@@ -1,7 +1,10 @@
 name: Gerar APK
 on:
   push:
+    branches: [main]
   workflow_dispatch:
+permissions:
+  contents: write
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -16,7 +19,6 @@ jobs:
       - name: Criar projeto Android
         run: |
           npx cap add android
-          # tela cheia, sempre deitado
           sed -i 's|<activity|<activity android:screenOrientation="sensorLandscape"|' android/app/src/main/AndroidManifest.xml
           npx cap sync android
       - name: Compilar APK
@@ -24,7 +26,19 @@ jobs:
         run: |
           chmod +x gradlew
           ./gradlew assembleDebug
+      - name: Copiar APK
+        run: cp android/app/build/outputs/apk/debug/app-debug.apk FuriaDoTemplo.apk
       - uses: actions/upload-artifact@v4
         with:
           name: FuriaDoTemplo-apk
-          path: android/app/build/outputs/apk/debug/app-debug.apk
+          path: FuriaDoTemplo.apk
+      - name: Publicar APK (release + branch apk)
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release delete ultima-versao -y --cleanup-tag || true
+          gh release create ultima-versao FuriaDoTemplo.apk -t "Fúria do Templo — última versão" -n "Baixe o FuriaDoTemplo.apk abaixo e instale no celular."
+          mkdir out && cp FuriaDoTemplo.apk out/ && cd out
+          git init -q && git checkout -q -b apk && git add FuriaDoTemplo.apk
+          git -c user.name=github-actions -c user.email=actions@github.com commit -qm "APK"
+          git push -f "https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" apk
