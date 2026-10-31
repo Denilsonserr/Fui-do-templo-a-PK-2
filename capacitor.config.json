@@ -1,0 +1,6 @@
+{
+  "appId": "com.denilson.furiadotemplo",
+  "appName": "Fúria do Templo",
+  "webDir": "www",
+  "android": { "backgroundColor": "#06050d" }
+}
