@@ -205,15 +205,16 @@ h2{margin:0;font-family:var(--f-display);font-weight:400;font-size:clamp(26px,8v
 #mmfx i{position:absolute;bottom:-4%;width:.45cqw;height:.45cqw;border-radius:50%;background:#fff6d8;box-shadow:0 0 .8cqw #ffd27a;opacity:0;animation:fl linear infinite}
 @keyframes fl{0%{transform:translateY(0) translateX(0);opacity:0}10%{opacity:.9}90%{opacity:.6}100%{transform:translateY(-105cqh) translateX(4cqw);opacity:0}}
 .mb{position:absolute;left:1.2%;border:0;background:transparent;cursor:pointer;padding:0;overflow:hidden;clip-path:polygon(4% 0,96% 0,100% 50%,96% 100%,4% 100%,0 50%);transition:transform .12s,filter .12s;opacity:0;animation:mbin .5s cubic-bezier(.2,.9,.3,1.2) forwards}
-.mb1{top:15.8%;width:28.4%;height:9.6%;animation-delay:.35s}
-.mb2{top:25.4%;width:26.8%;height:7.6%;animation-delay:.45s}
-.mb3{top:33.6%;width:26.8%;height:7.6%;animation-delay:.55s}
-.mb4{top:41.6%;width:26.8%;height:7.6%;animation-delay:.65s}
+.mb1{top:15.7%;width:28.2%;height:8.3%;animation-delay:.35s}
+.mb2{top:24.5%;width:26.6%;height:6.8%;animation-delay:.45s}
+.mb3{top:31.9%;width:26.6%;height:6.8%;animation-delay:.55s}
+.mb4{top:39.1%;width:26.6%;height:6.8%;animation-delay:.65s}
+.mb5{top:46.3%;width:26.6%;height:6.8%;animation-delay:.75s}
 @keyframes mbin{from{opacity:0;transform:translateX(-30%)}to{opacity:1;transform:none}}
 .mb:not(.lk):hover,.mb:not(.lk):focus-visible{filter:brightness(1.25)}
 .mb:not(.lk):active{transform:scale(.97)}
 .mb .shine{position:absolute;inset:0;background:linear-gradient(105deg,transparent 30%,rgba(255,255,255,.45) 45%,transparent 60%);transform:translateX(-120%);animation:sh 3.2s ease-in-out infinite 1.2s;mix-blend-mode:screen}
-.mb4 .shine{animation-delay:2.4s;opacity:.6}
+.mb5 .shine{animation-delay:2.4s;opacity:.6}.mb3 .shine{animation-delay:1.8s;opacity:.7}
 @keyframes sh{0%,55%{transform:translateX(-120%)}85%,100%{transform:translateX(120%)}}
 .mb1::after{content:"";position:absolute;inset:0;box-shadow:inset 0 0 2cqw rgba(255,150,40,.55);animation:gp 1.4s ease-in-out infinite alternate}
 .mb.lk{background:rgba(4,6,14,.55)}
@@ -223,7 +224,7 @@ h2{margin:0;font-family:var(--f-display);font-weight:400;font-size:clamp(26px,8v
 .mb .ld{position:absolute;right:12%;top:50%;transform:translateY(-50%);font:800 1.1cqw var(--f-ui);font-style:normal;letter-spacing:.12em;color:#fff;text-shadow:0 1px 3px #000}
 .mb1:not(:disabled) .ld{display:none}
 .mb1:disabled{filter:grayscale(.6) brightness(.8)}
-#mmtoast{position:absolute;left:2%;top:51%;font:800 1.4cqw var(--f-ui);letter-spacing:.12em;color:var(--gold);text-shadow:0 2px 4px #000;text-transform:uppercase;opacity:0;transition:opacity .2s}
+#mmtoast{position:absolute;left:2%;top:55%;font:800 1.4cqw var(--f-ui);letter-spacing:.12em;color:var(--gold);text-shadow:0 2px 4px #000;text-transform:uppercase;opacity:0;transition:opacity .2s}
 #mmtoast.on{opacity:1}
 #mmfade{position:absolute;inset:0;background:#000;pointer-events:none;animation:mf 1.1s ease-out forwards}
 @keyframes mf{to{opacity:0}}
@@ -276,8 +277,9 @@ h2{margin:0;font-family:var(--f-display);font-weight:400;font-size:clamp(26px,8v
       <div id="mmfx"></div>
       <button class="mb mb1" id="goSelect" disabled aria-label="Batalha"><span class="shine"></span><em class="ld">Carregando…</em></button>
       <button class="mb mb2 lk" id="mHist" aria-label="História (bloqueado)"><span class="lock"><svg viewBox="0 0 24 24"><path d="M7 10V7a5 5 0 0 1 10 0v3" fill="none" stroke="currentColor" stroke-width="2.4"/><rect x="4.5" y="10" width="15" height="11" rx="2" fill="currentColor"/></svg>EM BREVE</span></button>
-      <button class="mb mb3 lk" id="mOnline" aria-label="Online (bloqueado)"><span class="lock"><svg viewBox="0 0 24 24"><path d="M7 10V7a5 5 0 0 1 10 0v3" fill="none" stroke="currentColor" stroke-width="2.4"/><rect x="4.5" y="10" width="15" height="11" rx="2" fill="currentColor"/></svg>EM BREVE</span></button>
-      <button class="mb mb4" id="mCfg" aria-label="Configuração"><span class="shine"></span></button>
+      <button class="mb mb3" id="mTorre" aria-label="Modo Torre"><span class="shine"></span></button>
+      <button class="mb mb4 lk" id="mOnline" aria-label="Online (bloqueado)"><span class="lock"><svg viewBox="0 0 24 24"><path d="M7 10V7a5 5 0 0 1 10 0v3" fill="none" stroke="currentColor" stroke-width="2.4"/><rect x="4.5" y="10" width="15" height="11" rx="2" fill="currentColor"/></svg>EM BREVE</span></button>
+      <button class="mb mb5" id="mCfg" aria-label="Configuração"><span class="shine"></span></button>
       <div id="mmtoast" role="status" aria-live="polite"></div>
     </div>
     <div id="mmfade"></div>
@@ -319,7 +321,6 @@ h2{margin:0;font-family:var(--f-display);font-weight:400;font-size:clamp(26px,8v
     <div id="modeGrid">
       <button class="mode" data-m="pve" style="--c:#36e07a"><span class="mbg" data-i="denilson"></span><span class="tag">LIBERADO</span><b>PVE</b><span class="md">Você vs CPU</span></button>
       <button class="mode" data-m="treino" style="--c:#3fd8ff"><span class="mbg" data-i="xiao"></span><span class="tag">LIBERADO</span><b>TREINO</b><span class="md">Teste golpes — o rival não ataca</span></button>
-      <button class="mode" data-m="torre" style="--c:#ffd23f"><span class="mbg" data-i="arkarus"></span><span class="tag">TESTE</span><b>TORRE</b><span class="md">Enfrente todos — a vida continua</span></button>
       <button class="mode lock" data-m="pvp" style="--c:#ff3b5c"><span class="mbg" data-i="linfeng"></span><span class="tag">BLOQUEADO</span><b>PVP</b><span class="md">Online contra jogadores</span><span class="pad"><svg viewBox="0 0 24 24"><path d="M7 10V7a5 5 0 0 1 10 0v3" fill="none" stroke="currentColor" stroke-width="2.4"/><rect x="4.5" y="10" width="15" height="11" rx="2" fill="currentColor"/></svg>EM BREVE</span></button>
       <button class="mode lock" data-m="versus" style="--c:#ffb020"><span class="mbg" data-i="arkarus"></span><span class="tag">BLOQUEADO</span><b>VERSUS</b><span class="md">2 jogadores no mesmo celular</span><span class="pad"><svg viewBox="0 0 24 24"><path d="M7 10V7a5 5 0 0 1 10 0v3" fill="none" stroke="currentColor" stroke-width="2.4"/><rect x="4.5" y="10" width="15" height="11" rx="2" fill="currentColor"/></svg>EM BREVE</span></button>
       <button class="mode lock" data-m="story" style="--c:#b46bff"><span class="mbg" data-i="stage"></span><span class="tag">BLOQUEADO</span><b>HISTÓRIA</b><span class="md">A jornada de Denilson</span><span class="pad"><svg viewBox="0 0 24 24"><path d="M7 10V7a5 5 0 0 1 10 0v3" fill="none" stroke="currentColor" stroke-width="2.4"/><rect x="4.5" y="10" width="15" height="11" rx="2" fill="currentColor"/></svg>EM BREVE</span></button>
@@ -2672,10 +2673,10 @@ $('goHow').onclick=()=>{audioInit();howFrom='config';showScreen('how')};
   const fx=$('mmfx');for(let i=0;i<26;i++){const d=document.createElement('i');d.style.left=(Math.random()*100)+'%';d.style.animationDuration=(7+Math.random()*9)+'s';d.style.animationDelay=(-Math.random()*14)+'s';const s=.5+Math.random()*1.2;d.style.transform='scale('+s+')';fx.appendChild(d)}
   let tt=0;const toast=(m)=>{const t=$('mmtoast');t.textContent=m;t.classList.add('on');clearTimeout(tt);tt=setTimeout(()=>t.classList.remove('on'),1600)};
   for(const [id,n] of [['mHist','História'],['mOnline','Online']])$(id).onclick=()=>{audioInit();const b=$(id);b.classList.remove('shake');void b.offsetWidth;b.classList.add('shake');SFX.block();toast(n+' bloqueado — em breve!')};
-  $('mCfg').onclick=()=>{audioInit();SFX.whoosh();showScreen('config')};$('cfgBack').onclick=()=>showScreen('title')}
+  $('mCfg').onclick=()=>{audioInit();SFX.whoosh();showScreen('config')};$('mTorre').onclick=()=>{if(!SPR_OK)return;audioInit();fsTry();SFX.whoosh();G.gmode='torre';$('teamRow').hidden=true;renderSel();showScreen('select')};$('cfgBack').onclick=()=>showScreen('title')}
 $('pHow').onclick=()=>{howFrom='pause';showScreen('how')};
 $('howBack').onclick=()=>showScreen(howFrom);
-$('selBack').onclick=()=>showScreen('modes');
+$('selBack').onclick=()=>showScreen(G.gmode==='torre'?'title':'modes');
 const ALLC=['denilson','denilson2','linfeng','arkarus','aylla','white','xiao','magmus'];const ROS={magmus:{c:'#ff5a14',d:'General de força bruta. Normal: só socos e chutes pesados. No Modo Magma (braços de lava) libera os especiais: Punho de Magma, Erupção (baixo/frente + Ki) e o especial Chuva de Magma.',st:[62,96,84]},denilson:{c:'#4ea4ff',d:'Lutador de rua com ki azul. Transforma no Anjo Sombrio com asas. Super: Chuva de Espadas Sombrias.',st:[85,68,80]},
   linfeng:{c:'#ff3047',d:'Mestre da katana e da chama carmesim. Transforma no Dragão Sombrio. Supers: Fúria do Dragão e Dança do Dragão.',st:[68,88,76]},
   denilson2:{c:'#3f8cff',d:'A nova versão do Denilson: mais rápido, com ki azul elétrico. Transforma na Fera Desperta (sem camisa, ki vermelho). Supers: Explosão Azul / Carmesim e Rush Relâmpago.',st:[90,72,84]},
