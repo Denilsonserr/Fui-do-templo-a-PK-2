@@ -1418,18 +1418,19 @@ function drawZedFX(){
     blitF(T,n,fi,e.x,y,w,h,e.fl,al)}
   G.zfx=G.zfx.filter(e=>e.delay>0||e.t<ZFX[e.k].n*e.sp*(1+e.loop)+e.fade)}
 /* ULTIMATE: Impacto Estelar (Forma Suprema) - ergue as duas mãos, vídeo, e a explosão atravessa o rival */
-const ZVID=document.createElement('video');ZVID.muted=true;ZVID.playsInline=true;ZVID.setAttribute('playsinline','');ZVID.setAttribute('webkit-playsinline','');ZVID.preload='auto';ZVID.src='a/2e25eabfbd2a80.webm';let ZVOK=false;ZVID.addEventListener('canplay',()=>{ZVOK=true});try{ZVID.load()}catch(e){}
+const ZUFS=['a/b43e1be16cc59d.webp','a/c5bc7cdf79b823.webp','a/0d43074db8805e.webp','a/6e1f46d12bf5d7.webp','a/fad04e1d0396f0.webp','a/873c8c1cc11e74.webp','a/698d8fe4423539.webp','a/bf0f5aa4a98115.webp','a/e4d4bb885fc6b6.webp','a/b65766adb2327b.webp','a/f536793a95154a.webp','a/02b77ffabb49dd.webp','a/4a0d464b2a9a8d.webp','a/56be5fa1accd42.webp','a/78e6096f9208bd.webp','a/534d0b8cd7cc9e.webp','a/56a970a0d7ea12.webp','a/bcaf1368804e4e.webp','a/9e5c85a2db2b5e.webp','a/7de8a756439619.webp','a/286a6dc5e80cdd.webp','a/dad7ba90e962c4.webp','a/158a184044e567.webp','a/44b3260cd8b331.webp','a/dd4f035eb6509b.webp','a/f6220c07ffb445.webp','a/680a897e614058.webp','a/ef600d1715f5b6.webp','a/41c3daaa908686.webp','a/15a97a3104ea87.webp','a/afb762c3964a97.webp','a/dbf1b4cb1596ea.webp','a/921053818e8b66.webp','a/64b6d5054d5e23.webp','a/e4981ed877eb3d.webp','a/415d3aa974e6f7.webp','a/8ec239ed067fe8.webp','a/52b6e052d62d73.webp','a/46bfbd40652386.webp','a/0882e38db9be64.webp','a/00a019b7594bca.webp','a/674239efe12867.webp','a/4f731cd65e02c3.webp','a/bd04c300992742.webp','a/d7c7df708bb2d1.webp','a/230a87a98630c1.webp','a/f623c52d22a74b.webp','a/f990d0586e8812.webp','a/a9ba1715d43346.webp','a/3ffc45af4fec08.webp','a/5d9a1d5e223c41.webp','a/3f3d4706115b83.webp','a/28c96b65ceff08.webp','a/681faeb284d3fe.webp','a/cec0b48979b8d7.webp','a/0530dce1c0c905.webp','a/dde4973fa7ae79.webp','a/d1442713715cd3.webp','a/5dcce2f405fbad.webp','a/6d52c307ff105a.webp','a/dec9cf71586bc0.webp','a/d5d465b6c44cd9.webp','a/d2c774fc84877e.webp','a/aa127adbb8b428.webp','a/53974ab0f079bb.webp','a/42e6111015bdf5.webp','a/3ae54116943d87.webp','a/93359de011d4db.webp','a/688761489eeb60.webp','a/c71cc5e45e3300.webp','a/285650017cbbab.webp','a/253312b6627a0c.webp','a/8f2ede0162c721.webp','a/e91f1b05c11632.webp','a/eaf425b7aa8060.webp','a/c44d356ecac09f.webp','a/e569e1e5ddde43.webp','a/f152307de64c8c.webp','a/36bb6c431d6230.webp'];const ZUF=[];let ZUFP=null;
+function zLoadUF(){if(ZUFP)return ZUFP;return ZUFP=Promise.all(ZUFS.map((p,i)=>new Promise(r=>{const im=new Image();im.decoding='async';im.onload=()=>{ZUF[i]=im;r()};im.onerror=()=>r();im.src=p})))}
 function zedUlt(f,o){if(f.form!==2){if(!f.cpu)say(f,'SÓ NA FORMA SUPREMA');return false}if(f.ki<100){if(!f.cpu)say(f,'PRECISA DE 100 KI');return false}if(!o||o.ko)return false;
   f.ki-=100;f.state='whtS';f.st=0;f.inv=999;f.vx=0;f.vy=0;f.flying=false;f.y=FLOOR;f.grounded=true;f.rushKey=['pw',0];
   G.ws={zed:1,a:f,d:o,t:0,hi:0};SFX.superUp();buzz(70);return true}
 function updZedU(){const R=G.ws,a=R.a,d=R.d;R.t++;const t=R.t;a.st=t;a.y=FLOOR;a.grounded=true;
   const u=t-20;
   if(u<60){a.rushKey=['sp',0];R.cut=u+20;if(u%14===0)SFX.charge();if(u===50)SFX.blast();d.state='rushed';d.st=t;d.vx=0;d.vy=0;return}
-  if(u===60){R.v0=u;R.vid=0;if(ZVOK){try{ZVID.currentTime=0;const p=ZVID.play();R.vid=1;if(p&&p.catch)p.catch(()=>{R.vid=0})}catch(e){R.vid=0}}G.flash=8;G.flashCol='#e6f6ff';SFX.blast();SFX.boom();G.tz=1}
-  if(!R.post){const gt=(u-R.v0)/60,vt=R.vid?Math.min(ZVID.currentTime+(ZVID.ended?9:0),gt*1.25+.3):gt*2.5;R.vt=vt;
+  if(u===60){R.v0=u;R.vid=1;zLoadUF();G.flash=8;G.flashCol='#e6f6ff';SFX.blast();SFX.boom();G.tz=1}
+  if(!R.post){const gt=(u-R.v0)/60,vt=gt;R.vt=vt;
     d.state='rushed';d.st=t;d.vx=0;d.vy=0;d.flying=false;
     if((vt>1.3&&R.hi===0)||(vt>2.2&&R.hi===1)||(vt>4.2&&R.hi===2)){R.hi++;G.shake=Math.max(G.shake,14);SFX.boom();buzz(40);if(!d.ko)applyHit(a,d,{dmg:85,kb:0,hs:6,px:d.x,py:d.y-120,kind:'blast',lock:1});d.vx=0;d.vy=0;d.state='rushed'}
-    if(vt>=5.15||u-R.v0>420){try{ZVID.pause()}catch(e){}G.flash=8;G.flashCol='#e6f6ff';G.shake=Math.max(G.shake,18);SFX.crater();SFX.boom();buzz(120);
+    if(vt>=5.15||u-R.v0>420){G.flash=8;G.flashCol='#e6f6ff';G.shake=Math.max(G.shake,18);SFX.crater();SFX.boom();buzz(120);
       d.y=FLOOR;d.grounded=true;if(!d.ko)applyHit(a,d,{dmg:430,kb:12,hs:22,launch:-17,heavy:1,px:d.x,py:d.y-120,kind:'blast',lock:1});
       G.ws=null;a.rushKey=null;a.inv=12;neutral(a);G.tz=1;if(d.state==='rushed'){d.state='airhit';d.st=0;d.vy=-4}}
     return}
@@ -1470,7 +1471,7 @@ function drawZedCut(){const R=G.ws;if(!R||!R.zed||R.v0!=null||R.cut==null)return
 let ZCINE=null;
 function zPrepCine(){if(ZCINE)return ZCINE;
   const one=(p)=>new Promise(r=>{const im=new Image();im.decoding='async';im.onload=()=>{try{const W=Math.min(1280,im.naturalWidth),Hh=Math.round(W*im.naturalHeight/im.naturalWidth),c=document.createElement('canvas');c.width=W;c.height=Hh;c.getContext('2d').drawImage(im,0,0,W,Hh);c.naturalWidth=W;c.naturalHeight=Hh;c.complete=true;r(c)}catch(e){r(im)}};im.onerror=()=>r(null);im.src=p});
-  return ZCINE=Promise.all(['a/02333922d30d6e.webp','a/006d1cdd24b809.webp','a/7ac3d208486a4f.webp','a/c070a93390e222.webp'].map(one)).then(a=>{ZT2I[0]=a[0];ZT2I[1]=a[1];ZT2I[2]=a[2];ZCUT=a[3]})}
+  return ZCINE=Promise.all(['a/02333922d30d6e.webp','a/006d1cdd24b809.webp','a/7ac3d208486a4f.webp','a/c070a93390e222.webp'].map(one)).then(a=>{ZT2I[0]=a[0];ZT2I[1]=a[1];ZT2I[2]=a[2];ZCUT=a[3]}).then(()=>zLoadUF())}
 /* v67: cena cinematográfica da Forma Suprema do Zedry (3 artes) */
 const ZT2I=[null,null,null];const ZT2L=56,ZT2E=ZT2L*3;
 function updZT2(T,f,t){G.tz=1.15;G.tzx=sxs(f.x);G.tzy=sys(f.y-160);
@@ -1500,9 +1501,9 @@ function drawZT2(){const T=G.trans;if(!T||!isZed(T.f)||!T.f.zt2||T.t>=ZT2E+10)re
   const bar=H*.09;ctx.fillStyle='#000';ctx.fillRect(0,0,VW,bar);ctx.fillRect(0,H-bar,VW,bar);
   const g=ctx.createRadialGradient(VW/2,H/2,H*.35,VW/2,H/2,VW*.7);g.addColorStop(0,'rgba(0,0,0,0)');g.addColorStop(1,'rgba(0,0,0,.5)');ctx.fillStyle=g;ctx.fillRect(0,0,VW,H);
   ctx.restore()}
-function drawZedVid(){drawZedCut();const R=G.ws;if(!R||!R.zed||R.post||R.v0==null)return;const vt0=R.vt||0;if(!R.vid||ZVID.readyState<2){ctx.fillStyle=`rgba(230,246,255,${Math.max(0,1-vt0/.5)})`;ctx.fillRect(0,0,VW,H);return}
-  const vw=ZVID.videoWidth||1280,vh=ZVID.videoHeight||720,sc=Math.max(VW/vw,H/vh),w=vw*sc,h=vh*sc,vt=R.vt||0,fa=Math.min(1,(5.2-vt)/.25),sh=Math.min(10,G.shake)*.6;
-  ctx.save();ctx.globalAlpha=Math.max(0,fa);ctx.drawImage(ZVID,(VW-w)/2+rand(-sh,sh),(H-h)/2+rand(-sh,sh),w,h);if(vt<.35){ctx.globalAlpha=1;ctx.fillStyle=`rgba(230,246,255,${1-vt/.35})`;ctx.fillRect(0,0,VW,H)}ctx.restore()}
+function drawZedVid(){drawZedCut();const R=G.ws;if(!R||!R.zed||R.post||R.v0==null)return;const vt0=R.vt||0;let fi=Math.min(ZUFS.length-1,Math.floor(vt0*15));while(fi>0&&!ZUF[fi])fi--;const VF=ZUF[fi];if(!VF){ctx.fillStyle='rgba(230,246,255,1)';ctx.fillRect(0,0,VW,H);return}
+  const vw=VF.naturalWidth||960,vh=VF.naturalHeight||540,sc=Math.max(VW/vw,H/vh),w=vw*sc,h=vh*sc,vt=R.vt||0,fa=Math.min(1,(5.2-vt)/.25),sh=Math.min(10,G.shake)*.6;
+  ctx.save();ctx.globalAlpha=Math.max(0,fa);ctx.drawImage(VF,(VW-w)/2+rand(-sh,sh),(H-h)/2+rand(-sh,sh),w,h);if(vt<.35){ctx.globalAlpha=1;ctx.fillStyle=`rgba(230,246,255,${1-vt/.35})`;ctx.fillRect(0,0,VW,H)}ctx.restore()}
 
 function onSpritesReady(){const b=$('goSelect');if(b){b.disabled=false}}
 
