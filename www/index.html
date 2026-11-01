@@ -2651,7 +2651,7 @@ function showResult(){G.mode='result';$('controls').hidden=true;$('pauseBtn').hi
   setTimeout(()=>{if(G.mode==='result'){menuSetupKeep()}},1600)}
 function menuSetupKeep(){const pick=G.pick;menuSetup();G.pick=pick}
 const fsTry=()=>{try{const d=document.documentElement;if(!document.fullscreenElement&&d.requestFullscreen)d.requestFullscreen().then(()=>{try{screen.orientation.lock('landscape').catch(()=>{})}catch(e){}}).catch(()=>{})}catch(e){}};
-$('goSelect').onclick=()=>{audioInit();fsTry();showScreen('modes')};
+$('goSelect').onclick=()=>{audioInit();fsTry();SFX.whoosh();G.gmode='pve';$('teamRow').hidden=false;renderSel();showScreen('select')};
 {const IMS={xiao:()=>IMG.xiao.src,denilson:()=>IMG.denilson.src,linfeng:()=>IMG.linfeng.src,arkarus:()=>IMG.arkarus.src,stage:()=>STG.temple.img.src};
   document.querySelectorAll('#modeGrid .mbg').forEach(e=>{try{e.style.backgroundImage=`url(${IMS[e.dataset.i]()})`}catch(_){}});
   let tt=0;document.querySelectorAll('#modeGrid .mode').forEach(b=>b.onclick=()=>{audioInit();
@@ -2676,7 +2676,7 @@ $('goHow').onclick=()=>{audioInit();howFrom='config';showScreen('how')};
   $('mCfg').onclick=()=>{audioInit();SFX.whoosh();showScreen('config')};$('mTorre').onclick=()=>{if(!SPR_OK)return;audioInit();fsTry();SFX.whoosh();G.gmode='torre';$('teamRow').hidden=true;renderSel();showScreen('select')};$('cfgBack').onclick=()=>showScreen('title')}
 $('pHow').onclick=()=>{howFrom='pause';showScreen('how')};
 $('howBack').onclick=()=>showScreen(howFrom);
-$('selBack').onclick=()=>showScreen(G.gmode==='torre'?'title':'modes');
+$('selBack').onclick=()=>showScreen('title');
 const ALLC=['denilson','denilson2','linfeng','arkarus','aylla','white','xiao','magmus'];const ROS={magmus:{c:'#ff5a14',d:'General de força bruta. Normal: só socos e chutes pesados. No Modo Magma (braços de lava) libera os especiais: Punho de Magma, Erupção (baixo/frente + Ki) e o especial Chuva de Magma.',st:[62,96,84]},denilson:{c:'#4ea4ff',d:'Lutador de rua com ki azul. Transforma no Anjo Sombrio com asas. Super: Chuva de Espadas Sombrias.',st:[85,68,80]},
   linfeng:{c:'#ff3047',d:'Mestre da katana e da chama carmesim. Transforma no Dragão Sombrio. Supers: Fúria do Dragão e Dança do Dragão.',st:[68,88,76]},
   denilson2:{c:'#3f8cff',d:'A nova versão do Denilson: mais rápido, com ki azul elétrico. Transforma na Fera Desperta (sem camisa, ki vermelho). Supers: Explosão Azul / Carmesim e Rush Relâmpago.',st:[90,72,84]},
