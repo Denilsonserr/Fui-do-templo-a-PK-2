@@ -687,9 +687,9 @@ function speedMul(f){return (f.form?1.35:1)*(f.slowT>0?.55:1)}
 function tryCommon(f,o,hf,hb,air){
   if(isZed(f)){if(bufd(f,'tr')){use(f,'tr');const sb=f.sb||0;
       if(f.form===2){if(!f.cpu)say(f,'JÁ NA FORMA SUPREMA')}
-      else if(sb>=4){f.zt2=1;f.zt0=f.form?0:1;startTransform(f);f.sb=Math.max(0,(f.sb||0)-2);return true}
-      else if(!f.form&&sb>=SB_COST){f.zt2=0;f.zt0=0;startTransform(f);return true}
-      else if(!f.cpu)say(f,f.form?'PRECISA DE 4 BARRAS DE ENERGIA':'PRECISA DE 2 BARRAS DE ENERGIA')}
+      else if(f.form===1&&sb>=2){f.zt2=1;f.zt0=0;startTransform(f);f.sb=Math.max(0,sb-2);return true}
+      else if(!f.form&&sb>=1){f.zt2=0;f.zt0=0;startTransform(f);f.sb=Math.max(0,sb-1);return true}
+      else if(!f.cpu)say(f,f.form?'PRECISA DE 2 BARRAS DE ENERGIA':'PRECISA DE 1 BARRA DE ENERGIA')}
     if(bufd(f,'sr')){use(f,'sr');if(zedUlt(f,o))return true}
     if(bufd(f,'sp')){use(f,'sp');if(zedAtk(f,o,'met'))return true}
     if(bufd(f,'kiTap')){use(f,'kiTap');if(zedAtk(f,o,'shot'))return true}
@@ -1419,14 +1419,10 @@ function drawZedFX(){
 const ZVID=document.createElement('video');ZVID.muted=true;ZVID.playsInline=true;ZVID.setAttribute('playsinline','');ZVID.setAttribute('webkit-playsinline','');ZVID.preload='auto';ZVID.src='a/2e25eabfbd2a80.webm';let ZVOK=false;ZVID.addEventListener('canplay',()=>{ZVOK=true});try{ZVID.load()}catch(e){}
 function zedUlt(f,o){if(f.form!==2){if(!f.cpu)say(f,'SÓ NA FORMA SUPREMA');return false}if(f.ki<100){if(!f.cpu)say(f,'PRECISA DE 100 KI');return false}if(!o||o.ko)return false;
   f.ki-=100;f.state='whtS';f.st=0;f.inv=999;f.vx=0;f.vy=0;f.flying=false;f.y=FLOOR;f.grounded=true;f.rushKey=['pw',0];
-  G.ws={zed:1,a:f,d:o,t:0,hi:0};G.cine={f,t:0,title:'IMPACTO ESTELAR',sub:'ULTIMATE'};G.flash=6;G.flashCol='#9fd8ff';SFX.superUp();buzz(70);return true}
+  G.ws={zed:1,a:f,d:o,t:0,hi:0};SFX.superUp();buzz(70);return true}
 function updZedU(){const R=G.ws,a=R.a,d=R.d;R.t++;const t=R.t;a.st=t;a.y=FLOOR;a.grounded=true;
-  if(t<=40&&G.cine){G.cine.t++;if(G.cine.t>=40)G.cine=null;return}
-  const u=t-40;
-  if(u<60){a.rushKey=['pw',0];G.tz=1.15;G.tzx=sxs(a.x);G.tzy=sys(a.y-220);G.shake=Math.max(G.shake,1+u*.08);
-    const hy=a.y-340;if(u%2===0){glow(a.x+rand(-150,150),hy+rand(-40,110),Math.random()<.5?'#4aa3ff':'#e6f6ff',rand(8,16),20,0,0);addP({x:a.x+rand(-200,200),y:FLOOR-rand(0,10),vx:0,vy:-rand(3,8),life:30,max:30,c:'#4aa3ff',type:'glow',sz:rand(8,14),g:.1})}
-    if(u%12===0){ring(a.x,hy,'#9fd8ff',60+u*2,16,4);SFX.charge()}
-    d.state='rushed';d.st=t;d.vx=0;d.vy=0;return}
+  const u=t-20;
+  if(u<60){a.rushKey=['sp',0];R.cut=u+20;if(u%14===0)SFX.charge();if(u===50)SFX.blast();d.state='rushed';d.st=t;d.vx=0;d.vy=0;return}
   if(u===60){R.v0=u;R.vid=0;if(ZVOK){try{ZVID.currentTime=0;const p=ZVID.play();R.vid=1;if(p&&p.catch)p.catch(()=>{R.vid=0})}catch(e){R.vid=0}}G.flash=8;G.flashCol='#e6f6ff';SFX.blast();SFX.boom();G.tz=1}
   if(!R.post){const gt=(u-R.v0)/60,vt=R.vid?Math.min(ZVID.currentTime+(ZVID.ended?9:0),gt*1.25+.3):gt*2.5;R.vt=vt;
     d.state='rushed';d.st=t;d.vx=0;d.vy=0;d.flying=false;
@@ -1445,9 +1441,29 @@ function updZedU(){const R=G.ws,a=R.a,d=R.d;R.t++;const t=R.t;a.st=t;a.y=FLOOR;a
     G.flash=8;G.flashCol='#e6f6ff';G.shake=Math.max(G.shake,26);flashL(d.x,FLOOR-140,'#4aa3ff',680,1,30);ring(d.x,FLOOR-6,'#9fd8ff',260,26,8);for(let i=0;i<20;i++)debris(d.x+rand(-160,160),FLOOR);SFX.crater();SFX.boom();buzz(140);
     applyHit(a,d,{dmg:320,kb:12,hs:28,launch:-19,heavy:1,px:d.x,py:d.y-120,kind:'blast',lock:1})}
   if(R.fin!=null&&pu-R.fin>=70){G.ws=null;a.rushKey=null;a.inv=12;neutral(a);G.tz=1;if(d.state==='rushed'){d.state='airhit';d.st=0;d.vy=-4}}}
-function drawZedVid(){const R=G.ws;if(!R||!R.zed||!R.vid||R.post||R.v0==null||ZVID.readyState<2)return;
-  const vw=ZVID.videoWidth||1280,vh=ZVID.videoHeight||720,sc=Math.max(VW/vw,H/vh),w=vw*sc,h=vh*sc,vt=R.vt||0,fa=Math.min(1,vt/.2,(5.2-vt)/.25),sh=Math.min(10,G.shake)*.6;
-  ctx.save();ctx.globalAlpha=Math.max(0,fa);ctx.drawImage(ZVID,(VW-w)/2+rand(-sh,sh),(H-h)/2+rand(-sh,sh),w,h);ctx.restore()}
+
+/* corte de abertura do ultimate: arte do Zedry animada */
+const ZCUT=new Image();ZCUT.src='a/c070a93390e222.webp';
+function drawZedCut(){const R=G.ws;if(!R||!R.zed||R.v0!=null||R.cut==null)return;const c=R.cut,T=c/80,im=ZCUT;
+  ctx.save();ctx.fillStyle=`rgba(2,6,20,${Math.min(1,c/6)})`;ctx.fillRect(0,0,VW,H);
+  if(im.complete&&im.naturalWidth){const iw=im.naturalWidth,ih=im.naturalHeight,ein=1-Math.pow(1-Math.min(1,c/9),3),sc=Math.max(VW/iw,H/ih)*(1.18-.12*ein+.05*T),
+      w=iw*sc,h=ih*sc,sh=c>9?(2+T*7):0,x0=(VW-w)/2+(1-ein)*VW*.6+rand(-sh,sh),y0=(H-h)/2+rand(-sh,sh)*.6;
+    ctx.globalAlpha=ein;ctx.drawImage(im,x0,y0,w,h);ctx.globalAlpha=1;
+    const hx=x0+w*.355,hy=y0+h*.30,pu=1+.25*Math.sin(c*.9);
+    ctx.globalCompositeOperation='lighter';
+    let g=ctx.createRadialGradient(hx,hy,2,hx,hy,(60+170*T)*pu);g.addColorStop(0,'rgba(255,255,255,.95)');g.addColorStop(.3,'rgba(140,210,255,.7)');g.addColorStop(1,'rgba(40,120,255,0)');ctx.fillStyle=g;ctx.fillRect(hx-420,hy-420,840,840);
+    ctx.save();ctx.translate(hx,hy);ctx.rotate(c*.03);for(let i=0;i<12;i++){ctx.rotate(TAU/12);const L=(220+380*T)*(.7+.3*Math.sin(c*.5+i*1.7));ctx.fillStyle=`rgba(150,215,255,${.16+.2*T})`;ctx.beginPath();ctx.moveTo(0,-5);ctx.lineTo(L,-1.5);ctx.lineTo(L,1.5);ctx.lineTo(0,5);ctx.fill()}
+    ctx.restore();
+    if(c%3===0&&c>8){ctx.strokeStyle='rgba(200,235,255,.9)';ctx.lineWidth=2.5;ctx.beginPath();let px=hx+rand(-40,40),py=hy+rand(-40,40);ctx.moveTo(px,py);for(let k=0;k<6;k++){px+=rand(-45,45);py+=rand(-45,45);ctx.lineTo(px,py)}ctx.stroke()}
+    ctx.globalCompositeOperation='source-over'}
+  ctx.strokeStyle='rgba(255,255,255,.22)';ctx.lineWidth=2;for(let i=0;i<14;i++){const yy=(i*61+c*37)%H,xx=(i*97+c*53)%VW;ctx.beginPath();ctx.moveTo(xx,yy);ctx.lineTo(xx-160,yy+18);ctx.stroke()}
+  if(c>6){const k=Math.min(1,(c-6)/6);ctx.globalAlpha=k;ctx.font='italic 900 46px Bangers, Impact, sans-serif';ctx.textAlign='right';ctx.lineWidth=8;ctx.strokeStyle='#04122e';ctx.strokeText('IMPACTO ESTELAR',VW-40,H-56);ctx.fillStyle='#e6f6ff';ctx.fillText('IMPACTO ESTELAR',VW-40,H-56);
+    ctx.font='italic 800 20px "Saira Condensed",sans-serif';ctx.lineWidth=5;ctx.strokeText('ZEDRY · ULTIMATE',VW-42,H-28);ctx.fillStyle='#7fc4ff';ctx.fillText('ZEDRY · ULTIMATE',VW-42,H-28);ctx.globalAlpha=1}
+  if(c>68){ctx.fillStyle=`rgba(230,246,255,${(c-68)/12})`;ctx.fillRect(0,0,VW,H)}
+  ctx.restore()}
+function drawZedVid(){drawZedCut();const R=G.ws;if(!R||!R.zed||R.post||R.v0==null)return;const vt0=R.vt||0;if(!R.vid||ZVID.readyState<2){ctx.fillStyle=`rgba(230,246,255,${Math.max(0,1-vt0/.5)})`;ctx.fillRect(0,0,VW,H);return}
+  const vw=ZVID.videoWidth||1280,vh=ZVID.videoHeight||720,sc=Math.max(VW/vw,H/vh),w=vw*sc,h=vh*sc,vt=R.vt||0,fa=Math.min(1,(5.2-vt)/.25),sh=Math.min(10,G.shake)*.6;
+  ctx.save();ctx.globalAlpha=Math.max(0,fa);ctx.drawImage(ZVID,(VW-w)/2+rand(-sh,sh),(H-h)/2+rand(-sh,sh),w,h);if(vt<.35){ctx.globalAlpha=1;ctx.fillStyle=`rgba(230,246,255,${1-vt/.35})`;ctx.fillRect(0,0,VW,H)}ctx.restore()}
 
 function onSpritesReady(){const b=$('goSelect');if(b){b.disabled=false}}
 
@@ -2614,7 +2630,7 @@ function aiThink(f,o){
   if(!['idle','walk','crouch','cblock','jump','attack','fly'].includes(f.state))return;
   const free=f.state!=='attack';
   if(free&&srReady(f)&&Math.abs(dy)<200&&Math.random()<.02+.015*G.diff){I.sr=1;A.wait=30;return}
-  if(free&&isZed(f)&&f.form!==2&&(f.sb||0)>=4&&dist>220&&Math.random()<.01){I.tr=1;A.wait=20;return}
+  if(free&&isZed(f)&&((f.form===1&&(f.sb||0)>=2)||(!f.form&&(f.sb||0)>=1))&&dist>220&&Math.random()<.01){I.tr=1;A.wait=20;return}
   if(free&&isZed(f)&&f.form&&(f.sb||0)>=1&&dist>200&&Math.random()<.006){I.sp=1;A.wait=40;return}
   if(free&&!f.form&&(f.sb||0)>=SB_COST&&dist>220&&Math.random()<.004+.004*G.diff){I.tr=1;A.wait=20;return}
   if(free&&f.ki>=100&&!o.ko&&o.state!=='down'&&o.state!=='getup'){
@@ -2681,7 +2697,7 @@ const BTN={sp:$('bSp'),tr:$('bTr'),ki:$('bKi'),sr:$('bSr')};
 function setCls(el,c,on){const k=el.id+c;if(bst[k]!==on){bst[k]=on;el.classList.toggle(c,on)}}
 function setP(el,v){v=Math.round(clamp(v,0,1)*50)/50;if(el._p!==v){el._p=v;el.style.setProperty('--p',v)}}
 function updateButtons(f){const rd=srReady(f);setCls(BTN.sr,'locked',!f.form);setCls(BTN.sr,'ready',rd);setCls(BTN.sr,'dim',!rd);setP(BTN.sr,f.form?(isAyl(f)?f.ki/MGS[mgNext(f)].c:(isWht(f)||isXw(f))?f.ki/habL(f)[whNext(f)].c:f.ki/100):0);if(isAyl(f)||isWht(f)||isXw(f)){const W2=isWht(f)||isXw(f),em=BTN.sr.querySelector('em'),tx=String(W2?habL(f)[whNext(f)].c:MGS[mgNext(f)].c),sp=BTN.sr.querySelector('span'),lb=W2?'Hab '+(whNext(f)+1):'Magia '+(mgNext(f)+1);if(em.textContent!==tx)em.textContent=tx;if(sp.textContent!==lb)sp.textContent=lb};
-  if(rd&&!srWas&&G.phase==='fight'&&!G.sr){txt(f.x,f.y-310,isAyl(f)?'MAGIA PRONTA!':(isWht(f)||isXw(f))?'HABILIDADE PRONTA!':'SUPER PRONTO!','#e9c6ff');SFX.praise()}srWas=rd;const c=!!f.form;if(c!==chg){chg=c;$('controls').classList.toggle('charged',c);$('controls').style.setProperty('--chg',f.def.sid==='lin'?'#b14dff':f.def.fe);$('controls').style.setProperty('--chg2',f.def.fe2)}setP(BTN.ki,f.ki/15);setP(BTN.sp,isZed(f)?(f.form?Math.min(1,f.sb||0):0):f.ki/100);setP(BTN.tr,f.form?clamp(f.formT/FORM_T,0,1):(f.sb||0)/SB_COST);setCls(BTN.ki,'dim',f.ki<15);{const zr=isZed(f)?(f.form&&(f.sb||0)>=1):f.ki>=100;setCls(BTN.sp,'ready',zr);setCls(BTN.sp,'dim',!zr)}setCls(BTN.tr,'ready',(!f.form&&(f.sb||0)>=SB_COST)||(isZed(f)&&f.form!==2&&(f.sb||0)>=4));setCls(BTN.tr,'dim',!!f.form||(f.sb||0)<SB_COST);}
+  if(rd&&!srWas&&G.phase==='fight'&&!G.sr){txt(f.x,f.y-310,isAyl(f)?'MAGIA PRONTA!':(isWht(f)||isXw(f))?'HABILIDADE PRONTA!':'SUPER PRONTO!','#e9c6ff');SFX.praise()}srWas=rd;const c=!!f.form;if(c!==chg){chg=c;$('controls').classList.toggle('charged',c);$('controls').style.setProperty('--chg',f.def.sid==='lin'?'#b14dff':f.def.fe);$('controls').style.setProperty('--chg2',f.def.fe2)}setP(BTN.ki,f.ki/15);setP(BTN.sp,isZed(f)?(f.form?Math.min(1,f.sb||0):0):f.ki/100);setP(BTN.tr,f.form&&!(isZed(f)&&f.form===1)?clamp(f.formT/FORM_T,0,1):(f.sb||0)/(isZed(f)?(f.form?2:1):SB_COST));setCls(BTN.ki,'dim',f.ki<15);{const zr=isZed(f)?(f.form&&(f.sb||0)>=1):f.ki>=100;setCls(BTN.sp,'ready',zr);setCls(BTN.sp,'dim',!zr)}setCls(BTN.tr,'ready',isZed(f)?((!f.form&&(f.sb||0)>=1)||(f.form===1&&(f.sb||0)>=2)):(!f.form&&(f.sb||0)>=SB_COST));setCls(BTN.tr,'dim',!!f.form||(f.sb||0)<SB_COST);}
 
 /* ================= flow ================= */
 function setupFighters(){const other=G.opp||(G.pick==='denilson'?'linfeng':'denilson');
@@ -2811,7 +2827,7 @@ $('goHow').onclick=()=>{audioInit();howFrom='config';showScreen('how')};
 $('pHow').onclick=()=>{howFrom='pause';showScreen('how')};
 $('howBack').onclick=()=>showScreen(howFrom);
 $('selBack').onclick=()=>showScreen('title');
-const ALLC=['denilson','denilson2','linfeng','arkarus','aylla','white','xiao','magmus','zedry'];const ROS={zedry:{c:'#ffc63d',d:'Guerreiro alienígena. Luta só com socos e chutes na forma normal. Forma Dourada (2 barras): Rajada Dourada e Meteoro Azul (1 barra). Forma Suprema (4 barras): ultimate Impacto Estelar.',st:[86,80,72]},magmus:{c:'#ff5a14',d:'General de força bruta. Normal: só socos e chutes pesados. No Modo Magma (braços de lava) libera os especiais: Punho de Magma, Erupção (baixo/frente + Ki) e o especial Chuva de Magma.',st:[62,96,84]},denilson:{c:'#4ea4ff',d:'Lutador de rua com ki azul. Transforma no Anjo Sombrio com asas. Super: Chuva de Espadas Sombrias.',st:[85,68,80]},
+const ALLC=['denilson','denilson2','linfeng','arkarus','aylla','white','xiao','magmus','zedry'];const ROS={zedry:{c:'#ffc63d',d:'Guerreiro alienígena. Luta só com socos e chutes na forma normal. Forma Dourada (1 barra): Rajada Dourada e Meteoro Azul (1 barra). Forma Suprema (+2 barras, a partir da Dourada): ultimate Impacto Estelar.',st:[86,80,72]},magmus:{c:'#ff5a14',d:'General de força bruta. Normal: só socos e chutes pesados. No Modo Magma (braços de lava) libera os especiais: Punho de Magma, Erupção (baixo/frente + Ki) e o especial Chuva de Magma.',st:[62,96,84]},denilson:{c:'#4ea4ff',d:'Lutador de rua com ki azul. Transforma no Anjo Sombrio com asas. Super: Chuva de Espadas Sombrias.',st:[85,68,80]},
   linfeng:{c:'#ff3047',d:'Mestre da katana e da chama carmesim. Transforma no Dragão Sombrio. Supers: Fúria do Dragão e Dança do Dragão.',st:[68,88,76]},
   denilson2:{c:'#3f8cff',d:'A nova versão do Denilson: mais rápido, com ki azul elétrico. Transforma na Fera Desperta (sem camisa, ki vermelho). Supers: Explosão Azul / Carmesim e Rush Relâmpago.',st:[90,72,84]},
   aylla:{c:'#a35cff',d:'Bruxa lutadora. Luta só com socos e chutes até ativar o Modo Arcano; aí libera magia: raios, lâminas, erupção e o Selo do Vazio.',st:[88,74,92]},
