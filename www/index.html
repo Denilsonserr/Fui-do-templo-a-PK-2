@@ -1169,7 +1169,9 @@ for(const P of PANELS){const im=new Image();im.src=P.src;P.img=im;delete P.src}
 /* v43: memória — carrega por personagem, prepara antes da luta e libera o que não está em uso */
 const SPL={};
 function loadSid(sid){if(SPL[sid])return SPL[sid];const L=[];for(const arr of Object.values(SPRH[sid]||{}))for(const S of arr){if(!S.src)continue;const src=S.src;delete S.src;
-  L.push(new Promise(r=>{const im=new Image();im.decoding='async';im.onload=im.onerror=()=>{S.img=im;r()};im.src=src}))}return SPL[sid]=Promise.all(L)}
+  L.push(new Promise(r=>{const im=new Image();im.decoding='async';im.onload=im.onerror=()=>{S.img=im;r()};im.src=src}));
+  if(S.b){const ld=(o,k)=>{if(!o||!o[k]||o[k+'I'])return;L.push(new Promise(r=>{const im=new Image();im.decoding='async';im.onload=im.onerror=()=>r();o[k+'I']=im;im.src=o[k]}))};ld(S,'b');ld(S.rl,'src');ld(S.hl,'src')}}
+  if(sid==='zed3'||sid==='zed')L.push(zPrepCine());return SPL[sid]=Promise.all(L)}
 const sidsOf=id=>{const s=CH[id]&&CH[id].sid;return !s?[]:s==='dn2'?['dn2','dn2f']:s==='xw'?['xw','xwf']:s==='gmg'?['gmg','gmgf']:s==='zed'?['zed','zedf','zed3']:[s]};
 Promise.all(['den','lin'].map(loadSid)).then(()=>{SPR_OK=true;onSpritesReady();
   const rest=Object.keys(SPRH).filter(k=>!SPL[k]);(function nx(){const k=rest.shift();if(k)loadSid(k).then(()=>setTimeout(nx,30))})()});
@@ -1181,7 +1183,7 @@ function prepMatch(ids){const use=new Set();for(const id of ids)for(const s of s
     for(const sid of use)for(const [k,arr] of Object.entries(SPRH[sid]))for(const S of arr)if(!seen.has(S)){seen.add(S);Q.push([sid,k,S])}
     let i=0;(function step(){if(job!==warmJob)return;const t0=performance.now();
       while(i<Q.length&&performance.now()-t0<8){const [sid,k,S]=Q[i++];if(!S.img||!S.img.naturalWidth)continue;
-        try{wx.drawImage(S.img,0,0,4,4)}catch(e){}if(k[0]!=='f'){recolor(sid,S);if(S.imgF&&S.imgF!==S.img)try{wx.drawImage(S.imgF,0,0,4,4)}catch(e){}}silOf(S,S.img);if(sid==='gmgf')gmgPts(S)}
+        try{wx.drawImage(S.img,0,0,4,4);if(S.bI&&S.bI.naturalWidth){wx.drawImage(S.bI,0,0,4,4);if(S.rl&&S.rl.srcI&&S.rl.srcI.naturalWidth)wx.drawImage(S.rl.srcI,0,0,4,4);if(S.hl&&S.hl.srcI&&S.hl.srcI.naturalWidth)wx.drawImage(S.hl.srcI,0,0,4,4)}}catch(e){}if(k[0]!=='f'){recolor(sid,S);if(S.imgF&&S.imgF!==S.img)try{wx.drawImage(S.imgF,0,0,4,4)}catch(e){}}silOf(S,S.img);if(sid==='gmgf')gmgPts(S)}
       if(i<Q.length)setTimeout(step,0)})()})}
 SPRH.dn2f.win=SPRH.dn2.win.slice(4);SPRH.dn2f.trans=SPRH.dn2.trans;SPRH.xwf.trans=SPRH.xw.trans;SPRH.xwf.flip=SPRH.xw.flip;SPRH.xwf.bar=SPRH.xw.bar;SPRH.xwf.en1=SPRH.xwf.pose;
 function recDen(d){for(let i=0;i<d.length;i+=4){if(d[i+3]===0)continue;const r=d[i],g=d[i+1],b=d[i+2],mx=Math.max(r,g,b),mn=Math.min(r,g,b);if(mx<28)continue;
@@ -1340,7 +1342,7 @@ function drawSprite(f,key,x,y,facing,e,mode){
 
 /* v62: Zedry - cabelo e faixas com movimento (camadas separadas) */
 function zImg(o,k){if(!o[k+'I']){const i=new Image();i.src=o[k];o[k+'I']=i}const i=o[k+'I'];return i.complete&&i.naturalWidth?i:null}
-function zedBlit(S,e,f){const B=zImg(S,'b');if(!B)return false;
+function zedBlit(S,e,f){const B=zImg(S,'b');if(!B)return false;if((S.rl&&!zImg(S.rl,'src'))||(S.hl&&!zImg(S.hl,'src')))return false;
   const t=G.frame+(f.cpu?40:0),st0=f.state,act=(st0==='charge'||st0==='transform')?1:0,mv=Math.min(1,Math.abs(f.vx)/5+(f.grounded?0:.5)+act),fm=f.form?1:0;
   const L=S.rl,RI=L&&zImg(L,'src');
   if(RI){const rx=RI.width/L.w,st=G.hq?3:5,amp=4+4*mv+1.5*fm,span=Math.max(40,L.a-L.x);
@@ -1444,8 +1446,8 @@ function updZedU(){const R=G.ws,a=R.a,d=R.d;R.t++;const t=R.t;a.st=t;a.y=FLOOR;a
   if(R.fin!=null&&pu-R.fin>=70){G.ws=null;a.rushKey=null;a.inv=12;neutral(a);G.tz=1;if(d.state==='rushed'){d.state='airhit';d.st=0;d.vy=-4}}}
 
 /* corte de abertura do ultimate: arte do Zedry animada */
-const ZCUT=new Image();ZCUT.src='a/c070a93390e222.webp';
-function drawZedCut(){const R=G.ws;if(!R||!R.zed||R.v0!=null||R.cut==null)return;const c=R.cut,T=c/80,im=ZCUT;
+let ZCUT=null;
+function drawZedCut(){const R=G.ws;if(!R||!R.zed||R.v0!=null||R.cut==null)return;const c=R.cut,T=c/80,im=ZCUT||{};
   ctx.save();ctx.fillStyle=`rgba(2,6,20,${Math.min(1,c/6)})`;ctx.fillRect(0,0,VW,H);
   if(im.complete&&im.naturalWidth){const iw=im.naturalWidth,ih=im.naturalHeight,ein=1-Math.pow(1-Math.min(1,c/9),3),sc=Math.max(VW/iw,H/ih)*(1.18-.12*ein+.05*T),
       w=iw*sc,h=ih*sc,sh=c>9?(2+T*7):0,x0=(VW-w)/2+(1-ein)*VW*.6+rand(-sh,sh),y0=(H-h)/2+rand(-sh,sh)*.6;
@@ -1463,8 +1465,14 @@ function drawZedCut(){const R=G.ws;if(!R||!R.zed||R.v0!=null||R.cut==null)return
   if(c>68){ctx.fillStyle=`rgba(230,246,255,${(c-68)/12})`;ctx.fillRect(0,0,VW,H)}
   ctx.restore()}
 
+
+/* v69: imagens das cenas do Zedry pré-carregadas e já redimensionadas (sem travar no celular) */
+let ZCINE=null;
+function zPrepCine(){if(ZCINE)return ZCINE;
+  const one=(p)=>new Promise(r=>{const im=new Image();im.decoding='async';im.onload=()=>{try{const W=Math.min(1280,im.naturalWidth),Hh=Math.round(W*im.naturalHeight/im.naturalWidth),c=document.createElement('canvas');c.width=W;c.height=Hh;c.getContext('2d').drawImage(im,0,0,W,Hh);c.naturalWidth=W;c.naturalHeight=Hh;c.complete=true;r(c)}catch(e){r(im)}};im.onerror=()=>r(null);im.src=p});
+  return ZCINE=Promise.all(['a/02333922d30d6e.webp','a/006d1cdd24b809.webp','a/7ac3d208486a4f.webp','a/c070a93390e222.webp'].map(one)).then(a=>{ZT2I[0]=a[0];ZT2I[1]=a[1];ZT2I[2]=a[2];ZCUT=a[3]})}
 /* v67: cena cinematográfica da Forma Suprema do Zedry (3 artes) */
-const ZT2I=['a/02333922d30d6e.webp','a/006d1cdd24b809.webp','a/7ac3d208486a4f.webp'].map(p=>{const i=new Image();i.src=p;return i});const ZT2L=56,ZT2E=ZT2L*3;
+const ZT2I=[null,null,null];const ZT2L=56,ZT2E=ZT2L*3;
 function updZT2(T,f,t){G.tz=1.15;G.tzx=sxs(f.x);G.tzy=sys(f.y-160);
   if(t<ZT2E){const i=(t/ZT2L)|0,l=t%ZT2L;if(l===1){SFX.boom();G.shake=Math.max(G.shake,8+i*6);buzz(30+i*20)}if(t===2)SFX.powerUp();G.ring=null;if(l===28&&i<2)SFX.charge();
     if(t%3===0)T.emb=(T.emb||[]).concat([{x:Math.random()*VW,y:H+10,vy:-rand(2,6),vx:rand(-1,1),r:rand(1.5,4),l:0}]);return}
@@ -2594,6 +2602,7 @@ function render(){
   G._lights=G.hq?collectLights():[];
   ctx=ctx0;ctx.setTransform(SC*DPR,0,0,SC*DPR,0,0);ctx.imageSmoothingEnabled=true;ctx.imageSmoothingQuality='high';
   ctx.fillStyle='#06050d';ctx.fillRect(0,0,VW,H);
+  if(G.trans&&isZed(G.trans.f)&&G.trans.f.zt2&&G.trans.t<ZT2E){drawZT2();if(G.mode==='fight')drawHUD();return}
   if(G.hq&&!G.nosplit&&BGD<DPR-.05){/* v46: cenário em resolução menor, lutadores e efeitos em resolução cheia */
     const bw=Math.max(2,Math.round(VW*SC*BGD)),bh=Math.max(2,Math.round(H*SC*BGD));if(STC.width!==bw||STC.height!==bh){STC.width=bw;STC.height=bh}
     ctx=stx;ctx.setTransform(SC*BGD,0,0,SC*BGD,0,0);ctx.imageSmoothingEnabled=true;ctx.imageSmoothingQuality='high';ctx.fillStyle='#06050d';ctx.fillRect(0,0,VW,H);
