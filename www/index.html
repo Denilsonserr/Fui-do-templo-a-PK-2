@@ -691,7 +691,7 @@ function tryCommon(f,o,hf,hb,air){
       else if(!f.form&&sb>=1){f.zt2=0;f.zt0=0;startTransform(f);f.sb=Math.max(0,sb-1);return true}
       else if(!f.cpu)say(f,f.form?'PRECISA DE 2 BARRAS DE ENERGIA':'PRECISA DE 1 BARRA DE ENERGIA')}
     if(bufd(f,'sr')){use(f,'sr');if(zedUlt(f,o))return true}
-    if(bufd(f,'sp')){use(f,'sp');if(zedAtk(f,o,'met'))return true}
+    if(bufd(f,'sp')){use(f,'sp');if(!f.cpu)say(f,'EM BREVE')}
     if(bufd(f,'kiTap')){use(f,'kiTap');if(zedAtk(f,o,'shot'))return true}
     if(hb&&(!air||f.flying)&&bufd(f,'kick')){use(f,'kick');startMove(f,'hkick');return true}}
   if(bufd(f,'sr')){use(f,'sr');if(trySR(f,o))return true}
@@ -1356,7 +1356,7 @@ function zedBlit(S,e,f){const B=zImg(S,'b');if(!B)return false;
   return true}
 
 /* v64: ZEDRY - Rajada Dourada + Meteoro Azul (Forma Dourada) e ultimate Impacto Estelar (Forma Suprema) */
-const ZFX={"zB_p":{"w":240,"h":184,"n":16,"src":"a/70ce5ab52eeeda.webp"},"zB_x":{"w":300,"h":260,"n":5,"src":"a/96d798473af999.webp"},"zM_b":{"w":300,"h":150,"n":7,"src":"a/c0faa7e6f2a642.webp"},"zM_d":{"w":480,"h":252,"n":6,"src":"a/65299fa9c47e30.webp"},"zM_p":{"w":480,"h":255,"n":14,"src":"a/c8948ae0061af2.webp"}};const ZT={};for(const k in ZFX){const im=new Image();im.src=ZFX[k].src;ZT[k]=im}
+const ZFX={"zB_p":{"w":240,"h":184,"n":16,"src":"a/70ce5ab52eeeda.webp"},"zB_x":{"w":300,"h":260,"n":5,"src":"a/96d798473af999.webp"}};const ZT={};for(const k in ZFX){const im=new Image();im.src=ZFX[k].src;ZT[k]=im}
 const zT=k=>{const i=ZT[k];return i&&i.complete&&i.naturalWidth?i:null};
 G.zfx=[];G.zmet=[];G.zpil=null;
 function zfxAdd(k,x,y,o){G.zfx.push(Object.assign({k,x,y,t:0,sp:3,w:300,anchor:'c',loop:0,fade:10,fl:1,al:1,delay:0},o||{}))}
@@ -1464,7 +1464,7 @@ function drawZedCut(){const R=G.ws;if(!R||!R.zed||R.v0!=null||R.cut==null)return
   ctx.restore()}
 
 /* v67: cena cinematográfica da Forma Suprema do Zedry (3 artes) */
-const ZT2I=['02333922d30d6e','006d1cdd24b809','7ac3d208486a4f'].map(h=>{const i=new Image();i.src='a/'+h+'.webp';return i});const ZT2L=56,ZT2E=ZT2L*3;
+const ZT2I=['a/02333922d30d6e.webp','a/006d1cdd24b809.webp','a/7ac3d208486a4f.webp'].map(p=>{const i=new Image();i.src=p;return i});const ZT2L=56,ZT2E=ZT2L*3;
 function updZT2(T,f,t){G.tz=1.15;G.tzx=sxs(f.x);G.tzy=sys(f.y-160);
   if(t<ZT2E){const i=(t/ZT2L)|0,l=t%ZT2L;if(l===1){SFX.boom();G.shake=Math.max(G.shake,8+i*6);buzz(30+i*20)}if(t===2)SFX.powerUp();G.ring=null;if(l===28&&i<2)SFX.charge();
     if(t%3===0)T.emb=(T.emb||[]).concat([{x:Math.random()*VW,y:H+10,vy:-rand(2,6),vx:rand(-1,1),r:rand(1.5,4),l:0}]);return}
@@ -2662,7 +2662,6 @@ function aiThink(f,o){
   const free=f.state!=='attack';
   if(free&&srReady(f)&&Math.abs(dy)<200&&Math.random()<.02+.015*G.diff){I.sr=1;A.wait=30;return}
   if(free&&isZed(f)&&((f.form===1&&(f.sb||0)>=2)||(!f.form&&(f.sb||0)>=1))&&dist>220&&Math.random()<.01){I.tr=1;A.wait=20;return}
-  if(free&&isZed(f)&&f.form&&(f.sb||0)>=1&&dist>200&&Math.random()<.006){I.sp=1;A.wait=40;return}
   if(free&&!f.form&&(f.sb||0)>=SB_COST&&dist>220&&Math.random()<.004+.004*G.diff){I.tr=1;A.wait=20;return}
   if(free&&f.ki>=100&&!o.ko&&o.state!=='down'&&o.state!=='getup'){
     if((dist<230&&Math.abs(dy)<150&&Math.random()<.035*L.agg+.008)||(dist>340&&Math.random()<.02*L.agg+.004)){I.sp=1;A.wait=30;return}}
@@ -2728,7 +2727,7 @@ const BTN={sp:$('bSp'),tr:$('bTr'),ki:$('bKi'),sr:$('bSr')};
 function setCls(el,c,on){const k=el.id+c;if(bst[k]!==on){bst[k]=on;el.classList.toggle(c,on)}}
 function setP(el,v){v=Math.round(clamp(v,0,1)*50)/50;if(el._p!==v){el._p=v;el.style.setProperty('--p',v)}}
 function updateButtons(f){const rd=srReady(f);setCls(BTN.sr,'locked',!f.form);setCls(BTN.sr,'ready',rd);setCls(BTN.sr,'dim',!rd);setP(BTN.sr,f.form?(isAyl(f)?f.ki/MGS[mgNext(f)].c:(isWht(f)||isXw(f))?f.ki/habL(f)[whNext(f)].c:f.ki/100):0);if(isAyl(f)||isWht(f)||isXw(f)){const W2=isWht(f)||isXw(f),em=BTN.sr.querySelector('em'),tx=String(W2?habL(f)[whNext(f)].c:MGS[mgNext(f)].c),sp=BTN.sr.querySelector('span'),lb=W2?'Hab '+(whNext(f)+1):'Magia '+(mgNext(f)+1);if(em.textContent!==tx)em.textContent=tx;if(sp.textContent!==lb)sp.textContent=lb};
-  if(rd&&!srWas&&G.phase==='fight'&&!G.sr){txt(f.x,f.y-310,isAyl(f)?'MAGIA PRONTA!':(isWht(f)||isXw(f))?'HABILIDADE PRONTA!':'SUPER PRONTO!','#e9c6ff');SFX.praise()}srWas=rd;const c=!!f.form;if(c!==chg){chg=c;$('controls').classList.toggle('charged',c);$('controls').style.setProperty('--chg',f.def.sid==='lin'?'#b14dff':f.def.fe);$('controls').style.setProperty('--chg2',f.def.fe2)}setP(BTN.ki,f.ki/15);setP(BTN.sp,isZed(f)?(f.form?Math.min(1,f.sb||0):0):f.ki/100);setP(BTN.tr,f.form&&!(isZed(f)&&f.form===1)?clamp(f.formT/FORM_T,0,1):(f.sb||0)/(isZed(f)?(f.form?2:1):SB_COST));setCls(BTN.ki,'dim',f.ki<15);{const zr=isZed(f)?(f.form&&(f.sb||0)>=1):f.ki>=100;setCls(BTN.sp,'ready',zr);setCls(BTN.sp,'dim',!zr)}setCls(BTN.tr,'ready',isZed(f)?((!f.form&&(f.sb||0)>=1)||(f.form===1&&(f.sb||0)>=2)):(!f.form&&(f.sb||0)>=SB_COST));setCls(BTN.tr,'dim',!!f.form||(f.sb||0)<SB_COST);}
+  if(rd&&!srWas&&G.phase==='fight'&&!G.sr){txt(f.x,f.y-310,isAyl(f)?'MAGIA PRONTA!':(isWht(f)||isXw(f))?'HABILIDADE PRONTA!':'SUPER PRONTO!','#e9c6ff');SFX.praise()}srWas=rd;const c=!!f.form;if(c!==chg){chg=c;$('controls').classList.toggle('charged',c);$('controls').style.setProperty('--chg',f.def.sid==='lin'?'#b14dff':f.def.fe);$('controls').style.setProperty('--chg2',f.def.fe2)}setP(BTN.ki,f.ki/15);setP(BTN.sp,isZed(f)?0:f.ki/100);setP(BTN.tr,f.form&&!(isZed(f)&&f.form===1)?clamp(f.formT/FORM_T,0,1):(f.sb||0)/(isZed(f)?(f.form?2:1):SB_COST));setCls(BTN.ki,'dim',f.ki<15);{const zr=isZed(f)?false:f.ki>=100;setCls(BTN.sp,'ready',zr);setCls(BTN.sp,'dim',!zr)}setCls(BTN.tr,'ready',isZed(f)?((!f.form&&(f.sb||0)>=1)||(f.form===1&&(f.sb||0)>=2)):(!f.form&&(f.sb||0)>=SB_COST));setCls(BTN.tr,'dim',!!f.form||(f.sb||0)<SB_COST);}
 
 /* ================= flow ================= */
 function setupFighters(){const other=G.opp||(G.pick==='denilson'?'linfeng':'denilson');
@@ -2858,7 +2857,7 @@ $('goHow').onclick=()=>{audioInit();howFrom='config';showScreen('how')};
 $('pHow').onclick=()=>{howFrom='pause';showScreen('how')};
 $('howBack').onclick=()=>showScreen(howFrom);
 $('selBack').onclick=()=>showScreen('title');
-const ALLC=['denilson','denilson2','linfeng','arkarus','aylla','white','xiao','magmus','zedry'];const ROS={zedry:{c:'#ffc63d',d:'Guerreiro alienígena. Luta só com socos e chutes na forma normal. Forma Dourada (1 barra): Rajada Dourada e Meteoro Azul (1 barra). Forma Suprema (+2 barras, a partir da Dourada): ultimate Impacto Estelar.',st:[86,80,72]},magmus:{c:'#ff5a14',d:'General de força bruta. Normal: só socos e chutes pesados. No Modo Magma (braços de lava) libera os especiais: Punho de Magma, Erupção (baixo/frente + Ki) e o especial Chuva de Magma.',st:[62,96,84]},denilson:{c:'#4ea4ff',d:'Lutador de rua com ki azul. Transforma no Anjo Sombrio com asas. Super: Chuva de Espadas Sombrias.',st:[85,68,80]},
+const ALLC=['denilson','denilson2','linfeng','arkarus','aylla','white','xiao','magmus','zedry'];const ROS={zedry:{c:'#ffc63d',d:'Guerreiro alienígena. Luta só com socos e chutes na forma normal. Forma Dourada (1 barra): Rajada Dourada. Forma Suprema (+2 barras, a partir da Dourada): dano e velocidade +30% e ultimate Impacto Estelar.',st:[86,80,72]},magmus:{c:'#ff5a14',d:'General de força bruta. Normal: só socos e chutes pesados. No Modo Magma (braços de lava) libera os especiais: Punho de Magma, Erupção (baixo/frente + Ki) e o especial Chuva de Magma.',st:[62,96,84]},denilson:{c:'#4ea4ff',d:'Lutador de rua com ki azul. Transforma no Anjo Sombrio com asas. Super: Chuva de Espadas Sombrias.',st:[85,68,80]},
   linfeng:{c:'#ff3047',d:'Mestre da katana e da chama carmesim. Transforma no Dragão Sombrio. Supers: Fúria do Dragão e Dança do Dragão.',st:[68,88,76]},
   denilson2:{c:'#3f8cff',d:'A nova versão do Denilson: mais rápido, com ki azul elétrico. Transforma na Fera Desperta (sem camisa, ki vermelho). Supers: Explosão Azul / Carmesim e Rush Relâmpago.',st:[90,72,84]},
   aylla:{c:'#a35cff',d:'Bruxa lutadora. Luta só com socos e chutes até ativar o Modo Arcano; aí libera magia: raios, lâminas, erupção e o Selo do Vazio.',st:[88,74,92]},
