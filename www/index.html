@@ -685,7 +685,9 @@ function say(f,t){if(!f.cpu){f.msg=t;f.msgT=55;SFX.nope()}}
 function startMove(f,name){const m=MOVES[name];aylSwing(f,m);SFX.swing(m.heavy||m.rush);if(m.heavy||m.rush)fvox(f,pick(['f_ora','f_hya','f_hah']),false,22);else if(Math.random()<.35)fvox(f,pick(['f_hah','f_hup','f_hya']),false,26);f.state='attack';f.move=m;f.mname=name;f.mf=0;f.hasHit=false;f.st=0;f.guard=false;f.trail=[];if(m.air&&!f.flying)f.airN++}
 function speedMul(f){return (f.form?1.35:1)*(f.slowT>0?.55:1)}
 function tryCommon(f,o,hf,hb,air){
-  if(isZed(f)){const no=k=>{if(bufd(f,k)){use(f,k);if(!f.cpu)say(f,'PODERES EM BREVE')}};no('sr');no('sp');no('kiTap');
+  if(isZed(f)){if(bufd(f,'sr')){use(f,'sr');if(!f.cpu)say(f,'EM BREVE')}
+    if(bufd(f,'sp')){use(f,'sp');if(zedAtk(f,o,'big'))return true}
+    if(bufd(f,'kiTap')){use(f,'kiTap');if(zedAtk(f,o,'shot'))return true}
     if(hb&&(!air||f.flying)&&bufd(f,'kick')){use(f,'kick');startMove(f,'hkick');return true}}
   if(bufd(f,'sr')){use(f,'sr');if(trySR(f,o))return true}
   if(bufd(f,'tr')){use(f,'tr');if(!f.form&&(f.sb||0)>=SB_COST){startTransform(f);return true}say(f,f.form?'JÁ TRANSFORMADO':'PRECISA DE '+SB_COST+' BARRAS DE ENERGIA')}
@@ -950,6 +952,7 @@ function updFighter(f,o){
     case 'blast':
       if(isAyl(f)&&f.bk&&f.bk.startsWith('a_')){aylBlastUpd(f);break}
       if(isWht(f)&&f.bk&&f.bk.startsWith('w_')){whtBlastUpd(f);break}
+      if(isZed(f)&&f.bk&&f.bk.startsWith('z_')){zedBlastUpd(f);break}
       if(isGmg(f)&&f.bk&&f.bk.startsWith('g_')){gmgBlastUpd(f);break}
       if(isXw(f)&&f.bk&&f.bk.startsWith('x_')){xwBlastUpd(f);break}
       if(f.st<12&&G.frame%2===0){const h=handPos(f);glow(h[0]+rand(-6,6),h[1]+rand(-6,6),E(f),rand(6,12),14,0,0)}
@@ -1298,7 +1301,7 @@ function spriteKey(f){
     case 'fly':return f.moving?['fly',Math.floor(t/6)%4]:['jump',3];
     case 'charge':case 'rushS':case 'comicS':{const c=M.charge;return pickPhase(c[Math.floor(t/7)%c.length],0)}
     case 'transform':{if(f.def.sid==='zed'){const tt=G.trans?G.trans.t:99;return tt<12?['pw',0]:tt<26?['pw',1]:tt<42?['trans',0]:tt<52?['trans',1]:tt<70?['trans',2]:['trans',3]}if(f.def.sid==='gmg'){const tt=G.trans?G.trans.t:99;return['trans',Math.min(3,Math.floor(tt/20))]}if(f.def.sid==='xw'){const tt=G.trans?G.trans.t:99;return['trans',Math.min(2,Math.floor(tt/26))]}if(f.def.sid==='wht'){const tt=G.trans?G.trans.t:99;return['trans',Math.min(2,Math.floor(tt/26))]}if(f.def.sid==='ayl'){const tt=G.trans?G.trans.t:99;return['trans',Math.min(2,Math.floor(tt/26))]}if(f.def.sid==='dn2'){const tt=G.trans?G.trans.t:99;return['trans',Math.min(3,Math.floor(tt/17))]}if(f.def.sid==='ark'){const tt=G.trans?G.trans.t:99;return tt<62?['trans',Math.min(3,Math.floor(tt/16))]:['charge',3]}const c=M.trans;return pickPhase(c[Math.floor(t/5)%c.length],0)}
-    case 'blast':if(isGmg(f)&&f.bk&&f.bk.startsWith('g_'))return gmgKey(f);if(isXw(f)&&f.bk&&f.bk.startsWith('x_'))return xwKey(f);if(isWht(f)&&f.bk&&f.bk.startsWith('w_'))return whtKey(f);return f.st<12?M.blastP:M.blastF;
+    case 'blast':if(isZed(f)&&f.bk&&f.bk.startsWith('z_'))return zedKey(f);if(isGmg(f)&&f.bk&&f.bk.startsWith('g_'))return gmgKey(f);if(isXw(f)&&f.bk&&f.bk.startsWith('x_'))return xwKey(f);if(isWht(f)&&f.bk&&f.bk.startsWith('w_'))return whtKey(f);return f.st<12?M.blastP:M.blastF;
     case 'super':if(f.st<50)return pickPhase(M.super[Math.min(2,Math.floor(f.st/17))],0);return M.beamF;
     case 'arkDive':return arkKey(f);
     case 'aylS':return aylKey(f);
@@ -1346,6 +1349,39 @@ function zedBlit(S,e,f){const B=zImg(S,'b');if(!B)return false;
       dx=-(.55+.45*Math.sin(t*.21+y*.09))*amp*q*q+Math.sin(t*.37+y*.23)*.5*q;
       ctx.drawImage(HI,0,y*ry,HI.width,hh*ry,-S.ax+H2.x+dx,-S.ay+H2.y+y,H2.w,hh+.8)}}
   return true}
+
+/* v63: ZEDRY - ataques da Forma Dourada (Rajada Dourada / Trovao Dourado) */
+const ZFX={"zA_p": {"w": 230, "h": 324, "n": 12, "src": "a/cd8008512db78f.webp"}, "zB_p": {"w": 240, "h": 184, "n": 16, "src": "a/70ce5ab52eeeda.webp"}, "zB_x": {"w": 300, "h": 260, "n": 5, "src": "a/96d798473af999.webp"}, "zA_x": {"w": 560, "h": 315, "n": 11, "src": "a/bd729527ff5eb9.webp"}};const ZT={};for(const k in ZFX){const im=new Image();im.src=ZFX[k].src;ZT[k]=im}
+const zT=k=>{const i=ZT[k];return i&&i.complete&&i.naturalWidth?i:null};
+G.zfx=[];
+function zedAtk(f,o,kind){if(!f.form){if(!f.cpu)say(f,'SÓ NA FORMA DOURADA');return false}
+  const cost=kind==='big'?100:20;if(f.ki<cost){if(!f.cpu)say(f,'PRECISA DE '+cost+' KI');return false}
+  f.ki-=cost;f.state='blast';f.st=0;f.bk='z_'+kind;f.vx=0;if(f.flying)f.vy=0;
+  if(kind==='big'){G.flash=3;G.flashCol='#ffd23f';SFX.superUp();banner('TROVÃO DOURADO','#ffd23f',70,'ATAQUE ESPECIAL');G.shake=Math.max(G.shake,6);buzz(50)}
+  else txt(f.x,f.y-310,'RAJADA DOURADA','#ffe08a');
+  return true}
+function zedKey(f){const big=f.bk==='z_big',fire=big?30:10;return f.st<fire*.55?['sp',0]:f.st<fire?['sp',1]:['sp',2]}
+function zedBlastUpd(f){const big=f.bk==='z_big',fire=big?30:10,dir=f.facing,hx=f.x+dir*(big?120:105),hy=f.y-178;
+  if(f.st<fire){if(G.frame%2===0)glow(hx+rand(-12,12),hy+rand(-12,12),Math.random()<.5?'#ffd23f':'#ff7a1a',rand(6,big?16:11),16,0,0);
+    if(big&&f.st%6===0)ring(hx,hy,'#ffd23f',40+f.st*2,12,3);if(big)G.shake=Math.max(G.shake,2)}
+  if(f.st===fire){G.projs.push({type:'ball',zd:big?'A':'B',o:f,x:hx+dir*(big?40:20),y:hy,vx:(big?11:16)*dir,r:big?54:32,t:0,dmg:big?250:80,heavy:big?1:0,c:'#ffb020',c2:'#fff2b0'});
+    SFX.blast();G.shake=Math.max(G.shake,big?12:5);flashL(hx,hy,'#ffd23f',big?320:200,.8,big?20:12);if(big)SFX.boom()}
+  if(f.st>=fire+(big?26:14))neutral(f)}
+function drawZedShot(p){const big=p.zd==='A',k=big?'zA_p':'zB_p',T=zT(k),A=ZFX[k],d=Math.sign(p.vx)||1;
+  if(G.frame%2===0)addP({x:p.x-d*rand(20,60),y:p.y+rand(-14,14),vx:-p.vx*.12,vy:rand(-.6,.6),life:20,max:20,c:Math.random()<.5?'#ffb020':'#ff5a1a',type:'glow',sz:rand(6,big?16:11),g:0});
+  ctx.save();ctx.globalCompositeOperation='lighter';const R0=big?120:80;const g=ctx.createRadialGradient(p.x,p.y,4,p.x,p.y,R0);g.addColorStop(0,'rgba(255,214,90,.55)');g.addColorStop(1,'rgba(255,90,20,0)');ctx.fillStyle=g;ctx.fillRect(p.x-R0,p.y-R0,R0*2,R0*2);ctx.restore();
+  if(!T)return;const w=big?250:210,h=w*A.h/A.w,hx=big?.80:.70;
+  blitF(T,A.n,(p.t/(big?3:2))|0,p.x-d*w*(hx-.5),p.y,w,h,d,1);
+  if(big&&G.frame%5===0)addP({x:p.x+rand(-40,40),y:p.y+rand(-50,50),vx:0,vy:0,life:5,max:5,c:'#fff2b0',type:'bolt2',sz:rand(30,60),g:0})}
+function zedBoom(p){const big=p.zd==='A',d=Math.sign(p.vx)||1,o=p.o,tgt=G.p[0]===o?G.p[1]:G.p[0];
+  const x=big&&tgt?tgt.x+d*40:p.x,y=big?FLOOR-150:p.y;
+  G.zfx.push({k:big?'zA_x':'zB_x',x,y,t:0,d,s:big?1:1});
+  G.shake=Math.max(G.shake,big?24:10);flashL(x,y,'#ffd23f',big?620:300,.95,big?30:16);spark(x,y,'#fff2b0',big?30:14,big?16:10);ring(x,y,'#ffb020',big?220:90,big?26:14,big?8:5);
+  if(big){G.flash=5;G.flashCol='#fff1b0';SFX.boom();SFX.crater();dust(x,FLOOR,16);for(let i=0;i<18;i++)debris(x+rand(-120,120),FLOOR);buzz(120)}else{SFX.boom();buzz(30)}}
+function drawZedFX(){if(!G.zfx||!G.zfx.length)return;for(const e of G.zfx){e.t++;const A=ZFX[e.k],T=zT(e.k);if(!T)continue;const big=e.k==='zA_x',sp=big?3:3,fi=Math.min(A.n-1,(e.t/sp)|0);
+    const last=A.n*sp,al=e.t<last?1:Math.max(0,1-(e.t-last)/(big?22:8));const w=big?500:320,h=w*A.h/A.w;
+    blitF(T,A.n,fi,e.x,big?FLOOR-h*.46:e.y,w*(big?1:1+.08*Math.min(1,e.t/10)),h,-e.d,al)}
+  G.zfx=G.zfx.filter(e=>e.t<ZFX[e.k].n*3+(e.k==='zA_x'?22:8))}
 function onSpritesReady(){const b=$('goSelect');if(b){b.disabled=false}}
 
 /* ================= blades ================= */
@@ -2311,7 +2347,7 @@ function drawWWave(p){const XK=isXw(p.o),T4=auraTex(XK?'x_a4':'w_a4'),A4=AUX[XK?
   ctx.shadowBlur=0;ctx.globalCompositeOperation='lighter';ctx.strokeStyle='#ffffff';ctx.lineWidth=4;ctx.beginPath();ctx.moveTo(-24,-hh*.88);ctx.quadraticCurveTo(58,0,-24,hh*.88);ctx.stroke();
   ctx.strokeStyle=rgba(p.c,.8);ctx.lineWidth=2;for(let i=0;i<5;i++){const y=(i/4-.5)*p.h*.8;ctx.beginPath();ctx.moveTo(-40-Math.random()*60,y);ctx.lineTo(-120-Math.random()*80,y);ctx.stroke()}
   ctx.restore()}
-function drawProj(p){if(p.gm){drawGmgShot(p);return}if(p.type==='wave'&&(isWht(p.o)||isXw(p.o))){drawWWave(p);return}if(p.type==='morb'){drawMorb(p);return}if(p.type==='mega'){drawMega(p);return}if(p.type==='ball'&&drawBallTex(p))return;ctx.save();ctx.globalCompositeOperation='lighter';const t=G.frame;
+function drawProj(p){if(p.zd){drawZedShot(p);return}if(p.gm){drawGmgShot(p);return}if(p.type==='wave'&&(isWht(p.o)||isXw(p.o))){drawWWave(p);return}if(p.type==='morb'){drawMorb(p);return}if(p.type==='mega'){drawMega(p);return}if(p.type==='ball'&&drawBallTex(p))return;ctx.save();ctx.globalCompositeOperation='lighter';const t=G.frame;
   if(p.type==='wave'){const d=Math.sign(p.vx),hh=p.h/2;ctx.translate(p.x,p.y);ctx.scale(d,1);
     for(let k=2;k>=0;k--){const ox=-k*34,al=k?.25/k:1;
       ctx.beginPath();ctx.moveTo(ox-18,-hh);ctx.quadraticCurveTo(ox+58,0,ox-18,hh);ctx.quadraticCurveTo(ox+22,0,ox-18,-hh);ctx.closePath();
@@ -2467,7 +2503,7 @@ function render(){
   for(const f of G.p){if(f.hide>0||(G.trans&&G.trans.f===f))continue;if(f.state==='charge'||(f.ent&&f.ent.pw)){const KC=auraTex('kic',E(f)),A=AUX.kic;if(KC){ctx.save();ctx.globalCompositeOperation='lighter';const h=440,w=h*A.w/A.h;blitF(KC,A.n,((G.frame+5)/3|0),f.x,f.y-h*.42,w,h,-1,.2);ctx.restore()}}}
   for(const p of G.projs)drawProj(p);
   for(const b of G.beams)drawBeam(b);
-  drawGmgFX();
+  drawGmgFX();drawZedFX();
   drawSRFront();
   if(G.hq)drawLights();
   drawErupts();drawMfx();drawDeb(false);drawDfx();drawMBeams();drawMg();drawAfx();drawParts();drawFxs();drawHazards();
@@ -2478,7 +2514,7 @@ function render(){
   drawFG();drawSpeed();drawDist();drawMcut();drawVC();drawWS();drawWfs();drawGmgVid();drawXU();
   if(G.trans){const T=G.trans,f=T.f,t=T.t,k=Math.min(1,t/14)*(t>96?Math.max(0,(104-t)/8):1);
     ctx.fillStyle=`rgba(0,0,0,${.55*k})`;ctx.fillRect(0,0,VW,H);
-    worldOn();const ak=(.6+Math.min(1,t/70)*1.1+(t>=70?.3:0))*(f.def.sid==='den'?.45:1);const tc=t>=70?f.def.fe:f.def.energy,tc2=t>=70?f.def.fe2:f.def.energy2;
+    worldOn();const ak=(.6+Math.min(1,t/70)*1.1+(t>=70?.3:0))*(f.def.sid==='den'?.45:f.def.sid==='zed'?.6:1);const tc=t>=70?f.def.fe:f.def.energy,tc2=t>=70?f.def.fe2:f.def.energy2;
     drawAura(f,ak,tc,tc2);renderFighter(f);drawParts();ctx.restore()}
   if(G.cine){drawCine();worldOn();const f=G.cine.f;drawAura(f,.6);renderFighter(f);drawParts();ctx.restore()}
   drawComic();drawSRCut();
@@ -2662,7 +2698,7 @@ function update(){
 function camFit(cx,zt,k1,k2){CAM.z=lerp(CAM.z,zt,k2);const hw=VW/(2*CAM.z);CAM.cx=lerp(CAM.cx,clamp(cx,hw,Math.max(hw,WW-hw)),k1);CAM.cx=clamp(CAM.cx,hw,Math.max(hw,WW-hw));CAM.x=CAM.cx-hw}
 function updCam(){const [a,b]=G.p;if(!a)return;const dx=Math.abs(a.x-b.x),top=Math.min(a.y,b.y)-300;
   let zt=Math.min(VW/(dx+400),H/Math.max(1,H-top));zt=clamp(zt,1,G.camMax);camFit((a.x+b.x)/2,zt,.14,.06)}
-function explode(p){if(p.type==='morb')return aylExplode(p);if(p.type==='mega')megaBoom(p);flashL(p.x,p.y,p.c,280,.75,16);spark(p.x,p.y,p.c2,14,10);ring(p.x,p.y,p.c,60,14,5);glow(p.x,p.y,p.c,60,14,0,0);SFX.boom()}
+function explode(p){if(p.zd)return zedBoom(p);if(p.type==='morb')return aylExplode(p);if(p.type==='mega')megaBoom(p);flashL(p.x,p.y,p.c,280,.75,16);spark(p.x,p.y,p.c2,14,10);ring(p.x,p.y,p.c,60,14,5);glow(p.x,p.y,p.c,60,14,0,0);SFX.boom()}
 function menuSetup(){G.mode='menu';setStage('temple');camReset(1.12);G.p=[mkFighter('denilson',WW/2-200,1,false),mkFighter('linfeng',WW/2+200,-1,true)];G.projs=[];G.beams=[];G.parts=[];G.cracks=[];G.banner=null;G.cine=null;G.rush=null;G.trans=null;G.comic=null;G.zoom=G.tz=1;G.flash=0;setWeather('clear')}
 function menuUpdate(){for(const f of G.p){f.st++;f.state='idle';if(G.frame%3===0)glow(f.x+rand(-45,45),f.y-rand(0,40),E(f),rand(4,9),30,rand(-.3,.3),-rand(2,4));if(G.frame%11===0)debris(f.x+rand(-70,70),FLOOR)}}
 
@@ -2706,7 +2742,7 @@ $('goHow').onclick=()=>{audioInit();howFrom='config';showScreen('how')};
 $('pHow').onclick=()=>{howFrom='pause';showScreen('how')};
 $('howBack').onclick=()=>showScreen(howFrom);
 $('selBack').onclick=()=>showScreen('title');
-const ALLC=['denilson','denilson2','linfeng','arkarus','aylla','white','xiao','magmus','zedry'];const ROS={zedry:{c:'#ffc63d',d:'Guerreiro alienígena. Luta só com socos e chutes. Transforma na Forma Dourada (cabelo dourado e aura com raios): mais rápido e mais forte. Poderes em breve.',st:[86,80,72]},magmus:{c:'#ff5a14',d:'General de força bruta. Normal: só socos e chutes pesados. No Modo Magma (braços de lava) libera os especiais: Punho de Magma, Erupção (baixo/frente + Ki) e o especial Chuva de Magma.',st:[62,96,84]},denilson:{c:'#4ea4ff',d:'Lutador de rua com ki azul. Transforma no Anjo Sombrio com asas. Super: Chuva de Espadas Sombrias.',st:[85,68,80]},
+const ALLC=['denilson','denilson2','linfeng','arkarus','aylla','white','xiao','magmus','zedry'];const ROS={zedry:{c:'#ffc63d',d:'Guerreiro alienígena. Luta só com socos e chutes na forma normal. Na Forma Dourada libera a Rajada Dourada (Ki) e o especial Trovão Dourado.',st:[86,80,72]},magmus:{c:'#ff5a14',d:'General de força bruta. Normal: só socos e chutes pesados. No Modo Magma (braços de lava) libera os especiais: Punho de Magma, Erupção (baixo/frente + Ki) e o especial Chuva de Magma.',st:[62,96,84]},denilson:{c:'#4ea4ff',d:'Lutador de rua com ki azul. Transforma no Anjo Sombrio com asas. Super: Chuva de Espadas Sombrias.',st:[85,68,80]},
   linfeng:{c:'#ff3047',d:'Mestre da katana e da chama carmesim. Transforma no Dragão Sombrio. Supers: Fúria do Dragão e Dança do Dragão.',st:[68,88,76]},
   denilson2:{c:'#3f8cff',d:'A nova versão do Denilson: mais rápido, com ki azul elétrico. Transforma na Fera Desperta (sem camisa, ki vermelho). Supers: Explosão Azul / Carmesim e Rush Relâmpago.',st:[90,72,84]},
   aylla:{c:'#a35cff',d:'Bruxa lutadora. Luta só com socos e chutes até ativar o Modo Arcano; aí libera magia: raios, lâminas, erupção e o Selo do Vazio.',st:[88,74,92]},
