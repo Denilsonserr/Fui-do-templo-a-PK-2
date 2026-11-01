@@ -319,6 +319,7 @@ h2{margin:0;font-family:var(--f-display);font-weight:400;font-size:clamp(26px,8v
     <div id="modeGrid">
       <button class="mode" data-m="pve" style="--c:#36e07a"><span class="mbg" data-i="denilson"></span><span class="tag">LIBERADO</span><b>PVE</b><span class="md">Você vs CPU</span></button>
       <button class="mode" data-m="treino" style="--c:#3fd8ff"><span class="mbg" data-i="xiao"></span><span class="tag">LIBERADO</span><b>TREINO</b><span class="md">Teste golpes — o rival não ataca</span></button>
+      <button class="mode" data-m="torre" style="--c:#ffd23f"><span class="mbg" data-i="arkarus"></span><span class="tag">TESTE</span><b>TORRE</b><span class="md">Enfrente todos — a vida continua</span></button>
       <button class="mode lock" data-m="pvp" style="--c:#ff3b5c"><span class="mbg" data-i="linfeng"></span><span class="tag">BLOQUEADO</span><b>PVP</b><span class="md">Online contra jogadores</span><span class="pad"><svg viewBox="0 0 24 24"><path d="M7 10V7a5 5 0 0 1 10 0v3" fill="none" stroke="currentColor" stroke-width="2.4"/><rect x="4.5" y="10" width="15" height="11" rx="2" fill="currentColor"/></svg>EM BREVE</span></button>
       <button class="mode lock" data-m="versus" style="--c:#ffb020"><span class="mbg" data-i="arkarus"></span><span class="tag">BLOQUEADO</span><b>VERSUS</b><span class="md">2 jogadores no mesmo celular</span><span class="pad"><svg viewBox="0 0 24 24"><path d="M7 10V7a5 5 0 0 1 10 0v3" fill="none" stroke="currentColor" stroke-width="2.4"/><rect x="4.5" y="10" width="15" height="11" rx="2" fill="currentColor"/></svg>EM BREVE</span></button>
       <button class="mode lock" data-m="story" style="--c:#b46bff"><span class="mbg" data-i="stage"></span><span class="tag">BLOQUEADO</span><b>HISTÓRIA</b><span class="md">A jornada de Denilson</span><span class="pad"><svg viewBox="0 0 24 24"><path d="M7 10V7a5 5 0 0 1 10 0v3" fill="none" stroke="currentColor" stroke-width="2.4"/><rect x="4.5" y="10" width="15" height="11" rx="2" fill="currentColor"/></svg>EM BREVE</span></button>
@@ -1732,7 +1733,7 @@ function fvox(f,k,force,cd){return;if(!f||G.mode==='menu')return;const n=G.frame
   const r=(VRATE[ssid(f)]||1)*(.97+Math.random()*.06);say2(k,{rate:r,vol:1,pan:clamp((sxs(f.x)-VW/2)/(VW/2),-1,1)*.45})}
 const pick=a=>a[(Math.random()*a.length)|0];
 /* ---- round-start ring ---- */
-function startRing(){const fin=G.wins[0]===1&&G.wins[1]===1;G.ring={title:fin?'ROUND FINAL':'ROUND '+G.round,sub:STAGE.name+' · '+WNAMES[WX.type]};
+function startRing(){const fin=G.wins[0]===1&&G.wins[1]===1,tw=G.gmode==='torre'&&G.teams;G.ring={title:tw?'TORRE '+(G.ti[1]+1)+'/'+G.teams[1].length:fin?'ROUND FINAL':'ROUND '+G.round,sub:STAGE.name+' · '+WNAMES[WX.type]};
   annc(fin?'a_rf':G.round===1?'a_r1':'a_r2',.35)}
 function drawRing(){const R=G.ring;if(!R||G.mode!=='fight')return;const t=G.phaseT;if(t>128){G.ring=null;return}
   const cx=VW/2,cy=H*.47,Rr=Math.min(H*.2,112),tm=G.frame;
@@ -2541,13 +2542,13 @@ function startRound(){
   const w=pickWeather();setWeather(w);
   SFX.bell();startEntrances();startRing();
 }
-function startMatch(){MAXHP=LAYER*(G.lives||2);G.teams=G.teamN===2&&G.gmode!=='treino'?[[G.pick,G.pick2||G.pick],[G.opp,G.opp3||G.opp]]:null;G.ti=[0,0];G.keep=null;$('bSr').hidden=!(G.pick==='magmus'||G.pick==='denilson'||G.pick==='arkarus'||G.pick==='aylla'||G.pick==='white'||G.pick==='xiao');{const ay=G.pick==='aylla';$('bSr').querySelector('span').textContent=ay?'Magia':'Super';$('bSr').querySelector('em').textContent=ay?'20':'100'}G.round=1;G.wins=[0,0];G.mode='fight';G.paused=false;showScreen(null);$('controls').hidden=false;$('pauseBtn').hidden=false;layoutControls();startRound()}
+function startMatch(){MAXHP=LAYER*(G.lives||2);G.teams=G.gmode==='torre'?[[G.pick],G.tower.slice()]:G.teamN===2&&G.gmode!=='treino'?[[G.pick,G.pick2||G.pick],[G.opp,G.opp3||G.opp]]:null;G.ti=[0,0];G.keep=null;$('bSr').hidden=!(G.pick==='magmus'||G.pick==='denilson'||G.pick==='arkarus'||G.pick==='aylla'||G.pick==='white'||G.pick==='xiao');{const ay=G.pick==='aylla';$('bSr').querySelector('span').textContent=ay?'Magia':'Super';$('bSr').querySelector('em').textContent=ay?'20':'100'}G.round=1;G.wins=[0,0];G.mode='fight';G.paused=false;showScreen(null);$('controls').hidden=false;$('pauseBtn').hidden=false;layoutControls();startRound()}
 function endRound(){
   const w=G.koWinner;
   if(G.teams){let L=w<0?(G.p[0].hp<=G.p[1].hp?0:1):1-w;const W2=1-L;G.ti[L]++;
     if(G.ti[L]>=G.teams[L].length){G.wins[W2]=2;G.wins[L]=0;showResult();return}
     G.keep={side:W2,hp:Math.max(1,G.p[W2].hp),ki:G.p[W2].ki,sb:G.p[W2].sb||0};G.round++;startRound();
-    banner('PRÓXIMO: '+CH[G.teams[L][G.ti[L]]].name,'#ffd23f',90);return}
+    if(G.gmode==='torre')banner('TORRE '+(G.ti[1]+1)+'/'+G.teams[1].length,'#ffd23f',110,CH[G.teams[1][G.ti[1]]].name);else banner('PRÓXIMO: '+CH[G.teams[L][G.ti[L]]].name,'#ffd23f',90);return}
   if(w>=0)G.wins[w]++;
   if(G.wins[0]>=2||G.wins[1]>=2){showResult();return}
   G.round++;startRound()}
@@ -2624,7 +2625,9 @@ function togglePause(force){if(G.mode!=='fight')return;G.paused=force!==undefine
 function showResult(){G.mode='result';$('controls').hidden=true;$('pauseBtn').hidden=true;const win=G.wins[0]>=2;rainSound(0);annc(win?'a_win':'a_lose',.3);
   $('resBig').textContent=win?'VITÓRIA!':'DERROTA';$('resBig').className='result '+(win?'win':'lose');
   const [a,b]=G.p;$('rp1').src=IMG[a.def.id].src;$('rp2').src=IMG[b.def.id].src;$('rp1').className=win?'w':'l';$('rp2').className=win?'l':'w';
-  $('resTxt').textContent=`${a.def.name} ${G.wins[0]} × ${G.wins[1]} ${b.def.name}`;showScreen('result');
+  $('resTxt').textContent=`${a.def.name} ${G.wins[0]} × ${G.wins[1]} ${b.def.name}`;
+  if(G.gmode==='torre'&&G.teams){const N=G.teams[1].length;if(win){$('resBig').textContent='TORRE CONCLUÍDA!';$('resTxt').textContent=`${a.def.name} venceu todos os ${N} lutadores da torre`}else $('resTxt').textContent=`${a.def.name} caiu no andar ${G.ti[1]+1} de ${N} da torre`}
+  showScreen('result');
   setTimeout(()=>{if(G.mode==='result'){menuSetupKeep()}},1600)}
 function menuSetupKeep(){const pick=G.pick;menuSetup();G.pick=pick}
 const fsTry=()=>{try{const d=document.documentElement;if(!document.fullscreenElement&&d.requestFullscreen)d.requestFullscreen().then(()=>{try{screen.orientation.lock('landscape').catch(()=>{})}catch(e){}}).catch(()=>{})}catch(e){}};
@@ -2633,7 +2636,7 @@ $('goSelect').onclick=()=>{audioInit();fsTry();showScreen('modes')};
   document.querySelectorAll('#modeGrid .mbg').forEach(e=>{try{e.style.backgroundImage=`url(${IMS[e.dataset.i]()})`}catch(_){}});
   let tt=0;document.querySelectorAll('#modeGrid .mode').forEach(b=>b.onclick=()=>{audioInit();
     if(b.classList.contains('lock')){b.classList.remove('shake');void b.offsetWidth;b.classList.add('shake');SFX.block();const t=$('toast');t.textContent=b.querySelector('b').textContent+' bloqueado — em breve!';t.classList.add('on');clearTimeout(tt);tt=setTimeout(()=>t.classList.remove('on'),1600);return}
-    G.gmode=b.dataset.m;SFX.whoosh();$('teamRow').hidden=G.gmode==='treino';renderSel();showScreen('select')})}
+    G.gmode=b.dataset.m;SFX.whoosh();$('teamRow').hidden=G.gmode==='treino'||G.gmode==='torre';renderSel();showScreen('select')})}
 $('modeBack').onclick=()=>showScreen('title');
 $('goStage').onclick=()=>{renderStages();showScreen('stages')};
 $('stBack').onclick=()=>showScreen('select');
@@ -2665,14 +2668,14 @@ G.opp2='random';let selT='p';
 function fillPv(el,id,who){const R=ROS[id];el.style.setProperty('--c',R?R.c:'#8a86a8');
   el.innerHTML=R?`<img src="${IMG[id].src}" alt=""><span class="who">${who}</span><span class="nm">${CH[id].name}</span><span class="tg">${R.d}</span><span class="st"><span>Veloc.</span><i style="--v:${R.st[0]}%"></i><span>Força</span><i style="--v:${R.st[1]}%"></i><span>Ki</span><i style="--v:${R.st[2]}%"></i></span>`
   :`<span class="q">?</span><span class="who">${who}</span><span class="nm">ALEATÓRIO</span><span class="tg">O rival será sorteado.</span>`}
-function renderSel(){const T2=G.teamN===2&&G.gmode!=='treino';document.querySelectorAll('#selTab button').forEach(b=>{if(b.dataset.t==='p2'||b.dataset.t==='c2')b.hidden=!T2});if(!T2&&(selT==='p2'||selT==='c2'))selT='p';
+function renderSel(){const T2=G.teamN===2&&G.gmode!=='treino'&&G.gmode!=='torre';document.querySelectorAll('#selTab button').forEach(b=>{if(b.dataset.t==='p2'||b.dataset.t==='c2')b.hidden=!T2});if(!T2&&(selT==='p2'||selT==='c2'))selT='p';
   document.querySelectorAll('#roster .tile').forEach(t=>{t.classList.toggle('p1',t.dataset.c===G.pick||(T2&&t.dataset.c===G.pick2));t.classList.toggle('p2',t.dataset.c===G.opp2||(T2&&t.dataset.c===G.opp4))});
   const L=selT==='p2'?[G.pick2,'VOCÊ · 2º']:[G.pick,T2?'VOCÊ · 1º':'VOCÊ'],Rv=selT==='c2'?[G.opp4,'RIVAL · 2º']:[G.opp2,T2?'RIVAL · 1º':(G.gmode==='treino'?'BONECO DE TREINO':'RIVAL (CPU)')];
   fillPv($('pv1'),L[0]||'random',L[1]);fillPv($('pv2'),Rv[0]||'random',Rv[1]);
   document.querySelectorAll('#selTab button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.t===selT?'true':'false'))}
 (function(){const r=$('roster');for(const id of [...ALLC,'random']){const b=document.createElement('button');b.className='tile';b.dataset.c=id;b.style.setProperty('--c',ROS[id]?ROS[id].c:'#8a86a8');
   b.innerHTML=(ROS[id]?`<img src="${IMG[id].src}" alt="${CH[id].name}">`:'<span class="q">?</span>')+`<b>${ROS[id]?CH[id].name:'ALEATÓRIO'}</b><i class="m1">1P</i><i class="m2">CPU</i>`;
-  b.onclick=()=>{const T2=G.teamN===2&&G.gmode!=='treino',rnd=()=>ALLC[(Math.random()*ALLC.length)|0];if(selT==='p'){G.pick=id==='random'?rnd():id;selT=T2?'p2':'c'}else if(selT==='p2'){G.pick2=id==='random'?rnd():id;selT='c'}else if(selT==='c'){G.opp2=id;if(T2)selT='c2'}else G.opp4=id;renderSel()};r.appendChild(b)}
+  b.onclick=()=>{const T2=G.teamN===2&&G.gmode!=='treino'&&G.gmode!=='torre',rnd=()=>ALLC[(Math.random()*ALLC.length)|0];if(selT==='p'){G.pick=id==='random'?rnd():id;selT=T2?'p2':'c'}else if(selT==='p2'){G.pick2=id==='random'?rnd():id;selT='c'}else if(selT==='c'){G.opp2=id;if(T2)selT='c2'}else G.opp4=id;renderSel()};r.appendChild(b)}
   document.querySelectorAll('#selTab button').forEach(b=>b.onclick=()=>{selT=b.dataset.t;renderSel()});renderSel()})();
 function showVS(cb){const a=G.pick,b=G.opp;$('vs1').src=IMG[a].src;$('vs2').src=IMG[b].src;$('vsn1').textContent=CH[a].name;$('vsn2').textContent=CH[b].name;
   $('vs').style.setProperty('--c1',ROS[a].c);$('vs').style.setProperty('--c2',ROS[b].c);showScreen('vs');SFX.boom();setTimeout(()=>{SFX.bell()},700);setTimeout(cb,2100)}
@@ -2681,7 +2684,7 @@ document.querySelectorAll('#teamN button').forEach(b=>b.onclick=()=>{G.teamN=+b.
 document.querySelectorAll('#livesN button').forEach(b=>b.onclick=()=>{G.lives=+b.dataset.v;document.querySelectorAll('#livesN button').forEach(x=>x.setAttribute('aria-pressed',x===b?'true':'false'))});
 document.querySelectorAll('#diff button').forEach(b=>b.onclick=()=>{G.diff=+b.dataset.d;document.querySelectorAll('#diff button').forEach(x=>x.setAttribute('aria-pressed',x===b?'true':'false'))});
 document.querySelectorAll('#wsel button').forEach(b=>b.onclick=()=>{G.wsel=b.dataset.w;document.querySelectorAll('#wsel button').forEach(x=>x.setAttribute('aria-pressed',x===b?'true':'false'))});
-$('goFight').onclick=()=>{audioInit();const rr=a=>a[(Math.random()*a.length)|0];G.opp=G.opp2==='random'?rr(ALLC.filter(x=>x!==G.pick)):G.opp2;G.opp3=(!G.opp4||G.opp4==='random')?rr(ALLC.filter(x=>x!==G.opp)):G.opp4;if(!G.pick2)G.pick2=rr(ALLC.filter(x=>x!==G.pick));const T2=G.teamN===2&&G.gmode!=='treino';const PM=prepMatch(T2?[G.pick,G.pick2,G.opp,G.opp3]:[G.pick,G.opp]);showVS(()=>PM.then(startMatch))};
+$('goFight').onclick=()=>{audioInit();const rr=a=>a[(Math.random()*a.length)|0];G.opp=G.opp2==='random'?rr(ALLC.filter(x=>x!==G.pick)):G.opp2;G.opp3=(!G.opp4||G.opp4==='random')?rr(ALLC.filter(x=>x!==G.opp)):G.opp4;if(!G.pick2)G.pick2=rr(ALLC.filter(x=>x!==G.pick));if(G.gmode==='torre'){const L=ALLC.filter(x=>x!==G.pick);for(let i=L.length-1;i>0;i--){const j=(Math.random()*(i+1))|0;[L[i],L[j]]=[L[j],L[i]]}G.tower=L;G.opp=L[0]}const T2=G.teamN===2&&G.gmode!=='treino'&&G.gmode!=='torre';const PM=prepMatch(G.gmode==='torre'?[G.pick,...G.tower]:T2?[G.pick,G.pick2,G.opp,G.opp3]:[G.pick,G.opp]);showVS(()=>PM.then(startMatch))};
 $('pauseBtn').onclick=()=>togglePause(true);
 $('resume').onclick=()=>togglePause(false);
 $('restart').onclick=()=>startMatch();
