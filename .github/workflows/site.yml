@@ -5,7 +5,6 @@ on:
   workflow_dispatch:
 permissions:
   contents: write
-  pages: write
 jobs:
   site:
     runs-on: ubuntu-latest
@@ -21,10 +20,3 @@ jobs:
           git init -q && git checkout -q -b gh-pages && git add -A
           git -c user.name=github-actions -c user.email=actions@github.com commit -qm "site"
           git push -f "https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" gh-pages
-      - name: Ligar o GitHub Pages (se ainda estiver desligado)
-        continue-on-error: true
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          gh api "repos/${GITHUB_REPOSITORY}/pages" >/dev/null 2>&1 && echo "Pages ja ligado" && exit 0
-          gh api -X POST "repos/${GITHUB_REPOSITORY}/pages" -f "source[branch]=gh-pages" -f "source[path]=/"
