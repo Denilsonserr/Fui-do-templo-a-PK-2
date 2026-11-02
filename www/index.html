@@ -2925,7 +2925,7 @@ document.querySelectorAll('.howto .ic[data-from]').forEach(el=>{const s=$(el.dat
 function resize(){
   const w=stage.clientWidth,h=stage.clientHeight;if(!w||!h)return;
   {const pr=$('safeProbe'),cs=pr?getComputedStyle(pr):null;G._sl=cs?parseFloat(cs.paddingLeft)||0:0;G._sr=cs?parseFloat(cs.paddingRight)||0:0}
-  VW=clamp(H*w/h,760,1280);SC=Math.min(h/H,w/VW);DPR=Math.min(window.devicePixelRatio||1,G.q4k?3.5:G.hq?2.25:1.35);if(G.q4k)DPR=Math.max(DPR,Math.min(2.5,3840/Math.max(1,w)));DPR=Math.min(DPR,2600/Math.max(1,VW*SC));G.baseDPR=DPR;DPR=Math.max(1,DPR*(G.dyn||1));BGD=Math.max(1,DPR*.55);cv.classList.toggle('hd',!!G.hq);
+  VW=clamp(H*w/h,760,1280);SC=Math.min(h/H,w/VW);DPR=Math.min(window.devicePixelRatio||1,G.q4k?3.5:G.hq?2.25:1.35);if(G.q4k)DPR=Math.max(DPR,Math.min(2.5,3840/Math.max(1,w)));DPR=Math.min(DPR,2600/Math.max(1,VW*SC));G.baseDPR=DPR;DPR=Math.max(1,DPR*(G.dyn||1));BGD=Math.max(1,DPR*(G.q4k?.85:.55));cv.classList.toggle('hd',!!G.hq);
   G.safeL=G._sl/SC;G.safeR=G._sr/SC;
   gameEl.style.width=VW*SC+'px';gameEl.style.height=H*SC+'px';cv.width=Math.round(VW*SC*DPR);cv.height=Math.round(H*SC*DPR);
   if(G.mode==='fight')camFit(CAM.cx,CAM.z,1,1);else camReset(1.12);G.zx=G.tzx=VW/2;G.zy=G.tzy=H/2;
