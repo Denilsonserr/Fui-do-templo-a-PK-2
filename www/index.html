@@ -1488,7 +1488,7 @@ function zArcs(f,cx,base,pal,mx,pr){const A=f.zarc||(f.zarc=[]);pal=pal||ZPAL.bl
 
 /* v74: ZAYKON - transformação em vídeo, aura azul e raios roxos */
 const ZKV={"f":["a/7b5f8231b94241.webp","a/2c52bcec6e299f.webp","a/c1cfe08000c456.webp","a/4ab9cfe4bbbcc9.webp","a/f3bcde0fa861e1.webp","a/c9cd29cce6dd8a.webp","a/96e2936771675a.webp","a/145304ed9fd0fb.webp","a/f72cbba05855ea.webp","a/c3f21d2e9c6461.webp","a/8ab7be43557bc0.webp","a/b0bf72f8ce2860.webp","a/431aaf6a147721.webp","a/61cf36433be54c.webp","a/f2510ecf33dd64.webp","a/f79e43dd44c830.webp","a/960ee62357f34b.webp","a/8857801bf7f91c.webp","a/25fb4e10d7db04.webp","a/5cd9af6322b3d1.webp","a/58912eb7923d48.webp","a/31a0669851fd2d.webp","a/38b43d5e42ab99.webp","a/76603eab1e8fe7.webp","a/062caf88b8db0a.webp","a/3737f59625ebf2.webp","a/213f44f71c19f0.webp","a/c011bf09437f4e.webp","a/c14f59dbbedaca.webp","a/ba716dd376a2dd.webp","a/a2d09bf751ec74.webp","a/0321cc2dabd2d3.webp","a/22a098ec34bf91.webp","a/c7013c716b842b.webp","a/432987d503a6da.webp","a/7269e99a970351.webp","a/3608b5c0c62a34.webp","a/1fab92e3e88e6b.webp","a/da5e306f2fc737.webp","a/9e031689c2d50e.webp","a/58c6fac3f7837c.webp","a/8153e0ace093a7.webp","a/3c8edf7b54c20c.webp","a/956e9aee5c6ead.webp","a/d877a834dbadcd.webp","a/86008cb7e178b1.webp","a/8eeeb7cdd4d10b.webp","a/632d29d07ed0f6.webp","a/31b30ae1ff4b32.webp","a/a682ea9b1133ed.webp","a/8e56f1df4b3ad1.webp","a/09c8f8f1a3cf0e.webp","a/8f3bebba0b89aa.webp","a/3fc30ec041dfc1.webp","a/94cb1bad4b6f05.webp","a/8520982b432162.webp","a/c5409e4d37ff28.webp","a/9777a1820ed450.webp","a/73ec61ffb0d997.webp","a/2d2a13a7fd9612.webp","a/0f524c0d171262.webp","a/008fb800442aeb.webp","a/545ea84b255e83.webp","a/cbdfd0076b126e.webp","a/e52afb3eedf9b7.webp","a/4841d4e64af758.webp","a/d00a591ac89b80.webp","a/2459cfcdd46b5f.webp","a/27611e241bc26e.webp","a/a96491a354f190.webp","a/0ae794ef51e7f4.webp","a/630a81e8478628.webp","a/c8c8e679c9e198.webp"],"snd":"a/0731a47ee6c123.mp3","port":"a/cac4b9c97c5ee7.jpg"},ZKVF=[];let ZKVP=null;const ZKVE=ZKV.f.length*5;let ZKSND=null;
-function zkLoadV(){if(ZKVP)return ZKVP;try{ZKSND=new Audio(ZKV.snd);ZKSND.preload='auto';ZKUS=new Audio(ZKU.snd);ZKUS.preload='auto'}catch(e){}
+function zkLoadV(){if(ZKVP)return ZKVP;
   ZKU.f.forEach((p,i)=>{const im=new Image();im.decoding='async';im.onload=()=>{ZKUF[i]=im};im.src=p});
   return ZKVP=Promise.all(ZKV.f.map((p,i)=>new Promise(r=>{const im=new Image();im.decoding='async';im.onload=()=>{ZKVF[i]=im;r()};im.onerror=()=>r();im.src=p})))}
 function updZKT(T,f,t){G.tz=1.15;G.tzx=sxs(f.x);G.tzy=sys(f.y-150);
@@ -1609,7 +1609,7 @@ function scEnd(){const R=G.sc;if(!R)return;const a=R.a,d=R.d;a.rushKey=null;a.ru
 
 /* v78: ZEDRY - Forma Dourada com vídeo de transformação */
 const ZGV={"f":["a/63fcabf7d87501.webp","a/cd5a5701e24063.webp","a/52d5e132f80a4f.webp","a/95e37d9b11baca.webp","a/1be6adc2c8d486.webp","a/70cbe84f5c867f.webp","a/bf6e01bd390040.webp","a/d55ba2d8f330c5.webp","a/b2b2955f72a245.webp","a/5f131657bfe7ee.webp","a/9febce83585347.webp","a/8161271a7cb1c9.webp","a/5fb50fcec71e20.webp","a/058afefe6e3cd7.webp","a/308d5693a6e90d.webp","a/5c7382b64705bd.webp","a/f3048776041bd4.webp","a/5feb4ceaaeb5fb.webp","a/103730eddbb679.webp","a/5c3eef56be6579.webp","a/2ca355438c2640.webp","a/5afeac273471a7.webp","a/5ab567ed810805.webp","a/9f570044add9dc.webp","a/cc39e5ba25ca8d.webp","a/40db31e34b55fc.webp","a/e3d95b17800d2b.webp","a/4b55a75873cb24.webp","a/9e4cb0a86e5afe.webp","a/03029ae1df8ede.webp","a/77ec2971afeb72.webp","a/6785ae831e9d97.webp","a/46a03d58148e67.webp","a/9bd64d7d99526f.webp","a/0f3b5d8fcce3a7.webp","a/64ac85ab74c15b.webp","a/0bbe4c6d78c826.webp","a/0fbbb73b54ba4b.webp","a/f2ea573cc5f14a.webp","a/4f209a78667724.webp","a/fced6b96cb49e7.webp","a/78bc66c139d4d0.webp","a/a643474c770288.webp","a/e5884929c4a8c1.webp","a/ee7e9f796938dc.webp","a/ab2e75c8a933c9.webp","a/ee9ad135fdb1fb.webp","a/44aeba7d2e5a05.webp","a/f8d28df7eba695.webp","a/cfd69693590595.webp","a/eb115340d0faf5.webp","a/3d6e2663efa379.webp","a/265bc5d638c52f.webp","a/1a41acd81062aa.webp","a/4031d567ab5532.webp","a/ca4e4d84129cfd.webp","a/952e5c13b6cf91.webp","a/8e9af9ced053d9.webp","a/27c6ecfaca6c9f.webp","a/f621803326d83d.webp","a/4c810b491e8469.webp","a/5af3651f827bc2.webp","a/de608ae0c9aa01.webp","a/4f02f005a31de7.webp","a/cdf8ce6d02d3d2.webp","a/07d05f6689a981.webp","a/8615a2ccde399a.webp","a/63d38a061a249d.webp","a/d631561b33169b.webp","a/69ef71c568aa8f.webp","a/0ef1dd353351d6.webp","a/51f7c5b40a7497.webp","a/ce2bedef37b157.webp","a/8f119e4d6c2c1a.webp","a/46b589b74a15cf.webp","a/aa46650a5ea033.webp","a/8ee2db9581c188.webp","a/f8da2f9e787a60.webp","a/f2ebf7a2086322.webp","a/d5e8d9c5b0c939.webp","a/60b2c97d639c29.webp","a/dd64c0205674a5.webp","a/f8db3ac7506380.webp","a/b692d98fa1cdd4.webp","a/370a9e6b23bbf5.webp"],"snd":"a/975751624ce97f.mp3"},ZGVF=[];let ZGVP=null,ZGSND=null;const ZGVE=ZGV.f.length*5;
-function zgLoadV(){if(ZGVP)return ZGVP;try{ZGSND=new Audio(ZGV.snd);ZGSND.preload='auto'}catch(e){}
+function zgLoadV(){if(ZGVP)return ZGVP;
   return ZGVP=Promise.all(ZGV.f.map((p,i)=>new Promise(r=>{const im=new Image();im.decoding='async';im.onload=()=>{ZGVF[i]=im;r()};im.onerror=()=>r();im.src=p})))}
 function updZGT(T,f,t){G.tz=1.15;G.tzx=sxs(f.x);G.tzy=sys(f.y-150);
   if(t===1){try{if(ZGSND&&AU.on){ZGSND.currentTime=0;ZGSND.volume=.9;const p=ZGSND.play();if(p&&p.catch)p.catch(()=>{})}}catch(e){}}
@@ -1633,7 +1633,7 @@ document.querySelectorAll('#msel button').forEach(b=>b.onclick=()=>{musSel(b.dat
 function musPick(){if(MSEL==='none'){MCUR=-1;return}const i=MSEL==='auto'?(Math.random()*MUS.length)|0:+MSEL;if(i!==MCUR||!MEL.src){MCUR=i;MEL.src=MUS[i][1];try{MEL.currentTime=0}catch(e){}}}
 setInterval(()=>{const want=G.mode==='fight'&&MCUR>=0&&!G.paused&&AU.on&&!document.hidden;
   const duck=(G.trans&&(isZyk(G.trans.f)||(isZed(G.trans.f))))||(G.ws&&(G.ws.zed||G.ws.zyk||G.ws.gmg));
-  const tgt=want?(duck?.08:.30):0;MV+=(tgt-MV)*.25;if(Math.abs(tgt-MV)<.01)MV=tgt;
+  const tgt=want?.30:0;MV+=(tgt-MV)*.25;if(Math.abs(tgt-MV)<.01)MV=tgt;
   if(want&&MEL.paused){const p=MEL.play();if(p&&p.catch)p.catch(()=>{})}
   try{MEL.volume=Math.max(0,Math.min(1,MV))}catch(e){}
   if(!want&&MV<=0.001&&!MEL.paused)MEL.pause();
@@ -2107,7 +2107,7 @@ const VRATE={den:.96,dn2:.93,dn2f:.86,lin:1.05,ark:.8};
 function say2(k,o){o=o||{};const C=AU.c;if(!C||!AU.vox||!VOX[k])return;try{const s=C.createBufferSource();s.buffer=VOX[k];s.playbackRate.value=o.rate||1;
   const g=C.createGain();g.gain.value=o.vol||1;s.connect(g);let n=g;if(C.createStereoPanner&&o.pan){const p=C.createStereoPanner();p.pan.value=clamp(o.pan,-1,1);g.connect(p);n=p}
   n.connect(AU.vox);s.start(C.currentTime+(o.at||0))}catch(e){}}
-function annc(k,at){say2(k,{vol:1.15,at:at||0})}
+function annc(k,at){return;say2(k,{vol:1.15,at:at||0})}
 function fvox(f,k,force,cd){return;if(!f||G.mode==='menu')return;const n=G.frame;if(!force&&f.voxT!=null&&n-f.voxT<(cd||34))return;f.voxT=n;
   const r=(VRATE[ssid(f)]||1)*(.97+Math.random()*.06);say2(k,{rate:r,vol:1,pan:clamp((sxs(f.x)-VW/2)/(VW/2),-1,1)*.45})}
 const pick=a=>a[(Math.random()*a.length)|0];
