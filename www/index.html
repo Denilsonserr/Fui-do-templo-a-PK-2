@@ -755,7 +755,7 @@ function startSuper(f,o){if(isGmg(f)){if(!f.form){say(f,'SÓ NO MODO MAGMA');ret
 const SB_COST=2,SB_FR=900;
 function startTransform(f){if(f.def.sid==='gmg'){for(let i=0;i<30;i++)addP({x:f.x+rand(-80,80),y:FLOOR-rand(0,40),vx:rand(-5,5),vy:-rand(4,14),life:rand(30,50),max:50,c:i%3?'#ff5a14':'#ffd27a',type:'glow',sz:rand(10,22),g:.35});G.lava=G.lava||[];setTimeout(()=>addLava(f,f.x,320,260),0)}fvox(f,'f_trans',true);f.sb=Math.max(0,(f.sb||0)-SB_COST);f.state='transform';f.st=0;f.vx=0;f.vy=0;f.inv=999;G.trans={f,t:0};ensureForm(f.def.sid);SFX.powerUp();buzz(60)}
 function rockUp(x){addP({x,y:FLOOR-rand(0,6),vx:rand(-.3,.3),vy:-rand(.5,2),life:rand(50,80),max:80,c:'#3a3352',type:'rock',sz:rand(3,9),g:-.06})}
-function updTrans(){const T=G.trans,f=T.f;T.t++;const t=T.t;f.st=t;f.vx=0;f.vy=0;if(isZyk(f))return updZKT(T,f,t);if(isZed(f)&&f.zt2)return updZT2(T,f,t);
+function updTrans(){const T=G.trans,f=T.f;T.t++;const t=T.t;f.st=t;f.vx=0;f.vy=0;if(isZyk(f))return updZKT(T,f,t);if(isZed(f)&&!f.zt2)return updZGT(T,f,t);if(isZed(f)&&f.zt2)return updZT2(T,f,t);
   G.tz=1.2;G.tzx=sxs(f.x);G.tzy=sys(f.y-150);
   const c=t>=70?f.def.fe:(t>55&&t%4<2?f.def.fe:f.def.energy);f.flick=t>55&&t<70&&t%4<2;
   if(t%2===0)glow(f.x+rand(-80,80),f.y-rand(0,90),c,rand(7,15),30,0,-rand(3,7));
@@ -1183,7 +1183,7 @@ window.__mem=()=>{const o={};for(const sid in SPRH){let n=0,f=0,sl=0,im=0;for(co
 const WARM=document.createElement('canvas');WARM.width=WARM.height=4;const wx=WARM.getContext('2d');let warmJob=0;
 function prepMatch(ids){const use=new Set();for(const id of ids)for(const s of sidsOf(id))use.add(s);
   for(const sid of Object.keys(SPRH))if(!use.has(sid))for(const arr of Object.values(SPRH[sid]))for(const S of arr){if(S.imgF&&S.imgF!==S.img)S.imgF=null;S._sil=null;S._silSrc=null}
-  const job=++warmJob;return Promise.all([...use].map(loadSid).concat(ids.includes('zedry')?[zPrepCine()]:[],ids.includes('zaykon')?[zkLoadV()]:[])).then(()=>{const seen=new Set(),Q=[];
+  const job=++warmJob;return Promise.all([...use].map(loadSid).concat(ids.includes('zedry')?[zPrepCine(),zgLoadV()]:[],ids.includes('zaykon')?[zkLoadV()]:[])).then(()=>{const seen=new Set(),Q=[];
     for(const sid of use)for(const [k,arr] of Object.entries(SPRH[sid]))for(const S of arr)if(!seen.has(S)){seen.add(S);Q.push([sid,k,S])}
     let i=0;(function step(){if(job!==warmJob)return;const t0=performance.now();
       while(i<Q.length&&performance.now()-t0<8){const [sid,k,S]=Q[i++];if(!S.img||!S.img.naturalWidth)continue;
@@ -1311,7 +1311,7 @@ function spriteKey(f){
     case 'jump':return f.vy<-10?['jump',0]:f.vy<-2?['jump',1]:f.vy<5?['jump',2]:['jump',3];
     case 'fly':return f.moving?['fly',Math.floor(t/6)%4]:['jump',3];
     case 'charge':case 'rushS':case 'comicS':{const c=M.charge;return pickPhase(c[Math.floor(t/7)%c.length],0)}
-    case 'transform':{if(f.def.sid==='zyk'){const tt=G.trans?G.trans.t:99;return tt<ZKVE?['pw',1]:['trans',Math.min(3,((tt-ZKVE)/14)|0)]}if(f.def.sid==='zed'){const tt=G.trans?G.trans.t:99;if(f.zt2){f.ztS='zed3';return tt<200?['pw',1]:['win',0];if(f.zt0&&tt<30){f.ztS='zed';return tt<10?['pw',1]:tt<20?['trans',1]:['trans',3]}f.ztS='zed3';return f.zt0?['trans',tt<44?1:tt<56?2:tt<70?3:4]:['trans',tt<14?0:tt<28?1:tt<42?2:tt<56?3:4]}f.ztS=null;return tt<12?['pw',0]:tt<26?['pw',1]:tt<42?['trans',0]:tt<52?['trans',1]:tt<70?['trans',2]:['trans',3]}if(f.def.sid==='gmg'){const tt=G.trans?G.trans.t:99;return['trans',Math.min(3,Math.floor(tt/20))]}if(f.def.sid==='xw'){const tt=G.trans?G.trans.t:99;return['trans',Math.min(2,Math.floor(tt/26))]}if(f.def.sid==='wht'){const tt=G.trans?G.trans.t:99;return['trans',Math.min(2,Math.floor(tt/26))]}if(f.def.sid==='ayl'){const tt=G.trans?G.trans.t:99;return['trans',Math.min(2,Math.floor(tt/26))]}if(f.def.sid==='dn2'){const tt=G.trans?G.trans.t:99;return['trans',Math.min(3,Math.floor(tt/17))]}if(f.def.sid==='ark'){const tt=G.trans?G.trans.t:99;return tt<62?['trans',Math.min(3,Math.floor(tt/16))]:['charge',3]}const c=M.trans;return pickPhase(c[Math.floor(t/5)%c.length],0)}
+    case 'transform':{if(f.def.sid==='zyk'){const tt=G.trans?G.trans.t:99;return tt<ZKVE?['pw',1]:['trans',Math.min(3,((tt-ZKVE)/14)|0)]}if(f.def.sid==='zed'){const tt=G.trans?G.trans.t:99;if(f.zt2){f.ztS='zed3';return tt<200?['pw',1]:['win',0];if(f.zt0&&tt<30){f.ztS='zed';return tt<10?['pw',1]:tt<20?['trans',1]:['trans',3]}f.ztS='zed3';return f.zt0?['trans',tt<44?1:tt<56?2:tt<70?3:4]:['trans',tt<14?0:tt<28?1:tt<42?2:tt<56?3:4]}f.ztS=null;return tt>=ZGVE?['pw',1]:tt<12?['pw',0]:tt<26?['pw',1]:tt<42?['trans',0]:tt<52?['trans',1]:tt<70?['trans',2]:['trans',3]}if(f.def.sid==='gmg'){const tt=G.trans?G.trans.t:99;return['trans',Math.min(3,Math.floor(tt/20))]}if(f.def.sid==='xw'){const tt=G.trans?G.trans.t:99;return['trans',Math.min(2,Math.floor(tt/26))]}if(f.def.sid==='wht'){const tt=G.trans?G.trans.t:99;return['trans',Math.min(2,Math.floor(tt/26))]}if(f.def.sid==='ayl'){const tt=G.trans?G.trans.t:99;return['trans',Math.min(2,Math.floor(tt/26))]}if(f.def.sid==='dn2'){const tt=G.trans?G.trans.t:99;return['trans',Math.min(3,Math.floor(tt/17))]}if(f.def.sid==='ark'){const tt=G.trans?G.trans.t:99;return tt<62?['trans',Math.min(3,Math.floor(tt/16))]:['charge',3]}const c=M.trans;return pickPhase(c[Math.floor(t/5)%c.length],0)}
     case 'blast':if(isZed(f)&&f.bk&&f.bk.startsWith('z_'))return zedKey(f);if(isGmg(f)&&f.bk&&f.bk.startsWith('g_'))return gmgKey(f);if(isXw(f)&&f.bk&&f.bk.startsWith('x_'))return xwKey(f);if(isWht(f)&&f.bk&&f.bk.startsWith('w_'))return whtKey(f);return f.st<12?M.blastP:M.blastF;
     case 'super':if(f.st<50)return pickPhase(M.super[Math.min(2,Math.floor(f.st/17))],0);return M.beamF;
     case 'arkDive':return arkKey(f);
@@ -1602,6 +1602,24 @@ function updSC(){const R=G.sc,a=R.a,d=R.d;R.t++;const t=R.t;a.st++;a.vx=0;a.vy=0
 function scEnd(){const R=G.sc;if(!R)return;const a=R.a,d=R.d;a.rushKey=null;a.rushRot=0;a.hide=0;a.inv=12;
   if(a.y<FLOOR-2){a.grounded=false;a.flying=false;a.state='jump';a.vy=-3;a.vx=-a.facing*2}else{a.y=FLOOR;a.grounded=true;neutral(a)}
   if(d.state==='rushed'){d.state='airhit';d.st=6;d.vy=20}G.sc=null;G.tz=1}
+
+/* v78: ZEDRY - Forma Dourada com vídeo de transformação */
+const ZGV={"f":["a/63fcabf7d87501.webp","a/cd5a5701e24063.webp","a/52d5e132f80a4f.webp","a/95e37d9b11baca.webp","a/1be6adc2c8d486.webp","a/70cbe84f5c867f.webp","a/bf6e01bd390040.webp","a/d55ba2d8f330c5.webp","a/b2b2955f72a245.webp","a/5f131657bfe7ee.webp","a/9febce83585347.webp","a/8161271a7cb1c9.webp","a/5fb50fcec71e20.webp","a/058afefe6e3cd7.webp","a/308d5693a6e90d.webp","a/5c7382b64705bd.webp","a/f3048776041bd4.webp","a/5feb4ceaaeb5fb.webp","a/103730eddbb679.webp","a/5c3eef56be6579.webp","a/2ca355438c2640.webp","a/5afeac273471a7.webp","a/5ab567ed810805.webp","a/9f570044add9dc.webp","a/cc39e5ba25ca8d.webp","a/40db31e34b55fc.webp","a/e3d95b17800d2b.webp","a/4b55a75873cb24.webp","a/9e4cb0a86e5afe.webp","a/03029ae1df8ede.webp","a/77ec2971afeb72.webp","a/6785ae831e9d97.webp","a/46a03d58148e67.webp","a/9bd64d7d99526f.webp","a/0f3b5d8fcce3a7.webp","a/64ac85ab74c15b.webp","a/0bbe4c6d78c826.webp","a/0fbbb73b54ba4b.webp","a/f2ea573cc5f14a.webp","a/4f209a78667724.webp","a/fced6b96cb49e7.webp","a/78bc66c139d4d0.webp","a/a643474c770288.webp","a/e5884929c4a8c1.webp","a/ee7e9f796938dc.webp","a/ab2e75c8a933c9.webp","a/ee9ad135fdb1fb.webp","a/44aeba7d2e5a05.webp","a/f8d28df7eba695.webp","a/cfd69693590595.webp","a/eb115340d0faf5.webp","a/3d6e2663efa379.webp","a/265bc5d638c52f.webp","a/1a41acd81062aa.webp","a/4031d567ab5532.webp","a/ca4e4d84129cfd.webp","a/952e5c13b6cf91.webp","a/8e9af9ced053d9.webp","a/27c6ecfaca6c9f.webp","a/f621803326d83d.webp","a/4c810b491e8469.webp","a/5af3651f827bc2.webp","a/de608ae0c9aa01.webp","a/4f02f005a31de7.webp","a/cdf8ce6d02d3d2.webp","a/07d05f6689a981.webp","a/8615a2ccde399a.webp","a/63d38a061a249d.webp","a/d631561b33169b.webp","a/69ef71c568aa8f.webp","a/0ef1dd353351d6.webp","a/51f7c5b40a7497.webp","a/ce2bedef37b157.webp","a/8f119e4d6c2c1a.webp","a/46b589b74a15cf.webp","a/aa46650a5ea033.webp","a/8ee2db9581c188.webp","a/f8da2f9e787a60.webp","a/f2ebf7a2086322.webp","a/d5e8d9c5b0c939.webp","a/60b2c97d639c29.webp","a/dd64c0205674a5.webp","a/f8db3ac7506380.webp","a/b692d98fa1cdd4.webp","a/370a9e6b23bbf5.webp"],"snd":"a/975751624ce97f.mp3"},ZGVF=[];let ZGVP=null,ZGSND=null;const ZGVE=ZGV.f.length*5;
+function zgLoadV(){if(ZGVP)return ZGVP;try{ZGSND=new Audio(ZGV.snd);ZGSND.preload='auto'}catch(e){}
+  return ZGVP=Promise.all(ZGV.f.map((p,i)=>new Promise(r=>{const im=new Image();im.decoding='async';im.onload=()=>{ZGVF[i]=im;r()};im.onerror=()=>r();im.src=p})))}
+function updZGT(T,f,t){G.tz=1.15;G.tzx=sxs(f.x);G.tzy=sys(f.y-150);
+  if(t===1){try{if(ZGSND&&AU.on){ZGSND.currentTime=0;ZGSND.volume=.9;const p=ZGSND.play();if(p&&p.catch)p.catch(()=>{})}}catch(e){}}
+  if(t<ZGVE)return;
+  if(t===ZGVE){f.form=1;f.formT=FORM_T;f.flick=0;G.flash=12;G.flashCol='#fff2b0';G.shake=22;
+    for(const r of [260,170,90])ring(f.x,f.y-150,r===90?'#ffffff':f.def.fe,r,26,8);fxTex('swirl',f.def.fe,f.x,f.y-160,360,46,1.9,.4);fxTex('blast',null,f.x,FLOOR+10,520,40,1.35);
+    for(let i=0;i<40;i++)spark(f.x,f.y-150,f.def.fe2,1,rand(5,16));for(let i=0;i<22;i++)debris(f.x+rand(-150,150),FLOOR);
+    SFX.transform();banner(f.def.formName+'!',f.def.fe2,90,f.def.formSub);buzz(150)}
+  if(t>ZGVE&&t%2===0)glow(f.x+rand(-80,80),f.y-rand(0,110),f.def.fe,rand(8,15),30,0,-rand(3,7));
+  if(t>=ZGVE+56){G.trans=null;f.inv=15;neutral(f);G.tz=1}}
+function drawZGV(){const T=G.trans;if(!T)return;let k=Math.min(ZGVF.length-1,Math.floor(T.t/5));while(k>0&&!ZGVF[k])k--;const im=ZGVF[k];
+  ctx.save();ctx.fillStyle='#000';ctx.fillRect(0,0,VW,H);
+  if(im){const sc=Math.max(VW/im.naturalWidth,H/im.naturalHeight),w=im.naturalWidth*sc,h=im.naturalHeight*sc;ctx.globalAlpha=Math.min(1,T.t/6,(ZGVE-T.t)/6+.25);ctx.drawImage(im,(VW-w)/2,(H-h)/2,w,h)}
+  ctx.globalAlpha=1;if(T.t>ZGVE-8){ctx.fillStyle=`rgba(255,242,176,${(T.t-(ZGVE-8))/8})`;ctx.fillRect(0,0,VW,H)}ctx.restore()}
 /* v69: imagens das cenas do Zedry pré-carregadas e já redimensionadas (sem travar no celular) */
 let ZCINE=null;
 function zPrepCine(){if(ZCINE)return ZCINE;
@@ -2741,6 +2759,7 @@ function render(){
   ctx=ctx0;ctx.setTransform(SC*DPR,0,0,SC*DPR,0,0);ctx.imageSmoothingEnabled=true;ctx.imageSmoothingQuality='high';
   ctx.fillStyle='#06050d';ctx.fillRect(0,0,VW,H);
   if(G.ws&&G.ws.zyk&&G.ws.t>=ZKU0){drawZKU();if(G.mode==='fight')drawHUD();return}
+  if(G.trans&&isZed(G.trans.f)&&!G.trans.f.zt2&&G.trans.t<ZGVE){drawZGV();if(G.mode==='fight')drawHUD();return}
   if(G.trans&&isZyk(G.trans.f)&&G.trans.t<ZKVE){drawZKV();if(G.mode==='fight')drawHUD();return}
   if(G.trans&&isZed(G.trans.f)&&G.trans.f.zt2&&G.trans.t<ZT2E){drawZT2();if(G.mode==='fight')drawHUD();return}
   if(G.hq&&!G.nosplit&&BGD<DPR-.05){/* v46: cenário em resolução menor, lutadores e efeitos em resolução cheia */
