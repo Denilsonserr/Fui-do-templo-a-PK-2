@@ -334,6 +334,10 @@ h2{margin:0;font-family:var(--f-display);font-weight:400;font-size:clamp(26px,8v
     <h2>Escolha o cenário</h2>
     <div id="stGrid"></div>
     <div class="row">
+      <span class="lbl">Música</span>
+      <div class="seg" id="msel"><button data-m="auto" aria-pressed="true">Aleatória</button><button data-m="0" aria-pressed="false">Blizzard (Broly)</button><button data-m="1" aria-pressed="false">Abertura Super</button><button data-m="2" aria-pressed="false">Abertura Kai</button><button data-m="3" aria-pressed="false">Torneio do Poder</button><button data-m="none" aria-pressed="false">Sem música</button></div>
+    </div>
+    <div class="row">
       <span class="lbl">Clima</span>
       <div class="seg" id="wsel"><button data-w="auto" aria-pressed="true">Aleatório</button><button data-w="clear" aria-pressed="false">Limpo</button><button data-w="rain" aria-pressed="false">Chuva</button><button data-w="storm" aria-pressed="false">Tempestade</button><button data-w="fog" aria-pressed="false">Neblina</button><button data-w="snow" aria-pressed="false">Neve</button><button data-w="sand" class="hz" aria-pressed="false">Areia</button><button data-w="gale" class="hz" aria-pressed="false">Vendaval</button><button data-w="lightning" class="hz" aria-pressed="false">Relâmpagos</button><button data-w="hurricane" class="hz" aria-pressed="false">Furacão</button></div>
     </div>
@@ -1620,6 +1624,20 @@ function drawZGV(){const T=G.trans;if(!T)return;let k=Math.min(ZGVF.length-1,Mat
   ctx.save();ctx.fillStyle='#000';ctx.fillRect(0,0,VW,H);
   if(im){const sc=Math.max(VW/im.naturalWidth,H/im.naturalHeight),w=im.naturalWidth*sc,h=im.naturalHeight*sc;ctx.globalAlpha=Math.min(1,T.t/6,(ZGVE-T.t)/6+.25);ctx.drawImage(im,(VW-w)/2,(H-h)/2,w,h)}
   ctx.globalAlpha=1;if(T.t>ZGVE-8){ctx.fillStyle=`rgba(255,242,176,${(T.t-(ZGVE-8))/8})`;ctx.fillRect(0,0,VW,H)}ctx.restore()}
+
+/* v79: músicas de batalha (escolha na tela de cenário) */
+const MUS=[['Blizzard (Broly)','a/cc98e2d4131a53.mp3'],['Abertura Super','a/92e8f19e77ba36.mp3'],['Abertura Kai','a/ef7e90a3a2945e.mp3'],['Torneio do Poder','a/d815536378faaa.mp3']];let MSEL='auto';try{const v=localStorage.getItem('ft_mus');if(v!=null)MSEL=v}catch(e){}
+const MEL=new Audio();MEL.loop=true;MEL.preload='none';MEL.volume=0;let MCUR=-1,MV=0;window.__mel=MEL;
+function musSel(v){MSEL=v;try{localStorage.setItem('ft_mus',v)}catch(e){}document.querySelectorAll('#msel button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.m===v?'true':'false'))}
+document.querySelectorAll('#msel button').forEach(b=>b.onclick=()=>{musSel(b.dataset.m);SFX.whoosh&&SFX.whoosh()});musSel(MSEL);
+function musPick(){if(MSEL==='none'){MCUR=-1;return}const i=MSEL==='auto'?(Math.random()*MUS.length)|0:+MSEL;if(i!==MCUR||!MEL.src){MCUR=i;MEL.src=MUS[i][1];try{MEL.currentTime=0}catch(e){}}}
+setInterval(()=>{const want=G.mode==='fight'&&MCUR>=0&&!G.paused&&AU.on&&!document.hidden;
+  const duck=(G.trans&&(isZyk(G.trans.f)||(isZed(G.trans.f))))||(G.ws&&(G.ws.zed||G.ws.zyk||G.ws.gmg));
+  const tgt=want?(duck?.08:.30):0;MV+=(tgt-MV)*.25;if(Math.abs(tgt-MV)<.01)MV=tgt;
+  if(want&&MEL.paused){const p=MEL.play();if(p&&p.catch)p.catch(()=>{})}
+  try{MEL.volume=Math.max(0,Math.min(1,MV))}catch(e){}
+  if(!want&&MV<=0.001&&!MEL.paused)MEL.pause();
+  if(AU.mus)AU.mus.gain.value=(G.mode==='fight'&&MCUR>=0)?0:.3},100);
 /* v69: imagens das cenas do Zedry pré-carregadas e já redimensionadas (sem travar no celular) */
 let ZCINE=null;
 function zPrepCine(){if(ZCINE)return ZCINE;
@@ -2910,7 +2928,7 @@ function startRound(){
   const w=pickWeather();setWeather(w);
   SFX.bell();startEntrances();startRing();
 }
-function startMatch(){MAXHP=LAYER*(G.lives||2);G.teams=G.gmode==='torre'?[[G.pick],G.tower.slice()]:G.teamN===2&&G.gmode!=='treino'?[[G.pick,G.pick2||G.pick],[G.opp,G.opp3||G.opp]]:null;G.ti=[0,0];G.keep=null;$('bSr').hidden=!(G.pick==='zaykon'||G.pick==='zedry'||G.pick==='magmus'||G.pick==='denilson'||G.pick==='arkarus'||G.pick==='aylla'||G.pick==='white'||G.pick==='xiao');{const ay=G.pick==='aylla';$('bSr').querySelector('span').textContent=ay?'Magia':'Super';$('bSr').querySelector('em').textContent=ay?'20':'100'}G.round=1;G.wins=[0,0];G.mode='fight';G.paused=false;showScreen(null);$('controls').hidden=false;$('pauseBtn').hidden=false;layoutControls();startRound()}
+function startMatch(){musPick();MAXHP=LAYER*(G.lives||2);G.teams=G.gmode==='torre'?[[G.pick],G.tower.slice()]:G.teamN===2&&G.gmode!=='treino'?[[G.pick,G.pick2||G.pick],[G.opp,G.opp3||G.opp]]:null;G.ti=[0,0];G.keep=null;$('bSr').hidden=!(G.pick==='zaykon'||G.pick==='zedry'||G.pick==='magmus'||G.pick==='denilson'||G.pick==='arkarus'||G.pick==='aylla'||G.pick==='white'||G.pick==='xiao');{const ay=G.pick==='aylla';$('bSr').querySelector('span').textContent=ay?'Magia':'Super';$('bSr').querySelector('em').textContent=ay?'20':'100'}G.round=1;G.wins=[0,0];G.mode='fight';G.paused=false;showScreen(null);$('controls').hidden=false;$('pauseBtn').hidden=false;layoutControls();startRound()}
 function endRound(){
   const w=G.koWinner;
   if(G.teams){let L=w<0?(G.p[0].hp<=G.p[1].hp?0:1):1-w;const W2=1-L;G.ti[L]++;
