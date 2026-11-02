@@ -1645,9 +1645,9 @@ window.__SB=0;const SMP={"hS":"a/e3abbc76a2165f.mp3","hM":"a/292b430441dbd8.mp3"
 function smpLoad(){if(SMPOK||!AU.c)return;SMPOK=true;for(const k in SMP)fetch(SMP[k]).then(r=>r.arrayBuffer()).then(b=>AU.c.decodeAudioData(b,d=>{SB[k]=d},()=>{})).catch(()=>{})}
 const _sl={};
 function smp(k,vol,o){o=o||{};const C=AU.c,B=SB[k];if(!C||!B||!AU.on)return null;const now=C.currentTime;if(o.gap&&_sl[k]&&now-_sl[k]<o.gap)return null;_sl[k]=now;
-  try{const s=C.createBufferSource();s.buffer=B;s.playbackRate.value=o.rate||(o.vary?.94+Math.random()*.12:1);s.loop=!!o.loop;const g=C.createGain();g.gain.value=vol==null?1:vol;s.connect(g);g.connect(o.vox?AU.vox:AU.sfx);s.start(now+(o.at||0));return {s,g}}catch(e){return null}}
+  try{const s=C.createBufferSource();s.buffer=B;s.playbackRate.value=o.rate||(o.vary?.94+Math.random()*.12:1);s.loop=!!o.loop;const g=C.createGain();g.gain.value=vol==null?1:vol;s.connect(g);if(!o.vox&&!AU.smpG){AU.smpG=C.createGain();AU.smpG.gain.value=.42;AU.smpG.connect(AU.sfx)}g.connect(o.vox?AU.vox:AU.smpG);s.start(now+(o.at||0));return {s,g}}catch(e){return null}}
 window.__SBo=()=>Object.keys(SB).length;const SFX0=Object.assign({},SFX),has=k=>!!SB[k];
-SFX.hit=(h,T)=>{T=T==null?(h?2:0):T;const k=T>=2?'hL':T>=1?'hM':'hS';if(!has(k))return SFX0.hit(h,T);smp(k,T>=2?.95:.85,{vary:1})};
+SFX.hit=(h,T)=>{T=T==null?(h?2:0):T;const k=T>=2?'hL':T>=1?'hM':'hS';if(!has(k))return SFX0.hit(h,T);smp(k,T>=2?.95:.8,{vary:1,gap:.035})};
 SFX.block=()=>has('grd')?smp('grd',.7,{vary:1,gap:.05}):SFX0.block();
 SFX.clang=()=>has('sgrd')?smp('sgrd',.8,{vary:1}):SFX0.clang();
 SFX.boom=()=>has('expE')?smp('expE',.8,{vary:1,gap:.06}):SFX0.boom();
@@ -1672,7 +1672,7 @@ setInterval(()=>{if(!AU.c)return;smpLoad();for(let i=0;i<2;i++){const f=G.p&&G.p
 const AMBK={metro:'aTown',ruins:'aTown',desert:'aVolc',ice:'aWind',temple:'aLWind',arena:'aTenk',chess:'aSpace',falls:'aTaki',lotus:'aTaki',planet:'aNam'};let AMB=null;
 setInterval(()=>{if(!AU.c)return;const want=G.mode==='fight'&&!G.paused&&AU.on&&STAGE?AMBK[STAGE.key]:null;
   if(AMB&&AMB.k!==want){try{AMB.h.g.gain.setTargetAtTime(0,AU.c.currentTime,.3);AMB.h.s.stop(AU.c.currentTime+1.5)}catch(e){}AMB=null}
-  if(want&&!AMB&&has(want)){const h=smp(want,.0001,{loop:1});if(h){h.g.gain.setTargetAtTime(.22,AU.c.currentTime,.8);AMB={k:want,h}}}},400);
+  if(want&&!AMB&&has(want)){const h=smp(want,.0001,{loop:1});if(h){h.g.gain.setTargetAtTime(.35,AU.c.currentTime,.8);AMB={k:want,h}}}},400);
 /* v69: imagens das cenas do Zedry pré-carregadas e já redimensionadas (sem travar no celular) */
 let ZCINE=null;
 function zPrepCine(){if(ZCINE)return ZCINE;
