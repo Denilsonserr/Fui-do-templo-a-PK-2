@@ -1653,10 +1653,10 @@ function aoAura(f,cx,base,k,t){const big=k>=.5,K=big?1.2:1.05;ctx.save();
 function aoIceHit(a,d,h){for(let i=0;i<8;i++)spark(h.px,h.py,i%2?'#ffffff':'#9fe4ff',1,rand(4,10));ring(h.px,h.py,'#bfeaff',70,12,3);
   a.aoN=(a.aoN||0)+1;if(a.aoN>=3){a.aoN=0;d.slowT=Math.max(d.slowT||0,150);txt(d.x,d.y-280,'LENTIDÃO!','#9fe4ff');aoSpikes(d.x,8,60);for(let i=0;i<10;i++)addP({x:d.x+rand(-40,40),y:d.y-rand(30,240),vx:0,vy:-rand(.3,.8),life:30,max:30,c:'#dff6ff',type:'glow',sz:rand(4,8),g:0})}}
 function aoShatter(f){for(let i=0;i<24;i++)spark(f.x+rand(-40,40),f.y-rand(30,240),i%2?'#ffffff':'#9fe4ff',1,rand(5,13));ring(f.x,f.y-140,'#dff6ff',140,16,4);try{SFX.clang()}catch(e){}}
-function drawIceBody(f){if(f.state!=='iced')return;const S=SPRH[ssid(f)].hit[0];if(!S)return;const x=f.x,y=f.y;ctx.save();
-  const g=ctx.createLinearGradient(0,y-S.h-20,0,y);g.addColorStop(0,'rgba(220,248,255,.55)');g.addColorStop(1,'rgba(110,200,255,.55)');ctx.fillStyle=g;ctx.strokeStyle='rgba(255,255,255,.8)';ctx.lineWidth=2;
-  const w=S.w*.75+30,h=S.h+24;ctx.beginPath();ctx.moveTo(x-w/2,y+4);ctx.lineTo(x-w/2-10,y-h*.55);ctx.lineTo(x-w*.25,y-h);ctx.lineTo(x+w*.2,y-h-8);ctx.lineTo(x+w/2+8,y-h*.6);ctx.lineTo(x+w/2,y+4);ctx.closePath();ctx.fill();ctx.stroke();
-  ctx.globalCompositeOperation='lighter';ctx.strokeStyle='rgba(255,255,255,.5)';ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(x-w*.3,y-h*.85);ctx.lineTo(x-w*.1,y-h*.3);ctx.stroke();ctx.restore()}
+const ICEB=new Image();ICEB.src='a/adcb2fa3f5ba20.webp';
+function drawIceBody(f){if(f.state!=='iced'||!ICEB.complete||!ICEB.naturalWidth)return;const S=SPRH[ssid(f)].hit[0];const hh=((S&&S.h)||260)*1.22,ww=hh*ICEB.naturalWidth/ICEB.naturalHeight,k=Math.min(1,(f.st||0)/8);
+  ctx.save();ctx.globalAlpha=.82*k;const sc=.85+.15*k;ctx.drawImage(ICEB,f.x-ww*sc/2,f.y+18-hh*sc,ww*sc,hh*sc);
+  ctx.globalCompositeOperation='lighter';ctx.globalAlpha=.12+.06*Math.sin(G.frame*.12);ctx.drawImage(ICEB,f.x-ww*sc/2,f.y+18-hh*sc,ww*sc,hh*sc);ctx.restore()}
 function aoUlt(f,o){if(!f.form){if(!f.cpu)say(f,'SÓ NO CORPO DE GELO');return false}if(f.ki<100){if(!f.cpu)say(f,'PRECISA DE 100 KI');return false}if(!o||o.ko)return false;aoLoad();
   f.ki-=100;f.state='whtS';f.st=0;f.inv=999;f.vx=0;f.vy=0;f.flying=false;f.y=FLOOR;f.grounded=true;f.rushKey=['sp',0];o.hypHard=0;o.iceHard=0;
   G.ws={ao:1,a:f,d:o,t:0,hi:0};banner('ERA DO GELO','#e8f8ff',60,'ATAQUE FINAL');G.flash=4;G.flashCol='#bfeaff';SFX.superUp();buzz(70);return true}
