@@ -1,0 +1,18 @@
+const {chromium}=require('playwright');
+(async()=>{const b=await chromium.launch();const p=await b.newPage({viewport:{width:1280,height:576}});
+const errs=[];p.on('pageerror',e=>errs.push((e.stack||e.message).slice(0,400)));await p.route(/fonts\.g/,r=>r.abort());
+await p.goto('file:///home/claude/fui-do-templo-a-pk-2/www/index.html',{timeout:120000});
+await p.waitForFunction(()=>!document.getElementById('goSelect').disabled,null,{timeout:120000});await p.waitForTimeout(500);
+await p.click('#goSelect');await p.waitForTimeout(600);await p.click('.tile[data-c="zoro"]');await p.waitForTimeout(200);await p.click('.tile[data-c="zaykon"]');
+await p.click('#goStage');await p.waitForTimeout(300);await p.click('.stc[data-s="city"]');await p.click('#goFight');
+await p.waitForFunction(()=>__dbg.G.mode==='fight'&&__dbg.G.phase==='fight',null,{timeout:120000});
+await p.evaluate(()=>{const G=__dbg.G;G.p[1].cpu=false;G.p[0].cpu=false;G.timer=999;G.p[0].x=700;G.p[1].x=1300;G.p[0].facing=1});await p.waitForTimeout(500);await p.screenshot({path:'shots/y0.png'});
+const R={};
+R.wave=await p.evaluate(async()=>{const G=__dbg.G,f=G.p[0],o=G.p[1],w=ms=>new Promise(r=>setTimeout(r,ms));f.ki=100;const hp=o.hp;f.buf.kiTap=G.frame;const L=[];for(let i=0;i<20;i++){await w(30);L.push(f.zw?[Math.round(f.zw.x),f.zw.t,f.zw.hit]:null)}return [Math.round(hp-o.hp),o.inv,o.x,f.state,L.filter(Boolean).slice(-3)]});
+await p.screenshot({path:'shots/y1.png'});
+R.wave2=await p.evaluate(async()=>{const w=ms=>new Promise(r=>setTimeout(r,ms));await w(900);const o=__dbg.G.p[1];return [o.state]});
+R.sp=await p.evaluate(async()=>{const G=__dbg.G,f=G.p[0],o=G.p[1],w=ms=>new Promise(r=>setTimeout(r,ms));await w(1500);o.state='idle';o.inv=0;f.state='idle';f.x=900;o.x=1060;f.ki=100;f.sb=6;window.__hp=o.hp;f.buf.sp=G.frame;await w(700);return !!G.zsp});
+await p.screenshot({path:'shots/y2.png'});await p.waitForFunction(()=>!__dbg.G.zsp,null,{timeout:15000});await p.waitForTimeout(200);
+R.sp2=await p.evaluate(()=>{const o=__dbg.G.p[1];return [Math.round(window.__hp-o.hp),o.slowT,o.state]});
+await p.evaluate(()=>{__dbg.G.zov={k:'e1',f0:__dbg.G.frame,dur:46}});await p.waitForTimeout(250);await p.screenshot({path:'shots/y3.png'});
+console.log(JSON.stringify(R),errs);await b.close()})();

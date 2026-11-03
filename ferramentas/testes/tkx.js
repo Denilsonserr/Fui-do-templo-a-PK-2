@@ -1,0 +1,11 @@
+const {chromium}=require('playwright');
+(async()=>{const b=await chromium.launch();const p=await b.newPage({viewport:{width:1280,height:576}});const errs=[];p.on('pageerror',e=>errs.push((e.stack||e.message).slice(0,300)));await p.route(/fonts\.g/,r=>r.abort());
+await p.goto('file:///home/claude/fui-do-templo-a-pk-2/www/index.html',{timeout:120000});
+await p.waitForFunction(()=>!document.getElementById('goSelect').disabled,null,{timeout:120000});await p.waitForTimeout(400);
+await p.click('#goSelect');await p.waitForTimeout(300);await p.click('.tile[data-c="broly"]');await p.click('.tile[data-c="qingqing"]');await p.click('#goStage');await p.waitForTimeout(300);await p.click('#goFight');
+await p.waitForFunction(()=>__dbg.G.mode==='fight'&&__dbg.G.phase==='fight',null,{timeout:120000});
+const R={};R.a=await p.evaluate(async()=>{const G=__dbg.G,f=G.p[0],o=G.p[1],w=ms=>new Promise(r=>setTimeout(r,ms));o.cpu=false;f.cpu=false;G.timer=999;f.ki=100;f.sb=6;f.buf.sr=G.frame;await w(200);const blocked=!G.ws&&f.msg;
+  return {blocked}});await p.keyboard.down('l');await p.waitForTimeout(2600);R.mid=await p.evaluate(()=>Math.round(__dbg.G.p[0].kx||0));await p.waitForTimeout(9000);R.end=await p.evaluate(()=>[Math.round(__dbg.G.p[0].kx||0),__dbg.G.p[0].spark]);
+await p.screenshot({path:'shots/kx.png'});await p.keyboard.up('l');
+R.b=await p.evaluate(async()=>{const G=__dbg.G,f=G.p[0],w=ms=>new Promise(r=>setTimeout(r,ms));await w(100);f.state='idle';f.buf.sr=G.frame;await w(400);return {ws:!!G.ws,spark:f.spark}});
+console.log(JSON.stringify(R),errs);await b.close()})();
