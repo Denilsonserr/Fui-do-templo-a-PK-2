@@ -66,6 +66,7 @@
 /* leveza */
 #select .tile.p1::after,#select .tile.p2::after,#select .tile.cur::before{animation:none!important}
 .fzf img.full{animation:fzin .25s ease-out;will-change:auto}
+button,.tile,.stc,.mode{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
 </style></head><body><title>Fúria do Templo</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -258,7 +259,7 @@ h2{margin:0;font-family:var(--f-display);font-weight:400;font-size:clamp(26px,8v
 
 #title{padding:0!important;display:block;background:#05060c;overflow:hidden}
 #title>:first-child,#title>:last-child{margin:0}
-#mmbg{position:absolute;inset:-30px;background:var(--mmsrc) center/cover;filter:blur(18px) brightness(.55) saturate(1.2)}
+#mmbg{position:absolute;inset:-30px;background:var(--mmsrc) center/cover;filter:brightness(.5) saturate(1.15)}
 #mm{position:absolute;left:50%;top:0;transform:translateX(-50%);width:max(100vw,calc(100vh*1.7769));aspect-ratio:1672/941;max-width:calc(100vh*2.4);overflow:hidden;container-type:inline-size}
 #mmimg{position:absolute;inset:0;background:var(--mmsrc) center/100% 100%;animation:kb 18s ease-in-out infinite alternate;transform-origin:62% 55%}
 @keyframes kb{from{transform:scale(1)}to{transform:scale(1.045) translateX(-.6%)}}
@@ -749,11 +750,11 @@ function drawWeatherFront(){const w=WX,t=w.type;if(t==='clear')return;
 const MOVES={
   zs1:{su:5,ac:4,rc:10,dmg:50,hb:[20,-262,170,140],kb:3,hs:18,lean:2.2,sword:1,noblade:1,next:'zs2',swing:[-70,30],cat:'punch',zr:1},
   zs2:{su:5,ac:4,rc:12,dmg:58,hb:[20,-262,175,140],kb:3.5,hs:19,lean:2.4,sword:1,noblade:1,next:'zs3',swing:[60,-100],cat:'punch',zr:2},
-  zs3:{su:7,ac:5,rc:17,dmg:80,hb:[10,-300,185,200],kb:2,launch:-10,launcher:1,heavy:1,lean:3,sword:1,noblade:1,swing:[-100,20],cat:'punch',zr:3},
+  zs3:{su:7,ac:5,rc:17,dmg:80,hb:[10,-300,185,200],kb:6,launch:-8,launcher:1,heavy:1,lean:3,sword:1,noblade:1,swing:[-100,20],cat:'punch',zr:3},
   zkk:{su:7,ac:5,rc:15,dmg:78,hb:[20,-270,190,150],kb:7,hs:22,heavy:1,lean:2.6,sword:1,noblade:1,swing:[-60,40],cat:'kick',zr:4},
   jab:{su:4,ac:3,rc:9,dmg:45,hb:[36,-232,104,50],kb:2.5,hs:17,next:'cross',cat:'punch'},
   cross:{su:5,ac:3,rc:12,dmg:55,hb:[36,-232,118,50],kb:3,hs:19,next:'upper',lean:3,cat:'punch'},
-  upper:{su:7,ac:5,rc:20,dmg:90,hb:[18,-300,128,170],kb:2,lean:3.2,launch:-14,heavy:1,launcher:1,cat:'punch'},
+  upper:{su:7,ac:5,rc:18,dmg:90,hb:[18,-300,128,170],kb:6,lean:3.2,launch:-9,heavy:1,launcher:1,cat:'punch'},
   sweep:{su:6,ac:5,rc:16,dmg:70,hb:[40,-52,118,52],kb:4,launch:-5,low:1,crouch:1,cat:'kick'},
   hkick:{su:8,ac:5,rc:14,dmg:80,hb:[24,-262,140,96],kb:7,launch:-9,heavy:1,lean:1.6,cat:'kick'},
   rush:{su:6,ac:16,rc:10,dmg:85,hb:[20,-220,120,150],kb:10,launch:-9,heavy:1,rush:1,cat:'kick'},
@@ -1109,7 +1110,7 @@ function updFighter(f,o){
   }
   // physics
   if(f.lowG>0)f.lowG--;
-  if(!f.grounded){if(!f.flying)f.vy+=GRAV*(f.lowG>0&&f.state==='airhit'?(f.vy<0?.42:.3):1);else if(f.state!=='fly'&&f.state!=='sdash'&&!(f.state==='attack'&&f.move&&f.move.rush))f.vy*=.85;f.y+=f.vy;if(f.flying&&f.y<FLY_TOP){f.y=FLY_TOP;f.vy=Math.max(0,f.vy)}}
+  if(!f.grounded){if(!f.flying)f.vy+=GRAV*(f.state==='airhit'&&f.vy>0?1.15:1);else if(f.state!=='fly'&&f.state!=='sdash'&&!(f.state==='attack'&&f.move&&f.move.rush))f.vy*=.85;f.y+=f.vy;if(f.flying&&f.y<FLY_TOP){f.y=FLY_TOP;f.vy=Math.max(0,f.vy)}}
   f.x+=f.vx;
   if(f.y>=FLOOR){f.y=FLOOR;if(!f.grounded)land(f);}
   if(f.x<40)f.x=40;if(f.x>WW-40)f.x=WW-40;
@@ -1146,7 +1147,7 @@ function updAttack(f,o){
     if(f.mf>=m.su&&f.mf<=m.su+m.ac&&!f.hasHit){f.vx=15*f.facing;if(G.frame%2===0)dust(f.x-f.facing*30,f.grounded?FLOOR:f.y,1)}else f.vx*=.8;
     if(f.mf>m.su+m.ac&&f.flying)f.vy*=.8}
   else if(m.fly){if(f.mf===m.su){f.vy=-6.5;f.grounded=false;f.vx=11.5*f.facing;SFX.whoosh()}}
-  else if(f.grounded){f.vx=f.mf<=m.su+m.ac?(m.lean||1.4)*f.facing*speedMul(f):0}
+  else if(f.grounded){f.vx=f.mf<=m.su+m.ac?Math.min(m.lean||1.4,2.2)*f.facing*Math.min(speedMul(f),1.3):0}
   else if(f.flying){f.vx*=.9;f.vy*=.9}
   if(m.sword){if(f.mf===m.su+1){if(isZr(f)){smp('furi',.9,{gap:.04});smp('kiri',.35,{gap:.04})}else SFX.slash()}if(f.mf>m.su&&f.mf<=m.su+m.ac+1)f.trail.push(bladeAngle(f))}
   else if(!m.fly&&f.mf===m.su)SFX.whoosh();
@@ -1222,7 +1223,7 @@ function applyHit(a,d,h){
   d.flash=h.kind==='beam'?3:7;
   if(!h.lock&&h.kind!=='beam'){const hsF=h.heavy?9:dmg>=60?6:4;G.hitstop=Math.max(G.hitstop,hsF);if(h.heavy){G.shake=Math.max(G.shake,7);G.ck.vx+=a.facing*1.2}}
   if(!h.lock){
-    if(h.launch||!d.grounded){d.flying=false;d.state='airhit';d.st=0;d.vy=h.launch||Math.min(d.vy,-5.5);if(h.launcher){d.vy=-11.5;d.lowG=70;a.sdOK=G.frame+80;txt(d.x,d.y-260,'LANÇADO!','#ffe45a')}d.grounded=false;d.bounced=false;d.vx=h.kb*a.facing*.8;d.y-=1}
+    if(h.launch||!d.grounded){d.flying=false;d.state='airhit';d.st=0;d.vy=h.launch||(h.kind==='melee'||h.kind==='sword'?Math.max(Math.min(d.vy,-2.5),-4):Math.min(d.vy,-5.5));if(h.launcher){d.vy=-12;a.sdOK=G.frame+40}d.grounded=false;d.bounced=false;d.vx=h.kb*a.facing*.8;d.y-=1}
     else{d.state='hit';d.st=0;d.hitstun=(h.hs||18)+(ctr?8:0);d.vx=h.kb*a.facing}}
   if(d.iceHard&&d.hp>0&&d.iceLeft>0&&!h.launch){d.state='iced';d.hitstun=0;d.vx=0}
   if(d.hypHard){if(!h.lock&&!h.launch&&d.grounded&&d.hp>0&&d.hypLeft>0){d.state='hypno';d.hitstun=0;d.vx*=.3}else{d.hypHard=0;d.hypLeft=0}}
@@ -3641,7 +3642,7 @@ function dynTick(dt){if(DYN.off||dt>1500||document.hidden||G.paused){DYN.n=0;ret
   else if(DYN.ema<17.6&&G.dyn<1){if(++DYN.good>=4){G.dyn=Math.min(1,G.dyn+.05);DYN.good=0;DYN.cool=1000;setRes()}}else DYN.good=0}
 window.__dyn=()=>({dyn:G.dyn,ms:Math.round(DYN.ema*10)/10,dpr:DPR,base:G.baseDPR,off:DYN.off});
 window.__WX=()=>WX;window.__adv=n=>{for(let i=0;i<n;i++)update();render()};
-function loop(now){if(G.hold){last=now;requestAnimationFrame(loop);return}dynTick(now-last);acc+=Math.min(100,now-last);last=now;let n=0;const STP=1000/(60*(G.spd||1));while(acc>=STP&&n<6){update();acc-=STP;n++}render();requestAnimationFrame(loop)}
+function loop(now){const sc=showScreen.cur;if(G.mode!=='fight'&&(sc==='select'||sc==='stages'||sc==='title'||sc==='vs'||sc==='modes')){last=now;acc=0;requestAnimationFrame(loop);return}if(G.hold){last=now;requestAnimationFrame(loop);return}dynTick(now-last);acc+=Math.min(100,now-last);last=now;let n=0;const STP=1000/(60*(G.spd||1));while(acc>=STP&&n<6){update();acc-=STP;n++}render();requestAnimationFrame(loop)}
 G.cracks=[];setSound(AU.on);$('hqBtn').textContent=$('hqBtn2').textContent=qName();resize();menuSetup();
 requestAnimationFrame(loop);
 window.__dbg={startSC,gmgUlt,gmgBlast,startGmgSuper,startTransform,startXU,startHab,startWhtSuper,aylErupt,startAylSuper,aylBlast,cinePass,startMove,auraTex,AUX,destroy,fireArc,dfx,auraTest:(k)=>{const c=document.createElement('canvas');c.width=600;c.height=600;const keep=ctx;ctx=c.getContext('2d');ctx.fillStyle='#000';ctx.fillRect(0,0,600,600);const f=G.p[0];const fx=Object.assign({},f,{x:300,y:560,grounded:true,form:1});drawAura(fx,k);ctx=keep;return c.toDataURL()},VOX,annc,fvox,CH,impact,startEntrances,renderStages,WX,drawLit,startArk,startSR,SPRH,spriteKey,setStage,startComic,startMatch,G,setDiff:d=>G.diff=d,setWeather,startTransform,startSuper,ensureForm};
