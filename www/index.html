@@ -1,7 +1,7 @@
 <!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><style>body{margin:0}
 /* v104: telas no estilo FighterZ */
-#select.fz{padding:0;justify-content:center;align-items:center;overflow:hidden;gap:0;background:#200a06 url(a/b38ecfe79a2c2b.webp) center/cover}
-.fzs{--H:calc(100vh - max(46px,13vh));--u:min(calc(var(--H) / 100),.4615vw);position:relative;width:min(100vw,calc(var(--H) * 2.1667));aspect-ratio:1846/852;background:url(a/b38ecfe79a2c2b.webp) center/100% 100%;flex:none}
+#select.fz{padding:0;justify-content:flex-start;align-items:stretch;overflow:hidden;gap:0;background:#140802}
+.fzs{--H:calc(100vh - max(46px,13vh));--u:min(calc(var(--H) / 100),.4615vw);position:relative;width:100vw;height:var(--H);background:url(a/b38ecfe79a2c2b.webp) center/100% 100%;flex:none}
 .fzt{position:absolute;left:1.5%;top:2%;display:flex;flex-direction:column;align-items:center;gap:calc(var(--u)*1)}
 .fzt h2{display:none;margin:0;font-size:calc(var(--u)*5.5);text-shadow:0 0 12px rgba(255,140,40,.9),0 3px 0 #000}
 .fzt .seg button{font-size:calc(var(--u)*2.6);padding:calc(var(--u)*.8) calc(var(--u)*2.2)}
@@ -30,7 +30,7 @@
 .fzf .who{order:-2}
 .fzf .q{font:calc(var(--u)*24) var(--f-display);color:#fff;text-shadow:0 0 30px var(--g);margin-bottom:6%}
 @keyframes fzin{from{opacity:0;translate:0 6%;scale:.94}to{opacity:1;translate:0 0;scale:1}}
-.fzb{--u:min(1vh,.5vw);width:min(100vw,1200px);padding:0 12px;box-sizing:border-box;height:max(46px,13vh);display:flex;align-items:center;justify-content:space-between;gap:calc(var(--u)*1.5)}
+.fzb{--u:min(1vh,.5vw);width:100%;margin:0 auto;background:linear-gradient(180deg,#2a1204,#0d0502);padding:0 12px;box-sizing:border-box;height:max(46px,13vh);display:flex;align-items:center;justify-content:space-between;gap:calc(var(--u)*1.5)}
 .fzb .btn{font-size:calc(var(--u)*3);padding:calc(var(--u)*1) calc(var(--u)*3);min-width:0}
 .fzo{display:flex;gap:calc(var(--u)*1.2);align-items:center;flex-wrap:wrap;justify-content:center}
 .fzo .seg{display:flex;align-items:center}
