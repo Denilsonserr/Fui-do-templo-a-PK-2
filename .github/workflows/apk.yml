@@ -43,4 +43,4 @@ jobs:
           mkdir out && cp FuriaDoTemplo.apk out/ && cd out
           git init -q && git checkout -q -b apk && git add FuriaDoTemplo.apk
           git -c user.name=github-actions -c user.email=actions@github.com commit -qm "APK"
-          git push -f "https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" apk
+          git push -f "https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" apk || echo "APK grande demais para o ramo apk; use a release ultima-versao"
