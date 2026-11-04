@@ -1,0 +1,21 @@
+name: Destravar site (cancelar publicação presa)
+on:
+  workflow_dispatch:
+    inputs:
+      deploy_id:
+        description: "ID da publicação presa"
+        required: true
+permissions:
+  pages: write
+  actions: read
+jobs:
+  cancelar:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Cancelar publicação presa do GitHub Pages
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh api -X POST "repos/${GITHUB_REPOSITORY}/pages/deployments/${{ inputs.deploy_id }}/cancel" || true
+          sleep 5
+          gh api "repos/${GITHUB_REPOSITORY}/pages/deployments/${{ inputs.deploy_id }}" || true
