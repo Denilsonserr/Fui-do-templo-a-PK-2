@@ -1,0 +1,28 @@
+const {chromium}=require('playwright');const SH=__dirname+'/shots/';
+(async()=>{const b=await chromium.launch();const p=await b.newPage({viewport:{width:1280,height:576}});
+const errs=[];p.on('pageerror',e=>errs.push((e.stack||e.message).slice(0,400)));await p.route(/fonts\.g/,r=>r.abort());
+await p.goto('file:///home/claude/fui-do-templo-a-pk-2/www/index.html',{timeout:120000});
+await p.waitForFunction(()=>!document.getElementById('goSelect').disabled,null,{timeout:120000});await p.waitForTimeout(500);
+await p.click('#goSelect');await p.waitForTimeout(600);await p.click('.tile[data-c="vegeta"]');await p.waitForTimeout(200);await p.click('.tile[data-c="goku"]');
+await p.click('#goStage');await p.waitForTimeout(300);await p.click('.stc[data-s="city"]');await p.click('#goFight');
+await p.waitForFunction(()=>__dbg.G.mode==='fight'&&__dbg.G.phase==='fight',null,{timeout:120000});
+await p.evaluate(()=>{const G=__dbg.G;G.p[1].cpu=true;G.noAI=true;G.p[0].cpu=false;G.timer=999;G.p[0].x=600;G.p[1].x=780;
+  window.F=n=>new Promise(r=>{const g=__dbg.G,f0=g.frame;const c=()=>g.frame>=f0+n?r():requestAnimationFrame(c);c()});
+  window.K=(k,v)=>{const c={left:'ArrowLeft',right:'ArrowRight',up:'ArrowUp',down:'ArrowDown',punch:'KeyJ',kick:'KeyK',tr:'KeyU',sr:'KeyO',sp:'KeyI'}[k];dispatchEvent(new KeyboardEvent(v?'keydown':'keyup',{code:c,bubbles:true}))};
+  window.TAP=async k=>{K(k,1);await F(2);K(k,0);await F(1)};window.LOG=[];(function lp(){const f=G.p[0];LOG.push(f.state+(f.state==='attack'?':'+f.mname:'')+(G.p[1].hp!==window.__lh?'*':''));window.__lh=G.p[1].hp;requestAnimationFrame(lp)})()});
+const R={};const LG=m=>require('fs').appendFileSync(__dirname+'/tf.log',m+'\n');
+LG('start');R.tr=await p.evaluate(async()=>{const G=__dbg.G,f=G.p[0];f.sb=6;await TAP('tr');await F(30);return [f.state,!!G.trans]});
+LG(JSON.stringify(R));await p.waitForTimeout(1500);await p.screenshot({path:SH+'tr1.png'});LG('shot')
+for(let i=0;i<12;i++){const q=await p.evaluate(()=>{const G=__dbg.G;return [G.frame,G.trans&&G.trans.t,G.p[0].state,G.paused,G.phase]});LG(JSON.stringify(q));if(!q[1])break;await p.waitForTimeout(3000)}await p.evaluate(()=>F(10));await p.screenshot({path:SH+'form.png'});
+R.form=await p.evaluate(()=>[__dbg.G.p[0].form,__dbg.G.p[0].state]);
+R.combo=await p.evaluate(async()=>{const G=__dbg.G,f=G.p[0],o=G.p[1];f.x=600;o.x=720;o.state='idle';o.hp=3600;await F(10);LOG.length=0;const hp=o.hp;
+  for(const k of ['punch','punch','punch','kick','punch']){await TAP(k);await F(10)}await F(30);return [Math.round(hp-o.hp),[...new Set(LOG)].join(',')]});
+R.ult=await p.evaluate(async()=>{const G=__dbg.G,f=G.p[0],o=G.p[1];await F(90);o.state='idle';o.y=486;o.grounded=true;f.ki=100;f.spark=600;f.x=600;o.x=800;const hp=o.hp;await TAP('sr');await F(60);return [!!G.ws,Math.round(hp)]});
+await p.waitForTimeout(1500);await p.screenshot({path:SH+'ult.png'});
+await p.waitForFunction(()=>!__dbg.G.ws,null,{timeout:30000});
+R.ult2=await p.evaluate(async()=>{const o=__dbg.G.p[1];return [o.state,Math.round(o.hp)]});
+R.sp=await p.evaluate(async()=>{const G=__dbg.G,f=G.p[0],o=G.p[1];await F(100);f.ki=100;f.sb=6;const hp=o.hp;await TAP('sp');await F(40);return [!!G.ws,G.ws&&G.ws.vg]});
+await p.waitForTimeout(800);await p.screenshot({path:SH+'sp.png'});
+await p.waitForFunction(()=>!__dbg.G.ws,null,{timeout:30000});R.sp2=await p.evaluate(()=>[__dbg.G.p[1].state]);
+await p.evaluate(()=>F(80));await p.evaluate(()=>{const G=__dbg.G;G.p[0].x=500;G.p[1].x=1100});await p.evaluate(()=>F(20));await p.screenshot({path:SH+'aura.png'});
+console.log(JSON.stringify(R),errs);await b.close()})();
