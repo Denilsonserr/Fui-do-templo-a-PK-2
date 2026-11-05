@@ -168,6 +168,10 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - Transformação: vídeo no máximo ~3,2 s (`TVD(n,base)=min(base,192/n)` → `XXVD` = frames de jogo por quadro; `XXVE=round(n*XXVD)`), mais ~0,55 s depois do vídeo. Antes: Broly 9,5 s, Qingqing 8 s, Goku/Zaykon 7 s; agora todos ~3,7 s (Zoro e Madara 2,5 s).
 - Ultimate: vídeo no máximo 5,5 s (`USP(n)` multiplica o tempo do vídeo `vt`; acertos e fim seguem o tempo do vídeo). Antes: Goku 12,9 s, Aokiji ~10 s, Madara ~9,9 s; agora todos ~6 s com a preparação. Teste: `ferramentas/testes/tduracao.js`.
 
+## v139 — músicas novas
+- 8 músicas do dono (vieram em .m4a, convertidas para .mp3 128k com volume igualado, loudnorm -15,5): Bring Me To Life, Numb (Linkin Park), On My Own, Rise, Judas, Hero’s Come Back, Blue Bird, Lovers. Entram em `MUS` (índices 4–11) e nos botões escondidos `#msel` (o menu "Selecionar Música" lê esses botões). "Aleatória" sorteia entre todas as 12.
+- Menu de música: `#stPop` agora rola se ficar alto e fica por cima das fases (z-index).
+
 ## Pendências / ideias
 - Vegeta transformado: faltam poses próprias de carregar ki, rajada de ki, soco e chute no ar (hoje usa grito da vitória, soco e chute alto). Se o dono mandar, trocar no `build_vegeta_blue2.py` e no mapa `A`.
 - A segunda folha de "gancho para cima" do Vegeta transformado não foi usada.
