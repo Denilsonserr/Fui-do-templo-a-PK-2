@@ -229,6 +229,9 @@ h2{margin:0;font-family:var(--f-display);font-weight:400;font-size:clamp(26px,8v
 #controls .b,#joyBase{background-size:100% 100%,0 0!important;background-position:center!important}
 #controls #bSw{background:none!important;border-radius:14px;opacity:.01}
 #controls #bSw::before{display:none}
+#controls #bPunch::before,#controls #bKick::before,#controls #bBl::before,#controls #bFly::before{display:none}
+#controls .b::before{inset:7%!important;opacity:.95!important;-webkit-mask:radial-gradient(circle,transparent 0 calc(50% - 3.5px),#000 calc(50% - 3px) 50%,transparent calc(50% + .5px));mask:radial-gradient(circle,transparent 0 calc(50% - 3.5px),#000 calc(50% - 3px) 50%,transparent calc(50% + .5px))}
+#controls .b em{top:2%!important;right:2%!important;min-width:17px!important;height:17px!important;font-size:9px!important}
 #btnFx{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:6}
 #controls.charged .b{animation:none!important}#controls.charged .b::after{display:none!important}
 #controls.charged .b{animation:zapb .18s steps(2) infinite}
@@ -3849,15 +3852,15 @@ function boltArc(cx,cy,r,a0,sw,n,jit){const P=[];for(let i=0;i<=n;i++){const a=a
 function boltLine(x0,y0,x1,y1,n,jit){const P=[[x0,y0]],dx=x1-x0,dy=y1-y0,L=Math.hypot(dx,dy)||1,nx=-dy/L,ny=dx/L;for(let i=1;i<n;i++){const u=i/n,j=(Math.random()-.5)*jit;P.push([x0+dx*u+nx*j,y0+dy*u+ny*j])}P.push([x1,y1]);return P}
 function drawBtnFx(){const cv2=$('btnFx');if(!cv2)return;const g=cv2.getContext('2d'),f=G.p&&G.p[0],on=G.mode==='fight'&&f&&f.form&&!$('controls').hidden;
   if(!on){if(BFX.on){g.setTransform(1,0,0,1,0,0);g.clearRect(0,0,cv2.width,cv2.height);BFX.on=false;BFX.p=[]}return}BFX.on=true;
-  if(!BFX.list){const pr=$('controls').getBoundingClientRect();BFX.list=[...document.querySelectorAll('#controls .b'),$('joyBase')].filter(b=>b&&!b.hidden&&b.id!=='bSw').map(b=>{const r=b.getBoundingClientRect();return{x:r.left-pr.left+r.width/2,y:r.top-pr.top+r.height/2,r:r.width/2*(b.id==='joyBase'?.86:.9)}})}
+  if(!BFX.list){const pr=$('controls').getBoundingClientRect();BFX.list=[...document.querySelectorAll('#controls .b'),$('joyBase')].filter(b=>b&&!b.hidden&&b.id!=='bSw').map(b=>{const r=b.getBoundingClientRect();return{x:r.left-pr.left+r.width/2,y:r.top-pr.top+r.height/2,r:r.width/2*(b.id==='joyBase'?.8:.8)}})}
   const T=fxTheme(f),t=G.frame,d=BFX.d;g.setTransform(d,0,0,d,0,0);g.clearRect(0,0,cv2.width/d,cv2.height/d);g.globalCompositeOperation='lighter';g.lineCap='round';g.lineJoin='round';
   const GL=blobT(T.c);
-  for(const b of BFX.list){const pu=.75+.25*Math.sin(t*.2+b.x*.01);g.globalAlpha=.32*pu;g.drawImage(GL,b.x-b.r*1.55,b.y-b.r*1.55,b.r*3.1,b.r*3.1);
-    g.globalAlpha=.85;g.beginPath();g.arc(b.x,b.y,b.r,0,TAU);g.strokeStyle=T.c;g.lineWidth=2.4;g.stroke();g.globalAlpha=.5;g.strokeStyle=T.c2;g.lineWidth=1;g.stroke()}
-  if(T.k==='bolt'){if(t%3===0||!BFX.bolts.length){BFX.bolts=[];for(const b of BFX.list){const k=1+(Math.random()<.5?1:0);for(let i=0;i<k;i++){const a0=Math.random()*TAU;BFX.bolts.push(boltArc(b.x,b.y,b.r*1.04,a0,.7+Math.random()*1.1,8,.22));
-          if(Math.random()<.35){const a=Math.random()*TAU,x0=b.x+Math.cos(a)*b.r,y0=b.y+Math.sin(a)*b.r,L=b.r*(.35+Math.random()*.4);BFX.bolts.push(boltLine(x0,y0,x0+Math.cos(a)*L,y0+Math.sin(a)*L,5,b.r*.18))}}}}
-    for(const P of BFX.bolts)jag(g,P,T.c,T.c2,1.6)}
-  else if(T.k==='fire'){for(const b of BFX.list){if(Math.random()<.9){const a=-Math.PI/2+(Math.random()-.5)*Math.PI*1.7;BFX.p.push({x:b.x+Math.cos(a)*b.r,y:b.y+Math.sin(a)*b.r,vx:(Math.random()-.5)*.6,vy:-(.8+Math.random()*1.6)*b.r/40,l:0,m:16+Math.random()*12,s:b.r*(.28+Math.random()*.2)})}}
+  for(const b of BFX.list){const pu=.75+.25*Math.sin(t*.2+b.x*.01);g.globalAlpha=.16*pu;g.drawImage(GL,b.x-b.r*1.35,b.y-b.r*1.35,b.r*2.7,b.r*2.7);
+    g.globalAlpha=.55*pu;g.beginPath();g.arc(b.x,b.y,b.r,0,TAU);g.strokeStyle=T.c;g.lineWidth=1.6;g.stroke()}
+  if(T.k==='bolt'){if(t%3===0||!BFX.bolts.length){BFX.bolts=[];for(const b of BFX.list){const k=Math.random()<.55?1:0;for(let i=0;i<k;i++){const a0=Math.random()*TAU;BFX.bolts.push(boltArc(b.x,b.y,b.r*1.02,a0,.6+Math.random()*.9,7,.18));
+          if(Math.random()<.15){const a=Math.random()*TAU,x0=b.x+Math.cos(a)*b.r,y0=b.y+Math.sin(a)*b.r,L=b.r*(.35+Math.random()*.4);BFX.bolts.push(boltLine(x0,y0,x0+Math.cos(a)*L,y0+Math.sin(a)*L,5,b.r*.18))}}}}
+    for(const P of BFX.bolts)jag(g,P,T.c,T.c2,1.15)}
+  else if(T.k==='fire'){for(const b of BFX.list){if(Math.random()<.45){const a=-Math.PI/2+(Math.random()-.5)*Math.PI*1.4;BFX.p.push({x:b.x+Math.cos(a)*b.r,y:b.y+Math.sin(a)*b.r,vx:(Math.random()-.5)*.6,vy:-(.6+Math.random()*1.2)*b.r/40,l:0,m:14+Math.random()*10,s:b.r*(.2+Math.random()*.14)})}}
     const C1=blobT(T.c),C2=blobT(T.c2);for(const p of BFX.p){p.l++;p.x+=p.vx;p.y+=p.vy;const u=p.l/p.m,sz=p.s*(1-u*.7);g.globalAlpha=(1-u)*.85;g.drawImage(C1,p.x-sz,p.y-sz,sz*2,sz*2);g.globalAlpha=(1-u)*.6;g.drawImage(C2,p.x-sz*.45,p.y-sz*.45,sz*.9,sz*.9)}BFX.p=BFX.p.filter(p=>p.l<p.m)}
   else{for(const b of BFX.list){for(let i=0;i<3;i++){const a=t*.05*(i%2?-1:1)+i*2.1+b.x*.003,sw=.9+.4*Math.sin(t*.07+i);g.beginPath();g.arc(b.x,b.y,b.r*(1.06+.05*i),a,a+sw);g.strokeStyle=i===1?T.c2:T.c;g.globalAlpha=.55+.3*Math.sin(t*.13+i);g.lineWidth=2.6-i*.6;g.stroke()}
       if(Math.random()<.35){const a=Math.random()*TAU;BFX.p.push({x:b.x+Math.cos(a)*b.r,y:b.y+Math.sin(a)*b.r,vx:0,vy:-.6-Math.random(),l:0,m:24,s:b.r*.12})}}
@@ -3930,9 +3933,9 @@ function humanInput(f){const I=f.inp;for(const k in I){I[k]=(keys[k]||touch[k]||
 function layoutControls(){const C=$('controls'),W=C.clientWidth,Hh=C.clientHeight;if(!W||!Hh)return;
   const U=clamp(Hh,300,620);const R=(id,rx,by,d)=>{const b=$(id);const D=d*U;b.style.width=b.style.height=D+'px';b.style.left=(W-rx*U-D/2)+'px';b.style.top=(Hh-by*U-D/2)+'px'};
   const L=(id,lx,by,d)=>{const b=$(id);const D=d*U;b.style.width=b.style.height=D+'px';b.style.left=(lx*U-D/2)+'px';b.style.top=(Hh-by*U-D/2)+'px'};
-  R('bPunch',.172,.164,.25);R('bKick',.417,.167,.238);R('bKi',.346,.355,.205);R('bSp',.132,.365,.219);R('bSr',.148,.583,.257);R('bBl',.359,.531,.19);
-  L('bFly',.135,.659,.167);L('bTr',.135,.504,.171);
-  const jb=$('joyBase'),JD=.393*U;jb.style.width=jb.style.height=JD+'px';jb.style.left=(.202*U-JD/2)+'px';jb.style.bottom=(.251*U-JD/2)+'px';
+  R('bPunch',.145,.14,.2);R('bKick',.345,.135,.17);R('bKi',.29,.3,.155);R('bSp',.118,.325,.165);R('bSr',.13,.505,.195);R('bBl',.3,.455,.145);
+  L('bFly',.115,.62,.14);L('bTr',.115,.48,.14);
+  const jb=$('joyBase'),JD=.32*U;jb.style.width=jb.style.height=JD+'px';jb.style.left=(.18*U-JD/2)+'px';jb.style.bottom=(.215*U-JD/2)+'px';
   {const fx=$('btnFx'),d=Math.min(2,window.devicePixelRatio||1);fx.width=Math.round(W*d);fx.height=Math.round(Hh*d);BFX.d=d;BFX.list=null}
   {const sw=$('bSw'),cr=cv.getBoundingClientRect(),pr=C.getBoundingClientRect(),k=cr.width/VW,sf=G.safeL||0;sw.style.left=(cr.left-pr.left+(128+sf)*k)+'px';sw.style.top=(cr.top-pr.top+90*k)+'px';sw.style.width=(128*k)+'px';sw.style.height=(34*k)+'px'}}
 const BTN={sp:$('bSp'),tr:$('bTr'),ki:$('bKi'),sr:$('bSr')};

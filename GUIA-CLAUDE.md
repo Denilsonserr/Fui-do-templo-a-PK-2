@@ -121,7 +121,7 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - Dicas para vídeos novos: câmera parada, 3–10 s, mesma arte da imagem do cenário (ou mandar a imagem junto).
 
 ## v127 — botões novos, efeito de transformação e troca estilo FighterZ
-- Arte dos botões = imagem enviada pelo dono (recortada com `ferramentas/web/recortar_botoes.py`; brilho sobre fundo preto vira transparência). Layout igual à imagem (`layoutControls`).
+- Arte dos botões = imagem enviada pelo dono (recortada com `ferramentas/web/recortar_botoes.py`; brilho sobre fundo preto vira transparência). Layout baseado na imagem, mas menor (v128: o dono achou grande demais; anel de carga fino só em Ki, Combo, Super e Transformar).
 - Botões: Defesa (`bBl`, tecla H — segura para defender parado; com baixo defende agachado), Combo dourado = `bSp` (Especial/combos; o dono vai mandar combos novos), Super vermelho = `bSr` (ataques em vídeo). Chute = botão do corredor.
 - Transformado: efeito nos botões (canvas `#btnFx`, `drawBtnFx`) e na barra de vida de quem transformou (`hudBarFx`). Tema por personagem em `FXT`: `bolt` raios (Goku amarelo, Vegeta/Gogeta azul, Broly verde...), `fire` (Magmus, Lin Feng, Xiao), `aura` (Zoro verde, Qingqing, Aokiji...). Personagem novo: adicionar em `FXT`.
 - Modo 2x2 (não Torre): troca estilo FighterZ (`TAG`, `doTag`, `tagStep`, `tagUpdate`, `hudTag`). Pílula embaixo do nome mostra o parceiro (retrato, vida, espera); tocar troca (espera de 5 s; tecla T). O parceiro entra correndo e dá um soco que joga o rival longe. Quando um cai, o outro entra direto sem round novo; acaba quando os dois caem. CPU também troca. Parceiro fora recupera vida devagar.
