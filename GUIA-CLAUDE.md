@@ -130,7 +130,8 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 ## v130 — efeitos de chão e finalização (referência: gameplay de FighterZ que o dono mandou)
 - `FX2` (partículas próprias): nuvens de poeira com sombra na cor do cenário (`STAGE.dust`), pedras na cor do chão (`STAGE.peb`), grama voando nos cenários com grama (`GRASS`: verde, planet, look — cenário novo com grama: adicionar ali).
 - Gatilhos em `fx2Tick`: corrida/dash, aterrissagem, queda no chão, deslizar ao tomar golpe, carregar ki (ventania com linhas de vento, poeira empurrada, pedras e grama subindo).
-- v131: pedras = folhas desenhadas pelo dono (atlas em cinza, `RKA`), pintadas na cor do chão de cada cenário (`rockTex`). Usadas no FX2 e nas pedrinhas antigas.
+- v132: o dono NÃO quer pedras (desligadas: `rock()` não faz nada e partículas 'rock' não aparecem na luta). Zoom da finalização melhorado (`finOverlay`: escurecer bordas, linhas de velocidade, clarão; câmera acompanha o rival).
+- (antigo v131) pedras = folhas desenhadas pelo dono (atlas em cinza, `RKA`), pintadas na cor do chão de cada cenário (`rockTex`). Usadas no FX2 e nas pedrinhas antigas.
 - Finalização (`comboFinish`): último golpe de um combo de 4+ acertos (lança, pesado ou sem continuação) → zoom 1.45 na câmera, câmera lenta curta, linhas de velocidade, poeira e pedras.
 
 ## Pendências / ideias
