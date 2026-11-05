@@ -24,7 +24,7 @@ Jogo de luta anime em HTML5/canvas, empacotado como APK Android com Capacitor (W
 - **Não inventar poderes**: só colocar especiais/ultimates que ele mandar. Sem ataque mandado = só socos/chutes + rajada de ki básica.
 - **Nunca mandar o arquivo APK no chat sem ele pedir.**
 - Sempre que pedir "melhor qualidade", passar as poses pela IA (Real-ESRGAN, ver `ferramentas/ia`).
-- Super ataques: **sem áudio** do vídeo, exceto Aokiji e Qingqing (que mantêm o som). Transformações mantêm o som do vídeo, com a música mais baixa.
+- Super ataques e transformações: **sem áudio** do vídeo, todos (regra do dono desde a v138). Vídeos curtos: transformação ≤ ~3,2 s, ultimate ≤ ~5,5 s.
 - Música dentro da luta: volume normal 0.45, cai para 0.24 durante vídeos com som.
 - Os efeitos de impacto devem ser discretos (clarão branco pequeno). Ele achou feia a explosão laranja grande — não voltar com ela.
 - Não copiar arte/efeitos de jogos comerciais (ex.: FighterZ). Fazer efeitos próprios no mesmo estilo.
@@ -162,6 +162,11 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - Resultado: vitória = "Player 1" + Win/Winner/Victory (emendados); Torre concluída = Congratulations; derrota = Game Over. Player 3–6 ficam guardados (não há 3+ jogadores).
 - Nomes na seleção (`nm_<id>`): voz PRÓPRIA do jogo (não imita o narrador — o dono pediu "parecido"; o Claude recusa copiar voz real). Feita offline com Kokoro (modelo baixado do GitHub releases de thewh1teagle/kokoro-onnx; PyPI e HuggingFace bloqueados) com fonemas escritos à mão, mistura am_fenrir+am_eric, depois tom +32% (rubberband), compressão, brilho e eco (`ferramentas/narracao/names.py`). Personagem novo: adicionar o nome em IPA no dicionário `N` e rodar.
 - Correção: o botão vermelho do Madara ficava escondido no começo da luta (lista do `startMatch`).
+
+## v138 — vídeos sem som e mais rápidos (pedido do dono)
+- **Regra nova do dono:** vídeos de super ataque e de transformação SEM som (todos). `gkPlay` não toca nada; sons de Qingqing/Zaykon/Zedry desligados (`if(0&&...)`). Música não abaixa mais durante os vídeos. (Substitui a regra antiga "Aokiji/Qingqing com som; transformações com som".)
+- Transformação: vídeo no máximo ~3,2 s (`TVD(n,base)=min(base,192/n)` → `XXVD` = frames de jogo por quadro; `XXVE=round(n*XXVD)`), mais ~0,55 s depois do vídeo. Antes: Broly 9,5 s, Qingqing 8 s, Goku/Zaykon 7 s; agora todos ~3,7 s (Zoro e Madara 2,5 s).
+- Ultimate: vídeo no máximo 5,5 s (`USP(n)` multiplica o tempo do vídeo `vt`; acertos e fim seguem o tempo do vídeo). Antes: Goku 12,9 s, Aokiji ~10 s, Madara ~9,9 s; agora todos ~6 s com a preparação. Teste: `ferramentas/testes/tduracao.js`.
 
 ## Pendências / ideias
 - Vegeta transformado: faltam poses próprias de carregar ki, rajada de ki, soco e chute no ar (hoje usa grito da vitória, soco e chute alto). Se o dono mandar, trocar no `build_vegeta_blue2.py` e no mapa `A`.
