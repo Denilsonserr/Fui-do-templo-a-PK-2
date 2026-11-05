@@ -155,6 +155,14 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - `comboFinish`: pausa maior no golpe final (hitstop 32 ≈ meio segundo parado com o zoom), depois câmera lenta (slow 36) com o rival caindo; zoom dura mais (`finCam.m` 96).
 - `finOverlay` desenha "COMBO FINALIZADO!" no alto da tela (entra com pulo de tamanho, faixa escura com linhas na cor do personagem) e embaixo "N GOLPES · X DE DANO".
 
+## v137 — narração (áudios do dono) + nomes dos personagens
+- 34 áudios do dono (narrador em inglês) em `SMP` com chave `v...` (ex.: `vEKO`, `vFantastic`, `vMVersus`). Toca por `nv(k,at,force)`: uma voz por vez (corta a anterior), sem repetir a mesma em 350 ms. Log de teste: `window.__nvlog`.
+- Momentos: escolher modo = Challenge; "Lutar" = Challenge OK; tela VS = Versus; 1º golpe do round = First Attack; combo 3/5/8/12/16 = Impressive/Excellent/Amazing/Fantastic/Extreme; defesa perfeita = Reflected; 3 barras de ki cheias = Power Up; transformação = Max Burst; especial/combo dourado = Super Power; ultimate = Ultimate.
+- K.O. (`koCall`): round que não acaba a luta = K.O. (ou Destruction se foi com especial/ultimate/smash). Último K.O.: ultimate/especial = Special Finish (Reverse Special Finish se o vencedor estava com menos de 25% de vida), combo dourado = Destruction Finish, smash = Smash K.O., combo de 8+ = Devastation, senão K.O. Empate = Double K.O.; vitória sem tomar dano = Perfect; round ganho = Victory/Winner.
+- Resultado: vitória = "Player 1" + Win/Winner/Victory (emendados); Torre concluída = Congratulations; derrota = Game Over. Player 3–6 ficam guardados (não há 3+ jogadores).
+- Nomes na seleção (`nm_<id>`): voz PRÓPRIA do jogo (não imita o narrador — o dono pediu "parecido"; o Claude recusa copiar voz real). Feita offline com Kokoro (modelo baixado do GitHub releases de thewh1teagle/kokoro-onnx; PyPI e HuggingFace bloqueados) com fonemas escritos à mão, mistura am_fenrir+am_eric, depois tom +32% (rubberband), compressão, brilho e eco (`ferramentas/narracao/names.py`). Personagem novo: adicionar o nome em IPA no dicionário `N` e rodar.
+- Correção: o botão vermelho do Madara ficava escondido no começo da luta (lista do `startMatch`).
+
 ## Pendências / ideias
 - Vegeta transformado: faltam poses próprias de carregar ki, rajada de ki, soco e chute no ar (hoje usa grito da vitória, soco e chute alto). Se o dono mandar, trocar no `build_vegeta_blue2.py` e no mapa `A`.
 - A segunda folha de "gancho para cima" do Vegeta transformado não foi usada.
