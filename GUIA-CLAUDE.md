@@ -127,6 +127,11 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - Modo 2x2 (não Torre): troca estilo FighterZ (`TAG`, `doTag`, `tagStep`, `tagUpdate`, `hudTag`). Pílula embaixo do nome mostra o parceiro (retrato, vida, espera); tocar troca (espera de 5 s; tecla T). O parceiro entra correndo e dá um soco que joga o rival longe. Quando um cai, o outro entra direto sem round novo; acaba quando os dois caem. CPU também troca. Parceiro fora recupera vida devagar.
 - Pendente: o Especial em vídeo de Vegeta/Gogeta/Broly continua no botão dourado até chegarem os combos novos.
 
+## v130 — efeitos de chão e finalização (referência: gameplay de FighterZ que o dono mandou)
+- `FX2` (partículas próprias): nuvens de poeira com sombra na cor do cenário (`STAGE.dust`), pedras na cor do chão (`STAGE.peb`), grama voando nos cenários com grama (`GRASS`: verde, planet, look — cenário novo com grama: adicionar ali).
+- Gatilhos em `fx2Tick`: corrida/dash, aterrissagem, queda no chão, deslizar ao tomar golpe, carregar ki (ventania com linhas de vento, poeira empurrada, pedras e grama subindo).
+- Finalização (`comboFinish`): último golpe de um combo de 4+ acertos (lança, pesado ou sem continuação) → zoom 1.45 na câmera, câmera lenta curta, linhas de velocidade, poeira e pedras.
+
 ## Pendências / ideias
 - Vegeta transformado: faltam poses próprias de carregar ki, rajada de ki, soco e chute no ar (hoje usa grito da vitória, soco e chute alto). Se o dono mandar, trocar no `build_vegeta_blue2.py` e no mapa `A`.
 - A segunda folha de "gancho para cima" do Vegeta transformado não foi usada.
