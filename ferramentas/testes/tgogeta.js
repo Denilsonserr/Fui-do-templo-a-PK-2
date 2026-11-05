@@ -2,7 +2,7 @@
 const {chromium}=require('playwright');const fs=require('fs');const SH=__dirname+'/shots/';fs.mkdirSync(SH,{recursive:true});
 (async()=>{const b=await chromium.launch();const p=await b.newPage({viewport:{width:1280,height:576}});
 const errs=[];p.on('pageerror',e=>errs.push((e.stack||e.message).slice(0,400)));p.on('console',m=>{if(m.type()==='error'&&!/Fetch API|Failed to load resource/.test(m.text()))errs.push('console: '+m.text().slice(0,200))});p.on('requestfailed',r=>{if(!/mp3|fonts/.test(r.url()))errs.push('falhou: '+r.url())});await p.route(/fonts\.g/,r=>r.abort());
-await p.goto('file://'+__dirname+'/../../www/index.html',{timeout:120000});
+p.setDefaultTimeout(120000);await p.goto('file://'+__dirname+'/../../www/index.html',{timeout:120000});
 await p.waitForFunction(()=>!document.getElementById('goSelect').disabled,null,{timeout:120000});await p.waitForTimeout(500);
 await p.click('#goSelect');await p.waitForTimeout(600);await p.click('.tile[data-c="gogeta"]');await p.waitForTimeout(400);await p.screenshot({path:SH+'gg_sel.png'});
 await p.click('.tile[data-c="vegeta"]');await p.waitForTimeout(300);await p.screenshot({path:SH+'gg_sel2.png'});
