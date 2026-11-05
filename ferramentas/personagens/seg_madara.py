@@ -20,8 +20,9 @@ def run(path,tag,N=8):
     H_,W_=m.shape;Y,X=np.mgrid[0:H_,0:W_];r,g,b=rgb[...,0],rgb[...,1],rgb[...,2]
     skin=(r>140)&(r>g+20)&(g>b);nearskin=nd.binary_dilation(skin,iterations=3);hair=(lum<120)&((rgb.max(2)-rgb.min(2))<80)&~nearskin
     teal=(b>r+15)
-    FIX={'g20':[(3,4,(X>=1045)&hair)],'g22':[(1,2,(X>=428)&(Y<350)&hair)],'g13':[(6,5,(X<1706)&(Y>500)&(Y<585)&~teal)]}
+    FIX={'m02':[(5,4,(X>=1288)&(X<=1385)&(Y>325)&(Y<405)&(lum>10)),(4,5,(X>=1296)&((Y<325)|((Y<348)&(lum<75)))),(6,5,(X>=1595)&(X<=1650)&(Y>255)&(Y<350)&(lum>10))],'g20':[(3,4,(X>=1045)&hair)],'g22':[(1,2,(X>=428)&(Y<350)&hair)],'g13':[(6,5,(X<1706)&(Y>500)&(Y<585)&~teal)]}
     for a_,b_,cond in FIX.get(tag,[]):own[(own==a_+1)&cond]=b_+1
+    if tag in('m26','m27'):own[((rgb.max(2)-rgb.min(2))<16)&(lum>55)&(lum<185)&(tag=='m26')]=0
     # 2) pedacos soltos: vao para o vizinho que encostam
     for _ in range(2):
         for n in range(1,len(seeds)+1):
