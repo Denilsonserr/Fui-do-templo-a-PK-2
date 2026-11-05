@@ -172,6 +172,11 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - 8 músicas do dono (vieram em .m4a, convertidas para .mp3 128k com volume igualado, loudnorm -15,5): Bring Me To Life, Numb (Linkin Park), On My Own, Rise, Judas, Hero’s Come Back, Blue Bird, Lovers. Entram em `MUS` (índices 4–11) e nos botões escondidos `#msel` (o menu "Selecionar Música" lê esses botões). "Aleatória" sorteia entre todas as 12.
 - Menu de música: `#stPop` agora rola se ficar alto e fica por cima das fases (z-index).
 
+## v140 — 4 cenários novos feitos só com vídeo
+- Quartel Congelado (`marinha`), Vale da Caveira (`caveira`), Vila da Folha (`konoha`), Dojô do Jardim (`dojo`). Nomes inventados pelo Claude.
+- Vieram só os vídeos (1648x544, ~3:1, mesmo formato do Verde/Cidade). `ferramentas/cenarios/build_cenario_novo.py`: imagem parada = começo do vídeo limpo + IA (2172 de largura); céu animado só onde o vídeo mexe dentro da faixa de cima (Caveira 420 px, Folha 230 px) SEM parallax (`VSTG.noPar`, alinhado ao mundo); recortes que se mexem (bandeiras, árvores) com fps/escala/loop limitados. Dojô: 6 q/s, escala .5, loop 4 s, com mistura entre quadros no `drawVid` (quando fps<10); chão do dojô esticado 130 px para baixo (os lutadores precisam de ~150 px de imagem abaixo do chão).
+- `drawVid`/`vidImgs` aceitam cenário sem céu (sem `skyS`/`sky`). Altura do chão: `dy = 486 - fração*dh` (fração = onde pisam na imagem). Luz própria em `LT`; Dojô só tem clima limpo (é interno).
+
 ## Pendências / ideias
 - Vegeta transformado: faltam poses próprias de carregar ki, rajada de ki, soco e chute no ar (hoje usa grito da vitória, soco e chute alto). Se o dono mandar, trocar no `build_vegeta_blue2.py` e no mapa `A`.
 - A segunda folha de "gancho para cima" do Vegeta transformado não foi usada.
