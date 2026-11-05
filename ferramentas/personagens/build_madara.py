@@ -9,8 +9,8 @@ TARGET=250.0;RES=2.6;T0=time.time()
 OUT='out_ai' if AI else 'out_fast';os.makedirs(OUT,exist_ok=True)
 G=lambda t,ix:[(t,i) for i in ix];R8=range(8);RL=1.07
 REF={1:387,2:427,3:437,4:417,5:428,6:425,7:443,8:419,9:435,10:457,11:446,12:439,13:400,14:422,15:489,16:468/RL,17:427,18:384,
-     19:432,20:463,21:519/RL,22:502/RL,23:511/RL,24:549/RL,25:575/RL,26:379,27:407}
-PLANT={1,5,6,11,12,15,19,20,21,22,23,27,25,16}
+     19:432,20:463,21:519/RL,22:502/RL,23:511/RL,24:549/RL,25:575/RL,26:379,27:407,28:344}
+PLANT={28,1,5,6,11,12,15,19,20,21,22,23,27,25,16}
 SUPPORT={2,3}
 HEADA={4}
 A={'relax':G(25,R8),'gin':[(25,0),(21,0),(5,0),(2,0),(1,0)],'idle':[(2,0),(2,7),(3,0)],'walk':G(24,R8),'run':[(8,3),(8,4),(8,5),(8,6),(8,3),(8,4),(8,5),(8,6)],
@@ -19,10 +19,10 @@ A={'relax':G(25,R8),'gin':[(25,0),(21,0),(5,0),(2,0),(1,0)],'idle':[(2,0),(2,7),
  'jumpv':G(9,R8),'jumpd':G(18,R8),'hover':[(10,0),(10,1),(10,2),(10,0),(10,1),(10,2)],
  'ajab':[(17,0),(17,1),(17,2),(17,3),(17,3),(17,6),(17,7),(17,7)],'akick':[(17,0),(17,4),(17,4),(17,5),(17,5),(17,6),(17,7),(17,7)],
  'fall':[(13,1),(13,2),(13,3),(13,4),(13,7)],'drop':G(13,[5,6,7]),'getup':G(14,R8),'win':G(15,R8),'lose':G(16,R8),
- 'pw':G(23,R8),'ki1':G(20,R8),'ki2':G(22,R8),'kunai':G(19,R8),'throw':G(20,R8),'seals':G(21,R8),'fire':G(22,R8),'cmb':G(26,R8),'grab':[(27,0),(27,1),(27,2),(27,3),(27,4),(27,5),(26,6),(26,7)]}
+ 'pw':G(23,R8),'ki1':G(20,R8),'ki2':G(22,R8),'kunai':G(19,R8),'throw':G(20,R8),'seals':G(21,R8),'fire':G(22,R8),'cmb':G(26,R8),'grab':[(27,0),(27,1),(27,2),(27,3),(27,4),(27,5),(26,6),(26,7)],'cmb2':G(28,R8)}
 AIR={'jumpv','jumpd','hover','ajab','akick'}   # ancora vertical no proprio pe
 GL={}
-for t in range(1,28):GL[t]=max(np.load(f)[1] for f in glob.glob(f'cut/m{t:02d}_*.y.npy'))
+for t in range(1,29):GL[t]=max(np.load(f)[1] for f in glob.glob(f'cut/m{t:02d}_*.y.npy'))
 def sv(arr):
     im=Image.fromarray(arr.clip(0,255).astype(np.uint8),'RGBA');h=hashlib.md5(im.tobytes()).hexdigest()[:14];p=f'{OUT}/{h}.webp'
     if not os.path.exists(p):im.save(p,'WEBP',quality=88,alpha_quality=90,method=6)
@@ -78,5 +78,6 @@ def frame(t,i,air):
     cache[key]=fr
     if AI:print(r,len(cache),round(time.time()-T0),flush=True)
     return fr
-J={'md':{a:[frame(t,i,a in AIR) for t,i in L] for a,L in A.items()}}
-json.dump(J,open('md_ai.json' if AI else 'md_fast.json','w'),separators=(',',':'));print('DONE',len(cache),round(time.time()-T0))
+ONLY=os.environ.get('ONLY','').split(',') if os.environ.get('ONLY') else None
+J={'md':{a:[frame(t,i,a in AIR) for t,i in L] for a,L in A.items() if not ONLY or a in ONLY}}
+json.dump(J,open(('md_ai' if AI else 'md_fast')+('_'+'_'.join(ONLY) if ONLY else '')+'.json','w'),separators=(',',':'));print('DONE',len(cache),round(time.time()-T0))

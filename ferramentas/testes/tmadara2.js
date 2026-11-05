@@ -1,0 +1,34 @@
+// Teste do Madara com Rinnegan (v135): transformação, raios, velocidade, combo novo, esquiva+contra, ultimate. Uso: NODE_PATH=<node_modules globais> node tmadara.js
+const {chromium}=require('playwright');const fs=require('fs');const SH=__dirname+'/shots/';fs.mkdirSync(SH,{recursive:true});
+(async()=>{const b=await chromium.launch();const p=await b.newPage({viewport:{width:915,height:412},deviceScaleFactor:1.5});p.setDefaultTimeout(120000);
+const errs=[];p.on('pageerror',e=>errs.push((e.stack||e.message).slice(0,300)));p.on('requestfailed',r=>{if(!/mp3|fonts/.test(r.url()))errs.push('falhou: '+r.url())});await p.route(/fonts\.g/,r=>r.abort());
+await p.goto('file://'+__dirname+'/../../www/index.html');await p.waitForFunction(()=>!document.getElementById('goSelect').disabled,null,{timeout:120000});
+await p.click('#goSelect');await p.waitForTimeout(500);await p.click('.tile[data-c="madara"]');await p.waitForTimeout(300);await p.screenshot({path:SH+'md_sel.png'});await p.click('.tile[data-c="gogeta"]');
+await p.click('#goStage');await p.waitForTimeout(300);await p.click('.stc[data-s="falls"]');await p.click('#goFight');await p.waitForTimeout(1200);await p.screenshot({path:SH+'md_vs.png'});
+await p.waitForFunction(()=>__dbg.G.mode==='fight'&&__dbg.G.phase==='fight',null,{timeout:120000});
+await p.evaluate(()=>{const G=__dbg.G;G.noAI=true;G.timer=999;G.p[1].cpu=true;G.p[0].cpu=false;
+  window.F=n=>new Promise(r=>{const g=__dbg.G,f0=g.frame;const c=()=>g.frame>=f0+n?r():requestAnimationFrame(c);c()});
+  window.K=(k,v)=>{const c={left:'ArrowLeft',right:'ArrowRight',up:'ArrowUp',down:'ArrowDown',punch:'KeyJ',kick:'KeyK',ki:'KeyL',sp:'KeyI',bl:'KeyH',tr:'KeyU',sr:'KeyO'}[k];dispatchEvent(new KeyboardEvent(v?'keydown':'keyup',{code:c,bubbles:true}))};
+  window.tap=async k=>{K(k,1);await F(2);K(k,0);await F(1)};
+  window.reset=async(d)=>{const G=__dbg.G,f=G.p[0],o=G.p[1];f.x=700;o.x=700+(d||110);f.y=o.y=486;f.grounded=o.grounded=true;f.facing=1;o.facing=-1;f.state='idle';o.state='idle';o.inv=0;f.ki=100;o.hp=o.hpLag=3600;await F(30)};
+  window.LOG=[];const G2=__dbg.G;(function lp(){const f=G2.p[0];LOG.push(f.state+(f.mname&&f.state==='attack'?':'+f.mname:''));requestAnimationFrame(lp)})()});
+const R={};const shot=n=>p.screenshot({path:SH+n+'.png'});
+await p.evaluate(()=>F(60));
+R.tr=await p.evaluate(async()=>{await reset();const f=__dbg.G.p[0];f.sb=6;await tap('tr');await F(30);return [f.state,!!__dbg.G.trans]});await shot('md2_trans_video');
+R.tr2=await p.evaluate(async()=>{await F(110);return 1});await shot('md2_trans_end');
+R.tr3=await p.evaluate(async()=>{await F(60);const f=__dbg.G.p[0];return [f.form,f.state]});await shot('md2_form');
+R.speed=await p.evaluate(async()=>{const f=__dbg.G.p[0];f.x=400;__dbg.G.p[1].x=1500;await F(10);const x0=f.x;K('right',1);await F(40);K('right',0);await F(10);return Math.round(f.x-x0)});
+R.charge=await p.evaluate(async()=>{K('ki',1);await F(40);return __dbg.G.p[0].state});await shot('md2_charge');await p.evaluate(()=>{K('ki',0)});
+R.c2=await p.evaluate(async()=>{await F(30);await reset(160);const f=__dbg.G.p[0];f.form=1;f.formT=2000;const o=__dbg.G.p[1],hp=o.hp;await tap('sp');await F(22);return f.state});await shot('md2_combo_a');
+R.c2b=await p.evaluate(async()=>{await F(12);return 1});await shot('md2_combo_b');
+R.c2c=await p.evaluate(async()=>{await F(40);const o=__dbg.G.p[1];return [o.state,Math.round(3600-o.hp)]});
+R.ctr=await p.evaluate(async()=>{await F(90);await reset(110);const G=__dbg.G,f=G.p[0],o=G.p[1];f.form=1;f.formT=2000;f.mdN=0;f.hp=3000;o.facing=-1;const S=[];
+  for(let i=0;i<3;i++){o.state='idle';o.inv=0;o.x=f.x+110;o.facing=-1;__dbg.startMove(o,'jab');await F(16);S.push(f.state);f.state==='mdv'||(f.state='idle',f.inv=0,f.hitstun=0)}
+  await F(8);return [S,f.state,f.mdN]});await shot('md2_counter');
+R.ctr2=await p.evaluate(async()=>{await F(30);const G=__dbg.G;return [G.p[1].state,Math.round(3600-G.p[1].hp),G.p[0].state]});
+R.ult=await p.evaluate(async()=>{await F(90);await reset(200);const G=__dbg.G,f=G.p[0];f.form=1;f.formT=3000;f.ki=100;f.spark=100;await tap('sr');await F(20);return [f.state,!!G.ws&&G.ws.md]});
+R.ult2=await p.evaluate(async()=>{await F(60);return 1});await shot('md2_ult_a');
+R.ult3=await p.evaluate(async()=>{await F(500);return 1});await shot('md2_ult_b');
+R.ult4=await p.evaluate(async()=>{await F(500);const G=__dbg.G;return [!!G.ws,G.p[1].state,Math.round(3600-G.p[1].hp)]});
+R.cpu=await p.evaluate(async()=>{const G=__dbg.G;G.noAI=false;G.p[0].cpu=true;G.p[1].cpu=true;G.p[0].sb=6;await F(900);return [G.p[0].state,G.p[0].form,Math.round(G.p[0].hp),Math.round(G.p[1].hp)]});
+console.log(JSON.stringify(R));console.log('ERRS',errs);await b.close()})();

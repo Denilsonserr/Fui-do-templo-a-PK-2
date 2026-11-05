@@ -139,7 +139,17 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - Sistema profissional (`isMd`, `isPro`), golpes `mjab→mjab2→mknee→mstr` (lança), `mkick→mhkick`, `msweep`. Montagem: `seg_madara.py` (fundos preto, branco, cinza e transparente) + `build_madara.py`.
 - Botões: Combo dourado = **combo pronto** (folha do dono: sobe com o rival e desce com soco, `mdc`); frente+Defesa = **agarrão** (não dá para defender, joga o rival por cima para o outro lado, `mdg`); Ki = **kunai** de longe (12 ki, imagem do dono); frente+Ki = **Bola de Fogo** saindo da boca (35 ki, GIF do dono; boca medida no quadro, `mo`), vira com o lado; baixo+Ki = corte de kunai (10 ki). Código: `mdStep`, `mdTick`, `drawMd`, `MDBOX`.
 - v134: recortes corrigidos (chute que encostava no quadro vizinho; fumaça cinza do agarrão — fim do agarrão usa o agachamento do combo pronto). Aura própria do Madara (`mdAura`): pequena, transparente, chamas escuras finas — o dono não quer aura de Dragon Ball nele; sem a aura grande de ki, sem as linhas de vento e com luz fraca ao carregar.
-- Efeito de transformação já definido como fogo (`FXT.madara`). Transformação e ultimate: o dono vai mandar.
+- (v133/v134) Efeito de transformação era fogo; na v135 virou raio roxo.
+
+## v135 — Madara com Rinnegan (transformação ocular)
+- Material do dono: vídeo da transformação (olhos → Rinnegan, **com som**, música abaixa para .24), folha "combo 2" (2 linhas × 4 quadros em fundo cinza, com os rastros brancos) e vídeo do ultimate (Susanoo + meteoro, sem som).
+- Transformação: botão Transformar (custo normal de barras) → `updMDT` toca o vídeo `MDV` (12 qps, 5 frames de jogo por quadro) e liga `f.form=1`. Mesmas poses (sid `md`), cor da forma roxa (`fe`), `FXT.madara` = raio roxo.
+- Raios roxos em volta do corpo (`mdBolts`, desenhado dentro do `mdAura`); carregando ki: mais raios e faíscas. Velocidade ×1.85 (`speedMul`).
+- A cada 3 golpes recebidos transformado (`d.mdN` no `applyHit`), o 3º é desviado: estado `mdv` = esquiva (pose dodge) → aparece atrás do rival → chute giratório (75 de dano, lança).
+- Combo dourado transformado = **Combo do Rinnegan** (`mdc2`, anim `cmb2` da folha `m28`, 6 frames por pose): avança, prende o rival e acerta 45+50+45+55+130 (≈530 com bônus da forma).
+- Botão vermelho transformado (100 ki + 3 barras de ki como os outros) = **Tengai Shinsei** (`mdSuper`/`updMDU`, vídeo `MDU` 112 quadros): acertos nos quadros 6,70,80,90,100 e golpe final no fim; rival termina caído.
+- Montagem: `seg_md.py` (m28: tira a sombra cinza do último quadro) e `build_madara.py` com `ONLY=cmb2` (monta só uma animação; gera `md_ai_cmb2.json`). Teste: `ferramentas/testes/tmadara2.js`.
+- Nomes inventados pelo Claude: "Combo do Rinnegan", "ESQUIVA + CONTRA!". "Tengai Shinsei"/"Rinnegan" vêm do Naruto.
 
 ## Pendências / ideias
 - Vegeta transformado: faltam poses próprias de carregar ki, rajada de ki, soco e chute no ar (hoje usa grito da vitória, soco e chute alto). Se o dono mandar, trocar no `build_vegeta_blue2.py` e no mapa `A`.
