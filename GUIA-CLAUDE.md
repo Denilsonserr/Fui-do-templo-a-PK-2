@@ -183,7 +183,7 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - Animações: relax j01, idle j02, walk j03, run j04, dashf j05, dash2 j07, dashb j30 (mortal), jab j08, cross j09, str j10, upper j06, kick j11, hkick j12, sweep j13, block j14, cblock j15, palm j16, dodge j18, jumpv j19, jumpd j20, hit j22, hhit/launch/lose j23, fall/drop j24, getup j25, pw/ki j26 (aura roxa já no desenho → aura genérica de carregar desligada), win j27, cmb2 j28, cmb j29 (16), seals j31, azul j32.
 - Golpes: jjab→jjab2→jknee→jstr (lança). Combo dourado: normal = Combo do Mais Forte (`gjc`, 16 quadros, 12 acertos + final); transformado = Combo do Domínio (`gjc2`, folha j28). Ki = Azul (`gja`, 30 ki): bola azul (GIF convertido para brilho aditivo, atlas 520x234x12, desenhada com 'lighter') que anda, PUXA o rival e acerta 5 vezes.
 - Transformação = Expansão de Domínio: vídeo `GJV` sem som (~3,2 s) → `form=1`, cenário vira `STG.dominio` (escondido da seleção com `hid:1`; `G.gjPrev` guarda o cenário e `gjDomEnd()` volta quando a forma acaba; novo round já troca). Aura azul própria (`gjAura`), velocidade ×1.85, a cada 3 golpes recebidos desvia sozinho (`gjv`, texto "INFINITO!", sem contra-ataque — o dono pediu só desviar).
-- Ultimate (vermelho, transformado, 100 ki): vídeo `GJU` (Azul máximo), acertos nos quadros 12,24,38,46,64,72 e final; rival termina caído. Nome: "AZUL MÁXIMO".
+- Ultimate (vermelho, transformado, 100 ki): vídeo `GJU` (Azul máximo), acertos nos quadros 12,24,38,46,64,72 e final; rival termina caído. Nome: "VAZIO ROXO" (v143).
 - Voz do nome: `nm_gojo` (names.py). Nomes inventados pelo Claude: "O MAIS FORTE", "Combo do Mais Forte", "Combo do Domínio", "AZUL MÁXIMO", "INFINITO!". "Vazio Infinito" é o nome do domínio no anime.
 - `__dbg.stg()` devolve a chave do cenário atual (para testes). Teste: `ferramentas/testes/tgojo.js`.
 
@@ -193,6 +193,11 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - Voar para frente = quadros 5 e 6 da folha de avanço j05 (`flyf`); voar para trás = quadros 5 e 6 da folha cinza j07 (`flyb`). Andar para trás no chão (`dashb`) = j07; mortal (j30) virou a esquiva automática (`flip`, estado `gjv`).
 - Combo do Mais Forte: os acertos agora caem só nos quadros de golpe do combo numerado (2,3,5,6,7,8,11,12 e final no 13); avanço nos quadros 2 e 10. Chute alto do fim da corrente segura a pose de joelho antes do chute.
 - `build_gojo.py ai` reaproveita `cache_ai.json` (quadros já feitos com IA), então trocar quadros de animação não precisa refazer a IA.
+
+## v143 — Gojo: dash para trás limpo, ultimate novo e aura de fogo azul-claro
+- Folha nova j33 (mesmo dash para trás sem os rastros que atrapalhavam) → `dashb` e `flyb` (quadros 5 e 6). REF 469.
+- Ultimate trocado pelo vídeo novo do dono (Vazio Roxo, 63 quadros, 5,3 s, SEM acelerar: `vt` sem `USP`). Acertos nos quadros 24,28,32,47,51,55 + final. Banner "VAZIO ROXO". Quadros do ultimate antigo apagados.
+- Aura transformado: usa a aura de fogo genérica (`drawAura`) em azul-claro (`#8fe2ff`), sempre no tamanho grande, com brilho reduzido pela metade (senão some o personagem no cenário claro do domínio) e sem raios. Sem transformar continua a aura suave `gjAura`.
 
 ## Pendências / ideias
 - Vegeta transformado: faltam poses próprias de carregar ki, rajada de ki, soco e chute no ar (hoje usa grito da vitória, soco e chute alto). Se o dono mandar, trocar no `build_vegeta_blue2.py` e no mapa `A`.

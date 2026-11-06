@@ -9,12 +9,12 @@ TARGET=250.0;RES=2.6;T0=time.time()
 OUT='out_ai' if AI else 'out_fast';os.makedirs(OUT,exist_ok=True)
 G=lambda t,ix:[(t,i) for i in ix];R8=range(8);RL=1.07
 REF={1:678,2:659,3:689/RL,4:540,5:483,6:473,7:470,8:480,9:461,10:455,11:446,12:460,13:456,14:620,15:545,16:531,17:510,18:497,19:528,20:511,
-     21:522,22:549,23:516,24:419,25:472,26:543,27:585,28:333,29:306,30:427/RL,31:662/RL,32:596/RL}
+     21:522,22:549,23:516,24:419,25:472,26:543,27:585,28:333,29:306,30:427/RL,31:662/RL,32:596/RL,33:469}
 PLANT={1,2,6,8,9,10,11,12,14,15,16,22,23,26,27,28,29,31,32}
 SUPPORT=set()
 HEADA={13}
 A={'relax':G(1,R8),'gin':[(31,0),(31,1),(1,0),(2,0),(2,7)],'idle':G(2,R8),'walk':G(3,R8),'run':G(4,[1,2,3,4,5,6]),
- 'dashf':G(5,R8),'dash2':G(5,R8),'dashb':G(7,R8),'flip':G(30,R8),'flyf':[(5,4),(5,5)],'flyb':[(7,4),(7,5)],'jab':G(8,R8),'kick':G(11,R8),'hkick':G(12,R8),'upper':G(6,R8),'str':G(10,R8),'cross':G(9,R8),'sweep':G(13,R8),
+ 'dashf':G(5,R8),'dash2':G(5,R8),'dashb':G(33,R8),'flip':G(30,R8),'flyf':[(5,4),(5,5)],'flyb':[(33,4),(33,5)],'jab':G(8,R8),'kick':G(11,R8),'hkick':G(12,R8),'upper':G(6,R8),'str':G(10,R8),'cross':G(9,R8),'sweep':G(13,R8),
  'block':G(14,R8),'cblock':[(15,4)]*8,'hit':G(22,R8),'hhit':G(23,[0,1,2,3,3,6,7]),'launch':G(23,R8),'dodge':G(18,R8),
  'jumpv':G(19,R8),'jumpd':G(20,R8),'hover':[(19,4),(19,5),(19,6),(19,4),(19,5),(19,6)],'land':G(21,R8),
  'ajab':[(19,4),(29,1),(29,1),(29,2),(29,2),(19,5),(19,6),(19,6)],'akick':[(19,4),(29,7),(29,7),(29,11),(29,11),(19,5),(19,6),(19,6)],
@@ -23,7 +23,7 @@ A={'relax':G(1,R8),'gin':[(31,0),(31,1),(1,0),(2,0),(2,7)],'idle':G(2,R8),'walk'
  'cmb':[(29,i) for i in range(16)],'cmb2':G(28,R8)}
 AIR={'jumpv','jumpd','hover','ajab','akick','flip'}   # ancora vertical no proprio pe
 GL={}
-for t in range(1,33):GL[t]=max(np.load(f)[1] for f in glob.glob(f'cut/j{t:02d}_*.y.npy'))
+for t in range(1,34):GL[t]=max(np.load(f)[1] for f in glob.glob(f'cut/j{t:02d}_*.y.npy'))
 def sv(arr):
     im=Image.fromarray(arr.clip(0,255).astype(np.uint8),'RGBA');h=hashlib.md5(im.tobytes()).hexdigest()[:14];p=f'{OUT}/{h}.webp'
     if not os.path.exists(p):im.save(p,'WEBP',quality=88,alpha_quality=90,method=6)
