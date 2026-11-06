@@ -255,3 +255,8 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 ## Observações
 - Os scripts em `ferramentas/` foram escritos para a pasta temporária da sessão antiga; ajuste os caminhos (`/tmp/...`, `/home/claude/...`) antes de usar.
 - Músicas e sons de efeitos são de jogos/animes com direitos autorais — o jogo é só para uso pessoal do dono.
+
+## v154 — Luffy: frames "cortados" corrigidos
+- l30/l31/l32 (soco1/soco2/chute novos): o zeramento de 30 colunas da borda cortava a capa. Recorte refeito: na faixa de 45px da borda só remove pixels marrom-escuros (fundo), capa preservada.
+- 46 frames com borda reta cortada (fumaça/corpo tocando a borda do recorte) receberam fade de 18px nas bordas (lista em build: l01_3, l12_*, l14_*, l19_*, s01_3/4, s24_3/7 ...).
+- Merge: só as posições (t,i) regeneradas foram trocadas em SPRH.lf/lfs (frames do cache têm tamanho pré-v149; NÃO substituir animações inteiras).
