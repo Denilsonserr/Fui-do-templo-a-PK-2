@@ -10,7 +10,7 @@ OUT='out_ai' if AI else 'out_fast';os.makedirs(OUT,exist_ok=True)
 G=lambda t,ix:[(t,i) for i in ix];R8=range(8);RL=1.07
 RL=1.10;SK=.87
 REF={'l01':483/RL,'l02':493,'l03':489/RL,'l04':430,'l05':429,'l06':453,'l07':473,'l08':428,'l09':429,'l10':433,'l11':434,'l12':430,'l13':430,'l14':425,'l15':440,
- 'l16':429,'l17':427,'l18':441/RL,'l19':469/RL,'l20':485/RL,'l21':475/RL,'l22':437/RL,'l23':463/RL,'l24':510/RL,'l25':488/RL,'l26':511/RL,'l27':429,'l28':426,'l29':414}
+ 'l16':429,'l17':427,'l18':441/RL,'l19':469/RL,'l20':485/RL,'l21':475/RL,'l22':437/RL,'l23':463/RL,'l24':510/RL,'l25':488/RL,'l26':511/RL,'l27':429,'l28':426,'l29':414,'l30':448/1.03,'l31':459/1.03,'l32':456/1.03}
 for k,v in {'s01':415,'s02':415,'s03':430,'s04':405,'s05':425,'s06':417,'s07':415,'s08':418,'s09':418,'s10':421,'s11':422,'s12':424,'s13':425,'s14':421,'s15':423,
  's16':425,'s17':433,'s18':400,'s19':384,'s20':426,'s21':439,'s22':467,'s23':434,'s24':440,'s25':405}.items():REF[k]=v*SK
 # v149: tamanho igual pela cabeça/chapéu (folhas de luta 1774px vinham ~10% maiores; l02 menor)
@@ -23,10 +23,10 @@ def N(p):  # animações iguais nos dois (p='l' normal, 's' Snakeman)
     G2=lambda t,ix:[(f'{p}{t:02d}',i) for i in ix]
     if p=='l':
         return {'relax':G2(1,R8),'gin':G2(1,[0,4])+G2(2,[0,1,0]),'idle':G2(2,R8),'walk':G2(3,R8),'run':G2(4,R8),'dashf':G2(5,R8),'dash2':G2(6,R8),'dashb':G2(6,R8),'dodge':G2(17,R8),
-         'jab':G2(10,R8),'cross':G2(7,R8),'str':G2(8,R8),'upper':G2(9,R8),'kick':G2(11,R8),'hkick':G2(12,R8),'sweep':G2(13,R8),'block':G2(14,R8),'cblock':G2(15,[4]*8),'crouch':G2(15,R8),
+         'jab':G2(30,R8),'cross':G2(31,R8),'str':G2(8,R8),'upper':G2(9,R8),'kick':G2(32,R8),'hkick':G2(12,R8),'sweep':G2(13,R8),'block':G2(14,R8),'cblock':G2(15,[4]*8),'crouch':G2(15,R8),
          'hit':G2(16,R8),'hhit':G2(20,R8),'launch':G2(21,R8),'fall':G2(21,[2,3,4,5,6]),'drop':G2(21,[5,6,7]),'getup':G2(22,R8),'win':G2(23,R8),'lose':G2(24,R8),
-         'pw':G2(26,R8),'ki1':G2(7,R8),'ki2':G2(8,R8),'seals':G2(25,R8),'gatling':G2(27,R8),'cmb':G2(28,R8),'jumpv':G2(18,R8),'jumpd':G2(18,R8),'hover':G2(18,[4,5,4,5,4,5]),'land':G2(19,R8),
-         'ajab':G2(18,[4])+G2(7,[3,4,4,5])+G2(18,[5,6,6]),'akick':G2(18,[4])+G2(11,[3,4,4,5])+G2(18,[5,6,6]),'trans':G2(29,R8)}
+         'pw':G2(26,R8),'ki1':G2(30,R8),'ki2':G2(31,R8),'seals':G2(25,R8),'gatling':G2(27,R8),'cmb':G2(28,R8),'jumpv':G2(18,R8),'jumpd':G2(18,R8),'hover':G2(18,[4,5,4,5,4,5]),'land':G2(19,R8),
+         'ajab':G2(18,[4])+G2(30,[2,3,3,4])+G2(18,[5,6,6]),'akick':G2(18,[4])+G2(32,[3,4,4,5])+G2(18,[5,6,6]),'trans':G2(29,R8)}
     return {'relax':G2(1,R8),'gin':G2(2,[0,1,2,3,4]),'idle':G2(2,R8),'walk':G2(3,R8),'run':G2(4,R8),'dashf':G2(5,R8),'dash2':G2(6,R8),'dashb':G2(6,R8),'dodge':G2(17,R8),
          'jab':G2(7,R8),'cross':G2(8,R8),'str':G2(10,R8),'upper':G2(9,R8),'kick':G2(11,R8),'hkick':G2(12,R8),'sweep':G2(13,R8),'block':G2(14,R8),'cblock':G2(15,[4]*8),'crouch':G2(15,R8),
          'hit':G2(16,R8),'hhit':G2(21,R8),'launch':G2(22,R8),'fall':G2(22,[2,3,4,5,6]),'drop':G2(22,[5,6,7]),'getup':G2(23,R8),'win':G2(1,R8),'lose':G2(24,R8),

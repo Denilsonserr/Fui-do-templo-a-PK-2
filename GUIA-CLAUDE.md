@@ -232,6 +232,11 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - `move.lfAir`: 1 = sai uma rajada de ar visual no 1º quadro ativo; 2 = várias rajadas durante a rajada de socos (só visual, `nohit`). `lfHand` usa `spriteKey` fora dos estados especiais.
 - Ki mais forte: Pistol 65/95, Culverin 82/110; Gatling/Black Mamba acertos 16/20 a cada 4 frames.
 
+## v151 — Luffy: socos e chute novos do dono, braço desenhado pelo dono, Gatling estilo anime, sem voar normal
+- Folhas novas (fundo marrom em degradê, tirado com `ferramentas/personagens/fundo_marrom.py`: cor puxada pro marrom + liga a partir da borda, protegendo vermelho saturado): l30 soco esticado (jab/ki1), l31 soco forte (cross/ki2), l32 chute (kick). REF = altura do quadro 0 / 1.03. Só essas animações foram trocadas no SPRH (o resto ficou com a escala da v149).
+- Braço de borracha agora é o DESENHO do dono (tira de 4 quadros, `novo_lf/v2/braco.png`): recortado sem a manga, atlas `LFARMS` (L = braço comprido, S = punho curto; LH/SH = versões Haki vermelho-escuro para o Snakeman). Pistol/Culverin: `lfArmDraw` estica o braço (L) da mão até o alcance, punho na ponta, e volta. Gatling/Black Mamba: vários punhos (S) espalhados + puffs brancos com miolo cinza e arcos (`LFFIST`, `LFPUFF`, `lfPuff`) — imitando o GIF que o dono mandou (o GIF em si é cena do anime, não dá para recortar).
+- Luffy normal NÃO voa (`startFly` bloqueia; mensagem "SÓ VOA NO GEAR 4"). Snakeman voa.
+
 ## Pendências / ideias
 - Vegeta transformado: faltam poses próprias de carregar ki, rajada de ki, soco e chute no ar (hoje usa grito da vitória, soco e chute alto). Se o dono mandar, trocar no `build_vegeta_blue2.py` e no mapa `A`.
 - A segunda folha de "gancho para cima" do Vegeta transformado não foi usada.
