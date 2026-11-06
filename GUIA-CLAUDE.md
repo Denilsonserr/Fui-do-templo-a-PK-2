@@ -213,6 +213,15 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 ## v147 — correção: Gojo (e Madara) invisíveis
 - Na v146 o pré-carregamento inicial passou a ser `['gj','md']`, mas esse código roda ANTES de `SPRH.gj`/`SPRH.md` existirem no arquivo → `loadSid` guardava em `SPL` uma promessa vazia e nunca mais carregava as poses. Correção: `loadSid` não guarda nada se `SPRH[sid]` ainda não existe, e o pré-carregamento inicial roda num `setTimeout(0)` (depois do script inteiro).
 
+## v148 — LUFFY (sid `lf` normal, sid `lfs` = Gear 4 Snakeman; id `luffy`)
+- Material do dono: corpo inteiro + quadrada; 29 folhas normais (`/home/claude/novo_lf/poses/lNN.png`) + 25 folhas do Snakeman (`snake/sNN.png`), todas 2 linhas × 4 (cada folha virou 1 linha em `lf_build/sh/`); vídeo da transformação (`trans/video1.mp4`, 6,3 s) e do ultimate (`trans/ultimate.mp4`, 7,5 s). A folha l29 (Boundman) NÃO é usada: o dono quer o Snakeman.
+- Fundos: quase todos com alfa; l12 tinha "xadrez" de transparência pintado (limpo à mão antes). Recorte `seg_luffy.py`; montagem `build_luffy.py` (gera `lf` e `lfs` juntos; `ai` ~40 min, cache em `cache_ai.json`).
+- Golpes normais: ljab→ljab2→lknee (Pistol curto, folha do soco que estica)→lstr (gancho, lança). Snakeman: yjab→yjab2→yknee (soco forte com giro, 2 acertos)→ystr. Nomes de golpe `l*`/`y*` trocados automaticamente pela forma no `startMove`.
+- Ki: `lfp` = Gomu Gomu no Pistol (braço de borracha desenhado em `drawLf`: linha da mão do quadro até o punho, estica e volta; frente+Ki = forte). Snakeman: braço vinho maior que faz curva e PERSEGUE a altura do rival (Culverin / Jet Culverin). baixo+Ki = `lfg` Gatling / Black Mamba (punhos borrados + vários acertos). Combo dourado = `lfc` (folha de combo pronto: l28 normal, s25 Snakeman).
+- Transformação: vídeo `LFV` sem som → `form=1` (sid `lfs`), velocidade ×2.2 (a maior do jogo). Aura `lfAura`: Snakeman = bolinhas de fumaça lilás subindo devagar + raios vermelhos (`ZPAL.red`) discretos; carregando (qualquer forma) = GIF da chama do Gojo em cinza-claro, transparente ('screen'), como fumaça. Aura genérica de carregar desligada para ele.
+- Ultimate (vermelho, só Snakeman, 100 ki): vídeo `LFU` "KING COBRA" (89 quadros, limitado a 5,5 s pelo `USP`), rival termina caído.
+- Voz do nome `nm_luffy`. Nomes: Pistol, Gatling, Culverin, Jet Culverin, Black Mamba, King Cobra e Snakeman são do anime; "O REI DOS PIRATAS", "Combo de Borracha", "Combo da Cobra" inventados pelo Claude. Teste: `ferramentas/testes/tluffy.js`.
+
 ## Pendências / ideias
 - Vegeta transformado: faltam poses próprias de carregar ki, rajada de ki, soco e chute no ar (hoje usa grito da vitória, soco e chute alto). Se o dono mandar, trocar no `build_vegeta_blue2.py` e no mapa `A`.
 - A segunda folha de "gancho para cima" do Vegeta transformado não foi usada.
