@@ -205,6 +205,11 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 ## v145 — Madara: perna bugada ao tomar golpe forte
 - Na folha m12 (tomar golpe forte / ser lançado) o 4º quadro tinha "roubado" a perna direita e a mão do 3º quadro (os dois se encostam). Regra nova no `seg_md.py`: `'m12':[(3,2,(X<815)&((Y>352)|elipse da mão em (773,337)|((X<760)&(Y>318))))]`. Refeito só `hhit`/`launch` com IA (`ONLY=hhit,launch build_madara.py ai`).
 
+## v146 — 7 personagens tirados do jogo (pedido do dono)
+- Tirados: Denilson, Denilson 2.0, Lin Feng, Arkarus, White, Xiao Wyn e General Magmus. Saíram do `ALLC` (seleção, aleatório, Torre, CPU). Ficaram 12: Aylla, Zedry, Zaykon, Qingqing, Goku, Aokiji, Zoro, Broly, Vegeta, Gogeta, Madara, Gojo.
+- O CÓDIGO deles continua no index.html (CH, SPRH, funções isXw/isWht/etc.) porque está muito misturado com o resto; só não aparecem mais. Os 529 arquivos de pose (66 MB) usados só por eles foram apagados de `www/a` — NÃO colocar eles de volta no `ALLC` sem refazer as poses.
+- Trocas: escolha padrão = Gojo; luta de fundo do menu e pré-carregamento inicial = Gojo x Madara (antes Denilson x Lin Feng); fundos dos cartões de modo = Gojo, Goku, Madara, Vegeta; "A jornada de Denilson" → "Em breve".
+
 ## Pendências / ideias
 - Vegeta transformado: faltam poses próprias de carregar ki, rajada de ki, soco e chute no ar (hoje usa grito da vitória, soco e chute alto). Se o dono mandar, trocar no `build_vegeta_blue2.py` e no mapa `A`.
 - A segunda folha de "gancho para cima" do Vegeta transformado não foi usada.
