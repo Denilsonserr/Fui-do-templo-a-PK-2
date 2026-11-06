@@ -3245,10 +3245,10 @@ const LFK={lfc:1,lfp:1,lfg:1};
 function lfKey(f){const t=f.st;if(f.state==='lfc')return['cmb',Math.min(7,Math.floor(t/6))];
   if(f.state==='lfp'){const A=f.lfS?'ki2':'ki1',ext=f.form?(f.lfS?3:4):(f.lfS?5:4);if(t<6)return[A,Math.min(ext-1,1+(t>>1))];if(t<16)return[A,ext];return[A,Math.min(7,ext+1+((t-16)>>2))]}
   if(f.state==='lfg'){if(t<8)return['gatling',Math.min(2,t>>2)];if(t<50)return['gatling',3+((t>>2)%3)];return['gatling',Math.min(7,6+((t-50)>>3))]}return['idle',0]}
-Object.assign(VGA,{ljab:['jab',[0,1],[2],[3]],ljab2:['jab',[3,4],[5],[6]],lknee:['cross',[1,2,3],[4],[5,6,7]],lstr:['upper',[1,2,3],[4],[5,6,7]],
+Object.assign(VGA,{ljab:['jab',[1],[2],[3]],ljab2:['jab',[4],[5],[6]],lknee:['cross',[2,3],[4,4,5],[6,7]],lrap:['gatling',[1,2],[3,4,5,4,5,3,4,5],[6,7]],lstr:['upper',[2,3],[4],[5,6,7]],
   lkick:['kick',[1,2,3],[4],[5,6,7]],lhkick:['hkick',[1,2,3],[4],[5,6,7]],lsweep:['sweep',[1,2,3,4],[5],[6,7]],
   lajab:['ajab',[1],[2,3],[4,5,6,7]],lakick:['akick',[1],[2,3],[4,5,6,7]],lsmash:['str',[0,1,2,3],[4,5],[6,7]],lrush:['dash2',[1,2],[3,4],[5,6]],
-  yjab:['jab',[0,1,2],[3,4],[5,6,7]],yjab2:['cross',[0,1,2],[3,4],[5,6,7]],yknee:['str',[1,2],[3,4,5,6],[7]],ystr:['upper',[1,2,3],[4],[5,6,7]],
+  yjab:['jab',[1,2],[3,4],[6,7]],yjab2:['cross',[1,2],[3,4],[6,7]],yknee:['str',[1,2],[3,4,5,6],[7]],yrap:['gatling',[1,2],[3,4,5,6,3,4,5,6],[7]],ystr:['upper',[2,3],[4],[5,6,7]],
   ykick:['kick',[1,2],[3,4],[5,6,7]],yhkick:['hkick',[1,2],[3,4],[5,6,7]],ysweep:['sweep',[1,2],[3,4,5],[6,7]],
   yajab:['ajab',[1],[2,3],[4,5,6,7]],yakick:['akick',[1],[2,3],[4,5,6,7]],ysmash:['cross',[0,1,2],[3,4],[5,6,7]],yrush:['dash2',[1,2],[3,4],[5,6]]});
 (function(){
@@ -3260,10 +3260,11 @@ Object.assign(VGA,{ljab:['jab',[0,1],[2],[3]],ljab2:['jab',[3,4],[5],[6]],lknee:
   const hb=(name,pad,hh,low,S)=>{const A=VGA[name],L=(S||S0)[A[0]];let rx=0,ry=0;for(const i of A[2]){const F=L[i];if(F&&F.rx>rx){rx=F.rx;ry=F.ry}}
     return low?[6,-(ry+hh*.6),rx+pad-6,hh]:[6,-(ry+hh/2),rx+pad-6,hh]};
   Object.assign(MOVES,{
-    ljab:{su:4,ac:3,rc:8,dmg:42,hb:hb('ljab',26,60),kb:2.2,hs:16,next:'ljab2',knext:'lkick',lean:1.6,cat:'punch'},
-    ljab2:{su:3,ac:3,rc:9,dmg:46,hb:hb('ljab2',26,60),kb:2.4,hs:17,next:'lknee',knext:'lkick',lean:1.8,cat:'punch'},
-    lknee:{su:5,ac:4,rc:10,dmg:62,hb:hb('lknee',40,70),kb:3.4,hs:18,next:'lstr',knext:'lkick',lean:1.4,cat:'punch'},
-    lstr:{su:6,ac:5,rc:14,dmg:84,hb:hb('lstr',26,120),kb:4,launch:-10,launcher:1,heavy:1,lean:2,cat:'kick'},
+    ljab:{su:3,ac:3,rc:6,dmg:48,hb:hb('ljab',28,60),kb:2.2,hs:16,next:'ljab2',knext:'lkick',lean:1.8,cat:'punch'},
+    ljab2:{su:2,ac:3,rc:6,dmg:52,hb:hb('ljab2',28,60),kb:2.4,hs:17,next:'lknee',knext:'lkick',lean:2,cat:'punch'},
+    lknee:{su:3,ac:5,rc:7,dmg:72,hb:hb('lknee',60,70),kb:3.4,hs:18,next:'lrap',knext:'lkick',lean:1.6,lfAir:1,cat:'punch'},
+    lrap:{su:3,ac:16,rc:6,dmg:24,rehit:[4,8,12],hb:hb('lrap',50,90),kb:1,hs:12,next:'lstr',knext:'lkick',lean:1.2,lfAir:2,cat:'punch'},
+    lstr:{su:4,ac:5,rc:12,dmg:96,hb:hb('lstr',30,130),kb:4,launch:-10,launcher:1,heavy:1,lean:2.2,cat:'kick'},
     lkick:{su:6,ac:5,rc:12,dmg:62,hb:hb('lkick',26,80),kb:4,hs:19,lean:1.2,next:'ljab',knext:'lhkick',cat:'kick'},
     lhkick:{su:8,ac:4,rc:15,dmg:84,hb:[6,-290,124,262],kb:4,launch:-10,launcher:1,heavy:1,lean:1.4,cat:'kick'},
     lsweep:{su:7,ac:5,rc:16,dmg:66,hb:hb('lsweep',22,56,1),kb:3,launch:-5,low:1,crouch:1,cat:'kick'},
@@ -3271,10 +3272,11 @@ Object.assign(VGA,{ljab:['jab',[0,1],[2],[3]],ljab2:['jab',[3,4],[5],[6]],lknee:
     lakick:{su:4,ac:5,rc:9,dmg:64,hb:hb('lakick',26,100),kb:5,hs:18,air:1,cat:'kick'},
     lsmash:Object.assign({},MOVES.smash,{hb:hb('lsmash',40,80)}),
     lrush:Object.assign({},MOVES.rush,{hb:hb('lrush',30,120)}),
-    yjab:{su:3,ac:4,rc:8,dmg:46,hb:hb('yjab',40,70,0,S1),kb:2.6,hs:16,next:'yjab2',knext:'ykick',lean:1.6,cat:'punch'},
-    yjab2:{su:3,ac:4,rc:8,dmg:50,hb:hb('yjab2',40,70,0,S1),kb:2.8,hs:17,next:'yknee',knext:'ykick',lean:1.8,cat:'punch'},
-    yknee:{su:3,ac:8,rc:7,dmg:30,rehit:[6,9],hb:hb('yknee',40,80,0,S1),kb:1.5,hs:12,next:'ystr',knext:'ykick',lean:1.4,cat:'punch'},
-    ystr:{su:5,ac:5,rc:13,dmg:90,hb:hb('ystr',30,130,0,S1),kb:4,launch:-11,launcher:1,heavy:1,lean:2,cat:'kick'},
+    yjab:{su:2,ac:4,rc:6,dmg:54,hb:hb('yjab',60,70,0,S1),kb:2.6,hs:16,next:'yjab2',knext:'ykick',lean:1.8,lfAir:1,cat:'punch'},
+    yjab2:{su:2,ac:4,rc:6,dmg:58,hb:hb('yjab2',60,70,0,S1),kb:2.8,hs:17,next:'yknee',knext:'ykick',lean:2,lfAir:1,cat:'punch'},
+    yknee:{su:2,ac:8,rc:6,dmg:36,rehit:[5],hb:hb('yknee',60,80,0,S1),kb:1.5,hs:12,next:'yrap',knext:'ykick',lean:1.4,lfAir:1,cat:'punch'},
+    yrap:{su:2,ac:16,rc:5,dmg:28,rehit:[3,6,9,12],hb:hb('yrap',70,100,0,S1),kb:1,hs:11,next:'ystr',knext:'ykick',lean:1.2,lfAir:2,cat:'punch'},
+    ystr:{su:3,ac:5,rc:11,dmg:104,hb:hb('ystr',40,140,0,S1),kb:4,launch:-11,launcher:1,heavy:1,lean:2.2,cat:'kick'},
     ykick:{su:5,ac:6,rc:11,dmg:64,hb:hb('ykick',30,80,0,S1),kb:4,hs:19,lean:1.2,next:'yjab',knext:'yhkick',cat:'kick'},
     yhkick:{su:6,ac:6,rc:14,dmg:88,hb:[6,-300,140,270],kb:4,launch:-11,launcher:1,heavy:1,lean:1.4,cat:'kick'},
     ysweep:{su:5,ac:7,rc:14,dmg:68,hb:hb('ysweep',30,60,1,S1),kb:3,launch:-5,low:1,crouch:1,cat:'kick'},
@@ -3287,15 +3289,15 @@ function lfOpp(f){return G.p[0]===f?G.p[1]:G.p[0]}
 function lfAct(f,st,cost,strong){if(f.ki<cost){if(!f.cpu)say(f,'PRECISA DE '+cost+' KI');return}f.ki-=cost;lfLoad();f.state=st;f.st=0;f.vx=0;f.move=null;f.guard=false;f.lfS=strong?1:0;f.lfArm=null;f.lfHit=0;if(st==='lfg')fzTag(f,f.form?'Black Mamba!':'Gomu Gomu no Gatling!')}
 function lfCombo(f,o){lfLoad();f.state='lfc';f.st=0;f.vx=0;f.move=null;f.guard=false;f.lfHeld=false;SFX.whoosh()}
 /* braço de borracha: sai da mão do quadro esticado, vai até o alcance e volta (Snakeman: persegue o rival) */
-function lfHand(f){const k=lfKey(f),L=SPRH[ssid(f)][k[0]],F=L&&L[Math.min(L.length-1,k[1])];return F?[f.x+f.facing*(F.rx-10),f.y-F.ry]:[f.x+f.facing*90,f.y-170]}
+function lfHand(f){const k=LFK[f.state]?lfKey(f):spriteKey(f),L=SPRH[ssid(f)][k[0]],F=L&&L[Math.min(L.length-1,k[1])];return F?[f.x+f.facing*(F.rx-10),f.y-F.ry]:[f.x+f.facing*90,f.y-170]}
 function lfStep(f){const o=lfOpp(f),t=++f.st,fw=f.facing,form=!!f.form;
   if(f.state==='lfp'){
     if(t===6){const h=lfHand(f);LFAIR.push({o:f,x:h[0],y:h[1],x0:h[0],dir:fw,vx:fw*(form?30:26),t:0,form,strong:f.lfS,max:form?(f.lfS?760:640):(f.lfS?600:480)});SFX.whoosh();G.shake=Math.max(G.shake,f.lfS?5:3);
       if(f.lfS||form)fzTag(f,form?(f.lfS?'Jet Culverin!':'Culverin!'):'Gomu Gomu no Pistol!')}
     if(t>=30)neutral(f);return}
   if(f.state==='lfg'){
-    if(t>=10&&t<=48&&t%5===0&&o&&!o.ko&&Math.sign(o.x-f.x)===fw&&Math.abs(o.x-f.x)<(form?420:330)&&Math.abs(o.y-f.y)<150){
-      applyHit(f,o,{dmg:form?17:13,kb:.6,hs:7,px:o.x-fw*30+rand(-10,10),py:o.y-rand(110,200),kind:'melee'});spark(o.x-fw*30,o.y-rand(110,200),form?'#ff7a88':'#fff3d0',4,7);if(o.hp<=0)ko(f,o)}
+    if(t>=10&&t<=48&&t%4===0&&o&&!o.ko&&Math.sign(o.x-f.x)===fw&&Math.abs(o.x-f.x)<(form?420:330)&&Math.abs(o.y-f.y)<150){
+      applyHit(f,o,{dmg:form?20:16,kb:.6,hs:7,px:o.x-fw*30+rand(-10,10),py:o.y-rand(110,200),kind:'melee'});spark(o.x-fw*30,o.y-rand(110,200),form?'#ff7a88':'#fff3d0',4,7);if(o.hp<=0)ko(f,o)}
     if(t===52&&o&&!o.ko&&Math.sign(o.x-f.x)===fw&&Math.abs(o.x-f.x)<(form?440:350)&&Math.abs(o.y-f.y)<150){applyHit(f,o,{dmg:form?55:42,kb:6,hs:18,heavy:1,px:o.x-fw*30,py:o.y-150,kind:'melee'});G.shake=Math.max(G.shake,9);if(o.hp<=0)ko(f,o)}
     if(t>=10&&t<=48&&t%3===0){const h=lfHand(f);LFAIR.push({o:f,x:h[0],y:h[1]+rand(-40,30),x0:h[0],dir:fw,vx:fw*(form?32:28),t:0,form,small:1,nohit:1,max:form?400:320})}
     if(t>=64)neutral(f);return}
@@ -3309,9 +3311,9 @@ function lfStep(f){const o=lfOpp(f),t=++f.st,fw=f.facing,form=!!f.form;
         if(!f.finDone&&f.combo>=3)comboFinish(f,o,h);G.shake=Math.max(G.shake,14);if(o.hp<=0)ko(f,o)}}
     if(t>=52){f.lfHeld=false;neutral(f)}return}}
 const LFAIR=[];
-function lfAirTick(){if(G.mode!=='fight'||G.hitstop>0)return;for(const p of LFAIR){p.t++;p.x+=p.vx;const o=lfOpp(p.o);
+function lfAirTick(){if(G.mode!=='fight'||G.hitstop>0)return;for(const f of G.p){if(!f||!isLf(f)||f.state!=='attack'||!f.move||!f.move.lfAir)continue;const m=f.move,r=f.mf-m.su;if(r<1||r>m.ac)continue;if((m.lfAir===1&&r===1)||(m.lfAir===2&&r%3===1)){const h=lfHand(f);LFAIR.push({o:f,x:h[0]+f.facing*10,y:h[1]+(m.lfAir===2?rand(-35,25):0),x0:h[0],dir:f.facing,vx:f.facing*(f.form?30:26),t:0,form:!!f.form,small:1,nohit:1,max:m.lfAir===2?200:150})}}for(const p of LFAIR){p.t++;p.x+=p.vx;const o=lfOpp(p.o);
     if(!p.nohit&&o&&!o.ko&&Math.sign(o.x-p.o.x)===p.dir&&Math.abs(o.x-p.x)<60&&p.y>o.y-280&&p.y<o.y+10){p.dead=1;
-      applyHit(p.o,o,{dmg:p.form?(p.strong?95:72):(p.strong?85:55),kb:p.strong?6:3,hs:p.strong?20:16,heavy:p.strong?1:0,px:p.x,py:p.y,kind:'blast'});
+      applyHit(p.o,o,{dmg:p.form?(p.strong?110:82):(p.strong?95:65),kb:p.strong?6:3,hs:p.strong?20:16,heavy:p.strong?1:0,px:p.x,py:p.y,kind:'blast'});
       ring(p.x,p.y,p.form?'#ff4a5a':'#ffffff',100,12,4);spark(p.x,p.y,p.form?'#ff9aa6':'#ffffff',10,9);if(p.form)for(let i=0;i<3;i++)spark(p.x+rand(-30,30),p.y+rand(-30,30),'#ff4a5a',2,4,'bolt');G.shake=Math.max(G.shake,p.strong?10:5);if(o.hp<=0)ko(p.o,o)}
     if(Math.abs(p.x-p.x0)>p.max)p.dead=1}
   for(let i=LFAIR.length-1;i>=0;i--)if(LFAIR[i].dead)LFAIR.splice(i,1)}

@@ -14,7 +14,7 @@ await p.evaluate(()=>{const G=__dbg.G;G.noAI=true;G.timer=999;G.p[1].cpu=true;G.
   window.LOG=[];const G2=__dbg.G;(function lp(){const f=G2.p[0];LOG.push(f.state+(f.mname&&f.state==='attack'?':'+f.mname:''));requestAnimationFrame(lp)})()});
 const R={};const shot=n=>p.screenshot({path:SH+n+'.png'});
 await p.evaluate(()=>F(60));await shot('lf_idle');
-R.chain=await p.evaluate(async()=>{await reset();LOG.length=0;for(let i=0;i<4;i++){await tap('punch');await F(10)}await F(30);return [...new Set(LOG)].join(' ')});
+R.chain=await p.evaluate(async()=>{await reset();LOG.length=0;const o=__dbg.G.p[1];for(let i=0;i<5;i++){await tap("punch");await F(10)}await F(40);LOG.push("DMG"+Math.round(3600-o.hp));return [...new Set(LOG)].join(' ')});
 R.kick=await p.evaluate(async()=>{await F(60);await reset();const o=__dbg.G.p[1],hp=o.hp;await tap('kick');await F(18);await tap('kick');await F(40);return Math.round(hp-o.hp)});
 R.pis=await p.evaluate(async()=>{await F(60);await reset(400);await tap('ki');await F(20);return __dbg.G.p[0].state});await shot('lf_pistol');
 R.pis2=await p.evaluate(async()=>{await F(40);return Math.round(3600-__dbg.G.p[1].hp)});
@@ -26,7 +26,7 @@ R.tr=await p.evaluate(async()=>{await F(60);await reset(300);const f=__dbg.G.p[0
 R.tr2=await p.evaluate(async()=>{await F(200);const f=__dbg.G.p[0];return [f.form,f.state]});await shot('lf_snake');
 R.speed=await p.evaluate(async()=>{const f=__dbg.G.p[0];f.x=400;__dbg.G.p[1].x=1500;await F(10);const x0=f.x;K('right',1);await F(40);K('right',0);await F(10);return Math.round(f.x-x0)});
 R.charge=await p.evaluate(async()=>{await reset(500);const f=__dbg.G.p[0];f.form=1;f.formT=5000;K('ki',1);await F(40);return __dbg.G.p[0].state});await shot('lf_charge');await p.evaluate(()=>{K('ki',0)});
-R.ychain=await p.evaluate(async()=>{await F(30);await reset();const f=__dbg.G.p[0];f.form=1;f.formT=5000;LOG.length=0;for(let i=0;i<4;i++){await tap('punch');await F(10)}await F(30);return [...new Set(LOG)].join(' ')});
+R.ychain=await p.evaluate(async()=>{await F(30);await reset();const f=__dbg.G.p[0],o=__dbg.G.p[1];f.form=1;f.formT=5000;LOG.length=0;for(let i=0;i<5;i++){await tap("punch");await F(10)}await F(40);LOG.push("DMG"+Math.round(3600-o.hp));return [...new Set(LOG)].join(' ')});
 R.cul=await p.evaluate(async()=>{await F(60);await reset(560);const f=__dbg.G.p[0],o=__dbg.G.p[1];f.form=1;f.formT=5000;o.y=486;K('right',1);await F(1);await tap('ki');K('right',0);await F(22);return f.state});await shot('lf_culverin');
 R.cul2=await p.evaluate(async()=>{await F(40);return Math.round(3600-__dbg.G.p[1].hp)});
 R.c2=await p.evaluate(async()=>{await F(60);await reset(170);const f=__dbg.G.p[0];f.form=1;f.formT=5000;await tap('sp');await F(20);return f.state});await shot('lf_combo2');

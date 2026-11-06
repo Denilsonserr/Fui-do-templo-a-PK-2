@@ -227,6 +227,11 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - O dono NÃO gostou do braço de borracha desenhado pelo Claude: removido. Ki = soco rápido (quadro esticado da própria folha) + rajada de AR (`LFAIR`, `lfAirTick`/`drawLf`: meias-luas brancas e linhas de vento; Snakeman vermelhas, com raios). Gatling: várias rajadas de ar pequenas (sem punhos desenhados). O dono disse que vai mandar um desenho de soco dele — usar no lugar quando chegar.
 - Snakeman: raios vermelhos (`zArcs` ZPAL.red) sempre visíveis (até 5; 8 carregando).
 
+## v150 — Luffy: socos mais fortes, mais rápidos e rajadas
+- Corrente de socos agora tem 5 golpes: ljab → ljab2 → lknee (Pistol curto, alcance maior) → **lrap** (rajada: folha da Gatling, 4 acertos) → lstr (gancho, lança). Snakeman: yjab → yjab2 → yknee (2 acertos) → **yrap** (5 acertos) → ystr. Tudo mais rápido (su 2–3, rc 5–7) e com mais dano (~+15%).
+- `move.lfAir`: 1 = sai uma rajada de ar visual no 1º quadro ativo; 2 = várias rajadas durante a rajada de socos (só visual, `nohit`). `lfHand` usa `spriteKey` fora dos estados especiais.
+- Ki mais forte: Pistol 65/95, Culverin 82/110; Gatling/Black Mamba acertos 16/20 a cada 4 frames.
+
 ## Pendências / ideias
 - Vegeta transformado: faltam poses próprias de carregar ki, rajada de ki, soco e chute no ar (hoje usa grito da vitória, soco e chute alto). Se o dono mandar, trocar no `build_vegeta_blue2.py` e no mapa `A`.
 - A segunda folha de "gancho para cima" do Vegeta transformado não foi usada.
