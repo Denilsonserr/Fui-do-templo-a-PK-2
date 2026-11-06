@@ -199,6 +199,9 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - Ultimate trocado pelo vídeo novo do dono (Vazio Roxo, 63 quadros, 5,3 s, SEM acelerar: `vt` sem `USP`). Acertos nos quadros 24,28,32,47,51,55 + final. Banner "VAZIO ROXO". Quadros do ultimate antigo apagados.
 - Aura transformado: usa a aura de fogo genérica (`drawAura`) em azul-claro (`#8fe2ff`), sempre no tamanho grande, com brilho reduzido pela metade (senão some o personagem no cenário claro do domínio) e sem raios. Sem transformar continua a aura suave `gjAura`.
 
+## v144 — Gojo: aura do transformado pela referência do dono
+- Substitui a aura de fogo genérica da v143. Atrás do corpo: GIF de chama azul do dono (atlas `GJAU`, 5 quadros 360x405, 'lighter', alfa .46; .62 carregando), virando de lado a cada 16 frames. Na frente do corpo (`gjFireFront`, chamado logo depois do `renderFighter`): raios azuis (`zArcs` azul, mais ao carregar) e fogo azul nas mãos (`gjHandFire`: brilho branco-ciano + línguas de fogo). A mão da frente vem do quadro atual (`rx/ry` do sprite); a mão de trás é estimada (58 px atrás) só em poses paradas/andando/defesa.
+
 ## Pendências / ideias
 - Vegeta transformado: faltam poses próprias de carregar ki, rajada de ki, soco e chute no ar (hoje usa grito da vitória, soco e chute alto). Se o dono mandar, trocar no `build_vegeta_blue2.py` e no mapa `A`.
 - A segunda folha de "gancho para cima" do Vegeta transformado não foi usada.

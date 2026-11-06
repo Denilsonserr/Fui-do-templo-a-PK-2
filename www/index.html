@@ -3175,7 +3175,25 @@ function drawGj(){if(!GJBOX.length||!GJA.img.complete||!GJA.img.naturalWidth)ret
   ctx.restore()}
 /* aura azul do Gojo (transformado: brilho azul como no anime; carregando: mais forte) */
 const GJW=[];
-function gjAura(f,k){const t=G.frame,cx=f.x,base=f.y,H=255,R=60*(.8+k*.4),on=f.form?1:.55;
+/* v144: Gojo transformado — aura de chama azul no corpo (GIF do dono), raios azuis no corpo e fogo azul nas mãos (referência do dono) */
+const GJAU={"src":"a/717961b7ac2b8f.webp","n":5,"w":360,"h":405};GJAU.img=new Image();GJAU.img.src=GJAU.src;
+function gjFrame(f){try{const k=spriteKey(f),L=SPRH[ssid(f)][k[0]];return L&&L[Math.max(0,Math.min(L.length-1,k[1]|0))]}catch(e){return null}}
+function gjFire(f,k){const t=G.frame,cx=f.x,base=f.y,ch=f.state==='charge';if(!GJAU.img.complete||!GJAU.img.naturalWidth)return;
+  const i=Math.floor(t/4)%GJAU.n,h=(ch?340:300)*(1+.03*Math.sin(t*.6)),w=h*GJAU.w/GJAU.h;
+  ctx.save();ctx.globalCompositeOperation='lighter';ctx.globalAlpha=ch?.62:.46;ctx.translate(cx,base-h*.47);ctx.scale((t>>4)%2?f.facing:-f.facing,1);
+  ctx.drawImage(GJAU.img,0,i*GJAU.h,GJAU.w,GJAU.h,-w/2,-h/2,w,h);ctx.restore()}
+function gjHandFire(x,y,r,t,ph){ctx.save();ctx.globalCompositeOperation='lighter';
+  const g=ctx.createRadialGradient(x,y,0,x,y,r*1.9);g.addColorStop(0,'rgba(235,255,255,.95)');g.addColorStop(.3,'rgba(140,235,255,.75)');g.addColorStop(.7,'rgba(50,160,255,.25)');g.addColorStop(1,'rgba(40,140,255,0)');ctx.fillStyle=g;ctx.beginPath();ctx.arc(x,y,r*1.9,0,TAU);ctx.fill();
+  for(let k=0;k<6;k++){const a=-Math.PI/2+Math.sin(t*.35+k*1.7+ph)*.9,L=r*(1.1+.6*Math.abs(Math.sin(t*.5+k*2.3+ph))),bx=x+Math.cos(a+Math.PI/2)*r*.45*(k%2?1:-1)*.6;
+    ctx.globalAlpha=.55;const gr=ctx.createLinearGradient(bx,y,bx+Math.cos(a)*L,y+Math.sin(a)*L);gr.addColorStop(0,'rgba(160,240,255,.9)');gr.addColorStop(1,'rgba(230,255,255,0)');ctx.fillStyle=gr;
+    ctx.beginPath();ctx.moveTo(bx-r*.25,y);ctx.quadraticCurveTo(bx+Math.cos(a)*L*.5-r*.2,y+Math.sin(a)*L*.5,bx+Math.cos(a)*L,y+Math.sin(a)*L);ctx.quadraticCurveTo(bx+Math.cos(a)*L*.5+r*.2,y+Math.sin(a)*L*.5,bx+r*.25,y);ctx.fill()}
+  ctx.restore()}
+function gjFireFront(f){if(f.hide>0)return;const t=G.frame,F=gjFrame(f),fw=f.facing;
+  zArcs(f,f.x,f.y,ZPAL.blue,f.state==='charge'?6:3,f.state==='charge'?.8:.45);
+  if(!F)return;const hx=f.x+fw*(F.rx-6),hy=f.y-F.ry;gjHandFire(hx,hy,15,t,0);
+  if(['idle','walk','charge','block','crouch','cblock','fly'].includes(f.state))gjHandFire(hx-fw*58,hy-8,12,t,2);
+  if(G.hitstop<=0&&t%4===0)addP({x:hx+rand(-8,8),y:hy+rand(-8,8),vx:rand(-.5,.5),vy:-rand(1,2.2),life:14,max:14,c:Math.random()<.5?'#bff4ff':'#ffffff',type:'glow',sz:rand(2,3.5),g:0})}
+function gjAura(f,k){if(f.form)return gjFire(f,k);const t=G.frame,cx=f.x,base=f.y,H=255,R=60*(.8+k*.4),on=f.form?1:.55;
   if(G.hitstop<=0&&GJW.length<46&&Math.random()<(.45+k*.45)*on){const s=Math.random()<.5?-1:1;GJW.push({o:f,ox:s*(R*(.3+Math.random()*.7)),y:-(Math.random()*H*.6),vy:-(1.6+Math.random()*2),l:0,m:22+Math.random()*14,w:5+Math.random()*7,h:30+Math.random()*34,ph:Math.random()*6})}
   ctx.save();ctx.globalCompositeOperation='lighter';
   const g=ctx.createRadialGradient(cx,base-H*.45,10,cx,base-H*.45,H*.66);g.addColorStop(0,`rgba(60,160,255,${(.16+k*.08)*on})`);g.addColorStop(.6,`rgba(40,120,255,${.07*on})`);g.addColorStop(1,'rgba(40,120,255,0)');ctx.fillStyle=g;ctx.fillRect(cx-H*.75,base-H*1.15,H*1.5,H*1.25);
@@ -3440,7 +3458,7 @@ function mdAura(f,k){if(f.form)mdBolts(f,k);const t=G.frame,cx=f.x,base=f.y,H=25
   for(let i=MDW.length-1;i>=0;i--)if(MDW[i].l>=MDW[i].m)MDW.splice(i,1);
   if(t%6===0)addP({x:cx+rand(-R,R),y:base-rand(20,200),vx:rand(-.3,.3),vy:-rand(.8,1.6),life:24,max:24,c:f.form?'#b98aff':'#ff7a3a',type:'glow',sz:rand(2,3.5),g:0});
   ctx.restore()}
-function drawAura(f,k,c,c2){if(isMd(f))return mdAura(f,k);if(isGj(f)&&!f.form)return gjAura(f,k);if(isGj(f)){c='#8fe2ff';c2='#f2fdff';k=Math.max(k,.55)}c=c||E(f);c2=c2||E2(f);const PU=auraTex('pur',c);if(!PU)return drawAuraOld(f,k,c,c2);
+function drawAura(f,k,c,c2){if(isMd(f))return mdAura(f,k);if(isGj(f))return gjAura(f,k);c=c||E(f);c2=c2||E2(f);const PU=auraTex('pur',c);if(!PU)return drawAuraOld(f,k,c,c2);
   if(isAyl(f)&&f.form){const T=auraTex('a_aura'),A=AUX.a_aura;if(T){const h=(k>=.5?400:340),w=h*A.w/A.h,pu=1+.04*Math.sin(G.frame*.5);ctx.save();ctx.globalCompositeOperation='screen';blitT(T,f.x,f.y-h*.44,w*pu,h*pu,0,(G.frame>>3)%2?1:-1,.5);ctx.restore()}}
   const zk=isZyk(f)&&f.form,zg=isZed(f)&&f.form,t=G.frame+(f.cpu?7:0),cx=f.x,base=f.y,kk=Math.min(1,k*2.1)*(isGj(f)?.5:1),K=Math.min(1.45,Math.max(.95,k*1.6))*(zg?.88:1),big=k>=.5,gr=base>FLOOR-30,fl=f.facing||1;
   ctx.save();ctx.globalCompositeOperation='lighter';
@@ -4123,7 +4141,7 @@ function render(){
   drawVolFX();drawSRBack();
   const order=G.p.slice().sort((a,b)=>(a.state==='attack'||a.state==='super'||!!a.rushKey)-(b.state==='attack'||b.state==='super'||!!b.rushKey));
   drawIceFloor();drawZFX(0);drawDashTrail();drawFZ(0);
-  for(const f of order)if(!(G.trans&&G.trans.f===f)){renderFighter(f);drawIceBody(f)}
+  for(const f of order)if(!(G.trans&&G.trans.f===f)){renderFighter(f);drawIceBody(f);if(isGj(f)&&f.form)gjFireFront(f)}
   drawZFX(1);drawFZ(1);
   for(const f of G.p){if(f.hide>0||(G.trans&&G.trans.f===f))continue;if((f.state==='charge'||(f.ent&&f.ent.pw))&&!isMd(f)&&!isGj(f)){const KC=auraTex('kic',E(f)),A=AUX.kic;if(KC){ctx.save();ctx.globalCompositeOperation='lighter';const h=440,w=h*A.w/A.h;blitF(KC,A.n,((G.frame+5)/3|0),f.x,f.y-h*.42,w,h,-1,.2);ctx.restore()}}}
   for(const p of G.projs)drawProj(p);
