@@ -1370,12 +1370,12 @@ const GMZ={"gmg":{"idle":[{"w":205.0,"h":274.0,"ax":121.6,"ay":273.5,"src":"a/47
 for(const P of PANELS){const im=new Image();im.src=P.src;P.img=im;delete P.src}
 /* v43: memória — carrega por personagem, prepara antes da luta e libera o que não está em uso */
 const SPL={};const LDP={t:0,n:0,w:0,wt:0,v:0,vt:0};
-function loadSid(sid){if(SPL[sid])return SPL[sid];const L=[];for(const arr of Object.values(SPRH[sid]||{}))for(const S of arr){if(!S.src)continue;const src=S.src;S.src0=src;delete S.src;
+function loadSid(sid){if(SPL[sid])return SPL[sid];if(!SPRH[sid])return Promise.resolve();const L=[];for(const arr of Object.values(SPRH[sid]||{}))for(const S of arr){if(!S.src)continue;const src=S.src;S.src0=src;delete S.src;
   LDP.t++;L.push(new Promise(r=>{const im=new Image();im.decoding='async';im.onload=im.onerror=()=>{S.img=im;LDP.n++;r()};im.src=src}));
   if(S.b||S.gl){const ld=(o,k)=>{if(!o||!o[k]||o[k+'I'])return;L.push(new Promise(r=>{const im=new Image();im.decoding='async';im.onload=im.onerror=()=>r();o[k+'I']=im;im.src=o[k]}))};ld(S,'b');ld(S.rl,'src');ld(S.hl,'src');ld(S,'gl')}}
   return SPL[sid]=Promise.all(L)}
 const sidsOf=id=>{const s=CH[id]&&CH[id].sid;return !s?[]:s==='dn2'?['dn2','dn2f']:s==='xw'?['xw','xwf']:s==='gmg'?['gmg','gmgf']:s==='zed'?['zed','zedf','zed3']:s==='zyk'?['zyk','zykf']:s==='qq'?['qq','qqf']:s==='gk'?['gk','gkf']:s==='ao'?['ao','aof']:s==='zr'?['zr','zrf']:s==='vg'?['vg','vgf']:s==='gg'?['gg','ggf']:s==='br'?['br','brf']:[s]};
-Promise.all(['gj','md'].map(loadSid)).then(()=>{SPR_OK=true;onSpritesReady()});
+new Promise(r=>setTimeout(r,0)).then(()=>Promise.all(['gj','md'].map(loadSid))).then(()=>{SPR_OK=true;onSpritesReady()});
 window.__mem=()=>{const o={};for(const sid in SPRH){let n=0,f=0,sl=0,im=0;for(const arr of Object.values(SPRH[sid]))for(const S of arr){n++;if(S.img)im++;if(S.imgF&&S.imgF!==S.img)f++;if(S._sil)sl++}o[sid]=[n,im,f,sl]}return o};
 const WARM=document.createElement('canvas');WARM.width=WARM.height=4;const wx=WARM.getContext('2d');let warmJob=0;
 function prepMatch(ids,stk){const use=new Set();for(const id of ids)for(const s of sidsOf(id))use.add(s);freeUnused(use,ids);LDP.t=0;LDP.n=0;LDP.w=0;LDP.wt=0;LDP.v=0;LDP.vt=0;

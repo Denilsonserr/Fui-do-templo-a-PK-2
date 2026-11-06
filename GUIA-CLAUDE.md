@@ -210,6 +210,9 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - O CÓDIGO deles continua no index.html (CH, SPRH, funções isXw/isWht/etc.) porque está muito misturado com o resto; só não aparecem mais. Os 529 arquivos de pose (66 MB) usados só por eles foram apagados de `www/a` — NÃO colocar eles de volta no `ALLC` sem refazer as poses.
 - Trocas: escolha padrão = Gojo; luta de fundo do menu e pré-carregamento inicial = Gojo x Madara (antes Denilson x Lin Feng); fundos dos cartões de modo = Gojo, Goku, Madara, Vegeta; "A jornada de Denilson" → "Em breve".
 
+## v147 — correção: Gojo (e Madara) invisíveis
+- Na v146 o pré-carregamento inicial passou a ser `['gj','md']`, mas esse código roda ANTES de `SPRH.gj`/`SPRH.md` existirem no arquivo → `loadSid` guardava em `SPL` uma promessa vazia e nunca mais carregava as poses. Correção: `loadSid` não guarda nada se `SPRH[sid]` ainda não existe, e o pré-carregamento inicial roda num `setTimeout(0)` (depois do script inteiro).
+
 ## Pendências / ideias
 - Vegeta transformado: faltam poses próprias de carregar ki, rajada de ki, soco e chute no ar (hoje usa grito da vitória, soco e chute alto). Se o dono mandar, trocar no `build_vegeta_blue2.py` e no mapa `A`.
 - A segunda folha de "gancho para cima" do Vegeta transformado não foi usada.
