@@ -202,6 +202,9 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 ## v144 — Gojo: aura do transformado pela referência do dono
 - Substitui a aura de fogo genérica da v143. Atrás do corpo: GIF de chama azul do dono (atlas `GJAU`, 5 quadros 360x405, 'lighter', alfa .46; .62 carregando), virando de lado a cada 16 frames. Na frente do corpo (`gjFireFront`, chamado logo depois do `renderFighter`): raios azuis (`zArcs` azul, mais ao carregar) e fogo azul nas mãos (`gjHandFire`: brilho branco-ciano + línguas de fogo). A mão da frente vem do quadro atual (`rx/ry` do sprite); a mão de trás é estimada (58 px atrás) só em poses paradas/andando/defesa.
 
+## v145 — Madara: perna bugada ao tomar golpe forte
+- Na folha m12 (tomar golpe forte / ser lançado) o 4º quadro tinha "roubado" a perna direita e a mão do 3º quadro (os dois se encostam). Regra nova no `seg_md.py`: `'m12':[(3,2,(X<815)&((Y>352)|elipse da mão em (773,337)|((X<760)&(Y>318))))]`. Refeito só `hhit`/`launch` com IA (`ONLY=hhit,launch build_madara.py ai`).
+
 ## Pendências / ideias
 - Vegeta transformado: faltam poses próprias de carregar ki, rajada de ki, soco e chute no ar (hoje usa grito da vitória, soco e chute alto). Se o dono mandar, trocar no `build_vegeta_blue2.py` e no mapa `A`.
 - A segunda folha de "gancho para cima" do Vegeta transformado não foi usada.
