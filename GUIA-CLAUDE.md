@@ -241,6 +241,11 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - O dono não quer o braço esticado (nem o desenhado pelo Claude, nem o desenho dele esticado pelo jogo). Ki/Pistol voltou ao da v150: soco rápido + rajada de ar (`LFAIR`). `LFARMS`/`lfArmDraw` ficam no código mas o `lfArm` nunca é criado. Os punhos da Gatling (`LFFIST`) e os puffs ficaram (o dono aprovou "o resto dos efeitos").
 - Snakeman: raios vermelhos também NA FRENTE do corpo (`lfBoltsFront`, chamado depois do `renderFighter`), além dos de trás.
 
+## v153 — Luffy: super do normal + Snakeman divertido
+- Luffy NORMAL ganhou super no botão vermelho (100 ki + 3 barras como os outros): vídeo do dono `LFU2` (93 quadros, sem som, máx 5,5 s), banner "GOMU GOMU NO BAZOOKA" (nome escolhido pelo Claude), acertos a 45–85% do vídeo + final 200; rival caído. `G.ws.lf` = 2 (normal) / 1 (King Cobra). `srReady` do Luffy não exige forma.
+- Snakeman: golpes bem mais rápidos (su 1–3, rc 4–9); sempre quicando no chão parado/andando/correndo (`spriteFx`: pulo visual de 30–40 px com achatamento ao tocar o chão); dash para frente (toque duplo) = some (`lfb`, `hide`) e aparece atrás do rival com chute alto (`yhkick`), "ATRÁS DE VOCÊ!", 45 frames de espera; a cada 10 golpes levados (`lfHN`) ganha 3 esquivas (`lfDg`, estado `lfv`, "MODO ESQUIVA!"/"ESQUIVA!").
+- Teste: `ferramentas/testes/tluffy_snake.js`.
+
 ## Pendências / ideias
 - Vegeta transformado: faltam poses próprias de carregar ki, rajada de ki, soco e chute no ar (hoje usa grito da vitória, soco e chute alto). Se o dono mandar, trocar no `build_vegeta_blue2.py` e no mapa `A`.
 - A segunda folha de "gancho para cima" do Vegeta transformado não foi usada.

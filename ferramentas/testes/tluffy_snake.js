@@ -1,0 +1,16 @@
+const {chromium}=require('playwright');
+(async()=>{const b=await chromium.launch();const p=await b.newPage({viewport:{width:915,height:412}});const errs=[];p.on('pageerror',e=>errs.push(e.message.slice(0,200)));await p.route(/fonts\.g/,r=>r.abort());
+await p.goto('file:///home/claude/fui-do-templo-a-pk-2/www/index.html');await p.waitForFunction(()=>!document.getElementById('goSelect').disabled,null,{timeout:120000});
+await p.click('#goSelect');await p.waitForTimeout(500);await p.click('.tile[data-c="luffy"]');await p.click('.tile[data-c="goku"]');await p.click('#goStage');await p.waitForTimeout(300);await p.click('.stc[data-s="falls"]');await p.click('#goFight');
+await p.waitForFunction(()=>__dbg.G.mode==='fight'&&__dbg.G.phase==='fight',null,{timeout:120000});
+await p.evaluate(()=>{window.F=n=>new Promise(r=>{const g=__dbg.G,f0=g.frame;const c=()=>g.frame>=f0+n?r():requestAnimationFrame(c);c()});window.K=(c,v)=>dispatchEvent(new KeyboardEvent(v?'keydown':'keyup',{code:c,bubbles:true}));window.tap=async c=>{K(c,1);await F(2);K(c,0);await F(1)}});
+const R={};
+R.sup=await p.evaluate(async()=>{const G=__dbg.G,f=G.p[0],o=G.p[1];G.noAI=true;f.form=0;f.x=700;o.x=900;f.ki=100;f.spark=100;f.state='idle';o.hp=3600;await F(10);await tap('KeyO');await F(20);return [f.state,G.ws&&G.ws.lf]});
+await p.evaluate(()=>F(90));await p.screenshot({path:'/tmp/s1.png'});
+R.sup2=await p.evaluate(async()=>{await F(500);const G=__dbg.G;return [!!G.ws,G.p[1].state,Math.round(3600-G.p[1].hp)]});
+R.blink=await p.evaluate(async()=>{await F(60);const G=__dbg.G,f=G.p[0],o=G.p[1];f.form=1;f.formT=9000;f.x=500;o.x=900;o.facing=-1;o.state='idle';o.hp=3600;o.inv=0;f.state='idle';await F(10);
+  K('ArrowRight',1);await F(3);K('ArrowRight',0);await F(3);K('ArrowRight',1);await F(3);K('ArrowRight',0);const s0=f.state;await F(8);const st=[s0,f.state,Math.round(f.x),f.facing];await F(30);return [st,Math.round(3600-o.hp)]});
+R.dodge=await p.evaluate(async()=>{await F(60);const G=__dbg.G,f=G.p[0],o=G.p[1];f.form=1;f.formT=9000;f.lfHN=0;f.lfDg=0;f.hp=3600;const S=[];
+  for(let i=0;i<13;i++){f.x=700;o.x=810;o.facing=-1;f.state='idle';f.inv=0;f.hitstun=0;f.vx=0;o.state='idle';__dbg.startMove(o,'jab');await F(16);S.push(f.state==='lfv'?'D':'h')}return S.join('')});
+await p.evaluate(async()=>{const G=__dbg.G,f=G.p[0],o=G.p[1];f.form=1;f.state='idle';f.x=600;o.x=1100;f.vx=0;await F(4)});await p.screenshot({path:'/tmp/s2.png'});await p.evaluate(()=>F(3));await p.screenshot({path:'/tmp/s3.png'});
+console.log(JSON.stringify(R),errs);await b.close()})();
