@@ -14,14 +14,14 @@ PLANT={1,2,6,8,9,10,11,12,14,15,16,22,23,26,27,28,29,31,32}
 SUPPORT=set()
 HEADA={13}
 A={'relax':G(1,R8),'gin':[(31,0),(31,1),(1,0),(2,0),(2,7)],'idle':G(2,R8),'walk':G(3,R8),'run':G(4,[1,2,3,4,5,6]),
- 'dashf':G(5,R8),'dash2':G(7,R8),'dashb':G(30,R8),'jab':G(8,R8),'kick':G(11,R8),'hkick':G(12,R8),'upper':G(6,R8),'str':G(10,R8),'cross':G(9,R8),'sweep':G(13,R8),
- 'block':G(14,R8),'cblock':G(15,R8),'hit':G(22,R8),'hhit':G(23,[0,1,2,3,3,6,7]),'launch':G(23,R8),'dodge':G(18,R8),
+ 'dashf':G(5,R8),'dash2':G(5,R8),'dashb':G(7,R8),'flip':G(30,R8),'flyf':[(5,4),(5,5)],'flyb':[(7,4),(7,5)],'jab':G(8,R8),'kick':G(11,R8),'hkick':G(12,R8),'upper':G(6,R8),'str':G(10,R8),'cross':G(9,R8),'sweep':G(13,R8),
+ 'block':G(14,R8),'cblock':[(15,4)]*8,'hit':G(22,R8),'hhit':G(23,[0,1,2,3,3,6,7]),'launch':G(23,R8),'dodge':G(18,R8),
  'jumpv':G(19,R8),'jumpd':G(20,R8),'hover':[(19,4),(19,5),(19,6),(19,4),(19,5),(19,6)],'land':G(21,R8),
  'ajab':[(19,4),(29,1),(29,1),(29,2),(29,2),(19,5),(19,6),(19,6)],'akick':[(19,4),(29,7),(29,7),(29,11),(29,11),(19,5),(19,6),(19,6)],
  'fall':G(24,[1,2,3,4,5]),'drop':G(24,[5,6,7]),'getup':G(25,R8),'win':G(27,R8),'lose':G(23,[1,2,3,4,4,4,4,4]),
- 'pw':G(26,R8),'ki1':G(26,R8),'ki2':G(26,[4,5,6,7]),'seals':G(31,R8),'azul':G(32,R8),'palm':G(16,R8),'crouch':G(15,R8),'ldash':G(17,R8),
+ 'pw':G(32,R8),'ki1':G(32,R8),'ki2':G(32,R8),'seals':G(31,R8),'azul':G(32,R8),'palm':G(16,R8),'crouch':G(15,R8),'ldash':G(17,R8),
  'cmb':[(29,i) for i in range(16)],'cmb2':G(28,R8)}
-AIR={'jumpv','jumpd','hover','ajab','akick','dashb'}   # ancora vertical no proprio pe
+AIR={'jumpv','jumpd','hover','ajab','akick','flip'}   # ancora vertical no proprio pe
 GL={}
 for t in range(1,33):GL[t]=max(np.load(f)[1] for f in glob.glob(f'cut/j{t:02d}_*.y.npy'))
 def sv(arr):
@@ -59,6 +59,8 @@ def anchor(t,i):
             if abs(best[0]-exp)<45:return best[0]+off
     return cen
 cache={}
+if AI and os.path.exists('cache_ai.json'):
+    for k_,v_ in json.load(open('cache_ai.json')).items():t_,i_,a_=map(int,k_.split(','));cache[(t_,i_,bool(a_))]=v_
 def frame(t,i,air):
     key=(t,i,air)
     if key in cache:return cache[key]
