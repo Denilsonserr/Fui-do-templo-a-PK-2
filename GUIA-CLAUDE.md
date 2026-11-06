@@ -222,6 +222,11 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - Ultimate (vermelho, só Snakeman, 100 ki): vídeo `LFU` "KING COBRA" (89 quadros, limitado a 5,5 s pelo `USP`), rival termina caído.
 - Voz do nome `nm_luffy`. Nomes: Pistol, Gatling, Culverin, Jet Culverin, Black Mamba, King Cobra e Snakeman são do anime; "O REI DOS PIRATAS", "Combo de Borracha", "Combo da Cobra" inventados pelo Claude. Teste: `ferramentas/testes/tluffy.js`.
 
+## v149 — Luffy: tamanho, soco de ar e raios vermelhos
+- Tamanho: as folhas de luta (1774 px: l05–l17, l27, l28) vinham ~10% maiores que as de pé (conferido pela cabeça/chapéu) → REF ×1.11; l02 /1.03; l04 ×1.03; Snakeman SK .95→.87. Como o cache da IA guarda w/h antigos, a escala foi aplicada direto no JSON (`lf_ai2.json` → `lf_ai.json`); `build_luffy.py` já tem os fatores para quem refizer do zero (sem cache).
+- O dono NÃO gostou do braço de borracha desenhado pelo Claude: removido. Ki = soco rápido (quadro esticado da própria folha) + rajada de AR (`LFAIR`, `lfAirTick`/`drawLf`: meias-luas brancas e linhas de vento; Snakeman vermelhas, com raios). Gatling: várias rajadas de ar pequenas (sem punhos desenhados). O dono disse que vai mandar um desenho de soco dele — usar no lugar quando chegar.
+- Snakeman: raios vermelhos (`zArcs` ZPAL.red) sempre visíveis (até 5; 8 carregando).
+
 ## Pendências / ideias
 - Vegeta transformado: faltam poses próprias de carregar ki, rajada de ki, soco e chute no ar (hoje usa grito da vitória, soco e chute alto). Se o dono mandar, trocar no `build_vegeta_blue2.py` e no mapa `A`.
 - A segunda folha de "gancho para cima" do Vegeta transformado não foi usada.
