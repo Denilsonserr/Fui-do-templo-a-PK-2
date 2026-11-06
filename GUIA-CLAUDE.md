@@ -237,6 +237,10 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - Braço de borracha agora é o DESENHO do dono (tira de 4 quadros, `novo_lf/v2/braco.png`): recortado sem a manga, atlas `LFARMS` (L = braço comprido, S = punho curto; LH/SH = versões Haki vermelho-escuro para o Snakeman). Pistol/Culverin: `lfArmDraw` estica o braço (L) da mão até o alcance, punho na ponta, e volta. Gatling/Black Mamba: vários punhos (S) espalhados + puffs brancos com miolo cinza e arcos (`LFFIST`, `LFPUFF`, `lfPuff`) — imitando o GIF que o dono mandou (o GIF em si é cena do anime, não dá para recortar).
 - Luffy normal NÃO voa (`startFly` bloqueia; mensagem "SÓ VOA NO GEAR 4"). Snakeman voa.
 
+## v152 — Luffy: braço esticado desenhado REMOVIDO (pedido do dono)
+- O dono não quer o braço esticado (nem o desenhado pelo Claude, nem o desenho dele esticado pelo jogo). Ki/Pistol voltou ao da v150: soco rápido + rajada de ar (`LFAIR`). `LFARMS`/`lfArmDraw` ficam no código mas o `lfArm` nunca é criado. Os punhos da Gatling (`LFFIST`) e os puffs ficaram (o dono aprovou "o resto dos efeitos").
+- Snakeman: raios vermelhos também NA FRENTE do corpo (`lfBoltsFront`, chamado depois do `renderFighter`), além dos de trás.
+
 ## Pendências / ideias
 - Vegeta transformado: faltam poses próprias de carregar ki, rajada de ki, soco e chute no ar (hoje usa grito da vitória, soco e chute alto). Se o dono mandar, trocar no `build_vegeta_blue2.py` e no mapa `A`.
 - A segunda folha de "gancho para cima" do Vegeta transformado não foi usada.

@@ -3292,17 +3292,9 @@ function lfCombo(f,o){lfLoad();f.state='lfc';f.st=0;f.vx=0;f.move=null;f.guard=f
 function lfHand(f){const k=LFK[f.state]?lfKey(f):spriteKey(f),L=SPRH[ssid(f)][k[0]],F=L&&L[Math.min(L.length-1,k[1])];return F?[f.x+f.facing*(F.rx-10),f.y-F.ry]:[f.x+f.facing*90,f.y-170]}
 function lfStep(f){const o=lfOpp(f),t=++f.st,fw=f.facing,form=!!f.form;
   if(f.state==='lfp'){
-    if(t===6){const h=lfHand(f);f.lfArm={x0:h[0],y0:h[1],len:0,max:form?(f.lfS?780:640):(f.lfS?620:500),ty:h[1],out:1,hit:0};SFX.whoosh();G.shake=Math.max(G.shake,f.lfS?5:3);
+    if(t===6){const h=lfHand(f);LFAIR.push({o:f,x:h[0],y:h[1],x0:h[0],dir:fw,vx:fw*(form?30:26),t:0,form,strong:f.lfS,max:form?(f.lfS?760:640):(f.lfS?600:480)});SFX.whoosh();G.shake=Math.max(G.shake,f.lfS?5:3);
       if(f.lfS||form)fzTag(f,form?(f.lfS?'Jet Culverin!':'Culverin!'):'Gomu Gomu no Pistol!')}
-    const A=f.lfArm;
-    if(A){const h=lfHand(f);A.x0=h[0];A.y0=h[1];
-      if(A.out){A.len=Math.min(A.max,A.len+(form?90:72));if(form&&o)A.ty+=((o.y-140)-A.ty)*.2;else A.ty=A.y0;const tx=A.x0+fw*A.len;
-        if(o&&!o.ko&&!A.hit&&Math.sign(o.x-f.x)===fw&&Math.abs(o.x-tx)<70&&A.ty>o.y-280&&A.ty<o.y+10){A.hit=1;A.out=0;
-          applyHit(f,o,{dmg:form?(f.lfS?110:82):(f.lfS?95:65),kb:f.lfS?6:3,hs:f.lfS?20:16,heavy:f.lfS?1:0,px:tx,py:A.ty,kind:'blast'});
-          lfPuff(tx,A.ty,form,1.3);G.shake=Math.max(G.shake,f.lfS?10:5);if(o.hp<=0)ko(f,o)}
-        if(A.len>=A.max)A.out=0}
-      else{A.len=Math.max(0,A.len-(form?110:90));if(A.len<=0)f.lfArm=null}}
-    if(!f.lfArm&&t>=24)neutral(f);if(t>60){f.lfArm=null;neutral(f)}return}
+    if(t>=30)neutral(f);return}
   if(f.state==='lfg'){
     if(t>=10&&t<=48&&t%4===0&&o&&!o.ko&&Math.sign(o.x-f.x)===fw&&Math.abs(o.x-f.x)<(form?420:330)&&Math.abs(o.y-f.y)<150){
       applyHit(f,o,{dmg:form?20:16,kb:.6,hs:7,px:o.x-fw*30+rand(-10,10),py:o.y-rand(110,200),kind:'melee'});spark(o.x-fw*30,o.y-rand(110,200),form?'#ff7a88':'#fff3d0',4,7);if(o.hp<=0)ko(f,o)}
@@ -3352,6 +3344,11 @@ function drawLf(){for(const f of G.p)if(f&&isLf(f)&&f.lfArm&&f.hide<=0){if(f.sta
   ctx.restore()}
 /* aura: normal só carregando (fumaça do GIF em cinza-claro); Snakeman = fumaça leve subindo + raios vermelhos de Haki */
 const LFW=[];
+function lfBoltsFront(f){const ch=f.state==='charge';const A=f.lfZ||(f.lfZ=[]);
+  if(A.length<(ch?6:4)&&Math.random()<(ch?.8:.5)){const n=5+((Math.random()*4)|0);let x=f.x+rand(-55,55),y=f.y-rand(40,240);const pts=[[x,y]];const d=rand(0,6.28);for(let i=0;i<n;i++){x+=Math.cos(d)*rand(8,18)+rand(-10,10);y+=Math.sin(d)*rand(8,18)+rand(-12,12);pts.push([x,y])}A.push({pts,l:0,m:3+((Math.random()*3)|0),w:rand(1.4,2.6)})}
+  ctx.save();ctx.globalCompositeOperation='lighter';ctx.lineJoin='round';ctx.lineCap='round';
+  for(const b of A){b.l++;const a=1-b.l/(b.m+1);for(const [lw,col,al] of [[b.w*5,'#b0101e',.35],[b.w*2.2,'#ff4a5a',.85],[b.w,'#ffe2e6',1]]){ctx.strokeStyle=rgba(col,al*a);ctx.lineWidth=lw;ctx.beginPath();b.pts.forEach((p,i)=>i?ctx.lineTo(p[0],p[1]):ctx.moveTo(p[0],p[1]));ctx.stroke()}}
+  ctx.restore();f.lfZ=A.filter(b=>b.l<b.m)}
 function lfAura(f,k){const t=G.frame,cx=f.x,base=f.y,ch=f.state==='charge';
   if(ch&&LFA.img.complete&&LFA.img.naturalWidth){const i=Math.floor(t/4)%LFA.n,h=(f.form?350:320)*(1+.04*Math.sin(t*.5)),w=h*LFA.w/LFA.h;
     ctx.save();ctx.globalCompositeOperation='screen';ctx.globalAlpha=.42;ctx.translate(cx,base-h*.46);ctx.scale((t>>4)%2?1:-1,1);ctx.drawImage(LFA.img,0,i*LFA.h,LFA.w,LFA.h,-w/2,-h/2,w,h);ctx.restore()}
@@ -4302,7 +4299,7 @@ function render(){
   drawVolFX();drawSRBack();
   const order=G.p.slice().sort((a,b)=>(a.state==='attack'||a.state==='super'||!!a.rushKey)-(b.state==='attack'||b.state==='super'||!!b.rushKey));
   drawIceFloor();drawZFX(0);drawDashTrail();drawFZ(0);
-  for(const f of order)if(!(G.trans&&G.trans.f===f)){renderFighter(f);drawIceBody(f);if(isGj(f)&&f.form)gjFireFront(f)}
+  for(const f of order)if(!(G.trans&&G.trans.f===f)){renderFighter(f);drawIceBody(f);if(isGj(f)&&f.form)gjFireFront(f);if(isLf(f)&&f.form&&f.hide<=0)lfBoltsFront(f)}
   drawZFX(1);drawFZ(1);
   for(const f of G.p){if(f.hide>0||(G.trans&&G.trans.f===f))continue;if((f.state==='charge'||(f.ent&&f.ent.pw))&&!isMd(f)&&!isGj(f)&&!isLf(f)){const KC=auraTex('kic',E(f)),A=AUX.kic;if(KC){ctx.save();ctx.globalCompositeOperation='lighter';const h=440,w=h*A.w/A.h;blitF(KC,A.n,((G.frame+5)/3|0),f.x,f.y-h*.42,w,h,-1,.2);ctx.restore()}}}
   for(const p of G.projs)drawProj(p);
