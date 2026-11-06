@@ -260,3 +260,13 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - l30/l31/l32 (soco1/soco2/chute novos): o zeramento de 30 colunas da borda cortava a capa. Recorte refeito: na faixa de 45px da borda só remove pixels marrom-escuros (fundo), capa preservada.
 - 46 frames com borda reta cortada (fumaça/corpo tocando a borda do recorte) receberam fade de 18px nas bordas (lista em build: l01_3, l12_*, l14_*, l19_*, s01_3/4, s24_3/7 ...).
 - Merge: só as posições (t,i) regeneradas foram trocadas em SPRH.lf/lfs (frames do cache têm tamanho pré-v149; NÃO substituir animações inteiras).
+
+## v155 — otimização (sem perder qualidade)
+- Conferido: o carregamento por partida (v125) continua funcionando — ao entrar numa luta, `freeUnused` solta poses e vídeos dos personagens que não estão nela (testado: Luffy/Gojo → Madara/Goku solta tudo do Luffy e do Gojo).
+- Abertura mais rápida: o menu só precisa das poses paradas de Gojo e Madara → `loadAnims(sid,['idle'])` em vez de `loadSid` (antes carregava ~800 imagens antes de liberar o botão Batalha; abertura ~2x mais rápida). `freeUnused` agora solta também personagens carregados só em parte.
+- Bloom: reduz a tela cheia 1 vez (antes 3) e multiplica com a cópia pequena (`BL3`) — mesmo resultado.
+- Vídeos (transformação/ultimate, `gkFull`): decodifica os próximos 6 quadros em segundo plano (`img.decode()`) → menos travadinhas.
+- Névoa (`drawHaze`) não desenha a camada quando o alfa é 0 (clima neblina).
+- `dominio` (Gojo) fica carregado durante as lutas dele (antes era solto no começo do round e recarregado na hora da expansão). `G._mids` = ids da partida (gravado em `prepMatch`).
+- Bug: se os dois apertassem transformar no mesmo instante, um ficava preso no estado 'transform' (invencível, parado). `startTransform` agora recusa se já há outra transformação (`return false`).
+- Debug: `__dbg.prepMatch`, `__dbg.render`, `__dbg.vmem()` (quadros de vídeo carregados).
