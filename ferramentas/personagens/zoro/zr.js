@@ -8,9 +8,11 @@ const ZRAU={"src":"a/9ddf09d051c5cc.webp","n":5,"w":360,"h":381};ZRAU.img=new Im
   const hb=(an,ac,pad,hh)=>{let rx=0,ry=0;for(const i of ac){const F=ZRN[an][i];if(F.rx>rx){rx=F.rx;ry=F.ry}}rx*=.9;ry*=.9;return[6,-(ry+hh/2),Math.max(120,rx+pad-6),hh]};
   Object.assign(MOVES,{
     zp1:{su:6,ac:6,rc:8,dmg:52,rehit:[3],hb:hb('c1',[3,4],10,170),kb:2.6,hs:17,lean:1.6,next:'zp2',knext:'zp3',cat:'punch',rgSw:1,rgPush:7,zr:1,zv:['c1',[0,1,2],[3,4],[5]]},
-    zp2:{su:5,ac:9,rc:9,dmg:44,rehit:[3,6],hb:hb('c2',[2,3,4],10,190),kb:2.6,hs:16,lean:1.8,next:'zp3',knext:'zp3',cat:'punch',rgSw:1,rgPush:8,zr:2,zv:['c2',[0,1],[2,3,4],[5]]},
-    zair:{su:4,ac:8,rc:8,dmg:50,rehit:[4],hb:hb('c3',[2,3,4],10,200),kb:3,hs:18,air:1,zHover:1,lean:1.4,cat:'punch',rgSw:1,zr:1,zv:['c3',[0,1],[2,3,4],[5]]},
-    zdive:{su:5,ac:14,rc:8,dmg:66,hb:hb('c3',[4],10,230),kb:4,hs:18,air:1,zDive:1,heavy:1,lean:1.2,cat:'kick',rgSw:1,zr:2,zv:['c3',[1,2],[4],[5]]},
+    zp2:{su:5,ac:9,rc:9,dmg:44,rehit:[3,6],hb:hb('c2',[2,3,4],10,190),kb:2.6,hs:16,lean:1.8,next:'zca',knext:'zp3',cat:'punch',rgSw:1,rgPush:8,zr:2,zv:['c2',[0,1],[2,3,4],[5]]},
+    zca:{su:6,ac:9,rc:6,dmg:46,rehit:[4],hb:hb('cmb',[5,6,7],10,240),kb:2.6,hs:17,lean:1.6,next:'zcb',knext:'zp3',cat:'punch',rgSw:1,rgPush:6,zr:1,zv:['cmb',[3,4],[5,6,7],[8]]},
+    zcb:{su:6,ac:15,rc:8,dmg:40,rehit:[4,8,12],hb:hb('cmb',[11,12,13,14,15],10,250),kb:3,hs:16,lean:1.6,next:'zp3',knext:'zp3',cat:'punch',rgSw:1,rgPush:9,zr:2,zv:['cmb',[9,10],[11,12,13,14,15],[18,19]]},
+    zair:{su:4,ac:8,rc:8,dmg:50,rehit:[4],hb:hb('c3',[2],10,200),kb:3,hs:18,air:1,zHover:1,lean:1.4,cat:'punch',rgSw:1,zr:1,zv:['c3',[0],[2],[5]]},
+    zdive:{su:5,ac:14,rc:8,dmg:66,hb:hb('c3',[2],10,230),kb:4,hs:18,air:1,zDive:1,heavy:1,lean:1.2,cat:'kick',rgSw:1,zr:2,zv:['c3',[0],[2],[5]]},
     zp3:{su:8,ac:9,rc:12,dmg:92,hb:hb('dsh',[3,4],30,200),kb:5,launch:-10,launcher:1,heavy:1,lean:2.4,cat:'kick',rgSw:1,zDash:15,zr:3,zv:['dsh',[0,1,2],[3,4],[5]]}})})();
 /* quadro do golpe novo (o sistema antigo do Zoro só tinha 3 quadros por golpe) */
 function zrKey(f){if(f.state==='zrc')return['cmb',Math.min(19,Math.floor(f.st/zrD(f)))];
@@ -19,14 +21,14 @@ function zrKey(f){if(f.state==='zrc')return['cmb',Math.min(19,Math.floor(f.st/zr
     return[V[0],L[Math.min(L.length-1,Math.floor(u*L.length))]]}return null}
 function zrD(f){return f.form?3:4}
 /* Combo do Rei Demônio (só transformado, botão especial) */
-function zrCombo(f,o){f.state='zrc';f.st=0;f.vx=0;f.move=null;f.guard=false;f.zrHeld=false;f.zrK=-1;SFX.whoosh();try{smp('furi',.9,{gap:.04})}catch(e){}}
+function zrCombo(f,o){f.zrW=f.form?1:.38;f.state='zrc';f.st=0;f.vx=0;f.move=null;f.guard=false;f.zrHeld=false;f.zrK=-1;SFX.whoosh();try{smp('furi',.9,{gap:.04})}catch(e){}}
 function zrcStep(f){const o=G.p[0]===f?G.p[1]:G.p[0],t=++f.st,fw=f.facing,D=zrD(f),k=Math.floor(t/D),END=20*D+8,HK={3:22,4:22,5:24,6:24,7:26,8:26,9:28,11:24,12:24,13:26,14:26,15:28};
   if(k===1||k===10)f.x=clamp(f.x+fw*10,40,WW-40);
-  if(!f.zrHeld&&k>=2&&k<=5&&o&&!o.ko&&Math.abs(o.x-f.x)<240&&Math.abs(o.y-f.y)<170&&o.inv<=0){f.zrHeld=true;fzTag(f,'Combo do Rei Demônio!')}
+  if(!f.zrHeld&&k>=2&&k<=5&&o&&!o.ko&&Math.abs(o.x-f.x)<240&&Math.abs(o.y-f.y)<170&&o.inv<=0){f.zrHeld=true;fzTag(f,f.form?'Combo do Rei Demônio!':'Combo do Espadachim!')}
   if(f.zrHeld&&o){const lift=k>=11&&k<=15?Math.min(120,(t-11*D)*6):0;o.state='rushed';o.st=0;o.vx=0;o.vy=0;o.flying=false;o.grounded=lift<=0;o.move=null;o.x=clamp(f.x+fw*120,40,WW-40);o.y=FLOOR-lift;
     if(k!==f.zrK){f.zrK=k;
-      if(HK[k]){applyHit(f,o,{dmg:HK[k],kb:0,hs:5,px:o.x-fw*20,py:o.y-150,kind:'melee',lock:1});G.hitstop=Math.max(G.hitstop,3);G.shake=Math.max(G.shake,5);zrSlashMark(o.x-fw*10,o.y-rand(110,190),fw,1.2);try{smp('sgrd',.5,{gap:.03})}catch(e){}if(o.hp<=0){ko(f,o);f.zrHeld=false}}
-      if(k===16&&f.zrHeld){o.y=FLOOR;o.grounded=true;const h={dmg:130,kb:0,hs:22,heavy:1,px:o.x-fw*10,py:o.y-140,kind:'melee',lock:1};applyHit(f,o,h);f.zrHeld=false;
+      if(HK[k]){applyHit(f,o,{dmg:HK[k]*(f.zrW||1),kb:0,hs:5,px:o.x-fw*20,py:o.y-150,kind:'melee',lock:1});G.hitstop=Math.max(G.hitstop,3);G.shake=Math.max(G.shake,5);zrSlashMark(o.x-fw*10,o.y-rand(110,190),fw,1.2);try{smp('sgrd',.5,{gap:.03})}catch(e){}if(o.hp<=0){ko(f,o);f.zrHeld=false}}
+      if(k===16&&f.zrHeld){o.y=FLOOR;o.grounded=true;const h={dmg:130*(f.zrW||1),kb:0,hs:22,heavy:1,px:o.x-fw*10,py:o.y-140,kind:'melee',lock:1};applyHit(f,o,h);f.zrHeld=false;
         o.state='airhit';o.vx=fw*12;o.vy=-9;o.grounded=false;o.bounced=false;if(!f.finDone&&f.combo>=3)comboFinish(f,o,h);G.shake=Math.max(G.shake,18);G.flash=6;G.flashCol='#d8ffd0';
         for(const a of [-.8,.8])ZRSL.push({x:o.x,y:o.y-140,dir:fw,a,t:0,m:14,big:2.4});ring(o.x,o.y-140,'#7dff6a',260,22,7);flashL(o.x,o.y-120,'#5cff4a',520,.9,20);zrSpark(o.x,o.y-140,24,1.6);if(o.hp<=0)ko(f,o)}}}
   if(k>=3&&k<=16&&t%3===0)zrSpark(f.x+fw*rand(40,180),f.y-rand(40,260),1,1);

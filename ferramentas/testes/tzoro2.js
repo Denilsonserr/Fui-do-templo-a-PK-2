@@ -1,0 +1,16 @@
+const {chromium}=require('playwright');const SH='/home/claude/fui-do-templo-a-pk-2/ferramentas/testes/shots/';
+(async()=>{const b=await chromium.launch();const p=await b.newPage({viewport:{width:915,height:412},deviceScaleFactor:1.5});const errs=[];p.on('pageerror',e=>{errs.push(e.message);console.log('ERR',e.stack)});await p.route(/fonts\.g|firestore/,r=>r.abort());
+await p.goto('file:///home/claude/fui-do-templo-a-pk-2/www/index.html');await p.waitForFunction(()=>!document.getElementById('goSelect').disabled,null,{timeout:120000});
+await p.click('#goSelect');await p.waitForTimeout(400);await p.click('.tile[data-c="zoro"]');await p.click('.tile[data-c="goku"]');await p.click('#goStage');await p.waitForTimeout(300);await p.click('.stc[data-s="cupula"]');await p.click('#goFight');
+await p.waitForFunction(()=>__dbg.G.mode==='fight'&&__dbg.G.phase==='fight',null,{timeout:120000});
+await p.evaluate(()=>{const G=__dbg.G;G.noAI=true;G.timer=999;window.F=n=>new Promise(r=>{const f0=G.frame;const c=()=>G.frame>=f0+n?r():requestAnimationFrame(c);c()});
+ window.K=(k,v)=>{const c={up:'ArrowUp',down:'ArrowDown',punch:'KeyJ',kick:'KeyK',tr:'KeyU',sp:'KeyI'}[k];dispatchEvent(new KeyboardEvent(v?'keydown':'keyup',{code:c,bubbles:true}))};
+ window.tap=async k=>{K(k,1);await F(2);K(k,0);await F(1)};
+ window.reset=async(d)=>{const f=G.p[0],o=G.p[1];f.x=700;o.x=700+(d||150);f.y=o.y=486;f.grounded=o.grounded=true;f.facing=1;o.facing=-1;f.state='idle';o.state='idle';o.inv=0;o.hp=o.hpLag=3600;f.ki=100;f.sb=6;await F(30)};
+ window.LOG=[];(function lp(){const f=G.p[0];if(f.state==='attack')LOG.push(f.mname);requestAnimationFrame(lp)})()});
+const r1=await p.evaluate(async()=>{const G=__dbg.G,o=G.p[1];await reset(140);LOG.length=0;const t0=G.frame;for(let i=0;i<14;i++){await tap('punch');await F(6)}await F(40);return {seq:[...new Set(LOG)],dmg:Math.round(3600-o.hp),frames:G.frame-t0}});console.log('CORRENTE',JSON.stringify(r1));
+const r2=await p.evaluate(async()=>{const G=__dbg.G,o=G.p[1];await reset(140);await tap('sp');await F(130);return {st:G.p[0].state,dmg:Math.round(3600-o.hp)}});console.log('COMBO NORMAL',JSON.stringify(r2));
+const r3=await p.evaluate(async()=>{const G=__dbg.G,o=G.p[1];await reset(140);K('down',1);await tap('sp');K('down',0);await F(10);return {st:G.p[0].state}});console.log('BAIXO+SP',JSON.stringify(r3));
+await p.evaluate(async()=>{const G=__dbg.G,f=G.p[0],o=G.p[1];await reset(140);__dbg.startMove(f,'zca');await F(9);G.hold=true;await new Promise(r=>setTimeout(r,150))});await p.screenshot({path:SH+'zr_zca.png'});await p.evaluate(()=>{__dbg.G.hold=false});
+await p.evaluate(async()=>{const G=__dbg.G,f=G.p[0],o=G.p[1];await F(40);await reset(140);__dbg.startMove(f,'zcb');await F(14);G.hold=true;await new Promise(r=>setTimeout(r,150))});await p.screenshot({path:SH+'zr_zcb.png'});
+console.log(errs);await b.close()})();

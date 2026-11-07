@@ -415,3 +415,8 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - Transformado usa os quadros NORMAIS (`SPRH.zrf` = `SPRH.zr`): sem espada roxa; o roxo fica só nos raios. Aura do tamanho do Zoro (altura 268, largura ×0.8) e mais transparente (alfa .22 + .07 'lighter').
 - Torre: tempo do ranking zerado de novo (`TWCUT` 2026-11-07 22:50 UTC, e `v<180` não conta tempo; envio manda `v:180`). Botão ✏️ NOME no painel (troca quando quiser) e linha "Jogador: …".
 - Ordem completa para remontar: index da v170 → `ferramentas/web/patch_torre.py` → `patch_combo.py` → `patch_v178.py` → `ferramentas/personagens/zoro/patch_zr.py <index> /home/claude/zr_build`.
+
+## v181 — Zoro: golpes do combo no soco, combo também sem transformar
+- No ar (`zair`/`zdive`) só os quadros 1, 3 e 6 da folha z5 (`c3` [0],[2],[5]), pedido do dono.
+- Corrente do soco agora: `zp1` (corte 1 espada) → `zp2` (2 espadas) → `zca` (corte por cima, quadros 3–8 do combo) → `zcb` (giro com arcos, quadros 9–15 + 18–19, 4 acertos) → `zp3` (investida). Chute = investida. CANCELAR NO ACERTO: depois que o golpe acerta, apertar soco/chute no fim dele já sai o próximo (corrente rápida).
+- Especial: transformado = Combo do Rei Demônio (dano cheio); SEM transformar = mesmo combo ("Combo do Espadachim") com 38% do dano (`f.zrW`). Baixo + especial (sem transformar) = Fúria do Demônio (como antes).
