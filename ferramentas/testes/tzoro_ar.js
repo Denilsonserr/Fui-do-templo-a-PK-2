@@ -1,0 +1,14 @@
+const {chromium}=require('playwright');const SH='/home/claude/fui-do-templo-a-pk-2/ferramentas/testes/shots/';
+(async()=>{const b=await chromium.launch();const p=await b.newPage({viewport:{width:915,height:412},deviceScaleFactor:1.5});const errs=[];p.on('pageerror',e=>{errs.push(e.message);console.log('ERR',e.stack)});await p.route(/fonts\.g|firestore/,r=>r.abort());
+await p.goto('file:///home/claude/fui-do-templo-a-pk-2/www/index.html');await p.waitForFunction(()=>!document.getElementById('goSelect').disabled,null,{timeout:120000});
+await p.click('#goSelect');await p.waitForTimeout(400);await p.click('.tile[data-c="zoro"]');await p.click('.tile[data-c="goku"]');await p.click('#goStage');await p.waitForTimeout(300);await p.click('.stc[data-s="cupula"]');await p.click('#goFight');
+await p.waitForFunction(()=>__dbg.G.mode==='fight'&&__dbg.G.phase==='fight',null,{timeout:120000});
+await p.evaluate(()=>{const G=__dbg.G;G.noAI=true;G.timer=999;window.F=n=>new Promise(r=>{const f0=G.frame;const c=()=>G.frame>=f0+n?r():requestAnimationFrame(c);c()});
+ window.K=(k,v)=>{const c={up:'ArrowUp',punch:'KeyJ',kick:'KeyK',tr:'KeyU'}[k];dispatchEvent(new KeyboardEvent(v?'keydown':'keyup',{code:c,bubbles:true}))};
+ window.tap=async k=>{K(k,1);await F(2);K(k,0);await F(1)};
+ window.reset=async(d)=>{const f=G.p[0],o=G.p[1];f.x=700;o.x=700+(d||150);f.y=o.y=486;f.grounded=o.grounded=true;f.facing=1;o.facing=-1;f.state='idle';o.state='idle';o.inv=0;o.hp=o.hpLag=3600;await F(30)}});
+const r1=await p.evaluate(async()=>{const G=__dbg.G,f=G.p[0],o=G.p[1];await reset(130);await tap('up');await F(8);await tap('punch');await F(8);const m=f.mname;await F(30);return {m,dmg:3600-o.hp}});console.log('AR',JSON.stringify(r1));
+await p.evaluate(async()=>{await reset(130);await tap('up');await F(8);await tap('punch');await F(9);__dbg.G.hold=true;await new Promise(r=>setTimeout(r,150))});await p.screenshot({path:SH+'zr_air.png'});await p.evaluate(()=>{__dbg.G.hold=false});
+const r2=await p.evaluate(async()=>{const G=__dbg.G,f=G.p[0],o=G.p[1];await reset(150);await tap('up');await F(14);await tap('kick');await F(6);const m=f.mname;await F(40);return {m,dmg:3600-o.hp,ost:o.state}});console.log('MERGULHO',JSON.stringify(r2));
+await p.evaluate(async()=>{const G=__dbg.G,f=G.p[0];await reset(200);f.sb=6;await tap('tr');let t=0;while(G.trans&&t<600){await F(10);t+=10}await F(40)});await p.screenshot({path:SH+'zr_aura2.png'});
+console.log(errs);await b.close()})();

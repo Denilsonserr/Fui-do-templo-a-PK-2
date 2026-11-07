@@ -4,11 +4,13 @@
    transformado (folha de 20 quadros), aura verde (GIF do dono recolorido) com raios roxos. ================= */
 const ZRN=__ZRN__;
 const ZRAU={"src":"a/9ddf09d051c5cc.webp","n":5,"w":360,"h":381};ZRAU.img=new Image();ZRAU.img.src=ZRAU.src;
-(function(){const S0=SPRH.zr,S1=SPRH.zrf;for(const k in ZRN){S0[k]=ZRN[k];S1[k]=ZRN[k]}
+(function(){const S0=SPRH.zr,S1=SPRH.zrf;for(const k in S0)S1[k]=S0[k];/* transformado usa as espadas normais (sem roxo) */for(const k in ZRN){S0[k]=ZRN[k];S1[k]=ZRN[k]}
   const hb=(an,ac,pad,hh)=>{let rx=0,ry=0;for(const i of ac){const F=ZRN[an][i];if(F.rx>rx){rx=F.rx;ry=F.ry}}rx*=.9;ry*=.9;return[6,-(ry+hh/2),Math.max(120,rx+pad-6),hh]};
   Object.assign(MOVES,{
     zp1:{su:6,ac:6,rc:8,dmg:52,rehit:[3],hb:hb('c1',[3,4],10,170),kb:2.6,hs:17,lean:1.6,next:'zp2',knext:'zp3',cat:'punch',rgSw:1,rgPush:7,zr:1,zv:['c1',[0,1,2],[3,4],[5]]},
     zp2:{su:5,ac:9,rc:9,dmg:44,rehit:[3,6],hb:hb('c2',[2,3,4],10,190),kb:2.6,hs:16,lean:1.8,next:'zp3',knext:'zp3',cat:'punch',rgSw:1,rgPush:8,zr:2,zv:['c2',[0,1],[2,3,4],[5]]},
+    zair:{su:4,ac:8,rc:8,dmg:50,rehit:[4],hb:hb('c3',[2,3,4],10,200),kb:3,hs:18,air:1,zHover:1,lean:1.4,cat:'punch',rgSw:1,zr:1,zv:['c3',[0,1],[2,3,4],[5]]},
+    zdive:{su:5,ac:14,rc:8,dmg:66,hb:hb('c3',[4],10,230),kb:4,hs:18,air:1,zDive:1,heavy:1,lean:1.2,cat:'kick',rgSw:1,zr:2,zv:['c3',[1,2],[4],[5]]},
     zp3:{su:8,ac:9,rc:12,dmg:92,hb:hb('dsh',[3,4],30,200),kb:5,launch:-10,launcher:1,heavy:1,lean:2.4,cat:'kick',rgSw:1,zDash:15,zr:3,zv:['dsh',[0,1,2],[3,4],[5]]}})})();
 /* quadro do golpe novo (o sistema antigo do Zoro só tinha 3 quadros por golpe) */
 function zrKey(f){if(f.state==='zrc')return['cmb',Math.min(19,Math.floor(f.st/zrD(f)))];
@@ -54,10 +56,16 @@ function zrFront(f){if(f.hide>0)return;const F=zrFrame(f);if(!F||!F.fl)return;if
     if(G.hitstop<=0)for(let i=0;i<2;i++){const q=F.fp[(Math.random()*F.fp.length)|0];addP({x:f.x+fw*q[0]+rand(-6,6),y:f.y-q[1]+rand(-6,6),vx:rand(-.8,.8),vy:-rand(1,2.6),life:rand(12,22),max:22,c:pick(['#3dff3a','#8cff6a','#d8ffd0']),type:'glow',sz:rand(3,6),g:0})}}}
 /* aura transformado/carregando: GIF do dono em verde + raios roxos em volta */
 function zrAura(f,k){const t=G.frame,cx=f.x,base=f.y,ch=f.state==='charge';if(!f.form&&!ch)return;if(!ZRAU.img.complete||!ZRAU.img.naturalWidth)return;
-  const i=Math.floor(t/4)%ZRAU.n,h=(ch?(f.form?340:300):300)*(1+.04*Math.sin(t*.6)),w=h*ZRAU.w/ZRAU.h;
-  ctx.save();ctx.translate(cx,base-h*.46);ctx.scale((t>>4)%2?f.facing:-f.facing,1);
-  ctx.globalAlpha=f.form?(ch?.55:.42):.32;ctx.drawImage(ZRAU.img,0,i*ZRAU.h,ZRAU.w,ZRAU.h,-w/2,-h/2,w,h);
-  ctx.globalCompositeOperation='lighter';ctx.globalAlpha=f.form?(ch?.24:.15):.1;ctx.drawImage(ZRAU.img,0,i*ZRAU.h,ZRAU.w,ZRAU.h,-w/2,-h/2,w,h);ctx.restore();
-  if(f.form&&t%3===0){ctx.save();ctx.globalCompositeOperation='lighter';for(let j=0;j<2;j++){const a0=rand(0,TAU),r0=rand(70,120),x0=cx+Math.cos(a0)*r0*.7,y0=base-140+Math.sin(a0)*r0;
+  /* do tamanho do Zoro (altura de pé ~265) e meio transparente */
+  const i=Math.floor(t/4)%ZRAU.n,h=(ch?285:268)*(1+.03*Math.sin(t*.6)),w=h*ZRAU.w/ZRAU.h*.8;
+  ctx.save();ctx.translate(cx,base-h*.5);ctx.scale((t>>4)%2?f.facing:-f.facing,1);
+  ctx.globalAlpha=f.form?(ch?.3:.22):.18;ctx.drawImage(ZRAU.img,0,i*ZRAU.h,ZRAU.w,ZRAU.h,-w/2,-h/2,w,h);
+  ctx.globalCompositeOperation='lighter';ctx.globalAlpha=f.form?(ch?.12:.07):.05;ctx.drawImage(ZRAU.img,0,i*ZRAU.h,ZRAU.w,ZRAU.h,-w/2,-h/2,w,h);ctx.restore();
+  if(f.form&&t%3===0){ctx.save();ctx.globalCompositeOperation='lighter';for(let j=0;j<2;j++){const a0=rand(0,TAU),r0=rand(55,95),x0=cx+Math.cos(a0)*r0*.6,y0=base-135+Math.sin(a0)*r0*1.1;
       zrBolt(x0,y0,x0+rand(-60,60),y0+rand(-70,70),'rgba(180,80,255,.95)',rand(1.4,2.4),.9)}ctx.restore()}
   if(G.hitstop<=0&&t%(ch?2:4)===0)addP({x:cx+rand(-70,70),y:base-rand(10,250),vx:rand(-.4,.4),vy:-rand(1.4,3),life:rand(18,30),max:30,c:pick(['#3dff3a','#8cff6a','#d8ffd0','#c58bff']),type:'glow',sz:rand(2.5,5),g:0})}
+
+/* CORTE METEORO: chute no ar = mergulha cortando; ao tocar o chão solta uma onda de corte em volta */
+function zrDiveLand(f){const o=G.p[0]===f?G.p[1]:G.p[0],fw=f.facing;G.shake=Math.max(G.shake,14);ring(f.x+fw*60,FLOOR-10,'#5cff4a',200,18,6);flashL(f.x+fw*60,FLOOR-60,'#5cff4a',360,.7,14);zrSpark(f.x+fw*60,FLOOR-30,18,1.3);for(let i=0;i<8;i++)debris(f.x+rand(-120,160),FLOOR);
+  for(const a of [-.25,.25])ZRSL.push({x:f.x+fw*80,y:FLOOR-40,dir:fw,a,t:0,m:12,big:1.8});txt(f.x,f.y-280,'CORTE METEORO!','#8cff6a');try{SFX.boom();smp('sgrd',.7,{gap:.05})}catch(e){}
+  if(o&&!o.ko&&o.inv<=0&&Math.abs(o.x-(f.x+fw*60))<200&&o.y>FLOOR-200){const h={dmg:76,kb:5,hs:20,heavy:1,launch:-10,launcher:1,px:o.x-fw*20,py:o.y-120,kind:'melee'};if(applyHit(f,o,h)&&o.state!=='blockstun'){o.state='airhit';o.vy=-10;o.vx=fw*4;o.grounded=false;o.bounced=false}if(o.hp<=0)ko(f,o)}}

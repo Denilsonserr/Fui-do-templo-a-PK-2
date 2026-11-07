@@ -138,3 +138,4 @@
 .twSt b.twCh{display:flex;align-items:center;gap:.3em;font-size:1.4em}
 .twSt b.twCh img{width:1.4em;height:1.4em;border-radius:50%;object-fit:cover;border:1px solid #ff5a5a}
 .twRk.c .rw{grid-template-columns:2.6em 2.4em 1fr 4.5em 7em 0}.twRk.c .rw .tr{white-space:nowrap}
+#twInfo .nm{font-size:.72em;color:#d6c7c7}#twInfo .nm b{color:#7dff9a}

@@ -5,7 +5,7 @@ import json,numpy as np,os,hashlib,sys,time
 sys.path.insert(0,'/home/claude/fui-do-templo-a-pk-2/ferramentas/ia');import esr
 from PIL import Image
 RES=2.4;OUT='out';os.makedirs(OUT,exist_ok=True);T0=time.time()
-NF={'z1':6,'z2':6,'z3':6,'z4':20}
+NF={'z1':6,'z2':6,'z3':6,'z4':20,'z5':6}
 def body_mask(a):
     al=a[...,3]>140;g,r,b=a[...,1],a[...,0],a[...,2];return al&~((g>r+25)&(g>b+15))
 def eff_mask(a):
@@ -41,5 +41,6 @@ def frame(t,i):
         fr['fl']=sv(fl);ey,ex=np.where(eff_mask(a));sel=np.random.default_rng(i).choice(len(ex),min(40,len(ex)),replace=False)
         fr['fp']=[[round((ex[j]-ax)*k),round((ay-ey[j])*k)] for j in sel]
     print(t,i,round(time.time()-T0),flush=True);return fr
-J={'c1':[frame('z1',i) for i in range(6)],'c2':[frame('z2',i) for i in range(6)],'dsh':[frame('z3',i) for i in range(6)],'cmb':[frame('z4',i) for i in range(20)]}
+CA=json.load(open('zr_new.json')) if os.path.exists('zr_new.json') and len(sys.argv)>1 else None
+J=dict(CA,c3=[frame('z5',i) for i in range(6)]) if CA else {'c3':[frame('z5',i) for i in range(6)],'c1':[frame('z1',i) for i in range(6)],'c2':[frame('z2',i) for i in range(6)],'dsh':[frame('z3',i) for i in range(6)],'cmb':[frame('z4',i) for i in range(20)]}
 json.dump(J,open('zr_new.json','w'),separators=(',',':'));print('DONE',S,round(time.time()-T0))

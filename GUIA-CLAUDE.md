@@ -408,3 +408,10 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - Velocidade/dano: andar 4.5→5.8, força 1.1→1.25, velocidade ×1.15 normal / ×1.95 transformado, golpes +30% normal / +70% transformado (`f.zrac`).
 - Transformado: aura = GIF do dono em VERDE com raios ROXOS (`zrAura`); especial (botão sp) = COMBO DO REI DEMÔNIO (`zrc`, folha z4, 12 acertos + final em X, segura o rival). Normal: especial continua Fúria do Demônio. Ultimate continua Corte do Rei.
 - Teste `ferramentas/testes/tzoro.js`.
+
+## v180 — Zoro: ataques de cima, sem espada roxa, aura menor; Torre: tempo zerado de novo + trocar nome
+- Folha nova z5 (6 quadros, 2 espadas com arcos) → animação `c3`. `build_zoro.py add` só monta o que falta e reaproveita o `zr_new.json`.
+- No AR (é o "ataque de cima"): soco = `zair` (corte duplo, 2 acertos, segura no ar `zHover`); chute = `zdive` CORTE METEORO (mergulha `vy=19`; ao tocar o chão `zrDiveLand`: onda de corte, lança quem estiver perto).
+- Transformado usa os quadros NORMAIS (`SPRH.zrf` = `SPRH.zr`): sem espada roxa; o roxo fica só nos raios. Aura do tamanho do Zoro (altura 268, largura ×0.8) e mais transparente (alfa .22 + .07 'lighter').
+- Torre: tempo do ranking zerado de novo (`TWCUT` 2026-11-07 22:50 UTC, e `v<180` não conta tempo; envio manda `v:180`). Botão ✏️ NOME no painel (troca quando quiser) e linha "Jogador: …".
+- Ordem completa para remontar: index da v170 → `ferramentas/web/patch_torre.py` → `patch_combo.py` → `patch_v178.py` → `ferramentas/personagens/zoro/patch_zr.py <index> /home/claude/zr_build`.

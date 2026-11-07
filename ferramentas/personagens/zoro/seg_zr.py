@@ -3,7 +3,7 @@ import numpy as np,os,sys
 from PIL import Image
 from scipy import ndimage as nd
 from skimage.segmentation import watershed
-SH={'z1':('z01_corte1.png',[(0,445),(445,887)],3),'z2':('z02_corte2.png',[(0,450),(450,887)],3),'z3':('z03_investida.png',[(0,490),(490,887)],3),'z4':('z04_alpha.png',[(0,365),(365,725)],10)}
+SH={'z1':('z01_corte1.png',[(0,445),(445,887)],3),'z2':('z02_corte2.png',[(0,450),(450,887)],3),'z3':('z03_investida.png',[(0,490),(490,887)],3),'z4':('z04_alpha.png',[(0,365),(365,725)],10),'z5':('z05_cima.png',[(0,437),(437,887)],3)}
 def run(a,tag,N,off,yoff):
     rgb=a[...,:3];al=a[...,3]/255.;m=al>.06;H,W=m.shape;cw=W/N
     g,r,b=rgb[...,1],rgb[...,0],rgb[...,2];eff=(g>r+25)&(g>b+15)
