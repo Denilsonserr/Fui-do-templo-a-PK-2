@@ -1,11 +1,11 @@
 /* ================= v168: botões e HUD personalizados por personagem (artes do dono; normal e transformado). Só muda a aparência. ================= */
-const HUDA=__HUDA__;const HUDK=942/540;
+const HUDA=__HUDA__;const HUDA_ON=false; /* v170: o dono pediu o HUD de vida ANTIGO; só os botões usam as artes */const HUDK=942/540;
 function huImg(src){const C=huImg.c||(huImg.c={});if(!C[src]){const i=new Image();i.decoding='async';i.src=src;C[src]=i}const i=C[src];return i.complete&&i.naturalWidth?i:null}
 function huArt(f){const A=f&&HUDA[f.def.id];return A?A[f.form&&A[1]?1:0]:null}
 const HUTH={naruto:{c:'#ffb020',c2:'#fff2b0',bc:'#ffe23a',bc2:'#fffbe0'},rengoku:{c:'#ff5a10',c2:'#ffd080',bc:'#ff2a20',bc2:'#ffd0c8',sr:1},gojo:{c:'#a040ff',c2:'#e8c8ff',bc:'#c070ff',bc2:'#f4e8ff'}};
 const HUFL=[[],[]];
 const PORTF={naruto:'a/2e1f82d79ae4b7.jpg'};
-function hudArtDraw(f,side,sf){const own=huArt(f),V=own||(side===1?huArt(G.p[0]):null);if(!V)return false;const P=V.hud[side?'R':'L'],k=1/HUDK,full=huImg(P.full),emp=huImg(P.empty);if(!full||!emp)return false;
+function hudArtDraw(f,side,sf){if(!HUDA_ON)return false;const own=huArt(f),V=own||(side===1?huArt(G.p[0]):null);if(!V)return false;const P=V.hud[side?'R':'L'],k=1/HUDK,full=huImg(P.full),emp=huImg(P.empty);if(!full||!emp)return false;
   const x0=side?VW-sf-P.w*k:sf,y0=0,W=P.w*k,Hh=P.h*k,t=G.frame;
   ctx.save();ctx.drawImage(emp,x0,y0,W,Hh);
   const B=P.bars,LY=Math.max(1,Math.ceil(f.hp/LAYER)),base=(LY-1)*LAYER,fr=clamp((f.hp-base)/LAYER,0,1),lag=clamp(((f.hpLag==null?f.hp:f.hpLag)-base)/LAYER,0,1);
@@ -37,7 +37,7 @@ function hudArtDraw(f,side,sf){const own=huArt(f),V=own||(side===1?huArt(G.p[0])
       jag(ctx,boltLine(X0,y0+a[1]*k,X1,y0+b[1]*k+rand(-6,6),7,10),T.bc,T.bc2,1.1)}}
     ctx.restore()}
   return true}
-function hudArtTimer(cx){const V=huArt(G.p[0]);if(!V)return false;const T=V.hud.T,im=huImg(T.img);if(!im)return false;const k=1/HUDK,W=T.w*k,Hh=T.h*k,x0=cx-W/2;
+function hudArtTimer(cx){if(!HUDA_ON)return false;const V=huArt(G.p[0]);if(!V)return false;const T=V.hud.T,im=huImg(T.img);if(!im)return false;const k=1/HUDK,W=T.w*k,Hh=T.h*k,x0=cx-W/2;
   ctx.drawImage(im,x0,0,W,Hh);const t=G.frame,TH=HUTH[G.p[0].def.id]||{c:'#6ab8ff'};
   ctx.textAlign='center';ctx.font='30px Bangers, Impact, sans-serif';const warn=G.tlim!==0&&G.timer<=10&&t%30<15;ctx.save();ctx.shadowColor=warn?'#ff3b30':TH.c;ctx.shadowBlur=12;ctx.fillStyle=warn?'#ff6b5e':'#ffffff';
   ctx.fillText(G.tlim===0?'∞':String(G.timer).padStart(2,'0'),cx,T.cy*k+11);ctx.restore();

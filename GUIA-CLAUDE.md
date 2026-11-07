@@ -351,3 +351,6 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 ## v169 — HUD: rival sem arte e retratos
 - Rival SEM arte própria agora usa o HUD do jogador (metade direita da arte do P1) em vez do HUD antigo (o dono achou que ficava "bugado" misturado). Fogo/raios do HUD só aparecem em quem tem arte própria.
 - O círculo do retrato da arte agora mostra a foto do personagem (`IMG[id]`), espelhada do lado direito, com escurecer no K.O. e vermelho ao tomar golpe. Transformado usa `PORTF[id]` se existir (Naruto Modo Kurama = rosto recortado da imagem do Kurama do dono); senão a foto normal. Centro/raio do círculo: `pc` de cada metade no `hud.json` (achado por Hough).
+
+## v170 — HUD de vida ANTIGO de volta (pedido do dono)
+- O dono achou o HUD de vida das artes "bugado": `HUDA_ON=false` desliga `hudArtDraw`/`hudArtTimer` (barra de vida, ki, energia, retrato e timer voltam ao desenho antigo). Ficam SÓ os botões e o joystick das artes (normal/transformado, com fogo/raios nos botões).
