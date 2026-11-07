@@ -12,7 +12,8 @@ const TWTR={win:{n:'Vitória',i:'🏆',d:'Vencer um andar',p:1},rap:{n:'Relâmpa
   fio:{n:'Por um Fio',i:'🩸',d:'Vencer com menos de 15% de vida',p:2},cmb:{n:'Mestre do Combo',i:'👊',d:'Fazer um combo de 10 golpes ou mais',p:1},ult:{n:'Ultimate!',i:'💥',d:'Usar uma Ultimate na luta',p:1},
   boss:{n:'Caçador de Chefe',i:'👑',d:'Derrotar o chefe final',p:3},bossr:{n:'Rei Relâmpago',i:'🔥',d:'Derrotar o chefe em menos de 60 segundos',p:4},
   tor:{n:'Torre Conquistada',i:'🏯',d:'Vencer os 7 andares',p:5},spd:{n:'Speedrun',i:'⏱️',d:'Completar a torre em menos de 6 minutos',p:5},lend:{n:'Bênção Lendária',i:'🌟',d:'Ganhar uma passiva lendária',p:1}};
-const TW={on:false,pick:null,opps:[],fl:0,rev:false,hp:1,pas:{vida:0,dano:0,vel:0},time:0,tr:[],fs:null,busy:false,sent:false,diff0:1,last:null};
+const TWOB=[2,3,3,4,5,6,7],TWPB=4,TWMB=7;
+const TW={on:false,pick:null,opps:[],fl:0,rev:false,hp:1,bars:TWPB,hpv:TWPB*LAYER,pas:{vida:0,dano:0,vel:0},time:0,tr:[],fs:null,busy:false,sent:false,diff0:1,last:null};
 window.__TW=TW;
 const twLS={g:(k,d)=>{try{const v=localStorage.getItem(k);return v==null?d:JSON.parse(v)}catch(e){return d}},s:(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
 const twEsc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -45,13 +46,13 @@ function twRender(){twBuild();
   const me=$('twMe').querySelector('img');const src=fullSrc(TW.pick);if(me.getAttribute('src')!==src)me.src=src;
   $('twFl').textContent=(TW.on&&TW.fl===TWN-1?'CHEFE':'ANDAR '+Math.min(TWN,TW.fl+(TW.on?1:0))+'/'+TWN);
   $('twTm').textContent=twFmt(TW.time);$('twTr').textContent=twTrofP();
-  const hp=Math.round(TW.hp*100);$('twHp').style.width=hp+'%';$('twHpT').textContent=hp+'%';$('twHp').className=hp<30?'lo':hp<60?'md':'';
+  TW.hp=TW.hpv/(TW.bars*LAYER);const hp=Math.round(TW.hp*100);$('twHp').style.width=hp+'%';$('twHpT').textContent=TW.bars+' barras';$('twHp').className=hp<30?'lo':hp<60?'md':'';
   $('twPs').innerHTML=TWPT.map(p=>`<span>${p.i} ${p.n==='VELOCIDADE'?'VEL.':p.n} <b>+${TW.pas[p.k]}%</b></span>`).join('');
   const R=twLS.g('tw_rec',null);$('twRec').innerHTML=R?`Recorde: <b>${R.andar}/7</b> andares · ${twFmt(R.tempo)} · 🏆${R.trof}`:'Recorde: nenhum ainda';
   const L=$('twGoL');L.textContent=!TW.on?'':TW.busy?'...':TW.rev?(TW.fl===TWN-1?'LUTAR: CHEFE!':'LUTAR: ANDAR '+(TW.fl+1)):'';L.hidden=!TW.on;
   $('twGo').classList.toggle('off',TW.busy)}
 function twOpen(){if(!G.pick||G.pick==='random'||!CH[G.pick])G.pick=ALLC[(Math.random()*ALLC.length)|0];
-  TW.pick=G.pick;TW.on=false;TW.opps=[];TW.fl=0;TW.rev=false;TW.hp=1;TW.pas={vida:0,dano:0,vel:0};TW.time=0;TW.tr=[];TW.busy=false;TW.last=null;
+  TW.pick=G.pick;TW.on=false;TW.opps=[];TW.fl=0;TW.rev=false;TW.hp=1;TW.bars=TWPB;TW.hpv=TWPB*LAYER;TW.pas={vida:0,dano:0,vel:0};TW.time=0;TW.tr=[];TW.busy=false;TW.last=null;
   twBuild();twRender();twModal(null);showScreen('tower');layoutTw()}
 function layoutTw(){}
 function twToast(t,c){const T=$('twToast');if(!T)return;T.textContent=t;T.style.color=c||'#ffd23f';T.classList.remove('on');void T.offsetWidth;T.classList.add('on')}
@@ -59,10 +60,10 @@ function twToast(t,c){const T=$('twToast');if(!T)return;T.textContent=t;T.style.
 function twGo(){if(TW.busy||!$('twModal').hidden)return;audioInit();
   if(!TW.on){twStart();return}
   if(TW.rev)twFight()}
-function twStart(){TW.opps=twShuf(TWC.filter(x=>x!==TW.pick)).slice(0,TWN);TW.on=true;TW.fl=0;TW.rev=false;TW.hp=1;TW.pas={vida:0,dano:0,vel:0};TW.time=0;TW.tr=[];TW.sent=false;TW.last=null;TW.diff0=G.diff;
+function twStart(){TW.opps=twShuf(TWC.filter(x=>x!==TW.pick)).slice(0,TWN);TW.on=true;TW.fl=0;TW.rev=false;TW.hp=1;TW.bars=TWPB;TW.hpv=TWPB*LAYER;TW.pas={vida:0,dano:0,vel:0};TW.time=0;TW.tr=[];TW.sent=false;TW.last=null;TW.diff0=G.diff;
   twSfx('whoosh');try{nv('vMChallenge',.05,1)}catch(e){}twRender();setTimeout(()=>twReveal(0),350)}
 function twReveal(i){TW.rev=true;twRender();const el=twSlot(i);el.classList.add('anim');twSfx('boom');
-  twToast(i===TWN-1?'👑 CHEFE FINAL: '+CH[TW.opps[i]].name:'ANDAR '+(i+1)+': '+CH[TW.opps[i]].name,i===TWN-1?'#ffc531':'#ff5a5a');try{fsTry()}catch(e){}}
+  twToast((i===TWN-1?'👑 CHEFE FINAL: ':'ANDAR '+(i+1)+': ')+CH[TW.opps[i]].name+' · '+TWOB[i]+' BARRAS',i===TWN-1?'#ffc531':'#ff5a5a');try{fsTry()}catch(e){}}
 function twFight(){if(TW.busy)return;TW.busy=true;twRender();twSfx('whoosh');
   G.gmode='torre';G.opp=TW.opps[TW.fl];G.diff=[0,0,1,1,2,2,3][TW.fl];
   const sk=Object.keys(STG).filter(k=>!STG[k].hid);G.nextStg=sk[(Math.random()*sk.length)|0];
@@ -70,19 +71,19 @@ function twFight(){if(TW.busy)return;TW.busy=true;twRender();twSfx('whoosh');
   const PM=prepMatch([G.pick,G.opp],G.nextStg);showVS(()=>PM.then(()=>{vsLoadEnd();TW.busy=false;startMatch()}),PM)}
 /* chamado no fim do setupFighters: vida que sobrou, passivas e dificuldade do andar */
 function twApply(){if(!(TW.on&&G.gmode==='torre'))return;const [p,o]=G.p,b=TW.fl===TWN-1;
-  p.hp=p.hpLag=Math.max(1,Math.round(MAXHP*TW.hp));p.tdm=1+TW.pas.dano/100;p.tsp=1+TW.pas.vel/100;p.tdf=1/(1+TW.pas.vida/100);
-  o.tdm=1+.07*TW.fl;o.tdf=b?.6:1-.035*TW.fl;if(TW.fl>=3)o.ki=60;if(b){o.ki=100;o.sb=Math.max(o.sb||0,SB_COST)}
-  TW.fs={t:0,cmb:0,ult:0,hp0:TW.hp}}
+  p.mhp=TW.bars*LAYER;p.hp=p.hpLag=Math.max(1,Math.min(p.mhp,Math.round(TW.hpv)));p.tdm=1+TW.pas.dano/100;p.tsp=1+TW.pas.vel/100;p.tdf=1/(1+TW.pas.vida/100);
+  o.mhp=TWOB[TW.fl]*LAYER;o.hp=o.hpLag=o.mhp;o.tdm=b?1.6:1+.08*TW.fl;o.tdf=b?.85:1;if(TW.fl>=3)o.ki=60;if(b){o.ki=100;o.sb=Math.max(o.sb||0,SB_COST);o.tsp=1.12}
+  TW.fs={t:0,cmb:0,ult:0,hp0:p.hp/p.mhp}}
 function twTick(){const F=TW.fs;if(!F||!G.p)return;F.t++;const c=G.p[0].combo||0;if(c>F.cmb)F.cmb=c}
-function twBossGo(){if(!(TW.on&&G.gmode==='torre'&&TW.fl===TWN-1&&G.p))return;const o=G.p[1];
+function twBossGo(){if(!(TW.on&&G.gmode==='torre'&&G.p))return;if(G.tlim!==0)G.timer=Math.min(240,60+20*TWOB[TW.fl]);if(TW.fl!==TWN-1)return;const o=G.p[1];
   banner('CHEFE FINAL','#ffc531',90,o.def.name+' · TRANSFORMADO');if(o.form)return;o.sb=Math.max(o.sb||0,SB_COST);try{startTransform(o)}catch(e){}}
 function twAfter(w){G.mode='tower';$('controls').hidden=true;$('pauseBtn').hidden=true;rainSound(0);G.paused=false;
   const F=TW.fs||{t:0,cmb:0,ult:0,hp0:TW.hp},secs=F.t/60,p=G.p[0];TW.time+=secs;
   if(w!==0){twFinish(false);return}
-  const hpE=Math.max(.01,p.hp/MAXHP),boss=TW.fl===TWN-1,ks=['win'];
+  const hpE=Math.max(.01,p.hp/(p.mhp||MAXHP)),boss=TW.fl===TWN-1,ks=['win'];
   if(secs<30)ks.push('rap');if(F.hp0-hpE<=.02)ks.push('int');if(hpE<.15)ks.push('fio');if(F.cmb>=10)ks.push('cmb');if(F.ult>0)ks.push('ult');
   if(boss){ks.push('boss');if(secs<60)ks.push('bossr')}
-  TW.hp=hpE;const won=TW.fl;TW.fl++;TW.rev=false;
+  TW.hpv=Math.max(1,p.hp);TW.hp=TW.hpv/(TW.bars*LAYER);const won=TW.fl;TW.fl++;TW.rev=false;
   if(TW.fl>=TWN){ks.push('tor');if(TW.time<360)ks.push('spd')}
   for(const k of ks)TW.tr.push({k,fl:won});
   try{nv(TW.fl>=TWN?'vCongratulations':['vEWin','vEWinner','vEVictory'][(Math.random()*3)|0],.2,1)}catch(e){}
@@ -91,13 +92,15 @@ function twAfter(w){G.mode='tower';$('controls').hidden=true;$('pauseBtn').hidde
   setTimeout(()=>{if(TW.fl>=TWN)twFinish(true,false,ks);else twPassive(ks,won)},1500)}
 function twTrofHTML(ks){return ks.map((k,i)=>`<span class="twT" style="animation-delay:${i*.12}s"><i>${TWTR[k].i}</i><b>${TWTR[k].n}</b><span>+${TWTR[k].p}</span></span>`).join('')}
 function twRoll(){let r=Math.random()*100;for(const R of TWRAR){if((r-=R.w)<0)return R}return TWRAR[0]}
+const TWBAR={k:'barra',n:'BARRA DE VIDA',i:'💚',d:'+1 barra de vida (máx. 7)'};
 function twPassive(ks,won){const opts=twShuf(TWPT.slice()).map((p,i)=>{const R=twRoll();return {p,R,v:R.v[TWPT.indexOf(p)]}});
+  if(TW.bars<TWMB&&Math.random()<.3){const i=(Math.random()*3)|0;opts[i]={p:TWBAR,R:Math.random()<.35?TWRAR[3]:TWRAR[2],v:1}}
   twModal(`<div class="twM"><h3>ANDAR ${won+1} VENCIDO!</h3><div class="twTs">${twTrofHTML(ks)}</div>
-    <h4>ESCOLHA UMA PASSIVA</h4><div class="twPs">${opts.map((o,i)=>`<button class="twp ${o.R.k}" data-i="${i}" style="--c:${o.R.c};animation-delay:${.25+i*.15}s"><span class="rr">${o.R.n}</span><span class="ic">${o.p.i}</span><b>+${o.v}%</b><span class="nm">${o.p.n}</span><span class="ds">${o.p.d}</span></button>`).join('')}</div>
-    <p class="twH">Você vai recuperar <b>60%</b> da vida antes da próxima luta.</p></div>`);
+    <h4>ESCOLHA UMA PASSIVA</h4><div class="twPs">${opts.map((o,i)=>`<button class="twp ${o.R.k}" data-i="${i}" style="--c:${o.R.c};animation-delay:${.25+i*.15}s"><span class="rr">${o.R.n}</span><span class="ic">${o.p.i}</span><b>+${o.v}${o.p.k==='barra'?'':'%'}</b><span class="nm">${o.p.n}</span><span class="ds">${o.p.d}</span></button>`).join('')}</div>
+    <p class="twH">Você vai recuperar <b>60%</b> da vida antes da próxima luta. Próximo rival: <b>${TWOB[won+1]||7} barras</b>.</p></div>`);
   if(opts.some(o=>o.R.k==='lend'))twSfx('powerUp');
-  document.querySelectorAll('#twModal .twp').forEach(b=>b.onclick=()=>{const o=opts[+b.dataset.i];TW.pas[o.p.k]+=o.v;if(o.R.k==='lend'&&!TW.tr.some(t=>t.k==='lend'))TW.tr.push({k:'lend',fl:won});
-    twSfx('powerUp');b.classList.add('pick');setTimeout(()=>{twModal(null);const h0=TW.hp;TW.hp=Math.min(1,TW.hp+.6);twRender();twToast('+'+Math.round((TW.hp-h0)*100)+'% VIDA · '+o.p.i+' +'+o.v+'% '+o.p.n,'#7dff9a');
+  document.querySelectorAll('#twModal .twp').forEach(b=>b.onclick=()=>{const o=opts[+b.dataset.i];if(o.p.k==='barra'){TW.bars=Math.min(TWMB,TW.bars+1);TW.hpv+=LAYER}else TW.pas[o.p.k]+=o.v;if(o.R.k==='lend'&&!TW.tr.some(t=>t.k==='lend'))TW.tr.push({k:'lend',fl:won});
+    twSfx('powerUp');b.classList.add('pick');setTimeout(()=>{twModal(null);const M=TW.bars*LAYER,h0=TW.hpv;TW.hpv=Math.min(M,TW.hpv+.6*M);twRender();twToast(o.p.k==='barra'?'💚 +1 BARRA DE VIDA ('+TW.bars+')':'+'+Math.round((TW.hpv-h0)/M*100)+'% VIDA · '+o.p.i+' +'+o.v+'% '+o.p.n,'#7dff9a');
       setTimeout(()=>twReveal(TW.fl),900)},380)})}
 function twFinish(won,quit,ks){const andar=won?TWN:TW.fl,rec={andar,tempo:Math.round(TW.time),trof:twTrofP(),char:TW.pick,d:Date.now()};
   TW.on=false;TW.busy=false;G.diff=TW.diff0;if(!won&&!quit)try{nv('vGameOver',.3,1)}catch(e){}
@@ -154,4 +157,4 @@ function twBackF(){if(!$('twModal').hidden)return;twSfx('whoosh');
 function twQuitFight(){G.paused=false;rainSound(0);$('controls').hidden=true;$('pauseBtn').hidden=true;G.mode='tower';TW.time+=(TW.fs?TW.fs.t:0)/60;twFinish(false,true)}
 /* ultimates usadas pelo jogador (troféu) */
 {const _sr=trySR;trySR=function(f,o){const r=_sr(f,o);if(r&&TW.on&&TW.fs&&G.p&&f===G.p[0])TW.fs.ult++;return r}}
-LV[3]={react:5,agg:.92,blk:.8,combo:.97,idle:3};
+LV[3]={react:3,agg:.97,blk:.88,combo:1,idle:1};

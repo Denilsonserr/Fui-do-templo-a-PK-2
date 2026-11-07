@@ -15,16 +15,16 @@ await p.click('#mTorre');await wait(500);await p.click('.tile[data-c="naruto"]')
 await p.click('#goStage');await wait(800);await shot('tela');
 await p.click('#twGo');await wait(1600);await shot('revela');
 const fight=async(lose)=>{await p.click('#twGo');await p.waitForFunction(()=>__dbg.G.mode==='fight'&&__dbg.G.phase==='fight',null,{timeout:120000});await wait(400);
-  const st=await p.evaluate(()=>{const G=__dbg.G,[a,o]=G.p;return {opp:o.def.id,diff:G.diff,hp:a.hp,tdm:a.tdm,tsp:a.tsp,tdf:a.tdf,otdm:o.tdm,otdf:o.tdf,oform:o.form,trans:!!G.trans,stg:__dbg.stg(),ring:G.ring&&G.ring.title}});console.log('LUTA',JSON.stringify(st));
-  await p.evaluate((lose)=>{const G=__dbg.G;if(lose){G.p[0].hp=50}else{G.p[1].hp=50;G.p[0].combo=11}G.timer=1;G.tf=59},lose);
+  const st=await p.evaluate(()=>{const G=__dbg.G,[a,o]=G.p;return {opp:o.def.id,diff:G.diff,hp:a.hp,tdm:a.tdm,tsp:a.tsp,tdf:a.tdf,otdm:o.tdm,otdf:o.tdf,oform:o.form,trans:!!G.trans,pm:a.mhp,om:o.mhp,ohp:o.hp,timer:G.timer,stg:__dbg.stg(),ring:G.ring&&G.ring.title}});console.log('LUTA',JSON.stringify(st));
+  await p.evaluate((lose)=>{const G=__dbg.G;if(lose){G.p[0].hp=50}else{G.p[1].hp=50;G.p[0].hp=G.p[0].mhp*.5;G.p[0].combo=11}G.timer=1;G.tf=59},lose);
   await p.waitForFunction(()=>__dbg.G.mode==='tower',null,{timeout:60000})};
 await fight(false);await wait(700);await shot('x');await p.waitForSelector('#twModal .twp');await wait(1200);await shot('passiva');
-await p.click('#twModal .twp[data-i="1"]');await wait(1800);await shot('depois');
-console.log('TW',JSON.stringify(await p.evaluate(()=>({fl:__TW.fl,hp:__TW.hp,pas:__TW.pas,tr:__TW.tr.map(t=>t.k)}))));
+await p.evaluate(()=>{const b=[...document.querySelectorAll('#twModal .twp')].find(x=>x.textContent.includes('BARRA'));window.__pickB=!!b});await p.click('#twModal .twp[data-i="1"]');await wait(1800);await shot('depois');
+console.log('TW',JSON.stringify(await p.evaluate(()=>({bars:__TW.bars,hpv:__TW.hpv,fl:__TW.fl,hp:__TW.hp,pas:__TW.pas,tr:__TW.tr.map(t=>t.k)}))));
 // pula pro chefe
 await p.evaluate(()=>{__TW.fl=6;__TW.rev=true;document.querySelector('#twGo').click()});await p.waitForFunction(()=>__dbg.G.mode==='fight'&&__dbg.G.phase==='fight',null,{timeout:120000});
-await wait(1500);console.log('CHEFE',JSON.stringify(await p.evaluate(()=>({opp:__dbg.G.p[1].def.id,trans:!!__dbg.G.trans,form:__dbg.G.p[1].form,diff:__dbg.G.diff}))));await shot('chefe');
-await p.waitForFunction(()=>!__dbg.G.trans,null,{timeout:60000});await wait(500);console.log('CHEFE2',JSON.stringify(await p.evaluate(()=>({form:__dbg.G.p[1].form}))));
+await wait(1500);console.log('CHEFE',JSON.stringify(await p.evaluate(()=>({om:__dbg.G.p[1].mhp,pm:__dbg.G.p[0].mhp,timer:__dbg.G.timer,opp:__dbg.G.p[1].def.id,trans:!!__dbg.G.trans,form:__dbg.G.p[1].form,diff:__dbg.G.diff}))));await shot('chefe');
+await p.waitForFunction(()=>!__dbg.G.trans,null,{timeout:60000});await wait(800);await shot('chefe_hud');console.log('CHEFE2',JSON.stringify(await p.evaluate(()=>({form:__dbg.G.p[1].form}))));
 await p.evaluate(()=>{const G=__dbg.G;G.p[0].hp=50;G.timer=1;G.tf=59});await p.waitForFunction(()=>__dbg.G.mode==='tower',null,{timeout:60000});await wait(1500);await shot('derrota');
 await p.fill('#twName','Denilson');await p.click('#twSendB');await wait(800);await shot('enviado');console.log('ENVIADO',JSON.stringify(SENT));
 await p.click('#twRk');await wait(800);await shot('ranking');
