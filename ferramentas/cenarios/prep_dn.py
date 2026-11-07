@@ -17,6 +17,7 @@ rng=np.random.default_rng(7)
 for n in range(N):
     big=Image.open(f'{D}/B{n}.png').convert('RGB');far=save(big,84)
     o=ld(n);r,g,b=o[...,0],o[...,1],o[...,2];Hh,Ww=r.shape;Y,X=np.mgrid[0:Hh,0:Ww]
+    HZ=int(os.environ['HZL'].split(',')[n]) if os.environ.get('HZL') else int(sys.argv[3])
     top=np.median(o[:12].reshape(-1,3),0)
     # ceu: parecido com a cor do topo (ou nuvens claras), ligado ao topo, acima do horizonte
     dist=np.sqrt(((o-top)**2).sum(2));lum=o.mean(2)
@@ -32,7 +33,7 @@ for n in range(N):
         x,y=int(x),int(y)
         if sky_in[y,x]:
             s=1 if rng.random()<.8 else 2;st[max(0,y-s+1):y+s,max(0,x-s+1):x+s]=[255,255,240,int(150+rng.random()*105)]
-    fire=(r>215)&(g>80)&(g<200)&(b<90)&(Y<HZ+120)&~nd.binary_dilation(fA,iterations=6)&(n>=(FMIN if FMIN>=0 else N-1))
+    fire=(r>215)&(g>80)&(g<200)&(b<90)&(Y<int(os.environ.get("FY",str(HZ+120))))&~nd.binary_dilation(fA,iterations=6)&(n>=(FMIN if FMIN>=0 else N-1))
     fire=nd.binary_opening(fire,iterations=1);lab2,k2=nd.label(nd.binary_dilation(fire,iterations=3));sz2=nd.sum(fire,lab2,range(1,k2+1))
     fire&=np.isin(lab2,[i+1 for i in range(k2) if sz2[i]>120]);fI=None;fp=[]
     if fire.sum()>300:

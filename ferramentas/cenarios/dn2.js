@@ -38,6 +38,9 @@ const DNB=[];
 const DNF=[];
 function dnLife(lv,k,A,fu,fv,sc,n,t){if(CUP.snow){if(DNF.length<70&&G.hitstop<=0)DNF.push({x:CAM.x+Math.random()*VW/CAM.z,y:CAM.y-H/CAM.z-20+(H-H/CAM.z),s:rand(1.2,3.4),vy:rand(.6,1.6),ph:Math.random()*6});
     ctx.save();ctx.fillStyle='#ffffff';for(const f of DNF){if(G.hitstop<=0){f.y+=f.vy;f.x+=Math.sin(t*.02+f.ph)*.5-.25}ctx.globalAlpha=.75;ctx.beginPath();ctx.arc(f.x,f.y,f.s,0,TAU);ctx.fill()}ctx.restore();for(let i=DNF.length-1;i>=0;i--)if(DNF[i].y>FLOOR+60)DNF.splice(i,1)}
+  if(CUP.rain&&DN.lv===CUP.L.length-1){const k2=DN.lv===DN.from?1:DN.k;if(!DN.rn)DN.rn=[];const R=DN.rn;while(R.length<70)R.push({x:Math.random(),y:Math.random(),v:rand(.012,.02),l:rand(14,26)});
+    ctx.save();ctx.strokeStyle='rgba(200,215,240,1)';ctx.lineWidth=1.1;ctx.globalAlpha=.28*k2;const x0=CAM.x,w=VW/CAM.z,y0=H-H/CAM.z,hh=H/CAM.z;ctx.beginPath();
+    for(const d of R){if(G.hitstop<=0){d.y+=d.v;d.x-=d.v*.25;if(d.y>1){d.y=0;d.x=Math.random()}if(d.x<0)d.x+=1}const x=x0+d.x*w,y=y0+d.y*hh;ctx.moveTo(x,y);ctx.lineTo(x-d.l*.25,y+d.l)}ctx.stroke();ctx.restore()}
   const LF=CUP.life;if(!LF)return;
   const trees=(l,a)=>{const L=LF[l],im=cupImg(l,'trees');if(!L||!im||a<=0)return;ctx.save();ctx.globalAlpha=a;
     for(let i=0;i<L.tr.length;i++){const q=L.tr[i],w=q[6]*sc,h=q[7]*sc,px=fu(q[4]+q[6]/2),py=fv(q[5]+q[7]),gust=Math.max(0,Math.sin(t*.004+1))*.5;

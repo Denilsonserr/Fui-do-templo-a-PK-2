@@ -329,3 +329,8 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - Modo Kurama: velocidade ×2.1, dash = teletransporte (`nrTeleDash`, para frente para na frente do rival; para trás também), a cada 3 golpes recebidos desvia (some e aparece atrás) e dá um soco (`nrv`, "ESQUIVA!"). Aura = GIF do dono em amarelo-fogo (`NRAG`); carregando no normal = GIF azul-claro (`NRAB`, sem aura fora disso). Botões no Kurama: tema `firebolt` (chama amarela + raios azuis) no `drawBtnFx`.
 - Ultimate (vermelho, só Kurama): vídeo `NRU` "BIJUU DAMA", rival caído. Não voa (igual Rengoku). Voz `nm_naruto`. Teste `ferramentas/testes/trnaruto.js`.
 - Nomes: Clones das Sombras, Substituição, Rasengan, Modo Kurama, Bijuu Dama são do anime; "Combo dos Clones", "Combo da Kurama", "O NINJA DA FOLHA" do Claude.
+
+## v166 — VILA DA FOLHA (`folha`)
+- 5 imagens do dono (2132x737, redimensionadas para 2172x724 no prep), pasta `/home/claude/folha`. Prep: `FY=700 HZL=250,250,250,250,150 FMIN=3 SKYD=110 SKYL=0 python3 prep_dn.py /home/claude/folha fol.json 250` (`HZL` = horizonte por nível — o último tem céu escuro parecido com a montanha; `FY` = até onde procurar fogo desenhado). Árvores: `prep_life.py folha life_f.json B0..B4`.
+- `DNS.folha`: `ph0:.78` = começa de NOITE, passa pela madrugada, clareia, dia, entardece e escurece (dia de 5 min, `day:300`); destruição igual à do Namek (6/15/26/40 pontos, nível 4 exige 1 ultimate e o 5 exige 2); `rain:1` = no nível final cai uma chuva fraca (70 gotas finas, alfa .28, `DN.rn`).
+- Ordem para remontar o index: index da v161 → `patch_dn.py` → `patch_nr.py nr_ai.json` (o `patch_dn` aplica o motor e TODOS os cenários dn).
