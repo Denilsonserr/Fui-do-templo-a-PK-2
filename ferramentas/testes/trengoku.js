@@ -14,7 +14,7 @@ await p.evaluate(()=>{const G=__dbg.G;G.noAI=true;G.timer=999;G.p[1].cpu=true;G.
   window.LOG=[];const G2=__dbg.G;(function lp(){const f=G2.p[0];LOG.push(f.state+(f.mname&&f.state==='attack'?':'+f.mname:''));requestAnimationFrame(lp)})()});
 const R={};const shot=n=>p.screenshot({path:SH+n+'.png'});
 await p.evaluate(()=>F(60));await shot('rg_idle');
-console.log('STEP','chain');R.chain=await p.evaluate(async()=>{await reset();LOG.length=0;const o=__dbg.G.p[1];for(let i=0;i<4;i++){await tap("punch");await F(9)}await F(40);LOG.push("DMG"+Math.round(3600-o.hp));return [...new Set(LOG)].join(' ')});
+console.log('STEP','chain');R.chain=await p.evaluate(async()=>{await reset();LOG.length=0;const o=__dbg.G.p[1];for(let i=0;i<5;i++){await tap("punch");await F(9)}await F(40);LOG.push("DMG"+Math.round(3600-o.hp));return [...new Set(LOG)].join(' ')});
 console.log('STEP','swing');R.swing=await p.evaluate(async()=>{await F(60);await reset();await tap('punch');await F(6);return __dbg.G.p[0].mname});await shot('rg_jab');
 console.log('STEP','kick');R.kick=await p.evaluate(async()=>{await F(60);await reset();const o=__dbg.G.p[1],hp=o.hp;await tap('kick');await F(18);await tap('kick');await F(40);return Math.round(hp-o.hp)});
 console.log('STEP','wave');R.wave=await p.evaluate(async()=>{await F(60);await reset(500);await tap('ki');await F(24);return __dbg.G.p[0].state});await shot('rg_wave');
@@ -29,7 +29,7 @@ console.log('STEP','tr2');R.tr2=await p.evaluate(async()=>{await F(200);const f=
 console.log('STEP','speed');R.speed=await p.evaluate(async()=>{const f=__dbg.G.p[0];f.x=400;__dbg.G.p[1].x=1500;await F(10);const x0=f.x;K('right',1);await F(40);K('right',0);await F(10);return Math.round(f.x-x0)});
 console.log('STEP','charge');R.charge=await p.evaluate(async()=>{await reset(500);K('ki',1);await F(40);return __dbg.G.p[0].state});await shot('rg_charge');await p.evaluate(()=>{K('ki',0)});
 console.log('STEP','burn');R.burn=await p.evaluate(async()=>{await F(30);await reset();const o=__dbg.G.p[1];await tap('punch');await F(12);const hp=o.hp,b=o.burnT;await F(60);return [b>0,Math.round(hp-o.hp)]});await shot('rg_burn');
-console.log('STEP','fchain');R.fchain=await p.evaluate(async()=>{await F(40);await reset();const o=__dbg.G.p[1];LOG.length=0;for(let i=0;i<4;i++){await tap("punch");await F(7)}await F(30);LOG.push("DMG"+Math.round(3600-o.hp));return [...new Set(LOG)].join(' ')});
+console.log('STEP','fchain');R.fchain=await p.evaluate(async()=>{await F(40);await reset();const o=__dbg.G.p[1];LOG.length=0;for(let i=0;i<5;i++){await tap("punch");await F(7)}await F(30);LOG.push("DMG"+Math.round(3600-o.hp));return [...new Set(LOG)].join(' ')});
 console.log('STEP','fslash');R.fs=await p.evaluate(async()=>{await F(60);await reset();await tap('punch');await F(9);await tap('punch');await F(5);return __dbg.G.p[0].mname});await shot('rg_fslash');
 console.log('STEP','ult');R.ult=await p.evaluate(async()=>{await F(60);await reset(200);const G=__dbg.G,f=G.p[0];f.ki=100;f.spark=100;f.sb=6;await tap('sr');await F(20);return [f.state,!!G.ws&&!!G.ws.rg]});
 console.log('STEP','ult2');R.ult2=await p.evaluate(async()=>{await F(150);return 1});await shot('rg_ult');

@@ -45,4 +45,7 @@ rep('const PTH={"luffy": "a/2c0d9d6b83b78c.webp",','const PTH={"rengoku": "a/4fa
 rep("const FULLIMG={luffy:'a/e3612d84a43d42.webp',","const FULLIMG={rengoku:'a/973de26236c824.webp',luffy:'a/e3612d84a43d42.webp',")
 rep('"nm_luffy":"a/f38dde355c91e0.mp3",','"nm_luffy":"a/f38dde355c91e0.mp3","nm_rengoku":"a/df8c1b25a8ff3d.mp3",')
 rep("if(isGk(f)&&f.form){f.gacc=","if(isRg(f)&&f.form){f.racc=(f.racc||0)+.4;while(f.racc>=1){f.racc-=1;if(f.mf<m.su+m.ac+m.rc-1)f.mf++}}if(isGk(f)&&f.form){f.gacc=")
+rep("  if(isRg(a)&&a.form&&d.hp>0)rgBurn(a,d);","  if(isRg(a)&&a.form&&d.hp>0)rgBurn(a,d);\n  if(isRg(a)&&a.state==='attack'&&a.move&&a.move.rgSw){smp('sgrd',.6,{gap:.05});rgSlashMark(h.px,h.py,a.facing,a.form?1.25:1)}")
+rep("\n  if(m.sword){if(f.mf===m.su+1)","\n  if(m.rgPush&&f.grounded&&f.mf>=m.su-2&&f.mf<=m.su+1)f.vx=m.rgPush*f.facing*Math.min(speedMul(f),1.4);if(m.rgSw&&f.mf===m.su+1){smp('furi',.7,{gap:.04});SFX.slash()}\n  if(m.sword){if(f.mf===m.su+1)")
+rep("if(f.ent&&f.ent.al<=0)return;smear(f,key,x,e);ctx.globalAlpha=f.ent?f.ent.al:1;","if(f.ent&&f.ent.al<=0)return;smear(f,key,x,e);ctx.globalAlpha=f.ent?f.ent.al:1;if(isRg(f))rgTween(f,key,x,e);")
 open(P,'w').write(s);print('patched',len(s))

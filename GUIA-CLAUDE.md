@@ -282,3 +282,7 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - Ultimate (vermelho, normal ou transformado, 100 ki): vídeo `RGU` "NONA FORMA: RENGOKU" (97 quadros, máx 5,5 s pelo `USP`), acertos a 45–85% + final 240 + queimadura; rival caído.
 - Voz do nome `nm_rengoku`. Retrato/tela VS a partir das 2 imagens de referência. Teste: `ferramentas/testes/trengoku.js`.
 - Nomes: Primeira Forma, Segunda Forma, Nona Forma: Rengoku são do anime; "Espírito da Chama", "Combo da Chama", "O HASHIRA DAS CHAMAS" do Claude.
+
+## v157 — zoom do combo enquadrando os dois + Rengoku mais fluido
+- Zoom da finalização (`finFrame`, chamado pelo `camDirector`): antes dava zoom em volta de um ponto da tela (o ponto ficava parado e o rival podia sair do quadro). Agora calcula uma caixa com os dois lutadores + o ponto do golpe, escolhe o zoom que cabe (1.08–1.7) e CENTRALIZA de verdade (`zx=(VW/2-sx*z)/(1-z)`, limitado a 0..VW). Primeiros 7 frames: soco de zoom no ponto do golpe (+0.28); depois abre para mostrar os dois. Perto da parede o enquadramento fica limitado pela borda do cenário.
+- Rengoku: 5º golpe na corrente de socos — `kfire` (corte flamejante = quadros 2–7 da folha do combo, 2 acertos); corrente: kjab → kjab2 → kknee → kfire → kstr. Cada corte dá um passo à frente (`move.rgPush`), som de espada (`furi`/`sgrd` do Zoro), marca de corte no ponto do golpe (`RGSL`), rastro da espada mais longo com núcleo branco, e o quadro anterior desbota por 3 frames por cima do novo (`rgTween`) para o movimento ficar mais fluido.
