@@ -420,3 +420,7 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - No ar (`zair`/`zdive`) só os quadros 1, 3 e 6 da folha z5 (`c3` [0],[2],[5]), pedido do dono.
 - Corrente do soco agora: `zp1` (corte 1 espada) → `zp2` (2 espadas) → `zca` (corte por cima, quadros 3–8 do combo) → `zcb` (giro com arcos, quadros 9–15 + 18–19, 4 acertos) → `zp3` (investida). Chute = investida. CANCELAR NO ACERTO: depois que o golpe acerta, apertar soco/chute no fim dele já sai o próximo (corrente rápida).
 - Especial: transformado = Combo do Rei Demônio (dano cheio); SEM transformar = mesmo combo ("Combo do Espadachim") com 38% do dano (`f.zrW`). Baixo + especial (sem transformar) = Fúria do Demônio (como antes).
+
+## v182 — espera de 3 s no botão de COMBO
+- Combos prontos grátis (Rengoku `rgc`, Naruto `nrc`, Zoro `zrc`, Madara `mdc/mdc2`, Gojo `gjc/gjc2`, Luffy `lfc`): quando o combo TERMINA, o botão especial fica 3 s bloqueado (`f.spCD`, `cmbCD` no começo do `updFighter`). Apertar antes: "COMBO EM Xs". O botão fica cinza com o número da contagem (`#bSp.cd`, `<i class="cdn">`). Vale também para a CPU. Zoro baixo+especial (Fúria do Demônio) não é afetado.
+- `ferramentas/web/patch_v182.py` (depois do `patch_zr.py`). Teste `ferramentas/testes/tcombo_espera.js`.
