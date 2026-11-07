@@ -393,3 +393,8 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
   2. `comboBreak`: se o lutador fica apanhando (hit/airhit/down) mais de 200 quadros seguidos (~3,3 s) ou leva 24 golpes seguidos (`stunH`), ele ESCAPA: invencível 75 quadros, rival empurrado 140 px, texto "ESCAPE!". Não conta durante cinemáticas (cine/trans/comic/rush/sc).
 - Depois: Luffy máx. 23, Goku 5 no canto.
 - Ordem completa para remontar: index da v170 → `patch_torre.py` → `patch_combo.py`.
+
+## v178 — quem não voa + Broly mais forte
+- `noFly(f)` = Rengoku, Naruto, Zoro, Aokiji (Luffy normal já não voava; Gear 4 voa). `startFly` vira pulo, Super Dash vira "SALTO!", teletransporte não deixa flutuando. Quem voa: Goku, Vegeta, Gogeta, Broly, Madara, Gojo, Aylla, Zedry, Zaykon, Qingqing, etc. Teste `ferramentas/testes/tvoo.js <personagem> <rival>`.
+- Broly: andar 4.3→5.3, força 1.15→1.32, velocidade normal ×1.12 e transformado ×2.0 (era 1.8), golpes mais rápidos (normal +30%, transformado +80%, era +55% só transformado). ARMADURA: atacando, aguenta golpes leves sem ser interrompido (2 no normal, 4 transformado; depois recarrega 3 s; não vale contra pesado/lançador/beam/cinemática), texto "ARMADURA!".
+- `patch_v178.py` (depois do `patch_combo.py`). Também põe `applyHit` no `__dbg`.
