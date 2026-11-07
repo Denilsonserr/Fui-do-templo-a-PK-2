@@ -3,10 +3,10 @@ import json
 P='/home/claude/fui-do-templo-a-pk-2/www/index.html';s=open(P).read()
 def rep(a,b,n=1):
     global s;c=s.count(a);assert c==n,(a[:70],c);s=s.replace(a,b)
-cup=json.load(open('/home/claude/cup/cup.json'));nam=json.load(open('/home/claude/namek/nam.json'))
-DNS={'cupula':{'top':cup['top'],'L':cup['L'],'feet':552,'thr':[0,7,18],'day':360,'moon':[1720,110],'lamps':[[442,370],[1794,370]],
+cup=json.load(open('/home/claude/cup/cup.json'));nam=json.load(open('/home/claude/namek/nam.json'));lc=json.load(open('/home/claude/cup/life_c.json'));ln=json.load(open('/home/claude/namek/life_n.json'))
+DNS={'cupula':{'top':cup['top'],'L':cup['L'],'feet':552,'thr':[0,9,24],'ug':[0,0,2],'life':lc,'day':360,'moon':[1720,110],'lamps':[[442,370],[1794,370]],
    'smk':[[],[[500,330],[820,330],[1880,280]],[[450,300],[1700,150],[1250,380],[640,420],[1520,360]]],'names':['','O CENÁRIO ESTÁ SE DESTRUINDO!','CIDADE EM RUÍNAS!']},
- 'namek':{'top':nam['top'],'L':nam['L'],'feet':560,'thr':[0,4,10,18,28],'day':360,'moon':[435,95],'lamps':[],
+ 'namek':{'top':nam['top'],'L':nam['L'],'feet':560,'thr':[0,6,15,26,40],'ug':[0,0,0,1,2],'life':ln,'day':360,'moon':[435,95],'lamps':[],
    'smk':[[],[],[[1990,300],[1400,400]],[[370,290],[880,320],[1400,340],[1650,300],[1990,220]],[[350,230],[700,300],[870,330],[1400,290],[1700,280],[1950,200],[260,360]]],
    'names':['','O PLANETA ESTÁ TREMENDO!','CRATERAS POR TODO LADO!','O PLANETA ESTÁ DESMORONANDO!','NAMEKUSEI EM RUÍNAS!']}}
 a=s.find('/* ================= v159: CIDADE DAS CÚPULAS');b=s.find('\nfunction drawStageLayers(){const S=STAGE;if(S.dn)return drawDN(S);')
@@ -19,7 +19,7 @@ rep('{"cupula": "','{"namek": "%s", "cupula": "'%nam['thumb'])
 rep("if(S.dn){S.img=new Image();S.img.src=S.src0;return S._ld=cupLoad()}","if(S.dn){S.img=new Image();S.img.src=S.src0;return S._ld=cupLoad(k)}")
 rep("if(S.dn)cupFree();","if(S.dn)cupFree(k);")
 rep("if(STAGE.dn){DN.lv=0;DN.from=0;DN.k=1;DN.pts=0;DN.pend=0;DN.smk=[];DN.deb=[];DN.ult=0;DN.tr=0}",
-    "if(STAGE.dn&&(G.round===1||DN.key!==STAGE.key)){dnSet(STAGE.key);DN.key=STAGE.key;DN.ph=.955;DN.lv=0;DN.from=0;DN.k=1;DN.pts=0;DN.pend=0;DN.smk=[];DN.deb=[];DN.ult=0;DN.tr=0}")
+    "if(STAGE.dn&&(G.round===1||DN.key!==STAGE.key)){dnSet(STAGE.key);DN.key=STAGE.key;DN.ph=.955;DN.lv=0;DN.from=0;DN.k=1;DN.pts=0;DN.pend=0;DN.smk=[];DN.deb=[];DN.ult=0;DN.tr=0;DN.ults=0}")
 # golpe pesado recebido = +1 de destruição
-rep("  if(isRg(a)&&a.form&&d.hp>0)rgBurn(a,d);","  if(isRg(a)&&a.form&&d.hp>0)rgBurn(a,d);\n  if(STAGE.dn&&!h.lock&&(h.heavy||h.launch||h.launcher||h.smash))dnAdd(1);")
+rep("  if(isRg(a)&&a.form&&d.hp>0)rgBurn(a,d);","  if(isRg(a)&&a.form&&d.hp>0)rgBurn(a,d);\n  if(STAGE.dn&&!h.lock&&(h.heavy||h.launch||h.launcher||h.smash))dnAdd(.5);")
 open(P,'w').write(s);print('ok')
