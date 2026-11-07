@@ -306,3 +306,9 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - Mesmo tamanho: `SZK` (fator por sid) + `sizeNorm()` escala os dados dos quadros (w,h,ax,ay,rx,ry,sw,hand,mo,fp) uma vez no início (antes do pré-carregamento). Alvo: altura de pé ~265 (Aokiji/Zoro/Broly/Luffy/Rengoku menores, Gojo maior). As hitboxes dos golpes (calculadas antes) quase não mudam. Comparação: `/tmp/opt/lineup.js` (desenha todos lado a lado).
 - Gráfico: no `drawLit`, o lutador recebe uma cópia dele mesmo em 'soft-light' (alfa .38) → mais contraste e cor, sem mudar o desenho (`G.noPop` desliga).
 - Testes agora usam `data-s="cupula"`.
+
+## v162 — PLANETA NAMEKUSEI (`namek`) + motor de cenário genérico
+- Material do dono: 5 imagens alinhadas (inteiro → totalmente destruído; as 3 primeiras 2170x725, as outras 2172x724 — o prep redimensiona tudo para 2172x724).
+- Motor genérico (`ferramentas/cenarios/dn2.js`, substitui o bloco da v159): dados por cenário em `DNS[chave]` — `L` (níveis), `thr` (pontos para cada nível), `smk` (pontos de fumaça por nível, coordenadas da imagem 2172x724), `lamps`, `moon`, `feet`, `day` (segundos de um dia inteiro), `names` (aviso de cada nível). Cenário novo assim: imagens `L0..Ln.png` + IA (`B0..Bn.png`, 3000x1000) → `prep_dn.py <pasta> <saida.json> <linha_do_horizonte>` → acrescentar a entrada em `DNS` e o `STG` (dn:1, `dy=486-linha_dos_pés*1.2`) no `patch_dn.py`.
+- Destruição agora por PARTIDA (não volta a cada round): golpe pesado recebido (heavy/lança/smash, sem `lock`) +1, especial +2, transformação +2, ultimate +5. Namek: níveis com 4/10/18/28 pontos; Cúpulas: 7/18. Céu do Namek: máscara pela cor do topo (verde), o sol some à noite e vira lua.
+- Dia: começa de madrugada (ph .955) no 1º round e um dia inteiro dura 6 min (amanhece, dia, entardece e escurece ao longo da partida). A luz de dia de cada cenário vem do `LT[chave]` (guardada em `L._d`).
