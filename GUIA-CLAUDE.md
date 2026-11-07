@@ -398,3 +398,13 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - `noFly(f)` = Rengoku, Naruto, Zoro, Aokiji (Luffy normal já não voava; Gear 4 voa). `startFly` vira pulo, Super Dash vira "SALTO!", teletransporte não deixa flutuando. Quem voa: Goku, Vegeta, Gogeta, Broly, Madara, Gojo, Aylla, Zedry, Zaykon, Qingqing, etc. Teste `ferramentas/testes/tvoo.js <personagem> <rival>`.
 - Broly: andar 4.3→5.3, força 1.15→1.32, velocidade normal ×1.12 e transformado ×2.0 (era 1.8), golpes mais rápidos (normal +30%, transformado +80%, era +55% só transformado). ARMADURA: atacando, aguenta golpes leves sem ser interrompido (2 no normal, 4 transformado; depois recarrega 3 s; não vale contra pesado/lançador/beam/cinemática), texto "ARMADURA!".
 - `patch_v178.py` (depois do `patch_combo.py`). Também põe `applyHit` no `__dbg`.
+
+## v179 — ZORO NOVO (golpes das folhas do dono, estilo Rengoku)
+- Material: 4 folhas (`/home/claude/novo_zr`): z1 corte com 1 espada (6), z2 corte com 2 espadas (6), z3 investida (6), z4 combo transformado (20, fundo xadrez claro → `seg_zr4.py`) + GIF de aura azul.
+- `ferramentas/personagens/zoro/`: `seg_zr4.py` (fundo da z4), `seg_zr.py` (linhas → colunas iguais; corpo por watershed com 1 semente por coluna, efeito verde fica com a coluna), `build_zoro.py` (escala: postura do quadro 0 = 225 unidades antes do `SZK` do zr; âncora no quadril; chão = bota mais baixa da linha; IA 2x; gera camada SÓ do efeito verde `fl` + pontos `fp`) → `zr_new.json`; `zr.js`; `patch_zr.py <index> <pasta_build>` (depois do v178). Aura: GIF recolorido para verde `a/9ddf09d051c5cc.webp` (5 quadros 360x381).
+- Animações novas em `SPRH.zr` e `SPRH.zrf` (mesmos quadros): `c1`, `c2`, `dsh`, `cmb`. Golpes com `move.zv=[anim,[inicio],[ativo],[recuperação]]` (o `spriteKey` chama `zrKey` antes de tudo).
+- Golpes: soco = `zp1` (corte 1 espada, 2 acertos) → `zp2` (2 espadas, 3 acertos) → `zp3`; chute = `zp3` (INVESTIDA: corre `zDash` 15, lança). Passo à frente (`rgPush`), quadro anterior desbotando (`rgTween`), marca de corte verde (`ZRSL`), som de espada.
+- Brilho da espada com movimento (`zrFront`): camada do efeito piscando/ondulando em 'lighter', raios verdes saindo dos pontos `fp` (transformado: também roxos) e fagulhas verdes.
+- Velocidade/dano: andar 4.5→5.8, força 1.1→1.25, velocidade ×1.15 normal / ×1.95 transformado, golpes +30% normal / +70% transformado (`f.zrac`).
+- Transformado: aura = GIF do dono em VERDE com raios ROXOS (`zrAura`); especial (botão sp) = COMBO DO REI DEMÔNIO (`zrc`, folha z4, 12 acertos + final em X, segura o rival). Normal: especial continua Fúria do Demônio. Ultimate continua Corte do Rei.
+- Teste `ferramentas/testes/tzoro.js`.
