@@ -334,3 +334,10 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - 5 imagens do dono (2132x737, redimensionadas para 2172x724 no prep), pasta `/home/claude/folha`. Prep: `FY=700 HZL=250,250,250,250,150 FMIN=3 SKYD=110 SKYL=0 python3 prep_dn.py /home/claude/folha fol.json 250` (`HZL` = horizonte por nível — o último tem céu escuro parecido com a montanha; `FY` = até onde procurar fogo desenhado). Árvores: `prep_life.py folha life_f.json B0..B4`.
 - `DNS.folha`: `ph0:.78` = começa de NOITE, passa pela madrugada, clareia, dia, entardece e escurece (dia de 5 min, `day:300`); destruição igual à do Namek (6/15/26/40 pontos, nível 4 exige 1 ultimate e o 5 exige 2); `rain:1` = no nível final cai uma chuva fraca (70 gotas finas, alfa .28, `DN.rn`).
 - Ordem para remontar o index: index da v161 → `patch_dn.py` → `patch_nr.py nr_ai.json` (o `patch_dn` aplica o motor e TODOS os cenários dn).
+
+## v167 — Naruto: ajustes pedidos pelo dono
+- O combo dos clones da folha n18 foi TIRADO (o dono achou ruim). Combo dourado do normal = folha n17 (`cmb1`, 16 quadros) — no meio dele aparecem 1 e depois 2 clones (os clones copiam os quadros do combo).
+- Modo Kurama: as chamas que já vêm desenhadas nos quadros ganham movimento (`post_nr.py` gera a camada `fl` só das chamas laranja + pontos `fp`; `nrFront` desenha 2 cópias em 'lighter' ondulando/piscando e solta fagulhas). Ordem de montagem: `post_nr.py nr_ai.json nr_ai2.json out_ai` e depois `patch_nr.py nr_ai2.json`.
+- Socos/chutes: passo à frente em cada golpe (`move.nrPush`), impacto próprio (`nrImpact`: anel/faíscas brancas; douradas no Kurama), quadro anterior desbotando por cima (`rgTween`, igual ao Rengoku).
+- Clones: entram deslizando de longe com um "pulo", piscam branco ao aparecer, anel de fumaça, avançam junto no golpe (`c.lg`) e somem num "puf" maior.
+- Defesa: a cada 3 golpes defendidos, 65% de chance de Jutsu de Substituição (`nrLog`): fica o TRONCO da folha do dono (último quadro de `subst`; no Kurama o tronco dourado) no chão, ele aparece 250 px para trás, "SUBSTITUIÇÃO!". O baixo+Ki também usa o tronco da folha agora.
