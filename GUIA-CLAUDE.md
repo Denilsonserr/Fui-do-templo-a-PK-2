@@ -385,3 +385,11 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 ## v176 — Ranking por PERSONAGEM
 - Fim da subida mostra o personagem usado (foto + nome); nas linhas do ranking o nome do personagem aparece embaixo do nome do jogador.
 - Aba nova 🥷 PERSONAGEM: fileira com todos os personagens (começa no que você usou); busca no Firestore `where char == id` (índice simples automático, até 500 docs) e SOMA por nome: torre completa = 20 pontos (`TWPC`), subida que não terminou = 1 ponto por andar vencido. Mostra 👑 torres completas, ⭐ pontos e nº de subidas. Cache 30 s por personagem.
+
+## v177 — fim do combo infinito na parede
+- Bug usado na Torre: com o rival encostado na parede ele não era empurrado e ficava preso em "hit" no chão (Luffy chegou a 198 golpes seguidos, Goku 47). Teste: `ferramentas/testes/tparede.js <personagem> <punch|kick>` (rival no canto, sem IA, aperta o golpe 360 vezes; mostra o maior combo).
+- `ferramentas/web/patch_combo.py <index>` (aplicar DEPOIS do `patch_torre.py`):
+  1. Empurrão na parede: golpe (não beam/lock) com o rival a ≤80 px da parede empurra QUEM BATEU para trás (6 + kb×1.2, máx. 22 px).
+  2. `comboBreak`: se o lutador fica apanhando (hit/airhit/down) mais de 200 quadros seguidos (~3,3 s) ou leva 24 golpes seguidos (`stunH`), ele ESCAPA: invencível 75 quadros, rival empurrado 140 px, texto "ESCAPE!". Não conta durante cinemáticas (cine/trans/comic/rush/sc).
+- Depois: Luffy máx. 23, Goku 5 no canto.
+- Ordem completa para remontar: index da v170 → `patch_torre.py` → `patch_combo.py`.

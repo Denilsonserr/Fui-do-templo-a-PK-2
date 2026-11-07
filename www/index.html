@@ -1239,6 +1239,9 @@ function drawComic(){const C=G.comic;if(!C||C.t<=40)return;const t=C.t,dir=C.a.f
 function regBuf(f){const I=f.inp;if(I.punch){f.pHeld=(f.pHeld||0)+1;if(f.pHeld>8&&f.pHeld<20&&G.frame%2===0&&!f.hide){const hx=f.x+f.facing*70;glow(hx+rand(-12,12),f.y-170+rand(-12,12),E(f),rand(6,12),12,0,0)}if(f.pHeld===20)f.buf.smash=G.frame}else f.pHeld=0;
   for(const k of ['punch','kick','sw','sp','tr','sr','fly']){if(I[k]&&!f.prev[k])f.buf[k]=G.frame;f.prev[k]=I[k]}
   if(I.ki){f.kiHeld++;if(f.kiHeld>=10)f.kiHold=true}else{if(f.kiHeld>0&&f.kiHeld<10)f.buf.kiTap=G.frame;f.kiHeld=0;f.kiHold=false}}
+function comboBreak(f,o){f.stunT=0;f.stunH=0;f.inv=Math.max(f.inv,75);f.jug=99;if(f.grounded&&f.state==='hit')f.hitstun=Math.min(f.hitstun||0,4);
+  const dr=Math.sign(o.x-f.x)||-f.facing;o.x=clamp(o.x+dr*140,40,WW-40);o.vx=dr*7;o.combo=0;if(f.x<=80||f.x>=WW-80)f.x=clamp(f.x-dr*60,40,WW-40);
+  ring(f.x,f.y-140,'#ffffff',170,18,6);ring(f.x,f.y-140,'#7fe0ff',110,14,4);txt(f.x,f.y-290,'ESCAPE!','#7fe0ff');G.hitstop=Math.max(G.hitstop,6);G.shake=Math.max(G.shake,8);try{SFX.clang()}catch(e){}}
 function updFighter(f,o){
   const I=f.inp;
   if(f.flash>0)f.flash--;if(f.squash>0)f.squash--;if(f.inv>0)f.inv--;if(f.msgT>0)f.msgT--;if(f.hide>0)f.hide--;if(f.praiseT>0)f.praiseT--;
@@ -1256,7 +1259,8 @@ function updFighter(f,o){
   if(f.state==='rgc'||f.state==='rgs'||f.state==='rgu'){rgStep(f);return}
   if(f.state==='nrs'||f.state==='nrr'||f.state==='nrc'||f.state==='nrsub'||f.state==='nrv'){nrStep(f);return}
   if(f.state==='lfc'||f.state==='lfp'||f.state==='lfg'||f.state==='lfb'||f.state==='lfv'){lfStep(f);return}
-  f.st++;if(f.grounded)f.jug=0;if(isPro(f))vgPre(f);
+  f.st++;if(f.grounded)f.jug=0;
+  if((f.state==='hit'||f.state==='airhit'||f.state==='down')&&G.phase==='fight'&&!G.cine&&!G.trans&&!G.comic&&!G.rush&&!G.sc){f.stunT=(f.stunT||0)+1;if((f.stunT>200||(f.stunH||0)>=24)&&!f.ko&&f.hp>0&&o)comboBreak(f,o)}else if(f.state!=='getup'){f.stunT=0;f.stunH=0}if(isPro(f))vgPre(f);
   if(G.phase==='fight'&&!G.trans){const o0=f.sb||0;f.sb=Math.min(6,o0+1/SB_FR);if(Math.floor(f.sb)>Math.floor(o0)){txt(f.x,f.y-240,'ENERGIA '+Math.floor(f.sb)+'/6','#7ff3ff');if(!f.cpu)SFX.praise()}}
   if(G.phase==='fight'&&bufd(f,'fly')){
     if(f.flying&&f.state==='fly'){use(f,'fly');f.flying=false;f.state='jump';f.vy=2}
@@ -1472,6 +1476,8 @@ function applyHit(a,d,h){
   aylHitFx(a,d,h);impact(a,d,h,d.hp<=0?3:h.kind==='beam'?(h.heavy?2:0):h.heavy?2:(h.dmg>=60||h.kind==='blast'||h.kind==='sword'||h.lock)?1:0);
   if(human)buzz(h.heavy?45:18);
   a.ki=Math.min(100,a.ki+5);d.ki=Math.min(100,d.ki+3);
+  if(!h.lock&&h.kind!=='beam'&&(d.x<=80||d.x>=WW-80)){const dr=Math.sign(d.x-a.x)||a.facing,pb=Math.min(22,6+(h.kb||0)*1.2);a.x=clamp(a.x-dr*pb,40,WW-40)}
+  if(!h.lock&&h.kind!=='beam')d.stunH=(d.stunH||0)+1;
   if(G.gmode==='treino'&&d.hp<=0)d.hp=1;
   if(d.hp<=0)ko(a,d);
   return true;
