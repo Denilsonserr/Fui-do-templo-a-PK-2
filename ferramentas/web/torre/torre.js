@@ -59,8 +59,14 @@ function layoutTw(){}
 function twToast(t,c){const T=$('twToast');if(!T)return;T.textContent=t;T.style.color=c||'#ffd23f';T.classList.remove('on');void T.offsetWidth;T.classList.add('on')}
 /* ---------- fluxo ---------- */
 function twGo(){if(TW.busy||!$('twModal').hidden)return;audioInit();
-  if(!TW.on){twStart();return}
+  if(!TW.on){if(!twLS.g('tw_nome','')){twAskName(twStart);return}twStart();return}
   if(TW.rev)twFight()}
+function twAskName(cb){twModal(`<div class="twM sm"><h3>SEU NOME NA TORRE</h3><p class="twH">É o nome que vai aparecer no ranking para todo mundo. Dá para trocar depois no fim da subida.</p>
+    <div class="twSend"><input id="twName0" maxlength="16" placeholder="Digite seu nome" autocomplete="off"></div><span id="twNameE" class="twH err"></span>
+    <div class="row"><button class="btn" id="twNmX">VOLTAR</button><button class="btn main" id="twNmOk">CONFIRMAR</button></div></div>`);
+  const I=$('twName0');setTimeout(()=>{try{I.focus()}catch(e){}},80);
+  const ok=()=>{const n=I.value.replace(/[<>]/g,'').trim().slice(0,16);if(n.length<2){$('twNameE').textContent='Digite um nome com pelo menos 2 letras';I.focus();return}twLS.s('tw_nome',n);twSfx('powerUp');twModal(null);cb&&cb()};
+  $('twNmOk').onclick=ok;I.onkeydown=e=>{if(e.key==='Enter')ok()};$('twNmX').onclick=()=>twModal(null)}
 function twStart(){TW.opps=twShuf(TWC.filter(x=>x!==TW.pick)).slice(0,TWN);TW.on=true;TW.fl=0;TW.rev=false;TW.hp=1;TW.bars=TWPB;TW.hpv=TWPB*LAYER;TW.pas={vida:0,dano:0,vel:0};TW.time=0;TW.tr=[];TW.sent=false;TW.last=null;TW.diff0=G.diff;
   twSfx('whoosh');try{nv('vMChallenge',.05,1)}catch(e){}twRender();setTimeout(()=>twReveal(0),350)}
 function twReveal(i){TW.rev=true;twRender();const el=twSlot(i);el.classList.add('anim');twSfx('boom');

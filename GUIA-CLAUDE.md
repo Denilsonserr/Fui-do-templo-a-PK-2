@@ -378,3 +378,6 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - Ranking com 3 abas: ⏱ TEMPO (mais andares, depois menos tempo — `twCmpT`), 🏆 TROFÉUS (mais troféus, depois mais andares — `twCmpF`), MEUS RECORDES (aparelho). 1 linha por nome (melhor de cada aba). Busca 300 docs ordenados por `pontos` e reordena no aparelho; cache 30 s.
 - "Reset do tempo" pedido pelo dono (o jogo ficou mais difícil): NÃO dá para editar o Firestore daqui (proxy bloqueia e as regras não deixam editar). Feito no jogo: recordes criados antes de `TWCUT` (2026-11-07 21:00 UTC) ou com `v<174` ficam com tempo "--:--" e NÃO entram no rank de tempo; os troféus deles continuam valendo no rank de troféus. Envio agora manda `v:174`.
 - Raridade nova MÍTICA (`mit`, 1%: +65% vida/+45% dano/+30% velocidade, borda que troca de cor). Lendária caiu para 3%. Troféu "Bênção Mítica" 🔮 +3.
+
+## v175 — nome obrigatório na 1ª torre
+- Ao tocar INICIAR TORRE sem `tw_nome` salvo, abre `twAskName` ("SEU NOME NA TORRE", mín. 2 letras, máx. 16, sem < >). Só depois de confirmar a subida começa. O nome ainda pode ser trocado no campo do fim da subida.
