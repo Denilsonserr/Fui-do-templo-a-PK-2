@@ -450,6 +450,16 @@ h2{margin:0;font-family:var(--f-display);font-weight:400;font-size:clamp(26px,8v
 @keyframes twPop{0%{opacity:0;transform:scale(.3)}70%{transform:scale(1.15)}100%{opacity:1;transform:none}}
 @keyframes twCard{0%{opacity:0;transform:translateY(1.5em) rotateY(80deg)}100%{opacity:1;transform:none}}
 @keyframes twGold{50%{box-shadow:0 0 2.4em #ffc531,0 0 .6em #fff;filter:brightness(1.15)}}
+.twRk .rw .nm small{display:block;font-size:.65em;color:#ff9a7a;letter-spacing:.06em}
+.twRk.c .rw .tr{color:#ffcf4a;font-weight:900}
+.twCP{display:flex;flex-wrap:wrap;justify-content:center;gap:.35em;margin:.2em 0 .3em}
+.twCP button{width:2.8em;height:2.8em;padding:0;border-radius:50%;border:2px solid #4a1a20;background:#100;cursor:pointer;overflow:hidden;opacity:.6}
+.twCP button img{width:100%;height:100%;object-fit:cover;display:block}
+.twCP button.on{border-color:#ffcf4a;opacity:1;box-shadow:0 0 .8em #ffc531;transform:scale(1.12)}
+.twCN{font:900 1.1em var(--f-display);color:#ffcf4a;letter-spacing:.08em;margin-bottom:.3em}
+.twSt b.twCh{display:flex;align-items:center;gap:.3em;font-size:1.4em}
+.twSt b.twCh img{width:1.4em;height:1.4em;border-radius:50%;object-fit:cover;border:1px solid #ff5a5a}
+.twRk.c .rw{grid-template-columns:2.6em 2.4em 1fr 4.5em 7em 0}.twRk.c .rw .tr{white-space:nowrap}
 </style>
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true"><filter id="sharp" color-interpolation-filters="sRGB"><feConvolveMatrix order="3" kernelMatrix="0 -0.3 0 -0.3 2.2 -0.3 0 -0.3 0" preserveAlpha="true"/></filter></svg>
@@ -5361,7 +5371,7 @@ function twEndModal(){const L=TW.last;if(!L)return twModal(null);const {won,quit
   const tl=Object.keys(cnt).map(k=>`<span class="twT"><i>${TWTR[k].i}</i><b>${TWTR[k].n}</b><span>×${cnt[k]}</span></span>`).join('')||'<p class="twH">Nenhum troféu nesta subida.</p>';
   twModal(`<div class="twM ${won?'gold':''}"><h3>${won?'TORRE CONQUISTADA!':quit?'VOCÊ DESISTIU':TW.fl===TWN-1?'O CHEFE VENCEU!':'VOCÊ CAIU NO ANDAR '+(TW.fl+1)}</h3>
     ${won&&ks?`<div class="twTs">${twTrofHTML(ks)}</div>`:''}
-    <div class="twSt"><div><small>ANDARES</small><b>${andar}/${TWN}</b></div><div><small>TEMPO</small><b>${twFmt(rec.tempo)}</b></div><div><small>TROFÉUS</small><b>🏆 ${rec.trof}</b></div></div>
+    <div class="twSt"><div><small>PERSONAGEM</small><b class="twCh"><img src="${IMG[rec.char]?IMG[rec.char].src:''}" alt="">${CH[rec.char]?CH[rec.char].name:''}</b></div><div><small>ANDARES</small><b>${andar}/${TWN}</b></div><div><small>TEMPO</small><b>${twFmt(rec.tempo)}</b></div><div><small>TROFÉUS</small><b>🏆 ${rec.trof}</b></div></div>
     ${best?'<div class="twNew">⭐ NOVO RECORDE! ⭐</div>':''}
     <div class="twTs sm">${tl}</div>
     <div class="twSend">${andar>0?`<input id="twName" maxlength="16" placeholder="Seu nome no ranking" value="${twEsc(name)}"><button class="btn main" id="twSendB">ENVIAR</button><span id="twSendS"></span>`:'<span class="twH">Vença pelo menos 1 andar para entrar no ranking.</span>'}</div>
@@ -5370,7 +5380,7 @@ function twEndModal(){const L=TW.last;if(!L)return twModal(null);const {won,quit
   if(andar>0){$('twSendB').onclick=()=>twSubmit(rec);if(TW.sent){$('twSendS').textContent=TW.sendOk?'✓ Enviado para o ranking!':'Enviando...';$('twSendS').className='ok';$('twSendB').disabled=true}}}
 async function twSubmit(rec){if(TW.sent)return;const I=$('twName'),S=$('twSendS')||{};const nome=(I?I.value:twLS.g('tw_nome','')).replace(/[<>]/g,'').trim().slice(0,16);
   if(!nome){S.textContent='Digite seu nome';S.className='err';I&&I.focus();return}twLS.s('tw_nome',nome);TW.sent=true;TW.sendOk=false;S.textContent='Enviando...';S.className='';if($('twSendB'))$('twSendB').disabled=true;
-  try{await twSend(rec,nome);twFetch.c=null;TW.sendOk=true;const S2=$('twSendS');if(S2){S2.textContent='✓ Enviado para o ranking!';S2.className='ok'}}
+  try{await twSend(rec,nome);twFetch.c=null;twFetchC.c=null;TW.sendOk=true;const S2=$('twSendS');if(S2){S2.textContent='✓ Enviado para o ranking!';S2.className='ok'}}
   catch(e){TW.sent=false;const S2=$('twSendS'),B=$('twSendB');if(B)B.disabled=false;if(S2){S2.textContent='Sem internet — tente de novo';S2.className='err'}}}
 function twFetchT(url,o,ms){const c=new AbortController(),t=setTimeout(()=>c.abort(),ms||9000);return fetch(url,Object.assign({signal:c.signal},o)).finally(()=>clearTimeout(t))}
 async function twSend(rec,nome){const I=v=>({integerValue:String(Math.max(0,Math.round(v)))});
@@ -5388,14 +5398,26 @@ async function twFetch(){if(twFetch.c&&Date.now()-twFetch.t<30000)return twFetch
 const twCmpT=(a,b)=>b.andar-a.andar||a.tempo-b.tempo,twCmpF=(a,b)=>b.trof-a.trof||b.andar-a.andar||a.tempo-b.tempo;
 function twBest(L,cmp,mine){const S=L.slice().sort(cmp);if(mine)return S.slice(0,30);const o=[],seen=new Set();for(const e of S){const k=e.nome.toLowerCase();if(seen.has(k))continue;seen.add(k);o.push(e)}return o.slice(0,50)}
 function twRows(L,me,tab){if(!L.length)return `<p class="twH">${tab==='t'?'Ninguém no ranking de tempo ainda (temporada nova). Seja o primeiro!':'Ninguém no ranking ainda. Seja o primeiro!'}</p>`;
-  return '<div class="twRk '+tab+'">'+L.map((e,i)=>{const im=CH[e.char]&&IMG[e.char]?IMG[e.char].src:'';return `<div class="rw${me&&e.nome.toLowerCase()===me.toLowerCase()?' me':''}${i<3?' t'+(i+1):''}"><span class="ps">${i<3?['🥇','🥈','🥉'][i]:i+1}</span>${im?`<img src="${im}" alt="">`:'<i></i>'}<span class="nm">${twEsc(e.nome)}</span><span class="an">${e.andar>=TWN?'👑 7/7':'🏯 '+e.andar+'/7'}</span><span class="tr">🏆 ${e.trof}</span><span class="tm">${e.old?'--:--':'⏱ '+twFmt(e.tempo)}</span></div>`}).join('')+'</div>'}
-function twRank(tab){tab=tab||'t';const me=twLS.g('tw_nome','');
+  return '<div class="twRk '+tab+'">'+L.map((e,i)=>{const im=CH[e.char]&&IMG[e.char]?IMG[e.char].src:'';return `<div class="rw${me&&e.nome.toLowerCase()===me.toLowerCase()?' me':''}${i<3?' t'+(i+1):''}"><span class="ps">${i<3?['🥇','🥈','🥉'][i]:i+1}</span>${im?`<img src="${im}" alt="">`:'<i></i>'}<span class="nm">${twEsc(e.nome)}<small>${CH[e.char]?CH[e.char].name:''}</small></span><span class="an">${e.andar>=TWN?'👑 7/7':'🏯 '+e.andar+'/7'}</span><span class="tr">🏆 ${e.trof}</span><span class="tm">${e.old?'--:--':'⏱ '+twFmt(e.tempo)}</span></div>`}).join('')+'</div>'}
+/* rank por PERSONAGEM: torre completa = 20 pontos; subida que não terminou = 1 ponto por andar vencido (soma de todas as subidas) */
+const TWPC=20;
+async function twFetchC(id){const k='c_'+id;twFetchC.c=twFetchC.c||{};const C=twFetchC.c[k];if(C&&Date.now()-C.t<30000)return C.v;
+  const body={structuredQuery:{from:[{collectionId:'torre'}],where:{fieldFilter:{field:{fieldPath:'char'},op:'EQUAL',value:{stringValue:id}}},limit:500}};
+  const r=await twFetchT(TWURL+':runQuery?key='+TWFB.apiKey,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});if(!r.ok)throw new Error('http '+r.status);
+  const j=await r.json(),M={};
+  for(const x of (Array.isArray(j)?j:[])){const F=x&&x.document&&x.document.fields;if(!F)continue;const g=k=>F[k]?(F[k].stringValue!=null?F[k].stringValue:F[k].integerValue):undefined;
+    const nome=String(g('nome')||'?').slice(0,16),a=+g('andar')||0,key=nome.toLowerCase();const e=M[key]||(M[key]={nome,char:id,pts:0,tw:0,runs:0});e.runs++;if(a>=TWN){e.tw++;e.pts+=TWPC}else e.pts+=a}
+  const v=Object.values(M).sort((a,b)=>b.pts-a.pts||b.tw-a.tw).slice(0,50);twFetchC.c[k]={t:Date.now(),v};return v}
+function twRowsC(L,me){if(!L.length)return '<p class="twH">Ninguém subiu a torre com esse personagem ainda. Seja o primeiro!</p>';
+  return '<div class="twRk c">'+L.map((e,i)=>`<div class="rw${me&&e.nome.toLowerCase()===me.toLowerCase()?' me':''}${i<3?' t'+(i+1):''}"><span class="ps">${i<3?['🥇','🥈','🥉'][i]:i+1}</span><img src="${IMG[e.char].src}" alt=""><span class="nm">${twEsc(e.nome)}<small>${e.runs} subida${e.runs>1?'s':''}</small></span><span class="an">👑 ${e.tw}</span><span class="tr">⭐ ${e.pts} pts</span><span class="tm"></span></div>`).join('')+'</div>'}
+function twRank(tab,cid){tab=tab||'t';const me=twLS.g('tw_nome','');if(tab==='c'){cid=cid||twRank.cid||TW.pick||G.pick;if(!CH[cid])cid=ALLC[0];twRank.cid=cid}
   const H=twLS.g('tw_hist',[]).map(r=>Object.assign({nome:me||'Você'},r,{old:(r.d||0)<TWCUT}));
-  const sub={t:'Quem sobe mais andares no menor tempo. Recordes de antes da v174 não contam no tempo.',f:'Quem tem mais troféus 🏆 numa subida.',m:'Suas melhores subidas neste aparelho.'}[tab];
-  twModal(`<div class="twM rk"><h3>🏆 RANKING DA TORRE</h3><div class="seg twTab"><button data-t="t" aria-pressed="${tab==='t'}">⏱ TEMPO</button><button data-t="f" aria-pressed="${tab==='f'}">🏆 TROFÉUS</button><button data-t="m" aria-pressed="${tab==='m'}">MEUS RECORDES</button></div>
-    <p class="twH">${sub}</p><div id="twRkL">${tab==='m'?twRows(twBest(H,twCmpF,1),'','m'):'<p class="twH">Carregando...</p>'}</div><div class="row"><button class="btn" id="twRkX">FECHAR</button></div></div>`);
-  document.querySelectorAll('#twModal .twTab button').forEach(b=>b.onclick=()=>twRank(b.dataset.t));
+  const sub={t:'Quem sobe mais andares no menor tempo. Recordes de antes da v174 não contam no tempo.',f:'Quem tem mais troféus 🏆 numa subida.',c:'Top jogadores com o personagem: torre completa = '+TWPC+' pontos, andar vencido (sem completar) = 1 ponto. Soma todas as subidas.',m:'Suas melhores subidas neste aparelho.'}[tab];
+  twModal(`<div class="twM rk"><h3>🏆 RANKING DA TORRE</h3><div class="seg twTab"><button data-t="t" aria-pressed="${tab==='t'}">⏱ TEMPO</button><button data-t="f" aria-pressed="${tab==='f'}">🏆 TROFÉUS</button><button data-t="c" aria-pressed="${tab==='c'}">🥷 PERSONAGEM</button><button data-t="m" aria-pressed="${tab==='m'}">MEUS RECORDES</button></div>
+    <p class="twH">${sub}</p>${tab==='c'?`<div class="twCP">${ALLC.map(id=>`<button data-c="${id}" class="${id===cid?'on':''}" title="${CH[id].name}"><img src="${IMG[id].src}" alt=""></button>`).join('')}</div><div class="twCN">${CH[cid].name}</div>`:''}<div id="twRkL">${tab==='m'?twRows(twBest(H,twCmpF,1),'','m'):'<p class="twH">Carregando...</p>'}</div><div class="row"><button class="btn" id="twRkX">FECHAR</button></div></div>`);
+  document.querySelectorAll('#twModal .twTab button').forEach(b=>b.onclick=()=>twRank(b.dataset.t));document.querySelectorAll('#twModal .twCP button').forEach(b=>b.onclick=()=>twRank('c',b.dataset.c));
   $('twRkX').onclick=()=>{if(TW.last&&!TW.on){twFinishBack()}else twModal(null)};
+  if(tab==='c'){twFetchC(cid).then(L=>{if($('twRkL'))$('twRkL').innerHTML=twRowsC(L,me)}).catch(()=>{if($('twRkL'))$('twRkL').innerHTML='<p class="twH err">Sem internet agora.</p>'});return}
   if(tab!=='m')twFetch().then(A=>{const L=tab==='t'?twBest(A.filter(e=>!e.old),twCmpT):twBest(A,twCmpF);if($('twRkL'))$('twRkL').innerHTML=twRows(L,me,tab)}).catch(()=>{if($('twRkL'))$('twRkL').innerHTML='<p class="twH err">Sem internet agora. Veja seus recordes na outra aba.</p>'})}
 function twFinishBack(){twEndModal()}
 function twTrofList(){const tc=twLS.g('tw_tc',{}),run={};for(const t of TW.tr)run[t.k]=(run[t.k]||0)+1;

@@ -381,3 +381,7 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 
 ## v175 — nome obrigatório na 1ª torre
 - Ao tocar INICIAR TORRE sem `tw_nome` salvo, abre `twAskName` ("SEU NOME NA TORRE", mín. 2 letras, máx. 16, sem < >). Só depois de confirmar a subida começa. O nome ainda pode ser trocado no campo do fim da subida.
+
+## v176 — Ranking por PERSONAGEM
+- Fim da subida mostra o personagem usado (foto + nome); nas linhas do ranking o nome do personagem aparece embaixo do nome do jogador.
+- Aba nova 🥷 PERSONAGEM: fileira com todos os personagens (começa no que você usou); busca no Firestore `where char == id` (índice simples automático, até 500 docs) e SOMA por nome: torre completa = 20 pontos (`TWPC`), subida que não terminou = 1 ponto por andar vencido. Mostra 👑 torres completas, ⭐ pontos e nº de subidas. Cache 30 s por personagem.
