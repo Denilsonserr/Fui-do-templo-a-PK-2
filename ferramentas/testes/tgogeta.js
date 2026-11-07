@@ -6,7 +6,7 @@ p.setDefaultTimeout(120000);await p.goto('file://'+__dirname+'/../../www/index.h
 await p.waitForFunction(()=>!document.getElementById('goSelect').disabled,null,{timeout:120000});await p.waitForTimeout(500);
 await p.click('#goSelect');await p.waitForTimeout(600);await p.click('.tile[data-c="gogeta"]');await p.waitForTimeout(400);await p.screenshot({path:SH+'gg_sel.png'});
 await p.click('.tile[data-c="vegeta"]');await p.waitForTimeout(300);await p.screenshot({path:SH+'gg_sel2.png'});
-await p.click('#goStage');await p.waitForTimeout(300);await p.click('.stc[data-s="city"]');await p.click('#goFight');
+await p.click('#goStage');await p.waitForTimeout(300);await p.click('.stc[data-s="cupula"]');await p.click('#goFight');
 await p.waitForTimeout(1500);await p.screenshot({path:SH+'gg_vs.png'});
 await p.waitForFunction(()=>__dbg.G.mode==='fight'&&__dbg.G.phase==='fight',null,{timeout:120000});
 await p.evaluate(()=>{const G=__dbg.G;G.p[1].cpu=true;G.p[0].cpu=false;G.noAI=true;G.timer=999;G.p[0].x=300;G.p[1].x=1300;G.p[0].facing=1;G.p[1].facing=-1;

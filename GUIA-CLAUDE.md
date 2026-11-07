@@ -300,3 +300,9 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 
 ## v160 — Cidade das Cúpulas: tamanho dos lutadores como no FighterZ
 - O dono achou os lutadores grandes demais na v159 (ocupavam ~80% da altura da tela). Agora o cenário `cupula` tem `camMax:1.15` e `camMin:.9` (zoom pode ficar abaixo de 1 quando se afastam) → lutador ~45% da altura da tela, parecido com o Dragon Ball FighterZ. `updCam` usa `STAGE.camMin`; `camReset` começa no `camMax` quando ele é menor que 1.
+
+## v161 — só a Cidade das Cúpulas, todos do mesmo tamanho, realce no gráfico
+- Pedido do dono: apagar TODOS os cenários menos a Cidade das Cúpulas (os novos virão no mesmo estilo). `STG` só tem `cupula` (+ `dominio`, escondido, que é a expansão de domínio do Gojo). `VSTG={}`, `STH` só com a cúpula. Os blocos de dados dos cenários antigos (`ST18`, `ST19`, `NMK`, `ST4`, `LT`, `LIFE`, `GRADE`) continuam no código mas não carregam nada (`if(0)` nos carregadores). 253 arquivos (26 MB) apagados de `www/a`. Menu, fundo do cartão de modo e cenário padrão = `cupula` (o `stageLoad('cupula')` inicial roda num `setTimeout(0)` porque `CUP` é definido depois).
+- Mesmo tamanho: `SZK` (fator por sid) + `sizeNorm()` escala os dados dos quadros (w,h,ax,ay,rx,ry,sw,hand,mo,fp) uma vez no início (antes do pré-carregamento). Alvo: altura de pé ~265 (Aokiji/Zoro/Broly/Luffy/Rengoku menores, Gojo maior). As hitboxes dos golpes (calculadas antes) quase não mudam. Comparação: `/tmp/opt/lineup.js` (desenha todos lado a lado).
+- Gráfico: no `drawLit`, o lutador recebe uma cópia dele mesmo em 'soft-light' (alfa .38) → mais contraste e cor, sem mudar o desenho (`G.noPop` desliga).
+- Testes agora usam `data-s="cupula"`.

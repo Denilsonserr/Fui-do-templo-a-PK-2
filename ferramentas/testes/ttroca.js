@@ -5,7 +5,7 @@ await p.goto('file:///home/claude/fui-do-templo-a-pk-2/www/index.html');await p.
 await p.click('#goSelect');await p.waitForTimeout(400);
 await p.evaluate(()=>{const b=document.querySelector('#teamN button[data-v="2"]');if(b)b.click()});await p.waitForTimeout(200);
 for(const c of ['goku','vegeta','broly','magmus']){await p.click(`.tile[data-c="${c}"]`);await p.waitForTimeout(150)}
-await p.click('#goStage');await p.waitForTimeout(300);await p.click('.stc[data-s="arena"]');await p.click('#goFight');
+await p.click('#goStage');await p.waitForTimeout(300);await p.click('.stc[data-s="cupula"]');await p.click('#goFight');
 await p.waitForFunction(()=>__dbg.G.mode==='fight'&&__dbg.G.phase==='fight',null,{timeout:120000});
 const R={};
 R.team=await p.evaluate(()=>{const G=__dbg.G;return [G.teams,G.p.map(f=>f.def.id)]});

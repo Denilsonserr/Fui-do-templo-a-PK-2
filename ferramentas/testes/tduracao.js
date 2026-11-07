@@ -4,7 +4,7 @@ const CH=process.argv.slice(2);
 for(const c of CH){const p=await b.newPage({viewport:{width:915,height:412}});const errs=[];p.on('pageerror',e=>errs.push(e.message.slice(0,150)));await p.route(/fonts\.g/,r=>r.abort());
 await p.goto('file:///home/claude/fui-do-templo-a-pk-2/www/index.html');await p.waitForFunction(()=>!document.getElementById('goSelect').disabled,null,{timeout:120000});
 await p.click('#goSelect');await p.waitForTimeout(500);await p.click(`.tile[data-c="${c}"]`);await p.click('.tile[data-c="denilson"]');
-await p.click('#goStage');await p.waitForTimeout(300);await p.click('.stc[data-s="falls"]');await p.click('#goFight');
+await p.click('#goStage');await p.waitForTimeout(300);await p.click('.stc[data-s="cupula"]');await p.click('#goFight');
 await p.waitForFunction(()=>__dbg.G.mode==='fight'&&__dbg.G.phase==='fight',null,{timeout:120000});await p.waitForTimeout(1500);
 const r=await p.evaluate(async()=>{const G=__dbg.G;G.noAI=true;G.timer=999;const F=n=>new Promise(r=>{const f0=G.frame;const c=()=>G.frame>=f0+n?r():requestAnimationFrame(c);c()});
  const K=(k,v)=>dispatchEvent(new KeyboardEvent(v?'keydown':'keyup',{code:{tr:'KeyU',sr:'KeyO'}[k],bubbles:true}));const tap=async k=>{K(k,1);await F(2);K(k,0)};

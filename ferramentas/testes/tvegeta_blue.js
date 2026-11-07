@@ -4,7 +4,7 @@ const errs=[];p.on('pageerror',e=>errs.push((e.stack||e.message).slice(0,400)));
 await p.goto('file:///home/claude/fui-do-templo-a-pk-2/www/index.html',{timeout:120000});
 await p.waitForFunction(()=>!document.getElementById('goSelect').disabled,null,{timeout:120000});await p.waitForTimeout(500);
 await p.click('#goSelect');await p.waitForTimeout(600);await p.click('.tile[data-c="vegeta"]');await p.waitForTimeout(200);await p.click('.tile[data-c="goku"]');
-await p.click('#goStage');await p.waitForTimeout(300);await p.click('.stc[data-s="city"]');await p.click('#goFight');
+await p.click('#goStage');await p.waitForTimeout(300);await p.click('.stc[data-s="cupula"]');await p.click('#goFight');
 await p.waitForFunction(()=>__dbg.G.mode==='fight'&&__dbg.G.phase==='fight',null,{timeout:120000});
 await p.evaluate(()=>{const G=__dbg.G;G.p[1].cpu=true;G.noAI=true;G.p[0].cpu=false;G.timer=999;G.p[0].x=600;G.p[1].x=780;
   window.F=n=>new Promise(r=>{const g=__dbg.G,f0=g.frame;const c=()=>g.frame>=f0+n?r():requestAnimationFrame(c);c()});

@@ -5,7 +5,7 @@ await p.goto('file:///home/claude/fui-do-templo-a-pk-2/www/index.html');await p.
 await p.evaluate(()=>{const o=window.smp;});
 await p.click('#goSelect');await p.waitForTimeout(800);
 await p.evaluate(()=>{window.LG0=[];const o=window.smp;window.smp=(k,v,op)=>{if(op&&op.vox)LG0.push(k);return o(k,v,op)}});await p.click('.tile[data-c="madara"]');await p.waitForTimeout(400);await p.click('.tile[data-c="goku"]');
-await p.click('#goStage');await p.waitForTimeout(300);await p.click('.stc[data-s="falls"]');await p.click('#goFight');
+await p.click('#goStage');await p.waitForTimeout(300);await p.click('.stc[data-s="cupula"]');await p.click('#goFight');
 await p.waitForFunction(()=>__dbg.G.mode==='fight'&&__dbg.G.phase==='fight',null,{timeout:120000});
 const r=await p.evaluate(async()=>{const G=__dbg.G;const F=n=>new Promise(r=>{const f0=G.frame;const c=()=>G.frame>=f0+n?r():requestAnimationFrame(c);c()});G.noAI=true;
  window.LG=[];const o=window.smp;window.smp=(k,v,op)=>{if(op&&op.vox)LG.push(k);return o(k,v,op)};G.p[0].hp=1;G.p[1].hp=1;G.p[1].x=G.p[0].x+100;__dbg.startMove(G.p[0],'jab');await F(200);await F(250);return {lg:window.__nvlog.slice(),phase:G.phase,first:G.annFirst,w:G.wins,mad:!document.getElementById('bSr').hidden}});

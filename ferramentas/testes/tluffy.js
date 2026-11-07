@@ -4,7 +4,7 @@ const {chromium}=require('playwright');const fs=require('fs');const SH=__dirname
 const errs=[];p.on('pageerror',e=>errs.push((e.stack||e.message).slice(0,300)));p.on('requestfailed',r=>{if(!/mp3|fonts/.test(r.url()))errs.push('falhou: '+r.url())});await p.route(/fonts\.g/,r=>r.abort());
 await p.goto('file://'+__dirname+'/../../www/index.html');await p.waitForFunction(()=>!document.getElementById('goSelect').disabled,null,{timeout:120000});
 await p.click('#goSelect');await p.waitForTimeout(500);await p.click('.tile[data-c="luffy"]');await p.waitForTimeout(300);await p.screenshot({path:SH+'lf_sel.png'});await p.click('.tile[data-c="gogeta"]');
-await p.click('#goStage');await p.waitForTimeout(300);await p.click('.stc[data-s="falls"]');await p.click('#goFight');await p.waitForTimeout(1200);await p.screenshot({path:SH+'lf_vs.png'});
+await p.click('#goStage');await p.waitForTimeout(300);await p.click('.stc[data-s="cupula"]');await p.click('#goFight');await p.waitForTimeout(1200);await p.screenshot({path:SH+'lf_vs.png'});
 await p.waitForFunction(()=>__dbg.G.mode==='fight'&&__dbg.G.phase==='fight',null,{timeout:120000});
 await p.evaluate(()=>{const G=__dbg.G;G.noAI=true;G.timer=999;G.p[1].cpu=true;G.p[0].cpu=false;
   window.F=n=>new Promise(r=>{const g=__dbg.G,f0=g.frame;const c=()=>g.frame>=f0+n?r():requestAnimationFrame(c);c()});

@@ -1,7 +1,7 @@
 const {chromium}=require('playwright');
 (async()=>{const b=await chromium.launch();const p=await b.newPage({viewport:{width:915,height:412}});const errs=[];p.on('pageerror',e=>errs.push(e.message.slice(0,200)));await p.route(/fonts\.g/,r=>r.abort());
 await p.goto('file:///home/claude/fui-do-templo-a-pk-2/www/index.html');await p.waitForFunction(()=>!document.getElementById('goSelect').disabled,null,{timeout:120000});
-await p.click('#goSelect');await p.waitForTimeout(500);await p.click('.tile[data-c="luffy"]');await p.click('.tile[data-c="goku"]');await p.click('#goStage');await p.waitForTimeout(300);await p.click('.stc[data-s="falls"]');await p.click('#goFight');
+await p.click('#goSelect');await p.waitForTimeout(500);await p.click('.tile[data-c="luffy"]');await p.click('.tile[data-c="goku"]');await p.click('#goStage');await p.waitForTimeout(300);await p.click('.stc[data-s="cupula"]');await p.click('#goFight');
 await p.waitForFunction(()=>__dbg.G.mode==='fight'&&__dbg.G.phase==='fight',null,{timeout:120000});
 await p.evaluate(()=>{window.F=n=>new Promise(r=>{const g=__dbg.G,f0=g.frame;const c=()=>g.frame>=f0+n?r():requestAnimationFrame(c);c()});window.K=(c,v)=>dispatchEvent(new KeyboardEvent(v?'keydown':'keyup',{code:c,bubbles:true}));window.tap=async c=>{K(c,1);await F(2);K(c,0);await F(1)}});
 const R={};

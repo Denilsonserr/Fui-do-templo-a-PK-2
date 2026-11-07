@@ -5,7 +5,7 @@ const errs=[];p.on('pageerror',e=>errs.push((e.stack||e.message).slice(0,400)));
 p.setDefaultTimeout(120000);await p.goto('file://'+__dirname+'/../../www/index.html',{timeout:120000});
 await p.waitForFunction(()=>!document.getElementById('goSelect').disabled,null,{timeout:120000});await p.waitForTimeout(500);
 await p.click('#goSelect');await p.waitForTimeout(600);await p.click('.tile[data-c="gogeta"]');await p.click('.tile[data-c="vegeta"]');
-await p.click('#goStage');await p.waitForTimeout(300);await p.click('.stc[data-s="city"]');await p.click('#goFight');
+await p.click('#goStage');await p.waitForTimeout(300);await p.click('.stc[data-s="cupula"]');await p.click('#goFight');
 await p.waitForFunction(()=>__dbg.G.mode==='fight'&&__dbg.G.phase==='fight',null,{timeout:120000});
 await p.evaluate(()=>{const G=__dbg.G;G.p[1].cpu=true;G.p[0].cpu=false;G.noAI=true;G.timer=999;G.p[0].x=500;G.p[1].x=900;G.p[0].facing=1;G.p[1].facing=-1;
   window.F=n=>new Promise(r=>{const g=__dbg.G,f0=g.frame;const c=()=>g.frame>=f0+n?r():requestAnimationFrame(c);c()});
