@@ -6,7 +6,7 @@ def rep(a,b,n=1):
 C={'top':R['top'],'L':R['L']}
 K=2606/2172;dy=round(486-650*K)
 rep("ww:2400,dw:2606,dh:1016,dy:-314,refl:0.35,w:[\"clear\"],nw:1}};",
-    "ww:2400,dw:2606,dh:1016,dy:-314,refl:0.35,w:[\"clear\"],nw:1},\n  cupula:{lit:.9,bloom:.35,dust:'#d8b48a',peb:'#8a6a4a',name:'CIDADE DAS CÚPULAS',src:'%s',ww:2400,dw:2606,dh:%d,dy:%d,refl:.06,w:['clear','clear','clear','rain'],nw:1,dn:1,camMax:1.75}};"%(R['L'][0]['far'],round(724*K),dy))
+    "ww:2400,dw:2606,dh:1016,dy:-314,refl:0.35,w:[\"clear\"],nw:1},\n  cupula:{lit:.9,bloom:.35,dust:'#d8b48a',peb:'#8a6a4a',name:'CIDADE DAS CÚPULAS',src:'%s',ww:2400,dw:2606,dh:%d,dy:%d,refl:.06,w:['clear','clear','clear','rain'],nw:1,dn:1,camMax:1.15,camMin:.9}};"%(R['L'][0]['far'],round(724*K),dy))
 rep("dojo:{rim:'#fff4d8',lx:-.3,ly:-.9,amb:'#3a6a2a',aa:.12,bnc:'#e0b070',ba:.18,pt:'petal',mote:'#fff6d8'}};",
     "dojo:{rim:'#fff4d8',lx:-.3,ly:-.9,amb:'#3a6a2a',aa:.12,bnc:'#e0b070',ba:.18,pt:'petal',mote:'#fff6d8'},\n  cupula:{rim:'#fff4dc',lx:-.55,ly:-.82,amb:'#6a98d8',aa:.08,bnc:'#e0bc90',ba:.15,pt:'dust',mote:'#fff6e0'}};")
 blk=open('/home/claude/cup/dn.js').read().replace('__CUP__',json.dumps(C,separators=(',',':')))

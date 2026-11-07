@@ -641,7 +641,7 @@ const STG={city:{lit:.5,bloom:.3,dust:'#c9b28e',peb:'#6a5a48',name:'CIDADE DO FU
   caveira:{lit:.55,bloom:.3,dust:'#b8a070',peb:'#5a4a30',name:'VALE DA CAVEIRA',src:'a/6c28ed309b639a.webp',ww:2400,dw:2606,dh:860,dy:-275,refl:0.03,w:["clear", "gale", "rain", "lightning"],nw:1},
   konoha:{lit:.55,bloom:.3,dust:'#d8a070',peb:'#8a5030',name:'VILA DA FOLHA',src:'a/ce181d70c600aa.webp',ww:2400,dw:2606,dh:894,dy:-274,refl:0.1,w:["clear", "clear", "rain", "gale"],nw:1},
   dojo:{lit:.55,bloom:.3,dust:'#c8b08a',peb:'#6a4a2a',name:'DOJÔ DO JARDIM',src:'a/e2043ae7e160ae.webp',ww:2400,dw:2606,dh:1016,dy:-314,refl:0.35,w:["clear"],nw:1},
-  cupula:{lit:.9,bloom:.35,dust:'#d8b48a',peb:'#8a6a4a',name:'CIDADE DAS CÚPULAS',src:'a/f15f4cc8be6850.webp',ww:2400,dw:2606,dh:869,dy:-294,refl:.06,w:['clear','clear','clear','rain'],nw:1,dn:1,camMax:1.75}};
+  cupula:{lit:.9,bloom:.35,dust:'#d8b48a',peb:'#8a6a4a',name:'CIDADE DAS CÚPULAS',src:'a/f15f4cc8be6850.webp',ww:2400,dw:2606,dh:869,dy:-294,refl:.06,w:['clear','clear','clear','rain'],nw:1,dn:1,camMax:1.15,camMin:.9}};
 STG.dominio={lit:.7,bloom:.5,dust:'#bfe6ff',peb:'#2a4a8a',name:'VAZIO INFINITO',src:'a/2da95095ea8291.webp',ww:2400,dw:2606,dh:869,dy:-270,refl:.4,w:['clear'],hid:1};
 for(const k in STG){STG[k].src0=STG[k].src;STG[k].img=new Image();STG[k].key=k;delete STG[k].src}
 function stageLoad(k){const S=STG[k];if(!S)return Promise.resolve();if(S._ld)return S._ld;if(S.dn){S.img=new Image();S.img.src=S.src0;return S._ld=cupLoad()}const im=new Image();im.decoding='async';S.img=im;
@@ -651,7 +651,7 @@ function stageFree(keep){for(const k in STG){if(keep.includes(k)||!STG[k]._ld)co
 stageLoad('temple');
 let STAGE=STG.temple;
 function setStage(k){STAGE=STG[k]||STG.temple;for(const o of Object.values(STG))if(o!==STAGE){o.far=null;o.near=null}G.smoke=[];S18.puffs=[];S18.emb=[];S18.rocks=[];WW=STAGE.ww;camReset()}
-function camReset(z){CAM.z=z||1;CAM.cx=WW/2;const hw=VW/(2*CAM.z);CAM.cx=clamp(CAM.cx,hw,Math.max(hw,WW-hw));CAM.x=CAM.cx-hw}
+function camReset(z){CAM.z=z||(STAGE&&STAGE.camMax<1?STAGE.camMax:1);CAM.cx=WW/2;const hw=VW/(2*CAM.z);CAM.cx=clamp(CAM.cx,hw,Math.max(hw,WW-hw));CAM.x=CAM.cx-hw}
 
 /* ================= weather ================= */
 const WNAMES={clear:'CÉU LIMPO',rain:'CHUVA',storm:'TEMPESTADE',fog:'NEBLINA',snow:'NEVE',sand:'TEMPESTADE DE AREIA',gale:'VENDAVAL',lightning:'RELÂMPAGOS',hurricane:'FURACÃO'};
@@ -4846,7 +4846,7 @@ function update(){updLife();tagUpdate();mdTick();gjTick();lfAirTick();rgTick();d
 }
 function camFit(cx,zt,k1,k2){CAM.z=lerp(CAM.z,zt,k2);const hw=VW/(2*CAM.z);CAM.cx=lerp(CAM.cx,clamp(cx,hw,Math.max(hw,WW-hw)),k1);CAM.cx=clamp(CAM.cx,hw,Math.max(hw,WW-hw));CAM.x=CAM.cx-hw}
 function updCam(){const [a,b]=G.p;if(!a)return;const dx=Math.abs(a.x-b.x),top=Math.min(a.y,b.y)-300;
-  let zt=Math.min(VW/(dx+(STAGE.dn?330:400)),H/Math.max(1,H-top));zt=clamp(zt,1,STAGE.camMax||G.camMax);camFit((a.x+b.x)/2,zt,.14,.06)}
+  let zt=Math.min(VW/(dx+(STAGE.dn?330:400)),H/Math.max(1,H-top));zt=clamp(zt,STAGE.camMin||1,STAGE.camMax||G.camMax);camFit((a.x+b.x)/2,zt,.14,.06)}
 function explode(p){if(p.zd)return zedBoom(p);if(p.sz)szBoom(p);if(p.type==='morb')return aylExplode(p);if(p.type==='mega')megaBoom(p);flashL(p.x,p.y,p.c,280,.75,16);spark(p.x,p.y,p.c2,14,10);ring(p.x,p.y,p.c,60,14,5);glow(p.x,p.y,p.c,60,14,0,0);SFX.boom()}
 function menuSetup(){G.mode='menu';loadAnims('gj',['idle']);loadAnims('md',['idle']);stageLoad('temple');setStage('temple');camReset(1.12);G.p=[mkFighter('gojo',WW/2-200,1,false),mkFighter('madara',WW/2+200,-1,true)];G.projs=[];G.beams=[];G.parts=[];G.cracks=[];G.banner=null;G.cine=null;G.rush=null;G.trans=null;G.comic=null;G.zoom=G.tz=1;G.flash=0;setWeather('clear')}
 function menuUpdate(){for(const f of G.p){f.st++;f.state='idle';if(G.frame%3===0)glow(f.x+rand(-45,45),f.y-rand(0,40),E(f),rand(4,9),30,rand(-.3,.3),-rand(2,4));if(G.frame%11===0)debris(f.x+rand(-70,70),FLOOR)}}
