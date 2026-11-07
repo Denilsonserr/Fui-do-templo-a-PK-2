@@ -40,4 +40,5 @@ rep("['#7a3bff','#b07aff','#efe0ff']][Math.min(4,LY)]","['#7a3bff','#b07aff','#e
 rep("banner(wf.hp>=MAXHP?","banner(wf.hp>=(wf.mhp||MAXHP)?")
 rep("if(wf.hp>=MAXHP)annc","if(wf.hp>=(wf.mhp||MAXHP))annc")
 rep("a=G.p[0].hp+bh(0),b=G.p[1].hp+bh(1);","a=(G.p[0].hp+bh(0))/(G.p[0].mhp||MAXHP),b=(G.p[1].hp+bh(1))/(G.p[1].mhp||MAXHP);")
+rep("L=LV[G.diff],","L=twLV()||LV[G.diff],")
 open(P,'w').write(s);print('ok',len(s))

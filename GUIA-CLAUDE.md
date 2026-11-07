@@ -369,3 +369,7 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - Vida por fighter: `f.mhp` (antes só o global `MAXHP`). HUD conta os pontinhos por `f.mhp/LAYER` e tem cores até 7 barras (verde, amarelo, rosa, roxo, azul, vermelho, dourado). "PERFEITO" e o tempo esgotado comparam a FRAÇÃO da vida (`hp/mhp`).
 - Jogador começa com 4 barras (`TWPB`). Rivais por andar `TWOB=[2,3,3,4,5,6,7]` (chefe = 7). Rival bate +8%/andar; chefe bate ×1.6, aguenta ×1/0.85, velocidade ×1.12, IA `LV[3]` quase perfeita (react 3, agg .97, blk .88). Tempo da luta = 60+20×barras do rival (máx. 240; chefe 200).
 - Cartas: 30% de chance (se tiver menos de 7) de uma das 3 virar "💚 BARRA DE VIDA +1" (épica ou lendária). A vida guardada é absoluta (`TW.hpv`); cura de 60% do máximo depois de cada vitória.
+
+## v173 — Torre: menos barras, mais velocidade/dano/IA
+- Pedido do dono: 7 barras era demais. Rivais `TWOB=[2,2,3,3,3,4,4]` (andares 6 e 7 com 4). Jogador continua com 4 (+ carta de barra extra até 7).
+- A dificuldade agora vem de: velocidade do rival `o.tsp=1+.045×andar` (chefe ×1.3), dano `o.tdm=1+.07×andar` (chefe ×1.55, aguenta ×1/0.85), e IA própria por andar `TWLV[0..6]` (reação 16→2, agressividade .55→.98, defesa .4→.9, combos .6→1, pausas 16→0) — `aiThink` usa `twLV()||LV[G.diff]`. `G.diff` (usado nas chances de super/transformar) = 1,1,2,2,2,3,3.
