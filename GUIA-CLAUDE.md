@@ -424,3 +424,7 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 ## v182 — espera de 3 s no botão de COMBO
 - Combos prontos grátis (Rengoku `rgc`, Naruto `nrc`, Zoro `zrc`, Madara `mdc/mdc2`, Gojo `gjc/gjc2`, Luffy `lfc`): quando o combo TERMINA, o botão especial fica 3 s bloqueado (`f.spCD`, `cmbCD` no começo do `updFighter`). Apertar antes: "COMBO EM Xs". O botão fica cinza com o número da contagem (`#bSp.cd`, `<i class="cdn">`). Vale também para a CPU. Zoro baixo+especial (Fúria do Demônio) não é afetado.
 - `ferramentas/web/patch_v182.py` (depois do `patch_zr.py`). Teste `ferramentas/testes/tcombo_espera.js`.
+
+## v183 — Zoro: caixas de acerto consertadas + ordem dos golpes
+- Antes a caixa de acerto seguia a ponta do arco do quadro (ex.: `zca` ficava de 180 a 420 de altura) e errava rival agachado/baixo. Agora todas são fixas do chão até a cabeça (`B(alcance, atrás, topo, abaixo)`): zp1 205, zca 195 (+30 atrás), zp2 220, zcb 200 (+90 atrás, giro), zp3 190, no ar 200–205 pegando até 140–200 abaixo dos pés.
+- Corrente nova (mais rápida no começo): zp1 (início 4) → zca → zp2 → zcb → zp3. Teste `ferramentas/testes/tzoro_hitbox.js` (cada golpe a 70/120/170/220 px, em pé e agachado: todos acertam).

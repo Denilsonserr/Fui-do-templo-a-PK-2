@@ -3602,14 +3602,16 @@ const ZRN={"c1":[{"w":279.9,"h":226.7,"ax":108.0,"ay":225.6,"rx":171,"ry":119,"s
 const ZRAU={"src":"a/9ddf09d051c5cc.webp","n":5,"w":360,"h":381};ZRAU.img=new Image();ZRAU.img.src=ZRAU.src;
 (function(){const S0=SPRH.zr,S1=SPRH.zrf;for(const k in S0)S1[k]=S0[k];/* transformado usa as espadas normais (sem roxo) */for(const k in ZRN){S0[k]=ZRN[k];S1[k]=ZRN[k]}
   const hb=(an,ac,pad,hh)=>{let rx=0,ry=0;for(const i of ac){const F=ZRN[an][i];if(F.rx>rx){rx=F.rx;ry=F.ry}}rx*=.9;ry*=.9;return[6,-(ry+hh/2),Math.max(120,rx+pad-6),hh]};
+  /* v183: caixas de acerto fixas do chão até a cabeça (antes seguiam a ponta do arco e ficavam altas demais, errando o rival) */
+  const B=(reach,back,top,bot)=>[-(back||0),-(top||280),reach+(back||0),(top||280)+(bot||0)];
   Object.assign(MOVES,{
-    zp1:{su:6,ac:6,rc:8,dmg:52,rehit:[3],hb:hb('c1',[3,4],10,170),kb:2.6,hs:17,lean:1.6,next:'zp2',knext:'zp3',cat:'punch',rgSw:1,rgPush:7,zr:1,zv:['c1',[0,1,2],[3,4],[5]]},
-    zp2:{su:5,ac:9,rc:9,dmg:44,rehit:[3,6],hb:hb('c2',[2,3,4],10,190),kb:2.6,hs:16,lean:1.8,next:'zca',knext:'zp3',cat:'punch',rgSw:1,rgPush:8,zr:2,zv:['c2',[0,1],[2,3,4],[5]]},
-    zca:{su:6,ac:9,rc:6,dmg:46,rehit:[4],hb:hb('cmb',[5,6,7],10,240),kb:2.6,hs:17,lean:1.6,next:'zcb',knext:'zp3',cat:'punch',rgSw:1,rgPush:6,zr:1,zv:['cmb',[3,4],[5,6,7],[8]]},
-    zcb:{su:6,ac:15,rc:8,dmg:40,rehit:[4,8,12],hb:hb('cmb',[11,12,13,14,15],10,250),kb:3,hs:16,lean:1.6,next:'zp3',knext:'zp3',cat:'punch',rgSw:1,rgPush:9,zr:2,zv:['cmb',[9,10],[11,12,13,14,15],[18,19]]},
-    zair:{su:4,ac:8,rc:8,dmg:50,rehit:[4],hb:hb('c3',[2],10,200),kb:3,hs:18,air:1,zHover:1,lean:1.4,cat:'punch',rgSw:1,zr:1,zv:['c3',[0],[2],[5]]},
-    zdive:{su:5,ac:14,rc:8,dmg:66,hb:hb('c3',[2],10,230),kb:4,hs:18,air:1,zDive:1,heavy:1,lean:1.2,cat:'kick',rgSw:1,zr:2,zv:['c3',[0],[2],[5]]},
-    zp3:{su:8,ac:9,rc:12,dmg:92,hb:hb('dsh',[3,4],30,200),kb:5,launch:-10,launcher:1,heavy:1,lean:2.4,cat:'kick',rgSw:1,zDash:15,zr:3,zv:['dsh',[0,1,2],[3,4],[5]]}})})();
+    zp1:{su:4,ac:6,rc:7,dmg:52,rehit:[3],hb:B(205,20),kb:2.6,hs:17,lean:1.6,next:'zca',knext:'zp3',cat:'punch',rgSw:1,rgPush:7,zr:1,zv:['c1',[1,2],[3,4],[5]]},
+    zca:{su:5,ac:8,rc:6,dmg:48,rehit:[4],hb:B(195,30,300),kb:2.6,hs:17,lean:1.6,next:'zp2',knext:'zp3',cat:'punch',rgSw:1,rgPush:7,zr:1,zv:['cmb',[3,4],[5,6,7],[8]]},
+    zp2:{su:5,ac:9,rc:8,dmg:44,rehit:[3,6],hb:B(220,20),kb:2.6,hs:16,lean:1.8,next:'zcb',knext:'zp3',cat:'punch',rgSw:1,rgPush:8,zr:2,zv:['c2',[0,1],[2,3,4],[5]]},
+    zcb:{su:5,ac:15,rc:8,dmg:40,rehit:[4,8,12],hb:B(200,90,300),kb:3,hs:16,lean:1.6,next:'zp3',knext:'zp3',cat:'punch',rgSw:1,rgPush:9,zr:2,zv:['cmb',[9,10],[11,12,13,14,15],[18,19]]},
+    zair:{su:4,ac:8,rc:8,dmg:50,rehit:[4],hb:B(205,30,240,140),kb:3,hs:18,air:1,zHover:1,lean:1.4,cat:'punch',rgSw:1,zr:1,zv:['c3',[0],[2],[5]]},
+    zdive:{su:5,ac:14,rc:8,dmg:66,hb:B(200,30,240,200),kb:4,hs:18,air:1,zDive:1,heavy:1,lean:1.2,cat:'kick',rgSw:1,zr:2,zv:['c3',[0],[2],[5]]},
+    zp3:{su:7,ac:10,rc:12,dmg:92,hb:B(190,40,270,10),kb:5,launch:-10,launcher:1,heavy:1,lean:2.4,cat:'kick',rgSw:1,zDash:15,zr:3,zv:['dsh',[0,1,2],[3,4],[5]]}})})();
 /* quadro do golpe novo (o sistema antigo do Zoro só tinha 3 quadros por golpe) */
 function zrKey(f){if(f.state==='zrc')return['cmb',Math.min(19,Math.floor(f.st/zrD(f)))];
   if(f.state==='attack'&&f.move&&f.move.zv){const m=f.move,V=m.zv,mf=f.mf;let L,u;
