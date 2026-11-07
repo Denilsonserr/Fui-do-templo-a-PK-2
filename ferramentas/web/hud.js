@@ -4,7 +4,8 @@ function huImg(src){const C=huImg.c||(huImg.c={});if(!C[src]){const i=new Image(
 function huArt(f){const A=f&&HUDA[f.def.id];return A?A[f.form&&A[1]?1:0]:null}
 const HUTH={naruto:{c:'#ffb020',c2:'#fff2b0',bc:'#ffe23a',bc2:'#fffbe0'},rengoku:{c:'#ff5a10',c2:'#ffd080',bc:'#ff2a20',bc2:'#ffd0c8',sr:1},gojo:{c:'#a040ff',c2:'#e8c8ff',bc:'#c070ff',bc2:'#f4e8ff'}};
 const HUFL=[[],[]];
-function hudArtDraw(f,side,sf){const V=huArt(f);if(!V)return false;const P=V.hud[side?'R':'L'],k=1/HUDK,full=huImg(P.full),emp=huImg(P.empty);if(!full||!emp)return false;
+const PORTF={naruto:'a/2e1f82d79ae4b7.jpg'};
+function hudArtDraw(f,side,sf){const own=huArt(f),V=own||(side===1?huArt(G.p[0]):null);if(!V)return false;const P=V.hud[side?'R':'L'],k=1/HUDK,full=huImg(P.full),emp=huImg(P.empty);if(!full||!emp)return false;
   const x0=side?VW-sf-P.w*k:sf,y0=0,W=P.w*k,Hh=P.h*k,t=G.frame;
   ctx.save();ctx.drawImage(emp,x0,y0,W,Hh);
   const B=P.bars,LY=Math.max(1,Math.ceil(f.hp/LAYER)),base=(LY-1)*LAYER,fr=clamp((f.hp-base)/LAYER,0,1),lag=clamp(((f.hpLag==null?f.hp:f.hpLag)-base)/LAYER,0,1);
@@ -21,10 +22,14 @@ function hudArtDraw(f,side,sf){const V=huArt(f);if(!V)return false;const P=V.hud
   // nome
   ctx.font='italic 800 13px "Saira Condensed",sans-serif';ctx.textAlign=side?'right':'left';const ny=y0+Hh-4,nx=side?x0+W-138:x0+138;
   ctx.lineWidth=3;ctx.strokeStyle='#000';ctx.strokeText(f.def.name+(f.cpu?'  CPU':''),nx,ny+12);ctx.fillStyle='#fff';ctx.fillText(f.def.name+(f.cpu?'  CPU':''),nx,ny+12);
-  if(f.flash>0||f.hp<=0){ctx.globalCompositeOperation='source-atop';}
+  // retrato do personagem dentro do círculo (transformado se tiver)
+  if(P.pc){const pcx=side?x0+W-(P.w-P.pc[0])*k:x0+P.pc[0]*k,pcy=y0+P.pc[1]*k,pr=P.pc[2]*k*.86;const im=(f.form&&PORTF[f.def.id]&&huImg(PORTF[f.def.id]))||IMG[f.def.id];
+    ctx.save();ctx.beginPath();ctx.arc(pcx,pcy,pr,0,TAU);ctx.fillStyle='#05060c';ctx.fill();ctx.clip();
+    if(im&&im.complete&&im.naturalWidth){if(side){ctx.translate(pcx*2,0);ctx.scale(-1,1)}ctx.drawImage(im,pcx-pr,pcy-pr,pr*2,pr*2)}
+    ctx.restore();if(f.hp<=0||f.flash>0){ctx.save();ctx.beginPath();ctx.arc(pcx,pcy,pr,0,TAU);ctx.fillStyle=f.hp<=0?'rgba(0,0,0,.6)':'rgba(255,40,40,.4)';ctx.fill();ctx.restore()}}
   ctx.restore();
   // fogo e raios no HUD transformado
-  const T=HUTH[f.def.id];if(f.form&&T&&P.top&&P.top.length){const Lf=HUFL[side];if(G.hitstop<=0&&Lf.length<46)for(let i=0;i<2;i++){const q=P.top[(Math.random()*P.top.length)|0];Lf.push({x:q[0],y:q[1],vx:rand(-.3,.3),vy:-rand(.6,1.6),l:0,m:rand(14,26),s:rand(5,11)})}
+  const T=own&&HUTH[f.def.id];if(f.form&&T&&P.top&&P.top.length){const Lf=HUFL[side];if(G.hitstop<=0&&Lf.length<46)for(let i=0;i<2;i++){const q=P.top[(Math.random()*P.top.length)|0];Lf.push({x:q[0],y:q[1],vx:rand(-.3,.3),vy:-rand(.6,1.6),l:0,m:rand(14,26),s:rand(5,11)})}
     ctx.save();ctx.globalCompositeOperation='lighter';const C1=blobT(T.c),C2=blobT(T.c2);
     for(const p of Lf){p.l++;p.x+=p.vx;p.y+=p.vy;const u=p.l/p.m,sz=p.s*(1-u*.6),px=side?x0+W-(P.w-p.x)*k:x0+p.x*k,py=y0+p.y*k;ctx.globalAlpha=(1-u)*.7;ctx.drawImage(C1,px-sz,py-sz,sz*2,sz*2);ctx.globalAlpha=(1-u)*.5;ctx.drawImage(C2,px-sz*.4,py-sz*.4,sz*.8,sz*.8)}
     for(let i=Lf.length-1;i>=0;i--)if(Lf[i].l>=Lf[i].m)Lf.splice(i,1);
