@@ -316,3 +316,7 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 ## v163 — cenários: destruição mais lenta e "mini vida"
 - Destruição: golpe pesado agora vale 0,5; especial/transformação 2; ultimate 5. Níveis: Namek 6/15/26/40 pontos e o nível 4 exige 1 ultimate e o 5 exige 2 (`ug`); Cúpulas 9/24 e a ruína total exige 2 ultimates. `DN.ults` conta ultimates da partida.
 - Vida (`dnLife` no `dn2.js`, dados `DNS[k].life` gerados por `prep_life.py`): copas das árvores recortadas da imagem IA (atlas por nível, coordenadas da imagem 2172) desenhadas por cima balançando no vento (giro pequeno pela base, escala 1.045 para cobrir a original); brilhos piscando na água do Namek; fogo desenhado ganha chamas animadas (GIF de fogo `RGAU` nos focos, agrupando os pontos `fp`); bandos de pássaros de dia. Tudo leve (só desenhos pequenos).
+
+## v164 — FORTALEZA DE GELO (`gelo`)
+- 5 imagens do dono (fortaleza da Marinha no gelo, inteira → em ruínas), pasta `/home/claude/mar`. Prep: `FMIN=2 SKYD=90 SKYL=0 python3 prep_dn.py /home/claude/mar mar.json 300` (fogo desenhado a partir do nível 2; céu só pela cor azul-escura do topo, sem pegar o gelo claro). `prep_dn.py` ganhou essas opções (`FMIN`, `SKYD`, `SKYL`).
+- `DNS.gelo`: pés na linha 610 da imagem (`dy=486-610*1.2`), níveis 6/15/26/40 (4º exige 1 ultimate, 5º 2), fumaça por nível, avisos próprios, `snow:1` = neve caindo leve (`DNF`, até 70 flocos) desenhada no `dnLife`. Fogo animado nos focos (mesmo do Namek). Sem árvores.

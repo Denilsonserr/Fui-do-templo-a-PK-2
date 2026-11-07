@@ -4,7 +4,7 @@
 import numpy as np,hashlib,json,os,sys,glob
 from PIL import Image
 from scipy import ndimage as nd
-D=sys.argv[1];OUTJ=sys.argv[2];HZ=int(sys.argv[3])
+D=sys.argv[1];OUTJ=sys.argv[2];HZ=int(sys.argv[3]);FMIN=int(os.environ.get('FMIN','-1'));SKYD=int(os.environ.get('SKYD','200'));SKYL=os.environ.get('SKYL','1')=='1'
 OUT='/home/claude/fui-do-templo-a-pk-2/www/a'
 def save(im,q=86):
     b=im.tobytes();h=hashlib.md5(b).hexdigest()[:14];p=f'{OUT}/{h}.webp'
@@ -20,7 +20,7 @@ for n in range(N):
     top=np.median(o[:12].reshape(-1,3),0)
     # ceu: parecido com a cor do topo (ou nuvens claras), ligado ao topo, acima do horizonte
     dist=np.sqrt(((o-top)**2).sum(2));lum=o.mean(2)
-    cand=((dist<200)|((lum>170)&(Y<HZ-40)))&(Y<HZ)
+    cand=((dist<SKYD)|(SKYL&(lum>170)&(Y<HZ-40)))&(Y<HZ)
     cand=nd.binary_opening(cand,iterations=2);lab,_=nd.label(cand);edge=set(np.unique(lab[0]))-{0}
     sky=np.isin(lab,list(edge));sky=nd.binary_closing(sky,iterations=3)&(Y<HZ)
     hol=nd.binary_fill_holes(sky)&~sky;lh,kh=nd.label(hol);szh=nd.sum(hol,lh,range(1,kh+1));sky|=np.isin(lh,[i+1 for i in range(kh) if szh[i]<14000])
@@ -32,7 +32,7 @@ for n in range(N):
         x,y=int(x),int(y)
         if sky_in[y,x]:
             s=1 if rng.random()<.8 else 2;st[max(0,y-s+1):y+s,max(0,x-s+1):x+s]=[255,255,240,int(150+rng.random()*105)]
-    fire=(r>215)&(g>80)&(g<200)&(b<90)&(Y<HZ+120)&~nd.binary_dilation(fA,iterations=6)&(n==N-1)
+    fire=(r>215)&(g>80)&(g<200)&(b<90)&(Y<HZ+120)&~nd.binary_dilation(fA,iterations=6)&(n>=(FMIN if FMIN>=0 else N-1))
     fire=nd.binary_opening(fire,iterations=1);lab2,k2=nd.label(nd.binary_dilation(fire,iterations=3));sz2=nd.sum(fire,lab2,range(1,k2+1))
     fire&=np.isin(lab2,[i+1 for i in range(k2) if sz2[i]>120]);fI=None;fp=[]
     if fire.sum()>300:
