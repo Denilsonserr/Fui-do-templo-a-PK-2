@@ -541,3 +541,17 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
   - Na MOCHILA o botão BEBER guarda a poção em `tw_pocOn` (só uma por vez). Na próxima luta da torre (`twApply`) ela soma ao bônus de transformação (`p.tsb` e energia inicial) e é gasta. Aparece um aviso no começo da luta.
 - Migração: as poções de velocidade da v196 viram poções de uso único com o mesmo valor.
 - Teste `ferramentas/testes/ttorre_pocao.js`.
+
+## v198 — Torre com as artes do dono: ANDAR VENCIDO, BAÚS por raridade, MOCHILA
+- Artes originais em `ferramentas/torre_artes/`. `cut_items.py` recorta 5 itens por folha (componentes conexos agrupados por posição, porque as espadas se sobrepõem) e os 10 baús (fechado/aberto), e gera `/home/claude/mo_build/items.json`. `patch_v198.py` lê esse json (`TWIMG`).
+- Tela ANDAR VENCIDO (`.twAV`, arte 1847×851 com posições em %, `twFit` ajusta ao tamanho da tela):
+  - Embaixo, as 4 cartas de passiva nos 4 quadros.
+  - Em cima, até 3 BAÚS, ganhos pelo desempenho: pontos de troféu do andar 2+ = 1 baú, 5+ = 2, 9+ = 3 (`twChests`; `window.__twCh` força nos testes).
+  - Cada baú: 60% poção (`TWPOR`) / 40% equipamento (`TWEQR`, difícil). A arte do baú é a da raridade. Toque abre (ou abre sozinho em 2,2 s); o item sobe com nome e valor e vai para a mochila. Escolher a carta abre os baús que faltam.
+  - Quadro do troféu: ícones e pontos dos troféus do andar (+N 🏆) e os nomes. Linha de análise: tempo, % de vida perdida e maior combo.
+- Troféus novos de desempenho: Raio (<15 s, +3), Perfeito (<30 s sem perder vida, +5), Muralha (perdeu <10%, +2), Combo Insano (20+, +3).
+- MOCHILA (`.twMO`, arte 1846×852):
+  - 20 espaços (`TWBAG`) com equipamentos não equipados e poções. Quando passa de 20, descarta o mais fraco (`twCap`).
+  - Embaixo os 5 equipados: armadura, botas, capacete (EM BREVE, sem item ainda), espada, poção bebida.
+  - Toque num item → detalhe com EQUIPAR / BEBER / DESCARTAR / DESEQUIPAR.
+- Teste `ferramentas/testes/ttorre_arte.js`.
