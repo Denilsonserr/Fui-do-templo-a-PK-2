@@ -474,3 +474,26 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 
 ## v192 — Broly normal com a arte do dono
 - O dono mandou as folhas do Broly NORMAL (n1 = 8 socos, n2 = 16 do combo; fundo xadrez claro → `alpha_n1.py`/`alpha_n2.py`, só fundo ligado à borda, para não apagar o branco das botas). Agora `SPRH.br.bpn/bcm` = arte normal do dono (sai o cabelo pintado de preto) e `SPRH.brf` = transformado (b1/b2). `build_broly.py` monta as duas; mesmos golpes e combo da v191. Arquivos antigos do cabelo pintado apagados.
+
+## v193 — NOVO PERSONAGEM: GAROU (id `garou`, sid `gr` normal / `grm` Forma Monstro)
+- Material do dono em `/home/claude/novo_gr/` (folhas normais g01–g20, monstro t01–t16, combos c01/c02/c03, vídeos, botões). Ferramentas em `ferramentas/personagens/garou/` (cópias de `/home/claude/gr_build/`):
+  - `seg_gr.py` recorta (fundo branco ligado à borda; g12 limiar mais solto; t12 xadrez; buracos brancos internos removidos nas folhas do monstro).
+  - `build_garou.py [ai]` monta `gr_ai.json` (normal 282, monstro 300 unidades, quadros do monstro com nitidez extra).
+  - `gr.js` é o bloco JS; `patch_gr.py www/index.html gr_ai.json` injeta (lê vids/aura/imgs/hud de `/home/claude/gr_build`).
+- Golpes (prefixos livres `q` normal / `x` monstro; o `startMove` troca `v*`→`q*`/`x*`): soco jab→cross→joelhada→gancho lançador; chute→chute alto lançador; rasteira; aéreos.
+  - Todo golpe de soco/chute que ACERTA pode ser cancelado no próximo (`m.grQ`, igual Zoro), inclusive no Ki.
+  - Ki (toque) = `grk`: 2 socos relâmpago, custa 4 de Ki.
+  - Combo (`grc`, espera de 3 s) = Punho da Água Corrente (folha c02 normal com aura / c03 monstro).
+- CONTRA-ATAQUE (`grCounter`, estado `grcn`):
+  - Defesa perfeita com janela maior (12 quadros normal / 18 monstro) → contra-ataque.
+  - Esquiva pra trás (`vbdash`) na hora do golpe do rival → "ESQUIVA PERFEITA!" + contra-ataque.
+  - Monstro: a cada 4 golpes recebidos contra-ataca sozinho e teleporta atrás do rival.
+  - Acertar o rival no começo do golpe dele = COUNTER ×1.35 (`grCHit`).
+- Velocidade: normal ×1.12 (walk 5.6) + golpes acelerados; monstro ×2.4 (o mais rápido do jogo) + golpes bem mais rápidos.
+  - Rastro vermelho ao andar/correr (azul-claro só correndo no normal).
+  - Não voa (`noFly`).
+- Aura: a do Gojo (`GJAU`) recolorida em vermelho (`a/23baffe4772893.webp`) com raios vermelhos (`zArcs ZPAL.red`); no normal a mesma chama recolorida em azul-claro, bem transparente (forte ao carregar).
+- Transformação: vídeo de 3,2 s ("FORMA MONSTRO!"). Ultimate: vídeo inteiro, "EXPLOSÃO GAMA", só na Forma Monstro com 100 de Ki. Sem som.
+- Botões do dono (normal/transformado) em `HUDA.garou`; `HUTH.garou` = chamas + raios vermelhos nos botões. Vida sem arte (HUDA_ON=false).
+- Não entrou nas cartas da Torre.
+- Testes `ferramentas/testes/tgarou.js` (golpes, Ki, combo, defesa→contra-ataque, transformação, ultimate) e `tgarou_todos.js` (todos contra o Garou CPU).
