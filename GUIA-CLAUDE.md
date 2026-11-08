@@ -845,3 +845,10 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
   - 1 vez por pessoa: documentId `cupom_1b2e1xu_u<hash uid>` ou `_n<hash nome>`.
   - Sorteio `RKDIA`: 100 (25%) 200 (20%) 300 (16%) 400 (13%) 500 (10%) 600 (7%) 700 (4%) 800 (2,5%) 900 (1,5%) 1000 (1%). Vai para `rk_gem`.
 - Testes: `trecomp.js`, `tdiamante.js`.
+
+## v219 — campo de CÓDIGO no ranqueado e Caixa de Diamantes automática
+- Botão 🎟️ CÓDIGO no topo de todas as telas do ranqueado → `rkCode()`; usa o mesmo `twCupom` (baús abrem por cima com `rkBau`, caixa com `rkDiaShow`). O código ADM continua só no nome da Torre.
+- `rkOverTw(fn)`: mostra qualquer janela da Torre (`#twModal`) por cima do ranqueado.
+- `rkDiaAuto()` (ao abrir o ranqueado): quem está na lista da Torre ganha a Caixa de Diamantes sozinho, 1 vez (mesmo documento do código: se já pegou pelo código, não ganha de novo). Marca `rk_dia`.
+- Texto da caixa de info do Broly mostra as barras do nível.
+- Teste `ferramentas/testes/tcodigo_rk.js`.

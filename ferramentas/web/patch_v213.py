@@ -47,5 +47,6 @@ rep("const TWCUP={'706xst':","const TWCUP={'1b2e1xu':{nm:'CAIXA DE DIAMANTES',di
 rep("E.className='twH';E.textContent='Conferindo o código...';const IV=","let dk='';if(C.dia){const nm=String(twLS.g('tw_nome','')||'').toLowerCase().trim(),u=twUid(),oU=TWDIAU.includes(twHash(u)),oN=nm&&TWDIAN.includes(twHash(nm));if(!oU&&!oN){E.className='twH err';E.textContent='❌ Esse código é só para quem já jogou o Modo Torre (lista de jogadores).';twSfx('clang');return true}dk='_'+(oU?'u'+twHash(u):'n'+twHash(nm))}\n  E.className='twH';E.textContent='Conferindo o código...';const IV=")
 rep("'/torre?documentId=cupom_'+h+'&key='","'/torre?documentId=cupom_'+h+dk+'&key='")
 rep("r.status===409||r.status===403?'❌ Esse código já foi usado por outro jogador.'","r.status===409||r.status===403?(C.dia?'❌ Você já pegou essa caixa.':'❌ Esse código já foi usado por outro jogador.')")
-rep("used[h]=1;twLS.s('tw_cup',used);if(C.bau)","used[h]=1;twLS.s('tw_cup',used);if(C.dia){E.className='twH ok';E.textContent='🎁 Código aceito! CAIXA DE DIAMANTES!';twSfx('powerUp');setTimeout(rkDiaBox,700);return true}if(C.bau)")
+rep("used[h]=1;twLS.s('tw_cup',used);if(C.bau)","used[h]=1;twLS.s('tw_cup',used);if(C.dia){E.className='twH ok';E.textContent='🎁 Código aceito! CAIXA DE DIAMANTES!';twSfx('powerUp');setTimeout(rkDiaShow,700);return true}if(C.bau)")
+rep("setTimeout(()=>twBauOpen(C.bau),900)","setTimeout(()=>{if(showScreen.cur==='ranked'){rkModal(null);rkBau(C.bau).then(()=>rkView(RKV))}else twBauOpen(C.bau)},900)")
 open(P,'w').write(s);print('ok',len(s))
