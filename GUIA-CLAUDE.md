@@ -504,3 +504,17 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - Socos: a corrente agora é só no chão: jab → direto → golpe da água → direto rápido (`qjab3`) → SOCO FINAL (`qstr`, anim `upper` com o redemoinho) que empurra longe (kb 9), SEM lançar. Antes o último soco era lançador e o `trySD` fazia o Garou pular atrás chutando. Chutes continuam iguais.
 - Todo soco que acerta solta respingos de água azul (normal) / energia vermelha (monstro); o final tem explosão, tremida e brilho (`grImpact(a,d,h,fin)`, chamado no `applyHit`).
 - Teste `ferramentas/testes/tgarou_socos.js` (14 socos seguidos: 0 quadros no ar).
+
+## v195 — Torre: 4 cartas, carta SECRETA, carta TRANSFORMAÇÃO e drop de EQUIPAMENTOS
+- `ferramentas/web/patch_v195.py` (aplicado em cima da v194).
+- Agora vêm 4 cartas de passiva (um dos 3 tipos aparece repetido), com as mesmas raridades de antes.
+- Carta TRANSFORMAÇÃO 🔥 (`TWTRF`): só nasce de carta lendária (+40%) ou mítica (+75%), com 45% de chance de trocar o tipo.
+  - Faz a energia de transformar encher mais rápido (`f.tsb` multiplica o ganho de `f.sb`).
+  - Já começa cada luta com parte da energia (`SB_COST*trf/200`, até 90%).
+- Carta SECRETA 👁️ (`TWSECP=0.4`% por tela de cartas; `window.__twSec` força nos testes): +80% vida/dano/velocidade, +100% transformação, +2 barras (máx. 7) e vida cheia. Dá o troféu "Carta Secreta" (+10).
+- EQUIPAMENTOS (`TWEQ`): depois da passiva vem a tela "DROP DE EQUIPAMENTO" com 3 cartas (Espada = ataque, Armadura = defesa, Poção = velocidade).
+  - Raridades `TWEQR`: comum 70% +1%, rara 22,5% +4%, épica 6% +5%, lendária 1,3% +7%, mítica 0,2% +10%.
+  - Ficam até o fim da torre. Guarda o melhor de cada tipo (`TW.eq`), que soma nas passivas no `twApply`.
+  - Mítico dá o troféu "Equipamento Mítico" (+4).
+  - Aparecem no painel da torre.
+- Teste `ferramentas/testes/ttorre_v195.js`.
