@@ -19,7 +19,7 @@ jobs:
               d=json.load(urllib.request.urlopen(B+('&pageToken='+tok if tok else '')))
               for x in d.get('documents',[]):
                   F={k:list(v.values())[0] for k,v in x.get('fields',{}).items()}
-                  if q in str(F.get('nome','')).lower() or q in str(F.get('nomeL','')).lower():
+                  if q=='*' or q in str(F.get('nome','')).lower() or q in str(F.get('nomeL','')).lower():
                       if 'd' in F:F['d']='<%d bytes>'%len(F['d'])
                       if 'sg' in F:F['sg']=F['sg'][:8]
                       F['_id']=x['name'].split('/')[-1];F['_ct']=x['createTime'];R.append(F)
