@@ -30,11 +30,13 @@ rep("if(TW.on&&G.gmode==='torre')twTick();if(G.gmode==='treino')","if(TW.on&&G.g
 rep("function ko(a,d){if(G.phase!=='fight')return;","function ko(a,d){if(G.phase!=='fight')return;\n  if(G.gmode==='boss'&&d===G.p[1]&&d.rkPh===1){rkPhase2(a,d);return}\n  if((G.gmode==='boss'||(TW.on&&G.gmode==='torre'))&&d===G.p[0]&&rkSenzuRevive(d))return;")
 rep("function endRound(){\n  const w=G.koWinner;","function endRound(){\n  const w=G.koWinner;if(G.gmode==='boss'){rkAfter(w);return}")
 rep("G.ring={title:(TW.on&&G.gmode==='torre')?","G.ring={title:G.gmode==='boss'?'MODO BOSS · BROLY':(TW.on&&G.gmode==='torre')?")
-rep("$('toMenu').onclick=()=>{","$('toMenu').onclick=()=>{if(G.gmode==='boss'){G.diff=RKB.diff0;G.gmode='pve'}")
+rep("$('toMenu').onclick=()=>{","$('toMenu').onclick=()=>{if(G.gmode==='boss'){rkQuit()}")
 # ---- equipamentos especiais: dano extra e crítico de qualquer peça ----
 rep("if(st==='vel'&&o[E.k].vel)v+=o[E.k].vel}return v};","if(st==='vel'&&o[E.k].vel)v+=o[E.k].vel;if(st==='dano'&&o[E.k].dmg)v+=o[E.k].dmg}return v};")
 rep("{const c=twEqOn().cap;p.tcr=c&&c.crit||0}","{const o=twEqOn();p.tcr=0;for(const k in o)p.tcr+=o[k].crit||0}")
 rep("ef=x=>x.t==='cap'?","ef=x=>x.img&&(x.crit||x.dmg)?rkSpTxt(x)+' (permanente)':x.t==='cap'?")
 # ---- títulos de rank com brilho e emblema ----
 rep("k&&TWTIT[k]?`<em class=\"twTit\" style=\"--c:${TWTIT[k].c}\">","k&&TWTIT[k]&&TWTIT[k].rk!=null?`<em class=\"twTit rkt\" style=\"--c:${TWTIT[k].c}\"><img src=\"${RQA.rank[TWTIT[k].rk]}\" alt=\"\"><b>${TWTIT[k].n}</b></em>`:k&&TWTIT[k]?`<em class=\"twTit\" style=\"--c:${TWTIT[k].c}\">")
+rep("function twLV(){return TW.on&&G.gmode==='torre'?TWLV[TW.fl]:null}","function twLV(){return TW.on&&G.gmode==='torre'?TWLV[TW.fl]:G.gmode==='boss'&&G.p&&G.p[1]&&G.p[1].rkB?RKAI[G.p[1].rkL||0]:null}")
+rep("function applyHit(a,d,h){\n  if(d.ko)return false;","function applyHit(a,d,h){\n  if(d.ko)return false;\n  if(G.gmode==='boss'&&d===G.p[1]&&!h.lock){const rr=rkPassHit(a,d,h);if(rr!==undefined)return rr}")
 open(P,'w').write(s);print('ok',len(s))

@@ -772,3 +772,41 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
   - Desenhados num canvas pelo relógio (`rkPlayFrames`, 12 q/s com `requestAnimationFrame`), sem trocar `img.src`.
 - CSS: menos filtros animados (cartas lendárias brilham com um fundo pulsando em vez de `drop-shadow` animado; emblemas pequenos sem raios girando).
 - Mesmo patch `patch_v213.py` + fontes em `ferramentas/web/ranqueada/` (refazer a partir da v212).
+
+## v215 — REGRAS DA RANQUEADA (Boss Ranked) + tela "Ranqueada · Modo Boss"
+- Regras do dono em `ferramentas/ranqueada_artes/regras_boss.txt`; arte da tela em `ranqueada_boss.png` (1672×941, `rkB2`, view `rb`).
+- XP ranqueado (`rk_rp`), nunca negativo, pode cair de rank:
+
+| Rank | XP mínimo (`RKXP`) | Vitória (`RKXW`) | Derrota (`RKXL`) |
+|---|---|---|---|
+| Madeira | 0 | +100 | −30 |
+| Bronze | 1000 | +120 | −45 |
+| Prata | 2500 | +140 | −60 |
+| Ouro | 5000 | +160 | −80 |
+| Diamante | 9000 | +180 | −100 |
+| Lendário | 15000 | +200 | −125 |
+| Dragão Lendário | 23000 | +230 | −150 |
+| Divindade | 35000 | +260 | −180 |
+
+  - Divindade não tem limite de XP.
+  - Os pontos antigos (v213) foram convertidos para o XP mínimo do rank (`rk_xpv2`).
+  - Desistir no meio da luta (pausa → menu) = derrota (`rkQuit`).
+- Nível do Boss = rank (1–8); não dá para escolher outro (as setas só mostram as informações de cada nível).
+  - `RKLVS`: vida/dano/velocidade 100/100/100 … 320/200/135%. Vida = resistência (`tdf` dividido), para as barras continuarem 7+14.
+  - Calculado sempre a partir dos atributos originais (`RKBOSS[0].b1/b2`), sem acumular.
+  - IA por nível (`RKAI` via `twLV`) e `G.diff` 1/2/3.
+- Passivas (`rkPassTick`/`rkPassHit`, cada uma 1 vez por luta, contando a vida TOTAL das 2 fases):
+  - nv2: bloqueio 10% (recarga 1 s);
+  - nv3: esquiva 15% (recarga 1,5 s);
+  - nv4: regenera 3% a 40%;
+  - nv5: +15% de dano por 8 s a 50%;
+  - nv6: barreira 10% a 70%;
+  - nv7: fúria, +15% de velocidade por 10 s a 30%;
+  - nv8: Fase Suprema a 25% (barreira 15% e +20% de dano por 12 s).
+- Configuração reutilizável: `RKBOSS` (id, nome, barras das fases, atributos base) para os próximos bosses.
+- Tela `rb` (Modo Boss → Iniciar):
+  - Broly em pé no pedestal; seletor de nível 1/8 com setas e quadros (cadeado acima do rank).
+  - Rank atual com emblema; barra de XP; XP de vitória/derrota do rank.
+  - Passivas do nível; descrição do nível; próximo rank; INICIAR BATALHA.
+- `rkFit`: cobre a tela quando a proporção da arte é parecida com a da tela; senão encaixa inteira.
+- Teste `ferramentas/testes/trb.js` (confere o exemplo do dono: Ouro 5500 → vitória 5660 / derrota 5580).

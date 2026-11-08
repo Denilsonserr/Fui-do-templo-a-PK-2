@@ -26,7 +26,7 @@ await p.click('#rkWrap [data-t="chr"]');await w(500);
 await p.click('#rkWrap [data-a="back"]');await w(300);
 for(const [a,n] of [['ranking','14_rank'],['rewards','15_recomp'],['ach','16_conq'],['pos','17_pos']]){await p.click(`#rkWrap [data-a="${a}"]`);await w(900);await sh(n);await p.click('#rkMX')}
 // luta
-await p.click('#rkWrap [data-a="boss"]');await w(500);await p.click('#rkWrap [data-a="start"]');
+await p.click('#rkWrap [data-a="boss"]');await w(500);await p.click('#rkWrap [data-a="start"]');await w(900);await sh('17b_ranqueada');await p.click('#rkWrap [data-a="fight"]');
 await p.waitForFunction(()=>__dbg.G.mode==='fight'&&__dbg.G.phase==='fight',null,{timeout:120000});await w(800);await sh('18_luta');
 console.log('LUTA1',JSON.stringify(await p.evaluate(()=>{const [a,o]=__dbg.G.p;return {gmode:__dbg.G.gmode,pm:(a.mhp||__dbg.G.p[0].hp)/1800,om:o.mhp/1800,otdm:o.tdm,ph:o.rkPh,timer:__dbg.G.timer,diff:__dbg.G.diff}})));
 await p.evaluate(()=>{const G=__dbg.G,[a,o]=G.p;G.noAI=true;o.hp=5;o.inv=0;o.state='idle';__dbg.applyHit(a,o,{dmg:300,kb:0,hs:2,kind:'melee',px:o.x,py:o.y-150})});

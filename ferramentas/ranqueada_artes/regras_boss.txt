@@ -1,0 +1,154 @@
+SISTEMA DE RANQUEADA — BOSS RANKED
+
+Implemente no meu jogo de luta anime 2D um sistema de ranqueada PvE, no qual o jogador enfrenta bosses controlados pela CPU.
+
+1. Funcionamento geral
+
+- Inicialmente, apenas o Broly estará desbloqueado como Boss.
+- Cada Boss terá 8 níveis de dificuldade, correspondentes aos 8 ranks.
+- O jogador começa no Rank Madeira, enfrentando Broly nível 1.
+- Ao acumular XP ranqueado suficiente, sobe de rank e desbloqueia o próximo nível do Boss.
+- Quanto maior o nível, mais inteligente, rápido, resistente e poderoso o Boss se torna.
+- Vitórias concedem XP ranqueado.
+- Derrotas retiram XP ranqueado.
+- Os demais bosses serão adicionados futuramente, utilizando o mesmo sistema.
+
+2. Tabela de ranks e XP
+
+Rank| Nível do Boss| XP total necessário| XP por vitória| XP perdido por derrota
+Madeira| 1| 0| +100| -30
+Bronze| 2| 1.000| +120| -45
+Prata| 3| 2.500| +140| -60
+Ouro| 4| 5.000| +160| -80
+Diamante| 5| 9.000| +180| -100
+Lendário| 6| 15.000| +200| -125
+Dragão Lendário| 7| 23.000| +230| -150
+Divindade| 8| 35.000| +260| -180
+
+Os valores são acumulativos. Por exemplo, para subir de Bronze para Prata, o jogador precisa passar de 1.000 para 2.500 XP, ganhando 1.500 XP adicionais.
+
+O XP nunca pode ficar abaixo de zero.
+
+3. Escalonamento da dificuldade do Boss
+
+Utilize os atributos originais do Boss como referência de 100%.
+
+Nível| Vida| Dano| Velocidade
+1| 100%| 100%| 100%
+2| 115%| 110%| 105%
+3| 135%| 120%| 110%
+4| 160%| 135%| 115%
+5| 190%| 150%| 120%
+6| 225%| 165%| 125%
+7| 265%| 180%| 130%
+8| 320%| 200%| 135%
+
+A velocidade deve aumentar de maneira controlada para que os ataques continuem visualmente legíveis e seja possível reagir.
+
+4. Passivas especiais por nível
+
+As passivas são cumulativas, mas devem ter limites e tempos de recarga.
+
+Nível 1 — Madeira
+
+- Boss normal, sem passivas especiais.
+- IA básica, com ataques e bloqueios simples.
+
+Nível 2 — Bronze
+
+- 10% de chance de bloquear um ataque.
+- IA utiliza combos básicos.
+
+Nível 3 — Prata
+
+- 15% de chance de esquivar de um ataque.
+- Utiliza contra-ataques simples.
+
+Nível 4 — Ouro
+
+- Regenera 3% da vida máxima uma única vez ao atingir 40% de vida.
+- IA utiliza combos mais longos.
+
+Nível 5 — Diamante
+
+- Ao atingir 50% de vida, recebe 15% de dano adicional por 8 segundos.
+- IA fica mais agressiva.
+
+Nível 6 — Lendário
+
+- Recebe uma barreira que absorve até 10% da vida máxima em dano, ativada uma vez por luta.
+- Executa ataques especiais com maior frequência.
+
+Nível 7 — Dragão Lendário
+
+- Ao atingir 30% de vida, entra em modo furioso.
+- Ganha 15% de velocidade de ataque por 10 segundos.
+- IA utiliza esquivas e contra-ataques avançados.
+
+Nível 8 — Divindade
+
+- Ao atingir 25% de vida, ativa a Fase Suprema.
+- Recebe uma barreira de 15% da vida máxima.
+- Ganha 20% de dano adicional por 12 segundos.
+- Utiliza seus melhores combos e ataques especiais.
+- Todas as habilidades devem permitir reação do jogador, sem ataques impossíveis de defender.
+
+5. Regras de vitória e derrota
+
+Vitória:
+
+- Conceder o XP correspondente ao rank atual.
+- Atualizar a barra de progresso.
+- Verificar se o jogador alcançou o próximo rank.
+- Ao subir de rank, atualizar automaticamente o nível e os atributos do Boss.
+
+Derrota:
+
+- Descontar o XP correspondente ao rank atual.
+- Atualizar a barra de progresso.
+- Permitir rebaixamento caso o XP fique abaixo do mínimo do rank.
+- Nunca permitir XP negativo.
+
+Exemplo:
+
+- Jogador está no Ouro com 5.500 XP.
+- Vence: ganha 160 XP e fica com 5.660 XP.
+- Perde: perde 80 XP e fica com 5.580 XP.
+
+6. Regras de balanceamento
+
+- Não conceder XP de vitória ao abandonar uma partida.
+- Desistência durante combate conta como derrota.
+- O XP ranqueado deve ser separado do XP de nível da conta.
+- O jogador não pode escolher um Boss de nível inferior para ganhar XP ranqueado mais facilmente.
+- O nível do Boss deve acompanhar o rank atual do jogador.
+- Os atributos do Boss devem ser calculados com base nos atributos originais, evitando multiplicadores acumulados incorretamente.
+- A dificuldade deve aumentar também pelo comportamento da IA, e não apenas pela vida e pelo dano.
+- O rank Divindade não terá limite máximo de XP, permitindo competir pela maior pontuação.
+
+7. Interface da ranqueada
+
+Mostrar na tela:
+
+- Nome do Boss selecionado.
+- Rank atual do jogador.
+- Nível atual do Boss, de 1 a 8.
+- Barra de XP ranqueado.
+- XP atual e XP necessário para o próximo rank.
+- Quantidade de XP recebida por vitória.
+- Quantidade de XP perdida por derrota.
+- Lista de passivas ativas do Boss.
+- Botão para iniciar a batalha.
+- Animação especial ao subir ou cair de rank.
+
+Após cada partida, mostrar uma tela de resultado com vitória ou derrota, XP ganho ou perdido e progresso atualizado.
+
+8. Persistência e integração
+
+Salvar permanentemente o XP ranqueado, o rank, as vitórias, as derrotas e o nível desbloqueado do Boss.
+
+Criar uma configuração reutilizável para que futuramente seja possível adicionar outros bosses sem reprogramar todo o sistema.
+
+IMPORTANTE: Integrar esse sistema ao modo de batalha já existente, reutilizando personagens, sprites, animações, controles e lógica de combate. Não modificar os outros modos do jogo.
+
+O objetivo é criar uma ranqueada PvE competitiva, progressiva e desafiadora, na qual subir de rank signifique enfrentar versões cada vez mais poderosas do Boss.
