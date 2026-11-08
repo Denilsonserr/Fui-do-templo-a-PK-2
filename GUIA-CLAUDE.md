@@ -448,3 +448,8 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
   2. `rgTween` (quadro anterior desbotando por cima do novo) para TODOS os personagens nos golpes (antes só Rengoku/Zoro/Naruto) → golpes mais fluidos.
   3. Golpe pesado/lançador/smash: tranco maior na câmera (`G.ck.vx`) + brilho branco rápido no ponto do golpe.
 - Teste geral `/home/claude/scripts/allchars.js` sem erros.
+
+## v188 — ajuda para acertar os golpes (todos os personagens)
+- `atkAssist` (`ferramentas/web/patch_v188.py`, depois do `patch_v187`): ao começar um golpe de SOCO/CHUTE no chão, se o rival está na frente, na mesma altura, e até 120 px além do alcance (`hb`) do golpe, o lutador desliza para frente durante o início/ativo do golpe (10–18 px por quadro, no máx. a distância que falta, para ao encostar ou acertar). Sem animação nova, sem acerto automático; não vale no ar, em golpes que já correm (`zDash`) nem com o rival caído. CPU também usa.
+- Teste `ferramentas/testes/talcance.js <personagem>` (soco e chute a 140/180/220/260/300 px). Antes: Vegeta/Broly/Goku/Aokiji/Naruto acertavam soco só até ~140–180 e chute só até ~180. Agora: soco até ~220, chute até ~260–300.
+- Ordem para remontar: v170 → patch_torre → patch_combo → patch_v178 → zoro/patch_zr → patch_v182 → cenarios/patch_vale → patch_v187 → patch_v188.
