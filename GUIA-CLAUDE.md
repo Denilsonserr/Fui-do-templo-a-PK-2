@@ -816,3 +816,17 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - Vitória no Boss: 🔴 5–10 (mais jogando bem) e 50% de chance de 1–2 💎. Derrota: 🔴 0–2, sem 💎.
 - Gacha: moeda vermelha 1–5. Repetido: lendário 25 💎, épico 5 💎 (antes 100/30).
 - Recompensas de rank e conquistas continuam iguais.
+
+## v217 — Boss mais fácil no começo, botão EQUIPAR e música no ranqueado
+- Broly com barras por nível (`RKBOSS[0].ph` agora é lista por nível, `rkPhB(lv)`):
+  - nv1 3→5, nv2 3→6, nv3 4→7, nv4 4→8, nv5 5→10, nv6 6→11, nv7 7→13, nv8 7→14 (fase 1 → transformado).
+  - Dano base menor (b1 dm .9, b2 dm 1.15); continua multiplicado por `RKLVS`, então o dano sobe com o rank.
+  - Banner, resultado (`frac`) e `rkTot` usam as barras do nível.
+- Botão 🎒 EQUIPAR (lobby do Boss) e EQUIPAMENTOS (tela rb) → `rkEquip()`:
+  - Personagem selecionado no meio; espaços em volta: espada, capacete, armadura, botas, poção.
+  - Lista da mochila (mesma da Torre) com filtro; toque equipa/bebe; toque no espaço tira.
+  - A poção ativa agora também vale (e é gasta) na luta do Boss (`rkApply`).
+- Música: botão 🎵 nas telas do ranqueado → `rkMusic()` (aleatória / sem música / escolher faixa; salvo em `rk_mus`).
+  - Toca no lobby (intervalo de volume vale também quando `showScreen.cur==='ranked'`) e na luta do Boss (`musPick` → `rkMusPlay`).
+  - No modo aleatório, cada entrada no ranqueado sorteia uma faixa.
+- `__dbg.mus()` para testes. Teste `ferramentas/testes/tequipar.js`.
