@@ -531,3 +531,13 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
   - Nunca expira. Toque equipa ou desequipa (1 de cada tipo).
   - O bônus vale em todas as subidas (`twEqB` lê `twEqOn()`).
 - Teste `ferramentas/testes/ttorre_bau.js`.
+
+## v197 — Poção de uso único + BOTAS
+- `ferramentas/web/patch_v197.py` (em cima da v196).
+- Equipamentos permanentes agora são Espada (ataque), Armadura (defesa) e BOTAS 🥾 (`bot`, velocidade). Raridades `TWEQR` iguais (20% por andar).
+- POÇÃO 🧪 virou consumível: `localStorage tw_poc` (até 40).
+  - Raridades `TWPOR`: comum 60% +1, rara 30% +4, épica 7,5% +5, lendária 2% +7, mítica 0,5% +10.
+  - Chance de vir num baú: 40% por andar (`TWPOP`; `window.__twPo` força nos testes).
+  - Na MOCHILA o botão BEBER guarda a poção em `tw_pocOn` (só uma por vez). Na próxima luta da torre (`twApply`) ela soma ao bônus de transformação (`p.tsb` e energia inicial) e é gasta. Aparece um aviso no começo da luta.
+- Migração: as poções de velocidade da v196 viram poções de uso único com o mesmo valor.
+- Teste `ferramentas/testes/ttorre_pocao.js`.

@@ -404,7 +404,7 @@ h2{margin:0;font-family:var(--f-display);font-weight:400;font-size:clamp(26px,8v
 .twPs.q4{gap:.8em}.twPs.q4 .twp{width:12.6em}
 .twp.sec{--c:#fff;border-color:#fff;background:radial-gradient(circle at 50% 10%,#3b3b4a,#000 70%);animation:twCard .55s cubic-bezier(.2,1.4,.4,1) both,twSec 1.2s linear infinite}.twp.sec .rr{background:linear-gradient(90deg,#fff,#a0f,#0ff,#ff0,#fff);-webkit-background-clip:text;background-clip:text;color:transparent;font-size:1em}
 @keyframes twSec{0%{box-shadow:0 0 1.5em #fff,0 0 3em #a0f;filter:hue-rotate(0)}50%{box-shadow:0 0 3em #0ff,0 0 5em #fff}100%{box-shadow:0 0 1.5em #fff,0 0 3em #a0f;filter:hue-rotate(360deg)}}
-.twChs{display:flex;justify-content:center;gap:3em;margin:2.6em 0 .2em}
+.twChs{display:flex;justify-content:center;gap:3em;margin:3.6em 0 .2em}
 .twCh{--c:#c3c8d2;position:relative;width:9em;height:8em;cursor:pointer;animation:twChIn .5s cubic-bezier(.2,1.4,.4,1) both,twChShk .5s 1s ease-in-out infinite}
 .twCh:nth-child(2){animation-delay:.12s,1.1s}.twCh:nth-child(3){animation-delay:.24s,1.2s}
 .twCh .box{position:absolute;left:0;right:0;bottom:0;height:4.6em;border-radius:.3em .3em .5em .5em;background:linear-gradient(180deg,#8a4a1c,#4a2309);border:.25em solid #e2a93b;box-shadow:inset 0 0 0 .35em #5a2c0b,0 .4em 1em rgba(0,0,0,.6)}
@@ -419,6 +419,7 @@ h2{margin:0;font-family:var(--f-display);font-weight:400;font-size:clamp(26px,8v
 @keyframes twChShk{0%,100%{transform:rotate(0)}25%{transform:rotate(-3deg)}75%{transform:rotate(3deg)}}
 .twDrop{--c:#fff;margin:.3em auto;padding:.4em 1.2em;border:2px solid var(--c);border-radius:.6em;display:inline-flex;flex-direction:column;background:radial-gradient(circle at 50% 0%,color-mix(in srgb,var(--c) 45%,transparent),#0b0710 80%);box-shadow:0 0 1.5em var(--c);animation:twCard .55s cubic-bezier(.2,1.4,.4,1) both}
 .twDrop b{color:var(--c);font-size:1.1em}.twDrop span{font-size:.75em;color:#e6dbe8}.twDrop[hidden]{display:none}
+.twDrops{display:flex;gap:.8em;justify-content:center;flex-wrap:wrap}.bgi[disabled]{opacity:.45}
 .twBag .bgw{display:flex;gap:1em;justify-content:center;align-items:flex-start;margin:.4em 0}
 .twBag .bgc{flex:1;max-width:16em;display:flex;flex-direction:column;gap:.4em;max-height:52vh;overflow:auto;padding:.2em}
 .twBag h5{margin:0 0 .2em;font:900 1em var(--f-ui);letter-spacing:.1em;color:#ffcf4a;display:flex;flex-direction:column}.twBag h5 small{font-size:.65em;color:#cdbfcf;letter-spacing:0}
@@ -5615,7 +5616,7 @@ function twRender(){twBuild();
   $('twFl').textContent=(TW.on&&TW.fl===TWN-1?'CHEFE':'ANDAR '+Math.min(TWN,TW.fl+(TW.on?1:0))+'/'+TWN);
   $('twTm').textContent=twFmt(TW.time);$('twTr').textContent=twTrofP();
   TW.hp=TW.hpv/(TW.bars*LAYER);const hp=Math.round(TW.hp*100);$('twHp').style.width=hp+'%';$('twHpT').textContent=TW.bars+' barras';$('twHp').className=hp<30?'lo':hp<60?'md':'';
-  $('twPs').innerHTML=TWPT.map(p=>`<span>${p.i} ${p.n==='VELOCIDADE'?'VEL.':p.n} <b>+${TW.pas[p.k]}%</b></span>`).join('')+(TW.pas.trf?`<span>🔥 TRANSF. <b>+${TW.pas.trf}%</b></span>`:'')+`<span class="eq">${(()=>{const o=twEqOn();return TWEQ.map(E=>{const q=o[E.k];return q?`<i style="color:${twRarOf(q.r).c}" title="${E.n} ${twRarOf(q.r).n}">${E.i}+${q.v}%</i>`:`<i class="no">${E.i}—</i>`}).join('')})()}</span>`;
+  $('twPs').innerHTML=TWPT.map(p=>`<span>${p.i} ${p.n==='VELOCIDADE'?'VEL.':p.n} <b>+${TW.pas[p.k]}%</b></span>`).join('')+(TW.pas.trf?`<span>🔥 TRANSF. <b>+${TW.pas.trf}%</b></span>`:'')+`<span class="eq">${(()=>{const o=twEqOn();return TWEQ.map(E=>{const q=o[E.k];return q?`<i style="color:${twRarOf(q.r).c}" title="${E.n} ${twRarOf(q.r).n}">${E.i}+${q.v}%</i>`:`<i class="no">${E.i}—</i>`}).join('')})()}${twPocOn()?`<i style="color:#7dff9a">🧪+${twPocOn().v}%</i>`:''}</span>`;
   {const n=twLS.g('tw_nome','');$('twNm').innerHTML=n?'Jogador: <b>'+twEsc(n)+'</b>':'Jogador: <i>sem nome</i>'}
   const R=twLS.g('tw_rec',null);$('twRec').innerHTML=R?`Recorde: <b>${R.andar}/7</b> andares · ${(R.d||0)<TWCUT?'--:--':twFmt(R.tempo)} · 🏆${R.trof}`:'Recorde: nenhum ainda';
   const L=$('twGoL');L.textContent=!TW.on?'':TW.busy?'...':TW.rev?(TW.fl===TWN-1?'LUTAR: CHEFE!':'LUTAR: ANDAR '+(TW.fl+1)):'';L.hidden=!TW.on;
@@ -5646,13 +5647,13 @@ function twFight(){if(TW.busy)return;TW.busy=true;twRender();twSfx('whoosh');
   const PM=prepMatch([G.pick,G.opp],G.nextStg);showVS(()=>PM.then(()=>{vsLoadEnd();TW.busy=false;startMatch()}),PM)}
 /* chamado no fim do setupFighters: vida que sobrou, passivas e dificuldade do andar */
 function twApply(){if(!(TW.on&&G.gmode==='torre'))return;const [p,o]=G.p,b=TW.fl===TWN-1;
-  p.mhp=TW.bars*LAYER;p.hp=p.hpLag=Math.max(1,Math.min(p.mhp,Math.round(TW.hpv)));p.tdm=1+(TW.pas.dano+twEqB('dano'))/100;p.tsp=1+(TW.pas.vel+twEqB('vel'))/100;p.tdf=1/(1+(TW.pas.vida+twEqB('vida'))/100);p.tsb=1+(TW.pas.trf||0)/100;if(TW.pas.trf)p.sb=Math.max(p.sb||0,Math.min(SB_COST*.9,SB_COST*TW.pas.trf/200));
+  p.mhp=TW.bars*LAYER;p.hp=p.hpLag=Math.max(1,Math.min(p.mhp,Math.round(TW.hpv)));p.tdm=1+(TW.pas.dano+twEqB('dano'))/100;p.tsp=1+(TW.pas.vel+twEqB('vel'))/100;p.tdf=1/(1+(TW.pas.vida+twEqB('vida'))/100);const pon=twPocOn(),trf=(TW.pas.trf||0)+(pon?pon.v:0);p.tsb=1+trf/100;if(trf)p.sb=Math.max(p.sb||0,Math.min(SB_COST*.9,SB_COST*trf/200));if(pon){twLS.s('tw_pocOn',null);TW.pocMsg='🧪 POÇÃO +'+pon.v+'% TRANSFORMAÇÃO'}
   o.mhp=TWOB[TW.fl]*LAYER;o.hp=o.hpLag=o.mhp;o.tdm=b?1.55:1+.07*TW.fl;o.tsp=b?1.3:1+.045*TW.fl;o.tdf=b?.85:1;if(TW.fl>=3)o.ki=60;if(b){o.ki=100;o.sb=Math.max(o.sb||0,SB_COST)}
   TW.fs={t:0,cmb:0,ult:0,hp0:p.hp/p.mhp}}
 /* tempo da torre: NÃO conta durante ultimate, transformação, cinemáticas, especiais com vídeo nem pausado (configuração) */
 function twTick(){const F=TW.fs;if(!F||!G.p)return;if(!(G.paused||G.trans||G.ws||G.cine||G.comic||G.zsp||G.sc||G.rush||G.wfs||G.xu))F.t++;const c=G.p[0].combo||0;if(c>F.cmb)F.cmb=c}
 function twHudT(){return 'TORRE '+twFmt(TW.time+(TW.fs?TW.fs.t/60:0))}
-function twBossGo(){if(!(TW.on&&G.gmode==='torre'&&G.p))return;if(G.tlim!==0)G.timer=Math.min(240,60+20*TWOB[TW.fl]);if(TW.fl!==TWN-1)return;const o=G.p[1];
+function twBossGo(){if(TW.pocMsg&&G.p){txt(G.p[0].x,G.p[0].y-300,TW.pocMsg,'#7dff9a');TW.pocMsg=null}if(!(TW.on&&G.gmode==='torre'&&G.p))return;if(G.tlim!==0)G.timer=Math.min(240,60+20*TWOB[TW.fl]);if(TW.fl!==TWN-1)return;const o=G.p[1];
   banner('CHEFE FINAL','#ffc531',90,o.def.name+' · TRANSFORMADO');if(o.form)return;o.sb=Math.max(o.sb||0,SB_COST);try{startTransform(o)}catch(e){}}
 function twAfter(w){G.mode='tower';$('controls').hidden=true;$('pauseBtn').hidden=true;rainSound(0);G.paused=false;
   const F=TW.fs||{t:0,cmb:0,ult:0,hp0:TW.hp},secs=F.t/60,p=G.p[0];TW.time+=secs;
@@ -5675,7 +5676,16 @@ const TWTRF={k:'trf',n:'TRANSFORMAÇÃO',i:'🔥',d:'Transforma mais cedo (energ
 /* v195: carta SECRETA (0,4% por escolha): bônus absurdo */
 const TWSECR={k:'sec',n:'SECRETA',c:'#ffffff'};const TWSEC={k:'sec',n:'PODER PROIBIDO',i:'👁️',d:'+80% vida, dano e velocidade · transforma muito mais cedo · +2 barras e vida cheia'};const TWSECP=.4;
 /* v195: EQUIPAMENTOS — ficam até o fim da torre (guarda o melhor de cada tipo) */
-const TWEQ=[{k:'esp',n:'ESPADA',i:'🗡️',s:'dano',d:'Aumenta o ATAQUE'},{k:'arm',n:'ARMADURA',i:'🛡️',s:'vida',d:'Aumenta a DEFESA'},{k:'poc',n:'POÇÃO',i:'🧪',s:'vel',d:'Aumenta a VELOCIDADE'}];
+const TWEQ=[{k:'esp',n:'ESPADA',i:'🗡️',s:'dano',d:'Aumenta o ATAQUE'},{k:'arm',n:'ARMADURA',i:'🛡️',s:'vida',d:'Aumenta a DEFESA'},{k:'bot',n:'BOTAS',i:'🥾',s:'vel',d:'Aumenta a VELOCIDADE'}];
+/* poção: uso único, bônus na transformação (enche a energia mais rápido e já começa com uma parte) — vale para a PRÓXIMA luta da torre */
+const TWPOC={k:'poc',n:'POÇÃO',i:'🧪',d:'Transforma mais rápido · uso único (próxima luta)'};
+const TWPOR=[{k:'comum',n:'COMUM',c:'#c3c8d2',w:60,v:1},{k:'rara',n:'RARA',c:'#3d9bff',w:30,v:4},{k:'epica',n:'ÉPICA',c:'#b25bff',w:7.5,v:5},{k:'lend',n:'LENDÁRIA',c:'#ffc531',w:2,v:7},{k:'mit',n:'MÍTICA',c:'#ff2e63',w:.5,v:10}];
+const TWPOP=.4;/* chance de vir poção num baú (por andar vencido) */
+function twPoRoll(){let r=Math.random()*100;for(const R of TWPOR){if((r-=R.w)<0)return R}return TWPOR[0]}
+const twPocs=()=>twLS.g('tw_poc',[]),twPocOn=()=>twLS.g('tw_pocOn',null);
+function twAddPoc(R){const L=twPocs();L.push({id:Date.now().toString(36)+Math.random().toString(36).slice(2,6),r:R.k,v:R.v});twLS.s('tw_poc',L.slice(-40))}
+/* poções antigas (v196 eram equipamento de velocidade) viram poções de uso único */
+(function(){try{const I=twLS.g('tw_inv',[]),old=I.filter(x=>x.t==='poc');if(old.length){twLS.s('tw_inv',I.filter(x=>x.t!=='poc'));const L=twLS.g('tw_poc',[]);for(const x of old)L.push({id:x.id,r:x.r,v:x.v});twLS.s('tw_poc',L);const Q=twLS.g('tw_eqp',{});delete Q.poc;twLS.s('tw_eqp',Q)}}catch(e){}})();
 const TWEQR=[{k:'comum',n:'COMUM',c:'#c3c8d2',w:70,v:1},{k:'rara',n:'RARA',c:'#3d9bff',w:22.5,v:4},{k:'epica',n:'ÉPICA',c:'#b25bff',w:6,v:5},{k:'lend',n:'LENDÁRIA',c:'#ffc531',w:1.3,v:7},{k:'mit',n:'MÍTICA',c:'#ff2e63',w:.2,v:10}];
 function twEqRoll(){let r=Math.random()*100;for(const R of TWEQR){if((r-=R.w)<0)return R}return TWEQR[0]}
 const TWEQP=.2;/* chance de vir equipamento num dos baús (por andar vencido) */
@@ -5688,24 +5698,27 @@ function twAddItem(E,R){const I=twInv(),it={id:Date.now().toString(36)+Math.rand
   const Q=twEqp(),cur=I.find(x=>x.id===Q[E.k]);if(!cur||it.v>cur.v){Q[E.k]=it.id;twLS.s('tw_eqp',Q)}return it}
 function twBag(){if(!$('twModal').hidden&&!$('twModal').querySelector('.twBag'))return;const I=twInv(),Q=twEqp();
   const col=E=>{const L=I.filter(x=>x.t===E.k).sort((a,b)=>b.v-a.v);return `<div class="bgc"><h5>${E.i} ${E.n}<small>${E.d}</small></h5>${L.length?L.map(x=>{const R=twRarOf(x.r),on=Q[E.k]===x.id;return `<button class="bgi ${on?'on':''}" data-id="${x.id}" data-t="${E.k}" style="--c:${R.c}"><b>${E.i} +${x.v}%</b><span>${R.n}</span><em>${on?'EQUIPADO':'EQUIPAR'}</em></button>`}).join(''):'<p class="twH">Nenhum ainda.<br>Ache nos baús da torre!</p>'}</div>`};
-  twModal(`<div class="twM twBag"><h3>🎒 MOCHILA</h3><p class="twH">Equipamentos achados nos baús. Nunca expiram. Toque para equipar (1 de cada tipo). Vale em todas as subidas da torre.</p><div class="bgw">${TWEQ.map(col).join('')}</div><div class="row"><button class="btn main" id="twBagX">FECHAR</button></div></div>`);
+  twModal(`<div class="twM twBag"><h3>🎒 MOCHILA</h3><p class="twH">Equipamentos nunca expiram: toque para equipar (1 de cada tipo). Poção é de uso único: beba antes da luta (só uma por vez).</p><div class="bgw">${TWEQ.map(col).join('')}${(()=>{const L=twPocs().slice().sort((a,b)=>b.v-a.v),on=twPocOn();return `<div class="bgc"><h5>🧪 POÇÕES<small>Uso único · transforma mais rápido na próxima luta</small></h5>${on?`<div class="bgi on" style="--c:${twRarOf(on.r).c}"><b>🧪 +${on.v}%</b><span>BEBIDA · vale na próxima luta</span><em>ATIVA</em></div>`:''}${L.length?L.map(x=>{const R=twRarOf(x.r);return `<button class="bgi bgp" data-id="${x.id}" style="--c:${R.c}" ${on?'disabled':''}><b>🧪 +${x.v}%</b><span>${R.n}</span><em>BEBER</em></button>`}).join(''):on?'':'<p class="twH">Nenhuma ainda.<br>Vem nos baús da torre!</p>'}</div>`})()}</div><div class="row"><button class="btn main" id="twBagX">FECHAR</button></div></div>`);
   $('twBagX').onclick=()=>{twModal(null);twRender()};
-  document.querySelectorAll('#twModal .bgi').forEach(b=>b.onclick=()=>{const Q=twEqp();Q[b.dataset.t]=Q[b.dataset.t]===b.dataset.id?null:b.dataset.id;twLS.s('tw_eqp',Q);twSfx('clang');twBag()})}
+  document.querySelectorAll('#twModal .bgp').forEach(b=>b.onclick=()=>{if(twPocOn())return;const L=twPocs(),j=L.findIndex(x=>x.id===b.dataset.id);if(j<0)return;const x=L.splice(j,1)[0];twLS.s('tw_poc',L);twLS.s('tw_pocOn',x);twSfx('powerUp');twToast('🧪 POÇÃO +'+x.v+'% BEBIDA! Vale na próxima luta','#7dff9a');twBag()});
+  document.querySelectorAll('#twModal .bgi[data-t]').forEach(b=>b.onclick=()=>{const Q=twEqp();Q[b.dataset.t]=Q[b.dataset.t]===b.dataset.id?null:b.dataset.id;twLS.s('tw_eqp',Q);twSfx('clang');twBag()})}
 function twPassive(ks,won){const pt=TWPT.slice();pt.push(pt[(Math.random()*3)|0]);const opts=twShuf(pt).map((p,i)=>{const R=twRoll();return {p,R,v:R.v[TWPT.indexOf(p)]}});
   if(TW.bars<TWMB&&Math.random()<.3){const i=(Math.random()*4)|0;opts[i]={p:TWBAR,R:Math.random()<.35?TWRAR[3]:TWRAR[2],v:1}}
   for(const o of opts)if((o.R.k==='lend'||o.R.k==='mit')&&o.p!==TWBAR&&Math.random()<.45&&!opts.some(q=>q.p===TWTRF)){o.p=TWTRF;o.v=TWTRV[o.R.k]}
   if(Math.random()*100<(window.__twSec!=null?window.__twSec:TWSECP)){const i=(Math.random()*4)|0;opts[i]={p:TWSEC,R:TWSECR,v:80}}
   const drop=Math.random()<(window.__twEq!=null?window.__twEq:TWEQP)?{E:TWEQ[(Math.random()*3)|0],R:twEqRoll(),c:(Math.random()*3)|0}:null;
+  const pdrop=Math.random()<(window.__twPo!=null?window.__twPo:TWPOP)?{R:twPoRoll(),c:(Math.random()*3)|0}:null;
   const inC=[[0,1],[2],[3]];twShuf(inC);const chest=i=>{const cs=inC[i].map(j=>opts[j]),best=[drop&&drop.c===i?drop.R:null,...cs.map(o=>o.R)].filter(Boolean).reduce((a,R)=>TWRAR.findIndex(x=>x.k===R.k)>TWRAR.findIndex(x=>x.k===a.k)||R.k==='sec'?R:a,cs[0].R);
-    return `<div class="twCh" data-i="${i}" style="--c:${best.c}"><div class="lid"></div><div class="box"><i class="lock"></i></div><div class="glow"></div><div class="loot">${cs.map(o=>`<span>${o.p.i}</span>`).join('')}${drop&&drop.c===i?`<span class="it" style="--c:${drop.R.c}">${drop.E.i}</span>`:''}</div></div>`};
+    return `<div class="twCh" data-i="${i}" style="--c:${best.c}"><div class="lid"></div><div class="box"><i class="lock"></i></div><div class="glow"></div><div class="loot">${cs.map(o=>`<span>${o.p.i}</span>`).join('')}${drop&&drop.c===i?`<span class="it" style="--c:${drop.R.c}">${drop.E.i}</span>`:''}${pdrop&&pdrop.c===i?`<span class="it" style="--c:${pdrop.R.c}">🧪</span>`:''}</div></div>`};
   twModal(`<div class="twM"><h3>ANDAR ${won+1} VENCIDO!</h3><div class="twTs">${twTrofHTML(ks)}</div>
     <div class="twChs">${[0,1,2].map(chest).join('')}</div><p class="twH" id="twChT">Toque nos baús para abrir!</p>
-    <div class="twDrop" id="twDrop" hidden></div>
+    <div class="twDrops"><div class="twDrop" id="twDrop" hidden></div><div class="twDrop" id="twDropP" hidden></div></div>
     <div id="twCards" hidden><h4>ESCOLHA UMA PASSIVA</h4><div class="twPs q4">${opts.map((o,i)=>`<button class="twp ${o.R.k}" data-i="${i}" style="--c:${o.R.c};animation-delay:${.25+i*.15}s"><span class="rr">${o.R.n}</span><span class="ic">${o.p.i}</span><b>${o.p.k==='sec'?'???':'+'+o.v+(o.p.k==='barra'?'':'%')}</b><span class="nm">${o.p.n}</span><span class="ds">${o.p.d}</span></button>`).join('')}</div></div>
     <p class="twH">Você vai recuperar <b>60%</b> da vida antes da próxima luta. Próximo rival: <b>${TWOB[won+1]||7} barras</b>.</p></div>`);
   let nOpen=0;const openC=el=>{if(el.classList.contains('open'))return;el.classList.add('open');twSfx('boom');nOpen++;const i=+el.dataset.i;
       if(drop&&drop.c===i){const it=twAddItem(drop.E,drop.R);if(drop.R.k==='mit'&&!TW.tr.some(t=>t.k==='eqm'))TW.tr.push({k:'eqm',fl:won});const D=$('twDrop');D.hidden=false;D.style.setProperty('--c',drop.R.c);
         D.innerHTML=`<b>${drop.E.i} ${drop.E.n} ${drop.R.n} +${drop.R.v}%</b><span>Foi para a 🎒 MOCHILA${twEqp()[drop.E.k]===it.id?' e já está EQUIPADO':''}</span>`;setTimeout(()=>twSfx('powerUp'),250)}
+      if(pdrop&&pdrop.c===i){twAddPoc(pdrop.R);const D=$('twDropP');D.hidden=false;D.style.setProperty('--c',pdrop.R.c);D.innerHTML=`<b>🧪 POÇÃO ${pdrop.R.n} +${pdrop.R.v}%</b><span>Foi para a 🎒 MOCHILA (beba antes de uma luta)</span>`;setTimeout(()=>twSfx('powerUp'),300)}
       if(inC[i].some(j=>opts[j].R.k==='sec'))setTimeout(()=>{twToast('👁️ UMA CARTA SECRETA APARECEU!','#ffffff');twSfx('boom')},300);
       if(nOpen>=3)setTimeout(()=>{$('twChT').hidden=true;$('twCards').hidden=false;if(opts.some(o=>o.R.k==='lend'||o.R.k==='mit'||o.R.k==='sec'))twSfx('powerUp')},650)};
   document.querySelectorAll('#twModal .twCh').forEach(el=>el.onclick=()=>openC(el));

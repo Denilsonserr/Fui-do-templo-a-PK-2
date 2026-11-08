@@ -51,7 +51,7 @@ i=s.index("function twEquip(won){");j=s.index("\n",s.index("setTimeout(()=>twRev
 rep("TW.eq={};","",2);rep("eq:{},","")
 # --- estilos ---
 rep("\n.twp.eqc .ic{font-size:3em}",r"""
-.twChs{display:flex;justify-content:center;gap:3em;margin:2.6em 0 .2em}
+.twChs{display:flex;justify-content:center;gap:3em;margin:3.6em 0 .2em}
 .twCh{--c:#c3c8d2;position:relative;width:9em;height:8em;cursor:pointer;animation:twChIn .5s cubic-bezier(.2,1.4,.4,1) both,twChShk .5s 1s ease-in-out infinite}
 .twCh:nth-child(2){animation-delay:.12s,1.1s}.twCh:nth-child(3){animation-delay:.24s,1.2s}
 .twCh .box{position:absolute;left:0;right:0;bottom:0;height:4.6em;border-radius:.3em .3em .5em .5em;background:linear-gradient(180deg,#8a4a1c,#4a2309);border:.25em solid #e2a93b;box-shadow:inset 0 0 0 .35em #5a2c0b,0 .4em 1em rgba(0,0,0,.6)}
