@@ -910,3 +910,6 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - Conta: a tela "MINHA CONTA" diz claramente que já está conectado neste aparelho e mostra rank, XP, 💎, personagens e moedas; criar conta com nome que já tem conta manda usar ENTRAR.
 - Ferramenta `.github/workflows/busca.yml` (input `nome`, `*` = tudo): lista docs do servidor por nome (o campo `d` dos saves aparece só como tamanho). Os saves (`sv`) podem ser lidos com `consulta.yml` (campo `sv`, valor = acc).
 - Teste `ferramentas/testes/tticket.js`.
+
+## v226 — aviso de ticket discreto
+- O dono achou feia a etiqueta amarela em cima do preço. Agora é uma faixinha escura pequena ACIMA de cada botão (`.rkTk`, fora do botão): "🎫 usa 1 ticket (não gasta 💎)" / "🎫 usa 4 tickets + 270 💎". O preço original do botão aparece normal.
