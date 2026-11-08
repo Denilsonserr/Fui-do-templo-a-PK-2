@@ -764,3 +764,11 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
   - **Conquistas** (`RKACH`) dão 💎. **Minha Posição** mostra rank, pontos, colocação e recordes.
 - Dados no aparelho (`rk_*`): gem, tic, red, own, sel, rp, pity, pity2, bpity, hist, st, rwc, achc. Começa com 100 💎, 1 ticket e o Goku. A mochila e os equipamentos são os mesmos da torre.
 - Testes: `ferramentas/testes/tranqueado.js` (tudo, Firestore simulado) e `tsenzu.js`.
+
+## v214 — ranqueado em tela cheia e mais leve
+- Ao abrir o ranqueado chama `fsTry()` (tela cheia). `rkFit` usa a arte COBRINDO a tela (`max`, corta um pouquinho das bordas) em vez de deixar faixas pretas.
+- Vídeos (invocação e transformação do personagem novo):
+  - Os quadros são carregados e decodificados antes (`rkPre`); a invocação ao abrir o gacha, o personagem novo durante o vídeo da invocação (`RKCWP`).
+  - Desenhados num canvas pelo relógio (`rkPlayFrames`, 12 q/s com `requestAnimationFrame`), sem trocar `img.src`.
+- CSS: menos filtros animados (cartas lendárias brilham com um fundo pulsando em vez de `drop-shadow` animado; emblemas pequenos sem raios girando).
+- Mesmo patch `patch_v213.py` + fontes em `ferramentas/web/ranqueada/` (refazer a partir da v212).

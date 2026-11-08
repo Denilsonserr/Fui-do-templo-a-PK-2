@@ -101,3 +101,13 @@
 .rk_menu .hs.lk{background:linear-gradient(90deg,rgba(3,5,14,.35),rgba(3,5,14,.82) 55%);border-radius:1.4em}.rk_menu .rkLk{right:16%;font-size:1.1em}
 .rkChI{background:#0a1430;border-radius:.4em}
 .rkCd .in b{font-size:1.6vh}.rkCd .in em{font-size:1.2vh}
+/* desempenho: menos filtros animados */
+.rkCv{position:absolute;inset:0;width:100%;height:100%}
+#rkWrap{overflow:hidden}
+.rkEmb img{animation:rkEp 2s ease-in-out infinite;will-change:transform}
+.rkEmb.sm .ry,.rkEmb.xs .ry,.rkEmb.xs .sh,.rkEmb.xs .gl{display:none}.rkEmb.xs img{animation:none}
+.rkCd{will-change:transform}.rkCd .bk,.rkCd .fr{will-change:transform}
+.rkCd .frm{filter:drop-shadow(0 0 1.2vh var(--c))}
+.rkCd.rv.r_lend .frm,.rkCd.rv.r_mit .frm,.rkCd.rv.r_sec .frm{animation:none;filter:drop-shadow(0 0 1.6vh var(--c)) brightness(1.2)}
+.rkCd.rv.r_lend::after,.rkCd.rv.r_mit::after,.rkCd.rv.r_sec::after{content:'';position:absolute;inset:-8%;border-radius:1vw;background:radial-gradient(closest-side,color-mix(in srgb,var(--c) 55%,transparent),transparent);animation:rkEg 1.2s ease-in-out infinite;z-index:-1;pointer-events:none}
+.rkBox img{animation:none}

@@ -17,7 +17,7 @@ const rkAdd=(k,n)=>{rkS(k,Math.max(0,(rkG(k,0)|0)+n))};
 const rkSt=()=>rkG('st',{}),rkStAdd=(k,n,mx)=>{const S=rkSt();S[k]=mx?Math.max(S[k]||0,n):(S[k]||0)+n;rkS('st',S)};
 const rkFmtN=n=>String(n|0).replace(/\B(?=(\d{3})+(?!\d))/g,'.');
 function rkToast(t,c){const T=$('rkToast');if(!T)return;T.textContent=t;T.style.color=c||'#ffd84a';T.classList.remove('on');void T.offsetWidth;T.classList.add('on')}
-function rkFit(){const el=document.querySelector('#rkWrap .rkA');if(!el)return;const W=Math.min(innerWidth,innerHeight*RKW/RKH);el.style.width=W+'px';el.style.height=(W*RKH/RKW)+'px';el.style.fontSize=(W/100)+'px';
+function rkFit(){const el=document.querySelector('#rkWrap .rkA');if(!el)return;const W=Math.max(innerWidth,innerHeight*RKW/RKH);el.style.width=W+'px';el.style.height=(W*RKH/RKW)+'px';el.style.fontSize=(W/100)+'px';
   const M=$('rkModal');if(M)M.style.fontSize=Math.min(innerWidth/100,innerHeight*1.7757/100)+'px'}
 addEventListener('resize',rkFit);
 function rkModal(h){const M=$('rkModal');if(!M)return;if(h==null){M.hidden=true;M.innerHTML='';return}M.innerHTML=h;M.hidden=false;rkFit()}
@@ -26,7 +26,7 @@ function rkEmb(i,cls){const R=RKR[i];return `<div class="rkEmb ${cls||''}" style
 function rkCurHTML(){return `<div class="rkCur"><span><img src="${RQA.coin[0]}" alt="">${rkFmtN(rkG('gem',0))}</span><span><img src="${RQA.coin[2]}" alt="">${rkFmtN(rkG('tic',0))}</span><span><img src="${RQA.coin[1]}" alt="">${rkFmtN(rkG('red',0))}</span></div>`}
 const RKLOCK='<span class="rkLk"><svg viewBox="0 0 24 24"><path d="M7 10V7a5 5 0 0 1 10 0v3" fill="none" stroke="currentColor" stroke-width="2.4"/><rect x="4.5" y="10" width="15" height="11" rx="2" fill="currentColor"/></svg>EM BREVE</span>';
 function rkSfx(k){try{SFX[k]&&SFX[k]()}catch(e){}}
-function rkOpen(v){rkInit();audioInit();showScreen('ranked');rkView(v||'menu')}
+function rkOpen(v){rkInit();audioInit();try{fsTry()}catch(e){}showScreen('ranked');rkView(v||'menu')}
 let RKV='menu';
 function rkView(v){RKV=v;const W=$('rkWrap');if(!W)return;clearInterval(rkView.iv);rkModal(null);
   const H={menu:rkMenuH,boss:rkBossH,gacha:rkGachaH,shop:rkShopH,lib:rkLibH}[v]();W.innerHTML=`<div class="rkA rk_${v}" style="background-image:url(${RQA[{menu:'menu_ranqueado',boss:'modo_boss',gacha:'gacha',shop:'loja_gemas',lib:'biblioteca'}[v]]})">${H}<div id="rkToast"></div></div>`;
@@ -169,8 +169,16 @@ function rkGachaH(){const p=rkG('pity',0);
   <button class="hs" data-a="shop" style="${rkB(40,700,125,800)}"></button><button class="hs" data-a="hist" style="${rkB(165,700,265,800)}"></button><button class="hs" data-a="taxas" style="${rkB(300,700,390,800)}"></button>
   <button class="hs" data-a="sum1" style="${rkB(550,695,975,805)}"><span class="shine"></span></button><button class="hs" data-a="sum10" style="${rkB(1030,695,1475,805)}"><span class="shine"></span></button>
   <div class="rkPity" style="${rkB(560,812,1470,845)}">⭐ Lendário garantido em <b>${30-p}</b> · ✦ Lâmina Negra (secreta) garantida em <b>${50-rkG('pity2',0)}</b> · 🎟️ ticket = 1 giro</div>`}
-let RKVF=null;
-function rkGachaOn(){if(!RKVF){RKVF=RQA.inv.map(s=>{const im=new Image();im.decoding='async';im.src=s;return im})}}
+let RKVF=null,RKVP=null;
+function rkPre(list){const ims=list.map(s=>{const im=new Image();im.decoding='async';im.src=s;return im});return {ims,p:Promise.all(ims.map(im=>(im.decode?im.decode():new Promise(r=>{im.onload=r})).catch(()=>{})))}}
+function rkGachaOn(){if(!RKVF){const P=rkPre(RQA.inv);RKVF=P.ims;RKVP=P.p}}
+/* toca uma lista de quadros já carregados num canvas, 12 quadros/s, pelo relógio (não trava se o celular atrasar) */
+function rkPlayFrames(host,ims,ready,cb,fps){const cv=document.createElement('canvas');cv.className='rkCv';host.appendChild(cv);const c=cv.getContext('2d');let t0=0,done=false,raf=0;
+  const fit=()=>{const d=Math.min(2,devicePixelRatio||1);cv.width=innerWidth*d;cv.height=innerHeight*d};fit();
+  const end=()=>{if(done)return;done=true;cancelAnimationFrame(raf);cv.remove();cb()};
+  const draw=ts=>{if(done)return;if(!t0)t0=ts;const i=Math.floor((ts-t0)/1000*(fps||12));if(i>=ims.length){end();return}let k=i;while(k>0&&!(ims[k].complete&&ims[k].naturalWidth))k--;const im=ims[k];
+    if(im&&im.naturalWidth){const W=cv.width,H=cv.height,s=Math.min(W/im.naturalWidth,H/im.naturalHeight),w=im.naturalWidth*s,h=im.naturalHeight*s;c.fillStyle='#000';c.fillRect(0,0,W,H);c.drawImage(im,(W-w)/2,(H-h)/2,w,h)}raf=requestAnimationFrame(draw)};
+  Promise.race([ready,new Promise(r=>setTimeout(r,2500))]).then(()=>{raf=requestAnimationFrame(draw)});return end}
 function rkSummon(n){rkInit();const cost=n===1?50:450;let useT=false;
   if(n===1&&rkG('tic',0)>0)useT=true;else if(rkG('gem',0)<cost){rkSfx('clang');rkToast('Geminhas insuficientes! Compre na Loja 🛒','#ff8080');return}
   if(useT)rkAdd('tic',-1);else rkAdd('gem',-cost);
@@ -180,10 +188,11 @@ function rkSummon(n){rkInit();const cost=n===1?50:450;let useT=false;
   for(const x of L){if(x.k==='chr'){if(own.includes(x.id)){x.dup=x.r==='lend'?100:30;rkAdd('gem',x.dup)}else{own.push(x.id);x.nw=1}}else if(x.k==='eq')twAddItem(x.E,TWEQR.find(R=>R.k===x.r));else if(x.k==='sp')rkGiveSp(x.s);else rkAdd('red',x.n)}
   rkS('own',own);rkStAdd('spins',n);if(L.some(x=>x.k==='chr'&&x.r==='lend'&&x.nw))rkStAdd('legs',L.filter(x=>x.k==='chr'&&x.r==='lend'&&x.nw).length);
   const H=rkG('hist',[]);for(const x of L)H.unshift({k:x.k,r:x.r,id:x.id,s:x.s,t:x.E?x.E.k:'',n:x.n||0,dup:x.dup||0,d:Date.now()});rkS('hist',H.slice(0,60));
+  for(const x of L)if(x.k==='chr'&&x.nw&&x.r==='lend'){try{const F=RKTV[x.id]&&RKTV[x.id]().f;if(F)RKCWP[x.id]=rkPre(F)}catch(e){}}
   rkPlayVid(()=>rkCards(L))}
-function rkPlayVid(cb){const O=document.createElement('div');O.className='rkFx';O.innerHTML='<img alt=""><span>toque para pular</span>';$('ranked').appendChild(O);const im=O.querySelector('img');let i=0,done=false;
-  const end=()=>{if(done)return;done=true;clearInterval(iv);O.remove();cb()};O.onclick=end;const N=RQA.inv.length;
-  const iv=setInterval(()=>{if(i>=N){end();return}const F=RKVF&&RKVF[i];im.src=F&&F.complete?F.src:RQA.inv[i];i++},1000/12);try{SFX.powerUp()}catch(e){}}
+const RKCWP={};
+function rkPlayVid(cb){rkGachaOn();const O=document.createElement('div');O.className='rkFx';O.innerHTML='<span>toque para pular</span>';$('ranked').appendChild(O);
+  const stop=rkPlayFrames(O,RKVF,RKVP,()=>{O.remove();cb()});O.onclick=()=>stop();try{SFX.powerUp()}catch(e){}}
 function rkCardInner(x){if(x.k==='chr')return `<img class="pt" src="${IMG[x.id]?IMG[x.id].src:''}" alt=""><b>${CH[x.id]?CH[x.id].name:''}</b><em>${x.nw?'NOVO!':'REPETIDO +'+x.dup+'💎'}</em>`;
   if(x.k==='eq')return `<img class="ic" src="${twIco(x.E.k,x.r)}" alt=""><b>${x.E.n}</b><em>${TWEQR.find(R=>R.k===x.r).n}</em>`;
   if(x.k==='sp'){const S=RKSP[x.s];return `<img class="ic" src="${S.img}" alt=""><b>${S.nm}</b><em>${x.r==='sec'?'✦ SECRETA ✦':'MÍTICO ESPECIAL'}</em>`}
@@ -204,8 +213,8 @@ function rkSecWin(){return new Promise(res=>{const S=RKSP.sec,O=document.createE
 const RKTV={goku:()=>GKV,aokiji:()=>AOV,zoro:()=>ZRV,broly:()=>BRV,vegeta:()=>VGV,gogeta:()=>GGV,madara:()=>MDV,gojo:()=>GJV,luffy:()=>LFV,rengoku:()=>RGV,naruto:()=>NRV,garou:()=>GRV,qingqing:()=>QQV,zaykon:()=>ZKV,zedry:()=>ZGV};
 function rkCharWin(id){return new Promise(res=>{let F=null;try{F=RKTV[id]&&RKTV[id]().f}catch(e){}
   const O=document.createElement('div');O.className='rkWin';O.innerHTML=`<img class="v" alt=""><div class="t"><b>NOVO PERSONAGEM LENDÁRIO!</b><span>${CH[id]?CH[id].name:''}</span></div><img class="fl" src="${fullSrc(id)}" alt="" hidden><i class="rays"></i>`;$('ranked').appendChild(O);
-  const v=O.querySelector('.v'),fl=O.querySelector('.fl');let i=0,done=false;const fin=()=>{if(done)return;done=true;clearInterval(iv);v.hidden=true;fl.hidden=false;O.classList.add('end');rkSfx('powerUp');setTimeout(()=>{O.onclick=()=>{O.remove();res()}},400)};
-  O.onclick=fin;let iv=0;if(F&&F.length){const P=F.map(s=>{const im=new Image();im.src=s;return im});iv=setInterval(()=>{if(i>=F.length){fin();return}v.src=P[i].complete?P[i].src:F[i];i++},1000/12)}else fin()})}
+  const v=O.querySelector('.v'),fl=O.querySelector('.fl');v.remove();let done=false,stop=null;const fin=()=>{if(done)return;done=true;if(stop)stop();fl.hidden=false;O.classList.add('end');rkSfx('powerUp');setTimeout(()=>{O.onclick=()=>{O.remove();res()}},400)};
+  O.onclick=()=>fin();if(F&&F.length){const P=RKCWP[id]||rkPre(F);stop=rkPlayFrames(O,P.ims,P.p,fin)}else fin()})}
 function rkHist(){const H=rkG('hist',[]);rkModal(`<div class="twM"><h3>📜 HISTÓRICO</h3><div class="rkHl">${H.length?H.map(x=>{const R=TWEQR.find(q=>q.k===x.r)||TWEQR[0];return `<div style="--c:${R.c}"><b>${x.k==='chr'?(CH[x.id]?CH[x.id].name:x.id):x.k==='eq'?TWEQ.find(E=>E.k===x.t).n:x.k==='sp'?RKSP[x.s].nm:'+'+x.n+' 🔴'}</b><span>${x.k==='chr'?'PERSONAGEM '+(x.r==='lend'?'LENDÁRIO':'ÉPICO')+(x.dup?' (repetido +'+x.dup+'💎)':''):x.k==='eq'?'EQUIPAMENTO '+R.n:x.k==='sp'?(x.r==='sec'?'✦ SECRETO ✦':'MÍTICO ESPECIAL'):'MOEDA VERMELHA'}</span><small>${new Date(x.d).toLocaleString('pt-BR').slice(0,17)}</small></div>`}).join(''):'<p class="twH">Nenhum giro ainda.</p>'}</div><div class="row"><button class="btn" id="rkMX">FECHAR</button></div></div>`);$('rkMX').onclick=()=>rkModal(null)}
 function rkTaxas(){rkModal(`<div class="twM"><h3>% TAXAS DA INVOCAÇÃO LIMITADA</h3><table class="rkTx"><tr><th>Resultado</th><th>Chance</th></tr>
   <tr><td style="color:#ffc531">⭐ Personagem LENDÁRIO</td><td>2%</td></tr><tr><td style="color:#b25bff">Personagem ÉPICO</td><td>6%</td></tr><tr><td>Equipamento</td><td>27%</td></tr><tr><td style="color:#ff5a5a">Moeda Vermelha (20 a 80)</td><td>65%</td></tr><tr><td style="color:#ff2e63">Mítico especial (Máscara Hollow, Chapéu do Hokage, Armadura Saiyajin)</td><td>0,6%</td></tr><tr><td style="color:#e8f6ff">✦ SECRETO: Lâmina Negra</td><td>0,3%</td></tr></table>
