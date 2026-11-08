@@ -852,3 +852,14 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - `rkDiaAuto()` (ao abrir o ranqueado): quem está na lista da Torre ganha a Caixa de Diamantes sozinho, 1 vez (mesmo documento do código: se já pegou pelo código, não ganha de novo). Marca `rk_dia`.
 - Texto da caixa de info do Broly mostra as barras do nível.
 - Teste `ferramentas/testes/tcodigo_rk.js`.
+
+## v220 — CAIXA DA SORTE e CONTA (nome + senha)
+- Código CAIXA DA SORTE (hash `1jzhy5g`, código só com o dono): qualquer jogador, 1 vez por pessoa (documentId `cupom_1jzhy5g_u<hash uid>`); 100–600 💎 sorteio uniforme, sem tabela. `rkDiaBox(2)`.
+- CONTA (`acOpen`, botão 👤 CONTA no Menu Principal e 👤 no topo do ranqueado; janela própria `#acM`):
+  - Criar: usa o nome atual (`tw_nome`) + senha (mín. 4). Não deixa criar se já existe conta com o nome.
+  - Salvamento: todas as chaves `tw_*` e `rk_*` num doc novo `sv_<acc>_<ts36>` (campos `sv`=acc, `ts`, `d`=JSON, `sg`=HMAC). `acc`=SHA-256('furia|acc|'+nome)[:24]. Chave = PBKDF2(senha, 'furia|'+nome, 60000).
+  - Só cria documentos (regras não deixam editar): salva a cada 2 min se mudou e ao sair/minimizar (`visibilitychange`), e ao abrir o ranqueado.
+  - Entrar: consulta `sv==acc` ordenado por `__name__` DESC (funciona sem índice; o range só por `__name__` DESC precisa de índice), pega o mais novo com assinatura válida (doc falso sem a senha é ignorado), troca os dados e recarrega.
+  - Local: `ac_k` (chave derivada), `ac_n`, `ac_h`, `ac_t` (fora do backup).
+- Ferramenta `.github/workflows/teste_conta.yml` (testa a consulta no Firestore de verdade).
+- Testes `ferramentas/testes/tconta.js`.
