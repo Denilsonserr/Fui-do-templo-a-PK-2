@@ -61,4 +61,5 @@ rep("  if(isNr(d)&&d.form&&!h.lock&&!h.nrc&&","  if(isGr(d)&&d.form&&!h.lock&&!d
 # COUNTER: acertar no começo do golpe do rival
 rep("dmg=h.dmg*scl*mult*(ctr?1.25:1);","dmg=h.dmg*scl*mult*(ctr?1.25:1)*(ctr&&isGr(a)?grCHit(a,d,h):1);")
 rep("else if(f.spark>0)k=.5;else if(f.form)k=.36;","else if(f.spark>0)k=.5;else if(f.form)k=.36;else if(isGr(f))k=.3;")
+rep("  if(d.hp>0)nrHitHook(a,d,h);","  if(d.hp>0)nrHitHook(a,d,h);\n  if(isGr(a)&&a.state==='attack'&&a.move&&a.move.grQ&&!h.lock)grImpact(a,d,h,a.move.grF);")
 open(P,'w').write(s);print('patched',len(s))

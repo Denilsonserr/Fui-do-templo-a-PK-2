@@ -14,17 +14,18 @@ function grKey(f){const t=f.st,M=!!f.form;
   if(f.state==='grk')return['ki1',Math.min(7,Math.floor(t/(M?1.5:2)))];
   if(f.state==='grcn')return t<5?['dodge',3]:['jab',Math.min(7,2+Math.floor((t-5)/2))];
   return['idle',0]}
-Object.assign(VGA,{qjab:['jab',[1,2],[3,4],[5,6,7]],qjab2:['cross',[1,2],[3,4],[5,6,7]],qknee:['str',[0,1,2],[3,4,5],[6,7]],qstr:['upper',[1,2,3],[4,5,6],[7]],
+Object.assign(VGA,{qjab:['jab',[1,2],[3,4],[5,6,7]],qjab2:['cross',[1,2],[3,4],[5,6,7]],qjab3:['jab2',[0,1],[2,3,4],[5,6,7]],qknee:['str',[0,1,2],[3,4,5],[6,7]],qstr:['upper',[1,2,3],[4,5,6],[7]],
   qkick:['kick',[1],[2,3,4],[5,6,7]],qhkick:['hkick',[1,2],[3,4,5],[6,7]],qsweep:['sweep',[1,2],[3,4,5],[6,7]],
   qajab:['ajab',[1],[2,3,4],[5,6,7]],qakick:['akick',[1],[2,3,4],[5,6,7]],qsmash:['palm',[0,1,2,3],[4,5],[6,7]],qrush:['dash2',[1,2],[3,4],[5,6]]});
-for(const k of ['jab','jab2','knee','str','kick','hkick','sweep','ajab','akick','smash','rush'])VGA['x'+k]=VGA['q'+k];
+for(const k of ['jab','jab2','jab3','knee','str','kick','hkick','sweep','ajab','akick','smash','rush'])VGA['x'+k]=VGA['q'+k];
 (function(){for(const sid of ['gr','grm']){const S=SPRH[sid];Object.assign(S,{jump:S.jumpv,combo:S.jab,sp:S.ki1,trans:S.pw,fly:S.jumpd,up:S.upper,dash:S.dashf,low:S.sweep,throw:S.palm,kunai:S.palm,fire:S.ki1})}
   const B=(reach,top,bot)=>[-10,-(top||280),reach+10,(top||280)+(bot||0)];
   const N={
     qjab:{nrPush:5,su:3,ac:3,rc:6,dmg:40,hb:B(185),kb:2,hs:15,next:'qjab2',knext:'qkick',lean:1.6,cat:'punch',grQ:1},
     qjab2:{nrPush:6,su:3,ac:3,rc:6,dmg:44,hb:B(190),kb:2.2,hs:16,next:'qknee',knext:'qkick',lean:1.8,cat:'punch',grQ:1},
-    qknee:{nrPush:7,su:3,ac:4,rc:7,dmg:50,hb:B(195,280,20),kb:2.6,hs:17,next:'qstr',knext:'qhkick',lean:1.8,cat:'punch',grQ:1},
-    qstr:{nrPush:5,su:5,ac:4,rc:12,dmg:76,hb:B(185,300),kb:4,launch:-10,launcher:1,heavy:1,lean:2,cat:'kick',grQ:1},
+    qknee:{nrPush:7,su:3,ac:4,rc:7,dmg:48,hb:B(195,280,20),kb:2.4,hs:17,next:'qjab3',knext:'qhkick',lean:1.8,cat:'punch',grQ:1},
+    qjab3:{nrPush:6,su:2,ac:3,rc:6,dmg:44,hb:B(195),kb:2.2,hs:16,next:'qstr',knext:'qkick',lean:1.8,cat:'punch',grQ:1},
+    qstr:{nrPush:8,su:4,ac:5,rc:12,dmg:84,hb:B(205,300),kb:9,hs:22,heavy:1,lean:2.2,cat:'punch',grQ:1,grF:1},
     qkick:{nrPush:5,su:3,ac:4,rc:8,dmg:52,hb:B(205,260,20),kb:3.5,hs:17,lean:1.2,next:'qjab',knext:'qhkick',cat:'kick',grQ:1},
     qhkick:{nrPush:4,su:5,ac:5,rc:11,dmg:76,hb:B(210,320),kb:4,launch:-10,launcher:1,heavy:1,lean:1.4,cat:'kick',grQ:1},
     qsweep:{su:4,ac:5,rc:12,dmg:58,hb:[-10,-90,240,90],kb:3,launch:-5,low:1,crouch:1,cat:'kick'},
@@ -67,8 +68,10 @@ function grStep(f){const o=grOpp(f),t=++f.st,fw=f.facing,M=!!f.form;
           o.state='airhit';o.vx=fw*13;o.vy=-7;o.grounded=false;o.bounced=false;if(!f.finDone&&f.combo>=3)comboFinish(f,o,h);G.shake=Math.max(G.shake,16);
           ring(o.x,o.y-150,M?'#ff2020':'#9fe0ff',260,22,7);flashL(o.x,o.y-150,M?'#ff3030':'#7fd0ff',520,.9,20);if(o.hp<=0)ko(f,o)}}}
     if(t>=END){f.grHeld=false;neutral(f)}return}}
-function grImpact(a,d,h){const x=h.px||d.x,y=h.py||d.y-150,M=!!a.form;ring(x,y,M?'#ff3a2a':'#bfeaff',M?80:62,10,3);
-  for(let i=0;i<(M?8:5);i++)spark(x,y,M?(i%2?'#ffd0c8':'#ff3020'):(i%2?'#ffffff':'#7fd0ff'),1,rand(4,10))}
+function grImpact(a,d,h,fin){const x=h.px||d.x,y=h.py||d.y-150,M=!!a.form,c1=M?'#ff3020':'#4fb0ff',c2=M?'#ffd0c8':'#e8f8ff';ring(x,y,M?'#ff3a2a':'#bfeaff',fin?150:M?80:62,fin?18:10,fin?6:3);
+  for(let i=0;i<(fin?18:M?9:7);i++){const an=-Math.PI*.9+Math.random()*Math.PI*1.8,v=rand(3,fin?12:8);addP({x,y,vx:Math.cos(an)*v*a.facing,vy:Math.sin(an)*v-1,life:rand(12,22),max:22,c:i%3?c1:c2,type:'glow',sz:rand(3,fin?9:6),g:.25})}
+  for(let i=0;i<(M?8:5);i++)spark(x,y,i%2?c2:c1,1,rand(4,10));
+  if(fin){flashL(x,y,M?'#ff3030':'#6fc8ff',420,.85,16);G.shake=Math.max(G.shake,10);G.hitstop=Math.max(G.hitstop,7);ring(x,y,'#ffffff',90,12,4);G.ck.vx+=a.facing*2.5}}
 /* golpe do Garou que acerta o rival no INÍCIO do golpe dele = COUNTER (+35%) — chamado pelo applyHit */
 function grCHit(a,d,h){if(!isGr(a)||h.lock||d.state!=='attack'||!d.move||d.mf>d.move.su+1)return 1;txt(d.x,d.y-280,'COUNTER!',a.form?'#ff5a4a':'#9fe0ff');G.hitstop=Math.max(G.hitstop,6);return 1.35}
 /* ---------- tick: rastro de velocidade ---------- */

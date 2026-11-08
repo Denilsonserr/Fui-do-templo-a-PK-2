@@ -497,3 +497,10 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - Botões do dono (normal/transformado) em `HUDA.garou`; `HUTH.garou` = chamas + raios vermelhos nos botões. Vida sem arte (HUDA_ON=false).
 - Não entrou nas cartas da Torre.
 - Testes `ferramentas/testes/tgarou.js` (golpes, Ki, combo, defesa→contra-ataque, transformação, ultimate) e `tgarou_todos.js` (todos contra o Garou CPU).
+
+## v194 — Garou: quadradinho novo, imagem em pé limpa, socos sem pulo
+- Quadradinho da escolha (`PTH.garou`) = imagem do Monstro que o dono mandou (recorte do rosto/peito, 220×220).
+- Imagem em pé (`FULLIMG.garou`): tirado o branco preso entre o braço e o corpo (componente branca interna + halo).
+- Socos: a corrente agora é só no chão: jab → direto → golpe da água → direto rápido (`qjab3`) → SOCO FINAL (`qstr`, anim `upper` com o redemoinho) que empurra longe (kb 9), SEM lançar. Antes o último soco era lançador e o `trySD` fazia o Garou pular atrás chutando. Chutes continuam iguais.
+- Todo soco que acerta solta respingos de água azul (normal) / energia vermelha (monstro); o final tem explosão, tremida e brilho (`grImpact(a,d,h,fin)`, chamado no `applyHit`).
+- Teste `ferramentas/testes/tgarou_socos.js` (14 socos seguidos: 0 quadros no ar).

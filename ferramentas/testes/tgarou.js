@@ -10,7 +10,7 @@ await p.evaluate(()=>{const G=__dbg.G;G.noAI=true;G.timer=999;window.F=n=>new Pr
 await p.screenshot({path:'/tmp/g_0.png'});
 const out=[];
 // chain of punches
-out.push(await p.evaluate(async()=>{const G=__dbg.G,f=G.p[0],o=G.p[1];o.hp=3600;const seq=[];for(let i=0;i<5;i++){await K('KeyJ');seq.push(f.mname);await F(9)}await F(30);return 'punch chain '+seq.join(',')+' dmg '+Math.round(3600-o.hp)}));
+out.push(await p.evaluate(async()=>{const G=__dbg.G,f=G.p[0],o=G.p[1];o.hp=3600;const seq=[];for(let i=0;i<6;i++){await K('KeyJ');seq.push(f.mname+(f.grounded?'':'(AR)')+':'+Math.round(o.y));await F(9)}await F(30);return 'punch chain '+seq.join(',')+' dmg '+Math.round(3600-o.hp)}));
 // kick
 out.push(await p.evaluate(async()=>{const G=__dbg.G,f=G.p[0],o=G.p[1];o.hp=3600;f.x=900;o.x=1040;o.state='idle';await F(40);const seq=[];for(let i=0;i<3;i++){await K('KeyK');seq.push(f.mname);await F(10)}await F(40);return 'kick '+seq.join(',')+' dmg '+Math.round(3600-o.hp)}));
 // ki quick punches
