@@ -555,3 +555,15 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
   - Embaixo os 5 equipados: armadura, botas, capacete (EM BREVE, sem item ainda), espada, poção bebida.
   - Toque num item → detalhe com EQUIPAR / BEBER / DESCARTAR / DESEQUIPAR.
 - Teste `ferramentas/testes/ttorre_arte.js`.
+
+## v199 — buff do Garou
+- `ferramentas/web/patch_v199.py index.html gr.js patch_gr.py` (aplica as mesmas trocas no index e nas fontes do Garou).
+- Velocidade: normal ×1.3 (antes 1.12, walk 5.9) e Monstro ×2.7 (antes 2.4). Golpes mais acelerados (`gacc` .4 normal / .9 monstro).
+- Dano: power 1.12 e dano base dos golpes ~+12%.
+- Alcance: `B()` agora alcança +55 (antes +10). Monstro +30 em cima disso. Rasteira 290.
+  - Soco acerta até ~280 px (antes ~200).
+- Encaixe: corrente com menos empurrão (kb ~1.4), mais atordoamento (hs 19–20) e passo à frente maior (`nrPush`).
+- Combo (botão): avança até o rival nos primeiros quadros, pega até 300 px de distância (antes 240) e numa janela maior (k 1–7). Pega até quem está defendendo.
+- Ki (2 socos) com alcance 265/290.
+- PASSIVA: a cada 3 golpes recebidos (normal E Monstro; antes só Monstro a cada 4) → contra-ataque (`grCounter`).
+- Teste `ferramentas/testes/tgarou_buff.js`.

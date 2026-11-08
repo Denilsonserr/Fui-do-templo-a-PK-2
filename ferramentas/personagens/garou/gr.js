@@ -19,22 +19,22 @@ Object.assign(VGA,{qjab:['jab',[1,2],[3,4],[5,6,7]],qjab2:['cross',[1,2],[3,4],[
   qajab:['ajab',[1],[2,3,4],[5,6,7]],qakick:['akick',[1],[2,3,4],[5,6,7]],qsmash:['palm',[0,1,2,3],[4,5],[6,7]],qrush:['dash2',[1,2],[3,4],[5,6]]});
 for(const k of ['jab','jab2','jab3','knee','str','kick','hkick','sweep','ajab','akick','smash','rush'])VGA['x'+k]=VGA['q'+k];
 (function(){for(const sid of ['gr','grm']){const S=SPRH[sid];Object.assign(S,{jump:S.jumpv,combo:S.jab,sp:S.ki1,trans:S.pw,fly:S.jumpd,up:S.upper,dash:S.dashf,low:S.sweep,throw:S.palm,kunai:S.palm,fire:S.ki1})}
-  const B=(reach,top,bot)=>[-10,-(top||280),reach+10,(top||280)+(bot||0)];
+  const B=(reach,top,bot)=>[-10,-(top||280),reach+55,(top||280)+(bot||0)];
   const N={
-    qjab:{nrPush:5,su:3,ac:3,rc:6,dmg:40,hb:B(185),kb:2,hs:15,next:'qjab2',knext:'qkick',lean:1.6,cat:'punch',grQ:1},
-    qjab2:{nrPush:6,su:3,ac:3,rc:6,dmg:44,hb:B(190),kb:2.2,hs:16,next:'qknee',knext:'qkick',lean:1.8,cat:'punch',grQ:1},
-    qknee:{nrPush:7,su:3,ac:4,rc:7,dmg:48,hb:B(195,280,20),kb:2.4,hs:17,next:'qjab3',knext:'qhkick',lean:1.8,cat:'punch',grQ:1},
-    qjab3:{nrPush:6,su:2,ac:3,rc:6,dmg:44,hb:B(195),kb:2.2,hs:16,next:'qstr',knext:'qkick',lean:1.8,cat:'punch',grQ:1},
-    qstr:{nrPush:8,su:4,ac:5,rc:12,dmg:84,hb:B(205,300),kb:9,hs:22,heavy:1,lean:2.2,cat:'punch',grQ:1,grF:1},
-    qkick:{nrPush:5,su:3,ac:4,rc:8,dmg:52,hb:B(205,260,20),kb:3.5,hs:17,lean:1.2,next:'qjab',knext:'qhkick',cat:'kick',grQ:1},
-    qhkick:{nrPush:4,su:5,ac:5,rc:11,dmg:76,hb:B(210,320),kb:4,launch:-10,launcher:1,heavy:1,lean:1.4,cat:'kick',grQ:1},
-    qsweep:{su:4,ac:5,rc:12,dmg:58,hb:[-10,-90,240,90],kb:3,launch:-5,low:1,crouch:1,cat:'kick'},
+    qjab:{nrPush:7,su:2,ac:4,rc:5,dmg:46,hb:B(185),kb:1.3,hs:19,next:'qjab2',knext:'qkick',lean:1.6,cat:'punch',grQ:1},
+    qjab2:{nrPush:8,su:2,ac:4,rc:5,dmg:50,hb:B(190),kb:1.4,hs:20,next:'qknee',knext:'qkick',lean:1.8,cat:'punch',grQ:1},
+    qknee:{nrPush:8,su:3,ac:4,rc:6,dmg:55,hb:B(195,280,20),kb:1.5,hs:20,next:'qjab3',knext:'qhkick',lean:1.8,cat:'punch',grQ:1},
+    qjab3:{nrPush:8,su:2,ac:4,rc:5,dmg:50,hb:B(195),kb:1.4,hs:20,next:'qstr',knext:'qkick',lean:1.8,cat:'punch',grQ:1},
+    qstr:{nrPush:10,su:3,ac:5,rc:11,dmg:96,hb:B(205,300),kb:9,hs:24,heavy:1,lean:2.2,cat:'punch',grQ:1,grF:1},
+    qkick:{nrPush:7,su:3,ac:4,rc:7,dmg:58,hb:B(205,260,20),kb:2,hs:20,lean:1.2,next:'qjab',knext:'qhkick',cat:'kick',grQ:1},
+    qhkick:{nrPush:6,su:4,ac:5,rc:10,dmg:86,hb:B(210,320),kb:4,launch:-10,launcher:1,heavy:1,lean:1.4,cat:'kick',grQ:1},
+    qsweep:{su:3,ac:5,rc:11,dmg:64,hb:[-10,-90,290,90],kb:3,launch:-5,low:1,crouch:1,cat:'kick'},
     qajab:{su:3,ac:4,rc:8,dmg:44,hb:B(180,240,140),kb:2.5,hs:18,air:1,next:'qakick',cat:'punch'},
     qakick:{su:3,ac:5,rc:8,dmg:60,hb:B(200,240,160),kb:5,hs:18,air:1,cat:'kick'},
     qsmash:Object.assign({},MOVES.smash,{hb:B(200)}),qrush:Object.assign({},MOVES.rush,{hb:B(210)})};
   Object.assign(MOVES,N);
   // Forma Monstro: mesmos golpes, MUITO mais rápidos e fortes
-  for(const k in N){const m=Object.assign({},N[k]);m.su=Math.max(1,Math.round(m.su*.5));m.rc=Math.max(3,Math.round(m.rc*.55));m.dmg=Math.round(m.dmg*1.15);m.hb=m.hb.slice();m.hb[2]+=20;
+  for(const k in N){const m=Object.assign({},N[k]);m.su=Math.max(1,Math.round(m.su*.5));m.rc=Math.max(3,Math.round(m.rc*.55));m.dmg=Math.round(m.dmg*1.15);m.hb=m.hb.slice();m.hb[2]+=30;
     if(m.next)m.next='x'+m.next.slice(1);if(m.knext)m.knext='x'+m.knext.slice(1);MOVES['x'+k.slice(1)]=m}
   for(const sid of ['gr','grm'])FR[sid]={charge:[['pw',6],['pw',7]],jab:[['jab',3],['jab',4],['jab',5]],cross:[['cross',3],['cross',4],['cross',5]],upper:[['upper',3],['upper',4],['upper',5]],
     hkick:[['hkick',3],['hkick',4],['hkick',5]],sweep:[['sweep',3],['sweep',4],['sweep',5]],blastP:['ki1',3],blastF:['ki1',4],super:[['ki1',3],['ki1',4],['ki1',5]],beamF:['ki1',4],win:[0,1,2],trans:[['pw',7]]};
@@ -52,7 +52,7 @@ function grCounter(d,a,why){if(d.ko||a.ko)return;d.state='grcn';d.st=0;d.move=nu
 function grStep(f){const o=grOpp(f),t=++f.st,fw=f.facing,M=!!f.form;
   if(f.state==='grk'){const H1=M?3:4,H2=M?7:9,END=M?14:18;
     if(t===2||t===6)f.x=clamp(f.x+fw*(M?14:10),40,WW-40);
-    if((t===H1||t===H2)&&o&&!o.ko&&Math.abs(o.x-f.x)<(M?240:215)&&Math.abs(o.y-f.y)<180&&o.inv<=0){const h={dmg:M?44:34,kb:t===H2?3.5:1.5,hs:12,px:o.x-fw*40,py:o.y-170,kind:'melee'};
+    if((t===H1||t===H2)&&o&&!o.ko&&Math.abs(o.x-f.x)<(M?290:265)&&Math.abs(o.y-f.y)<200&&o.inv<=0){const h={dmg:M?44:34,kb:t===H2?3.5:1.5,hs:12,px:o.x-fw*40,py:o.y-170,kind:'melee'};
       if(applyHit(f,o,h)){grImpact(f,o,h);f.combo=(f.combo||0)}if(o.hp<=0)ko(f,o)}
     if(t>=END)neutral(f);return}
   if(f.state==='grcn'){const a=f.grCa||o;if(t===6&&a&&!a.ko&&Math.abs(a.x-f.x)<260){const h={dmg:M?115:78,kb:7,hs:20,heavy:1,px:a.x-fw*30,py:a.y-160,kind:'melee'};f.inv=Math.max(f.inv,8);
@@ -60,7 +60,8 @@ function grStep(f){const o=grOpp(f),t=++f.st,fw=f.facing,M=!!f.form;
     if(t>=(M?16:20)){f.inv=Math.max(f.inv,4);neutral(f)}return}
   if(f.state==='grc'){const D=M?3:4,k=Math.floor(t/D),END=16*D+6,HK=M?{2:32,3:30,4:32,5:34,7:36,8:34,10:30,11:34,12:36,13:38}:{2:22,3:22,4:24,5:26,7:28,8:24,10:22,11:26,12:28,13:30};
     if(k===2||k===10)f.x=clamp(f.x+fw*(M?12:8),40,WW-40);
-    if(!f.grHeld&&k>=1&&k<=4&&o&&!o.ko&&Math.abs(o.x-f.x)<240&&Math.abs(o.y-f.y)<160&&o.inv<=0){f.grHeld=true;fzTag(f,M?'Combo do Monstro!':'Punho da Água Corrente!')}
+    if(!f.grHeld&&k<=6&&o&&!o.ko){const dx=o.x-f.x;if(Math.sign(dx)===fw&&Math.abs(dx)>110)f.x=clamp(f.x+fw*Math.min(Math.abs(dx)-110,M?30:22),40,WW-40)}
+    if(!f.grHeld&&k>=1&&k<=7&&o&&!o.ko&&Math.abs(o.x-f.x)<300&&Math.abs(o.y-f.y)<230&&(o.inv<=0||o.state==='blockstun')){f.grHeld=true;fzTag(f,M?'Combo do Monstro!':'Punho da Água Corrente!')}
     if(f.grHeld&&o){const lift=k>=6&&k<=8?Math.min(90,(t-6*D)*6):0;o.state='rushed';o.st=0;o.vx=0;o.vy=0;o.flying=false;o.grounded=lift<=0;o.move=null;o.x=clamp(f.x+fw*120,40,WW-40);o.y=FLOOR-lift;
       if(k!==f.grK){f.grK=k;
         if(HK[k]){const h={dmg:HK[k],kb:0,hs:5,px:o.x-fw*30,py:o.y-rand(130,200),kind:'melee',lock:1};applyHit(f,o,h);grImpact(f,o,h);G.hitstop=Math.max(G.hitstop,3);G.shake=Math.max(G.shake,4);if(o.hp<=0){ko(f,o);f.grHeld=false}}
