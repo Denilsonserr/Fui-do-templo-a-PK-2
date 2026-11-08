@@ -5692,6 +5692,7 @@ function twAskName(cb){twModal(`<div class="twM sm"><h3>SEU NOME NA TORRE</h3><p
   const E=$('twNameE');let busy=0;
   const ok=async()=>{if(busy)return;const n=I.value.replace(/[<>]/g,'').trim().slice(0,16);
     if(twHash(n.toUpperCase())===TWADM){twGiveTit('adm');twLS.s('tw_titOn','adm');twLS.s('tw_nome',TWADMN);twClaimName(TWADMN);I.value=TWADMN;E.className='twH ok';E.textContent='👑 Bem-vindo, '+TWADMN+'! Título ADM liberado.';twSfx('powerUp');setTimeout(()=>{twModal(null);twRender();cb&&cb()},1200);return}
+    if(await twCupom(n,E)){I.value=twLS.g('tw_nome','');return}
     if(twBadName(n)){E.className='twH err';E.textContent='Nome proibido: "ADM" não pode ser usado no nome.';I.focus();twSfx('clang');return}
     if(n.length<2){E.textContent='Digite um nome com pelo menos 2 letras';I.focus();return}
     if(n.toLowerCase()===String(twLS.g('tw_nome','')).toLowerCase()){twLS.s('tw_nome',n);twModal(null);cb&&cb();return}
@@ -5910,6 +5911,16 @@ const twHash=s=>{let h=0x811c9dc5;for(const c of s){h^=c.charCodeAt(0);h=Math.im
 /* nome proibido: qualquer forma de "ADM" (maiúscula, espaço, ponto, acento, 4DM, @dm...) */
 const twBadName=n=>{const t=String(n).normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase().replace(/[4@]/g,'a').replace(/[0]/g,'o').replace(/[1!|]/g,'i').replace(/3/g,'e').replace(/[^a-z]/g,'');return t.includes('adm')};
 const twIsAdm=()=>twTits().includes('adm');const TWALIAS={'denilson_dw adm':'Denilson ADM'};const twAl=n=>TWALIAS[String(n).toLowerCase().trim()]||n;
+const TWCUP={'1polqg8':{nm:'TODOS OS EQUIPAMENTOS MÍTICOS',it:[{t:'esp',r:'mit',v:10},{t:'arm',r:'mit',v:10},{t:'bot',r:'mit',v:10}],eq:1}};
+async function twCupom(code,E){const h=twHash(code.toUpperCase()),C=TWCUP[h];if(!C)return false;const used=twLS.g('tw_cup',{});
+  if(used[h]){E.className='twH err';E.textContent='Você já usou esse código.';return true}
+  E.className='twH';E.textContent='Conferindo o código...';const IV=v=>({integerValue:String(v)});
+  const f={nome:{stringValue:String(twLS.g('tw_nome','')||'?').slice(0,16)},andar:IV(0),tempo:IV(0),uid:{stringValue:twUid()},cupom:{stringValue:h},v:IV(206)};
+  let r;try{r=await twFetchT(TWURL+'/torre?documentId=cupom_'+h+'&key='+TWFB.apiKey,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({fields:f})})}catch(e){E.className='twH err';E.textContent='Precisa de internet para usar o código.';return true}
+  if(!r.ok){E.className='twH err';E.textContent=r.status===409||r.status===403?'❌ Esse código já foi usado por outro jogador.':'Erro ao conferir o código ('+r.status+'). Tente de novo.';twSfx('clang');return true}
+  used[h]=1;twLS.s('tw_cup',used);const I=twInv(),Q=twEqp();
+  for(const x of C.it){const it={id:'cp'+h+x.t,t:x.t,r:x.r,v:x.v};if(!I.some(y=>y.id===it.id))I.push(it);if(C.eq)Q[x.t]=it.id}twLS.s('tw_inv',I);twLS.s('tw_eqp',Q);
+  E.className='twH ok';E.textContent='🎁 Código aceito! Você ganhou: '+C.nm+' (já equipados).';twSfx('powerUp');setTimeout(()=>twSfx('boom'),300);return true}
 function twAdmBuff(){if(!twIsAdm()||!G.p)return;const p=G.p[0];if(!p||p.cpu)return;p.tdm=(p.tdm||1)*1.2;p.tsp=(p.tsp||1)*1.1}
 const twTits=()=>twLS.g('tw_tit',[]),twTitOn=()=>{const t=twLS.g('tw_titOn','');return twTits().includes(t)?t:''};
 function twGiveTit(k){const L=twTits();if(L.includes(k))return false;L.push(k);twLS.s('tw_tit',L);if(!twLS.g('tw_titOn',''))twLS.s('tw_titOn',k);setTimeout(twTitSync,1500);setTimeout(()=>twToast('👑 TÍTULO NOVO: '+TWTIT[k].n,TWTIT[k].c),600);return true}

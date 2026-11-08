@@ -652,3 +652,11 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - Conferido na luta (`ferramentas/testes/tbuffs_loja.js`, medindo o `applyHit` e a distância andada): passivas + equipamentos + ADM entram certinho (dano dado ×1.38, dano recebido ×0.592, velocidade ×1.32 no exemplo).
 - MOEDAS (`tw_moedas`): cada andar vencido dá 100 + rapidez (<20 s +60, <35 +45, <50 +30, <75 +15) + vida (perdeu <10% +25, <30% +10) + combo 10+ (+15), no máximo 200. Completar a torre: +100. Aparece na tela ANDAR VENCIDO e no fim ("MOEDAS +N").
 - LOJA 🛒 (botão no painel): só poções. Comum 100, rara 200, épica 300, lendária 500, mítica 2000 (`TWSHOP`). Vão para a mochila (precisa de espaço).
+
+## v206 — códigos de uso único (cupons)
+- `ferramentas/web/patch_v206.py`.
+- Digitado no ✏️ NOME (como o código ADM). `TWCUP[hash FNV do código]` diz o que o código dá.
+- Ao usar, cria `torre/cupom_<hash>` com `documentId` fixo. Se o documento já existe, o Firestore responde 409/403 → "Esse código já foi usado por outro jogador". Só o 1º aparelho do mundo consegue.
+- Código 1 (hash `1polqg8`): espada, armadura e botas MÍTICAS (+10% cada), já equipadas. O texto do código fica só com o dono (não fica no repositório).
+- Para criar outro código: gerar um texto novo, calcular `twHash(CODIGO)` e acrescentar no `TWCUP`.
+- Teste `ferramentas/testes/tcupom.js` (simula 2 aparelhos).
