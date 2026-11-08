@@ -1,7 +1,7 @@
 import sys,json
 # v213: MODO RANQUEADO + novo menu principal. Fontes: ferramentas/web/ranqueada/rk.js e rk.css; artes: /home/claude/rk_build/rk_assets.json (copiar rk_build/out/* para www/a)
 P=sys.argv[1];s=open(P).read();D='/home/claude/fui-do-templo-a-pk-2/ferramentas/web/ranqueada/'
-RKA=json.load(open('/home/claude/rk_build/rk_assets.json'))
+import os;RKA=json.load(open(os.path.join(os.path.dirname(os.path.abspath(__file__)),'ranqueada','rk_assets.json')))
 def rep(a,b,n=1):
     global s;c=s.count(a);assert c==n,(a[:80],c);s=s.replace(a,b)
 js=open(D+'rk.js').read().replace('__RKA__',json.dumps({k:v for k,v in RKA.items() if not k.endswith('_wh')},separators=(',',':')))

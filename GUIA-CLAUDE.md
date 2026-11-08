@@ -9,6 +9,19 @@
 4. Ferramentas de montagem (recorte de poses, IA de qualidade, cenários, versão web, testes) estão em `ferramentas/`.
 5. A versão do navegador (artifact) da conta antiga não é acessível na conta nova: publique um artifact novo (ver "Publicação").
 
+## ⚠️ Estado atual (v220) e como montar o index.html
+- O `www/index.html` atual é gerado assim (sempre a partir da base, nunca editar o index à mão):
+  `cp ferramentas/web/base_v212.html www/index.html && python3 ferramentas/web/patch_v213.py www/index.html`
+  - Base = jogo até a v212 (`ferramentas/web/base_v212.html`). O `patch_v213.py` injeta `ferramentas/web/ranqueada/rk.js` + `rk.css` + artes (`ranqueada/rk_assets.json`) e todas as mudanças da v213 até a v220.
+  - Mudança nova no ranqueado/conta/códigos: editar `rk.js`/`rk.css` (ou acrescentar `rep(...)` no fim do `patch_v213.py`) e montar de novo.
+- Conferir sintaxe: `node -e "const s=require('fs').readFileSync('www/index.html','utf8');const m=s.match(/<script>[\s\S]*?<\/script>/);new Function(m[0].slice(8,-9))"`
+- Testes com Playwright em `ferramentas/testes/` (os de Firestore simulam o servidor com `page.route`). Os mais usados: `tranqueado.js`, `trb.js`, `tequipar.js`, `trecomp.js`, `tconta.js`, `tcodigo_rk.js`, `tdiamante.js`.
+- Servidor (Firestore) não é acessível pelo sandbox: usar os workflows `consulta.yml`, `lista.yml`, `teste_conta.yml` (`gh api -X POST repos/Denilsonserr/Fui-do-templo-a-PK-2/actions/workflows/<arquivo>/dispatches -f ref=main` e ler os logs com `gh api .../actions/runs/<id>/logs`).
+- Se o site demorar a atualizar: o deploy do GitHub Pages às vezes fica ~10 min "in_progress"; esperar (ou `destravar-site.yml`).
+- Códigos secretos: só os hashes ficam no código (`TWCUP`, `TWADM`). O texto dos códigos o dono guarda e passa na conversa se precisar.
+- Pendente sem resposta: dar o 2º lugar do evento de 08/11 para ZEUS_DARKBR (terminou 15:45:52, fora do horário)?
+- Regras do dono: responder curto em português simples (o que mudou, onde pegar, o que foi reaproveitado/inventado); atualizar este guia a cada versão; commits terminam com as linhas de Co-Authored-By/Claude-Session da sessão.
+
 ## Sobre o projeto (contexto combinado com o dono)
 - É um jogo **só para uso pessoal do dono** (ele joga sozinho no celular). Não é vendido nem distribuído.
 - Por isso o roster mistura personagens originais dele com personagens de anime que ele mesmo traz (Goku, Vegeta, Broly, Zoro, Aokiji...). **Ele manda as artes (folhas de poses em PNG) e os vídeos**; o Claude recorta, melhora a qualidade com IA e programa. O Claude não desenha nem copia arte desses personagens por conta própria.
