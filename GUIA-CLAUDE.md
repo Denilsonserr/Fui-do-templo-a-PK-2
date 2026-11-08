@@ -567,3 +567,30 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - Ki (2 socos) com alcance 265/290.
 - PASSIVA: a cada 3 golpes recebidos (normal E Monstro; antes só Monstro a cada 4) → contra-ataque (`grCounter`).
 - Teste `ferramentas/testes/tgarou_buff.js`.
+
+## v200 — TÍTULOS, ranking SEMANAL e MODO EVENTO
+- `ferramentas/web/patch_v200.py` (lê `/home/claude/mo_build/evento.json` com as imagens das 2 espadas do evento; arte em `ferramentas/torre_artes/espadas_evento.png`).
+- Cada aparelho tem um código escondido `tw_uid`. O envio para o Firestore agora manda também:
+  - `uid`
+  - `tit` (título em uso)
+  - `sem` (chave da semana `wAAAAMMDD` da segunda-feira, horário de Brasília UTC-3)
+  - `ev` (id do evento, só se estiver no horário)
+  - `v:200`
+  - Continua na coleção `torre` (as regras só deixam criar lá).
+- RANKING: aba nova 📅 SEMANA (abre nela). Busca `where sem == semana atual` e confere o `createTime` do servidor dentro da semana. Mostra a melhor subida por uid (`twBestU`). Reseta sozinho toda segunda 00:00.
+- TÍTULOS (`TWTIT`, botão 👑 TÍTULOS):
+  - INICIANTE (1 andar), GUERREIRO (4 andares), CONQUISTADOR (7 andares).
+  - CAMPEÃO DA SEMANA: 1º da semana anterior. Conferido ao abrir a torre (`twClaims`, `tw_wkc`).
+  - CAMPEÃO DO TORNEIO: 1º do evento.
+  - O título em uso aparece embaixo do nome e nos rankings.
+- EVENTO (`TWEV`, botão 🎉 EVENTO com bolinha vermelha piscando ao vivo):
+  - Evento atual: `ev20261108` "1º TORNEIO DA TORRE", 08/11/2026 15:00–15:45 (Brasília).
+  - Subida que TERMINA no horário entra. Vale o `createTime` do servidor (até +60 s de folga).
+  - Ranking = melhor subida por jogador (andares → troféus → menos tempo).
+  - Depois do fim (+90 s), ao abrir a torre: se este aparelho for 1º/2º, recebe o prêmio na mochila (`tw_evc` marca entregue) e aparece a tela "VOCÊ GANHOU".
+  - Prêmios:
+    - 1º = LÂMINA SOMBRIA (espada mítica, +11% dano +5% velocidade) + título CAMPEÃO DO TORNEIO.
+    - 2º = LÂMINA DOURADA (lendária, +6% dano +2% velocidade).
+  - Itens de evento têm `img`, `nm`, `vel` próprios e nunca são descartados primeiro pela mochila cheia.
+  - Para o próximo evento: trocar `TWEV` (id novo, horários, prêmios).
+- `window.__twEvT=[iniOffsetMs,fimOffsetMs]` antes de carregar → simula horário (teste `ferramentas/testes/tevento.js`, Firestore simulado).
