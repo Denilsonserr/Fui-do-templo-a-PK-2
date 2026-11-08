@@ -633,3 +633,14 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
   - Filtro simples de palavrão (`TWBAD`, troca por ***).
   - As regras do Firestore não deixam apagar: não dá para remover mensagem.
 - Teste `ferramentas/testes/tchat.js`.
+
+## v204 — recorde antigo do dono + buff do ADM
+- `ferramentas/web/patch_v204.py`.
+- Não dá para apagar documentos no Firestore (regras + proxy). Por isso `TWALIAS` faz o nome antigo "Denilson_DW adm" aparecer como "Denilson ADM" em todos os rankings (`twAl` no `twFetch`, `twQ`, `twFetchC`).
+  - O `twBest` junta por nome e fica a melhor subida: o 2º lugar do tempo (03:13, 70 troféus) virou do Denilson ADM, com a etiqueta ADM.
+  - Para juntar outros nomes antigos, é só acrescentar no `TWALIAS`.
+- Bônus escondido do título ADM:
+  - +15% dano (antes 10) e +10% velocidade.
+  - Sorte nas passivas: 30% de chance de sortear 2 vezes e ficar com a melhor raridade (`twRoll`).
+  - Sorte nos baús: 15% no sorteio da raridade do equipamento e da poção (`twEqRoll`/`twPoRoll`).
+- Teste `ferramentas/testes/tadm_alias.js`.
