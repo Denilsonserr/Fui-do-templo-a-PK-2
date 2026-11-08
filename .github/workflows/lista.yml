@@ -15,7 +15,7 @@ jobs:
               for x in d.get('documents',[]):
                   F={k:list(v.values())[0] for k,v in x.get('fields',{}).items()}
                   ks=','.join(sorted(F));kinds[ks]+=1
-                  if 'andar' in F and not F.get('cupom') and 'nome' in F:
+                  if 'pontos' in F and 'nome' in F:
                       k=(F.get('uid',''),F['nome']);o=P.setdefault(k,{'n':0,'max':0,'first':x['createTime']});o['n']+=1;o['max']=max(o['max'],int(F.get('andar',0)));o['first']=min(o['first'],x['createTime'])
               tok=d.get('nextPageToken')
               if not tok:break
