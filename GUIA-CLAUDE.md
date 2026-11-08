@@ -691,3 +691,20 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
   - Efeitos: "DEFESA QUEBRADA!" azul-gelo, cacos de luz, anéis, câmera lenta, tremida e vibração.
   - Vale para todos os personagens (smash/vsmash/qsmash/nsmash…).
 - Teste `ferramentas/testes/tsupersoco.js`.
+
+## v209 — poções mais fortes e mais caras
+- `ferramentas/web/patch_v209.py`.
+- Poção (uso único, próxima luta da torre). `TWPOE[raridade]` = [transformação, dano, crítico]:
+
+| Raridade | Transformação | Dano | Crítico |
+|---|---|---|---|
+| comum | +5% | +5% | +3% |
+| rara | +7% | +7% | +5% |
+| épica | +10% | +10% | +10% |
+| lendária | +15% | +15% | +15% |
+| mítica | +20% | +20% | +20% |
+
+  - No `twApply`: transformação no `trf`, dano no `p.tdm` (+), crítico no `p.tcr` (+).
+  - As poções que já estavam na mochila foram atualizadas pela raridade (o `v` virou o valor novo).
+- Loja: comum 400, rara 600, épica 700, lendária 1000, mítica 3000 (`TWSHOP`).
+- Teste `ferramentas/testes/tpocao2.js`.

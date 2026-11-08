@@ -5735,7 +5735,7 @@ function twFight(){if(TW.busy)return;TW.busy=true;twRender();twSfx('whoosh');
   const PM=prepMatch([G.pick,G.opp],G.nextStg);showVS(()=>PM.then(()=>{vsLoadEnd();TW.busy=false;startMatch()}),PM)}
 /* chamado no fim do setupFighters: vida que sobrou, passivas e dificuldade do andar */
 function twApply(){if(!(TW.on&&G.gmode==='torre'))return;const [p,o]=G.p,b=TW.fl===TWN-1;
-  p.mhp=TW.bars*LAYER;p.hp=p.hpLag=Math.max(1,Math.min(p.mhp,Math.round(TW.hpv)));p.tdm=1+(TW.pas.dano+twEqB('dano'))/100;p.tsp=1+(TW.pas.vel+twEqB('vel'))/100;p.tdf=1/(1+(TW.pas.vida+twEqB('vida'))/100);const pon=twPocOn(),trf=(TW.pas.trf||0)+(pon?pon.v:0)+twEqB('trf');{const c=twEqOn().cap;p.tcr=c&&c.crit||0}p.tsb=1+trf/100;if(trf)p.sb=Math.max(p.sb||0,Math.min(SB_COST*.9,SB_COST*trf/200));if(pon){twLS.s('tw_pocOn',null);TW.pocMsg='🧪 POÇÃO +'+pon.v+'% TRANSFORMAÇÃO'}
+  p.mhp=TW.bars*LAYER;p.hp=p.hpLag=Math.max(1,Math.min(p.mhp,Math.round(TW.hpv)));p.tdm=1+(TW.pas.dano+twEqB('dano'))/100;p.tsp=1+(TW.pas.vel+twEqB('vel'))/100;p.tdf=1/(1+(TW.pas.vida+twEqB('vida'))/100);const pon=twPocOn(),poE=pon?twPoE(pon.r):[0,0,0],trf=(TW.pas.trf||0)+poE[0]+twEqB('trf');{const c=twEqOn().cap;p.tcr=c&&c.crit||0}p.tsb=1+trf/100;if(trf)p.sb=Math.max(p.sb||0,Math.min(SB_COST*.9,SB_COST*trf/200));if(pon){p.tdm+=poE[1]/100;p.tcr=(p.tcr||0)+poE[2];twLS.s('tw_pocOn',null);TW.pocMsg='🧪 POÇÃO: +'+poE[0]+'% TRANSF. +'+poE[1]+'% DANO +'+poE[2]+'% CRÍT.'}
   o.mhp=TWOB[TW.fl]*LAYER;o.hp=o.hpLag=o.mhp;o.tdm=b?1.55:1+.07*TW.fl;o.tsp=b?1.3:1+.045*TW.fl;o.tdf=b?.85:1;if(TW.fl>=3)o.ki=60;if(b){o.ki=100;o.sb=Math.max(o.sb||0,SB_COST)}
   TW.fs={t:0,cmb:0,ult:0,hp0:p.hp/p.mhp}}
 /* tempo da torre: NÃO conta durante ultimate, transformação, cinemáticas, especiais com vídeo nem pausado (configuração) */
@@ -5769,8 +5769,12 @@ const TWSECR={k:'sec',n:'SECRETA',c:'#ffffff'};const TWSEC={k:'sec',n:'PODER PRO
 const TWEQ=[{k:'esp',n:'ESPADA',i:'🗡️',s:'dano',d:'Aumenta o ATAQUE'},{k:'arm',n:'ARMADURA',i:'🛡️',s:'vida',d:'Aumenta a DEFESA'},{k:'bot',n:'BOTAS',i:'🥾',s:'vel',d:'Aumenta a VELOCIDADE'},{k:'cap',n:'CAPACETE',i:'⛑️',s:'trf',d:'Transforma mais rápido + CRÍTICO'}];
 const TWCAPV={comum:[1,1],rara:[5,5],epica:[10,15],lend:[20,20],mit:[35,25]};
 /* poção: uso único, bônus na transformação (enche a energia mais rápido e já começa com uma parte) — vale para a PRÓXIMA luta da torre */
-const TWPOC={k:'poc',n:'POÇÃO',i:'🧪',d:'Transforma mais rápido · uso único (próxima luta)'};
-const TWPOR=[{k:'comum',n:'COMUM',c:'#c3c8d2',w:60,v:1},{k:'rara',n:'RARA',c:'#3d9bff',w:30,v:4},{k:'epica',n:'ÉPICA',c:'#b25bff',w:7.5,v:5},{k:'lend',n:'LENDÁRIA',c:'#ffc531',w:2,v:7},{k:'mit',n:'MÍTICA',c:'#ff2e63',w:.5,v:10}];
+const TWPOC={k:'poc',n:'POÇÃO',i:'🧪',d:'Transformação, dano e crítico · uso único (próxima luta)'};
+const TWPOR=[{k:'comum',n:'COMUM',c:'#c3c8d2',w:60,v:5},{k:'rara',n:'RARA',c:'#3d9bff',w:30,v:7},{k:'epica',n:'ÉPICA',c:'#b25bff',w:7.5,v:10},{k:'lend',n:'LENDÁRIA',c:'#ffc531',w:2,v:15},{k:'mit',n:'MÍTICA',c:'#ff2e63',w:.5,v:20}];
+/* efeito da poção por raridade: [transformação %, dano %, crítico %] */
+const TWPOE={comum:[5,5,3],rara:[7,7,5],epica:[10,10,10],lend:[15,15,15],mit:[20,20,20]};const twPoE=r=>TWPOE[r]||TWPOE.comum;
+const twPoTxt=r=>{const e=twPoE(r);return 'Transformação +'+e[0]+'% · Dano +'+e[1]+'% · Crítico +'+e[2]+'%'};
+(function(){try{for(const k of ['tw_poc']){const L=twLS.g(k,[]);let ch=0;for(const x of L){const v=twPoE(x.r)[0];if(x.v!==v){x.v=v;ch=1}}if(ch)twLS.s(k,L)}const o=twLS.g('tw_pocOn',null);if(o&&o.v!==twPoE(o.r)[0]){o.v=twPoE(o.r)[0];twLS.s('tw_pocOn',o)}}catch(e){}})();
 const TWPOP=.4;/* chance de vir poção num baú (por andar vencido) */
 function twPoRoll(){const R=twPoRoll0();if(twIsAdm()&&Math.random()<.15){const B=twPoRoll0();return TWPOR.indexOf(B)>TWPOR.indexOf(R)?B:R}return R}
 function twPoRoll0(){let r=Math.random()*100;for(const R of TWPOR){if((r-=R.w)<0)return R}return TWPOR[0]}
@@ -5802,7 +5806,7 @@ function twAddItem(E,R){const I=twInv(),it={id:Date.now().toString(36)+Math.rand
 const TWMOG=[];for(let r=0;r<2;r++)for(let c=0;c<10;c++){const x0=[125,287,448,610,771,934,1095,1257,1419,1580][c],y0=r?288:127;TWMOG.push([x0,y0,x0+142,y0+138])}
 const TWMOE=[['arm',278,562,476,750],['bot',558,562,755,751],['cap',827,562,1024,751],['esp',1094,563,1291,750],['poc',1374,562,1571,751]];
 function twBag(sel){if(!$('twModal').hidden&&!$('twModal').querySelector('.twMO'))return;const Q=twEqp(),I=twInv(),on=twPocOn(),L=twBagItems().sort((a,b)=>b.v-a.v||(a.k>b.k?1:-1)),W=1846,H=852;
-  const nm=x=>x.nm||(x.t==='poc'?'POÇÃO':TWEQ.find(E=>E.k===x.t).n),ef=x=>x.t==='cap'?'Transformação +'+x.v+'% mais rápida · Crítico +'+(x.crit||0)+'% (permanente)':x.vel?'Ataque +'+x.v+'% · Velocidade +'+x.vel+'% (permanente)':x.t==='poc'?'Transformação +'+x.v+'% (uso único, próxima luta)':{esp:'Ataque',arm:'Defesa',bot:'Velocidade'}[x.t]+' +'+x.v+'% (permanente)';
+  const nm=x=>x.nm||(x.t==='poc'?'POÇÃO':TWEQ.find(E=>E.k===x.t).n),ef=x=>x.t==='cap'?'Transformação +'+x.v+'% mais rápida · Crítico +'+(x.crit||0)+'% (permanente)':x.vel?'Ataque +'+x.v+'% · Velocidade +'+x.vel+'% (permanente)':x.t==='poc'?twPoTxt(x.r)+' (uso único, próxima luta)':{esp:'Ataque',arm:'Defesa',bot:'Velocidade'}[x.t]+' +'+x.v+'% (permanente)';
   const cell=(x,b,extra)=>`<button class="moS ${extra||''}" style="${b};--c:${twRarOf(x.r).c}" data-id="${x.id}" data-k="${x.k||'eq'}"><img src="${x.img||twIco(x.t,x.r)}" alt=""><b>+${x.v}%</b></button>`;
   let g='';TWMOG.forEach((b,i)=>{const x=L[i],bx=twBx(...b,W,H);g+=x?cell(x,bx):`<span class="moS em" style="${bx}"></span>`});
   let e='';for(const [k,...b] of TWMOE){const bx=twBx(...b,W,H);    const x=k==='poc'?(on?Object.assign({t:'poc',k:'on'},on):null):I.find(y=>y.id===Q[k]);e+=x?cell(Object.assign({},x,{k:k==='poc'?'on':'eqd'}),bx,'eqd'):`<span class="moS em eqe" style="${bx}"></span>`}
@@ -5819,7 +5823,7 @@ function twBag(sel){if(!$('twModal').hidden&&!$('twModal').querySelector('.twMO'
       D.querySelectorAll('button[data-a]').forEach(b=>b.onclick=()=>{const a=b.dataset.a;
         if(a==='eq'){const Q=twEqp();Q[x.t]=x.id;twLS.s('tw_eqp',Q);twSfx('clang');TW.capOut=twCap()}
         else if(a==='tirar'){const Q=twEqp();delete Q[x.t];twLS.s('tw_eqp',Q);twSfx('whoosh');const o=twCap();if(o)twToast('Mochila cheia: '+nm(o)+' +'+o.v+'% descartado','#ff8080')}
-        else if(a==='beber'){if(twPocOn())return;twLS.s('tw_poc',twPocs().filter(y=>y.id!==x.id));twLS.s('tw_pocOn',{id:x.id,r:x.r,v:x.v});twSfx('powerUp');twToast('🧪 POÇÃO +'+x.v+'% BEBIDA! Vale na próxima luta','#7dff9a')}
+        else if(a==='beber'){if(twPocOn())return;twLS.s('tw_poc',twPocs().filter(y=>y.id!==x.id));twLS.s('tw_pocOn',{id:x.id,r:x.r,v:x.v});twSfx('powerUp');twToast('🧪 POÇÃO '+twRarOf(x.r).n+' BEBIDA! Vale na próxima luta','#7dff9a')}
         else if(a==='del'){if(x.t==='poc')twLS.s('tw_poc',twPocs().filter(y=>y.id!==x.id));else twLS.s('tw_inv',twInv().filter(y=>y.id!==x.id));twSfx('boom')}
         if(a==='x'){D.hidden=true;return}twBag()})};
   document.querySelectorAll('#twModal .moS[data-id]').forEach(b=>b.onclick=()=>{const k=b.dataset.k,id=b.dataset.id;
@@ -6018,10 +6022,10 @@ function twChat(){const n=twLS.g('tw_nome','');if(!n){twAskName(()=>twChat());re
 /* ---------- v205: moedas e loja ---------- */
 const twCoins=()=>twLS.g('tw_moedas',0)|0,twAddCoins=n=>{twLS.s('tw_moedas',Math.max(0,twCoins()+n))};
 function twCoinWin(secs,lost,cmb){let c=100+(secs<20?60:secs<35?45:secs<50?30:secs<75?15:0)+(lost<.1?25:lost<.3?10:0)+(cmb>=10?15:0);return Math.min(200,c)}
-const TWSHOP=[100,200,300,500,2000];
+const TWSHOP=[400,600,700,1000,3000];
 function twShop(){const c=twCoins(),cheia=twBagItems().length>=TWBAG;
   twModal(`<div class="twM twShop"><h3>🛒 LOJA</h3><p class="twH">Você tem <b class="coin">🪙 ${c}</b> moedas. Ganhe moedas vencendo andares da torre (100 a 200 por luta, mais rápido = mais moedas; +100 ao completar a torre).</p>
-    <div class="shL">${TWPOR.map((R,i)=>`<button class="shI ${c<TWSHOP[i]||cheia?'off':''}" data-i="${i}" style="--c:${R.c}"><span class="rr">${R.n}</span><img src="${TWIMG.poc[i]}" alt=""><b>POÇÃO +${R.v}%</b><span class="ds">Transformação · uso único</span><em>🪙 ${TWSHOP[i]}</em></button>`).join('')}</div>
+    <div class="shL">${TWPOR.map((R,i)=>`<button class="shI ${c<TWSHOP[i]||cheia?'off':''}" data-i="${i}" style="--c:${R.c}"><span class="rr">${R.n}</span><img src="${TWIMG.poc[i]}" alt=""><b>POÇÃO ${R.n}</b><span class="ds">⚡ Transf. +${twPoE(R.k)[0]}%<br>⚔️ Dano +${twPoE(R.k)[1]}%<br>💥 Crítico +${twPoE(R.k)[2]}%<br><i>uso único · próxima luta</i></span><em>🪙 ${TWSHOP[i]}</em></button>`).join('')}</div>
     <span class="twH" id="twShE">${cheia?'Mochila cheia! Libere espaço para comprar.':''}</span><div class="row"><button class="btn" id="twShX">FECHAR</button></div></div>`);
   $('twShX').onclick=()=>{twModal(null);twRender()};
   document.querySelectorAll('#twModal .shI').forEach(b=>b.onclick=()=>{const i=+b.dataset.i,E=$('twShE');if(twBagItems().length>=TWBAG){E.className='twH err';E.textContent='Mochila cheia! Libere espaço para comprar.';return}
