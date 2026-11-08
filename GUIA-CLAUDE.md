@@ -830,3 +830,18 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
   - Toca no lobby (intervalo de volume vale também quando `showScreen.cur==='ranked'`) e na luta do Boss (`musPick` → `rkMusPlay`).
   - No modo aleatório, cada entrada no ranqueado sorteia uma faixa.
 - `__dbg.mus()` para testes. Teste `ferramentas/testes/tequipar.js`.
+
+## v218 — Broly bem mais fácil, prêmios dos elos, conquistas, menus leves e Caixa de Diamantes
+- Broly: barras por nível `[[2,3],[2,4],[3,5],[3,6],[4,8],[5,10],[6,12],[7,14]]`; base b1 dm .65/df 1.2/sp .92, b2 dm .8/df 1.05/sp 1; IA dos níveis 1–3 mais lenta (`RKAI`).
+- Elos (`RKRW`, resgate em `rk_rwc2`; quem já pegou o antigo recebe só a diferença de 💎):
+  - Bronze 200💎 + baú raro · Prata 350💎 2🎫 baú épico · Ouro 500💎 3🎫 2 baús épicos 1🌱 · Diamante 800💎 5🎫 baú lendário 2🌱
+  - Lendário 1200💎 8🎫 2 baús lendários 3🌱 · Dragão 2000💎 10🎫 baú mítico 5🌱 + CAIXA SECRETA (item especial sorteado)
+  - Divindade 3000💎 15🎫 2 baús míticos 10🌱 + LÂMINA NEGRA + CAIXA SECRETA.
+  - `rkBau` abre os baús da Torre por cima do ranqueado (cria o `#twModal` se a Torre ainda não foi aberta). `rkSpWin` mostra a caixa secreta.
+- Conquistas: 35 (vitórias, lutas, tempo, dano, giros, lendários, personagens, equipamentos, cada rank), algumas dão 🎫; botão RESGATAR TUDO.
+- Menus: o loop do jogo não roda mais na tela do ranqueado (`loop` pula `sc==='ranked'`); emblemas sem animação de filtro; botões com `touch-action:manipulation` e resposta ao toque.
+- CAIXA DE DIAMANTES (hash `1b2e1xu`, código só com o dono): digitado no campo de nome da Torre.
+  - Só vale para quem está na lista de jogadores da Torre (hashes de nome `TWDIAN` e uid `TWDIAU`, tirados com `.github/workflows/lista.yml` em 08/11).
+  - 1 vez por pessoa: documentId `cupom_1b2e1xu_u<hash uid>` ou `_n<hash nome>`.
+  - Sorteio `RKDIA`: 100 (25%) 200 (20%) 300 (16%) 400 (13%) 500 (10%) 600 (7%) 700 (4%) 800 (2,5%) 900 (1,5%) 1000 (1%). Vai para `rk_gem`.
+- Testes: `trecomp.js`, `tdiamante.js`.

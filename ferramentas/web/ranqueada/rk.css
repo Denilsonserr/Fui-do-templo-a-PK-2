@@ -141,3 +141,14 @@
 .eqR{flex:1.4;display:flex;flex-direction:column;gap:.4em}.eqG{display:grid;grid-template-columns:repeat(auto-fill,minmax(6em,1fr));gap:.4em;max-height:44vh;overflow:auto;padding:.2em}
 .eqI{--c:#ccc;position:relative;border:2px solid var(--c);border-radius:.6em;background:radial-gradient(circle at 50% 35%,color-mix(in srgb,var(--c) 30%,transparent),#0b0f20 75%);color:#fff;cursor:pointer;display:flex;flex-direction:column;align-items:center;padding:.3em .2em}
 .eqI img{width:3.6em;height:3.6em;object-fit:contain}.eqI b{position:absolute;top:.2em;right:.3em;font:900 .7em var(--f-ui);color:#7dff9a}.eqI span{font:800 .55em var(--f-ui);text-align:center;line-height:1.05}.eqT{font-size:.75em}
+.rkRw>div.top{background:linear-gradient(90deg,#1a0d20,#0b0f20);box-shadow:inset 0 0 1em color-mix(in srgb,var(--c) 25%,transparent)}.rkRw span small{color:#9fb0d0;font-size:.75em}.rkRw span{font-size:.85em}
+.twM h3 small{font-size:.6em;color:#9fb0d0}
+/* v218: menus mais leves e botões que respondem na hora */
+#ranked,#ranked *{-webkit-tap-highlight-color:transparent}#ranked button,#ranked [data-a],#rkModal button{touch-action:manipulation;user-select:none;-webkit-user-select:none}
+#ranked [data-a]:active,#rkModal button:active{transform:scale(.95);filter:brightness(1.25);transition:none}
+#rkWrap .rkEmb img{animation:none}#rkWrap .rkEmb .ry,#rkWrap .rkEmb .gl,.rkPed .glw,.rkWin .rays{will-change:transform,opacity}
+
+.rkDia .dbx{position:relative;width:16em;height:14em;margin:.5em auto;cursor:pointer;animation:twChShk .5s ease-in-out infinite}.rkDia .dbx.open{animation:none}
+.rkDia .dbx img.cf,.rkDia .dbx img.ca{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;transition:opacity .3s,transform .3s}.rkDia .dbx img.ca{opacity:0}.rkDia .dbx.open img.cf{opacity:0}.rkDia .dbx.open img.ca{opacity:1}
+.rkDia .dbx .rays{position:absolute;inset:-30%;opacity:0;background:repeating-conic-gradient(rgba(120,210,255,.45) 0 6deg,transparent 6deg 20deg);-webkit-mask:radial-gradient(circle,#000 20%,transparent 65%);mask:radial-gradient(circle,#000 20%,transparent 65%);animation:rkEr 8s linear infinite;z-index:-1}.rkDia .dbx.open .rays{opacity:1}
+.rkDia .dbx b{position:absolute;left:50%;top:10%;transform:translate(-50%,0) scale(.3);opacity:0;display:flex;align-items:center;gap:.2em;font:900 3.2em var(--f-ui);color:#bfeaff;text-shadow:0 0 .3em #3aa8ff,0 .08em 0 #000;transition:all .5s cubic-bezier(.2,1.6,.4,1)}.rkDia .dbx.open b{opacity:1;transform:translate(-50%,-85%) scale(1)}.rkDia .dbx b img{width:1em;height:1em}
