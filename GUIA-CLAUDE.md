@@ -881,3 +881,6 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - Código 1000 DIAMANTES (hash `1kd7i6l`, texto só com o dono): uso único no jogo inteiro (documentId `cupom_1kd7i6l`); `TWCUP` aceita `gem:N` (soma em `rk_gem`).
 - Vitória no Modo Boss: 💎 sempre 5–15 (antes 50% de 1–2). Caixa de recompensas do lobby mostra "5-15".
 - Teste `ferramentas/testes/tmil.js`.
+
+## v222 — Lâmina Negra garantida só em 160 giros
+- Pity da espada secreta (`rk_pity2`): 50 → 160 giros (pedido do dono: estava fácil demais). Chance por giro continua 0,3%. Textos do gacha atualizados.
