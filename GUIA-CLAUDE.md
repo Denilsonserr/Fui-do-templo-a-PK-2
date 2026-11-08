@@ -722,3 +722,11 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - No `ko()`: a 1ª morte do chefe vira `twBossRevive`. Ele volta com vida cheia, dano ×2, velocidade ×1.2 e defesa melhor (dano recebido ×0.85), invencível ~1,6 s, com banner "O CHEFE VOLTOU! 2ª VIDA · 2X MAIS FORTE" e efeitos vermelhos. A 2ª morte é K.O. normal.
 - Tela do evento avisa a regra.
 - Teste `ferramentas/testes/tchefe2vidas.js`.
+
+## v212 — código de uso único com 2 BAÚS LENDÁRIOS
+- `ferramentas/web/patch_v212.py`.
+- `TWCUP` aceita `bau:{r,n}`. Ao usar, `twBauOpen` mostra os baús (arte da raridade) que abrem sozinhos ou com toque.
+  - Cada baú: 60% poção / 40% equipamento (tipo sorteado) daquela raridade. Vai para a mochila.
+- Código 2 (hash `706xst`): 2 baús lendários. O texto do código fica só com o dono.
+- Ferramenta `.github/workflows/consulta.yml` (rodar pela API `actions/workflows/consulta.yml/dispatches`): lista do Firestore os documentos com `sem == semana` e `ev == ev20261108`. O sandbox não alcança o Firestore, mas o GitHub Actions sim.
+- Teste `ferramentas/testes/tcupom_bau.js`.

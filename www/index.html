@@ -478,6 +478,7 @@ h2{margin:0;font-family:var(--f-display);font-weight:400;font-size:clamp(26px,8v
 #bPunch .pchT{display:none;font-style:normal;position:absolute;left:50%;bottom:4%;transform:translateX(-50%);z-index:5;background:rgba(0,0,0,.75);padding:1px 6px;border-radius:6px;border:1px solid #ffd84a;font:900 13px var(--f-ui);color:#ffd84a;text-shadow:0 0 6px #ff6a00,0 1px 2px #000;pointer-events:none;white-space:nowrap}#bPunch.chf .pchT{display:block}
 @keyframes pchF{to{opacity:.55}}
 .moD .btn.sell{background:linear-gradient(180deg,#8a6a10,#4a3404);border-color:#ffd84a;color:#ffe680}
+.cpB{display:flex;gap:3em;justify-content:center;margin:2.5em 0 1.6em}.cpC{position:relative;width:11em;height:11em;font-size:1.2em}
 .twBag .bgw{display:flex;gap:1em;justify-content:center;align-items:flex-start;margin:.4em 0}
 .twBag .bgc{flex:1;max-width:16em;display:flex;flex-direction:column;gap:.4em;max-height:52vh;overflow:auto;padding:.2em}
 .twBag h5{margin:0 0 .2em;font:900 1em var(--f-ui);letter-spacing:.1em;color:#ffcf4a;display:flex;flex-direction:column}.twBag h5 small{font-size:.65em;color:#cdbfcf;letter-spacing:0}
@@ -5935,16 +5936,22 @@ const twHash=s=>{let h=0x811c9dc5;for(const c of s){h^=c.charCodeAt(0);h=Math.im
 /* nome proibido: qualquer forma de "ADM" (maiúscula, espaço, ponto, acento, 4DM, @dm...) */
 const twBadName=n=>{const t=String(n).normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase().replace(/[4@]/g,'a').replace(/[0]/g,'o').replace(/[1!|]/g,'i').replace(/3/g,'e').replace(/[^a-z]/g,'');return t.includes('adm')};
 const twIsAdm=()=>twTits().includes('adm');const TWALIAS={'denilson_dw adm':'Denilson ADM'};const twAl=n=>TWALIAS[String(n).toLowerCase().trim()]||n;
-const TWCUP={'1polqg8':{nm:'TODOS OS EQUIPAMENTOS MÍTICOS',it:[{t:'esp',r:'mit',v:10},{t:'arm',r:'mit',v:10},{t:'bot',r:'mit',v:10}],eq:1}};
+const TWCUP={'706xst':{nm:'2 BAÚS LENDÁRIOS',bau:{r:'lend',n:2}},'1polqg8':{nm:'TODOS OS EQUIPAMENTOS MÍTICOS',it:[{t:'esp',r:'mit',v:10},{t:'arm',r:'mit',v:10},{t:'bot',r:'mit',v:10}],eq:1}};
 async function twCupom(code,E){const h=twHash(code.toUpperCase()),C=TWCUP[h];if(!C)return false;const used=twLS.g('tw_cup',{});
   if(used[h]){E.className='twH err';E.textContent='Você já usou esse código.';return true}
   E.className='twH';E.textContent='Conferindo o código...';const IV=v=>({integerValue:String(v)});
   const f={nome:{stringValue:String(twLS.g('tw_nome','')||'?').slice(0,16)},andar:IV(0),tempo:IV(0),uid:{stringValue:twUid()},cupom:{stringValue:h},v:IV(206)};
   let r;try{r=await twFetchT(TWURL+'/torre?documentId=cupom_'+h+'&key='+TWFB.apiKey,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({fields:f})})}catch(e){E.className='twH err';E.textContent='Precisa de internet para usar o código.';return true}
   if(!r.ok){E.className='twH err';E.textContent=r.status===409||r.status===403?'❌ Esse código já foi usado por outro jogador.':'Erro ao conferir o código ('+r.status+'). Tente de novo.';twSfx('clang');return true}
-  used[h]=1;twLS.s('tw_cup',used);const I=twInv(),Q=twEqp();
+  used[h]=1;twLS.s('tw_cup',used);if(C.bau){E.className='twH ok';E.textContent='🎁 Código aceito! '+C.nm+'!';twSfx('powerUp');setTimeout(()=>twBauOpen(C.bau),900);return true}const I=twInv(),Q=twEqp();
   for(const x of C.it){const it={id:'cp'+h+x.t,t:x.t,r:x.r,v:x.v};if(!I.some(y=>y.id===it.id))I.push(it);if(C.eq)Q[x.t]=it.id}twLS.s('tw_inv',I);twLS.s('tw_eqp',Q);
   E.className='twH ok';E.textContent='🎁 Código aceito! Você ganhou: '+C.nm+' (já equipados).';twSfx('powerUp');setTimeout(()=>twSfx('boom'),300);return true}
+function twBauOpen(B){const ri=TWRK.indexOf(B.r),L=[];for(let i=0;i<B.n;i++){if(Math.random()<.6)L.push({t:'poc',R:TWPOR[ri]});else{const E=TWEQ[(Math.random()*TWEQ.length)|0];L.push({t:E.k,E,R:TWEQR[ri]})}}
+  twModal(`<div class="twM gold"><h3>🎁 ${B.n} BAÚ${B.n>1?'S':''} ${TWEQR[ri].n.replace('A','O')}${B.n>1?'S':''}!</h3><p class="twH">Toque nos baús para abrir</p><div class="cpB">${L.map((c,i)=>`<div class="avC cpC" data-i="${i}" style="--c:${c.R.c}"><img class="cf" src="${TWIMG.bf[ri]}" alt=""><img class="ca" src="${TWIMG.ba[ri]}" alt=""><img class="it" src="${twIco(c.t,c.R.k)}" alt=""><b class="lb">${c.t==='poc'?'POÇÃO':c.E.n} ${c.R.n}</b></div>`).join('')}</div>
+    <div class="row"><button class="btn main" id="twCpOk">PEGAR TUDO</button></div></div>`);
+  const open=el=>{if(!el||el.classList.contains('open'))return;el.classList.add('open');const c=L[+el.dataset.i];twSfx('boom');setTimeout(()=>twSfx('powerUp'),250);if(c.t==='poc')twAddPoc(c.R);else twAddItem(c.E,c.R)};
+  document.querySelectorAll('#twModal .cpC').forEach(el=>el.onclick=()=>open(el));L.forEach((c,i)=>setTimeout(()=>open(document.querySelector('#twModal .cpC[data-i="'+i+'"]')),1400+i*800));
+  $('twCpOk').onclick=()=>{document.querySelectorAll('#twModal .cpC').forEach(open);setTimeout(()=>{twModal(null);twRender();twToast('🎒 Itens dos baús foram para a MOCHILA','#ffc531')},500)}}
 function twAdmBuff(){if(!twIsAdm()||!G.p)return;const p=G.p[0];if(!p||p.cpu)return;p.tdm=(p.tdm||1)*1.2;p.tsp=(p.tsp||1)*1.1}
 const twTits=()=>twLS.g('tw_tit',[]),twTitOn=()=>{const t=twLS.g('tw_titOn','');return twTits().includes(t)?t:''};
 function twGiveTit(k){const L=twTits();if(L.includes(k))return false;L.push(k);twLS.s('tw_tit',L);if(!twLS.g('tw_titOn',''))twLS.s('tw_titOn',k);setTimeout(twTitSync,1500);setTimeout(()=>twToast('👑 TÍTULO NOVO: '+TWTIT[k].n,TWTIT[k].c),600);return true}
