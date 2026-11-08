@@ -1628,7 +1628,12 @@ function layerBreak(d){d.hpLag=Math.ceil(d.hp/LAYER)*LAYER;G.flash=Math.max(G.fl
   ring(d.x,d.y-140,'#ffd23f',200,22,7);ring(d.x,d.y-140,'#ffffff',110,16,4);flashL(d.x,d.y-140,'#ffd23f',380,.8,24);
   for(let i=0;i<22;i++){const a=rand(0,TAU),sp=rand(4,12);addP({x:d.x+rand(-30,30),y:d.y-rand(80,220),vx:Math.cos(a)*sp,vy:Math.sin(a)*sp-3,life:rand(30,50),max:50,c:i%2?'#ffd23f':'#fff3c0',type:'rock',sz:rand(3,7),g:.35})}
   txt(d.x,d.y-250,'BARRA QUEBRADA!','#ffd23f');SFX.clang();SFX.boom();buzz(80)}
+function twBossRevive(a,d){d.twRev=1;d.ko=false;d.hp=d.hpLag=d.mhp;d.tdm=(d.tdm||1)*2;d.tsp=(d.tsp||1)*1.2;d.tdf=(d.tdf||1)*.85;d.state='idle';d.st=0;d.vx=0;d.vy=0;d.y=FLOOR;d.grounded=true;d.flying=false;d.move=null;d.hitstun=0;d.inv=100;d.ki=100;
+  a.vx=-a.facing*10;G.hitstop=Math.max(G.hitstop,24);G.slow=Math.max(G.slow||0,40);G.flash=12;G.flashCol='#ff3030';G.shake=30;
+  for(const r of [360,240,130])ring(d.x,d.y-150,r===130?'#ffffff':'#ff1a1a',r,28,8);for(let i=0;i<46;i++)spark(d.x,d.y-150,i%3?'#ff4a3a':'#ffffff',1,rand(6,18));try{flashL(d.x,d.y-150,'#ff2020',700,1,30)}catch(e){}
+  banner('O CHEFE VOLTOU!','#ff3030',120,'2ª VIDA · 2X MAIS FORTE');try{SFX.transform();SFX.boom()}catch(e){}buzz(200)}
 function ko(a,d){if(G.phase!=='fight')return;
+  if(TW.on&&G.gmode==='torre'&&TW.evBoss&&TW.fl===TWN-1&&d===G.p[1]&&!d.twRev){twBossRevive(a,d);return}
   if(TAG.on){const sd=G.p.indexOf(d),b=TAG.bench[sd];if(b&&!b.ko&&!TAG.q){d.ko=true;d.flying=false;d.hp=0;d.state='airhit';d.grounded=false;d.vy=-11;d.vx=6*a.facing;d.bounced=false;d.inv=999;
     G.slow=45;G.hitstop=14;G.flash=8;G.flashCol='#ffffff';G.shake=16;banner('K.O.!','#ff3b30',70,'PRÓXIMO: '+b.def.name);SFX.ko();buzz(120);fvox(d,'f_no',true);TAG.q={s:sd,t:0};return}}d.ko=true;d.flying=false;d.hp=0;d.state='airhit';d.grounded=false;d.vy=-11;d.vx=6*a.facing;d.bounced=false;
   G.phase='ko';G.phaseT=0;G.koWinner=G.p.indexOf(a);G.slow=70;G.hitstop=18;G.flash=10;G.flashCol='#ffffff';G.shake=20;
@@ -5729,7 +5734,7 @@ function twStart(){TW.opps=twShuf(TWC.filter(x=>x!==TW.pick)).slice(0,TWN);TW.on
   twSfx('whoosh');try{nv('vMChallenge',.05,1)}catch(e){}twRender();setTimeout(()=>twReveal(0),350)}
 function twReveal(i){TW.rev=true;twRender();const el=twSlot(i);el.classList.add('anim');twSfx('boom');
   twToast((i===TWN-1?'👑 CHEFE FINAL: ':'ANDAR '+(i+1)+': ')+CH[TW.opps[i]].name+' · '+TWOB[i]+' BARRAS',i===TWN-1?'#ffc531':'#ff5a5a');try{fsTry()}catch(e){}}
-function twFight(){if(TW.busy)return;TW.busy=true;twRender();twSfx('whoosh');
+function twFight(){if(TW.busy)return;TW.busy=true;TW.evBoss=TW.fl===TWN-1&&twEvSt()==='ao vivo';twRender();twSfx('whoosh');
   G.gmode='torre';G.opp=TW.opps[TW.fl];G.diff=[1,1,2,2,2,3,3][TW.fl];
   const sk=Object.keys(STG).filter(k=>!STG[k].hid);G.nextStg=sk[(Math.random()*sk.length)|0];
   try{nv('vCOK',0,1)}catch(e){}
@@ -5743,7 +5748,7 @@ function twApply(){if(!(TW.on&&G.gmode==='torre'))return;const [p,o]=G.p,b=TW.fl
 function twTick(){const F=TW.fs;if(!F||!G.p)return;if(!(G.paused||G.trans||G.ws||G.cine||G.comic||G.zsp||G.sc||G.rush||G.wfs||G.xu))F.t++;const c=G.p[0].combo||0;if(c>F.cmb)F.cmb=c}
 function twHudT(){return 'TORRE '+twFmt(TW.time+(TW.fs?TW.fs.t/60:0))}
 function twBossGo(){if(TW.pocMsg&&G.p){txt(G.p[0].x,G.p[0].y-300,TW.pocMsg,'#7dff9a');TW.pocMsg=null}if(!(TW.on&&G.gmode==='torre'&&G.p))return;if(G.tlim!==0)G.timer=Math.min(240,60+20*TWOB[TW.fl]);if(TW.fl!==TWN-1)return;const o=G.p[1];
-  banner('CHEFE FINAL','#ffc531',90,o.def.name+' · TRANSFORMADO');if(o.form)return;o.sb=Math.max(o.sb||0,SB_COST);try{startTransform(o)}catch(e){}}
+  banner('CHEFE FINAL','#ffc531',90,o.def.name+' · TRANSFORMADO'+(TW.evBoss?' · 2 VIDAS (EVENTO)':''));if(o.form)return;o.sb=Math.max(o.sb||0,SB_COST);try{startTransform(o)}catch(e){}}
 function twAfter(w){G.mode='tower';$('controls').hidden=true;$('pauseBtn').hidden=true;rainSound(0);G.paused=false;
   const F=TW.fs||{t:0,cmb:0,ult:0,hp0:TW.hp},secs=F.t/60,p=G.p[0];TW.time+=secs;
   if(w!==0){twFinish(false);return}
@@ -5974,7 +5979,7 @@ function twEvent(){const st=twEvSt(),t=Date.now(),fmtH=x=>new Date(x-BRT).toISOS
   twModal(`<div class="twM rk ev"><h3>🎉 ${TWEV.nome}</h3>
     <div class="evSt ${st.replace(' ','')}"><b>${st==='antes'?'COMEÇA EM <span id="twEvC">'+twDur(TWEV.ini-t)+'</span>':st==='ao vivo'?'🔴 AO VIVO · TERMINA EM <span id="twEvC">'+twDur(TWEV.fim-t)+'</span>':'ENCERRADO'}</b><span>Hoje das ${fmtH(TWEV.ini)} às ${fmtH(TWEV.fim)} (horário de Brasília)</span></div>
     <div class="evPzs">${TWEV.prem.map(P=>`<div class="evPz" style="--c:${twRarOf(P.it.r).c}"><i>${P.pos===1?'🥇':'🥈'}</i><img src="${P.it.img}" alt=""><div><b>${P.it.nm}</b><span>${twRarOf(P.it.r).n} · +${P.it.v}% DANO · +${P.it.vel}% VEL.</span>${P.tit?`<em>+ título ${TWTIT[P.tit].i} ${TWTIT[P.tit].n}</em>`:''}</div></div>`).join('')}</div>
-    <p class="twH">Durante o horário do evento, toda subida da torre que <b>terminar</b> até ${fmtH(TWEV.fim)} entra neste ranking (vale a melhor de cada jogador: mais andares, depois mais troféus, depois menos tempo). O 1º e o 2º recebem o prêmio na mochila sozinhos quando abrirem a torre depois do fim.</p>
+    <p class="twH">⚠️ No evento o <b>CHEFE FINAL tem 2 vidas</b>: quando morre, volta com a vida cheia e 2x mais forte! Durante o horário do evento, toda subida da torre que <b>terminar</b> até ${fmtH(TWEV.fim)} entra neste ranking (vale a melhor de cada jogador: mais andares, depois mais troféus, depois menos tempo). O 1º e o 2º recebem o prêmio na mochila sozinhos quando abrirem a torre depois do fim.</p>
     <div id="twRkL"><p class="twH">${st==='antes'?'O ranking aparece quando o evento começar.':'Carregando...'}</p></div><div class="row"><button class="btn main" id="twEvGo" ${st==='ao vivo'?'':'hidden'}>JOGAR AGORA</button><button class="btn" id="twEvX">FECHAR</button></div></div>`);
   $('twEvX').onclick=()=>{clearInterval(twEvent.iv);twModal(null)};$('twEvGo').onclick=()=>{clearInterval(twEvent.iv);twModal(null);if(!TW.on)twGo()};
   const load=()=>twEvL().then(L=>{if($('twRkL')&&$('twModal').querySelector('.ev'))$('twRkL').innerHTML=twRowsU(L,'e')}).catch(()=>{if($('twRkL'))$('twRkL').innerHTML='<p class="twH err">Sem internet agora.</p>'});

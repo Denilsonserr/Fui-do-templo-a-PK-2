@@ -715,3 +715,10 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - Valores (`TWSELL`): comum 100, rara 200, épica 300, lendária 700, mítica 2000 🪙.
 - Poção continua só com DESCARTAR. As moedas aparecem no topo da mochila.
 - Teste `ferramentas/testes/tvender.js`.
+
+## v211 — chefe final com 2 vidas no EVENTO
+- `ferramentas/web/patch_v211.py`.
+- `TW.evBoss` é marcado no `twFight` do chefe (andar 7) quando o evento está AO VIVO.
+- No `ko()`: a 1ª morte do chefe vira `twBossRevive`. Ele volta com vida cheia, dano ×2, velocidade ×1.2 e defesa melhor (dano recebido ×0.85), invencível ~1,6 s, com banner "O CHEFE VOLTOU! 2ª VIDA · 2X MAIS FORTE" e efeitos vermelhos. A 2ª morte é K.O. normal.
+- Tela do evento avisa a regra.
+- Teste `ferramentas/testes/tchefe2vidas.js`.
