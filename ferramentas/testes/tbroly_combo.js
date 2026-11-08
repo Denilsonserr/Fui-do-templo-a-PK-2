@@ -1,0 +1,12 @@
+const {chromium}=require('playwright');
+(async()=>{const b=await chromium.launch();const p=await b.newPage({viewport:{width:915,height:412},deviceScaleFactor:1.5});const errs=[];p.on('pageerror',e=>{errs.push(e.message);console.log('ERR',e.stack)});await p.route(/fonts\.g|firestore/,r=>r.abort());
+await p.goto('file:///home/claude/fui-do-templo-a-pk-2/www/index.html');await p.waitForFunction(()=>!document.getElementById('goSelect').disabled,null,{timeout:120000});
+await p.click('#goSelect');await p.waitForTimeout(400);await p.click('.tile[data-c="broly"]');await p.click('.tile[data-c="goku"]');await p.click('#goStage');await p.waitForTimeout(300);await p.click('.stc[data-s="cupula"]');await p.click('#goFight');
+await p.waitForFunction(()=>__dbg.G.mode==='fight'&&__dbg.G.phase==='fight',null,{timeout:120000});
+await p.evaluate(()=>{const G=__dbg.G;G.noAI=true;G.timer=999;window.F=n=>new Promise(r=>{const f0=G.frame;const c=()=>G.frame>=f0+n?r():requestAnimationFrame(c);c()});const f=G.p[0],o=G.p[1];f.x=900;o.x=1040;f.facing=1;o.facing=-1});
+await p.evaluate(async()=>{await F(20);__dbg.startMove(__dbg.G.p[0],'bp2');await F(5);__dbg.G.hold=true;await new Promise(r=>setTimeout(r,150))});await p.screenshot({path:'/tmp/bc0.png'});
+const r=await p.evaluate(async()=>{const G=__dbg.G;G.hold=false;await F(40);const f=G.p[0],o=G.p[1];o.hp=3600;dispatchEvent(new KeyboardEvent('keydown',{code:'KeyI',bubbles:true}));await F(2);dispatchEvent(new KeyboardEvent('keyup',{code:'KeyI',bubbles:true}));await F(30);const s1=f.state+':'+f.brHeld;G.hold=true;await new Promise(r=>setTimeout(r,150));return s1});
+await p.screenshot({path:'/tmp/bc1.png'});
+const r2=await p.evaluate(async()=>{const G=__dbg.G;G.hold=false;await F(29);G.hold=true;await new Promise(r=>setTimeout(r,150));return 1});await p.screenshot({path:'/tmp/bc2.png'});
+const r3=await p.evaluate(async()=>{const G=__dbg.G;G.hold=false;for(let i=0;i<20&&G.p[0].state==="brc";i++)await F(20);return {st:G.p[0].state,t:G.p[0].st,dmg:Math.round(3600-G.p[1].hp),cd:G.p[0].spCD-G.frame}});
+console.log(r,JSON.stringify(r3),errs);await b.close()})();
