@@ -810,3 +810,9 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
   - Passivas do nível; descrição do nível; próximo rank; INICIAR BATALHA.
 - `rkFit`: cobre a tela quando a proporção da arte é parecida com a da tela; senão encaixa inteira.
 - Teste `ferramentas/testes/trb.js` (confere o exemplo do dono: Ouro 5500 → vitória 5660 / derrota 5580).
+
+## v216 — nerf da Moeda Vermelha e das geminhas
+- A Moeda Vermelha é tratada como "dinheiro de verdade" (pedido do dono).
+- Vitória no Boss: 🔴 5–10 (mais jogando bem) e 50% de chance de 1–2 💎. Derrota: 🔴 0–2, sem 💎.
+- Gacha: moeda vermelha 1–5. Repetido: lendário 25 💎, épico 5 💎 (antes 100/30).
+- Recompensas de rank e conquistas continuam iguais.
