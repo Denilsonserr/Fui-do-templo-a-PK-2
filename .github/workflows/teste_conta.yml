@@ -1,0 +1,15 @@
+name: Testar consulta de conta (ferramenta)
+on: workflow_dispatch
+jobs:
+  q:
+    runs-on: ubuntu-latest
+    steps:
+      - name: teste
+        run: |
+          K='key=AIzaSyDXTjvRMcKtJ5vq2vl-F2B_w2M-7hd_QY0';B='https://firestore.googleapis.com/v1/projects/furia-do-templo/databases/(default)/documents'
+          for t in 00000000a 00000000b; do curl -sS -X POST "$B/torre?documentId=sv_teste0_$t&$K" -H 'Content-Type: application/json' -d "{\"fields\":{\"nome\":{\"stringValue\":\"teste\"},\"andar\":{\"integerValue\":\"0\"},\"tempo\":{\"integerValue\":\"0\"},\"sv\":{\"stringValue\":\"teste0\"},\"d\":{\"stringValue\":\"{}\"}}}" | head -c 300; echo; done
+          P='projects/furia-do-templo/databases/(default)/documents/torre/'
+          echo '== range __name__ desc'
+          curl -sS -X POST "$B:runQuery?$K" -H 'Content-Type: application/json' -d "{\"structuredQuery\":{\"from\":[{\"collectionId\":\"torre\"}],\"where\":{\"compositeFilter\":{\"op\":\"AND\",\"filters\":[{\"fieldFilter\":{\"field\":{\"fieldPath\":\"__name__\"},\"op\":\"GREATER_THAN_OR_EQUAL\",\"value\":{\"referenceValue\":\"${P}sv_teste0_\"}}},{\"fieldFilter\":{\"field\":{\"fieldPath\":\"__name__\"},\"op\":\"LESS_THAN\",\"value\":{\"referenceValue\":\"${P}sv_teste0_~\"}}}]}},\"orderBy\":[{\"field\":{\"fieldPath\":\"__name__\"},\"direction\":\"DESCENDING\"}],\"limit\":5}}" | grep -o '"name": "[^"]*"\|"message": "[^"]*"'
+          echo '== sv equal + __name__ desc'
+          curl -sS -X POST "$B:runQuery?$K" -H 'Content-Type: application/json' -d "{\"structuredQuery\":{\"from\":[{\"collectionId\":\"torre\"}],\"where\":{\"fieldFilter\":{\"field\":{\"fieldPath\":\"sv\"},\"op\":\"EQUAL\",\"value\":{\"stringValue\":\"teste0\"}}},\"orderBy\":[{\"field\":{\"fieldPath\":\"__name__\"},\"direction\":\"DESCENDING\"}],\"limit\":5}}" | grep -o '"name": "[^"]*"\|"message": "[^"]*"'
