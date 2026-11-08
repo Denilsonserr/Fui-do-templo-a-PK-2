@@ -620,3 +620,16 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - Nos rankings a etiqueta ADM só aparece se o nome for "Denilson ADM" (contra quem tentar mandar o título pelo REST).
 - Bônus escondido do título ADM: +10% ataque e +10% velocidade (`twAdmBuff`, depois do `twApply`) em TODAS as lutas do jogador 1 do aparelho que tem o título.
 - Teste `ferramentas/testes/tnome_adm.js`.
+
+## v203 — títulos nos rankings + CHAT da torre
+- `ferramentas/web/patch_v203.py`.
+- Títulos de todo mundo nos rankings (Semana, Tempo, Troféus, Personagem e Evento): vale o título ATUAL de cada jogador.
+  - `twTitMap` lê os documentos `claim=='1'` (cache 30 s) e junta com o `tit` das subidas. O mais recente por nome ganha (`TWTM`, `twTN`).
+  - Quando o jogador troca ou ganha título, `twTitSync` grava um claim novo com `tit`. Na 1ª abertura da torre na v203 também grava (`tw_ts203`).
+  - ADM só aparece para o nome "Denilson ADM".
+- CHAT 💬 (botão no painel da torre):
+  - Mensagens são documentos na coleção `torre` com `chat:'cAAAAMMDD'` (dia de Brasília), `msg` (até 140), `nome`, `uid`, `tit`, `andar 0`, `tempo 0`, sem `pontos` (assim não entram no ranking de pontos).
+  - Carrega hoje + 2 dias antes (até 80 mensagens) e atualiza a cada 8 s com a tela aberta. Espera de 4 s entre mensagens.
+  - Filtro simples de palavrão (`TWBAD`, troca por ***).
+  - As regras do Firestore não deixam apagar: não dá para remover mensagem.
+- Teste `ferramentas/testes/tchat.js`.
