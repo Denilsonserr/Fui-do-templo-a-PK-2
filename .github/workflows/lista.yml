@@ -1,0 +1,24 @@
+name: Listar jogadores da torre (ferramenta)
+on: workflow_dispatch
+jobs:
+  q:
+    runs-on: ubuntu-latest
+    steps:
+      - name: lista
+        run: |
+          python3 - <<'P'
+          import json,urllib.request,collections
+          B='https://firestore.googleapis.com/v1/projects/furia-do-templo/databases/(default)/documents/torre?pageSize=300&key=AIzaSyDXTjvRMcKtJ5vq2vl-F2B_w2M-7hd_QY0'
+          tok='';kinds=collections.Counter();P={}
+          while True:
+              d=json.load(urllib.request.urlopen(B+('&pageToken='+tok if tok else '')))
+              for x in d.get('documents',[]):
+                  F={k:list(v.values())[0] for k,v in x.get('fields',{}).items()}
+                  ks=','.join(sorted(F));kinds[ks]+=1
+                  if 'andar' in F and not F.get('cupom') and 'nome' in F:
+                      k=(F.get('uid',''),F['nome']);o=P.setdefault(k,{'n':0,'max':0,'first':x['createTime']});o['n']+=1;o['max']=max(o['max'],int(F.get('andar',0)));o['first']=min(o['first'],x['createTime'])
+              tok=d.get('nextPageToken')
+              if not tok:break
+          for k,v in kinds.most_common():print('KIND',v,k)
+          for (u,n),o in sorted(P.items(),key=lambda a:a[1]['first']):print('PLAYER',json.dumps({'uid':u,'nome':n,**o},ensure_ascii=False))
+          P
