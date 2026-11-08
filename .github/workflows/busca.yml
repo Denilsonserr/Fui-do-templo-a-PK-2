@@ -1,0 +1,29 @@
+name: Buscar jogador por nome (ferramenta)
+on:
+  workflow_dispatch:
+    inputs:
+      nome: {description: 'parte do nome (minúsculas)', default: 'bruno'}
+jobs:
+  q:
+    runs-on: ubuntu-latest
+    steps:
+      - name: busca
+        env: {NOME: '${{ inputs.nome }}'}
+        run: |
+          python3 - <<'P'
+          import json,urllib.request,os
+          q=os.environ['NOME'].lower()
+          B='https://firestore.googleapis.com/v1/projects/furia-do-templo/databases/(default)/documents/torre?pageSize=300&key=AIzaSyDXTjvRMcKtJ5vq2vl-F2B_w2M-7hd_QY0'
+          tok='';R=[]
+          while True:
+              d=json.load(urllib.request.urlopen(B+('&pageToken='+tok if tok else '')))
+              for x in d.get('documents',[]):
+                  F={k:list(v.values())[0] for k,v in x.get('fields',{}).items()}
+                  if q in str(F.get('nome','')).lower() or q in str(F.get('nomeL','')).lower():
+                      if 'd' in F:F['d']='<%d bytes>'%len(F['d'])
+                      if 'sg' in F:F['sg']=F['sg'][:8]
+                      F['_id']=x['name'].split('/')[-1];F['_ct']=x['createTime'];R.append(F)
+              tok=d.get('nextPageToken')
+              if not tok:break
+          for F in sorted(R,key=lambda f:f['_ct']):print('ROW',json.dumps(F,ensure_ascii=False))
+          P
