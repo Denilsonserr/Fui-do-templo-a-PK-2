@@ -1536,6 +1536,8 @@ function hurtbox(f){if(f.state==='down'||f.state==='ko'||f.state==='getup'||(f.s
   return low?{x:f.x-36,y:f.y-170,w:72,h:170}:{x:f.x-34,y:f.y-250,w:68,h:250}}
 const overlap=(a,b)=>a.x<b.x+b.w&&a.x+a.w>b.x&&a.y<b.y+b.h&&a.y+a.h>b.y;
 const PRAISE=[[3,'BOM!'],[5,'ÓTIMO!'],[8,'INCRÍVEL!'],[12,'BRUTAL!'],[16,'LENDÁRIO!']];
+function critFx(a,d,h){const x=h.px||d.x,y=h.py||d.y-150;txt(d.x,d.y-290,'💥 CRÍTICO!','#ffdd33');G.hitstop=Math.max(G.hitstop,11);G.flash=Math.max(G.flash,4);G.flashCol='#fff2c0';G.shake=Math.max(G.shake,12);
+  ring(x,y,'#ffffff',90,12,5);ring(x,y,'#ffb300',170,18,7);ring(x,y,'#ff3a2a',240,22,4);for(let i=0;i<16;i++)spark(x,y,i%3?'#ffd84a':'#ffffff',1,rand(6,14));try{flashL(x,y,'#ffcf4a',380,.85,14)}catch(e){}try{SFX.hit(true,2)}catch(e){}buzz(45)}
 function applyHit(a,d,h){
   if(d.ko)return false;
   const brA=isBr(d)&&d.state==='attack'&&d.move&&!h.lock&&!h.heavy&&!h.launch&&!h.launcher&&!h.smash&&h.kind!=='beam'&&G.frame>=(d.brCD||0)&&(d.brN||0)<(d.form?4:2),brS=brA?{state:d.state,move:d.move,mf:d.mf,st:d.st,vx:d.vx,vy:d.vy,grounded:d.grounded,y:d.y}:null;
@@ -1546,8 +1548,8 @@ function applyHit(a,d,h){
   const flyGuard=d.state==='fly'&&(d.facing>0?d.inp.left:d.inp.right);
   const blocking=!h.lock&&(flyGuard||d.guard&&d.grounded&&(!h.low||d.guardLow)&&(d.state==='walk'||d.state==='cblock'||d.state==='blockstun'||d.state==='idle'));
   if(blocking&&isNr(d)&&!d.ko&&h.kind!=='beam'&&d.grounded){d.nrB=(d.nrB||0)+1;if(d.nrB>=3&&Math.random()<.65){d.nrB=0;nrLog(d,a);return false}}
-  const crit=isXw(a)&&a.form&&!h.lock&&Math.random()<.3;
-  const mult=(a.spark>0?1.2:1)*(isBr(a)&&a.form?1.5:1)*(isGk(a)&&a.form?1.25:1)*(isAo(a)&&a.form?1.4:1)*(crit?1.8:1)*(isZed(a)&&a.form===2?1.3:1)*a.def.power*(a.form?1.45:1)*(d.form?.8:1)*(isZed(d)&&d.form===2?.7:1)*(aylMagic(a)&&h.kind==='melee'?1.12:1)*(a.tdm||1)*(d.tdf||1);
+  const crit=!h.lock&&(isXw(a)&&a.form?Math.random()<.3:Math.random()<(window.__crit!=null?window.__crit:(5+(a.tcr||0))/100));
+  const mult=(a.spark>0?1.2:1)*(isBr(a)&&a.form?1.5:1)*(isGk(a)&&a.form?1.25:1)*(isAo(a)&&a.form?1.4:1)*(crit?(isXw(a)&&a.form?1.8:1.6):1)*(isZed(a)&&a.form===2?1.3:1)*a.def.power*(a.form?1.45:1)*(d.form?.8:1)*(isZed(d)&&d.form===2?.7:1)*(aylMagic(a)&&h.kind==='melee'?1.12:1)*(a.tdm||1)*(d.tdf||1);
   if(blocking&&((d.guardT||0)<=(isGr(d)?(d.form?18:12):7)||(isXw(d)&&d.form))&&h.kind!=='beam'&&d.grounded){if(isXw(d)){d.bar=14;flashL(d.x+d.facing*90,d.y-150,E(d),300,.8,14)}
     d.state='blockstun';d.st=0;d.hitstun=5;d.vx=a.facing*1.5;d.ki=Math.min(100,d.ki+12);d.guardT=99;
     if(a.state==='attack'&&a.move&&!a.move.rush){a.state='blockstun';a.st=0;a.hitstun=16;a.vx=-a.facing*3.5}
@@ -1568,7 +1570,7 @@ function applyHit(a,d,h){
   const ctr=!h.lock&&d.state==='attack'&&d.move&&d.mf<=d.move.su+d.move.ac;
   const scl=(h.kind==='beam'||h.lock)?1:Math.max(.45,1-.08*a.combo),dmg=h.dmg*scl*mult*(ctr?1.25:1)*(ctr&&isGr(a)?grCHit(a,d,h):1);
   if(!d.grounded)d.jug=(d.jug||0)+1;
-  if(crit){txt(d.x,d.y-270,'CRÍTICO!','#ff6ad0');G.hitstop=Math.max(G.hitstop,9);G.flash=Math.max(G.flash,3);G.flashCol='#ffd0f0';ring(h.px,h.py,'#ff4fb8',140,16,6)}
+  if(crit){critFx(a,d,h)}
   if(ctr){fzTag(a,'Contra-ataque!');txt(d.x,d.y-240,'CONTRA-ATAQUE!','#ffd23f');G.hitstop=Math.max(G.hitstop,8);ring(h.px,h.py,'#ffd23f',120,16,5)}
   d.lastH=h;if(!G.annFirst&&G.phase==='fight'&&!G.trans){G.annFirst=1;nv('vFirstAttack',.05)}const hp0=d.hp;d.hp=Math.max(0,d.hp-dmg);d.lagT=40;if(d.hp>0&&Math.ceil(hp0/LAYER)>Math.ceil(d.hp/LAYER))layerBreak(d);if(a.combo<=1)a.finDone=false;a.combo++;
   if(!h.lock&&!a.finDone&&a.combo>=4&&h.kind!=='beam'&&(h.launcher||h.heavy||h.launch||(a.state==='attack'&&a.move&&!a.move.next&&!a.move.knext)))comboFinish(a,d,h);a.comboT=95;a.comboDmg+=dmg;d.guard=false;
@@ -5670,7 +5672,7 @@ function twRender(){twBuild();
   $('twFl').textContent=(TW.on&&TW.fl===TWN-1?'CHEFE':'ANDAR '+Math.min(TWN,TW.fl+(TW.on?1:0))+'/'+TWN);
   $('twTm').textContent=twFmt(TW.time);$('twTr').textContent=twTrofP();
   TW.hp=TW.hpv/(TW.bars*LAYER);const hp=Math.round(TW.hp*100);$('twHp').style.width=hp+'%';$('twHpT').textContent=TW.bars+' barras';$('twHp').className=hp<30?'lo':hp<60?'md':'';
-  $('twPs').innerHTML=(twIsAdm()?'<span class="tb">👑 ADM <b>+20% DANO</b> · <b>+10% VEL.</b> · 🍀 <b>SORTE</b></span>':'')+`<span class="co">🪙 <b>${twCoins()}</b></span>`+TWPT.map(p=>`<span>${p.i} ${p.n==='VELOCIDADE'?'VEL.':p.n} <b>+${TW.pas[p.k]}%</b></span>`).join('')+(TW.pas.trf?`<span>🔥 TRANSF. <b>+${TW.pas.trf}%</b></span>`:'')+`<span class="eq">${(()=>{const o=twEqOn();return TWEQ.map(E=>{const q=o[E.k];return q?`<i style="color:${twRarOf(q.r).c}" title="${E.n} ${twRarOf(q.r).n}">${E.i}+${q.v}%</i>`:`<i class="no">${E.i}—</i>`}).join('')})()}${twPocOn()?`<i style="color:#7dff9a">🧪+${twPocOn().v}%</i>`:''}</span>`;
+  $('twPs').innerHTML=(twIsAdm()?'<span class="tb">👑 ADM <b>+20% DANO</b> · <b>+10% VEL.</b> · 🍀 <b>SORTE</b></span>':'')+`<span class="co">🪙 <b>${twCoins()}</b></span>`+(()=>{const c=twEqOn().cap;return `<span>💥 CRÍT. <b>${5+(c&&c.crit||0)}%</b></span>`})()+TWPT.map(p=>`<span>${p.i} ${p.n==='VELOCIDADE'?'VEL.':p.n} <b>+${TW.pas[p.k]}%</b></span>`).join('')+(TW.pas.trf?`<span>🔥 TRANSF. <b>+${TW.pas.trf}%</b></span>`:'')+`<span class="eq">${(()=>{const o=twEqOn();return TWEQ.map(E=>{const q=o[E.k];return q?`<i style="color:${twRarOf(q.r).c}" title="${E.n} ${twRarOf(q.r).n}">${E.i}+${q.v}%</i>`:`<i class="no">${E.i}—</i>`}).join('')})()}${twPocOn()?`<i style="color:#7dff9a">🧪+${twPocOn().v}%</i>`:''}</span>`;
   {const n=twLS.g('tw_nome','');$('twNm').innerHTML=(n?'Jogador: <b>'+twEsc(n)+'</b>':'Jogador: <i>sem nome</i>')+twTitTag(twTitOn())}
   {const st=twEvSt(),D=$('twEvDot');if(D){D.className=st==='ao vivo'?'live':st==='antes'?'soon':''}}
   const R=twLS.g('tw_rec',null);$('twRec').innerHTML=R?`Recorde: <b>${R.andar}/7</b> andares · ${(R.d||0)<TWCUT?'--:--':twFmt(R.tempo)} · 🏆${R.trof}`:'Recorde: nenhum ainda';
@@ -5722,7 +5724,7 @@ function twFight(){if(TW.busy)return;TW.busy=true;twRender();twSfx('whoosh');
   const PM=prepMatch([G.pick,G.opp],G.nextStg);showVS(()=>PM.then(()=>{vsLoadEnd();TW.busy=false;startMatch()}),PM)}
 /* chamado no fim do setupFighters: vida que sobrou, passivas e dificuldade do andar */
 function twApply(){if(!(TW.on&&G.gmode==='torre'))return;const [p,o]=G.p,b=TW.fl===TWN-1;
-  p.mhp=TW.bars*LAYER;p.hp=p.hpLag=Math.max(1,Math.min(p.mhp,Math.round(TW.hpv)));p.tdm=1+(TW.pas.dano+twEqB('dano'))/100;p.tsp=1+(TW.pas.vel+twEqB('vel'))/100;p.tdf=1/(1+(TW.pas.vida+twEqB('vida'))/100);const pon=twPocOn(),trf=(TW.pas.trf||0)+(pon?pon.v:0);p.tsb=1+trf/100;if(trf)p.sb=Math.max(p.sb||0,Math.min(SB_COST*.9,SB_COST*trf/200));if(pon){twLS.s('tw_pocOn',null);TW.pocMsg='🧪 POÇÃO +'+pon.v+'% TRANSFORMAÇÃO'}
+  p.mhp=TW.bars*LAYER;p.hp=p.hpLag=Math.max(1,Math.min(p.mhp,Math.round(TW.hpv)));p.tdm=1+(TW.pas.dano+twEqB('dano'))/100;p.tsp=1+(TW.pas.vel+twEqB('vel'))/100;p.tdf=1/(1+(TW.pas.vida+twEqB('vida'))/100);const pon=twPocOn(),trf=(TW.pas.trf||0)+(pon?pon.v:0)+twEqB('trf');{const c=twEqOn().cap;p.tcr=c&&c.crit||0}p.tsb=1+trf/100;if(trf)p.sb=Math.max(p.sb||0,Math.min(SB_COST*.9,SB_COST*trf/200));if(pon){twLS.s('tw_pocOn',null);TW.pocMsg='🧪 POÇÃO +'+pon.v+'% TRANSFORMAÇÃO'}
   o.mhp=TWOB[TW.fl]*LAYER;o.hp=o.hpLag=o.mhp;o.tdm=b?1.55:1+.07*TW.fl;o.tsp=b?1.3:1+.045*TW.fl;o.tdf=b?.85:1;if(TW.fl>=3)o.ki=60;if(b){o.ki=100;o.sb=Math.max(o.sb||0,SB_COST)}
   TW.fs={t:0,cmb:0,ult:0,hp0:p.hp/p.mhp}}
 /* tempo da torre: NÃO conta durante ultimate, transformação, cinemáticas, especiais com vídeo nem pausado (configuração) */
@@ -5753,7 +5755,8 @@ const TWTRF={k:'trf',n:'TRANSFORMAÇÃO',i:'🔥',d:'Transforma mais cedo (energ
 /* v195: carta SECRETA (0,4% por escolha): bônus absurdo */
 const TWSECR={k:'sec',n:'SECRETA',c:'#ffffff'};const TWSEC={k:'sec',n:'PODER PROIBIDO',i:'👁️',d:'+80% vida, dano e velocidade · transforma muito mais cedo · +2 barras e vida cheia'};const TWSECP=.4;
 /* v195: EQUIPAMENTOS — ficam até o fim da torre (guarda o melhor de cada tipo) */
-const TWEQ=[{k:'esp',n:'ESPADA',i:'🗡️',s:'dano',d:'Aumenta o ATAQUE'},{k:'arm',n:'ARMADURA',i:'🛡️',s:'vida',d:'Aumenta a DEFESA'},{k:'bot',n:'BOTAS',i:'🥾',s:'vel',d:'Aumenta a VELOCIDADE'}];
+const TWEQ=[{k:'esp',n:'ESPADA',i:'🗡️',s:'dano',d:'Aumenta o ATAQUE'},{k:'arm',n:'ARMADURA',i:'🛡️',s:'vida',d:'Aumenta a DEFESA'},{k:'bot',n:'BOTAS',i:'🥾',s:'vel',d:'Aumenta a VELOCIDADE'},{k:'cap',n:'CAPACETE',i:'⛑️',s:'trf',d:'Transforma mais rápido + CRÍTICO'}];
+const TWCAPV={comum:[1,1],rara:[5,5],epica:[10,15],lend:[20,20],mit:[35,25]};
 /* poção: uso único, bônus na transformação (enche a energia mais rápido e já começa com uma parte) — vale para a PRÓXIMA luta da torre */
 const TWPOC={k:'poc',n:'POÇÃO',i:'🧪',d:'Transforma mais rápido · uso único (próxima luta)'};
 const TWPOR=[{k:'comum',n:'COMUM',c:'#c3c8d2',w:60,v:1},{k:'rara',n:'RARA',c:'#3d9bff',w:30,v:4},{k:'epica',n:'ÉPICA',c:'#b25bff',w:7.5,v:5},{k:'lend',n:'LENDÁRIA',c:'#ffc531',w:2,v:7},{k:'mit',n:'MÍTICA',c:'#ff2e63',w:.5,v:10}];
@@ -5769,11 +5772,11 @@ function twEqRoll(){const R=twEqRoll0();if(twIsAdm()&&Math.random()<.15){const B
 function twEqRoll0(){let r=Math.random()*100;for(const R of TWEQR){if((r-=R.w)<0)return R}return TWEQR[0]}
 const TWEQP=.2;/* (v196, não usado desde a v198) */
 const TWIMG={"esp":["a/833230fcd0fac9.webp","a/d3df45e80cc708.webp","a/8b5f9716ff86b9.webp","a/80211a745c59cd.webp","a/a0eda80334d068.webp"],"arm":["a/ac8beac00bf40e.webp","a/738916153e717a.webp","a/134a124955f59d.webp","a/c6899f19a0b00b.webp","a/31d357b5a64496.webp"],"bot":["a/2913bfe9fd3571.webp","a/089fd124fe5644.webp","a/2e9b9c9948b282.webp","a/911d2403f0a731.webp","a/18b3a3b0a382df.webp"],"poc":["a/374ddcf2fbbc99.webp","a/9a8ec82478a8fc.webp","a/79aea8a01759aa.webp","a/18dc7a7f7efacc.webp","a/eabf96e0117707.webp"],"bf":["a/02014d91bb125b.webp","a/50e7a2bf8215bb.webp","a/ed7c879dbdfc7c.webp","a/4d37ef2c9ef6cc.webp","a/acb9ba66ba1067.webp"],"ba":["a/34511dca2e7ad6.webp","a/15f9ae5ac8712e.webp","a/de067aa5e2d37c.webp","a/dba378a7120b0a.webp","a/174da89290c8a8.webp"],"av":"a/85c23d22a0184d.webp","mo":"a/726b0fd96a53d8.webp"};const TWRK=['comum','rara','epica','lend','mit'];
-const twIco=(t,r)=>TWIMG[t][Math.max(0,TWRK.indexOf(r))];const TWBAG=20;
+TWIMG.cap=["a/cf28e6c94334d5.webp", "a/1386fbdc67adb4.webp", "a/5b1f67d2837454.webp", "a/1302a4410945ff.webp", "a/0f43e1f6dd3787.webp"];const twIco=(t,r)=>TWIMG[t][Math.max(0,TWRK.indexOf(r))];const TWBAG=20;
 for(const k of ['esp','arm','bot','poc'])for(const p of TWIMG[k]){const im=new Image();im.src=p}
 /* baús por desempenho: pontos de troféu do andar 2+ = 1 baú, 5+ = 2, 9+ = 3. Dentro: poção (60%) ou equipamento (40%, raridade difícil) */
 function twChests(ks){const P=ks.reduce((a,k)=>a+TWTR[k].p,0),n=window.__twCh!=null?window.__twCh:P>=9?3:P>=5?2:P>=2?1:0,L=[];
-  for(let i=0;i<n;i++){if(Math.random()<.6){const R=twPoRoll();L.push({t:'poc',R})}else{const E=TWEQ[(Math.random()*3)|0];L.push({t:E.k,E,R:twEqRoll()})}}return L}
+  for(let i=0;i<n;i++){if(Math.random()<.6){const R=twPoRoll();L.push({t:'poc',R})}else{const E=TWEQ[(Math.random()*TWEQ.length)|0];L.push({t:E.k,E,R:twEqRoll()})}}return L}
 function twBagItems(){const Q=twEqp(),on=Object.values(Q);return twInv().filter(x=>!on.includes(x.id)).map(x=>Object.assign({k:'eq'},x)).concat(twPocs().map(x=>Object.assign({k:'poc',t:'poc'},x)))}
 function twCap(){let L=twBagItems(),out=null;while(L.length>TWBAG){const w=L.slice().sort((a,b)=>(a.ev?99:0)+a.v-(b.ev?99:0)-b.v)[0];if(w.k==='poc'){twLS.s('tw_poc',twPocs().filter(x=>x.id!==w.id))}else{twLS.s('tw_inv',twInv().filter(x=>x.id!==w.id))}out=w;L=twBagItems()}return out}
 function twFit(el,W0,H0){if(!el)return;const W=Math.min(innerWidth*.97,innerHeight*.97*W0/H0);el.style.width=W+'px';el.style.height=(W*H0/W0)+'px';el.style.fontSize=(W/100)+'px'}
@@ -5783,19 +5786,18 @@ const twInv=()=>twLS.g('tw_inv',[]),twEqp=()=>twLS.g('tw_eqp',{});
 function twEqOn(){const I=twInv(),Q=twEqp(),o={};for(const E of TWEQ){const it=I.find(x=>x.id===Q[E.k]);if(it)o[E.k]=it}return o}
 const twEqB=st=>{const o=twEqOn();let v=0;for(const E of TWEQ){if(!o[E.k])continue;if(E.s===st)v+=o[E.k].v;if(st==='vel'&&o[E.k].vel)v+=o[E.k].vel}return v};
 const twRarOf=k=>TWEQR.find(r=>r.k===k)||TWEQR[0];
-function twAddItem(E,R){const I=twInv(),it={id:Date.now().toString(36)+Math.random().toString(36).slice(2,6),t:E.k,r:R.k,v:R.v};I.push(it);twLS.s('tw_inv',I);
+function twAddItem(E,R){const I=twInv(),it={id:Date.now().toString(36)+Math.random().toString(36).slice(2,6),t:E.k,r:R.k,v:R.v};if(E.k==='cap'){it.v=TWCAPV[R.k][0];it.crit=TWCAPV[R.k][1]}I.push(it);twLS.s('tw_inv',I);
   const Q=twEqp(),cur=I.find(x=>x.id===Q[E.k]);if(!cur||it.v>cur.v){Q[E.k]=it.id;twLS.s('tw_eqp',Q)}TW.capOut=twCap();return it}
 const TWMOG=[];for(let r=0;r<2;r++)for(let c=0;c<10;c++){const x0=[125,287,448,610,771,934,1095,1257,1419,1580][c],y0=r?288:127;TWMOG.push([x0,y0,x0+142,y0+138])}
 const TWMOE=[['arm',278,562,476,750],['bot',558,562,755,751],['cap',827,562,1024,751],['esp',1094,563,1291,750],['poc',1374,562,1571,751]];
 function twBag(sel){if(!$('twModal').hidden&&!$('twModal').querySelector('.twMO'))return;const Q=twEqp(),I=twInv(),on=twPocOn(),L=twBagItems().sort((a,b)=>b.v-a.v||(a.k>b.k?1:-1)),W=1846,H=852;
-  const nm=x=>x.nm||(x.t==='poc'?'POÇÃO':TWEQ.find(E=>E.k===x.t).n),ef=x=>x.vel?'Ataque +'+x.v+'% · Velocidade +'+x.vel+'% (permanente)':x.t==='poc'?'Transformação +'+x.v+'% (uso único, próxima luta)':{esp:'Ataque',arm:'Defesa',bot:'Velocidade'}[x.t]+' +'+x.v+'% (permanente)';
+  const nm=x=>x.nm||(x.t==='poc'?'POÇÃO':TWEQ.find(E=>E.k===x.t).n),ef=x=>x.t==='cap'?'Transformação +'+x.v+'% mais rápida · Crítico +'+(x.crit||0)+'% (permanente)':x.vel?'Ataque +'+x.v+'% · Velocidade +'+x.vel+'% (permanente)':x.t==='poc'?'Transformação +'+x.v+'% (uso único, próxima luta)':{esp:'Ataque',arm:'Defesa',bot:'Velocidade'}[x.t]+' +'+x.v+'% (permanente)';
   const cell=(x,b,extra)=>`<button class="moS ${extra||''}" style="${b};--c:${twRarOf(x.r).c}" data-id="${x.id}" data-k="${x.k||'eq'}"><img src="${x.img||twIco(x.t,x.r)}" alt=""><b>+${x.v}%</b></button>`;
   let g='';TWMOG.forEach((b,i)=>{const x=L[i],bx=twBx(...b,W,H);g+=x?cell(x,bx):`<span class="moS em" style="${bx}"></span>`});
-  let e='';for(const [k,...b] of TWMOE){const bx=twBx(...b,W,H);if(k==='cap'){e+=`<span class="moS lock" style="${bx}"><i>EM BREVE</i></span>`;continue}
-    const x=k==='poc'?(on?Object.assign({t:'poc',k:'on'},on):null):I.find(y=>y.id===Q[k]);e+=x?cell(Object.assign({},x,{k:k==='poc'?'on':'eqd'}),bx,'eqd'):`<span class="moS em eqe" style="${bx}"></span>`}
-  const tot={esp:0,arm:0,bot:0};for(const E of TWEQ){const x=I.find(y=>y.id===Q[E.k]);if(x)tot[E.k]=x.v}
+  let e='';for(const [k,...b] of TWMOE){const bx=twBx(...b,W,H);    const x=k==='poc'?(on?Object.assign({t:'poc',k:'on'},on):null):I.find(y=>y.id===Q[k]);e+=x?cell(Object.assign({},x,{k:k==='poc'?'on':'eqd'}),bx,'eqd'):`<span class="moS em eqe" style="${bx}"></span>`}
+  const tot={esp:0,arm:0,bot:0,cap:0,crit:0};for(const E of TWEQ){const x=I.find(y=>y.id===Q[E.k]);if(x){tot[E.k]=x.v;if(x.crit)tot.crit=x.crit}}
   twModal(`<div class="twMO" style="background-image:url(${TWIMG.mo})">${g}${e}
-    <div class="moT l">⚔️ ATAQUE <b>+${tot.esp}%</b> · 🛡️ DEFESA <b>+${tot.arm}%</b></div><div class="moT r">🥾 VEL. <b>+${tot.bot}%</b> · 🧪 <b>${on?'+'+on.v+'% ATIVA':'nenhuma'}</b></div>
+    <div class="moT l">⚔️ ATAQUE <b>+${tot.esp}%</b> · 🛡️ DEFESA <b>+${tot.arm}%</b></div><div class="moT r">🥾 VEL. <b>+${tot.bot}%</b> · ⛑️ TRANSF. <b>+${tot.cap}%</b> · 💥 CRÍT. <b>+${tot.crit}%</b> · 🧪 <b>${on?'+'+on.v+'% ATIVA':'nenhuma'}</b></div>
     <div class="moT c">🎒 MOCHILA ${L.length}/${TWBAG}</div><button class="moX" id="twBagX">✕</button><div class="moD" id="twMoD" hidden></div></div>`);
   twFit(document.querySelector('#twModal .twMO'),W,H);$('twBagX').onclick=()=>{twModal(null);twRender()};
   const det=(x,src)=>{const D=$('twMoD'),R=twRarOf(x.r);let bt='';

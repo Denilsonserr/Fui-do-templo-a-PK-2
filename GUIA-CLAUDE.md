@@ -660,3 +660,22 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - Código 1 (hash `1polqg8`): espada, armadura e botas MÍTICAS (+10% cada), já equipadas. O texto do código fica só com o dono (não fica no repositório).
 - Para criar outro código: gerar um texto novo, calcular `twHash(CODIGO)` e acrescentar no `TWCUP`.
 - Teste `ferramentas/testes/tcupom.js` (simula 2 aparelhos).
+
+## v207 — CAPACETE e crítico melhorado
+- `ferramentas/web/patch_v207.py` (lê `/home/claude/mo_build/cap.json`; artes em `ferramentas/torre_artes/capacetes1/2.png`).
+- Capacete ⛑️ (`TWEQ` k `cap`, `TWCAPV`): barra de transformação mais rápida e crítico.
+
+| Raridade | Transformação | Crítico |
+|---|---|---|
+| comum | +1% | +1% |
+| rara | +5% | +5% |
+| épica | +10% | +15% |
+| lendária | +20% | +20% |
+| mítica | +35% | +25% |
+
+  - Vem nos baús como os outros equipamentos (agora 4 tipos). Usa o espaço do meio da mochila (saiu o "EM BREVE").
+  - Na luta da torre: soma no `p.tsb` e dá `p.tcr`.
+- CRÍTICO: todos têm 5% de chance base (+ `tcr` do capacete) em golpes que não são de agarrão (`h.lock`). Crítico = dano ×1.6 (Xenowing transformado continua 30% de chance e ×1.8).
+  - Efeito novo `critFx`: "💥 CRÍTICO!" dourado, 3 anéis, faíscas, flash, tremida, pausa maior e vibração.
+  - Painel mostra "💥 CRÍT. X%". `window.__crit` força nos testes.
+- Teste `ferramentas/testes/tcapacete.js` (3000 golpes: ~29% de crítico com o mítico, ~6% sem).
