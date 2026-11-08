@@ -1,0 +1,26 @@
+name: Consultar servidor (ferramenta)
+on:
+  workflow_dispatch:
+    inputs:
+      campo: {description: 'campo do filtro', default: 'sem'}
+      valor: {description: 'valor do filtro', default: 'w20261102'}
+jobs:
+  q:
+    runs-on: ubuntu-latest
+    steps:
+      - name: consulta
+        run: |
+          U='https://firestore.googleapis.com/v1/projects/furia-do-templo/databases/(default)/documents:runQuery?key=AIzaSyDXTjvRMcKtJ5vq2vl-F2B_w2M-7hd_QY0'
+          for f in "${{ inputs.campo }}:${{ inputs.valor }}" "ev:ev20261108"; do
+            C=${f%%:*};V=${f#*:}
+            echo "===== $C == $V"
+            curl -sS -X POST "$U" -H 'Content-Type: application/json' -d "{\"structuredQuery\":{\"from\":[{\"collectionId\":\"torre\"}],\"where\":{\"fieldFilter\":{\"field\":{\"fieldPath\":\"$C\"},\"op\":\"EQUAL\",\"value\":{\"stringValue\":\"$V\"}}},\"limit\":1000}}" | python3 -c "
+          import json,sys
+          for x in json.load(sys.stdin):
+              d=x.get('document')
+              if not d:continue
+              F={k:list(v.values())[0] for k,v in d['fields'].items()}
+              F['_ct']=d['createTime'];F['_id']=d['name'].split('/')[-1]
+              print('ROW',json.dumps(F,ensure_ascii=False))
+          "
+          done
