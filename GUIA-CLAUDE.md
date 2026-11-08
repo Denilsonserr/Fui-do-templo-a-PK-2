@@ -461,3 +461,7 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
   - Teletransporte não deixa voando quem estava no chão.
   - CPU nunca voa (`startFly` com `f.cpu` vira pulo).
 - Teste `ferramentas/testes/tsemvoo.js` (Broly CPU 25 s: 0 quadros voando, no máximo 15 quadros no ar; botão de voar do jogador continua funcionando).
+
+## v190 — Broly: combo básico só de socos
+- Antes a corrente era jab → cross → upper (o upper usa o quadro `up` = Broly subindo como se voasse) e daí perseguição/chute. Agora o SOCO no chão do Broly é `bp1`…`bp5` (5 socos rápidos e fortes, alternando soco reto `combo 1`/soco longo `combo 2` com o gancho armado `combo 3`) → `bp6` SOCO PESADO (quadro `dash 0`, avançando com poeira) que ATORDOA: quem toma fica parado em "hit" ~1 s (`hitstun 58`), sem cair nem voar, texto "ATORDOADO!" e estrelinhas na cabeça (`stunFx`). Nada sobe no ar.
+- `ferramentas/web/patch_v190.py` (depois do `patch_v189`). Teste `ferramentas/testes/tbroly_socos.js` (6 golpes, 0 quadros no ar, rival só idle/hit).

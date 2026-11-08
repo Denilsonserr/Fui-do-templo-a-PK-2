@@ -1,0 +1,10 @@
+const {chromium}=require('playwright');
+(async()=>{const b=await chromium.launch();const p=await b.newPage({viewport:{width:915,height:412},deviceScaleFactor:1.5});const errs=[];p.on('pageerror',e=>errs.push(e.message));await p.route(/fonts\.g|firestore/,r=>r.abort());
+await p.goto('file:///home/claude/fui-do-templo-a-pk-2/www/index.html');await p.waitForFunction(()=>!document.getElementById('goSelect').disabled,null,{timeout:120000});
+await p.click('#goSelect');await p.waitForTimeout(400);await p.click('.tile[data-c="broly"]');await p.click('.tile[data-c="goku"]');await p.click('#goStage');await p.waitForTimeout(300);await p.click('.stc[data-s="cupula"]');await p.click('#goFight');
+await p.waitForFunction(()=>__dbg.G.mode==='fight'&&__dbg.G.phase==='fight',null,{timeout:120000});
+const r=await p.evaluate(async()=>{const G=__dbg.G;G.noAI=true;G.timer=999;const F=n=>new Promise(r=>{const f0=G.frame;const c=()=>G.frame>=f0+n?r():requestAnimationFrame(c);c()});
+ const K=(v)=>dispatchEvent(new KeyboardEvent(v?'keydown':'keyup',{code:'KeyJ',bubbles:true}));const f=G.p[0],o=G.p[1];f.x=900;o.x=1040;await F(20);
+ const mv=new Set(),os=new Set();let air=0,stunMax=0;const lp=()=>{if(f.state==='attack')mv.add(f.mname);os.add(o.state);if(!f.grounded)air++;stunMax=Math.max(stunMax,o.stunFx||0);if(!window.__s)requestAnimationFrame(lp)};lp();
+ for(let i=0;i<14;i++){K(1);await F(2);K(0);await F(5)}await F(80);window.__s=1;return {mv:[...mv],os:[...os],air,stunMax,dmg:Math.round(3600-o.hp),combo:f.combo}});
+await p.screenshot({path:'/tmp/br_end.png'});console.log(JSON.stringify(r),errs);await b.close()})();
