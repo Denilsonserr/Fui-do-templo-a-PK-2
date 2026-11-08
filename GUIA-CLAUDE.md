@@ -884,3 +884,11 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 
 ## v222 — Lâmina Negra garantida só em 160 giros
 - Pity da espada secreta (`rk_pity2`): 50 → 160 giros (pedido do dono: estava fácil demais). Chance por giro continua 0,3%. Textos do gacha atualizados.
+
+## v223 — personagens MÍTICOS no gacha (Naruto, Madara, Garou)
+- `RK_MIT=['naruto','madara','garou']` (saíram de `RK_LEG`). `rkRar` → 'mit' (cor vermelha, carta `RQA.card.mit`).
+- Chance 0,4% por giro, **sem garantia** (não usa nem zera o pity de lendário). Repetido: +60 💎.
+- Ao aparecer (novo ou repetido): `rkMega()` (tela "SUPER MEGA SORTE!", raios vermelhos, tremida, ~2,9 s) → revela a carta → `rkCharWin(id,1,nw)` toca o vídeo da ULTIMATE (`RKUV`: NRU/MDU/GRU, sem som) e mostra o corpo inteiro com fundo vermelho.
+- Revelar tudo agora é em sequência (não sobrepõe animações) e a carta não revela duas vezes.
+- Taxas, biblioteca e histórico mostram "MÍTICO". Quem já tinha esses personagens continua com eles.
+- Teste `ferramentas/testes/tmitico.js` (força o sorteio mítico com `Math.random` só dentro de `rkRoll`).
