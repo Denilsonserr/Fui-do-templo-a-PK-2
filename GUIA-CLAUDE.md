@@ -903,3 +903,10 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
   - Derrota: o dano causado devolve até 80% do XP perdido (`RKXL*0.8*fração`).
 - Tela rb mostra recorde do servidor e o seu no nível.
 - Testes `trecorde.js`, `tmitico2.js` (no `trb.js` o exemplo antigo 5500→5660 virou 5892 por causa do buff + 1ª vitória).
+
+## v225 — tickets de giro arrumados, evento 3x XP e tela da conta mais clara
+- Tickets (`rkCost(n)`): tickets são usados primeiro (1 ticket = 1 giro). Giro de 10 agora também usa tickets: os que faltarem custam 45 💎 cada. Etiqueta amarela no botão mostra o custo (`.rkTk`). Antes o giro de 10 ignorava os tickets.
+- Eventos de XP: `RKEVX=[[inícioUTC, fimUTC, mult, nome]]`. Primeiro: 08/11 20:00–22:00 (Brasília) = 3x XP; multiplica todo o XP da VITÓRIA (com bônus), derrota igual. Faixa `rkEvTxt()` em todas as telas do ranqueado com o tempo que falta; a tela rb mostra o XP de vitória já multiplicado.
+- Conta: a tela "MINHA CONTA" diz claramente que já está conectado neste aparelho e mostra rank, XP, 💎, personagens e moedas; criar conta com nome que já tem conta manda usar ENTRAR.
+- Ferramenta `.github/workflows/busca.yml` (input `nome`, `*` = tudo): lista docs do servidor por nome (o campo `d` dos saves aparece só como tamanho). Os saves (`sv`) podem ser lidos com `consulta.yml` (campo `sv`, valor = acc).
+- Teste `ferramentas/testes/tticket.js`.
