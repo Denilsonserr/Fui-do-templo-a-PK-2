@@ -431,3 +431,7 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 
 ## v184 — preso na parede: o rival dá um contra-golpe e joga para o meio (sem dano)
 - `wallBreak` (no `patch_combo.py`): se quem apanha está a ≤95 px da parede e já levou 8 golpes seguidos (ou ~1,8 s preso), ele dá um soco/chute (pose de `RUSHK` do personagem, 18 quadros, invencível 45) e quem estava batendo é arremessado (`airhit`) em direção ao MEIO do cenário (vx = distância até o meio / 34, mín. 9), SEM perder vida, invencível 30. Texto "SAIU DA PAREDE!". Fora da parede continua o `comboBreak` (24 golpes / 3,3 s). Teste `ferramentas/testes/tparede_sair.js` (Luffy: de x 2186 até ~1220, vida intacta).
+
+## v185 — tempo da Torre justo + tempo na tela
+- `twTick` só conta quando NÃO está: pausado (inclui a tela de configuração), transformando (`G.trans`), em ultimate (`G.ws`), cinemática/super (`G.cine`, `G.comic`, `G.zsp`, `G.sc`, `G.rush`, `G.wfs`, `G.xu`).
+- Na luta da Torre, embaixo do timer (que pode ser ∞), aparece "TORRE mm:ss" em amarelo = tempo total da subida até agora (`twHudT`, no lugar de "ROUND 1"). No fim soma tudo igual (`TW.time`). Teste `ferramentas/testes/ttorre_tempo.js` (transformação e pausa: 0 quadros contados).

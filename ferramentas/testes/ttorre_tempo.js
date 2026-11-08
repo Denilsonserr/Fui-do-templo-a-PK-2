@@ -1,0 +1,11 @@
+const {chromium}=require('playwright');
+(async()=>{const b=await chromium.launch();const p=await b.newPage({viewport:{width:915,height:412},deviceScaleFactor:1.5});const errs=[];p.on('pageerror',e=>errs.push(e.message));await p.route(/fonts\.g|firestore/,r=>r.abort());
+await p.goto('file:///home/claude/fui-do-templo-a-pk-2/www/index.html');await p.waitForFunction(()=>!document.getElementById('goSelect').disabled,null,{timeout:120000});
+await p.evaluate(()=>localStorage.setItem('tw_nome','"Teste"'));
+await p.click('#mTorre');await p.waitForTimeout(400);await p.click('.tile[data-c="goku"]');await p.click('#goStage');await p.waitForTimeout(800);await p.click('#twGo');await p.waitForTimeout(1500);await p.click('#twGo');
+await p.waitForFunction(()=>__dbg.G.mode==='fight'&&__dbg.G.phase==='fight',null,{timeout:120000});
+const r=await p.evaluate(async()=>{const G=__dbg.G;G.noAI=true;const F=n=>new Promise(r=>{const f0=G.frame;const c=()=>G.frame>=f0+n?r():requestAnimationFrame(c);c()});
+ const f=G.p[0],a=__TW.fs.t;await F(120);const b=__TW.fs.t;f.sb=6;dispatchEvent(new KeyboardEvent('keydown',{code:'KeyU',bubbles:true}));await F(2);dispatchEvent(new KeyboardEvent('keyup',{code:'KeyU',bubbles:true}));await F(5);const tr=!!G.trans,c=__TW.fs.t;await F(100);const d=__TW.fs.t;
+ G.paused=true;await new Promise(r=>setTimeout(r,1000));const e=__TW.fs.t;G.paused=false;return {normal:b-a,trans:tr,duringTrans:d-c,paused:e-d}});
+await p.waitForTimeout(500);await p.screenshot({path:'/tmp/ttt.png',clip:{x:300,y:0,width:315,height:120}});
+console.log(JSON.stringify(r),errs);await b.close()})();
