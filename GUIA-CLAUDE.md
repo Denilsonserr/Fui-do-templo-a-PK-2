@@ -679,3 +679,15 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
   - Efeito novo `critFx`: "💥 CRÍTICO!" dourado, 3 anéis, faíscas, flash, tremida, pausa maior e vibração.
   - Painel mostra "💥 CRÍT. X%". `window.__crit` força nos testes.
 - Teste `ferramentas/testes/tcapacete.js` (3000 golpes: ~29% de crítico com o mítico, ~6% sem).
+
+## v208 — SUPER SOCO com carga no botão e QUEBRA DE DEFESA
+- `ferramentas/web/patch_v208.py`.
+- Segurar o soco (já existia: `pHeld` 20 quadros → `buf.smash` → `doSmash`) agora mostra no botão de soco:
+  - um anel dourado enchendo (`.pch`, `--p`, de 4 a 20 quadros);
+  - ao completar, o anel brilhando com "SUPER!" (`.pchT`).
+  - É atualizado no `cmbCD` do jogador 1. No personagem aparece um anel dourado na hora que carrega.
+- QUEBRA DE DEFESA (`guardBreak`): golpe `smash` em quem está defendendo, inclusive defesa perfeita.
+  - O defensor fica atordoado 58 quadros (`gbT`, não consegue defender) e leva 60% do dano.
+  - Efeitos: "DEFESA QUEBRADA!" azul-gelo, cacos de luz, anéis, câmera lenta, tremida e vibração.
+  - Vale para todos os personagens (smash/vsmash/qsmash/nsmash…).
+- Teste `ferramentas/testes/tsupersoco.js`.
