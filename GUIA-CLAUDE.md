@@ -708,3 +708,10 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
   - As poções que já estavam na mochila foram atualizadas pela raridade (o `v` virou o valor novo).
 - Loja: comum 400, rara 600, épica 700, lendária 1000, mítica 3000 (`TWSHOP`).
 - Teste `ferramentas/testes/tpocao2.js`.
+
+## v210 — vender equipamento
+- `ferramentas/web/patch_v210.py`.
+- Na mochila, um equipamento guardado (não equipado) agora tem o botão VENDER no lugar de DESCARTAR. Pede confirmação no 2º toque.
+- Valores (`TWSELL`): comum 100, rara 200, épica 300, lendária 700, mítica 2000 🪙.
+- Poção continua só com DESCARTAR. As moedas aparecem no topo da mochila.
+- Teste `ferramentas/testes/tvender.js`.

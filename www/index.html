@@ -477,6 +477,7 @@ h2{margin:0;font-family:var(--f-display);font-weight:400;font-size:clamp(26px,8v
 #bPunch.chg .pch{opacity:1;filter:drop-shadow(0 0 6px #ffb300)}#bPunch.chf .pch{opacity:1;background:conic-gradient(#fff,#ffd84a,#fff,#ffd84a,#fff);animation:pchF .25s ease-in-out infinite alternate;filter:drop-shadow(0 0 10px #fff) drop-shadow(0 0 16px #ffb300)}
 #bPunch .pchT{display:none;font-style:normal;position:absolute;left:50%;bottom:4%;transform:translateX(-50%);z-index:5;background:rgba(0,0,0,.75);padding:1px 6px;border-radius:6px;border:1px solid #ffd84a;font:900 13px var(--f-ui);color:#ffd84a;text-shadow:0 0 6px #ff6a00,0 1px 2px #000;pointer-events:none;white-space:nowrap}#bPunch.chf .pchT{display:block}
 @keyframes pchF{to{opacity:.55}}
+.moD .btn.sell{background:linear-gradient(180deg,#8a6a10,#4a3404);border-color:#ffd84a;color:#ffe680}
 .twBag .bgw{display:flex;gap:1em;justify-content:center;align-items:flex-start;margin:.4em 0}
 .twBag .bgc{flex:1;max-width:16em;display:flex;flex-direction:column;gap:.4em;max-height:52vh;overflow:auto;padding:.2em}
 .twBag h5{margin:0 0 .2em;font:900 1em var(--f-ui);letter-spacing:.1em;color:#ffcf4a;display:flex;flex-direction:column}.twBag h5 small{font-size:.65em;color:#cdbfcf;letter-spacing:0}
@@ -5813,10 +5814,10 @@ function twBag(sel){if(!$('twModal').hidden&&!$('twModal').querySelector('.twMO'
   const tot={esp:0,arm:0,bot:0,cap:0,crit:0};for(const E of TWEQ){const x=I.find(y=>y.id===Q[E.k]);if(x){tot[E.k]=x.v;if(x.crit)tot.crit=x.crit}}
   twModal(`<div class="twMO" style="background-image:url(${TWIMG.mo})">${g}${e}
     <div class="moT l">⚔️ ATAQUE <b>+${tot.esp}%</b> · 🛡️ DEFESA <b>+${tot.arm}%</b></div><div class="moT r">🥾 VEL. <b>+${tot.bot}%</b> · ⛑️ TRANSF. <b>+${tot.cap}%</b> · 💥 CRÍT. <b>+${tot.crit}%</b> · 🧪 <b>${on?'+'+on.v+'% ATIVA':'nenhuma'}</b></div>
-    <div class="moT c">🎒 MOCHILA ${L.length}/${TWBAG}</div><button class="moX" id="twBagX">✕</button><div class="moD" id="twMoD" hidden></div></div>`);
+    <div class="moT c">🎒 MOCHILA ${L.length}/${TWBAG} · <span class="coin">🪙 ${twCoins()}</span></div><button class="moX" id="twBagX">✕</button><div class="moD" id="twMoD" hidden></div></div>`);
   twFit(document.querySelector('#twModal .twMO'),W,H);$('twBagX').onclick=()=>{twModal(null);twRender()};
   const det=(x,src)=>{const D=$('twMoD'),R=twRarOf(x.r);let bt='';
-      if(src==='eq')bt=`<button class="btn main" data-a="eq">EQUIPAR</button><button class="btn" data-a="del">DESCARTAR</button>`;
+      if(src==='eq')bt=`<button class="btn main" data-a="eq">EQUIPAR</button><button class="btn sell" data-a="sell">VENDER 🪙 ${TWSELL[x.r]||100}</button>`;
       else if(src==='poc')bt=`<button class="btn main" data-a="beber" ${on?'disabled':''}>${on?'JÁ TEM UMA ATIVA':'BEBER'}</button><button class="btn" data-a="del">DESCARTAR</button>`;
       else if(src==='eqd')bt=`<button class="btn main" data-a="tirar">DESEQUIPAR</button>`;
       D.innerHTML=`<div class="mdI" style="--c:${R.c}"><img src="${x.img||twIco(x.t,x.r)}" alt=""><div><span style="color:${R.c}">${R.n}</span><b>${nm(x)}</b><em>${ef(x)}</em>${src==='on'?'<em>Bebida: vale na próxima luta da torre</em>':''}</div></div><div class="row">${bt}<button class="btn" data-a="x">FECHAR</button></div>`;D.hidden=false;
@@ -5824,6 +5825,7 @@ function twBag(sel){if(!$('twModal').hidden&&!$('twModal').querySelector('.twMO'
         if(a==='eq'){const Q=twEqp();Q[x.t]=x.id;twLS.s('tw_eqp',Q);twSfx('clang');TW.capOut=twCap()}
         else if(a==='tirar'){const Q=twEqp();delete Q[x.t];twLS.s('tw_eqp',Q);twSfx('whoosh');const o=twCap();if(o)twToast('Mochila cheia: '+nm(o)+' +'+o.v+'% descartado','#ff8080')}
         else if(a==='beber'){if(twPocOn())return;twLS.s('tw_poc',twPocs().filter(y=>y.id!==x.id));twLS.s('tw_pocOn',{id:x.id,r:x.r,v:x.v});twSfx('powerUp');twToast('🧪 POÇÃO '+twRarOf(x.r).n+' BEBIDA! Vale na próxima luta','#7dff9a')}
+        else if(a==='sell'){if(!b.dataset.ok){b.dataset.ok=1;b.textContent='CONFIRMAR VENDA? 🪙 '+(TWSELL[x.r]||100);return}twLS.s('tw_inv',twInv().filter(y=>y.id!==x.id));const Q=twEqp();for(const k in Q)if(Q[k]===x.id)delete Q[k];twLS.s('tw_eqp',Q);twAddCoins(TWSELL[x.r]||100);twSfx('powerUp');twToast('🪙 +'+(TWSELL[x.r]||100)+' moedas! Item vendido','#ffd84a')}
         else if(a==='del'){if(x.t==='poc')twLS.s('tw_poc',twPocs().filter(y=>y.id!==x.id));else twLS.s('tw_inv',twInv().filter(y=>y.id!==x.id));twSfx('boom')}
         if(a==='x'){D.hidden=true;return}twBag()})};
   document.querySelectorAll('#twModal .moS[data-id]').forEach(b=>b.onclick=()=>{const k=b.dataset.k,id=b.dataset.id;
@@ -6022,6 +6024,7 @@ function twChat(){const n=twLS.g('tw_nome','');if(!n){twAskName(()=>twChat());re
 /* ---------- v205: moedas e loja ---------- */
 const twCoins=()=>twLS.g('tw_moedas',0)|0,twAddCoins=n=>{twLS.s('tw_moedas',Math.max(0,twCoins()+n))};
 function twCoinWin(secs,lost,cmb){let c=100+(secs<20?60:secs<35?45:secs<50?30:secs<75?15:0)+(lost<.1?25:lost<.3?10:0)+(cmb>=10?15:0);return Math.min(200,c)}
+const TWSELL={comum:100,rara:200,epica:300,lend:700,mit:2000};
 const TWSHOP=[400,600,700,1000,3000];
 function twShop(){const c=twCoins(),cheia=twBagItems().length>=TWBAG;
   twModal(`<div class="twM twShop"><h3>🛒 LOJA</h3><p class="twH">Você tem <b class="coin">🪙 ${c}</b> moedas. Ganhe moedas vencendo andares da torre (100 a 200 por luta, mais rápido = mais moedas; +100 ao completar a torre).</p>
