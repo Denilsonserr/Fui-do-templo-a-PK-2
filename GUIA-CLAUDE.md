@@ -518,3 +518,16 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
   - Mítico dá o troféu "Equipamento Mítico" (+4).
   - Aparecem no painel da torre.
 - Teste `ferramentas/testes/ttorre_v195.js`.
+
+## v196 — Torre: 3 BAÚS e MOCHILA (equipamentos permanentes)
+- `ferramentas/web/patch_v196.py` (em cima da v195). Saiu a tela "DROP DE EQUIPAMENTO" da v195.
+- Depois de vencer um andar aparecem 3 baús (CSS puro, `.twCh`): balançam e abrem sozinhos (1,4 s, um a cada 0,7 s) ou com toque.
+  - Brilham na cor da melhor raridade de dentro.
+  - Das 4 cartas: um baú tem 2 e os outros 1 cada.
+  - Depois dos 3 abertos aparecem as cartas para escolher.
+- Equipamento: 20% por andar (`TWEQP`; `window.__twEq` força nos testes) vem dentro de um dos baús, com a raridade `TWEQR` (comum 70% … mítico 0,2%).
+  - Vai para a MOCHILA. Se for melhor que o equipado, já equipa sozinho.
+- MOCHILA 🎒 (botão na torre): `localStorage tw_inv` (até 60 itens, apaga comum velho não equipado) e `tw_eqp` {esp,arm,poc}.
+  - Nunca expira. Toque equipa ou desequipa (1 de cada tipo).
+  - O bônus vale em todas as subidas (`twEqB` lê `twEqOn()`).
+- Teste `ferramentas/testes/ttorre_bau.js`.

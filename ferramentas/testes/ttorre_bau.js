@@ -1,0 +1,23 @@
+// v196: 3 baús (cartas + às vezes equipamento) e mochila permanente. window.__twEq=1 força equipamento, __twSec força carta secreta
+const {chromium}=require('playwright');const SH='/tmp/';
+(async()=>{const b=await chromium.launch();const p=await b.newPage({viewport:{width:915,height:412},deviceScaleFactor:1.5});p.setDefaultTimeout(120000);
+const errs=[];p.on('pageerror',e=>{errs.push((e.stack||e.message).slice(0,300))});await p.route(/fonts\.g|firestore/,r=>r.abort());
+await p.goto('file:///home/claude/fui-do-templo-a-pk-2/www/index.html');await p.waitForFunction(()=>!document.getElementById('goSelect').disabled,null,{timeout:120000});
+const shot=n=>p.screenshot({path:SH+'t6_'+n+'.png'});const wait=ms=>p.waitForTimeout(ms);
+await p.evaluate(()=>{localStorage.setItem('tw_nome','"Teste"');localStorage.removeItem('tw_inv');localStorage.removeItem('tw_eqp')});
+await p.click('#mTorre');await wait(500);await p.click('.tile[data-c="garou"]');await wait(300);await p.click('#goStage');await wait(800);
+await p.click('#twGo');await wait(1600);
+const fight=async()=>{await p.click('#twGo');await p.waitForFunction(()=>__dbg.G.mode==='fight'&&__dbg.G.phase==='fight',null,{timeout:120000});await wait(400);
+  const st=await p.evaluate(()=>{const [a]=__dbg.G.p;return {tdm:a.tdm,tsp:a.tsp,tdf:+a.tdf.toFixed(3)}});console.log('LUTA',JSON.stringify(st));
+  await p.evaluate(()=>{const G=__dbg.G;G.p[1].hp=50;G.timer=1;G.tf=59});await p.waitForFunction(()=>__dbg.G.mode==='tower',null,{timeout:60000})};
+await p.evaluate(()=>{window.__twEq=1});
+await fight();await p.waitForSelector('#twModal .twCh');await wait(900);await shot('bau_fechado');await wait(1300);await shot('bau_abrindo');
+await p.waitForSelector('#twCards:not([hidden])',{timeout:15000});await wait(900);await shot('bau_aberto');
+await p.click('#twModal .twp[data-i="0"]');await wait(2500);await shot('painel');
+console.log('INV',JSON.stringify(await p.evaluate(()=>({inv:JSON.parse(localStorage.tw_inv),eqp:JSON.parse(localStorage.tw_eqp)}))));
+await fight();await p.waitForSelector('#twModal .twCh');await p.click('#twModal .twCh[data-i="0"]');await p.click('#twModal .twCh[data-i="1"]');await p.click('#twModal .twCh[data-i="2"]');await p.waitForSelector('#twCards:not([hidden])');await p.click('#twModal .twp[data-i="1"]');await wait(1500);
+await p.click('#twBagB');await wait(700);await shot('mochila');
+const ids=await p.evaluate(()=>JSON.parse(localStorage.tw_inv).map(x=>x.id+':'+x.t));console.log('IDS',ids);
+await p.click('#twModal .bgi:not(.on)').catch(()=>{});await wait(400);await shot('mochila2');await p.click('#twBagX');await wait(400);
+await fight();
+console.log('ERROS',JSON.stringify(errs));await b.close()})();
