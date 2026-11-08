@@ -428,3 +428,6 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 ## v183 — Zoro: caixas de acerto consertadas + ordem dos golpes
 - Antes a caixa de acerto seguia a ponta do arco do quadro (ex.: `zca` ficava de 180 a 420 de altura) e errava rival agachado/baixo. Agora todas são fixas do chão até a cabeça (`B(alcance, atrás, topo, abaixo)`): zp1 205, zca 195 (+30 atrás), zp2 220, zcb 200 (+90 atrás, giro), zp3 190, no ar 200–205 pegando até 140–200 abaixo dos pés.
 - Corrente nova (mais rápida no começo): zp1 (início 4) → zca → zp2 → zcb → zp3. Teste `ferramentas/testes/tzoro_hitbox.js` (cada golpe a 70/120/170/220 px, em pé e agachado: todos acertam).
+
+## v184 — preso na parede: o rival dá um contra-golpe e joga para o meio (sem dano)
+- `wallBreak` (no `patch_combo.py`): se quem apanha está a ≤95 px da parede e já levou 8 golpes seguidos (ou ~1,8 s preso), ele dá um soco/chute (pose de `RUSHK` do personagem, 18 quadros, invencível 45) e quem estava batendo é arremessado (`airhit`) em direção ao MEIO do cenário (vx = distância até o meio / 34, mín. 9), SEM perder vida, invencível 30. Texto "SAIU DA PAREDE!". Fora da parede continua o `comboBreak` (24 golpes / 3,3 s). Teste `ferramentas/testes/tparede_sair.js` (Luffy: de x 2186 até ~1220, vida intacta).
