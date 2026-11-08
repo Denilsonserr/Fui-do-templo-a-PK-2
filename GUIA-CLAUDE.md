@@ -730,3 +730,37 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - Código 2 (hash `706xst`): 2 baús lendários. O texto do código fica só com o dono.
 - Ferramenta `.github/workflows/consulta.yml` (rodar pela API `actions/workflows/consulta.yml/dispatches`): lista do Firestore os documentos com `sem == semana` e `ev == ev20261108`. O sandbox não alcança o Firestore, mas o GitHub Actions sim.
 - Teste `ferramentas/testes/tcupom_bau.js`.
+
+## v213 — MODO RANQUEADO + menu principal novo
+- Fontes: `ferramentas/web/ranqueada/` (`rk.js`, `rk.css`, `prep_rk.py` que gera `rk_assets.json` + `/home/claude/rk_build/out/*` → `www/a`). Artes originais em `ferramentas/ranqueada_artes/`. Patch: `ferramentas/web/patch_v213.py` (em cima da v212). A variável das artes é `RQA` (`RKA` já existia no jogo).
+- Menu principal: arte nova (1847×851).
+  - Botões: Batalha, História 🔒, Torre, **Ranqueado (`mRank`)**, Online 🔒, Configuração. A arte já tem os cadeados.
+- Tela `ranked` (`rkOpen/rkView`), todas por cima das artes do dono com áreas clicáveis (`rkB` em pixels da arte):
+  - **Menu do ranqueado:** Modo Boss, Contra Relógio 🔒, Desafio do Tempo 🔒, Gacha; abas Ranking, Recompensas, Conquistas, Personagem (Biblioteca), Minha Posição. No topo, emblema do rank e moedas.
+  - **Modo Boss (Broly):**
+    - Recompensas, emblema do rank brilhando na bandeira, nº de jogadores online.
+    - Online: cada jogo grava `on:'o'+floor(t/120000)` a cada 2 min; conta uids do bucket atual e do anterior.
+    - Chat Global: `gchat` = dia. Escolha do personagem (só os que tem).
+  - **Luta:**
+    - `G.gmode='boss'`, jogador com 4 barras.
+    - Broly: 7 barras (dano ×1.6, recebe ×0.8). Na 1ª morte, `rkPhase2` transforma (vídeo) com 14 barras (dano ×2.2, recebe ×0.65, vel ×1.25); a forma não acaba.
+    - IA no máximo; 300 s.
+    - Equipamentos da mochila também valem aqui.
+  - **Fim da luta (`rkAfter`):**
+    - Vitória: baú (raridade pelo desempenho) com 300–500 🔴, 10–15 💎, ticket às vezes, equipamento às vezes, poção 30%. Drops especiais: lendários 4% (Bandana, Botas Saiyajin, Semente dos Deuses), míticos 1,5% (Adaga Kamish, Gunbai do Madara); piedade a cada 25 vitórias (`rk_bpity`).
+    - Derrota: 30–150 🔴 pelo dano.
+    - Pontos: vitória +30 (+10 se < 150 s), derrota −15 sem cair de rank.
+    - Grava no Firestore `rk:'1'` com rp, dmg, t1, tt.
+  - **Semente dos Deuses** (`tw_senzu`): ao morrer no Boss ou na Torre, volta com a vida cheia (gasta 1).
+  - **Ranks** (`RKR`): Madeira 0, Bronze 100, Prata 250, Ouro 450, Diamante 700, Lendário 1000, Dragão Lendário 1400, Divindade 1900. Cada rank tem título com o emblema brilhando (`TWTIT.rk0..rk7`, `.twTit.rkt`) e recompensa em 💎 (50…1000) para resgatar.
+  - **Invocação (gacha):**
+    - 1 giro = 50 💎 ou 1 ticket; 10 giros = 450 💎. Só a Limitada liberada; Especial e Padrão 🔒.
+    - Vídeo (cortado do vídeo do dono, efeitos roxos, `RQA.inv`) → cartas por raridade.
+    - Chances: lendário 2% (garantido em 30), épico 6%, equipamento 27%, moeda vermelha 20–80 (65%, pouca de propósito para não virar ciclo infinito com a loja).
+    - Especiais: mítico especial 0,6% (Máscara Hollow, Chapéu do Hokage, Armadura Saiyajin); SECRETO 0,3% Lâmina Negra (garantida em 50, `rk_pity2`).
+    - Lendário novo passa o vídeo da transformação do personagem (`RKTV`). Repetido vira 💎.
+  - **Loja:** só Geminhas (pacotes da arte; compra com 🔴). Abas Equipamentos/Tickets/Moeda Vermelha 🔒.
+  - **Biblioteca:** Personagens / Equipamentos / Itens / Coleções. Busca, filtro, páginas, item no pedestal, "USAR NA RANQUEADA" / "USAR TÍTULO".
+  - **Conquistas** (`RKACH`) dão 💎. **Minha Posição** mostra rank, pontos, colocação e recordes.
+- Dados no aparelho (`rk_*`): gem, tic, red, own, sel, rp, pity, pity2, bpity, hist, st, rwc, achc. Começa com 100 💎, 1 ticket e o Goku. A mochila e os equipamentos são os mesmos da torre.
+- Testes: `ferramentas/testes/tranqueado.js` (tudo, Firestore simulado) e `tsenzu.js`.
