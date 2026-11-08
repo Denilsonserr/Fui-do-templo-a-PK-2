@@ -644,3 +644,11 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
   - Sorte nas passivas: 30% de chance de sortear 2 vezes e ficar com a melhor raridade (`twRoll`).
   - Sorte nos baús: 15% no sorteio da raridade do equipamento e da poção (`twEqRoll`/`twPoRoll`).
 - Teste `ferramentas/testes/tadm_alias.js`.
+
+## v205 — buff do título no painel, ADM +20%, MOEDAS e LOJA
+- `ferramentas/web/patch_v205.py`.
+- Painel da torre: linha "👑 ADM +20% DANO · +10% VEL. · 🍀 SORTE" só no aparelho que tem o título. Moedas 🪙 na mesma área.
+- ADM: dano +20% (antes 15).
+- Conferido na luta (`ferramentas/testes/tbuffs_loja.js`, medindo o `applyHit` e a distância andada): passivas + equipamentos + ADM entram certinho (dano dado ×1.38, dano recebido ×0.592, velocidade ×1.32 no exemplo).
+- MOEDAS (`tw_moedas`): cada andar vencido dá 100 + rapidez (<20 s +60, <35 +45, <50 +30, <75 +15) + vida (perdeu <10% +25, <30% +10) + combo 10+ (+15), no máximo 200. Completar a torre: +100. Aparece na tela ANDAR VENCIDO e no fim ("MOEDAS +N").
+- LOJA 🛒 (botão no painel): só poções. Comum 100, rara 200, épica 300, lendária 500, mítica 2000 (`TWSHOP`). Vão para a mochila (precisa de espaço).

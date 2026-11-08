@@ -470,6 +470,9 @@ h2{margin:0;font-family:var(--f-display);font-weight:400;font-size:clamp(26px,8v
 .cm.adm{border-color:#ffd84a;box-shadow:0 0 .8em rgba(255,200,60,.45)}.cm .ch{display:flex;align-items:center;gap:.3em;font-size:.8em;flex-wrap:wrap}.cm .ch b{color:#ffcf4a}.cm .ch small{color:#8a7a80;font-size:.85em;margin-left:.3em}.cm p{margin:.15em 0 0;font:600 .95em var(--f-ui);word-break:break-word;color:#f2e8ee}
 .twChat .cs{display:flex;gap:.5em}.twChat .cs input{flex:1;padding:.5em .8em;border-radius:.5em;border:1px solid #6a2a30;background:#14080c;color:#fff;font:700 1em var(--f-ui)}
 .twRk .nm .twTit{margin-left:.5em}
+#twInfo .ps .tb{width:100%;color:#ffd84a;text-shadow:0 0 .4em rgba(255,200,60,.6)}#twInfo .ps .tb b{color:#ffe680}#twInfo .ps .co b{color:#ffd84a}.coin{color:#ffd84a}
+.twShop .shL{display:flex;gap:.8em;justify-content:center;flex-wrap:wrap;margin:.5em 0}.shI{--c:#ccc;width:10.5em;display:flex;flex-direction:column;align-items:center;gap:.15em;padding:.6em .4em;border:2px solid var(--c);border-radius:.8em;background:radial-gradient(circle at 50% 0%,color-mix(in srgb,var(--c) 35%,transparent),#0b0710 72%);color:#fff;font:700 .95em var(--f-ui);cursor:pointer}
+.shI img{width:5.5em;height:5.5em;object-fit:contain;filter:drop-shadow(0 0 .4em var(--c))}.shI .rr{font:900 .8em var(--f-ui);letter-spacing:.2em;color:var(--c)}.shI .ds{font-size:.68em;color:#cdbfcf}.shI em{font-style:normal;font:900 1.1em var(--f-ui);color:#ffd84a;margin-top:.2em}.shI.off{opacity:.45}
 .twBag .bgw{display:flex;gap:1em;justify-content:center;align-items:flex-start;margin:.4em 0}
 .twBag .bgc{flex:1;max-width:16em;display:flex;flex-direction:column;gap:.4em;max-height:52vh;overflow:auto;padding:.2em}
 .twBag h5{margin:0 0 .2em;font:900 1em var(--f-ui);letter-spacing:.1em;color:#ffcf4a;display:flex;flex-direction:column}.twBag h5 small{font-size:.65em;color:#cdbfcf;letter-spacing:0}
@@ -5650,10 +5653,10 @@ function twBuild(){if(twBuild.ok)return;twBuild.ok=1;const S=$('tower');
     <div id="twInfo"><div class="r1"><span id="twFl">ANDAR 0/7</span><span>⏱ <b id="twTm">00:00</b></span><span>🏆 <b id="twTr">0</b></span></div>
       <div class="hp"><span>VIDA</span><i><s id="twHp"></s></i><b id="twHpT">100%</b></div>
       <div class="ps" id="twPs"></div><div class="rec" id="twRec"></div>
-      <div class="bt"><button id="twRankB">🏆 RANKING</button><button id="twTrofB">🎖️ TROFÉUS</button><button id="twChB">💬 CHAT</button><button id="twEvB">🎉 EVENTO<i id="twEvDot"></i></button><button id="twTitB">👑 TÍTULOS</button><button id="twBagB">🎒 MOCHILA</button><button id="twNameB">✏️ NOME</button></div><div class="nm" id="twNm"></div></div>
+      <div class="bt"><button id="twRankB">🏆 RANKING</button><button id="twTrofB">🎖️ TROFÉUS</button><button id="twChB">💬 CHAT</button><button id="twEvB">🎉 EVENTO<i id="twEvDot"></i></button><button id="twTitB">👑 TÍTULOS</button><button id="twShB">🛒 LOJA</button><button id="twBagB">🎒 MOCHILA</button><button id="twNameB">✏️ NOME</button></div><div class="nm" id="twNm"></div></div>
     <span id="twGoL"></span><button id="twGo" class="twHit" aria-label="Iniciar torre"></button><button id="twBack" class="twHit" aria-label="Voltar"></button>
     <div id="twToast"></div></div><div id="twModal" hidden></div>`;
-  $('twGo').onclick=twGo;$('twBack').onclick=twBackF;$('twRankB').onclick=()=>twRank();$('twTrofB').onclick=twTrofList;$('twChB').onclick=()=>{if(!$('twModal').hidden||TW.busy)return;twSfx('whoosh');twChat()};$('twEvB').onclick=()=>{if(!$('twModal').hidden||TW.busy)return;twSfx('whoosh');twEvent()};$('twTitB').onclick=()=>{if(!$('twModal').hidden||TW.busy)return;twSfx('whoosh');twTitles()};$('twBagB').onclick=()=>{if(!$('twModal').hidden||TW.busy)return;twSfx('whoosh');twBag()};$('twNameB').onclick=()=>{if(!$('twModal').hidden||TW.busy)return;twAskName(()=>{twRender();twToast('NOME: '+twLS.g('tw_nome',''),'#7dff9a')})};
+  $('twGo').onclick=twGo;$('twBack').onclick=twBackF;$('twRankB').onclick=()=>twRank();$('twTrofB').onclick=twTrofList;$('twChB').onclick=()=>{if(!$('twModal').hidden||TW.busy)return;twSfx('whoosh');twChat()};$('twEvB').onclick=()=>{if(!$('twModal').hidden||TW.busy)return;twSfx('whoosh');twEvent()};$('twTitB').onclick=()=>{if(!$('twModal').hidden||TW.busy)return;twSfx('whoosh');twTitles()};$('twShB').onclick=()=>{if(!$('twModal').hidden||TW.busy)return;twSfx('whoosh');twShop()};$('twBagB').onclick=()=>{if(!$('twModal').hidden||TW.busy)return;twSfx('whoosh');twBag()};$('twNameB').onclick=()=>{if(!$('twModal').hidden||TW.busy)return;twAskName(()=>{twRender();twToast('NOME: '+twLS.g('tw_nome',''),'#7dff9a')})};
   for(const k of TWC){const im=new Image();im.src=TWA[k]}}
 function twSlot(i){return document.querySelector('#twSlots .tws[data-i="'+i+'"]')}
 function twRender(){twBuild();
@@ -5667,7 +5670,7 @@ function twRender(){twBuild();
   $('twFl').textContent=(TW.on&&TW.fl===TWN-1?'CHEFE':'ANDAR '+Math.min(TWN,TW.fl+(TW.on?1:0))+'/'+TWN);
   $('twTm').textContent=twFmt(TW.time);$('twTr').textContent=twTrofP();
   TW.hp=TW.hpv/(TW.bars*LAYER);const hp=Math.round(TW.hp*100);$('twHp').style.width=hp+'%';$('twHpT').textContent=TW.bars+' barras';$('twHp').className=hp<30?'lo':hp<60?'md':'';
-  $('twPs').innerHTML=TWPT.map(p=>`<span>${p.i} ${p.n==='VELOCIDADE'?'VEL.':p.n} <b>+${TW.pas[p.k]}%</b></span>`).join('')+(TW.pas.trf?`<span>🔥 TRANSF. <b>+${TW.pas.trf}%</b></span>`:'')+`<span class="eq">${(()=>{const o=twEqOn();return TWEQ.map(E=>{const q=o[E.k];return q?`<i style="color:${twRarOf(q.r).c}" title="${E.n} ${twRarOf(q.r).n}">${E.i}+${q.v}%</i>`:`<i class="no">${E.i}—</i>`}).join('')})()}${twPocOn()?`<i style="color:#7dff9a">🧪+${twPocOn().v}%</i>`:''}</span>`;
+  $('twPs').innerHTML=(twIsAdm()?'<span class="tb">👑 ADM <b>+20% DANO</b> · <b>+10% VEL.</b> · 🍀 <b>SORTE</b></span>':'')+`<span class="co">🪙 <b>${twCoins()}</b></span>`+TWPT.map(p=>`<span>${p.i} ${p.n==='VELOCIDADE'?'VEL.':p.n} <b>+${TW.pas[p.k]}%</b></span>`).join('')+(TW.pas.trf?`<span>🔥 TRANSF. <b>+${TW.pas.trf}%</b></span>`:'')+`<span class="eq">${(()=>{const o=twEqOn();return TWEQ.map(E=>{const q=o[E.k];return q?`<i style="color:${twRarOf(q.r).c}" title="${E.n} ${twRarOf(q.r).n}">${E.i}+${q.v}%</i>`:`<i class="no">${E.i}—</i>`}).join('')})()}${twPocOn()?`<i style="color:#7dff9a">🧪+${twPocOn().v}%</i>`:''}</span>`;
   {const n=twLS.g('tw_nome','');$('twNm').innerHTML=(n?'Jogador: <b>'+twEsc(n)+'</b>':'Jogador: <i>sem nome</i>')+twTitTag(twTitOn())}
   {const st=twEvSt(),D=$('twEvDot');if(D){D.className=st==='ao vivo'?'live':st==='antes'?'soon':''}}
   const R=twLS.g('tw_rec',null);$('twRec').innerHTML=R?`Recorde: <b>${R.andar}/7</b> andares · ${(R.d||0)<TWCUT?'--:--':twFmt(R.tempo)} · 🏆${R.trof}`:'Recorde: nenhum ainda';
@@ -5707,7 +5710,7 @@ async function twQRaw(w){const body={structuredQuery:{from:[{collectionId:'torre
 /* reserva: grava um documento "claim" (andar 0) com o nome e o código do aparelho; os rankings ignoram */
 function twClaimName(n){const I=v=>({integerValue:String(v)});const f={nome:{stringValue:n},nomeL:{stringValue:n.toLowerCase()},andar:I(0),tempo:I(0),trof:I(0),pontos:I(0),char:{stringValue:''},v:I(203),uid:{stringValue:twUid()},tit:{stringValue:twTitOn()},claim:{stringValue:'1'}};
   twFetchT(TWURL+'/torre?key='+TWFB.apiKey,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({fields:f})}).catch(()=>{})}
-function twStart(){TW.opps=twShuf(TWC.filter(x=>x!==TW.pick)).slice(0,TWN);TW.on=true;TW.fl=0;TW.rev=false;TW.hp=1;TW.bars=TWPB;TW.hpv=TWPB*LAYER;TW.pas={vida:0,dano:0,vel:0,trf:0};TW.time=0;TW.tr=[];TW.sent=false;TW.last=null;TW.diff0=G.diff;
+function twStart(){TW.opps=twShuf(TWC.filter(x=>x!==TW.pick)).slice(0,TWN);TW.on=true;TW.fl=0;TW.rev=false;TW.hp=1;TW.bars=TWPB;TW.hpv=TWPB*LAYER;TW.pas={vida:0,dano:0,vel:0,trf:0};TW.time=0;TW.tr=[];TW.coinRun=0;TW.sent=false;TW.last=null;TW.diff0=G.diff;
   twSfx('whoosh');try{nv('vMChallenge',.05,1)}catch(e){}twRender();setTimeout(()=>twReveal(0),350)}
 function twReveal(i){TW.rev=true;twRender();const el=twSlot(i);el.classList.add('anim');twSfx('boom');
   twToast((i===TWN-1?'👑 CHEFE FINAL: ':'ANDAR '+(i+1)+': ')+CH[TW.opps[i]].name+' · '+TWOB[i]+' BARRAS',i===TWN-1?'#ffc531':'#ff5a5a');try{fsTry()}catch(e){}}
@@ -5735,6 +5738,7 @@ function twAfter(w){G.mode='tower';$('controls').hidden=true;$('pauseBtn').hidde
   TW.hpv=Math.max(1,p.hp);TW.hp=TW.hpv/(TW.bars*LAYER);const won=TW.fl;TW.fl++;TW.rev=false;
   if(TW.fl>=TWN){ks.push('tor');if(TW.time<360)ks.push('spd')}
   for(const k of ks)TW.tr.push({k,fl:won});
+  {let c=twCoinWin(secs,lost,F.cmb);if(TW.fl>=TWN)c+=100;twAddCoins(c);TW.coinGain=c;TW.coinRun=(TW.coinRun||0)+c}
   try{nv(TW.fl>=TWN?'vCongratulations':['vEWin','vEWinner','vEVictory'][(Math.random()*3)|0],.2,1)}catch(e){}
   showScreen('tower');twRender();const el=twSlot(won);el.classList.remove('dead');el.classList.add('rev');
   setTimeout(()=>{el.classList.remove('rev');el.classList.add('dead','xan');twSfx('clang');twSfx('boom')},450);
@@ -5816,7 +5820,7 @@ function twPassive(ks,won){const pt=TWPT.slice();pt.push(pt[(Math.random()*3)|0]
   const chest=(i)=>{const c=CH[i],bx=twBx(...CS[i],W,H);if(!c)return `<div class="avC none" style="${bx}"><i>SEM BAÚ</i></div>`;const ri=TWRK.indexOf(c.R.k);
     return `<div class="avC" data-i="${i}" style="${bx};--c:${c.R.c};animation-delay:${.2+i*.18}s"><img class="cf" src="${TWIMG.bf[ri]}" alt=""><img class="ca" src="${TWIMG.ba[ri]}" alt=""><img class="it" src="${twIco(c.t,c.R.k)}" alt=""><b class="lb">${c.t==='poc'?'POÇÃO':c.E.n} +${c.R.v}%</b></div>`};
   twModal(`<div class="twAV" style="background-image:url(${TWIMG.av})">
-    <div class="avN">ANDAR ${won+1} · ⏱ ${twFmt(St.secs)} · 💔 perdeu ${Math.round(St.lost*100)}% da vida · 👊 combo ${St.cmb}</div>
+    <div class="avN">ANDAR ${won+1} · 🪙 +${TW.coinGain||0} · ⏱ ${twFmt(St.secs)} · 💔 perdeu ${Math.round(St.lost*100)}% da vida · 👊 combo ${St.cmb}</div>
     ${[0,1,2].map(chest).join('')}
     <div class="avTr" style="${twBx(1300,212,1565,330,W,H)}">${ks.map((k,i)=>`<span style="animation-delay:${.3+i*.1}s" title="${TWTR[k].n}">${TWTR[k].i}<small>+${TWTR[k].p}</small></span>`).join('')}</div>
     <div class="avP" style="${twBx(1312,333,1553,393,W,H)}">+${P} 🏆</div>
@@ -5846,7 +5850,7 @@ function twEndModal(){const L=TW.last;if(!L)return twModal(null);const {won,quit
   const tl=Object.keys(cnt).map(k=>`<span class="twT"><i>${TWTR[k].i}</i><b>${TWTR[k].n}</b><span>×${cnt[k]}</span></span>`).join('')||'<p class="twH">Nenhum troféu nesta subida.</p>';
   twModal(`<div class="twM ${won?'gold':''}"><h3>${won?'TORRE CONQUISTADA!':quit?'VOCÊ DESISTIU':TW.fl===TWN-1?'O CHEFE VENCEU!':'VOCÊ CAIU NO ANDAR '+(TW.fl+1)}</h3>
     ${won&&ks?`<div class="twTs">${twTrofHTML(ks)}</div>`:''}
-    <div class="twSt"><div><small>PERSONAGEM</small><b class="twCh"><img src="${IMG[rec.char]?IMG[rec.char].src:''}" alt="">${CH[rec.char]?CH[rec.char].name:''}</b></div><div><small>ANDARES</small><b>${andar}/${TWN}</b></div><div><small>TEMPO</small><b>${twFmt(rec.tempo)}</b></div><div><small>TROFÉUS</small><b>🏆 ${rec.trof}</b></div></div>
+    <div class="twSt"><div><small>MOEDAS</small><b class="coin">🪙 +${TW.coinRun||0}</b></div><div><small>PERSONAGEM</small><b class="twCh"><img src="${IMG[rec.char]?IMG[rec.char].src:''}" alt="">${CH[rec.char]?CH[rec.char].name:''}</b></div><div><small>ANDARES</small><b>${andar}/${TWN}</b></div><div><small>TEMPO</small><b>${twFmt(rec.tempo)}</b></div><div><small>TROFÉUS</small><b>🏆 ${rec.trof}</b></div></div>
     ${best?'<div class="twNew">⭐ NOVO RECORDE! ⭐</div>':''}
     <div class="twTs sm">${tl}</div>
     <div class="twSend">${andar>0?`<input id="twName" maxlength="16" placeholder="Seu nome no ranking" value="${twEsc(name)}" readonly><button class="btn main" id="twSendB">ENVIAR</button><span id="twSendS"></span>`:'<span class="twH">Vença pelo menos 1 andar para entrar no ranking.</span>'}</div>
@@ -5906,7 +5910,7 @@ const twHash=s=>{let h=0x811c9dc5;for(const c of s){h^=c.charCodeAt(0);h=Math.im
 /* nome proibido: qualquer forma de "ADM" (maiúscula, espaço, ponto, acento, 4DM, @dm...) */
 const twBadName=n=>{const t=String(n).normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase().replace(/[4@]/g,'a').replace(/[0]/g,'o').replace(/[1!|]/g,'i').replace(/3/g,'e').replace(/[^a-z]/g,'');return t.includes('adm')};
 const twIsAdm=()=>twTits().includes('adm');const TWALIAS={'denilson_dw adm':'Denilson ADM'};const twAl=n=>TWALIAS[String(n).toLowerCase().trim()]||n;
-function twAdmBuff(){if(!twIsAdm()||!G.p)return;const p=G.p[0];if(!p||p.cpu)return;p.tdm=(p.tdm||1)*1.15;p.tsp=(p.tsp||1)*1.1}
+function twAdmBuff(){if(!twIsAdm()||!G.p)return;const p=G.p[0];if(!p||p.cpu)return;p.tdm=(p.tdm||1)*1.2;p.tsp=(p.tsp||1)*1.1}
 const twTits=()=>twLS.g('tw_tit',[]),twTitOn=()=>{const t=twLS.g('tw_titOn','');return twTits().includes(t)?t:''};
 function twGiveTit(k){const L=twTits();if(L.includes(k))return false;L.push(k);twLS.s('tw_tit',L);if(!twLS.g('tw_titOn',''))twLS.s('tw_titOn',k);setTimeout(twTitSync,1500);setTimeout(()=>twToast('👑 TÍTULO NOVO: '+TWTIT[k].n,TWTIT[k].c),600);return true}
 const twTitTag=(k,nm)=>k==='adm'&&nm!=null&&String(nm).toLowerCase()!==TWADMN.toLowerCase()?'':k==='adm'?'<em class="twTit adm"><i>👑</i><b>ADM</b></em>':k&&TWTIT[k]?`<em class="twTit" style="--c:${TWTIT[k].c}">${TWTIT[k].i} ${TWTIT[k].n}</em>`:'';
@@ -5986,6 +5990,18 @@ function twChat(){const n=twLS.g('tw_nome','');if(!n){twAskName(()=>twChat());re
     const IV=v=>({integerValue:String(v)});const f={nome:{stringValue:nome},andar:IV(0),tempo:IV(0),uid:{stringValue:twUid()},tit:{stringValue:tit},chat:{stringValue:twDay(Date.now())},msg:{stringValue:t},v:IV(203)};
     twFetchT(TWURL+'/torre?key='+TWFB.apiKey,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({fields:f})}).then(r=>{if(!r.ok)throw 0}).catch(()=>{E.className='twH err';E.textContent='Não foi enviada (sem internet?).';L=L.filter(m=>!(m.pend&&m.msg===t));draw()})};
   $('twChS').onclick=send;I.onkeydown=e=>{if(e.key==='Enter')send()};$('twChX').onclick=()=>{clearInterval(twChat.iv);twModal(null)};setTimeout(()=>{try{I.focus()}catch(e){}},100)}
+
+/* ---------- v205: moedas e loja ---------- */
+const twCoins=()=>twLS.g('tw_moedas',0)|0,twAddCoins=n=>{twLS.s('tw_moedas',Math.max(0,twCoins()+n))};
+function twCoinWin(secs,lost,cmb){let c=100+(secs<20?60:secs<35?45:secs<50?30:secs<75?15:0)+(lost<.1?25:lost<.3?10:0)+(cmb>=10?15:0);return Math.min(200,c)}
+const TWSHOP=[100,200,300,500,2000];
+function twShop(){const c=twCoins(),cheia=twBagItems().length>=TWBAG;
+  twModal(`<div class="twM twShop"><h3>🛒 LOJA</h3><p class="twH">Você tem <b class="coin">🪙 ${c}</b> moedas. Ganhe moedas vencendo andares da torre (100 a 200 por luta, mais rápido = mais moedas; +100 ao completar a torre).</p>
+    <div class="shL">${TWPOR.map((R,i)=>`<button class="shI ${c<TWSHOP[i]||cheia?'off':''}" data-i="${i}" style="--c:${R.c}"><span class="rr">${R.n}</span><img src="${TWIMG.poc[i]}" alt=""><b>POÇÃO +${R.v}%</b><span class="ds">Transformação · uso único</span><em>🪙 ${TWSHOP[i]}</em></button>`).join('')}</div>
+    <span class="twH" id="twShE">${cheia?'Mochila cheia! Libere espaço para comprar.':''}</span><div class="row"><button class="btn" id="twShX">FECHAR</button></div></div>`);
+  $('twShX').onclick=()=>{twModal(null);twRender()};
+  document.querySelectorAll('#twModal .shI').forEach(b=>b.onclick=()=>{const i=+b.dataset.i,E=$('twShE');if(twBagItems().length>=TWBAG){E.className='twH err';E.textContent='Mochila cheia! Libere espaço para comprar.';return}
+    if(twCoins()<TWSHOP[i]){E.className='twH err';E.textContent='Moedas insuficientes.';twSfx('clang');return}twAddCoins(-TWSHOP[i]);twAddPoc(TWPOR[i]);twSfx('powerUp');twToast('🧪 POÇÃO '+TWPOR[i].n+' comprada! Está na mochila','#7dff9a');twShop()})}
 function twTrofList(){const tc=twLS.g('tw_tc',{}),run={};for(const t of TW.tr)run[t.k]=(run[t.k]||0)+1;
   twModal(`<div class="twM"><h3>🎖️ TROFÉUS</h3><div class="twTL">${Object.keys(TWTR).map(k=>{const T=TWTR[k];return `<div class="${tc[k]||run[k]?'got':''}"><i>${T.i}</i><b>${T.n}</b><span>${T.d}</span><em>+${T.p} 🏆</em><small>${run[k]?'nesta subida: '+run[k]+' · ':''}total: ${(tc[k]||0)}</small></div>`}).join('')}</div>
     <p class="twH">Cada troféu soma pontos 🏆 no ranking. Quem sobe mais andares fica na frente; empate = mais troféus, depois menos tempo.</p><div class="row"><button class="btn" id="twTx">FECHAR</button></div></div>`);
