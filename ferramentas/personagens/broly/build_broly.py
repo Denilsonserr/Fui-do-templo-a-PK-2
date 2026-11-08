@@ -3,7 +3,7 @@
 import json,numpy as np,os,hashlib,sys,time
 sys.path.insert(0,'/home/claude/fui-do-templo-a-pk-2/ferramentas/ia');import esr
 from PIL import Image
-RES=2.4;OUT='out';os.makedirs(OUT,exist_ok=True);NF={'b1':8,'b2':16};T0=time.time()
+RES=2.4;OUT='out';os.makedirs(OUT,exist_ok=True);NF={'b1':8,'b2':16,'n1':8,'n2':16};T0=time.time()
 def eff(a):g,r,b=a[...,1],a[...,0],a[...,2];return (g>r+25)&(g>b+15)
 def body(a):return (a[...,3]>140)&~eff(a)
 S={}
@@ -41,6 +41,6 @@ def frame(t,i):
     F=dict(base,src=sv(o));N=dict(base,src=sv(hair_black(o)))
     print(t,i,round(time.time()-T0),flush=True);return F,N
 R={'f':{},'n':{}}
-for an,t in [('bpn','b1'),('bcm','b2')]:
-    L=[frame(t,i) for i in range(NF[t])];R['f'][an]=[x[0] for x in L];R['n'][an]=[x[1] for x in L]
+for an,t,tn in [('bpn','b1','n1'),('bcm','b2','n2')]:
+    R['f'][an]=[frame(t,i)[0] for i in range(NF[t])];R['n'][an]=[frame(tn,i)[0] for i in range(NF[tn])]
 json.dump(R,open('br_new.json','w'),separators=(',',':'));print('DONE',S)

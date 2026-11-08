@@ -471,3 +471,6 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - Soco no chão (sobrescreve os `bp*` da v190, mesma ideia): bp1 jab (b1 4→5) → bp2 soco reto pesado de costas (1→2) → bp3 (0→3) → bp4 jab → bp5 reto → bp6 MARTELO por cima (6→7) que ATORDOA ~1 s. Chave de quadro por `move.xv` (`xvKey`). Nada sobe no ar.
 - Botão de COMBO: o Meteoro Verde (`brSuper` tipo 2) saiu; agora é o COMBO DO LENDÁRIO (`brc`, folha b2): segura o rival, socos com energia verde, gancho, giro de socos e o soco final explosivo que arremessa para longe (baixo, sem voar). Grátis com a espera de 3 s (`CMBS.brc`). Sem transformar: 60% do dano ("Combo do Broly"). Ultimate (Fúria do Planeta) continua.
 - Testes `ferramentas/testes/tbroly_socos.js` e `tbroly_combo.js`.
+
+## v192 — Broly normal com a arte do dono
+- O dono mandou as folhas do Broly NORMAL (n1 = 8 socos, n2 = 16 do combo; fundo xadrez claro → `alpha_n1.py`/`alpha_n2.py`, só fundo ligado à borda, para não apagar o branco das botas). Agora `SPRH.br.bpn/bcm` = arte normal do dono (sai o cabelo pintado de preto) e `SPRH.brf` = transformado (b1/b2). `build_broly.py` monta as duas; mesmos golpes e combo da v191. Arquivos antigos do cabelo pintado apagados.
