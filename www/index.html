@@ -5518,7 +5518,7 @@ function setupFighters(){const other=G.opp||(G.pick==='goku'?'vegeta':'goku');
   const a=G.teams?G.teams[0][G.ti[0]]:G.pick,b=G.teams?G.teams[1][G.ti[1]]:other;
   G.p=[mkFighter(a,WW/2-210,1,false),mkFighter(b,WW/2+210,-1,true)];
   if(G.keep){const k=G.keep,f=G.p[k.side];f.hp=f.hpLag=k.hp;f.ki=k.ki;f.sb=k.sb;G.keep=null}
-  if(G.gmode==='treino'){G.p[0].sb=6;G.p[0].ki=100}twApply();
+  if(G.gmode==='treino'){G.p[0].sb=6;G.p[0].ki=100}twApply();twAdmBuff();
   const id=G.p[0].def.id;$('bSr').hidden=!['vegeta','gogeta','denilson','arkarus','aylla','white','xiao','magmus','zedry','zaykon','qingqing','goku','aokiji','zoro','broly','madara','gojo','luffy','rengoku','naruto','garou'].includes(id);camReset(1.25)}
 function startRound(){
   const sk=Object.keys(STG).filter(k=>!STG[k].hid),rk=()=>sk[(Math.random()*sk.length)|0];const cur=G.nextStg||(G.ssel==='auto'?rk():G.ssel);G.nextStg=null;stageLoad(cur);setStage(cur);if(STAGE.dn&&(G.round===1||DN.key!==STAGE.key)){dnSet(STAGE.key);DN.key=STAGE.key;DN.ph=CUP.ph0!=null?CUP.ph0:.955;DN.rn=null;DN.lv=0;DN.from=0;DN.k=1;DN.pts=0;DN.pend=0;DN.smk=[];DN.deb=[];DN.ult=0;DN.tr=0;DN.ults=0}
@@ -5670,7 +5670,7 @@ function twRender(){twBuild();
   $('twGo').classList.toggle('off',TW.busy)}
 function twOpen(){if(!G.pick||G.pick==='random'||!CH[G.pick])G.pick=ALLC[(Math.random()*ALLC.length)|0];
   TW.pick=G.pick;TW.on=false;TW.opps=[];TW.fl=0;TW.rev=false;TW.hp=1;TW.bars=TWPB;TW.hpv=TWPB*LAYER;TW.pas={vida:0,dano:0,vel:0,trf:0};TW.time=0;TW.tr=[];TW.busy=false;TW.last=null;
-  twBuild();twRender();twModal(null);showScreen('tower');layoutTw();setTimeout(twClaims,800);if(twEvSt()==='ao vivo'&&!twOpen.evShown){twOpen.evShown=1;setTimeout(()=>twToast('🎉 EVENTO AO VIVO! Suas subidas valem para o ranking do evento','#ffcf4a'),900)}}
+  if(!twIsAdm()&&twBadName(twLS.g('tw_nome','')))twLS.s('tw_nome','');twBuild();twRender();twModal(null);showScreen('tower');layoutTw();setTimeout(twClaims,800);if(twEvSt()==='ao vivo'&&!twOpen.evShown){twOpen.evShown=1;setTimeout(()=>twToast('🎉 EVENTO AO VIVO! Suas subidas valem para o ranking do evento','#ffcf4a'),900)}}
 function layoutTw(){}
 function twToast(t,c){const T=$('twToast');if(!T)return;T.textContent=t;T.style.color=c||'#ffd23f';T.classList.remove('on');void T.offsetWidth;T.classList.add('on')}
 /* ---------- fluxo ---------- */
@@ -5683,7 +5683,8 @@ function twAskName(cb){twModal(`<div class="twM sm"><h3>SEU NOME NA TORRE</h3><p
   const I=$('twName0');setTimeout(()=>{try{I.focus()}catch(e){}},80);
   const E=$('twNameE');let busy=0;
   const ok=async()=>{if(busy)return;const n=I.value.replace(/[<>]/g,'').trim().slice(0,16);
-    if(twHash(n.toUpperCase())===TWADM){twGiveTit('adm');twLS.s('tw_titOn','adm');I.value=twLS.g('tw_nome','');E.className='twH ok';E.textContent='👑 Título ADM liberado neste aparelho!';twSfx('powerUp');return}
+    if(twHash(n.toUpperCase())===TWADM){twGiveTit('adm');twLS.s('tw_titOn','adm');twLS.s('tw_nome',TWADMN);twClaimName(TWADMN);I.value=TWADMN;E.className='twH ok';E.textContent='👑 Bem-vindo, '+TWADMN+'! Título ADM liberado.';twSfx('powerUp');setTimeout(()=>{twModal(null);twRender();cb&&cb()},1200);return}
+    if(twBadName(n)){E.className='twH err';E.textContent='Nome proibido: "ADM" não pode ser usado no nome.';I.focus();twSfx('clang');return}
     if(n.length<2){E.textContent='Digite um nome com pelo menos 2 letras';I.focus();return}
     if(n.toLowerCase()===String(twLS.g('tw_nome','')).toLowerCase()){twLS.s('tw_nome',n);twModal(null);cb&&cb();return}
     busy=1;E.className='twH';E.textContent='Verificando se o nome está livre...';
@@ -5893,10 +5894,14 @@ const twUid=()=>{let u=twLS.g('tw_uid','');if(!u){u=(Date.now().toString(36)+Mat
 const BRT=3*3600e3,twWk=t=>{const d=new Date(t-BRT),dw=(d.getUTCDay()+6)%7;return Date.UTC(d.getUTCFullYear(),d.getUTCMonth(),d.getUTCDate()-dw)+BRT},twWkKey=t=>{const d=new Date(twWk(t)-BRT);return 'w'+d.getUTCFullYear()+String(d.getUTCMonth()+1).padStart(2,'0')+String(d.getUTCDate()).padStart(2,'0')};
 const TWTIT={ini:{n:'INICIANTE',i:'🔰',c:'#9fe0a0',d:'Vencer 1 andar da torre'},gue:{n:'GUERREIRO',i:'⚔️',c:'#4fb0ff',d:'Vencer 4 andares numa subida'},con:{n:'CONQUISTADOR',i:'🏯',c:'#ffc531',d:'Vencer os 7 andares da torre'},
   sem:{n:'CAMPEÃO DA SEMANA',i:'📅',c:'#ff7a2a',d:'1º lugar no ranking SEMANAL (reseta toda segunda)'},tor:{n:'CAMPEÃO DO TORNEIO',i:'🏆',c:'#ff2e63',d:'1º lugar num EVENTO da torre'},adm:{n:'ADM',i:'👑',c:'#ffd84a',d:'Administrador do jogo',hid:1}};
-const twHash=s=>{let h=0x811c9dc5;for(const c of s){h^=c.charCodeAt(0);h=Math.imul(h,0x01000193)>>>0}return h.toString(36)};const TWADM='r8iakt';
+const twHash=s=>{let h=0x811c9dc5;for(const c of s){h^=c.charCodeAt(0);h=Math.imul(h,0x01000193)>>>0}return h.toString(36)};const TWADM='r8iakt',TWADMN='Denilson ADM';
+/* nome proibido: qualquer forma de "ADM" (maiúscula, espaço, ponto, acento, 4DM, @dm...) */
+const twBadName=n=>{const t=String(n).normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase().replace(/[4@]/g,'a').replace(/[0]/g,'o').replace(/[1!|]/g,'i').replace(/3/g,'e').replace(/[^a-z]/g,'');return t.includes('adm')};
+const twIsAdm=()=>twTits().includes('adm');
+function twAdmBuff(){if(!twIsAdm()||!G.p)return;const p=G.p[0];if(!p||p.cpu)return;p.tdm=(p.tdm||1)*1.1;p.tsp=(p.tsp||1)*1.1}
 const twTits=()=>twLS.g('tw_tit',[]),twTitOn=()=>{const t=twLS.g('tw_titOn','');return twTits().includes(t)?t:''};
 function twGiveTit(k){const L=twTits();if(L.includes(k))return false;L.push(k);twLS.s('tw_tit',L);if(!twLS.g('tw_titOn',''))twLS.s('tw_titOn',k);setTimeout(()=>twToast('👑 TÍTULO NOVO: '+TWTIT[k].n,TWTIT[k].c),600);return true}
-const twTitTag=k=>k==='adm'?'<em class="twTit adm"><i>👑</i><b>ADM</b></em>':k&&TWTIT[k]?`<em class="twTit" style="--c:${TWTIT[k].c}">${TWTIT[k].i} ${TWTIT[k].n}</em>`:'';
+const twTitTag=(k,nm)=>k==='adm'&&nm!=null&&String(nm).toLowerCase()!==TWADMN.toLowerCase()?'':k==='adm'?'<em class="twTit adm"><i>👑</i><b>ADM</b></em>':k&&TWTIT[k]?`<em class="twTit" style="--c:${TWTIT[k].c}">${TWTIT[k].i} ${TWTIT[k].n}</em>`:'';
 /* EVENTO: horário de Brasília. Vale o horário do servidor (createTime) para entrar no ranking. */
 const TWEV={id:'ev20261108',nome:'1º TORNEIO DA TORRE',ini:Date.parse('2026-11-08T15:00:00-03:00'),fim:Date.parse('2026-11-08T15:45:00-03:00'),
   prem:[{pos:1,it:{t:'esp',r:'mit',v:11,vel:5,nm:'LÂMINA SOMBRIA',img:'a/389676e4dd6ec9.webp'},tit:'tor'},{pos:2,it:{t:'esp',r:'lend',v:6,vel:2,nm:'LÂMINA DOURADA',img:'a/12a37efd1a2d54.webp'}}]};
@@ -5912,7 +5917,7 @@ function twBestU(L){const S=L.slice().sort((a,b)=>b.andar-a.andar||b.trof-a.trof
 async function twWeekL(off){const t=Date.now()-(off||0)*7*864e5,a=twWk(t),b=a+7*864e5;return twBestU((await twQ(['sem',twWkKey(t)])).filter(e=>e.ct>=a&&e.ct<b))}
 async function twEvL(){return twBestU((await twQ(['ev',TWEV.id])).filter(e=>e.ct>=TWEV.ini&&e.ct<=TWEV.fim+60e3))}
 function twRowsU(L,tab){const me=twUid();if(!L.length)return `<p class="twH">${tab==='e'?'Ninguém pontuou no evento ainda.':'Ninguém no ranking desta semana ainda. Seja o primeiro!'}</p>`;
-  return '<div class="twRk '+tab+'">'+L.map((e,i)=>{const im=CH[e.char]&&IMG[e.char]?IMG[e.char].src:'';return `<div class="rw${e.uid===me?' me':''}${i<3?' t'+(i+1):''}"><span class="ps">${i<3?['🥇','🥈','🥉'][i]:i+1}</span>${im?`<img src="${im}" alt="">`:'<i></i>'}<span class="nm">${twEsc(e.nome)}${twTitTag(e.tit)}<small>${CH[e.char]?CH[e.char].name:''}</small></span><span class="an">${e.andar>=TWN?'👑 7/7':'🏯 '+e.andar+'/7'}</span><span class="tr">🏆 ${e.trof}</span><span class="tm">⏱ ${twFmt(e.tempo)}</span></div>`}).join('')+'</div>'}
+  return '<div class="twRk '+tab+'">'+L.map((e,i)=>{const im=CH[e.char]&&IMG[e.char]?IMG[e.char].src:'';return `<div class="rw${e.uid===me?' me':''}${i<3?' t'+(i+1):''}"><span class="ps">${i<3?['🥇','🥈','🥉'][i]:i+1}</span>${im?`<img src="${im}" alt="">`:'<i></i>'}<span class="nm">${twEsc(e.nome)}${twTitTag(e.tit,e.nome)}<small>${CH[e.char]?CH[e.char].name:''}</small></span><span class="an">${e.andar>=TWN?'👑 7/7':'🏯 '+e.andar+'/7'}</span><span class="tr">🏆 ${e.trof}</span><span class="tm">⏱ ${twFmt(e.tempo)}</span></div>`}).join('')+'</div>'}
 /* prêmios: confere quem ganhou (semana passada / evento encerrado) e entrega na mochila deste aparelho */
 async function twClaims(){if(twClaims.busy)return;twClaims.busy=1;const me=twUid();
   try{const wk=twWkKey(Date.now()-7*864e5),dn=twLS.g('tw_wkc',{});if(!dn[wk]){const L=await twWeekL(1);dn[wk]=1;twLS.s('tw_wkc',dn);if(L[0]&&L[0].uid===me)twGiveTit('sem')}}catch(e){}

@@ -10,8 +10,9 @@ await p.goto('file:///home/claude/fui-do-templo-a-pk-2/www/index.html');await p.
 await p.click('#mTorre');await p.waitForTimeout(500);await p.click('.tile[data-c="garou"]');await p.click('#goStage');await p.waitForTimeout(1200);
 const tryN=async n=>{await p.fill('#twName0',n);await p.click('#twNmOk');await p.waitForTimeout(700);return await p.evaluate(()=>(document.getElementById('twNameE')||{}).textContent||'(fechou) nome='+localStorage.tw_nome)};
 await p.click('#twNameB');await p.waitForTimeout(300);
-console.log('zé ->',await tryN('zé'));console.log('Velho ->',await tryN('Velho'));console.log('adm# ->',await tryN('adm#furia2026'));await p.screenshot({path:'/tmp/nm_adm.png'});
-console.log('Denilson ->',await tryN('Denilson'));console.log('SENT',JSON.stringify(SENT));
+for(const n of ['Denilson ADM','a.d.m','x4dmx','Ádm','@DM boss'])console.log(n,'->',await tryN(n));console.log('zé ->',await tryN('zé'));console.log('Velho ->',await tryN('Velho'));console.log('adm# ->',await tryN('adm#furia2026'));await p.screenshot({path:'/tmp/nm_adm.png'});
+console.log('NOME AGORA',await p.evaluate(()=>localStorage.tw_nome));console.log('SENT',JSON.stringify(SENT));
 await p.click('#twTitB');await p.waitForTimeout(800);await p.screenshot({path:'/tmp/tit_adm.png'});
 await p.evaluate(()=>{const M=document.getElementById('twModal');M.hidden=true;M.innerHTML=''});await p.waitForTimeout(300);await p.screenshot({path:'/tmp/painel_adm.png'});
+await p.click('#twGo');await p.waitForTimeout(1600);await p.click('#twGo');await p.waitForFunction(()=>__dbg.G.mode==='fight'&&__dbg.G.phase==='fight',null,{timeout:120000});console.log('BUFF',JSON.stringify(await p.evaluate(()=>({tdm:__dbg.G.p[0].tdm,tsp:__dbg.G.p[0].tsp}))));
 console.log('ERROS',JSON.stringify(errs));await b.close()})();

@@ -608,3 +608,15 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
   - Liberado digitando o código secreto do dono no campo de NOME (hash FNV `TWADM`). O código fica só com o dono.
   - Vale por aparelho: em outro aparelho, digitar o código de novo.
 - Teste `ferramentas/testes/tnome_adm.js`.
+
+## v202 — nome "ADM" proibido + jogador Denilson ADM
+- `ferramentas/web/patch_v202.py`.
+- `twBadName`: nenhum nome pode ter "adm" de nenhum jeito. Antes de conferir, tira acento, maiúsculas, espaços, pontos e símbolos e troca 4/@→a, 0→o, 1/!/|→i, 3→e.
+- Quem já tinha nome com ADM (sem o título) perde o nome ao abrir a torre e escolhe outro.
+- O código ADM do dono (digitado no ✏️ NOME) agora:
+  - define o nome **Denilson ADM** (`TWADMN`) e reserva no Firestore;
+  - dá o título ADM e já deixa em uso.
+  - É o único jeito de ter ADM no nome.
+- Nos rankings a etiqueta ADM só aparece se o nome for "Denilson ADM" (contra quem tentar mandar o título pelo REST).
+- Bônus escondido do título ADM: +10% ataque e +10% velocidade (`twAdmBuff`, depois do `twApply`) em TODAS as lutas do jogador 1 do aparelho que tem o título.
+- Teste `ferramentas/testes/tnome_adm.js`.
