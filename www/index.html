@@ -956,7 +956,7 @@ function mkFighter(id,x,facing,cpu){
 const bufd=(f,k)=>G.frame-f.buf[k]<=10+G.hsAcc, use=(f,k)=>{f.buf[k]=-99};
 function face(f,o){if(Math.abs(o.x-f.x)>4)f.facing=o.x>f.x?1:-1}
 function trySD(f,o){if(!o||o.ko||!(f.sdOK>G.frame)||o.grounded||o.state!=='airhit'||!bufd(f,'punch'))return false;use(f,'punch');f.sdOK=0;
-  if(noFly(f)||(isLf(f)&&!f.form)){f.state='jump';f.st=0;f.move=null;f.flying=false;f.grounded=false;f.y-=2;f.vy=-16;f.vx=clamp((o.x-f.x)/20,-15,15);f.inv=6;SFX.zip();dust(f.x,FLOOR,8);txt(f.x,f.y-280,'SALTO!','#ffcf7a');return true}
+  if(!f.flying||noFly(f)||(isLf(f)&&!f.form)){f.state='jump';f.st=0;f.move=null;f.flying=false;f.grounded=false;f.y-=2;f.vy=-16;f.vx=clamp((o.x-f.x)/20,-15,15);f.inv=6;SFX.zip();dust(f.x,FLOOR,8);txt(f.x,f.y-280,'SALTO!','#ffcf7a');return true}
   fzTag(f,'Perseguição!');fzRing(f);f.state='sdash';f.st=0;f.move=null;f.flying=true;f.grounded=false;f.y-=2;f.inv=6;SFX.zip();ring(f.x,f.y-120,E(f),90,12,4);txt(f.x,f.y-280,'SUPER DASH!','#bfe8ff');return true}
 function acPick(f,def){if(f.acNext&&G.frame-f.acEnd<=30){const n=f.acNext;f.acNext=null;return n}return def}
 function neutral(f){f.state=f.grounded?'idle':(f.flying?'fly':'jump');f.st=0;f.move=null}
@@ -1044,7 +1044,7 @@ function airControl(f,o){const I=f.inp,fw=f.facing,hf=fw>0?I.right:I.left,hb=fw>
     if(!f.flying&&bufd(f,'kick')){use(f,'kick');startMove(f,'airkick');return true}}
   return tryCommon(f,o,hf,hb,true)}
 const noFly=f=>isRg(f)||isNr(f)||isZr(f)||isAo(f);
-function startFly(f){if(noFly(f)){if(f.state!=='jump'&&!f.grounded){f.state='jump';f.st=0;f.flying=false}return}if(isLf(f)&&!f.form){if(!f.cpu)say(f,'SÓ VOA NO GEAR 4');return}f.flying=true;f.state='fly';f.st=0;f.vy*=.3;f.upT=0;SFX.zip();ring(f.x,f.y-120,E(f),90,16,4);for(let i=0;i<10;i++)glow(f.x+rand(-30,30),f.y-rand(0,40),E(f),rand(6,12),20,rand(-1,1),rand(1,3))}
+function startFly(f){if(noFly(f)||f.cpu){if(f.state!=='jump'&&!f.grounded){f.state='jump';f.st=0;f.flying=false}return}if(isLf(f)&&!f.form){if(!f.cpu)say(f,'SÓ VOA NO GEAR 4');return}f.flying=true;f.state='fly';f.st=0;f.vy*=.3;f.upT=0;SFX.zip();ring(f.x,f.y-120,E(f),90,16,4);for(let i=0;i<10;i++)glow(f.x+rand(-30,30),f.y-rand(0,40),E(f),rand(6,12),20,rand(-1,1),rand(1,3))}
 function flyControl(f,o,ctl){
   face(f,o);const I=f.inp;
   if(!ctl){f.vx*=.85;f.vy*=.85;return}
@@ -1292,7 +1292,7 @@ function updFighter(f,o){cmbCD(f);
       break;
     case 'jump':
       if(ctl){if(airControl(f,o))break;
-        if(I.up){f.upT++;if(f.upT>=11)startFly(f)}else f.upT=0}
+        f.upT=0}
       break;
     case 'fly':flyControl(f,o,ctl);break;
     case 'attack':updAttack(f,o);break;
@@ -1337,7 +1337,7 @@ function updFighter(f,o){cmbCD(f);
     case 'down':f.vx*=.8;if(f.st>42+(f.downX||0)&&!f.ko){f.downX=0;f.state='getup';f.st=0;f.inv=isPro(f)?30:26}break;
     case 'getup':f.hypQ=0;if(f.st>=(isPro(f)?28:18)){neutral(f);f.inv=10}break;
     case 'tele':
-      if(f.st===8){const side=o.x>f.x?1:-1;f.x=clamp(o.x+side*90,44,WW-44);if(o.flying&&!noFly(f)&&!(isLf(f)&&!f.form)){f.flying=true;f.grounded=false;f.y=o.y;f.vy=0}f.facing=o.x>f.x?1:-1;ghostBurst(f);SFX.zip()}
+      if(f.st===8){const side=o.x>f.x?1:-1;f.x=clamp(o.x+side*90,44,WW-44);if(o.flying&&f.flying&&!noFly(f)&&!(isLf(f)&&!f.form)){f.flying=true;f.grounded=false;f.y=o.y;f.vy=0}f.facing=o.x>f.x?1:-1;ghostBurst(f);SFX.zip()}
       if(f.st>=16)neutral(f);break;
     case 'vdash':case 'vbdash':case 'vrun':case 'vstop':case 'vland':case 'vctr':vgUpd(f,o,ctl);break;
     case 'super':updSuper(f,o);break;

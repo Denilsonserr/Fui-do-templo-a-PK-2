@@ -453,3 +453,11 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - `atkAssist` (`ferramentas/web/patch_v188.py`, depois do `patch_v187`): ao começar um golpe de SOCO/CHUTE no chão, se o rival está na frente, na mesma altura, e até 120 px além do alcance (`hb`) do golpe, o lutador desliza para frente durante o início/ativo do golpe (10–18 px por quadro, no máx. a distância que falta, para ao encostar ou acertar). Sem animação nova, sem acerto automático; não vale no ar, em golpes que já correm (`zDash`) nem com o rival caído. CPU também usa.
 - Teste `ferramentas/testes/talcance.js <personagem>` (soco e chute a 140/180/220/260/300 px). Antes: Vegeta/Broly/Goku/Aokiji/Naruto acertavam soco só até ~140–180 e chute só até ~180. Agora: soco até ~220, chute até ~260–300.
 - Ordem para remontar: v170 → patch_torre → patch_combo → patch_v178 → zoro/patch_zr → patch_v182 → cenarios/patch_vale → patch_v187 → patch_v188.
+
+## v189 — ninguém voa sozinho
+- Pedido do dono: personagem só voa se o JOGADOR apertar o botão de voar (e o personagem puder voar). `patch_v189.py` (depois do `patch_v188`):
+  - Super Dash/Perseguição depois de lançar (soco com o rival no ar): no chão vira SALTO (pulo que desce) para TODOS; só persegue voando quem já estava voando.
+  - Segurar para cima no ar não faz mais voar (`upT` desligado).
+  - Teletransporte não deixa voando quem estava no chão.
+  - CPU nunca voa (`startFly` com `f.cpu` vira pulo).
+- Teste `ferramentas/testes/tsemvoo.js` (Broly CPU 25 s: 0 quadros voando, no máximo 15 quadros no ar; botão de voar do jogador continua funcionando).
