@@ -892,3 +892,14 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - Revelar tudo agora é em sequência (não sobrepõe animações) e a carta não revela duas vezes.
 - Taxas, biblioteca e histórico mostram "MÍTICO". Quem já tinha esses personagens continua com eles.
 - Teste `ferramentas/testes/tmitico.js` (força o sorteio mítico com `Math.random` só dentro de `rkRoll`).
+
+## v224 — mítico garantido em 110, sem repetido, XP turbinado e recordes no Boss
+- Mítico (`rk_pity3`): garantido em 110 giros; só sorteia míticos que o jogador NÃO tem (`RKMTMP` evita 2 iguais no mesmo giro de 10); com os 3, o mítico para de aparecer e o contador some da tela.
+- XP de vitória +50%: `RKXW=[150,180,210,240,270,300,340,390]` (derrota igual `RKXL`).
+- Bônus (`RKXB`), mostrados em etiquetas no resultado (`.rkXb`):
+  - Combo: +2 XP por golpe do maior combo (máx. +60).
+  - SEU RECORDE de tempo no nível (ou 1ª vitória no nível): +150 (`st.rec[nível]`).
+  - RECORDE DO SERVIDOR (vitória mais rápida no nível entre todos): +600 + aviso. `RKSRV` vem de `rkSrvLoad()` (docs `rk`; `lv` agora é enviado no `rkSend`; docs antigos usam o rank do `rp`). Sem internet = sem bônus de servidor.
+  - Derrota: o dano causado devolve até 80% do XP perdido (`RKXL*0.8*fração`).
+- Tela rb mostra recorde do servidor e o seu no nível.
+- Testes `trecorde.js`, `tmitico2.js` (no `trb.js` o exemplo antigo 5500→5660 virou 5892 por causa do buff + 1ª vitória).

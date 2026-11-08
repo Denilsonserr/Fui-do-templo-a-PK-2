@@ -125,7 +125,7 @@
 .rbCell i{font-style:normal;font:900 .9em var(--f-ui);padding:.1em .4em;border-radius:.3em;background:rgba(0,0,0,.7)}.rbCell i.ok{color:#7dff9a}.rbCell i.now{color:#ffd84a}
 .rbCell.lock{background:rgba(0,0,0,.62)}.rbCell.sel{box-shadow:0 0 0 .25em #ffd84a,0 0 1.6em #ffb300}.rbCell.cur:not(.sel){box-shadow:0 0 0 .15em rgba(255,216,74,.5)}
 .rbLvT{justify-content:flex-start;padding-left:.5em;background:#8a0a10;font-size:1.6em;font-style:italic}
-.rbDesc{display:flex;flex-direction:column;gap:.25em;padding:.4em .7em;text-align:left;font:700 1.05em var(--f-ui);color:#f0e6e6}.rbDesc em{font-style:normal;color:#ffb0b0;font-size:.9em}
+.rbDesc{display:flex;flex-direction:column;gap:.15em;padding:.35em .7em;text-align:left;font:700 .95em var(--f-ui);color:#f0e6e6;overflow:hidden}.rbDesc em{font-style:normal;color:#ffb0b0;font-size:.9em}
 .rbNxT{flex-direction:column;align-items:flex-start;background:#0b0608;padding-left:.3em}.rbNxT b{font:900 1.3em var(--f-ui)}.rbNxT small{font-size:.65em;color:#ccc}
 .rkEmb.up{animation:rkUp 1.2s ease-out}.rkEmb.down{animation:rkDown 1s ease-out}
 @keyframes rkUp{0%{transform:scale(.3) rotate(-30deg);filter:brightness(3)}60%{transform:scale(1.25) rotate(8deg)}100%{transform:none}}@keyframes rkDown{0%{transform:translateY(-1em) scale(1.1)}40%{transform:translateY(.4em) rotate(-8deg);filter:grayscale(1)}100%{transform:none}}
@@ -173,3 +173,6 @@
 @keyframes rkMgP{to{transform:scale(1.08)}}
 .rkWin.mit.end{background:radial-gradient(circle,#5a0010,#000 70%)}.rkWin.mit .rays{background:repeating-conic-gradient(rgba(255,46,99,.4) 0 6deg,transparent 6deg 20deg)}
 .rkWin.mit .t b{color:#ff4a7a;text-shadow:0 0 1vh #ff2e63,0 2px 4px #000}.rkWin.mit .t span{text-shadow:0 0 2vh #ff2e63}.rkWin.mit .fl{filter:drop-shadow(0 0 2vh #ff2e63)}
+.rbDesc .rec{color:#ffd84a}.rbDesc .rec2{color:#9fff5a;font-size:.85em}
+.rkXb{display:flex;flex-wrap:wrap;gap:.35em;justify-content:center;margin:.3em 0}.rkXb span{padding:.2em .6em;border-radius:1em;background:#0b0f20;border:1px solid #2a3a60;font:800 .8em var(--f-ui);color:#cdd6ea}.rkXb b{color:#7dff9a}
+.rkXb .me{border-color:#4fb0ff;color:#bfe0ff}.rkXb .srv{border-color:#ffd84a;color:#ffd84a;background:#2a2008;box-shadow:0 0 .8em rgba(255,216,74,.6);animation:rkEp 1s ease-in-out infinite}
