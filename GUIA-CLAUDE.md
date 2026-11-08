@@ -876,3 +876,8 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
   - Local: `ac_k` (chave derivada), `ac_n`, `ac_h`, `ac_t` (fora do backup).
 - Ferramenta `.github/workflows/teste_conta.yml` (testa a consulta no Firestore de verdade).
 - Testes `ferramentas/testes/tconta.js`.
+
+## v221 — código de 1000 💎 e mais diamantes no Broly
+- Código 1000 DIAMANTES (hash `1kd7i6l`, texto só com o dono): uso único no jogo inteiro (documentId `cupom_1kd7i6l`); `TWCUP` aceita `gem:N` (soma em `rk_gem`).
+- Vitória no Modo Boss: 💎 sempre 5–15 (antes 50% de 1–2). Caixa de recompensas do lobby mostra "5-15".
+- Teste `ferramentas/testes/tmil.js`.
