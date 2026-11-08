@@ -594,3 +594,17 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
   - Itens de evento têm `img`, `nm`, `vel` próprios e nunca são descartados primeiro pela mochila cheia.
   - Para o próximo evento: trocar `TWEV` (id novo, horários, prêmios).
 - `window.__twEvT=[iniOffsetMs,fimOffsetMs]` antes de carregar → simula horário (teste `ferramentas/testes/tevento.js`, Firestore simulado).
+
+## v201 — nome único + título ADM
+- `ferramentas/web/patch_v201.py`.
+- Nome ÚNICO: ao confirmar um nome novo (✏️ NOME ou o 1º nome), `twNameFree` procura no Firestore:
+  - `nomeL == minúsculo`, `nome ==` variações de maiúscula/minúscula, e o top 300.
+  - O nome está tomado se existir com outro `uid`. Se o documento antigo não tem uid, só libera se for o nome que este aparelho já usava.
+  - Sem internet não registra.
+  - Ao registrar, grava um documento de reserva (`claim:'1'`, andar 0) com `nome`, `nomeL`, `uid`. Todos os rankings ignoram `claim`.
+  - No fim da subida o campo de nome ficou só leitura (troca só pelo ✏️ NOME).
+  - Envio agora manda `nomeL` e `v:201`.
+- Título ADM (`TWTIT.adm`, escondido para quem não tem; não dá bônus): dourado com brilho passando, borda em gradiente animada e coroa pulsando (`.twTit.adm`).
+  - Liberado digitando o código secreto do dono no campo de NOME (hash FNV `TWADM`). O código fica só com o dono.
+  - Vale por aparelho: em outro aparelho, digitar o código de novo.
+- Teste `ferramentas/testes/tnome_adm.js`.
