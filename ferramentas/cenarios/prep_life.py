@@ -15,6 +15,9 @@ for f in files:
     if mode=='namek':
         tree=(b>r+70)&(b>g+35)&(b>110)&(r<60)&(g<175)&(Y<760)
         water=(g>120)&(b>80)&(r<110)&(np.abs(g-b)<75)&(Y>520)&(Y<740)
+    elif mode=='vale':
+        tree=(g>r+30)&(g>b+15)&(g>90)&(Y<900)&(Y>80)
+        water=(b>r+45)&(b>110)&(Y>835)&(Y<990)
     elif mode=='folha':
         tree=(g>r+18)&(g>b+12)&(g>80)&(Y<700)&(Y>380)
         water=np.zeros_like(tree)

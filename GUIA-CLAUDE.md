@@ -435,3 +435,9 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 ## v185 — tempo da Torre justo + tempo na tela
 - `twTick` só conta quando NÃO está: pausado (inclui a tela de configuração), transformando (`G.trans`), em ultimate (`G.ws`), cinemática/super (`G.cine`, `G.comic`, `G.zsp`, `G.sc`, `G.rush`, `G.wfs`, `G.xu`).
 - Na luta da Torre, embaixo do timer (que pode ser ∞), aparece "TORRE mm:ss" em amarelo = tempo total da subida até agora (`twHudT`, no lugar de "ROUND 1"). No fim soma tudo igual (`TW.time`). Teste `ferramentas/testes/ttorre_tempo.js` (transformação e pausa: 0 quadros contados).
+
+## v186 — VALE DO FIM (`vale`)
+- 6 imagens do dono (2172x724; inteiro → totalmente destruído, a última de noite com tempestade), pasta `/home/claude/vale` (`up.py` = IA 2x → B0..B5 3000x1000, ~1 min cada). Prep: `FMIN=99 SKYD=110 SKYL=0 HZL=240,240,240,240,230,230 python3 prep_dn.py /home/claude/vale val.json 240`; vida: `prep_life.py vale life_v.json B0..B5` (modo novo `vale`: arbustos verdes balançando + brilhos na água). Cópias em `ferramentas/cenarios/vale/`.
+- `ferramentas/cenarios/patch_vale.py <index>` (depois do `patch_v182`): `DNS.vale` (`ph0:.74` começa de NOITE → madrugada → dia → pôr do sol, dia de 5 min; níveis 5/12/20/30/42 pontos, o 5º exige 1 ultimate e o 6º 2; `rain:1` + `storm:1` = no nível final chuva forte (150 gotas) e relâmpagos (clarão na tela); `falls` = cachoeira com água descendo (traços brancos em 'lighter') e névoa na base, retângulo por nível), `STG.vale` (pés na linha 662 da imagem, reflexo .32), luz `LT.vale`, miniatura na seleção.
+- Teste `ferramentas/testes/tvale.js` (fotos de noite/dia/tarde e dos níveis).
+- Ordem para remontar: index da v170 → patch_torre → patch_combo → patch_v178 → zoro/patch_zr → patch_v182 → cenarios/patch_vale.
