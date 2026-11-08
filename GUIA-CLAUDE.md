@@ -441,3 +441,10 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - `ferramentas/cenarios/patch_vale.py <index>` (depois do `patch_v182`): `DNS.vale` (`ph0:.74` começa de NOITE → madrugada → dia → pôr do sol, dia de 5 min; níveis 5/12/20/30/42 pontos, o 5º exige 1 ultimate e o 6º 2; `rain:1` + `storm:1` = no nível final chuva forte (150 gotas) e relâmpagos (clarão na tela); `falls` = cachoeira com água descendo (traços brancos em 'lighter') e névoa na base, retângulo por nível), `STG.vale` (pés na linha 662 da imagem, reflexo .32), luz `LT.vale`, miniatura na seleção.
 - Teste `ferramentas/testes/tvale.js` (fotos de noite/dia/tarde e dos níveis).
 - Ordem para remontar: index da v170 → patch_torre → patch_combo → patch_v178 → zoro/patch_zr → patch_v182 → cenarios/patch_vale.
+
+## v187 — polimento (movimento, golpes, impacto)
+- `ferramentas/web/patch_v187.py` (depois do `patch_vale`):
+  1. Personagens do sistema profissional (Naruto, Rengoku, Gojo, Madara, Luffy, Vegeta, Gogeta) agora também têm o movimento secundário dos antigos: cabeça/cabelo balançando (vento, corrida, pulo, clima) e tronco inclinando (`e.kH`/`e.kU` pelo `updAnim`, força por estado em `PROSW`), e respiração parado (`e.sy`). Só com gráfico Ultra (`G.hq`).
+  2. `rgTween` (quadro anterior desbotando por cima do novo) para TODOS os personagens nos golpes (antes só Rengoku/Zoro/Naruto) → golpes mais fluidos.
+  3. Golpe pesado/lançador/smash: tranco maior na câmera (`G.ck.vx`) + brilho branco rápido no ponto do golpe.
+- Teste geral `/home/claude/scripts/allchars.js` sem erros.
