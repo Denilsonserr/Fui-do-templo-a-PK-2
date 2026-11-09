@@ -1199,3 +1199,6 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 
 ## v264 — 2 códigos únicos do PASSE PRÊMIO (Elite)
 - `extra/98_v264.py`: hashes `3c1czy` e `15an3rn` (`bp:2,uni:1`): cada um libera PAGO + PRÊMIO para UMA pessoa no jogo inteiro (documento `cupom_<hash>`). Texto só com o dono. Teste: `ferramentas/testes/tcodigos_v264.js`.
+
+## v265 — código de 20.000 💎
+- `extra/99_v265.py`: hash `1q7f8pe` (`gem:20000`), uso ÚNICO no jogo inteiro (só 1 pessoa, 1 vez). Texto só com o dono. Teste: `ferramentas/testes/tcodigos_v265.js`.
