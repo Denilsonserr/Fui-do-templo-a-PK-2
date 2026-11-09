@@ -655,3 +655,6 @@
 .pfMold.r9 .gl{background:radial-gradient(closest-side,rgba(200,235,255,.7),rgba(60,150,255,.35) 60%,transparent)!important}
 .pfMold.r10 .gl{background:radial-gradient(closest-side,rgba(245,215,255,.75),rgba(190,90,255,.4) 60%,transparent)!important}
 .rk_rb .rkEvX{top:auto;bottom:.6%;left:37%;font-size:.85em}
+/* v251: poções de cura na loja da Torre */
+.twShop .shCuT{margin:.6em 0 0;text-align:center;font:900 1.05em var(--f-ui);color:#7dff9a;text-shadow:0 0 .5em rgba(125,255,154,.5)}
+.twShop{max-height:96vh;overflow-y:auto}

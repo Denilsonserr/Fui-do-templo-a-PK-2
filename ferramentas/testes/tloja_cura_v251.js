@@ -1,0 +1,10 @@
+const {chromium}=require('playwright');const S=process.env.S;const W='/home/claude/fui-do-templo-a-pk-2/www/';const fs=require('fs');
+fs.writeFileSync(W+'_t.html',fs.readFileSync(W+'index.html','utf8').replace('window.__G=G;','window.__G=G;window.__v25=()=>({twShop});'));
+(async()=>{const b=await chromium.launch();const p=await b.newPage({viewport:{width:915,height:412},deviceScaleFactor:2});const errs=[];p.on('pageerror',e=>errs.push(e.message));await p.route(/fonts\.g|firestore/,r=>r.abort());
+await p.addInitScript(()=>{if(!sessionStorage.d){sessionStorage.d=1;localStorage.clear();Object.assign(localStorage,{tw_nome:'"T"',rk_ini:'1',tw_moedas:'25000'})}});
+await p.goto('file://'+W+'_t.html');await p.waitForFunction(()=>!document.getElementById('goSelect').disabled,null,{timeout:120000});
+await p.evaluate(()=>{localStorage.rk_xpv2='1';localStorage.rk_dia='1'});await p.click('#mRank');await p.waitForTimeout(500);await p.click('#rkWrap [data-a="torre"]');await p.waitForTimeout(1200);await p.evaluate(()=>{const b=document.querySelector('#rtUI [data-c="twShB"]');(b||document.getElementById('twShB')).click()});await p.waitForTimeout(600);await p.screenshot({path:S+'shop.png'});
+await p.click('#twModal .shCu .shI[data-cu="5"]');await p.waitForTimeout(400);await p.click('#twModal .shCu .shI[data-cu="0"]');await p.waitForTimeout(400);
+console.log(await p.evaluate(()=>localStorage.tw_moedas+' '+localStorage.tw_poc+' | '+document.getElementById('twShE').textContent));
+await p.click('#twModal .shCu .shI[data-cu="5"]');await p.waitForTimeout(300);console.log(await p.evaluate(()=>document.getElementById('twShE').textContent));
+console.log(errs);await b.close();fs.unlinkSync(W+'_t.html')})();

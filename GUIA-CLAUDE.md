@@ -1119,3 +1119,7 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - Drop total: `rkDropF()=1+(eqDrop()+RKPDN)/100` — entra no `lvLuck` e nas chances de ticket/equipamento/poção/anel do Boss.
 - Onde caem: vitória no Boss (fora do baú): 22% poção de cura/drop (farm 12%), 7% anel de drop (farm 4%), tudo × drop. Secreta = 1% × drop.
 - Teste: `ferramentas/testes/tv250.js`.
+
+## v251 — poções de CURA na loja da Torre
+- `twShop` embrulhado no fim do rk.js: embaixo das poções normais aparece "💚 POÇÕES DE CURA" com as 6 raridades. Preços `TWSHCU` (moedas da torre): comum 1000, rara 2000, épica 4000, lendária 5000 (o dono não falou a lendária; ficou entre épica e mítica), mítica 6000, secreta 20000.
+- `twPocFits` refeito com a chave nova das pilhas (`p|pk|r|v`). A loja rola para baixo se não couber (`.twShop{max-height:96vh;overflow-y:auto}`). Teste: `ferramentas/testes/tloja_cura_v251.js`.

@@ -1131,3 +1131,12 @@ function rkCuraTick(){const p=G.p&&G.p[0];if(!p||!p.rkCura||p.hp<=0||p.ko)return
 /* o drop da poção vale só para a luta em que foi usada */
 {const _r3=rkResult;rkResult=function(){try{return _r3.apply(this,arguments)}finally{RKPDN=0}}}
 {const _tf3=twFinish;twFinish=function(){try{return _tf3.apply(this,arguments)}finally{RKPDN=0}}}
+/* ================= v251: POÇÕES DE CURA na LOJA DA TORRE (bem caras) ================= */
+const TWSHCU=[1000,2000,4000,5000,6000,20000];
+{const _sh=twShop;twShop=function(){const r=_sh.apply(this,arguments);try{const L=document.querySelector('#twModal .shL');if(!L)return r;const c=twCoins();
+  L.insertAdjacentHTML('afterend',`<h4 class="shCuT">💚 POÇÕES DE CURA</h4><div class="shL shCu">${RKPR.map((k,i)=>{const R=TWEQR.find(q=>q.k===k)||TWEQR[0],v=RKPKV.cura[i];return `<button class="shI ${c<TWSHCU[i]?'off':''}" data-cu="${i}" style="--c:${R.c}"><span class="rr">${R.n}</span><img src="${RQA.pcu[i]}" alt=""><b>CURA ${R.n}</b><span class="ds">💚 Cura +${v}% da vida<br>quando ela ficar<br>abaixo de 35%<br><i>uso único · próxima luta</i></span><em>🪙 ${rkFmtN(TWSHCU[i])}</em></button>`}).join('')}</div>`);
+  document.querySelectorAll('#twModal .shCu .shI').forEach(b=>b.onclick=()=>{const i=+b.dataset.cu,E=$('twShE'),P={k:RKPR[i],pk:'cura',v:RKPKV.cura[i]};
+    try{if(!twPocFits(P)){E.className='twH err';E.textContent='Mochila cheia (40 espaços com pilhas de 99)! Libere espaço para comprar.';return}}catch(e){}
+    if(twCoins()<TWSHCU[i]){E.className='twH err';E.textContent='Moedas insuficientes.';twSfx('clang');return}
+    twAddCoins(-TWSHCU[i]);twAddPoc(P);twSfx('powerUp');twToast('💚 POÇÃO DE CURA '+(TWEQR.find(q=>q.k===P.k)||TWEQR[0]).n+' comprada! Está na mochila','#7dff9a');twShop()})}catch(e){}return r}}
+twPocFits=function(R){const k='p|'+(R.pk||'')+'|'+R.k+'|'+R.v,S=twStacks();return S.some(x=>x.key.split('#')[0]===k&&x.n<99)||S.length<TWBAG};
