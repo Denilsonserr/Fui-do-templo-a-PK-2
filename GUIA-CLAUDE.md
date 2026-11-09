@@ -1189,3 +1189,10 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 
 ## v262 — faixas de evento paradas
 - `.rkEvX` usava a animação `rkEp` (scale) que apagava o `translateX(-50%)` e fazia a faixa tremer. Agora usa só brilho (`rkEvG`, e `bpEvG` na roxa do passe). Posição testada parada.
+
+## v263 — MODO PC (teclado e mouse)
+- Fim do rk.js ("v263") + `extra/97_v263.py`. `pcOn()`: automático (mouse e sem tela de toque = PC) ou escolhido no botão "Controles" (Configuração e Pausa; `ft_pc` '1' teclado, '0' toque, vazio automático).
+- No PC: os botões de toque somem na luta (`$('controls').hidden=pcOn()` + `pcSync` a cada 250 ms), aparece a legenda das teclas embaixo (`#pcHud`, F1 esconde, `ft_pcleg`), aviso de girar o celular nunca aparece.
+- Teclas novas no `KM` (as antigas continuam): Espaço = pular, Shift = defender, Q = especial, E = transformar, R = super, G = voar, Tab = trocar. Mouse na luta: esquerdo = soco, direito = chute. Esc nos menus do Ranqueado fecha a janela aberta ou volta (inclusive `menuBack`).
+- "Como jogar" mostra o quadro das teclas no topo quando está no PC.
+- Teste: `ferramentas/testes/tpc_v263.js` (andar, pular, soco, clique, chute, defesa, ki, especial, F1, Esc, celular com toque).

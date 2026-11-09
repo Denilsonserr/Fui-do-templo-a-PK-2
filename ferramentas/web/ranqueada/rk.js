@@ -1436,3 +1436,27 @@ let bpEvBusy=0;async function bpEvChest(){try{if(!bpEvOn()||bpEvBusy||rkG('bpev_
 {const _ta5=twAfter;twAfter=function(w){try{if(w===0)bpEvChest()}catch(e){}return _ta5.apply(this,arguments)}}
 /* aviso na tela do passe para quem ganhou */
 {const _bh=bpH;bpH=function(){return _bh()+(rkG('bpev_'+BPEV.id,0)===2?`<div class="bpWin" style="${bpB(615,206,1240,240)}">🎁 Você ganhou o PASSE PAGO no baú do evento!</div>`:bpEvOn()?`<div class="bpWin ev" style="${bpB(615,206,1240,240)}">⚡ EVENTO: 3x XP nas missões · missões extras · passe pago no baú (0,5%) · ${bpEvLeft()}</div>`:'')}}
+/* ================= v263: MODO PC (teclado e mouse) =================
+   Automático: mouse/sem tela de toque = PC. ft_pc: '1' teclado, '0' toque, sem valor = automático. No PC: sem botões de toque, legenda das teclas na luta (F1),
+   teclas extras comuns em jogos de luta de PC, clique esquerdo = soco e direito = chute, Esc volta nos menus do Ranqueado. */
+const pcAuto=()=>{try{return matchMedia('(pointer:fine)').matches&&!(navigator.maxTouchPoints>0)}catch(e){return false}};
+function pcMode(){let v=null;try{v=localStorage.getItem('ft_pc')}catch(e){}return v==='1'?1:v==='0'?0:-1}
+function pcOn(){const m=pcMode();return m===1||(m===-1&&pcAuto())}
+const pcLeg=()=>{try{return localStorage.getItem('ft_pcleg')!=='0'}catch(e){return true}};
+try{Object.assign(KM,{Space:'up',ShiftLeft:'bl',ShiftRight:'bl',KeyQ:'sp',KeyE:'tr',KeyR:'sr',KeyG:'fly',Tab:'tag'})}catch(e){}
+function pcBtnTxt(){const m=pcMode(),t='Controles: '+(m===1?'Teclado (PC)':m===0?'Toque (celular)':'Automático ('+(pcAuto()?'PC':'toque')+')');['pcBtn','pcBtn2'].forEach(id=>{const b=$(id);if(b)b.textContent=t})}
+function pcCycle(){const m=pcMode(),n=m===-1?'1':m===1?'0':null;try{if(n==null)localStorage.removeItem('ft_pc');else localStorage.setItem('ft_pc',n)}catch(e){}pcBtnTxt();pcSync()}
+function pcHudH(){const k=(a,b)=>`<span><kbd>${a}</kbd>${b}</span>`;return k('WASD','mover')+k('ESPAÇO','pular')+k('J / 🖱️','soco')+k('K / 🖱️','chute')+k('L','ki')+k('I','especial')+k('O','super')+k('U','transformar')+k('F','voar')+k('SHIFT','defender')+k('ESC','pausa')+k('F1','esconder')}
+function pcSync(){const h=$('pcHud'),c=$('controls');if(!h||!c)return;const fight=G.mode==='fight',pc=pcOn();
+  if(fight){if(pc&&!c.hidden)c.hidden=true;else if(!pc&&c.hidden&&!G.paused){c.hidden=false;try{layoutControls()}catch(e){}}}
+  const on=fight&&pc&&!G.paused&&pcLeg();if(on&&!h.innerHTML)h.innerHTML=pcHudH();h.hidden=!on;document.body.classList.toggle('pcMode',pc)}
+setInterval(()=>{try{pcSync()}catch(e){}},250);
+setTimeout(()=>{try{pcBtnTxt();['pcBtn','pcBtn2'].forEach(id=>{const b=$(id);if(b)b.onclick=pcCycle})}catch(e){}},0);
+addEventListener('keydown',e=>{try{
+  if(e.code==='F1'){e.preventDefault();try{localStorage.setItem('ft_pcleg',pcLeg()?'0':'1')}catch(x){}pcSync();return}
+  if(e.code==='Escape'&&G.mode!=='fight'&&showScreen.cur==='ranked'){const md=$('rkModal');if(md&&!md.hidden&&md.innerHTML){const x=md.querySelector('#rkMX');if(x)x.click();else rkModal(null);return}
+    const bk=document.querySelector('#rkWrap [data-a="back"],#rkWrap [data-p="back"],#rkWrap [data-m="back"],#rkWrap [data-b="back"],#rkWrap [data-a="menuBack"]');if(bk)bk.click()}}catch(x){}});
+/* mouse na luta: esquerdo = soco, direito = chute */
+{const M={0:'punch',2:'kick'};const gm=()=>$('game');
+  addEventListener('mousedown',e=>{if(G.mode!=='fight'||G.paused||!pcOn())return;const g=gm();if(!g||!g.contains(e.target)||e.target.closest('button'))return;const k=M[e.button];if(!k)return;latch[k]=1;keys[k]=1;e.preventDefault()});
+  addEventListener('mouseup',e=>{const k=M[e.button];if(k)keys[k]=0});}

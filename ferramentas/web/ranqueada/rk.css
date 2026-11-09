@@ -765,3 +765,9 @@
 @keyframes rkEvG{0%,100%{box-shadow:0 0 .6em rgba(255,120,0,.55),0 0 0 rgba(255,216,74,0);filter:brightness(1)}50%{box-shadow:0 0 1.4em rgba(255,140,0,.95),0 0 2.4em rgba(255,216,74,.55);filter:brightness(1.18)}}
 .rkEvX.bpEvX{animation-name:bpEvG!important}
 @keyframes bpEvG{0%,100%{box-shadow:0 0 .6em rgba(160,80,255,.55);filter:brightness(1)}50%{box-shadow:0 0 1.4em rgba(180,100,255,.95),0 0 2.4em rgba(255,216,74,.5);filter:brightness(1.18)}}
+/* v263: modo PC */
+#pcHud{position:absolute;left:50%;bottom:.6%;transform:translateX(-50%);z-index:5;display:flex;flex-wrap:wrap;justify-content:center;gap:.3em .7em;max-width:94%;padding:.25em .8em;border-radius:.8em;background:rgba(5,8,20,.55);font:800 11px var(--f-ui);color:#dfe8ff;pointer-events:none;opacity:.85;text-shadow:0 1px 2px #000}
+#pcHud span{white-space:nowrap}#pcHud kbd,.pcKeys kbd{display:inline-block;min-width:1.6em;padding:.05em .4em;margin-right:.3em;border-radius:.35em;background:linear-gradient(#3a4466,#1a2036);border:1px solid #7f9bd8;border-bottom-width:3px;font:900 .95em var(--f-ui);color:#fff;text-align:center}
+.pcKeys{display:flex;flex-direction:column;gap:.35em;text-align:center;line-height:1.7}.pcKeys b{color:#ffd84a}
+body.pcMode #rotate{display:none!important}
+body:not(.pcMode) #how .pcKeys{display:none}#how .pcKeys{margin:0 auto .6em;max-width:1100px;padding:.5em 1em;border-radius:.8em;background:rgba(5,8,20,.7);font:700 .9em var(--f-ui);color:#dfe8ff}

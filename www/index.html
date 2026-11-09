@@ -1249,6 +1249,12 @@ h2{margin:0;font-family:var(--f-display);font-weight:400;font-size:clamp(26px,8v
 @keyframes rkEvG{0%,100%{box-shadow:0 0 .6em rgba(255,120,0,.55),0 0 0 rgba(255,216,74,0);filter:brightness(1)}50%{box-shadow:0 0 1.4em rgba(255,140,0,.95),0 0 2.4em rgba(255,216,74,.55);filter:brightness(1.18)}}
 .rkEvX.bpEvX{animation-name:bpEvG!important}
 @keyframes bpEvG{0%,100%{box-shadow:0 0 .6em rgba(160,80,255,.55);filter:brightness(1)}50%{box-shadow:0 0 1.4em rgba(180,100,255,.95),0 0 2.4em rgba(255,216,74,.5);filter:brightness(1.18)}}
+/* v263: modo PC */
+#pcHud{position:absolute;left:50%;bottom:.6%;transform:translateX(-50%);z-index:5;display:flex;flex-wrap:wrap;justify-content:center;gap:.3em .7em;max-width:94%;padding:.25em .8em;border-radius:.8em;background:rgba(5,8,20,.55);font:800 11px var(--f-ui);color:#dfe8ff;pointer-events:none;opacity:.85;text-shadow:0 1px 2px #000}
+#pcHud span{white-space:nowrap}#pcHud kbd,.pcKeys kbd{display:inline-block;min-width:1.6em;padding:.05em .4em;margin-right:.3em;border-radius:.35em;background:linear-gradient(#3a4466,#1a2036);border:1px solid #7f9bd8;border-bottom-width:3px;font:900 .95em var(--f-ui);color:#fff;text-align:center}
+.pcKeys{display:flex;flex-direction:column;gap:.35em;text-align:center;line-height:1.7}.pcKeys b{color:#ffd84a}
+body.pcMode #rotate{display:none!important}
+body:not(.pcMode) #how .pcKeys{display:none}#how .pcKeys{margin:0 auto .6em;max-width:1100px;padding:.5em 1em;border-radius:.8em;background:rgba(5,8,20,.7);font:700 .9em var(--f-ui);color:#dfe8ff}
 
 .twBag .bgw{display:flex;gap:1em;justify-content:center;align-items:flex-start;margin:.4em 0}
 .twBag .bgc{flex:1;max-width:16em;display:flex;flex-direction:column;gap:.4em;max-height:52vh;overflow:auto;padding:.2em}
@@ -1329,6 +1335,7 @@ h2{margin:0;font-family:var(--f-display);font-weight:400;font-size:clamp(26px,8v
     <button id="pauseBtn" aria-label="Pausar" hidden>II</button>
   </div>
 
+  <div id="pcHud" hidden></div>
   <div id="controls" hidden>
     <div id="joyZone">
       <div id="joyBase">
@@ -1388,6 +1395,7 @@ h2{margin:0;font-family:var(--f-display);font-weight:400;font-size:clamp(26px,8v
       <button class="btn" id="spdBtn">Velocidade: Normal</button>
       <button class="btn" id="tmBtn">Tempo: 99s</button>
       <button class="btn" id="goHow">Como jogar</button>
+      <button class="btn pcB" id="pcBtn">Controles: Automático</button>
     </div>
     <div class="row"><button class="btn main" id="cfgBack">Voltar</button></div>
   </section>
@@ -1442,7 +1450,7 @@ h2{margin:0;font-family:var(--f-display);font-weight:400;font-size:clamp(26px,8v
   </section>
 
   <section id="how" class="screen" hidden>
-    <h2>Como jogar</h2>
+    <h2>Como jogar</h2><div class="keys pcKeys"><b>⌨️ TECLADO E MOUSE (PC)</b><span><kbd>W A S D</kbd>/<kbd>setas</kbd> andar · <kbd>W</kbd>/<kbd>Espaço</kbd> pular (segure no ar = voar) · <kbd>S</kbd> agachar</span><span><kbd>J</kbd>/🖱️ esquerdo soco · <kbd>K</kbd>/🖱️ direito chute · <kbd>L</kbd> ki (toque = rajada, segure = carregar)</span><span><kbd>I</kbd>/<kbd>Q</kbd> especial · <kbd>O</kbd>/<kbd>R</kbd> super · <kbd>U</kbd>/<kbd>E</kbd> transformar · <kbd>F</kbd>/<kbd>G</kbd> voar · <kbd>Shift</kbd>/<kbd>H</kbd> defender · <kbd>T</kbd>/<kbd>Tab</kbd> trocar</span><span><kbd>Esc</kbd>/<kbd>P</kbd> pausa · <kbd>Esc</kbd> volta nos menus · <kbd>F1</kbd> mostra/esconde as teclas na luta</span></div>
     <div class="howto">
       <div><span class="ic"><svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="30" fill="rgba(255,255,255,.4)"/></svg></span><p><b>Direcional</b> anda, pula e agacha. Segure para trás para defender. Pule e <b>segure para cima</b> para voar; segure para baixo para pousar.</p></div>
       <div style="--c:#ff9a2e"><span class="ic" data-from="bPunch"></span><p><b>Soco</b> 3 toques fazem o combo. Agachado: rasteira. No ar: soco aéreo.</p></div>
@@ -1457,14 +1465,14 @@ h2{margin:0;font-family:var(--f-display);font-weight:400;font-size:clamp(26px,8v
       <div style="--c:#a35cff"><span class="ic" data-from="bSr"></span><p><b>Aylla</b> luta com socos e chutes até ativar o <b>Modo Arcano</b>. Aí o botão <b>Magia</b> solta uma magia diferente a cada toque, em sequência: <b>1</b> Corte do Vazio (40 ki, ataque supremo: escurece a tela e corta tudo), <b>2</b> Vendaval Arcano (25 ki, tornado que levanta o rival), <b>3</b> Chuva de Cortes (35 ki, vários cortes).</p></div>
       <div><span class="ic"><svg viewBox="0 0 100 100"><text x="50" y="62" text-anchor="middle" font-size="30" fill="#fff" font-family="sans-serif" font-weight="700">+</text></svg></span><p><b>Combos</b> acertou um soco? Emende chute, rajada ou especial. Lance o rival para o alto e continue no ar.</p></div>
     </div>
-    <div class="keys">Teclado: setas/WASD · J soco · K chute · L ki · I especial · U transformar · O super · P pausa</div>
+    
     <button class="btn main" id="howBack">Entendi</button>
   </section>
 
   <section id="pause" class="screen" hidden>
     <h2>Pausa</h2>
     <div class="row"><button class="btn main" id="resume">Continuar</button><button class="btn" id="restart">Reiniciar luta</button></div>
-    <div class="row"><button class="btn" id="pHow">Como jogar</button><button class="btn" id="sndBtn2">Som: ligado</button><button class="btn" id="bloodBtn2">Sangue: ligado</button><button class="btn" id="hqBtn2">Gráfico: Ultra</button><button class="btn" id="spdBtn2">Velocidade: Normal</button><button class="btn" id="toMenu">Menu</button></div>
+    <div class="row"><button class="btn" id="pHow">Como jogar</button><button class="btn pcB" id="pcBtn2">Controles: Automático</button><button class="btn" id="sndBtn2">Som: ligado</button><button class="btn" id="bloodBtn2">Sangue: ligado</button><button class="btn" id="hqBtn2">Gráfico: Ultra</button><button class="btn" id="spdBtn2">Velocidade: Normal</button><button class="btn" id="toMenu">Menu</button></div>
   </section>
 
   <section id="tower" class="screen" hidden></section>
@@ -6515,7 +6523,7 @@ function startRound(){
   const w=pickWeather();setWeather(w);
   SFX.bell();startEntrances();startRing();
 }
-function startMatch(){musPick();MAXHP=LAYER*(G.gmode==='torre'?2:G.gmode==='boss'?4:(G.lives||2));G.teams=G.gmode==='torre'?null:G.teamN===2&&G.gmode!=='treino'?[[G.pick,G.pick2||G.pick],[G.opp,G.opp3||G.opp]]:null;G.ti=[0,0];G.keep=null;$('bSr').hidden=!(G.pick==='vegeta'||G.pick==='gogeta'||G.pick==='broly'||G.pick==='zoro'||G.pick==='aokiji'||G.pick==='goku'||G.pick==='qingqing'||G.pick==='zaykon'||G.pick==='zedry'||G.pick==='magmus'||G.pick==='denilson'||G.pick==='arkarus'||G.pick==='aylla'||G.pick==='white'||G.pick==='xiao'||G.pick==='madara'||G.pick==='gojo'||G.pick==='luffy'||G.pick==='rengoku'||G.pick==='naruto'||G.pick==='garou'||G.pick==='yuta');{const ay=G.pick==='aylla';$('bSr').querySelector('span').textContent=ay?'Magia':'Super';$('bSr').querySelector('em').textContent=ay?'20':'100'}G.round=1;G.wins=[0,0];G.mode='fight';G.paused=false;showScreen(null);$('controls').hidden=false;$('pauseBtn').hidden=false;layoutControls();startRound();tagInit()}
+function startMatch(){musPick();MAXHP=LAYER*(G.gmode==='torre'?2:G.gmode==='boss'?4:(G.lives||2));G.teams=G.gmode==='torre'?null:G.teamN===2&&G.gmode!=='treino'?[[G.pick,G.pick2||G.pick],[G.opp,G.opp3||G.opp]]:null;G.ti=[0,0];G.keep=null;$('bSr').hidden=!(G.pick==='vegeta'||G.pick==='gogeta'||G.pick==='broly'||G.pick==='zoro'||G.pick==='aokiji'||G.pick==='goku'||G.pick==='qingqing'||G.pick==='zaykon'||G.pick==='zedry'||G.pick==='magmus'||G.pick==='denilson'||G.pick==='arkarus'||G.pick==='aylla'||G.pick==='white'||G.pick==='xiao'||G.pick==='madara'||G.pick==='gojo'||G.pick==='luffy'||G.pick==='rengoku'||G.pick==='naruto'||G.pick==='garou'||G.pick==='yuta');{const ay=G.pick==='aylla';$('bSr').querySelector('span').textContent=ay?'Magia':'Super';$('bSr').querySelector('em').textContent=ay?'20':'100'}G.round=1;G.wins=[0,0];G.mode='fight';G.paused=false;showScreen(null);$('controls').hidden=pcOn();$('pauseBtn').hidden=false;layoutControls();startRound();tagInit()}
 function endRound(){
   const w=G.koWinner;if(G.gmode==='boss'){rkAfter(w);return}if(G.gmode==='torre'&&TW.on){twAfter(w);return}
   if(TAG.on){const W=w>=0?w:(G.p[0].hp>=G.p[1].hp?0:1);G.wins[W]=2;G.wins[1-W]=0;TAG.on=false;$('bSw').hidden=true;showResult();return}
@@ -8444,6 +8452,30 @@ let bpEvBusy=0;async function bpEvChest(){try{if(!bpEvOn()||bpEvBusy||rkG('bpev_
 {const _ta5=twAfter;twAfter=function(w){try{if(w===0)bpEvChest()}catch(e){}return _ta5.apply(this,arguments)}}
 /* aviso na tela do passe para quem ganhou */
 {const _bh=bpH;bpH=function(){return _bh()+(rkG('bpev_'+BPEV.id,0)===2?`<div class="bpWin" style="${bpB(615,206,1240,240)}">🎁 Você ganhou o PASSE PAGO no baú do evento!</div>`:bpEvOn()?`<div class="bpWin ev" style="${bpB(615,206,1240,240)}">⚡ EVENTO: 3x XP nas missões · missões extras · passe pago no baú (0,5%) · ${bpEvLeft()}</div>`:'')}}
+/* ================= v263: MODO PC (teclado e mouse) =================
+   Automático: mouse/sem tela de toque = PC. ft_pc: '1' teclado, '0' toque, sem valor = automático. No PC: sem botões de toque, legenda das teclas na luta (F1),
+   teclas extras comuns em jogos de luta de PC, clique esquerdo = soco e direito = chute, Esc volta nos menus do Ranqueado. */
+const pcAuto=()=>{try{return matchMedia('(pointer:fine)').matches&&!(navigator.maxTouchPoints>0)}catch(e){return false}};
+function pcMode(){let v=null;try{v=localStorage.getItem('ft_pc')}catch(e){}return v==='1'?1:v==='0'?0:-1}
+function pcOn(){const m=pcMode();return m===1||(m===-1&&pcAuto())}
+const pcLeg=()=>{try{return localStorage.getItem('ft_pcleg')!=='0'}catch(e){return true}};
+try{Object.assign(KM,{Space:'up',ShiftLeft:'bl',ShiftRight:'bl',KeyQ:'sp',KeyE:'tr',KeyR:'sr',KeyG:'fly',Tab:'tag'})}catch(e){}
+function pcBtnTxt(){const m=pcMode(),t='Controles: '+(m===1?'Teclado (PC)':m===0?'Toque (celular)':'Automático ('+(pcAuto()?'PC':'toque')+')');['pcBtn','pcBtn2'].forEach(id=>{const b=$(id);if(b)b.textContent=t})}
+function pcCycle(){const m=pcMode(),n=m===-1?'1':m===1?'0':null;try{if(n==null)localStorage.removeItem('ft_pc');else localStorage.setItem('ft_pc',n)}catch(e){}pcBtnTxt();pcSync()}
+function pcHudH(){const k=(a,b)=>`<span><kbd>${a}</kbd>${b}</span>`;return k('WASD','mover')+k('ESPAÇO','pular')+k('J / 🖱️','soco')+k('K / 🖱️','chute')+k('L','ki')+k('I','especial')+k('O','super')+k('U','transformar')+k('F','voar')+k('SHIFT','defender')+k('ESC','pausa')+k('F1','esconder')}
+function pcSync(){const h=$('pcHud'),c=$('controls');if(!h||!c)return;const fight=G.mode==='fight',pc=pcOn();
+  if(fight){if(pc&&!c.hidden)c.hidden=true;else if(!pc&&c.hidden&&!G.paused){c.hidden=false;try{layoutControls()}catch(e){}}}
+  const on=fight&&pc&&!G.paused&&pcLeg();if(on&&!h.innerHTML)h.innerHTML=pcHudH();h.hidden=!on;document.body.classList.toggle('pcMode',pc)}
+setInterval(()=>{try{pcSync()}catch(e){}},250);
+setTimeout(()=>{try{pcBtnTxt();['pcBtn','pcBtn2'].forEach(id=>{const b=$(id);if(b)b.onclick=pcCycle})}catch(e){}},0);
+addEventListener('keydown',e=>{try{
+  if(e.code==='F1'){e.preventDefault();try{localStorage.setItem('ft_pcleg',pcLeg()?'0':'1')}catch(x){}pcSync();return}
+  if(e.code==='Escape'&&G.mode!=='fight'&&showScreen.cur==='ranked'){const md=$('rkModal');if(md&&!md.hidden&&md.innerHTML){const x=md.querySelector('#rkMX');if(x)x.click();else rkModal(null);return}
+    const bk=document.querySelector('#rkWrap [data-a="back"],#rkWrap [data-p="back"],#rkWrap [data-m="back"],#rkWrap [data-b="back"],#rkWrap [data-a="menuBack"]');if(bk)bk.click()}}catch(x){}});
+/* mouse na luta: esquerdo = soco, direito = chute */
+{const M={0:'punch',2:'kick'};const gm=()=>$('game');
+  addEventListener('mousedown',e=>{if(G.mode!=='fight'||G.paused||!pcOn())return;const g=gm();if(!g||!g.contains(e.target)||e.target.closest('button'))return;const k=M[e.button];if(!k)return;latch[k]=1;keys[k]=1;e.preventDefault()});
+  addEventListener('mouseup',e=>{const k=M[e.button];if(k)keys[k]=0});}
 
 function twTrofList(){const tc=twLS.g('tw_tc',{}),run={};for(const t of TW.tr)run[t.k]=(run[t.k]||0)+1;
   twModal(`<div class="twM"><h3>🎖️ TROFÉUS</h3><div class="twTL">${Object.keys(TWTR).map(k=>{const T=TWTR[k];return `<div class="${tc[k]||run[k]?'got':''}"><i>${T.i}</i><b>${T.n}</b><span>${T.d}</span><em>+${T.p} 🏆</em><small>${run[k]?'nesta subida: '+run[k]+' · ':''}total: ${(tc[k]||0)}</small></div>`}).join('')}</div>
