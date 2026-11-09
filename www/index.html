@@ -2438,14 +2438,14 @@ function layerBreak(d){d.hpLag=Math.ceil(d.hp/LAYER)*LAYER;G.flash=Math.max(G.fl
   ring(d.x,d.y-140,'#ffd23f',200,22,7);ring(d.x,d.y-140,'#ffffff',110,16,4);flashL(d.x,d.y-140,'#ffd23f',380,.8,24);
   for(let i=0;i<22;i++){const a=rand(0,TAU),sp=rand(4,12);addP({x:d.x+rand(-30,30),y:d.y-rand(80,220),vx:Math.cos(a)*sp,vy:Math.sin(a)*sp-3,life:rand(30,50),max:50,c:i%2?'#ffd23f':'#fff3c0',type:'rock',sz:rand(3,7),g:.35})}
   txt(d.x,d.y-250,'BARRA QUEBRADA!','#ffd23f');SFX.clang();SFX.boom();buzz(80)}
-function twBossRevive(a,d){d.twRev=1;d.ko=false;d.hp=d.hpLag=d.mhp;d.tdm=(d.tdm||1)*2;d.tsp=(d.tsp||1)*1.2;d.tdf=(d.tdf||1)*.85;d.state='idle';d.st=0;d.vx=0;d.vy=0;d.y=FLOOR;d.grounded=true;d.flying=false;d.move=null;d.hitstun=0;d.inv=100;d.ki=100;
+function twBossRevive(a,d){d.twRev=(d.twRev|0)+1;d.ko=false;d.hp=d.hpLag=d.mhp;d.tdm=(d.tdm||1)*2;d.tsp=(d.tsp||1)*1.2;d.tdf=(d.tdf||1)*.85;d.state='idle';d.st=0;d.vx=0;d.vy=0;d.y=FLOOR;d.grounded=true;d.flying=false;d.move=null;d.hitstun=0;d.inv=100;d.ki=100;
   a.vx=-a.facing*10;G.hitstop=Math.max(G.hitstop,24);G.slow=Math.max(G.slow||0,40);G.flash=12;G.flashCol='#ff3030';G.shake=30;
   for(const r of [360,240,130])ring(d.x,d.y-150,r===130?'#ffffff':'#ff1a1a',r,28,8);for(let i=0;i<46;i++)spark(d.x,d.y-150,i%3?'#ff4a3a':'#ffffff',1,rand(6,18));try{flashL(d.x,d.y-150,'#ff2020',700,1,30)}catch(e){}
-  banner('O CHEFE VOLTOU!','#ff3030',120,'2ª VIDA · 2X MAIS FORTE');try{SFX.transform();SFX.boom()}catch(e){}buzz(200)}
+  banner('O CHEFE VOLTOU!','#ff3030',120,(d.twRev+1)+'ª VIDA · '+(d.twRev>1?'AINDA MAIS FORTE':'2X MAIS FORTE'));try{SFX.transform();SFX.boom()}catch(e){}buzz(200)}
 function ko(a,d){if(G.phase!=='fight')return;
   if(G.gmode==='boss'&&d===G.p[1]&&d.rkPh===1){rkPhase2(a,d);return}
   if((G.gmode==='boss'||(TW.on&&G.gmode==='torre'))&&d===G.p[0]&&rkSenzuRevive(d))return;
-  if(TW.on&&G.gmode==='torre'&&TW.evBoss&&TW.fl===TWN-1&&d===G.p[1]&&!d.twRev){twBossRevive(a,d);return}
+  if(TW.on&&G.gmode==='torre'&&TW.evBoss&&TW.fl===TWN-1&&d===G.p[1]&&(d.twRev|0)<(TWEV.lives||2)-1){twBossRevive(a,d);return}
   if(TAG.on){const sd=G.p.indexOf(d),b=TAG.bench[sd];if(b&&!b.ko&&!TAG.q){d.ko=true;d.flying=false;d.hp=0;d.state='airhit';d.grounded=false;d.vy=-11;d.vx=6*a.facing;d.bounced=false;d.inv=999;
     G.slow=45;G.hitstop=14;G.flash=8;G.flashCol='#ffffff';G.shake=16;banner('K.O.!','#ff3b30',70,'PRÓXIMO: '+b.def.name);SFX.ko();buzz(120);fvox(d,'f_no',true);TAG.q={s:sd,t:0};return}}d.ko=true;d.flying=false;d.hp=0;d.state='airhit';d.grounded=false;d.vy=-11;d.vx=6*a.facing;d.bounced=false;
   G.phase='ko';G.phaseT=0;G.koWinner=G.p.indexOf(a);G.slow=70;G.hitstop=18;G.flash=10;G.flashCol='#ffffff';G.shake=20;
@@ -6734,7 +6734,7 @@ function twApply(){if(!(TW.on&&G.gmode==='torre'))return;const [p,o]=G.p,b=TW.fl
 function twTick(){const F=TW.fs;if(!F||!G.p)return;if(!(G.paused||G.trans||G.ws||G.cine||G.comic||G.zsp||G.sc||G.rush||G.wfs||G.xu))F.t++;const c=G.p[0].combo||0;if(c>F.cmb)F.cmb=c}
 function twHudT(){return 'TORRE '+twFmt(TW.time+(TW.fs?TW.fs.t/60:0))}
 function twBossGo(){if(TW.pocMsg&&G.p){txt(G.p[0].x,G.p[0].y-300,TW.pocMsg,'#7dff9a');TW.pocMsg=null}if(!(TW.on&&G.gmode==='torre'&&G.p))return;if(G.tlim!==0)G.timer=Math.min(240,60+20*TWOB[TW.fl]);if(TW.fl!==TWN-1)return;const o=G.p[1];
-  banner('CHEFE FINAL','#ffc531',90,o.def.name+' · TRANSFORMADO'+(TW.evBoss?' · 2 VIDAS (EVENTO)':''));if(o.form)return;o.sb=Math.max(o.sb||0,SB_COST);try{startTransform(o)}catch(e){}}
+  banner('CHEFE FINAL','#ffc531',90,o.def.name+' · TRANSFORMADO'+(TW.evBoss?' · '+(TWEV.lives||2)+' VIDAS (EVENTO)':''));if(o.form)return;o.sb=Math.max(o.sb||0,SB_COST);try{startTransform(o)}catch(e){}}
 function twAfter(w){G.mode='tower';$('controls').hidden=true;$('pauseBtn').hidden=true;rainSound(0);G.paused=false;
   const F=TW.fs||{t:0,cmb:0,ult:0,hp0:TW.hp},secs=F.t/60,p=G.p[0];TW.time+=secs;
   if(w!==0){twFinish(false);return}
@@ -6943,8 +6943,8 @@ const twTits=()=>twLS.g('tw_tit',[]),twTitOn=()=>{const t=twLS.g('tw_titOn','');
 function twGiveTit(k){const L=twTits();if(L.includes(k))return false;L.push(k);twLS.s('tw_tit',L);if(!twLS.g('tw_titOn',''))twLS.s('tw_titOn',k);setTimeout(twTitSync,1500);setTimeout(()=>twToast('👑 TÍTULO NOVO: '+TWTIT[k].n,TWTIT[k].c),600);return true}
 const twTitTag=(k,nm)=>k==='adm'&&nm!=null&&String(nm).toLowerCase()!==TWADMN.toLowerCase()?'':k==='adm'?'<em class="twTit admX"><i>👑</i><b>ADMINISTRADOR</b></em>':k&&TWTIT[k]&&TWTIT[k].rk!=null?`<em class="twTit rkt" style="--c:${TWTIT[k].c}"><img src="${RQA.rank[TWTIT[k].rk]}" alt=""><b>${TWTIT[k].n}</b></em>`:k&&TWTIT[k]?`<em class="twTit${TWTIT[k].inf?' inf':TWTIT[k].yt?' ytt y'+(TWTIT[k].yt===1?1:TWTIT[k].yt<=3?2:TWTIT[k].yt<=6?3:4):''}" style="--c:${TWTIT[k].c}">${TWTIT[k].i} ${TWTIT[k].n}</em>`:'';
 /* EVENTO: horário de Brasília. Vale o horário do servidor (createTime) para entrar no ranking. */
-const TWEV={id:'ev20261109',nome:'2º TORNEIO DA TORRE · CORRIDA',fast:1,ini:Date.parse('2026-11-09T20:15:00-03:00'),fim:Date.parse('2026-11-09T20:45:00-03:00'),
-  prem:[{pos:1,bp:2},{pos:2,bp:1},{pos:3,gem:3000}]};
+const TWEV={id:'ev20261109',nome:'2º TORNEIO DA TORRE · CORRIDA',fast:1,lives:3,flat:1,ini:Date.parse('2026-11-09T20:20:00-03:00'),fim:Date.parse('2026-11-09T20:50:00-03:00'),
+  prem:[{pos:1,bp:2},{pos:2,bp:1},{pos:3,gem:3000}],part:1000};
 if(window.__twEvT){TWEV.ini=Date.now()+window.__twEvT[0];TWEV.fim=Date.now()+window.__twEvT[1]}
 const twEvSt=(t)=>{t=t||Date.now();return t<TWEV.ini?'antes':t<TWEV.fim?'ao vivo':'fim'};
 const twDur=ms=>{ms=Math.max(0,ms);const h=(ms/3600e3)|0,m=((ms%3600e3)/60e3)|0,s=((ms%60e3)/1e3)|0;return (h?h+'h ':'')+String(m).padStart(2,'0')+'m '+String(s).padStart(2,'0')+'s'};
@@ -6962,7 +6962,7 @@ function twRowsU(L,tab){const me=twUid();if(!L.length)return `<p class="twH">${t
 async function twClaims(){if(twClaims.busy)return;twClaims.busy=1;const me=twUid();
   try{const wk=twWkKey(Date.now()-7*864e5),dn=twLS.g('tw_wkc',{});if(!dn[wk]){const L=await twWeekL(1);dn[wk]=1;twLS.s('tw_wkc',dn);if(L[0]&&L[0].uid===me)twGiveTit('sem')}}catch(e){}
   try{const ec=twLS.g('tw_evc',{});if(twEvSt()==='fim'&&!ec[TWEV.id]&&Date.now()>TWEV.fim+90e3){const L=await twEvL();ec[TWEV.id]={pos:0};
-      const i=L.findIndex(e=>e.uid===me);if(i>=0&&i<TWEV.prem.length){const P=TWEV.prem[i];ec[TWEV.id].pos=i+1;if(!P.it){if(P.bp)bpUnlock(P.bp);if(P.gem)rkAdd('gem',P.gem);try{acSave(1)}catch(x){}twLS.s('tw_evc',ec);twEvWin(i+1,{nm:evPrzNm(P),img:evPrzImg(P),x:1});throw 0}const it=Object.assign({id:'ev'+TWEV.id+i,ev:TWEV.id},P.it),I=twInv();if(!I.some(x=>x.id===it.id)){I.push(it);twLS.s('tw_inv',I)}if(P.tit)twGiveTit(P.tit);
+      const i=L.findIndex(e=>e.uid===me);if(i>=0&&TWEV.part){rkAdd('gem',TWEV.part);ec[TWEV.id].part=1;try{acSave(1)}catch(x){}setTimeout(()=>{try{rkToast('🎁 +'+TWEV.part+' 💎 por participar do '+TWEV.nome+'!','#7dff9a')}catch(x){}try{twToast('🎁 +'+TWEV.part+' 💎 por participar do torneio!','#7dff9a')}catch(x){}},i<TWEV.prem.length?4000:500)}if(i>=0&&i<TWEV.prem.length){const P=TWEV.prem[i];ec[TWEV.id].pos=i+1;if(!P.it){if(P.bp)bpUnlock(P.bp);if(P.gem)rkAdd('gem',P.gem);try{acSave(1)}catch(x){}twLS.s('tw_evc',ec);twEvWin(i+1,{nm:evPrzNm(P),img:evPrzImg(P),x:1});throw 0}const it=Object.assign({id:'ev'+TWEV.id+i,ev:TWEV.id},P.it),I=twInv();if(!I.some(x=>x.id===it.id)){I.push(it);twLS.s('tw_inv',I)}if(P.tit)twGiveTit(P.tit);
         twLS.s('tw_evc',ec);twEvWin(i+1,it)}else twLS.s('tw_evc',ec)}}catch(e){}
   twClaims.busy=0;try{twRender()}catch(e){}}
 function twEvWin(pos,it){if(it.x&&showScreen.cur==='ranked'){try{rkSfx('powerUp');setTimeout(()=>rkSfx('boom'),300);rkModal(`<div class="twM gold"><h3>${['🥇 VOCÊ GANHOU O TORNEIO!','🥈 2º LUGAR NO TORNEIO!','🥉 3º LUGAR NO TORNEIO!'][pos-1]}</h3><p class="twH">${TWEV.nome}</p><div class="evPz big"><img src="${it.img}" alt=""><div><b>${it.nm}</b><em>Já está na sua conta! ${pos<3?'Abra o 🎟️ PASSE DE BATALHA.':''}</em></div></div><div class="row"><button class="btn main" id="rkMX">PEGAR!</button></div></div>`);$('rkMX').onclick=()=>{rkModal(null);rkView(RKV||'menu')}}catch(e){}return}if(!$('twModal').hidden)return setTimeout(()=>twEvWin(pos,it),1500);twSfx('powerUp');
@@ -6972,7 +6972,7 @@ function twEvent(){const st=twEvSt(),t=Date.now(),fmtH=x=>new Date(x-BRT).toISOS
   twModal(`<div class="twM rk ev"><h3>🎉 ${TWEV.nome}</h3>
     <div class="evSt ${st.replace(' ','')}"><b>${st==='antes'?'COMEÇA EM <span id="twEvC">'+twDur(TWEV.ini-t)+'</span>':st==='ao vivo'?'🔴 AO VIVO · TERMINA EM <span id="twEvC">'+twDur(TWEV.fim-t)+'</span>':'ENCERRADO'}</b><span>Hoje das ${fmtH(TWEV.ini)} às ${fmtH(TWEV.fim)} (horário de Brasília)</span></div>
     <div class="evPzs">${TWEV.prem.map(P=>P.it?`<div class="evPz" style="--c:${twRarOf(P.it.r).c}"><i>${P.pos===1?'🥇':'🥈'}</i><img src="${P.it.img}" alt=""><div><b>${P.it.nm}</b><span>${twRarOf(P.it.r).n} · +${P.it.v}% DANO · +${P.it.vel}% VEL.</span>${P.tit?`<em>+ título ${TWTIT[P.tit].i} ${TWTIT[P.tit].n}</em>`:''}</div></div>`:`<div class="evPz" style="--c:#ffd84a"><i>${['🥇','🥈','🥉'][P.pos-1]}</i><img src="${evPrzImg(P)}" alt=""><div><b>${evPrzNm(P)}</b></div></div>`).join('')}</div>
-    <p class="twH">⚠️ No evento o <b>CHEFE FINAL tem 2 vidas</b>: quando morre, volta com a vida cheia e 2x mais forte! Durante o horário do evento, toda subida da torre que <b>terminar</b> até ${fmtH(TWEV.fim)} entra neste ranking (vale a melhor de cada jogador: ${TWEV.fast?'mais andares, depois MENOR TEMPO':'mais andares, depois mais troféus, depois menos tempo'}). Os premiados recebem sozinhos quando abrirem o jogo depois do fim.</p>
+    <p class="twH">⚠️ No evento o <b>CHEFE FINAL tem ${TWEV.lives||2} vidas</b>: quando morre, volta com a vida cheia e mais forte!${TWEV.flat?' Durante o torneio a torre é IGUAL para todos (dificuldade do rank mais baixo, sem bônus de rank).':''} Durante o horário do evento, toda subida da torre que <b>terminar</b> até ${fmtH(TWEV.fim)} entra neste ranking (vale a melhor de cada jogador: ${TWEV.fast?'mais andares, depois MENOR TEMPO':'mais andares, depois mais troféus, depois menos tempo'}). Os premiados recebem sozinhos quando abrirem o jogo depois do fim.</p>
     <div id="twRkL"><p class="twH">${st==='antes'?'O ranking aparece quando o evento começar.':'Carregando...'}</p></div><div class="row"><button class="btn main" id="twEvGo" ${st==='ao vivo'?'':'hidden'}>JOGAR AGORA</button><button class="btn" id="twEvX">FECHAR</button></div></div>`);
   $('twEvX').onclick=()=>{clearInterval(twEvent.iv);twModal(null)};$('twEvGo').onclick=()=>{clearInterval(twEvent.iv);twModal(null);if(!TW.on)twGo()};
   const load=()=>twEvL().then(L=>{if($('twRkL')&&$('twModal').querySelector('.ev'))$('twRkL').innerHTML=twRowsU(L,'e')}).catch(()=>{if($('twRkL'))$('twRkL').innerHTML='<p class="twH err">Sem internet agora.</p>'});
@@ -7566,13 +7566,15 @@ function acOpen(tab){const n=localStorage.getItem('ac_n'),k=localStorage.getItem
       msg('✔ Conta carregada! Recarregando o jogo...','ok');setTimeout(()=>location.reload(),900)}catch(e){B('acIn').disabled=false;msg('Sem internet agora. Tenta de novo.','err')}}}
 
 /* ================= MODO TORRE RANQUEADA (v228): mesma rank do Boss, dá mais XP, nova tela ================= */
+/* v268: no torneio (TWEV.flat) a torre é igual para todos: rank mais baixo, sem bônus de rank */
+const rkTwLv=()=>{try{if(TWEV.flat&&twEvSt()==='ao vivo')return 0}catch(e){}return rkLvl()};
 const RKTWX={fl:.6,top:2,loss:.5},RKTB=i=>({dano:i*2,def:i*2,vel:i,crit:i,sorte:i*3}),rkSorte=()=>psSum().st+RKTB(rkLvl()).sorte+(twIsAdm()?60:0)+rkEqSt()+(tbOf(twTitOn()).st||0),rkEqSt=()=>{let v=0;try{const o=twEqOn();for(const k in o)v+=(o[k].st||0)*eqNf(o[k])}catch(e){}return Math.round(v)};
 function rkTorre(){const s=rkG('sel','goku'),own=rkG('own',['goku']);G.pick=CH[s]&&own.includes(s)?s:'goku';G.gmode='torre';try{audioInit()}catch(e){}try{fsTry()}catch(e){}twOpen()}
 /* dificuldade da Torre pelo rank (v231): leve no começo; bem mais difícil para chegar nos 2 últimos ranks */
 const RKTD={dm:[1,1.05,1.1,1.15,1.22,1.4,1.55,1.65,1.75,1.85,2],hp:[1,1,1.1,1.15,1.25,1.4,1.55,1.65,1.75,1.85,2],sp:[1,1,1.02,1.04,1.06,1.1,1.14,1.16,1.18,1.2,1.22],ai:[0,0,0,0,0,1,1,1,1,1,1]};
-function rkTwDiff(o){const i=rkLvl();o.mhp=Math.max(1,Math.round(o.mhp/LAYER*RKTD.hp[i]))*LAYER;o.hp=o.hpLag=o.mhp;o.tdm*=RKTD.dm[i];o.tsp*=RKTD.sp[i];G.diff=Math.min(3,(G.diff||1)+RKTD.ai[i]);o.rkTd=i}
+function rkTwDiff(o){const i=rkTwLv();o.mhp=Math.max(1,Math.round(o.mhp/LAYER*RKTD.hp[i]))*LAYER;o.hp=o.hpLag=o.mhp;o.tdm*=RKTD.dm[i];o.tsp*=RKTD.sp[i];G.diff=Math.min(3,(G.diff||1)+RKTD.ai[i]);o.rkTd=i}
 const rkTdTxt=i=>i?`Inimigos: dano +${Math.round((RKTD.dm[i]-1)*100)}% · vida +${Math.round((RKTD.hp[i]-1)*100)}% · vel. +${Math.round((RKTD.sp[i]-1)*100)}%${RKTD.ai[i]?' · IA mais esperta':''}`:'Inimigos normais';
-function rkTwBuff(p){const B=RKTB(rkLvl());p.tdm+=B.dano/100;p.tsp+=B.vel/100;p.tdf=p.tdf/(1+B.def/100);p.tcr=(p.tcr||0)+B.crit}
+function rkTwBuff(p){const B=RKTB(rkTwLv());p.tdm+=B.dano/100;p.tsp+=B.vel/100;p.tdf=p.tdf/(1+B.def/100);p.tcr=(p.tcr||0)+B.crit}
 function rkTwXP(won,quit,andar){const lv=rkLvl(),parts=[];let d=0;
   if(andar>0){const a=Math.round(RKXW[lv]*RKTWX.fl)*andar;parts.push(['🏯 '+andar+' andar'+(andar>1?'es':''),a]);d+=a}
   if(won){const t=Math.round(RKXW[lv]*RKTWX.top);parts.push(['👑 TORRE COMPLETA',t]);d+=t}
@@ -8506,7 +8508,7 @@ function evTor(){try{const st=twEvSt();if(st==='fim'&&Date.now()>TWEV.fim+6*36e5
   <p>📅 Hoje das <b>${evHr(TWEV.ini)}</b> às <b>${evHr(TWEV.fim)}</b> (horário de Brasília) · ${Math.round((TWEV.fim-TWEV.ini)/6e4)} minutos.</p>
   <p>🏃 <b>CORRIDA NA TORRE:</b> quem chegar <b>mais alto</b> na torre no <b>menor tempo</b> ganha. Empate de andar → vence quem fez em menos tempo. Vale a melhor subida de cada jogador que <b>terminar</b> dentro do horário.</p>
   <div class="evPrz">${TWEV.prem.map(P=>`<div class="pz p${P.pos}"><i>${['🥇','🥈','🥉'][P.pos-1]}</i><img src="${evPrzImg(P)}" alt=""><b>${evPrzNm(P)}</b></div>`).join('')}</div>
-  <p>🎁 Os prêmios caem <b>sozinhos</b> na conta de quem ganhar (abrindo o jogo depois do fim). ⚠️ O <b>CHEFE FINAL tem 2 vidas</b> durante o torneio.</p>
+  <p>⚖️ Durante o torneio a torre é <b>igual para todos</b>: inimigos do rank mais baixo e sem bônus de rank (itens, passivas e nível continuam valendo).</p><p>🎁 Os prêmios caem <b>sozinhos</b> na conta de quem ganhar (abrindo o jogo depois do fim). <b>Todo mundo que participar ganha ${TWEV.part||0} 💎</b>. ⚠️ O <b>CHEFE FINAL tem ${TWEV.lives||2} vidas</b> durante o torneio.</p>
   <div class="evBtns"><button class="btn main" data-e="torre">🗼 IR PARA A TORRE</button></div>`}}}catch(e){return null}}
 function ev2x(){const e=rkEvX();if(!e)return null;return {k:'x2',ic:'🔥',t:'EVENTO '+e[3].split('·')[0].trim(),st:'AO VIVO',on:1,hot:1,h:()=>`<h2>🔥 EVENTO NA RANQUEADA</h2><div class="evBig aovivo">🔴 AO VIVO · TERMINA EM <b>${evFmt(e[1]-Date.now())}</b></div>
   <p>📅 Das <b>${evHr(e[0])}</b> às <b>${evHr(e[1])}</b> (horário de Brasília).</p><ul>${e[3].split('·').map(x=>`<li>✨ <b>${x.trim()}</b></li>`).join('')}</ul>

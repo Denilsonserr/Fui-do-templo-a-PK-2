@@ -5,7 +5,7 @@ P=sys.argv[1];s=open(P,encoding='utf8').read()
 def rep(a,b):
     global s;c=s.count(a);assert c==1,(a[:80],c);s=s.replace(a,b)
 i=s.index("const TWEV={id:'ev20261108'");j=s.index("};",i)+2
-s=s[:i]+"const TWEV={id:'ev20261109',nome:'2º TORNEIO DA TORRE · CORRIDA',fast:1,ini:Date.parse('2026-11-09T20:15:00-03:00'),fim:Date.parse('2026-11-09T20:45:00-03:00'),\n  prem:[{pos:1,bp:2},{pos:2,bp:1},{pos:3,gem:3000}]};"+s[j:]
+s=s[:i]+"const TWEV={id:'ev20261109',nome:'2º TORNEIO DA TORRE · CORRIDA',fast:1,lives:3,flat:1,ini:Date.parse('2026-11-09T20:20:00-03:00'),fim:Date.parse('2026-11-09T20:50:00-03:00'),\n  prem:[{pos:1,bp:2},{pos:2,bp:1},{pos:3,gem:3000}],part:1000};"+s[j:]
 rep("function twBestU(L){const S=L.slice().sort((a,b)=>b.andar-a.andar||b.trof-a.trof||a.tempo-b.tempo)","function twBestU(L,fast){const S=L.slice().sort((a,b)=>b.andar-a.andar||(fast?0:b.trof-a.trof)||a.tempo-b.tempo)")
 rep("async function twEvL(){return twBestU((await twQ(['ev',TWEV.id])).filter(e=>e.ct>=TWEV.ini&&e.ct<=TWEV.fim+60e3))}","async function twEvL(){return twBestU((await twQ(['ev',TWEV.id])).filter(e=>e.ct>=TWEV.ini&&e.ct<=TWEV.fim+60e3),TWEV.fast)}")
 # entrega: prêmios que não são item
@@ -16,4 +16,12 @@ rep("twModal(`<div class=\"twM gold\"><h3>${pos===1?'🥇 VOCÊ GANHOU O EVENTO!
 rep("${TWEV.prem.map(P=>`<div class=\"evPz\" style=\"--c:${twRarOf(P.it.r).c}\"><i>${P.pos===1?'🥇':'🥈'}</i><img src=\"${P.it.img}\" alt=\"\"><div><b>${P.it.nm}</b><span>${twRarOf(P.it.r).n} · +${P.it.v}% DANO · +${P.it.vel}% VEL.</span>${P.tit?`<em>+ título ${TWTIT[P.tit].i} ${TWTIT[P.tit].n}</em>`:''}</div></div>`).join('')}",
 "${TWEV.prem.map(P=>P.it?`<div class=\"evPz\" style=\"--c:${twRarOf(P.it.r).c}\"><i>${P.pos===1?'🥇':'🥈'}</i><img src=\"${P.it.img}\" alt=\"\"><div><b>${P.it.nm}</b><span>${twRarOf(P.it.r).n} · +${P.it.v}% DANO · +${P.it.vel}% VEL.</span>${P.tit?`<em>+ título ${TWTIT[P.tit].i} ${TWTIT[P.tit].n}</em>`:''}</div></div>`:`<div class=\"evPz\" style=\"--c:#ffd84a\"><i>${['🥇','🥈','🥉'][P.pos-1]}</i><img src=\"${evPrzImg(P)}\" alt=\"\"><div><b>${evPrzNm(P)}</b></div></div>`).join('')}")
 rep("(vale a melhor de cada jogador: mais andares, depois mais troféus, depois menos tempo). O 1º e o 2º recebem o prêmio na mochila sozinhos quando abrirem a torre depois do fim.","(vale a melhor de cada jogador: ${TWEV.fast?'mais andares, depois MENOR TEMPO':'mais andares, depois mais troféus, depois menos tempo'}). Os premiados recebem sozinhos quando abrirem o jogo depois do fim.")
+# v268: chefe final com TWEV.lives vidas (3), cada volta 2x mais forte
+rep("TW.evBoss&&TW.fl===TWN-1&&d===G.p[1]&&!d.twRev){","TW.evBoss&&TW.fl===TWN-1&&d===G.p[1]&&(d.twRev|0)<(TWEV.lives||2)-1){")
+rep("function twBossRevive(a,d){d.twRev=1;","function twBossRevive(a,d){d.twRev=(d.twRev|0)+1;")
+rep("banner('O CHEFE VOLTOU!','#ff3030',120,'2ª VIDA · 2X MAIS FORTE')","banner('O CHEFE VOLTOU!','#ff3030',120,(d.twRev+1)+'ª VIDA · '+(d.twRev>1?'AINDA MAIS FORTE':'2X MAIS FORTE'))")
+rep("(TW.evBoss?' · 2 VIDAS (EVENTO)':'')","(TW.evBoss?' · '+(TWEV.lives||2)+' VIDAS (EVENTO)':'')")
+rep("<p class=\"twH\">⚠️ No evento o <b>CHEFE FINAL tem 2 vidas</b>: quando morre, volta com a vida cheia e 2x mais forte!","<p class=\"twH\">⚠️ No evento o <b>CHEFE FINAL tem ${TWEV.lives||2} vidas</b>: quando morre, volta com a vida cheia e mais forte!${TWEV.flat?' Durante o torneio a torre é IGUAL para todos (dificuldade do rank mais baixo, sem bônus de rank).':''}")
+# v268: 1000 💎 para todo mundo que participou (1 vez)
+rep("const i=L.findIndex(e=>e.uid===me);if(i>=0&&i<TWEV.prem.length){","const i=L.findIndex(e=>e.uid===me);if(i>=0&&TWEV.part){rkAdd('gem',TWEV.part);ec[TWEV.id].part=1;try{acSave(1)}catch(x){}setTimeout(()=>{try{rkToast('🎁 +'+TWEV.part+' 💎 por participar do '+TWEV.nome+'!','#7dff9a')}catch(x){}try{twToast('🎁 +'+TWEV.part+' 💎 por participar do torneio!','#7dff9a')}catch(x){}},i<TWEV.prem.length?4000:500)}if(i>=0&&i<TWEV.prem.length){")
 open(P,'w',encoding='utf8').write(s);print('v267 ok')

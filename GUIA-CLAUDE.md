@@ -1212,3 +1212,7 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - RECADOS DO ADM: o ADM escreve e publica na própria aba (documento `avs_<ts>` com `avs:'1', tit, txt`; cache 20 s). Todo mundo lê. Assim códigos não ficam no GitHub. (Proteção do ADM é só no jogo.)
 - TORNEIO (`extra/9b_v267.py`): `TWEV` novo `ev20261109`, 09/11/2026 20:15–20:45 Brasília, `fast:1` = ranking por mais andares e depois MENOR TEMPO (troféus não contam). Prêmios: 1º `bp:2` (Passe Prêmio), 2º `bp:1` (Passe Pago), 3º `gem:3000`. Entrega automática pelo `twClaims` (agora também ao abrir o Ranqueado), com janela de parabéns. O chefe final continua com 2 vidas no torneio.
 - Teste: `ferramentas/testes/tabas_evento_v267.js` (abas ao vivo, recado do ADM, 3 vencedores recebendo, menu sem brilho fora de evento).
+
+## v268 — torneio justo (20:20–20:50), chefe com 3 vidas, 1000 💎 por participar
+- `TWEV` agora 20:20–20:50 Brasília, `lives:3` (chefe final volta 2 vezes; `d.twRev` conta as voltas), `flat:1` (`rkTwLv()` no rk.js devolve 0 durante o torneio: inimigos do rank mais baixo e SEM bônus de rank; itens/passivas/nível continuam), `part:1000` (todo mundo que tem subida no ranking do torneio ganha 1000 💎 uma vez, no `twClaims`, `ec[id].part`).
+- Teste: `ferramentas/testes/ttorneio_v268.js` (4 jogadores: 3 premiados + participante).
