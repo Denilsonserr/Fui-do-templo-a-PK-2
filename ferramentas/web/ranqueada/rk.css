@@ -207,3 +207,7 @@
 #mm .mb7 .pfLk{position:absolute;right:7%;top:50%;transform:translateY(-50%);display:flex;align-items:center;gap:.3em;font:900 clamp(8px,1.05cqw,16px) var(--f-ui);color:#fff;background:rgba(0,0,0,.55);border-radius:.4em;padding:.15em .5em;letter-spacing:.06em}
 .rtXpR{justify-content:center}.rtXpR .rkEmb{flex:none}
 .twSt b.twCh{width:auto;height:auto;animation:none;cursor:default;display:flex;align-items:center;gap:.3em}
+/* v229: Torre em tela cheia + título no lugar do nome */
+#tower #twBox.rkT{width:100vw;height:100vh;font-size:min(1vw,1.7757vh)}
+#twBox.rkT .twArt{object-fit:fill}
+.rtNm .rtTit{font:900 1.6em var(--f-display,var(--f-ui));color:var(--c);text-shadow:0 0 .4em var(--c),0 2px 3px #000;letter-spacing:.04em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}

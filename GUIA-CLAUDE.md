@@ -928,3 +928,9 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - BÔNUS DE RANK na Torre (`RKTB(i)`: dano 2i%, defesa 2i%, vel i%, crít i%, sorte 3i%), aplicado no `twApply` (`rkTwBuff`). Sorte (`rkSorte`, ADM +30) melhora `twRoll`/`twEqRoll`/`twPoRoll` (substitui a sorte só do ADM).
 - Mochila: `twBag` agora abre a mochila nova (`rkEquip`, funciona na Torre e no Ranqueado — `rkModal`/`rkToast`/`RKMS()`/`rkHost()` usam a janela da Torre quando a tela é a Torre). Itens iguais (e poções iguais) ficam numa PILHA que ocupa 1 espaço (até 99): `twStacks()`; `twCap` conta pilhas (20). Toque no item → detalhe: EQUIPAR / VENDER 1 / VENDER TODOS / BEBER / DESCARTAR.
 - Testes: `ttorre_rk.js` (novo); `tequipar.js`, `tcupom*.js`, `tdiamante.js` atualizados para o caminho novo. `ttorre_bau.js` (v196) já estava desatualizado (tela de andar vencido mudou depois).
+
+## v229 — Torre em tela cheia, título no lugar do nome, código SORTE MÁXIMA
+- Tela da Torre ocupa a tela inteira (`#twBox.rkT` 100vw×100vh; a arte estica um pouco na largura; tudo é posicionado em %).
+- Barra do nome: o nome saiu (ficava escuro/bugado); agora mostra só o TÍTULO ativo grande (`.rtTit`, cor do título) e o personagem embaixo.
+- Código CAIXA DA SORTE MÁXIMA (hash `1tg5gr8`, texto só com o dono): 100–1000 💎 totalmente aleatório; 1 vez por NOME (documentId `cupom_1tg5gr8_n<hash nome>`); precisa ter nome. `rkDiaBox(3)`.
+- Teste `ferramentas/testes/tsorte3.js`.

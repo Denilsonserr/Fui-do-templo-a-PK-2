@@ -691,6 +691,10 @@ h2{margin:0;font-family:var(--f-display);font-weight:400;font-size:clamp(26px,8v
 #mm .mb7 .pfLk{position:absolute;right:7%;top:50%;transform:translateY(-50%);display:flex;align-items:center;gap:.3em;font:900 clamp(8px,1.05cqw,16px) var(--f-ui);color:#fff;background:rgba(0,0,0,.55);border-radius:.4em;padding:.15em .5em;letter-spacing:.06em}
 .rtXpR{justify-content:center}.rtXpR .rkEmb{flex:none}
 .twSt b.twCh{width:auto;height:auto;animation:none;cursor:default;display:flex;align-items:center;gap:.3em}
+/* v229: Torre em tela cheia + título no lugar do nome */
+#tower #twBox.rkT{width:100vw;height:100vh;font-size:min(1vw,1.7757vh)}
+#twBox.rkT .twArt{object-fit:fill}
+.rtNm .rtTit{font:900 1.6em var(--f-display,var(--f-ui));color:var(--c);text-shadow:0 0 .4em var(--c),0 2px 3px #000;letter-spacing:.04em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 
 .twBag .bgw{display:flex;gap:1em;justify-content:center;align-items:flex-start;margin:.4em 0}
 .twBag .bgc{flex:1;max-width:16em;display:flex;flex-direction:column;gap:.4em;max-height:52vh;overflow:auto;padding:.2em}
@@ -6155,10 +6159,10 @@ const twHash=s=>{let h=0x811c9dc5;for(const c of s){h^=c.charCodeAt(0);h=Math.im
 /* nome proibido: qualquer forma de "ADM" (maiúscula, espaço, ponto, acento, 4DM, @dm...) */
 const twBadName=n=>{const t=String(n).normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase().replace(/[4@]/g,'a').replace(/[0]/g,'o').replace(/[1!|]/g,'i').replace(/3/g,'e').replace(/[^a-z]/g,'');return t.includes('adm')};
 const twIsAdm=()=>twTits().includes('adm');const TWALIAS={'denilson_dw adm':'Denilson ADM'};const twAl=n=>TWALIAS[String(n).toLowerCase().trim()]||n;
-const TWCUP={'17hle64':{nm:'2000 DIAMANTES',gem:2000},'1kd7i6l':{nm:'1000 DIAMANTES',gem:1000},'1jzhy5g':{nm:'CAIXA DA SORTE',dia:2},'1b2e1xu':{nm:'CAIXA DE DIAMANTES',dia:1},'706xst':{nm:'2 BAÚS LENDÁRIOS',bau:{r:'lend',n:2}},'1polqg8':{nm:'TODOS OS EQUIPAMENTOS MÍTICOS',it:[{t:'esp',r:'mit',v:10},{t:'arm',r:'mit',v:10},{t:'bot',r:'mit',v:10}],eq:1}};
+const TWCUP={'1tg5gr8':{nm:'CAIXA DA SORTE MÁXIMA',dia:3},'17hle64':{nm:'2000 DIAMANTES',gem:2000},'1kd7i6l':{nm:'1000 DIAMANTES',gem:1000},'1jzhy5g':{nm:'CAIXA DA SORTE',dia:2},'1b2e1xu':{nm:'CAIXA DE DIAMANTES',dia:1},'706xst':{nm:'2 BAÚS LENDÁRIOS',bau:{r:'lend',n:2}},'1polqg8':{nm:'TODOS OS EQUIPAMENTOS MÍTICOS',it:[{t:'esp',r:'mit',v:10},{t:'arm',r:'mit',v:10},{t:'bot',r:'mit',v:10}],eq:1}};
 async function twCupom(code,E){const h=twHash(code.toUpperCase()),C=TWCUP[h];if(!C)return false;const used=twLS.g('tw_cup',{});
   if(used[h]){E.className='twH err';E.textContent='Você já usou esse código.';return true}
-  let dk='';if(C.dia===2)dk='_u'+twHash(twUid());else if(C.dia){const nm=String(twLS.g('tw_nome','')||'').toLowerCase().trim(),u=twUid(),oU=TWDIAU.includes(twHash(u)),oN=nm&&TWDIAN.includes(twHash(nm));if(!oU&&!oN){E.className='twH err';E.textContent='❌ Esse código é só para quem já jogou o Modo Torre (lista de jogadores).';twSfx('clang');return true}dk='_'+(oU?'u'+twHash(u):'n'+twHash(nm))}
+  let dk='';if(C.dia===3){const nm=String(twLS.g('tw_nome','')||'').toLowerCase().trim();if(!nm){E.className='twH err';E.textContent='Escolha seu nome primeiro (botão ✏️ NOME na Torre).';return true}dk='_n'+twHash(nm)}else if(C.dia===2)dk='_u'+twHash(twUid());else if(C.dia){const nm=String(twLS.g('tw_nome','')||'').toLowerCase().trim(),u=twUid(),oU=TWDIAU.includes(twHash(u)),oN=nm&&TWDIAN.includes(twHash(nm));if(!oU&&!oN){E.className='twH err';E.textContent='❌ Esse código é só para quem já jogou o Modo Torre (lista de jogadores).';twSfx('clang');return true}dk='_'+(oU?'u'+twHash(u):'n'+twHash(nm))}
   E.className='twH';E.textContent='Conferindo o código...';const IV=v=>({integerValue:String(v)});
   const f={nome:{stringValue:String(twLS.g('tw_nome','')||'?').slice(0,16)},andar:IV(0),tempo:IV(0),uid:{stringValue:twUid()},cupom:{stringValue:h},v:IV(206)};
   let r;try{r=await twFetchT(TWURL+'/torre?documentId=cupom_'+h+dk+'&key='+TWFB.apiKey,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({fields:f})})}catch(e){E.className='twH err';E.textContent='Precisa de internet para usar o código.';return true}
@@ -6704,9 +6708,9 @@ function rkPos(){const rp=rkG('rp',0),ri=rkRank(rp),S=rkSt();
 const TWDIAN=["oqqh4h","13uxsah","x5a5kc","srbzgm","u2go56","10jasju","xq65nl","1g9ac0y","1vaplua","1cuadjd","z7e3m8","zf435s","vhy4to","1gn6q7b","1ry3d2h","io4fdx","8sa57d","1vla1n5","1rn8e9q","1nvlie","1cpy0l3","y5adqo","1twinyn","1mdayar"],TWDIAU=["13vlve8","14wfhw9","wurbwp","11ytymg","1v9nlbt","1off6cc","74xllj","1q475c8","1lgy2bh","xofqbu","1ilefnk","1idoq9v","1u5wgl5","1x8vi6l","1n9cqgu","y3wxz2","ld8n0d"];
 const RKDIA=[[100,25],[200,20],[300,16],[400,13],[500,10],[600,7],[700,4],[800,2.5],[900,1.5],[1000,1]];
 function rkDiaRoll(){let r=Math.random()*100;for(const [v,w] of RKDIA){if(r<w)return v;r-=w}return 100}
-function rkDiaBox(kind){const v=kind===2?100+((Math.random()*501)|0):rkDiaRoll();rkAdd('gem',v);
-  twModal(`<div class="twM gold rkDia"><h3>${kind===2?'🍀 CAIXA DA SORTE':'💎 CAIXA DE DIAMANTES'}</h3><p class="twH">${kind===2?'De 100 a 600 diamantes, totalmente aleatório!':'Presente para quem jogou o Modo Torre!'} Toque na caixa.</p><div class="dbx" id="rkDbx"><img class="cf" src="${TWIMG.bf[3]}" alt=""><img class="ca" src="${TWIMG.ba[3]}" alt=""><i class="rays"></i><b id="rkDn"><img src="${RQA.coin[0]}" alt=""><span>0</span></b></div>
-    ${kind===2?'':`<p class="twH">Chances: 100 (25%) · 200 (20%) · 300 (16%) · 400 (13%) · 500 (10%) · 600 (7%) · 700 (4%) · 800 (2,5%) · 900 (1,5%) · 1000 (1%)</p>`}<p class="twH ok" id="rkDt" style="visibility:hidden">Os diamantes já estão no MODO RANQUEADO (Gacha e Loja)!</p><div class="row"><button class="btn main" id="rkDok">ABRIR</button></div></div>`);
+function rkDiaBox(kind){const v=kind===3?100+((Math.random()*901)|0):kind===2?100+((Math.random()*501)|0):rkDiaRoll();rkAdd('gem',v);
+  twModal(`<div class="twM gold rkDia"><h3>${kind===3?'🍀 CAIXA DA SORTE MÁXIMA':kind===2?'🍀 CAIXA DA SORTE':'💎 CAIXA DE DIAMANTES'}</h3><p class="twH">${kind===3?'De 100 a 1000 diamantes, totalmente aleatório!':kind===2?'De 100 a 600 diamantes, totalmente aleatório!':'Presente para quem jogou o Modo Torre!'} Toque na caixa.</p><div class="dbx" id="rkDbx"><img class="cf" src="${TWIMG.bf[3]}" alt=""><img class="ca" src="${TWIMG.ba[3]}" alt=""><i class="rays"></i><b id="rkDn"><img src="${RQA.coin[0]}" alt=""><span>0</span></b></div>
+    ${kind>=2?'':`<p class="twH">Chances: 100 (25%) · 200 (20%) · 300 (16%) · 400 (13%) · 500 (10%) · 600 (7%) · 700 (4%) · 800 (2,5%) · 900 (1,5%) · 1000 (1%)</p>`}<p class="twH ok" id="rkDt" style="visibility:hidden">Os diamantes já estão no MODO RANQUEADO (Gacha e Loja)!</p><div class="row"><button class="btn main" id="rkDok">ABRIR</button></div></div>`);
   let op=0;const go=()=>{if(op){twModal(null);return}op=1;const X=$('rkDbx');X.classList.add('open');twSfx('boom');setTimeout(()=>twSfx('powerUp'),300);const S=document.querySelector('#rkDn span');let n=0;const st=Math.max(10,v/40);const iv=setInterval(()=>{n=Math.min(v,n+st);S.textContent=Math.round(n);if(n>=v){clearInterval(iv);if(v>=500)twSfx('boom')}},30);$('rkDt').style.visibility='visible';$('rkDok').textContent='PEGAR'};
   $('rkDbx').onclick=go;$('rkDok').onclick=go}
 
@@ -6805,7 +6809,7 @@ function rkTwSkin(){const B=$('twBox');if(!B||B.dataset.rk)return;B.dataset.rk=1
   $('rtRw').onclick=()=>{if(busy())return;twSfx('whoosh');rkTwRw()};$('rtRanks').onclick=()=>{if(busy())return;twSfx('whoosh');rkRewards()};
   U.querySelectorAll('.rtRow button').forEach(b=>b.onclick=()=>$(b.dataset.c).click())}
 function rkTwRender(){if(!$('rtUI'))return;const id=TW.pick,im=$('rtAv').querySelector('img'),src=RQA.rank[rkRank(rkG('rp',0))];if(im.getAttribute('src')!==src)im.src=src;
-  const n=twLS.g('tw_nome','');$('rtNm').innerHTML=`<b>${n?twEsc(n):'<i>sem nome</i>'}</b>${twTitTag(twTitOn())}<small>🥷 ${CH[id]?CH[id].name:''} · toque na 🔍 para trocar</small>`;
+  const T=TWTIT[twTitOn()];$('rtNm').innerHTML=`<b class="rtTit" style="--c:${T?T.c:'#9fb0d0'}">${T?(T.i||'🏅')+' '+T.n:'SEM TÍTULO'}</b><small>🥷 ${CH[id]?CH[id].name:''} · toque na 🔍 para trocar</small>`;
   const rp=rkG('rp',0),ri=rkRank(rp);$('rtXpS').style.cssText=`width:${rkProg(rp)}%;background:linear-gradient(90deg,${RKR[ri].c},#fff8)`;$('rtXpT').innerHTML=`<span style="color:${RKR[ri].c}">${RKR[ri].n}</span> · ${rkFmtN(rp)}${ri<7?' / '+rkFmtN(RKXP[ri+1]):''} XP`;
   const B=RKTB(ri),adm=twIsAdm(),cr=(()=>{let c=0;const o=twEqOn();for(const k in o)c+=o[k].crit||0;return c})();
   const V={dano:B.dano+twEqB('dano')+(TW.pas.dano||0)+(adm?20:0),bars:TW.bars,def:B.def+twEqB('vida')+(TW.pas.vida||0),vel:B.vel+twEqB('vel')+(TW.pas.vel||0)+(adm?10:0),crit:5+cr+B.crit,sorte:rkSorte()};
