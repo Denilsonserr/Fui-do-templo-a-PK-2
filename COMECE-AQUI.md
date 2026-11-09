@@ -1,6 +1,6 @@
 # FÚRIA DO TEMPLO — GUIA DE PASSAGEM PARA A CONTA NOVA
 
-Versão do jogo neste momento: **v234** (09/11/2026).
+Versão do jogo neste momento: **v235** (09/11/2026).
 Este arquivo tem duas partes: a **Parte 1** é para o dono (Denilson) e a **Parte 2** é para o Claude da conta nova.
 
 ---
@@ -12,7 +12,7 @@ Este arquivo tem duas partes: a **Parte 1** é para o dono (Denilson) e a **Part
    - Dê acesso ao repositório **Denilsonserr/Fui-do-templo-a-PK-2**.
 3. Comece uma conversa nova escolhendo esse repositório e mande este arquivo (ou só a mensagem abaixo):
 
-   > Continua o meu jogo Fúria do Templo. Repositório: Denilsonserr/Fui-do-templo-a-PK-2. Lê primeiro os arquivos COMECE-AQUI.md e GUIA-CLAUDE.md inteiros e segue as regras deles. A versão atual é a v234.
+   > Continua o meu jogo Fúria do Templo. Repositório: Denilsonserr/Fui-do-templo-a-PK-2. Lê primeiro os arquivos COMECE-AQUI.md e GUIA-CLAUDE.md inteiros e segue as regras deles. A versão atual é a v235.
 
 4. Depois é só pedir as coisas do mesmo jeito de sempre. Cada versão nova gera sozinha:
    - o **site**: https://denilsonserr.github.io/Fui-do-templo-a-PK-2/?v=NÚMERO
@@ -139,13 +139,13 @@ Este arquivo tem duas partes: a **Parte 1** é para o dono (Denilson) e a **Part
 
   Disparar: `gh api -X POST repos/Denilsonserr/Fui-do-templo-a-PK-2/actions/workflows/ARQUIVO.yml/dispatches -f ref=main`. Ler: `gh api repos/Denilsonserr/Fui-do-templo-a-PK-2/actions/runs/ID/logs > l.zip` e `unzip`.
 
-### O que existe hoje (v234)
+### O que existe hoje (v235)
 - **Menu principal (arte do dono):**
   - Batalha;
   - História 🔒;
   - Modo Ranqueado;
   - Online 🔒;
-  - Perfil 🔒;
+  - Perfil (aba PERFIL e aba HISTÓRICO, v235);
   - Configuração;
   - botão 👤 CONTA.
 - **Modo Ranqueado:**
@@ -169,4 +169,6 @@ Este arquivo tem duas partes: a **Parte 1** é para o dono (Denilson) e a **Part
 ### Pendências
 - O dono não respondeu se dá o 2º lugar do evento de 08/11 ao ZEUS_DARKBR (a corrida dele terminou às 15:45:52, fora do horário).
 - O plano Blaze não foi ativado (erro do Google OR_BACR2_59).
-- Ainda não existem: Desafio do Tempo, História, Online, Perfil. Esperar o dono mandar as artes e as regras.
+- Ainda não existem: Desafio do Tempo, História, Online. Esperar o dono mandar as artes e as regras.
+- Perfil: faltam os EMBLEMAS animados da foto (o dono vai mandar) e as abas vazias da arte.
+- Personagem novo: YUTA (Jujutsu Kaisen). O dono mandou só a imagem de corpo inteiro (para a tela VS); falta mandar o resto.

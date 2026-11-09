@@ -75,4 +75,7 @@ rep("const days=[0,1,2].map(i=>twDay(Date.now()-i*864e5)),out=[];","const days=[
 rep("where:{fieldFilter:{field:{fieldPath:'chat'},op:'EQUAL',value:{stringValue:d}}},limit:400}","where:{fieldFilter:{field:{fieldPath:'ch'},op:'EQUAL',value:{stringValue:d}}},limit:100}")
 rep("orderBy:[{field:{fieldPath:'pontos'},direction:'DESCENDING'}],limit:300}","orderBy:[{field:{fieldPath:'pontos'},direction:'DESCENDING'}],limit:150}")
 rep("Mensagens dos últimos 3 dias.","Mensagens das últimas 6 horas.")
+# v235: PERFIL liberado no menu principal (abre a tela Perfil/Histórico do rk.js)
+rep('<button class="mb mb7 lk" id="mPerfil" aria-label="Perfil (bloqueado)"><span class="pfLk">🔒 EM BREVE</span></button>','<button class="mb mb7" id="mPerfil" aria-label="Perfil"><span class="shine"></span></button>')
+rep("for(const [id,n] of [['mHist','História'],['mOnline','Online'],['mPerfil','Perfil']])","$('mPerfil').onclick=()=>{audioInit();SFX.whoosh();rkOpen('pf')};for(const [id,n] of [['mHist','História'],['mOnline','Online']])")
 open(P,'w').write(s);print('ok',len(s))

@@ -966,3 +966,21 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - Chats por HORA: global grava `gh:'h'+hora` e lê só as últimas 6 horas; Torre grava `ch` e lê as últimas 6 horas (antes lia o dia inteiro / 3 dias a cada poucos segundos).
 - Ranking da Torre (`twFetch`) lê 150 em vez de 300. Cache: títulos 6 h, rankings ordenados e recordes 10 min, semana/evento 10 min.
 - Teste `ferramentas/testes/tchat2.js` (servidor simulado com where/orderBy; conta leituras).
+
+## v235 — PERFIL e HISTÓRICO (artes do dono)
+- Artes: `ferramentas/ranqueada_artes/perfil_v235.png` (1672×941, `RQA.perfil`) e `historico_v235.png` (1671×941, `RQA.historico`). Views novas do ranqueado: `pf` e `hs` (`pfH/pfOn`, `hsH/hsOn` no fim do `rk.js`; coordenadas em pixels da arte com `rkB2`). Os botões 🎵/🎟️/👤 ficam escondidos nessas telas.
+- Menu principal: botão **Perfil** liberado (`#mPerfil` → `rkOpen('pf')`, rep no fim do `patch_v213.py`). Voltar (seta) = menu principal; abas PERFIL/HISTÓRICO trocam entre as telas. As outras abas vazias da arte ainda não fazem nada.
+- **Perfil:**
+  - Quadradinho = foto (`rk_foto`, jpg 200×200 ≤ ~40 KB, recortada no meio). Toque → TROCAR FOTO (galeria do celular, `<input type=file>`), 🏅 EMBLEMA (em breve: o dono vai mandar molduras animadas estilo Mobile Legends) e TIRAR FOTO. A foto fica no aparelho e vai no save da conta (chave `rk_`). Ninguém vê o perfil dos outros ainda; quando fizer isso, colocar o "esconder foto" do ADM.
+  - 1ª faixa = nome (`tw_nome`, dourado animado para Denilson ADM); 2ª faixa = título em uso (toque abre `twTitles` por cima).
+  - Bolinhas: rank ATUAL e MÁXIMO (`rk_rkmax`, atualizado no `rkS('rp')` e ao abrir o perfil) com brilho na cor do rank.
+  - 3 bolinhas de baixo: personagens mais usados (`rk_use`, conta cada `startMatch` fora do treino, desde a v235).
+  - Pedestal: personagem (`rk_ped`; vazio = o mais usado). 🔍 ou toque no personagem → escolher entre os personagens do ranqueado ou AUTOMÁTICO.
+- **Histórico:** PARTIDAS = lutas no Boss + andares lutados na Torre; TAXA DE VITÓRIA = vitórias/partidas; TOP = posição no ranking RANK (`rkLoadRk('rp')`, cache de 10 min; fora dos 150 = "150+"); TORRE = subidas (começa com o `tw_hist`); BOSS = vitórias no Broly; PERSON. = personagens/total; RECORDE = vitória mais rápida no Boss (`st.tt`). Toque nos 4 botões = detalhe.
+- **Radar (nível de habilidade, `pfRadar`)**, tudo local, sem servidor (toque = explicação):
+  - CRÍTICO: média entre crítico da build (5% + equipamentos + bônus do rank) e críticos de verdade (`PFF` conta acertos/críticos do jogador 1 via `applyHit`/`critFx`); 35% = máximo.
+  - DANO: média do dano no Broly (`pf.df`) 65% + bônus de dano 35%.
+  - VELOCIDADE: `walk` do personagem mais usado + bônus de velocidade.
+  - RANK: rank + progresso. COMBO: média do maior combo por luta (30 = máximo). FARM: tudo que juntou (💎 + 🔴×3 + 🪙/10, escala log).
+  - Dados em `rk_pf` (tw, twc, twf, twl, n, cmb, df, hit, crit, farm, mo). Ganchos: `rkAfter` (Boss), `twAfter`/`twFinish` (Torre), `rkAdd` (💎/🔴).
+- Teste `ferramentas/testes/tperfil.js` (`FOTO=<imagem> SH=<pasta> node ...`). `ttorre_rk.js` não clica mais no Perfil.

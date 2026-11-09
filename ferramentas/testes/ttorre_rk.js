@@ -7,7 +7,7 @@ await p.addInitScript(()=>{if(!sessionStorage.d){sessionStorage.d=1;localStorage
   Object.assign(localStorage,{tw_nome:'"Teste"',rk_ini:'1',rk_xpv2:'1',rk_own:'["goku","garou"]',rk_sel:'"garou"',rk_rp:'5200',rk_dia:'1',tw_poc:JSON.stringify(P),tw_inv:JSON.stringify(I),tw_moedas:'1000'})}});
 await p.goto('file:///home/claude/fui-do-templo-a-pk-2/www/index.html');await p.waitForFunction(()=>!document.getElementById('goSelect').disabled,null,{timeout:120000});
 const shot=n=>p.screenshot({path:SH+'tr_'+n+'.png'});const wait=ms=>p.waitForTimeout(ms);
-await wait(1200);await shot('menu');await p.click('#mPerfil');await wait(400);
+await wait(1200);await shot('menu');
 await p.click('#mRank');await wait(600);await shot('rkmenu');await p.click('#rkWrap [data-a="torre"]');await wait(1200);await shot('torre');
 await p.click('#rtUI .rtRow button[data-c="twBagB"]');await wait(500);await shot('mochila');
 const pilhas=await p.evaluate(()=>[...document.querySelectorAll('#twModal .eqI')].map(e=>e.innerText.replace(/\n/g,' ')));
