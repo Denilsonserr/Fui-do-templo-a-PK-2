@@ -1151,3 +1151,8 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 
 ## v255 — Joia Negra cai mais
 - Pedido do dono: chance da Joia Negra de 0,5% → **4% × `lvLuck()`** (a sorte aumenta; `lvLuck` já inclui drop, ADM +60% e evento) em cada vitória do Boss (rank/farm/evento) e em cada andar vencido da Torre.
+
+## v256 — 2 códigos novos (texto só com o dono)
+- `o9m3i1` = 40 JOIAS NEGRAS, uso ÚNICO no jogo inteiro (`uni:1` faz o `jn` não usar chave de conta → documentId `cupom_o9m3i1`, o 2º recebe "já foi usado por outro jogador").
+- `n8jwhl` = PRESENTE DAS PASSIVAS: 1000 💎 + 20 🎫 + 5 💠, todo mundo 1 vez (`ev:1`; o ramo `ev` agora também dá `jn`).
+- Arquivo `extra/93_v256.py`. Teste: `ferramentas/testes/tcodigos_v256.js`.
