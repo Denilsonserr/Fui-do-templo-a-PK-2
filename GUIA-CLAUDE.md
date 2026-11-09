@@ -992,3 +992,13 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - Ranks (`pfRkH`): quanto mais alto, mais efeito (`--k` = rank/7): brilho maior; raios girando a partir da Prata; faíscas orbitando a partir do Diamante; estrelinhas a partir do Lendário; anel de fogo no Dragão/Divindade; Divindade com brilho dourado extra.
 - Título (`pfTitH`): placa grande com a cor do título (emblema para títulos de rank). ADM: placa dourada com borda animada, coroa, "ADM" dourado animado, "ADMINISTRADOR", brilhos piscando e faixa de luz passando.
 - Teste `ferramentas/testes/tperfil.js` atualizado (recorte e vitrine).
+
+## v237 — ver o PERFIL dos outros jogadores
+- Toque num jogador no RANKING DO RANQUEADO (todas as abas), no CHAT GLOBAL (lobby do Boss) ou no CHAT DA TORRE → abre o Perfil/Histórico dele (`pfOpenOther`). Clique delegado em `[data-pu]` (`data-pu` = uid, `data-pn` = nome); `twChatHTML` foi reescrito no `rk.js` só para pôr esses atributos. A seta volta para onde estava (ranking reabre na mesma aba; chat da Torre reabre).
+- Publicação (`pfPub`): doc `torre/pf_<twHash(uid)>_<ts36>` com `pfu`=uid, `uid`, `nome`, `d`=JSON (`pfMine()`: nome, título, rp, rank máximo, foto, vitrine, pedestal, radar, números do histórico). Só grava se mudou (`pfpub_h`, fora do save da conta). Ao abrir o próprio Perfil = na hora; ao abrir o jogo (15 s) e depois das lutas = no máximo a cada 30 min (`pfpub_t`).
+- Leitura: `pfLast('pfu',uid)` (`__name__` DESC, limit 1 — como os saves da conta, sem índice) + `pfLast('pfh',uid)`; cache 5 min (`RKQT` /"pf[uh]"/). 2 leituras por perfil aberto.
+- Tudo que vem do servidor passa por `pfClean` (foto só `data:image/jpeg`, imagens de item só `a/*.webp` ou data:image, personagem/título/raridade conferidos, números limitados, textos escapados).
+- Quem ainda não abriu o jogo na v237: perfil básico pelo ranking (nome, título, rank, personagem do último Boss) com o aviso "ainda não atualizou o jogo" e Histórico com "—".
+- Perfil de outro: faixa "👀 PERFIL DE <nome>"; nada é editável; toque num item da vitrine mostra o efeito; sem 🔍.
+- ADM (título ADM + nome Denilson ADM) toca na foto de outro jogador → 🚫 ESCONDER FOTO / 👁️ MOSTRAR FOTO: doc `pfh_<hash>_<ts36>` com `pfh`=uid, `pfa`='h'/'s', nome Denilson ADM (vale o mais novo; leva até 5 min para os outros verem). Limitação: as regras do Firestore não conferem quem criou o doc.
+- Teste `ferramentas/testes/tperfil_outro.js` (2 jogadores, servidor simulado com orderBy `__name__`).

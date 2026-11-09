@@ -316,3 +316,11 @@
 .pfCs{display:flex;flex-direction:column;align-items:center;gap:.7em;max-width:16em}
 .pfCs label{display:flex;flex-direction:column;align-items:center;gap:.3em;font:900 .95em var(--f-ui);color:#e2c9ff;width:100%}.pfCs input{width:100%;accent-color:#a06aff}
 .pfPv{display:flex;flex-direction:column;align-items:center;gap:.2em}.pfPv canvas{width:6.5em;height:6.5em;border-radius:.8em;border:2px solid #c9a4ff;background:#000}.pfPv small{font:700 .75em var(--f-ui);color:#b9abd8}
+/* v237: perfil de outro jogador */
+.pfOth{display:flex;align-items:center;justify-content:center;gap:.4em;border-radius:2em;background:rgba(20,8,44,.82);border:2px solid #b88cff;box-shadow:0 0 1em rgba(160,106,255,.6);font:900 1.15em var(--f-ui);color:#e2c9ff;letter-spacing:.05em;white-space:nowrap;z-index:6}
+.pfOth b{color:#fff;font-size:1.1em}.pfOth small{font:700 .7em var(--f-ui);color:#ffb060;margin-left:.4em}
+.pfFoto.ro,.pfTi.ro{cursor:default}.pfFoto.ro:active{transform:none}
+#rkModal .twRk .rw[data-pu]:not([data-pu=""]),#rkChL .cm[data-pu]:not([data-pu=""]),#twChL .cm[data-pu]:not([data-pu=""]){cursor:pointer}
+#rkModal .twRk .rw[data-pu]:not([data-pu=""]):active,#rkChL .cm[data-pu]:not([data-pu=""]):active,#twChL .cm[data-pu]:not([data-pu=""]):active{filter:brightness(1.35)}
+.pfHint{margin:.2em 0 .4em;color:#c9b6ff!important}
+.pfFoto span.h{font-size:.72em}
