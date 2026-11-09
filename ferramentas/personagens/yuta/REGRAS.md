@@ -25,3 +25,8 @@
 - Faixa "Taxa Aumentada!" com brilho e flutuando (efeito em código).
 - Ao pegar o Yuta: animação com o vídeo dele, "SORTE MÍTICA", tudo fica roxo, bem top.
 - TÍTULO numerado do Yuta para os 10 PRIMEIROS que pegarem (nº 1 a 10, ordem do servidor). Quanto menor o número, mais brilho. O título dá +10% de dano.
+
+## Botões (`botoes_normal.png` e `botoes_despertar.png`)
+- Usar SÓ os botões (não usar o HUD de vida/barras da arte). Tamanho padrão de todos os botões, encaixados como sempre.
+- Forma normal: botões normais (sem animação extra).
+- Despertar (transformado): chamas se movendo, raios e movimentos legais nos botões.
