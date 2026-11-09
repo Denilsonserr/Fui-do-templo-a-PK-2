@@ -10,6 +10,10 @@
 - Super combo transformado: a RIKA aparece e desaparece — ele dá o soco, ela aparece e soca (folha `poses/19_combo_rika_soco.png`, linha de baixo).
 - Combo extra, que NÃO aparece toda hora, mais com a Rika (folha `poses/20_combo_rika_especial.png`). Pode sair no soco normal transformado: a Rika aparece para ajudar no soco.
 - Quando a Rika aparece, o Yuta meio que desaparece. Tudo bem rápido.
+## Combos com a Rika (esclarecido pelo dono)
+- Às vezes, quando ele está dando espadadas (transformado), a Rika pode aparecer.
+- No combo automático: os dois combos da Rika (folhas 19 e 20) entram SEPARADOS, um e outro alternando — para a gameplay ser realmente diferente.
+- O dono vai mandar junto: botões/HUD do Yuta, gacha nova e eventos — tudo numa atualização só.
 ## Passiva
 - Contra-ataque depois de 4 golpes (entendido como 4 golpes recebidos), com dano crítico.
 ## Falta
