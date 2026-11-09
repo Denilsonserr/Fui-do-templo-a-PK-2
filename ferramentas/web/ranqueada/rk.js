@@ -5,23 +5,27 @@
 const RQA=__RKA__;const RKW=1847,RKH=851;
 const rkB=(x0,y0,x1,y1)=>`left:${x0/RKW*100}%;top:${y0/RKH*100}%;width:${(x1-x0)/RKW*100}%;height:${(y1-y0)/RKH*100}%`;
 /* REGRAS DA RANQUEADA (do dono): XP ranqueado acumulado; vitória/derrota por rank; nível do Boss = rank (1..8) */
-const RKXP=[0,1000,2500,5000,9000,15000,23000,35000],RKXW=[150,180,210,240,270,300,340,390],RKXL=[30,45,60,80,100,125,150,180];
+const RKXP=[0,1000,2500,5000,9000,15000,23000,35000,50000,70000,100000],RKXW=[150,180,210,240,270,300,340,390,440,500,580],RKXL=[30,45,60,80,100,125,150,180,210,250,300];
 /* bônus de XP no Boss (v224) */
 const RKXB={dmg:.8,cmb:60,me:150,srv:600};
 const RKR=[{n:'MADEIRA',c:'#d29a5a',min:0,rw:0},{n:'BRONZE',c:'#ef9a5a',min:1000,rw:50},{n:'PRATA',c:'#dfe8ff',min:2500,rw:100},{n:'OURO',c:'#ffd23a',min:5000,rw:150},
-  {n:'DIAMANTE',c:'#5ab8ff',min:9000,rw:250},{n:'LENDÁRIO',c:'#c46aff',min:15000,rw:400},{n:'DRAGÃO LENDÁRIO',c:'#ff4a2a',min:23000,rw:600},{n:'DIVINDADE',c:'#fff4c0',min:35000,rw:1000}];
+  {n:'DIAMANTE',c:'#5ab8ff',min:9000,rw:250},{n:'LENDÁRIO',c:'#c46aff',min:15000,rw:400},{n:'DRAGÃO LENDÁRIO',c:'#ff4a2a',min:23000,rw:600},{n:'DIVINDADE',c:'#fff4c0',min:35000,rw:1000},
+  /* v250: 3 ranks acima da Divindade */
+  {n:'DIVINDADE SUPREMA',c:'#ffd86b',min:50000,rw:1500},{n:'DIVINDADE CELESTIAL',c:'#6fc8ff',min:70000,rw:2000},{n:'DEUS CELESTIAL',c:'#e0a0ff',min:100000,rw:3000}];
+const RKTOP=RKR.length-1;
 /* escala do Boss por nível (100% = atributos originais) */
-const RKLVS=[{v:100,d:100,s:100},{v:115,d:110,s:105},{v:135,d:120,s:110},{v:160,d:135,s:115},{v:190,d:150,s:120},{v:225,d:165,s:125},{v:265,d:180,s:130},{v:320,d:200,s:135}];
+const RKLVS=[{v:100,d:100,s:100},{v:115,d:110,s:105},{v:135,d:120,s:110},{v:160,d:135,s:115},{v:190,d:150,s:120},{v:225,d:165,s:125},{v:265,d:180,s:130},{v:320,d:200,s:135},{v:380,d:220,s:140},{v:450,d:240,s:145},{v:540,d:265,s:150}];
 const RKPAS=[['Boss normal, sem passivas especiais','IA básica: ataques e bloqueios simples'],['10% de chance de bloquear um ataque','IA usa combos básicos'],['15% de chance de esquivar de um ataque','Contra-ataques simples'],
   ['Regenera 3% da vida máxima uma vez ao chegar a 40%','Combos mais longos'],['Ao chegar a 50% da vida: +15% de dano por 8 s','IA mais agressiva'],['Barreira que absorve 10% da vida máxima (1 vez por luta)','Ataques especiais com mais frequência'],
-  ['Ao chegar a 30%: MODO FURIOSO, +15% de velocidade por 10 s','Esquivas e contra-ataques avançados'],['Ao chegar a 25%: FASE SUPREMA — barreira de 15% e +20% de dano por 12 s','Usa os melhores combos e especiais']];
+  ['Ao chegar a 30%: MODO FURIOSO, +15% de velocidade por 10 s','Esquivas e contra-ataques avançados'],['Ao chegar a 25%: FASE SUPREMA — barreira de 15% e +20% de dano por 12 s','Usa os melhores combos e especiais'],
+  ['Poder SUPREMO: todas as passivas acima com mais vida, dano e velocidade','IA suprema: combos e especiais em sequência'],['Poder CELESTIAL: ainda mais vida, dano e velocidade','IA celestial: quase não dá brecha'],['Poder de um DEUS: o Boss mais forte do jogo','IA divina: o melhor de tudo']];
 /* configuração reutilizável de bosses (para adicionar outros no futuro) */
-const RKBOSS=[{id:'broly',n:'BROLY',sub:'O Super Saiyajin Lendário',ph:[[2,3],[2,4],[3,5],[3,6],[4,8],[5,10],[6,12],[7,14]],b1:{dm:.65,df:1.2,sp:.92},b2:{dm:.8,df:1.05,sp:1},c:'#5cff4a'},
+const RKBOSS=[{id:'broly',n:'BROLY',sub:'O Super Saiyajin Lendário',ph:[[2,3],[2,4],[3,5],[3,6],[4,8],[5,10],[6,12],[7,14],[8,16],[9,18],[10,20]],b1:{dm:.65,df:1.2,sp:.92},b2:{dm:.8,df:1.05,sp:1},c:'#5cff4a'},
   /* v243: Yuta do EVENTO — mais forte que o Broly em cada nível (no Despertar ele já ganha velocidade x3 e dano +60% do próprio personagem) */
-  {id:'yuta',n:'YUTA',sub:'Feiticeiro de Jujutsu',ph:[[3,4],[3,5],[4,6],[4,7],[5,9],[6,11],[7,13],[8,15]],b1:{dm:.78,df:1.12,sp:.96},b2:{dm:.72,df:1,sp:.62},c:'#b57bff'}];
+  {id:'yuta',n:'YUTA',sub:'Feiticeiro de Jujutsu',ph:[[3,4],[3,5],[4,6],[4,7],[5,9],[6,11],[7,13],[8,15],[9,17],[10,19],[11,21]],b1:{dm:.78,df:1.12,sp:.96},b2:{dm:.72,df:1,sp:.62},c:'#b57bff'}];
 /* v243: boss atual (Broly ou Yuta do evento) */
 let RKBID='broly';const rkBoss=()=>RKBOSS.find(b=>b.id===RKBID)||RKBOSS[0],rkBP=()=>RKBID==='yuta'?'Y':'L';
-const rkPhB=lv=>rkBoss().ph[Math.max(0,Math.min(7,lv))];
+const rkPhB=lv=>rkBoss().ph[Math.max(0,Math.min(RKTOP,lv))];
 /* IA por nível (react = tempo de reação, agg = agressividade, blk = defesa, combo = continuar combos) */
 const RKAI=[{react:24,agg:.42,blk:.18,combo:.35,idle:24},{react:18,agg:.52,blk:.3,combo:.5,idle:16},{react:13,agg:.62,blk:.45,combo:.66,idle:11},{react:8,agg:.77,blk:.62,combo:.86,idle:6},
   {react:6,agg:.86,blk:.68,combo:.9,idle:4},{react:5,agg:.9,blk:.74,combo:.94,idle:3},{react:4,agg:.94,blk:.82,combo:.97,idle:2},{react:3,agg:.97,blk:.86,combo:1,idle:1}];
@@ -96,42 +100,42 @@ function rkBossH(){const rp=rkG('rp',0),ri=rkRank(rp),sel=rkG('sel','goku'),eqI=
   ${rkCurHTML().replace('rkCur','rkCur bt')}`}
 function rkBossOn(){rkSrvLoad();const I=$('rkChI');if(I)I.onkeydown=e=>{if(e.key==='Enter')rkChatSend()};rkChatLoad();rkOnline();let n=0;rkView.iv=setInterval(()=>{if((RKV!=='boss'&&RKV!=='yb')||showScreen.cur!=='ranked'){clearInterval(rkView.iv);return}n++;rkChatLoad();if(n%4===0)rkOnline()},30000)}
 let RKSEL=null;
-function rkRbH(){const xp=rkG('rp',0),ri=rkRank(xp),lv=RKSEL==null?ri:RKSEL,B=RKBOSS[0],L=RKLVS[lv],nx=Math.min(7,ri+1),prog=ri>=7?100:Math.round(100*(xp-RKXP[ri])/(RKXP[ri+1]-RKXP[ri]));
+function rkRbH(){const xp=rkG('rp',0),ri=rkRank(xp),lv=RKSEL==null?ri:RKSEL,B=RKBOSS[0],L=RKLVS[lv],nx=Math.min(RKTOP,ri+1),prog=ri>=RKTOP?100:Math.round(100*(xp-RKXP[ri])/(RKXP[ri+1]-RKXP[ri]));
   const cells=[[100,500,270,685],[300,505,453,685],[490,505,642,685],[682,505,835,685],[872,505,1025,685],[1065,505,1218,685],[1256,505,1408,685],[1447,505,1600,685]];
   const pas=[];for(let i=1;i<=lv;i++)pas.push(RKPAS[i][0]);
   return `<button class="hs" data-a="back" style="${rkB2(0,0,135,100)}"></button>
-  <div class="rbCov" style="${rkB2(150,340,330,420)}"><b>${lv+1}<small>/8</small></b></div>
+  <div class="rbCov" style="${rkB2(150,340,330,420)}"><b>${lv+1}<small>/${RKTOP+1}</small></b></div>
   <button class="hs" data-a="lvp" style="${rkB2(65,340,120,415)}"></button><button class="hs" data-a="lvn" style="${rkB2(335,340,392,415)}"></button>
   <div class="rbBoss" style="${rkB2(500,60,1020,470)}"><img src="${fullSrc(B.id)}" alt=""><b>${B.n}</b></div>
   <div class="rbEmb" style="${rkB2(1103,92,1212,202)}">${rkEmb(ri,'ban')}</div>
   <div class="rbCov rbRk" style="${rkB2(1225,118,1462,180)};color:${RKR[ri].c}">${RKR[ri].n}</div>
-  <div class="rbCov rbXp" style="${rkB2(1190,215,1395,248)}">${rkFmtN(xp)} / ${ri>=7?'∞':rkFmtN(RKXP[ri+1])} XP</div>
+  <div class="rbCov rbXp" style="${rkB2(1190,215,1395,248)}">${rkFmtN(xp)} / ${ri>=RKTOP?'∞':rkFmtN(RKXP[ri+1])} XP</div>
   <div class="rbBar" style="${rkB2(1114,252,1455,267)}"><s style="width:${prog}%;background:${RKR[ri].c}"></s></div>
   <div class="rbCov rbW" style="${rkB2(1528,140,1632,178)}">+${RKXW[ri]*(rkEvX()?rkEvX()[2]:1)}</div><div class="rbCov rbL" style="${rkB2(1540,226,1632,264)}">-${RKXL[ri]}</div>
   <div class="rbPas" style="${rkB2(1122,330,1645,452)}"><h5>PASSIVAS DO BOSS · NÍVEL ${lv+1}</h5>${pas.length?pas.map(p=>`<span>✦ ${p}</span>`).join(''):'<span>Nenhuma passiva especial</span>'}</div>
-  ${cells.map((c,i)=>`<button class="rbCell ${i===lv?'sel':''} ${i===ri?'cur':''} ${i>ri?'lock':''}" data-a="lvc" data-i="${i}" style="${rkB2(...c)}">${i>ri?'<i>🔒</i>':i<ri?'<i class="ok farm">🌾<small>FARM</small></i>':'<i class="now">ATUAL</i>'}</button>`).join('')}${lv<ri?`<div class="rbFarm" style="${rkB2(1122,458,1645,498)}">🌾 MODO FARM · NÍVEL ${lv+1}</div>`:''}
+  ${cells.map((c,j)=>{const s0=Math.max(0,lv-7),i=j+s0;return `<button class="rbCell ${i===lv?'sel':''} ${i===ri?'cur':''} ${i>ri?'lock':''}${s0?' ov':''}" data-a="lvc" data-i="${i}" style="${rkB2(...c)}">${s0?`<span class="rbO">${rkEmb(i,'xs')}<em>Nível ${i+1}</em></span>`:''}${i>ri?'<i>🔒</i>':i<ri?'<i class="ok farm">🌾<small>FARM</small></i>':'<i class="now">ATUAL</i>'}</button>`}).join('')}${lv<ri?`<div class="rbFarm" style="${rkB2(1122,458,1645,498)}">🌾 MODO FARM · NÍVEL ${lv+1}</div>`:''}
   <div class="rbCov rbLvT" style="${rkB2(62,727,232,762)}">Nível ${lv+1}</div>
   <div class="rbDesc" style="${rkB2(62,768,550,895)}"><span>❤️ ${rkPhB(lv)[0]} barras → transformado ${rkPhB(lv)[1]} · resistência ${L.v}% · ⚔️ Dano ${L.d}% · 💨 Velocidade ${L.s}%</span><span>🧠 ${RKPAS[lv][1]}</span>${lv<ri?'':`<span>⭐ Rank ${RKR[lv].n} · vitória +${RKXW[lv]} XP · derrota −${RKXL[lv]} XP</span>`}${lv<ri?'':`<span class="rec">🏆 Recorde do servidor: ${RKSRV?(RKSRV[lv]?twFmt(RKSRV[lv].tt)+' ('+twEsc(RKSRV[lv].nome)+')':'ninguém ainda!'):'carregando...'} · 🏅 Seu: ${rkMyRec(lv)?twFmt(rkMyRec(lv)):'—'}</span><span class="rec2">Bater recorde: servidor +${RKXB.srv} XP · seu +${RKXB.me} XP · dano diminui a derrota</span>`}${lv>ri?`<em>🔒 Suba de rank para chegar neste nível (seu nível é ${ri+1})</em>`:lv<ri?`<em class="farm">🌾 FARM: sem XP de rank · 💎🔴 normais · resto menor</em>`:''}</div>
-  <div class="rbNx" style="${rkB2(632,785,716,868)}">${ri<7?rkEmb(nx,'ban'):''}</div><div class="rbCov rbNxT" style="${rkB2(728,790,880,860)}">${ri<7?`<b style="color:${RKR[nx].c}">${RKR[nx].n}</b><small>(Nível ${nx+1} · ${rkFmtN(RKXP[nx])} XP)</small>`:'<b style="color:#fff4c0">RANK MÁXIMO</b>'}</div>
+  <div class="rbNx" style="${rkB2(632,785,716,868)}">${ri<RKTOP?rkEmb(nx,'ban'):''}</div><div class="rbCov rbNxT" style="${rkB2(728,790,880,860)}">${ri<RKTOP?`<b style="color:${RKR[nx].c}">${RKR[nx].n}</b><small>(Nível ${nx+1} · ${rkFmtN(RKXP[nx])} XP)</small>`:'<b style="color:#fff4c0">RANK MÁXIMO</b>'}</div>
   <button class="rkEqB wide" data-a="equip" style="${rkB2(1235,694,1600,750)}"><i>🎒</i><b>EQUIPAMENTOS</b></button>
   <button class="hs" data-a="fight" style="${rkB2(1185,758,1645,872)}"><span class="shine"></span></button>`}
-function rkRbSel(d,i){const ri=rkLvl();let v=RKSEL==null?ri:RKSEL;v=i!=null?i:Math.max(0,Math.min(7,v+d));RKSEL=v;rkView('rb')}
+function rkRbSel(d,i){const ri=rkLvl();let v=RKSEL==null?ri:RKSEL;v=i!=null?i:Math.max(0,Math.min(RKTOP,v+d));RKSEL=v;rkView('rb')}
 /* ---------- EQUIPAR: personagem no meio com os espaços equipados em volta + itens da mochila ---------- */
 const RKSLOT=[['esp','🗡️','ESPADA'],['cap','⛑️','CAPACETE'],['anel','💍','ANEL'],['arm','🛡️','ARMADURA'],['bot','🥾','BOTAS'],['poc','🧪','POÇÃO']];
 /* pilhas: itens iguais ocupam 1 espaço (até 99 por espaço) */
-const twStKey=x=>x.k==='poc'?'p|'+x.r+'|'+x.v:[x.t,x.r,x.v,x.crit||0,x.dmg||0,x.vel||0,x.nm||''].join('|');
+const twStKey=x=>x.k==='poc'?'p|'+(x.pk||'')+'|'+x.r+'|'+x.v:[x.t,x.r,x.v,x.crit||0,x.dmg||0,x.vel||0,x.nm||''].join('|');
 function twStacks(){const M=new Map();for(const x of twBagItems()){const k=twStKey(x);if(!M.has(k))M.set(k,[]);M.get(k).push(x)}const out=[];for(const [k,L] of M)for(let i=0;i<L.length;i+=99){const g=L.slice(i,i+99);out.push(Object.assign({},g[0],{key:k+'#'+i,ids:g.map(y=>y.id),n:g.length}))}return out}
 twCap=function(){let S=twStacks(),out=null;while(S.length>TWBAG){const w=S.slice().sort((a,b)=>(a.ev?99:0)+a.v-(b.ev?99:0)-b.v)[0],ids=new Set(w.ids);if(w.k==='poc')twLS.s('tw_poc',twPocs().filter(x=>!ids.has(x.id)));else twLS.s('tw_inv',twInv().filter(x=>!ids.has(x.id)));out=w;S=twStacks()}return out};
 twBag=function(){rkEquip()};
-const rkItNm=x=>x.nm||(x.t==='poc'?'POÇÃO':x.t==='anel'?'ANEL':(TWEQ.find(E=>E.k===x.t)||{}).n||''),rkItIc=x=>x.img||(x.t==='poc'?TWIMG.poc[Math.max(0,TWRK.indexOf(x.r))]:twIco(x.t,x.r)),rkItC=x=>x.r==='obs'?'#c46bff':rkHi(x.r)?'#e2b6ff':(TWEQR.find(q=>q.k===x.r)||TWEQR[0]).c;
+const rkItNm=x=>x.nm||(x.t==='poc'?(x.pk==='cura'?'POÇÃO DE CURA':x.pk==='drop'?'POÇÃO DE DROP':'POÇÃO'):x.t==='anel'?'ANEL':(TWEQ.find(E=>E.k===x.t)||{}).n||''),rkItIc=x=>x.img||(x.t==='poc'?(x.pk?RQA[x.pk==='cura'?'pcu':'pdr'][rkPkI(x.r)]:TWIMG.poc[Math.max(0,TWRK.indexOf(x.r))]):x.t==='anel'?RQA.anel[rkPkI(x.r)]:twIco(x.t,x.r)),rkItC=x=>x.r==='obs'?'#c46bff':rkHi(x.r)?'#e2b6ff':(TWEQR.find(q=>q.k===x.r)||TWEQR[0]).c;
 const rkHi=r=>r==='sec'||r==='obs',rkLock=x=>!!x&&x.r==='obs',rkYC=x=>rkIsY(x)?' ysec'+(x.r==='obs'?' yobs':''):'';
 const rkIsY=x=>!!x&&(x.ysec||(x.yt&&rkHi(x.r))),rkItV=x=>Math.max(x.v||0,x.def||0,x.crit||0,x.dmg||0,x.st||0,x.fdmg||0,x.drop||0);
-const rkItEf=x=>x.yt||x.t==='anel'?rkSpTxt(x):x.uniq?'✦ ITEM ÚNICO ✦ '+({esp:'Ataque',arm:'Defesa',bot:'Velocidade',cap:'Transformação'}[x.t]||'Bônus')+' +'+x.v+'%'+(x.dmg?' · Dano +'+x.dmg+'%':'')+(x.crit?' · Crítico +'+x.crit+'%':'')+(x.st?' · Sorte +'+x.st+'%':'')+(x.vel?' · Velocidade +'+x.vel+'%':'')+' (permanente)':x.img&&(x.crit||x.dmg)?rkSpTxt(x):x.t==='cap'?'Transformação +'+x.v+'% mais rápida · Crítico +'+(x.crit||0)+'%':x.vel?'Ataque +'+x.v+'% · Velocidade +'+x.vel+'%':x.t==='poc'?twPoTxt(x.r)+' (uso único, próxima luta)':({esp:'Ataque',arm:'Defesa',bot:'Velocidade'}[x.t]||'Bônus')+' +'+x.v+'%';
+const rkItEf=x=>x.t==='poc'&&x.pk?rkPkTxt(x):x.yt||x.t==='anel'?rkSpTxt(x):x.uniq?'✦ ITEM ÚNICO ✦ '+({esp:'Ataque',arm:'Defesa',bot:'Velocidade',cap:'Transformação'}[x.t]||'Bônus')+' +'+x.v+'%'+(x.dmg?' · Dano +'+x.dmg+'%':'')+(x.crit?' · Crítico +'+x.crit+'%':'')+(x.st?' · Sorte +'+x.st+'%':'')+(x.vel?' · Velocidade +'+x.vel+'%':'')+' (permanente)':x.img&&(x.crit||x.dmg)?rkSpTxt(x):x.t==='cap'?'Transformação +'+x.v+'% mais rápida · Crítico +'+(x.crit||0)+'%':x.vel?'Ataque +'+x.v+'% · Velocidade +'+x.vel+'%':x.t==='poc'?twPoTxt(x.r)+' (uso único, próxima luta)':({esp:'Ataque',arm:'Defesa',bot:'Velocidade'}[x.t]||'Bônus')+' +'+x.v+'%';
 function rkEquip(f,sk){f=f||'all';const sel=showScreen.cur==='tower'&&TW.pick?TW.pick:rkG('sel','goku'),I=twInv(),Q=twEqp(),on=twPocOn(),SA=twStacks(),L=SA.filter(x=>f==='all'||x.t===f).sort((a,b)=>(TWRK.indexOf(b.r)-TWRK.indexOf(a.r))||(b.v-a.v)||(a.t>b.t?1:-1)),X=sk?SA.find(x=>x.key===sk):null;
   const slot=([k,i,n])=>{const x=k==='poc'?on&&Object.assign({t:'poc'},on):I.find(y=>y.id===Q[k]);return `<button class="eqS ${x?'on':''}${x&&x.uniq?' uniq':''}${rkYC(x)}" data-s="${k}" style="--c:${x?rkItC(x):'#556'}">${x?`<img src="${rkItIc(x)}" alt=""><b>+${rkItV(x)}%</b>`:`<i>${i}</i>`}<span>${x?rkItNm(x):n}</span></button>`};
-  const tot=`⚔️ +${twEqB('dano')}% · 🛡️ +${twEqB('vida')}% · 💨 +${twEqB('vel')}% · 💥 +${Math.round(eqCrit())}% · ⚡ +${twEqB('trf')}%${eqFdmg()?' · 🔥 +'+Math.round(eqFdmg())+'%':''} · <b class="eqGr">🍀 Sorte +${rkEqSt()} · 🎁 Drop +${Math.round(eqDrop())}%</b>${on?' · 🧪 poção ativa':''}`;
+  const tot=`⚔️ +${twEqB('dano')}% · 🛡️ +${twEqB('vida')}% · 💨 +${twEqB('vel')}% · 💥 +${Math.round(eqCrit())}% · ⚡ +${twEqB('trf')}%${eqFdmg()?' · 🔥 +'+Math.round(eqFdmg())+'%':''} · <b class="eqGr">🍀 Sorte +${rkEqSt()} · 🎁 Drop +${Math.round(eqDrop())}%</b>${on?' · 🧪 poção ativa':''}${rkG('pk_cura',null)?' · <b class="eqGr">💚 Cura '+rkG('pk_cura').v+'% pronta</b>':''}${rkG('pk_drop',null)?' · <b class="eqGr">🎁 Poção de drop +'+rkG('pk_drop').v+'% pronta</b>':''}`;
   const pr=x=>TWSELL[x.r]||100;
-  const det=X?`<div class="eqD${X.uniq?' uniq':''}${rkYC(X)}" style="--c:${rkItC(X)}"><img src="${rkItIc(X)}" alt=""><div><span style="color:${rkItC(X)}">${X.uniq?'✦ ÚNICA ✦':(TWEQR.find(q=>q.k===X.r)||TWEQR[0]).n}${X.n>1?' · x'+X.n:''}</span><b>${rkItNm(X)} +${rkItV(X)}%</b><em>${rkItEf(X)}</em></div><div class="eqDb">${X.k==='poc'?`<button class="btn main" data-d="beber" ${on?'disabled':''}>${on?'JÁ TEM UMA ATIVA':'🧪 BEBER'}</button><button class="btn" data-d="del">DESCARTAR 1</button>`:`<button class="btn main" data-d="eq">EQUIPAR</button>${X.uniq?'<em class="eqUq">item único · não pode vender</em>':''}<button class="btn sell" data-d="sell" ${X.uniq||rkLock(X)?'hidden':''}>VENDER 1 · 🪙 ${pr(X)}</button>${X.n>1?`<button class="btn sell" data-d="sellAll">VENDER ${X.n} · 🪙 ${pr(X)*X.n}</button>`:''}`}</div></div>`:'<p class="twH eqT">Toque num item para ver e equipar / vender. Itens iguais ficam juntos no mesmo espaço (até 99).</p>';
+  const det=X?`<div class="eqD${X.uniq?' uniq':''}${rkYC(X)}" style="--c:${rkItC(X)}"><img src="${rkItIc(X)}" alt=""><div><span style="color:${rkItC(X)}">${X.uniq?'✦ ÚNICA ✦':(TWEQR.find(q=>q.k===X.r)||TWEQR[0]).n}${X.n>1?' · x'+X.n:''}</span><b>${rkItNm(X)} +${rkItV(X)}%</b><em>${rkItEf(X)}</em></div><div class="eqDb">${X.k==='poc'?`<button class="btn main" data-d="beber" ${(X.pk?rkG('pk_'+X.pk,null):on)?'disabled':''}>${(X.pk?rkG('pk_'+X.pk,null):on)?'JÁ TEM UMA ATIVA':'🧪 BEBER'}</button><button class="btn" data-d="del">DESCARTAR 1</button>`:`<button class="btn main" data-d="eq">EQUIPAR</button>${X.uniq?'<em class="eqUq">item único · não pode vender</em>':''}<button class="btn sell" data-d="sell" ${X.uniq||rkLock(X)?'hidden':''}>VENDER 1 · 🪙 ${pr(X)}</button>${X.n>1?`<button class="btn sell" data-d="sellAll">VENDER ${X.n} · 🪙 ${pr(X)*X.n}</button>`:''}`}</div></div>`:'<p class="twH eqT">Toque num item para ver e equipar / vender. Itens iguais ficam juntos no mesmo espaço (até 99).</p>';
   rkModal(`<div class="twM rkEq"><h3>🎒 MOCHILA E EQUIPAMENTOS <small>${SA.length}/${TWBAG} espaços · 🪙 ${rkFmtN(twCoins())}</small></h3><div class="eqW"><div class="eqP"><div class="col">${RKSLOT.slice(0,3).map(slot).join('')}</div><div class="chr"><img src="${fullSrc(sel)}" alt=""><b>${CH[sel]?CH[sel].name:''}</b><small>🌱 Semente dos Deuses: ${rkSenzu()}</small></div><div class="col">${RKSLOT.slice(3).map(slot).join('')}</div></div>
     <div class="eqR"><div class="seg twTab">${[['all','TUDO'],['esp','🗡️'],['cap','⛑️'],['anel','💍'],['arm','🛡️'],['bot','🥾'],['poc','🧪']].map(([k,t])=>`<button data-f="${k}" aria-pressed="${f===k}">${t}</button>`).join('')}</div>
     <div class="eqG">${L.length?L.map(x=>`<button class="eqI ${X&&X.key===x.key?'sel':''}${x.uniq?' uniq':''}${rkYC(x)}" data-k="${x.key}" style="--c:${rkItC(x)}"><img src="${rkItIc(x)}" alt=""><b>+${rkItV(x)}%</b>${x.n>1?`<i class="eqN">x${x.n}</i>`:''}<span>${rkItNm(x)}</span></button>`).join(''):'<p class="twH">Nada aqui. Ganhe equipamentos no Boss, na Torre e no Gacha!</p>'}</div>${det}</div></div>
@@ -140,6 +144,7 @@ function rkEquip(f,sk){f=f||'all';const sel=showScreen.cur==='tower'&&TW.pick?TW
   document.querySelectorAll(MS+'.eqI').forEach(b=>b.onclick=()=>{rkSfx('whoosh');re(b.dataset.k)});
   document.querySelectorAll(MS+'.eqD button[data-d]').forEach(b=>b.onclick=()=>{const d=b.dataset.d,id=X.ids[0];
     if(d==='eq'){const Q=twEqp();if(rkLock(twInv().find(y=>y.id===Q[X.t]))&&!rkLock(X)){rkSfx('clang');rkToast('🌑 Item OBSCURO fica sempre equipado','#c46bff');return}Q[X.t]=id;twLS.s('tw_eqp',Q);TW.capOut=twCap();rkSfx('clang');return re(null)}
+    if(d==='beber'&&X.pk){if(rkG('pk_'+X.pk,null))return;twLS.s('tw_poc',twPocs().filter(y=>y.id!==id));rkS('pk_'+X.pk,{r:X.r,v:X.v});rkSfx('powerUp');rkToast(X.pk==='cura'?'💚 POÇÃO DE CURA BEBIDA! Cura '+X.v+'% quando a vida ficar baixa na próxima luta':'🎁 POÇÃO DE DROP BEBIDA! +'+X.v+'% de drop na próxima luta','#7dff9a');return re(null)}
     if(d==='beber'){if(twPocOn())return;twLS.s('tw_poc',twPocs().filter(y=>y.id!==id));twLS.s('tw_pocOn',{id,r:X.r,v:X.v});rkSfx('powerUp');rkToast('🧪 POÇÃO BEBIDA! Vale na próxima luta','#7dff9a');return re(null)}
     if(d==='del'){twLS.s('tw_poc',twPocs().filter(y=>y.id!==id));rkSfx('boom');return re(X.n>1?X.key:null)}
     if(d==='sell'||d==='sellAll'){if(!b.dataset.ok){b.dataset.ok=1;b.textContent='CONFIRMAR? 🪙 '+(d==='sell'?pr(X):pr(X)*X.n);return}const ids=new Set(d==='sell'?[id]:X.ids);twLS.s('tw_inv',twInv().filter(y=>!ids.has(y.id)));twAddCoins(pr(X)*ids.size);rkSfx('powerUp');rkToast('🪙 +'+pr(X)*ids.size+' moedas!','#ffd84a');return re(d==='sell'&&X.n>1?X.key:null)}});
@@ -213,10 +218,12 @@ let R_SRV=0;
 function rkAfter(w){G.mode='ranked';$('controls').hidden=true;$('pauseBtn').hidden=true;rainSound(0);G.paused=false;G.diff=RKB.diff0;
   const F=RKB.fs||{t:0,t1:0,cmb:0,hp0:1},o=G.p[1],p=G.p[0],won=w===0,secs=Math.round(F.t/60);
   const PB=o.rkPhB||[7,14],dmg=Math.round(o.rkPh===2?PB[0]*LAYER+(PB[1]*LAYER-Math.max(0,o.hp)):(PB[0]*LAYER-Math.max(0,o.hp))),frac=Math.min(1,dmg/((PB[0]+PB[1])*LAYER)),lost=Math.max(0,1-Math.max(0,p.hp)/(p.mhp||MAXHP));
-  let red,gem=0,tic=0,eq=null,chest=null,drp,poc=null,sp=null;
+  let red,gem=0,tic=0,eq=null,chest=null,drp,poc=null,sp=null,pk2=null,ring=null;
   if(won){const q=Math.min(1,Math.max(0,(300-secs)/220))*.6+(1-lost)*.4;red=Math.round(5+5*q);gem=5+((Math.random()*11)|0);chest=secs<150&&lost<.4?'lend':secs<220?'epica':'rara';const FM=RKFL!=null&&RKYD==null;if(FM)chest=chest==='lend'?'epica':'rara';
     if(Math.random()<(chest==='lend'?.4:chest==='epica'?.2:.12)*(FM?.5:1)*rkDropF())tic=1;if(Math.random()<(chest==='lend'?.2:.08)*(FM?.5:1)*rkDropF()){const E=TWEQ[(Math.random()*TWEQ.length)|0];eq={E,R:twEqRoll()}}drp=RKXW[rkLvl()];
-    if(Math.random()<.3&&!['rara','lend','mit'].includes(chest))poc=twPoRoll();  /* v240: baú raro/lendário/mítico não dá poção */
+    if(Math.random()<.3&&!['rara','lend','mit'].includes(chest))poc=twPoRoll();
+    /* v250: poção de CURA/DROP e ANEL DE DROP (drop do Boss, fora do baú; o drop aumenta a chance) */
+    if(Math.random()<(FM?.12:.22)*rkDropF())pk2=rkPoRoll();if(Math.random()<(FM?.04:.07)*rkDropF())ring=rkRingRoll();  /* v240: baú raro/lendário/mítico não dá poção */
     /* drops especiais do boss (bem difíceis) + piedade: garantido em 25 vitórias sem drop especial */
     const bp=rkG('bpity',0)+(FM?0:1),rr=Math.random()*100*(FM?2:1);let sk=null;if(rr<1.5)sk=['kam','gun'][(Math.random()*2)|0];else if(rr<5.5)sk=['band','bots','senzu'][(Math.random()*3)|0];else if(bp>=25)sk=['band','bots','senzu','band','bots','senzu','kam','gun'][(Math.random()*8)|0];
     if(sk){rkS('bpity',0);sp=sk}else rkS('bpity',bp)}
@@ -227,12 +234,12 @@ function rkAfter(w){G.mode='ranked';$('controls').hidden=true;$('pauseBtn').hidd
   else{const db=Math.round(RKXL[lvB]*RKXB.dmg*frac);xb.push(['Derrota',drp]);if(db>0){xb.push(['💥 Dano '+Math.round(frac*100)+'%','+'+db]);drp+=db}}
   {const ev=rkEvX();if(ev&&won){const ex=drp*(ev[2]-1);xb.push(['🔥 EVENTO '+ev[3],'+'+ex]);drp+=ex}}
   if(RKFL!=null){xb.length=0;xb.push([RKYD!=null?'🌸 FARM DO EVENTO · '+YSDIF[RKYD].n+' · sem XP de rank':'🌾 MODO FARM · nível '+(RKFL+1)+' · sem XP de rank','0']);drp=0;R_SRV=0}
-  gem=Math.round(gem*rkEvG());rkAdd('red',red);rkAdd('gem',gem);rkAdd('tic',tic);if(eq)twAddItem(eq.E,eq.R);if(poc)twAddPoc(poc);if(sp){if(sp==='senzu')rkAddSenzu(1);else rkGiveSp(sp)}
+  gem=Math.round(gem*rkEvG());rkAdd('red',red);rkAdd('gem',gem);rkAdd('tic',tic);if(eq)twAddItem(eq.E,eq.R);if(poc)twAddPoc(poc);if(pk2)twAddPoc(pk2);if(ring)rkAddRing(ring);if(sp){if(sp==='senzu')rkAddSenzu(1);else rkGiveSp(sp)}
   const rp0=rkG('rp',0),r0=rkRank(rp0);let rp1=Math.max(0,rp0+drp);rkS('rp',rp1);const r1=rkRank(rp1);for(let i=0;i<=r1;i++)twGiveTit('rk'+i);
   rkStAdd(won?'wins':'loss',1);pfFight({cmb:F.cmb||0,frac,won});rkStAdd('dmgTot',dmg);rkStAdd('dmgMax',dmg,1);if(F.t1){const S=rkSt();if(!S.t1||F.t1/60<S.t1){S.t1=Math.round(F.t1/60);rkS('st',S)}}if(won){const S=rkSt();if(!S.tt||secs<S.tt){S.tt=secs;rkS('st',S)}if(lost<.25)rkStAdd('clean',1)}
   if(RKFL==null)rkSend({rp:rp1,dmg,t1:F.t1?Math.round(F.t1/60):0,tt:won?secs:0,won:won?1:0});
   {const S=rkSt();if(won){if(RKBID==='broly')S.brW=(S.brW||0)|(1<<rkBL());else if(RKYD!=null)S.ysW=(S.ysW||0)|(1<<RKYD);rkS('st',S)}}
-  const R={bn:rkBoss().n,yd:RKYD,farm:RKFL!=null?RKFL+1:0,won,secs,dmg,frac,red,gem,tic,eq,chest,poc,sp,drp,rp0,rp1,r0,r1,t1:F.t1?Math.round(F.t1/60):0,lost,cmb:F.cmb,xb,srv:R_SRV};R_SRV=0;
+  const R={bn:rkBoss().n,yd:RKYD,farm:RKFL!=null?RKFL+1:0,won,secs,dmg,frac,red,gem,tic,eq,chest,poc,pk2,ring,sp,drp,rp0,rp1,r0,r1,t1:F.t1?Math.round(F.t1/60):0,lost,cmb:F.cmb,xb,srv:R_SRV};R_SRV=0;
   {const fs=RKFL;rkOpen(RKBID==='yuta'?'yb':'boss');if(fs!=null&&RKYD==null)RKSEL=fs}setTimeout(()=>rkResult(R),200)}
 /* recordes de tempo por nível do Boss: servidor (RKSRV) e seu (st.rec) */
 let RKSRV=null;
@@ -244,6 +251,7 @@ function rkSend(x){const n=twLS.g('tw_nome','');if(!n)return;const IV=v=>({integ
   twFetchT(TWURL+'/torre?key='+TWFB.apiKey,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({fields:f})}).catch(()=>{})}
 function rkResult(R){const it=[];it.push(`<span><img src="${RQA.coin[1]}" alt="">+${R.red}</span>`);if(R.gem)it.push(`<span><img src="${RQA.coin[0]}" alt="">+${R.gem}</span>`);if(R.tic)it.push(`<span><img src="${RQA.coin[2]}" alt="">+1 TICKET</span>`);
   if(R.poc)it.push(`<span style="--c:${R.poc.c}"><img src="${TWIMG.poc[TWRK.indexOf(R.poc.k)]}" alt="">POÇÃO ${R.poc.n}</span>`);
+  for(const x of [R.pk2&&{t:'poc',pk:R.pk2.pk,r:R.pk2.k,v:R.pk2.v},R.ring&&{t:'anel',r:R.ring,drop:RKANV[rkPkI(R.ring)],v:0}])if(x)it.push(`<span style="--c:${rkItC(x)}"><img src="${rkItIc(x)}" alt="">${x.t==='anel'?'ANEL DE DROP':rkItNm(x)} ${rkRarN(x.r)} +${rkItV(x)}%</span>`);
   if(R.sp){const S=R.sp==='senzu'?{nm:'SEMENTE DOS DEUSES',img:RQA.sp.senzu,r:'lend'}:RKSP[R.sp];it.push(`<span class="spd" style="--c:${TWEQR.find(q=>q.k===S.r).c}"><img src="${S.img}" alt="">✦ ${S.nm}</span>`)}
   if(R.eq)it.push(`<span style="--c:${R.eq.R.c}"><img src="${twIco(R.eq.E.k,R.eq.R.k)}" alt="">${R.eq.E.n} ${R.eq.R.n}</span>`);
   const up=R.r1>R.r0,down=R.r1<R.r0,ri=R.r1,ci=R.chest?TWRK.indexOf(R.chest):0;
@@ -410,7 +418,8 @@ function rkRanking(tab){tab=tab||'rp';rkRanking.tab=tab;rkModal(`<div class="twM
 const rkRwPend=()=>{const c=rkG('rwc2',[]),ri=rkRank(rkG('rp',0));for(let i=1;i<=ri;i++)if(!c.includes(i))return true;return false};
 /* prêmios de cada elo (v218): diamantes, tickets, baús da Torre, sementes e CAIXA SECRETA nos dois últimos */
 const RKRW=[null,{g:200,bau:[['rara',1]]},{g:350,tic:2,bau:[['epica',1]]},{g:500,tic:3,bau:[['epica',2]],sz:1},{g:800,tic:5,bau:[['lend',1]],sz:2},
-  {g:1200,tic:8,bau:[['lend',2]],sz:3},{g:2000,tic:10,bau:[['mit',1]],sz:5,sec:['rnd']},{g:3000,tic:15,bau:[['mit',2]],sz:10,sec:['sec','rnd']}];
+  {g:1200,tic:8,bau:[['lend',2]],sz:3},{g:2000,tic:10,bau:[['mit',1]],sz:5,sec:['rnd']},{g:3000,tic:15,bau:[['mit',2]],sz:10,sec:['sec','rnd']},
+  {g:4000,tic:20,bau:[['mit',3]],sz:12,sec:['rnd']},{g:5000,tic:25,bau:[['mit',4]],sz:15,sec:['rnd']},{g:7000,tic:30,bau:[['mit',5]],sz:20,sec:['rnd','rnd']}];
 const rkRwTxt=(W,i)=>{const B={rara:'RARO',epica:'ÉPICO',lend:'LENDÁRIO',mit:'MÍTICO'},old=rkG('rwc',[]).includes(i)?RKR[i].rw:0;return [`💎 ${W.g-old}${old?` <small>(+${old} já pegos)</small>`:''}`,W.tic?`🎫 ${W.tic}`:'',...W.bau.map(([r,n])=>`🎁 ${n}× baú ${B[r]}`),W.sz?`🌱 ${W.sz} Semente${W.sz>1?'s':''}`:'',...(W.sec||[]).map(k=>k==='sec'?'✦ CAIXA SECRETA: LÂMINA NEGRA':'✦ CAIXA SECRETA')].filter(Boolean).join(' · ')};
 /* abre baús da Torre por cima do ranqueado */
 function rkBau(B){return rkOverTw(()=>twBauOpen(B))}
@@ -443,7 +452,8 @@ const RKACH=[{k:'p1',n:'Primeiro Desafio',d:'Lute contra o Broly 1 vez',g:30,ok:
   {k:'eq4',n:'Bem Equipado',d:'Equipe espada, capacete, armadura e botas',g:100,ok:()=>{const Q=twEqp();return ['esp','cap','arm','bot'].every(k=>Q[k])}},
   {k:'br',n:'Bronze!',d:'Chegue ao rank BRONZE',g:50,ok:()=>rkRk()>=1},{k:'pr',n:'Prata!',d:'Chegue ao rank PRATA',g:80,ok:()=>rkRk()>=2},{k:'gd',n:'Ouro!',d:'Chegue ao rank OURO',g:100,ok:()=>rkRk()>=3},
   {k:'di',n:'Diamante!',d:'Chegue ao rank DIAMANTE',g:200,tic:1,ok:()=>rkRk()>=4},{k:'le',n:'Lendário!',d:'Chegue ao rank LENDÁRIO',g:300,tic:2,ok:()=>rkRk()>=5},{k:'dr',n:'Dragão!',d:'Chegue ao rank DRAGÃO LENDÁRIO',g:400,tic:3,ok:()=>rkRk()>=6},
-  {k:'dv',n:'Divino',d:'Chegue ao rank DIVINDADE',g:500,tic:5,ok:()=>rkRk()>=7}];
+  {k:'dv',n:'Divino',d:'Chegue ao rank DIVINDADE',g:500,tic:5,ok:()=>rkRk()>=7},
+  {k:'dvs',n:'Supremo',d:'Chegue ao rank DIVINDADE SUPREMA',g:800,tic:6,ok:()=>rkRk()>=8},{k:'dvc',n:'Celestial',d:'Chegue ao rank DIVINDADE CELESTIAL',g:1000,tic:8,ok:()=>rkRk()>=9},{k:'dsc',n:'Deus',d:'Chegue ao rank DEUS CELESTIAL',g:1500,tic:10,ok:()=>rkRk()>=10}];
 const rkAchPend=()=>{const S=rkSt(),c=rkG('achc',[]);return RKACH.some(A=>A.ok(S)&&!c.includes(A.k))};
 function rkAch(){const S=rkSt(),c=rkG('achc',[]);
   rkModal(`<div class="twM"><h3>🎖️ CONQUISTAS <small>${RKACH.filter(A=>c.includes(A.k)).length}/${RKACH.length}</small></h3>${RKACH.some(A=>A.ok(S)&&!c.includes(A.k))?'<div class="row"><button class="btn main" id="rkAcAll">RESGATAR TUDO</button></div>':''}<div class="rkAc">${RKACH.map(A=>{const ok=A.ok(S),got=c.includes(A.k);return `<div class="${ok?'ok':''} ${got?'got':''}"><b>${A.n}</b><span>${A.d}</span><em>💎 ${A.g}${A.tic?' · 🎫 '+A.tic:''}</em>${ok&&!got?`<button class="btn main" data-k="${A.k}">RESGATAR</button>`:`<i>${got?'✔':'🔒'}</i>`}</div>`}).join('')}</div><div class="row"><button class="btn" id="rkMX">FECHAR</button></div></div>`);
@@ -525,7 +535,7 @@ function acOpen(tab){const n=localStorage.getItem('ac_n'),k=localStorage.getItem
 const RKTWX={fl:.6,top:2,loss:.5},RKTB=i=>({dano:i*2,def:i*2,vel:i,crit:i,sorte:i*3}),rkSorte=()=>RKTB(rkLvl()).sorte+(twIsAdm()?60:0)+rkEqSt()+(tbOf(twTitOn()).st||0),rkEqSt=()=>{let v=0;try{const o=twEqOn();for(const k in o)v+=(o[k].st||0)*eqNf(o[k])}catch(e){}return Math.round(v)};
 function rkTorre(){const s=rkG('sel','goku'),own=rkG('own',['goku']);G.pick=CH[s]&&own.includes(s)?s:'goku';G.gmode='torre';try{audioInit()}catch(e){}try{fsTry()}catch(e){}twOpen()}
 /* dificuldade da Torre pelo rank (v231): leve no começo; bem mais difícil para chegar nos 2 últimos ranks */
-const RKTD={dm:[1,1.05,1.1,1.15,1.22,1.4,1.55,1.65],hp:[1,1,1.1,1.15,1.25,1.4,1.55,1.65],sp:[1,1,1.02,1.04,1.06,1.1,1.14,1.16],ai:[0,0,0,0,0,1,1,1]};
+const RKTD={dm:[1,1.05,1.1,1.15,1.22,1.4,1.55,1.65,1.75,1.85,2],hp:[1,1,1.1,1.15,1.25,1.4,1.55,1.65,1.75,1.85,2],sp:[1,1,1.02,1.04,1.06,1.1,1.14,1.16,1.18,1.2,1.22],ai:[0,0,0,0,0,1,1,1,1,1,1]};
 function rkTwDiff(o){const i=rkLvl();o.mhp=Math.max(1,Math.round(o.mhp/LAYER*RKTD.hp[i]))*LAYER;o.hp=o.hpLag=o.mhp;o.tdm*=RKTD.dm[i];o.tsp*=RKTD.sp[i];G.diff=Math.min(3,(G.diff||1)+RKTD.ai[i]);o.rkTd=i}
 const rkTdTxt=i=>i?`Inimigos: dano +${Math.round((RKTD.dm[i]-1)*100)}% · vida +${Math.round((RKTD.hp[i]-1)*100)}% · vel. +${Math.round((RKTD.sp[i]-1)*100)}%${RKTD.ai[i]?' · IA mais esperta':''}`:'Inimigos normais';
 function rkTwBuff(p){const B=RKTB(rkLvl());p.tdm+=B.dano/100;p.tsp+=B.vel/100;p.tdf=p.tdf/(1+B.def/100);p.tcr=(p.tcr||0)+B.crit}
@@ -634,7 +644,7 @@ function pfRadar(){const o=pfD(),ri=rkLvl(),rp=rkG('rp',0),B=RKTB(ri),q=twEqOn()
     {k:'crit',n:'CRÍTICO',v:pfCl(crit/35*100),t:`Chance de crítico da build ${Math.round(bc)}% · críticos de verdade ${(o.hit||0)>=30?Math.round(rc)+'%':'(poucas lutas ainda)'}`},
     {k:'dano',n:'DANO',v:pfCl(df*65+Math.min(1,bd/60)*35),t:`Dano médio no Broly ${Math.round(df*100)}% da vida dele · bônus de dano +${Math.round(bd)}%`},
     {k:'vel',n:'VELOCIDADE',v:pfCl(15+45*Math.max(0,Math.min(1,(wk-3.9)/1))+40*Math.min(1,bv/35)),t:`Velocidade do personagem que mais usa (${CH[id]?CH[id].name:'—'}) · bônus de velocidade +${Math.round(bv)}%`},
-    {k:'rank',n:'RANK',v:pfCl((ri+rkProg(rp)/100)/8*100),t:`${RKR[ri].n} · ${rkFmtN(rp)} XP`},
+    {k:'rank',n:'RANK',v:pfCl((ri+rkProg(rp)/100)/(RKTOP+1)*100),t:`${RKR[ri].n} · ${rkFmtN(rp)} XP`},
     {k:'combo',n:'COMBO',v:pfCl((o.cmb||0)/30*100),t:`Maior combo por luta (média recente): ${Math.round(o.cmb||0)} golpes`},
     {k:'farm',n:'FARM',v:pfCl(Math.log10(1+fm)/Math.log10(30001)*100),t:`Tudo que já juntou: 💎, 🔴 e 🪙 (${rkFmtN(fm)} pontos)`}]}
 const PFRV=[[1331,316],[1478,404],[1478,567],[1331,648],[1193,570],[1184,407]],PFRC=[1331,482];
@@ -698,7 +708,7 @@ function pfVitPick(slot){const I=twInv(),V=rkG('vit',[]),seen=new Set(),L=[];for
   rkModal(`<div class="twM rkEq"><h3>🏅 VITRINE ${slot+1}/3</h3><p class="twH">Escolha um equipamento para mostrar no perfil. Quanto mais raro, mais ele brilha.</p><div class="eqG pfVG">${V[slot]?'<button class="eqI" data-v=""><i style="font-size:2.6em;font-style:normal">✖</i><span>TIRAR</span></button>':''}${L.length?L.map(x=>`<button class="eqI${x.uniq?' uniq':''}${x.id===V[slot]?' sel':''}${rkYC(x)}" data-v="${x.id}" style="--c:${rkItC(x)}"><img src="${rkItIc(x)}" alt=""><b>+${rkItV(x)}%</b><span>${rkItNm(x)}</span></button>`).join(''):'<p class="twH">Você ainda não tem equipamentos. Ganhe no Boss, na Torre e no Gacha!</p>'}</div><div class="row"><button class="btn" id="rkMX">FECHAR</button></div></div>`);
   $('rkMX').onclick=()=>rkModal(null);document.querySelectorAll('#rkModal .pfVG button').forEach(b=>b.onclick=()=>{const V=rkG('vit',[]).slice(0,3);while(V.length<3)V.push(null);const id=b.dataset.v||null;for(let j=0;j<3;j++)if(id&&V[j]===id)V[j]=null;V[slot]=id;rkS('vit',V);rkSfx(id?'powerUp':'whoosh');rkModal(null);rkView('pf')})}
 /* rank: quanto mais alto, mais efeitos (0 Madeira … 7 Divindade) */
-function pfRkH(i,st){return `<div class="pfRk t${i}" style="${st};--c:${RKR[i].c};--k:${(i/7).toFixed(2)}"><i class="rg"></i>${i>=2?'<i class="ry2"></i>':''}${i>=4?'<i class="orb"><s></s><s></s><s></s></i>':''}${i>=6?'<i class="fl"></i>':''}${rkEmb(i,'ban')}${i>=5?'<i class="sk"><s></s><s></s><s></s><s></s></i>':''}</div>`}
+function pfRkH(i,st){return `<div class="pfRk t${i}${i>7?' t7 tdv':''}" style="${st};--c:${RKR[i].c};--k:${Math.min(1,i/7).toFixed(2)}"><i class="rg"></i>${i>=2?'<i class="ry2"></i>':''}${i>=4?'<i class="orb"><s></s><s></s><s></s></i>':''}${i>=6?'<i class="fl"></i>':''}${rkEmb(i,'ban')}${i>=5?'<i class="sk"><s></s><s></s><s></s><s></s></i>':''}</div>`}
 /* título: placa grande; ADM com coroa, ouro animado e brilhos */
 function pfTitH(t,n,adm){if(!t)return '<i>SEM TÍTULO · toque para escolher</i>';
   if(t==='adm'){if(!adm)return '<i>SEM TÍTULO · toque para escolher</i>';return `<span class="pfAdm"><i class="cr">👑</i><b>ADM</b><em>ADMINISTRADOR</em><i class="sp a">✦</i><i class="sp b">✦</i><i class="sp c">✦</i><i class="sw"></i></span>`}
@@ -738,10 +748,10 @@ async function pfLast(field,val){const body={structuredQuery:{from:[{collectionI
 /* tudo que vem do servidor passa por aqui (nada de HTML/links estranhos) */
 const PFIMG=/^(a\/[\w.-]+\.(webp|png|jpg)|data:image\/(png|webp|jpeg);base64,[A-Za-z0-9+\/=]+)$/;
 function pfClean(o,uid,nome){const N=(v,mx)=>Math.max(0,Math.min(mx||1e9,+v||0))|0,S=(v,l)=>String(v==null?'':v).slice(0,l||40);
-  return {uid,mold:MDL[o.mold]?o.mold:'',nome:S(nome||o.nome,16),tit:TWTIT[o.tit]?o.tit:'',rp:N(o.rp),mx:Math.min(7,N(o.mx)),foto:/^data:image\/jpeg;base64,[A-Za-z0-9+\/=]+$/.test(o.foto||'')?o.foto:'',
+  return {uid,mold:MDL[o.mold]?o.mold:'',nome:S(nome||o.nome,16),tit:TWTIT[o.tit]?o.tit:'',rp:N(o.rp),mx:Math.min(RKTOP,N(o.mx)),foto:/^data:image\/jpeg;base64,[A-Za-z0-9+\/=]+$/.test(o.foto||'')?o.foto:'',
     vit:(Array.isArray(o.vit)?o.vit:[]).slice(0,3).map(e=>e&&(TWRK.includes(e.r)||rkHi(e.r))&&(TWEQ.some(E=>E.k===e.t)||e.t==='anel')?{t:e.t,r:e.r,v:N(e.v,999),nm:S(e.nm,30),img:PFIMG.test(e.img||'')?e.img:'',uniq:e.uniq?1:0,crit:N(e.crit,999),dmg:N(e.dmg,999),vel:N(e.vel,999),st:N(e.st,999),def:N(e.def,999),fdmg:N(e.fdmg,999),trf:N(e.trf,999),drop:N(e.drop,999),yt:e.yt?1:0,ysec:e.ysec?1:0}:null),
     ped:CH[o.ped]?o.ped:'goku',R:Array.isArray(o.R)&&o.R.length===6?o.R.map((r,i)=>({n:['CRÍTICO','DANO','VELOCIDADE','RANK','COMBO','FARM'][i],v:Math.max(4,Math.min(100,N(r&&r.v))),t:S(r&&r.t,160)})):null,
-    h:o.h&&typeof o.h==='object'?Object.assign(Object.fromEntries(['pt','vw','tw','twc','twf','wins','loss','own','tt'].map(k=>[k,N(o.h[k])])),{rl:Math.min(7,Math.max(-1,+o.h.rl|0))}):null}}
+    h:o.h&&typeof o.h==='object'?Object.assign(Object.fromEntries(['pt','vw','tw','twc','twf','wins','loss','own','tt'].map(k=>[k,N(o.h[k])])),{rl:Math.min(RKTOP,Math.max(-1,+o.h.rl|0))}):null}}
 async function pfOpenOther(uid,nome,ret){if(!uid)return;if(ret.sc==='tower'){try{twModal(null)}catch(e){}showScreen('ranked')}else rkModal(null);
   if(uid===twUid()){PFO=null;PFRET=ret;return rkView('pf')}
   rkToast('⏳ Carregando perfil...','#cfd6ea');let e=null,hd=null;try{[e,hd]=await Promise.all([pfLast('pfu',uid),pfLast('pfh',uid).catch(()=>null)])}catch(x){}
@@ -789,7 +799,7 @@ twEqOn=function(){const I=twInv(),Q=twEqp(),o={};for(const k of ['esp','arm','bo
 const EQMAIN={esp:'dano',arm:'vida',bot:'vel',cap:'trf',anel:'st'};
 twEqB=st=>{const o=twEqOn();let v=0;for(const k in o){const it=o[k],n=eqNf(it);if(EQMAIN[k]===st)v+=(it.v||0)*n;if(st==='vel'&&it.vel)v+=it.vel*n;if(st==='dano'&&it.dmg)v+=it.dmg*n;if(st==='vida'&&it.def)v+=it.def*n;if(st==='trf'&&it.trf)v+=it.trf*n}return Math.round(v*10)/10};
 const eqCrit=()=>{const o=twEqOn();let c=0;for(const k in o)c+=(o[k].crit||0)*eqNf(o[k]);return c};
-const eqDrop=()=>{const o=twEqOn();let c=0;for(const k in o)c+=(o[k].drop||0)*eqNf(o[k]);return c},rkDropF=()=>1+eqDrop()/100;
+const eqDrop=()=>{const o=twEqOn();let c=0;for(const k in o)c+=(o[k].drop||0)*eqNf(o[k]);return c},rkDropF=()=>1+(eqDrop()+RKPDN)/100;let RKPDN=0;
 const eqFdmg=()=>{const o=twEqOn();let c=0;for(const k in o)c+=(o[k].fdmg||0)*eqNf(o[k]);return c};
 /* ---------- NÍVEL dos personagens ---------- */
 const LVMAX=id=>({mit:50,lend:40,epica:30}[rkRar(id)]||30);
@@ -1013,7 +1023,7 @@ function ysLobbyH(){const rp=rkG('rp',0),ri=rkRank(rp),sel=rkG('sel','goku');
   <button class="hs" data-a="start" style="${rkB(1185,735,1640,825)}"><span class="shine"></span></button>
   ${rkCurHTML().replace('rkCur','rkCur bt')}`}
 /* ---------- tela de início do evento (ranqueado / farm) ---------- */
-function ysStartH(){const xp=rkG('rp',0),ri=rkRank(xp),L=RKLVS[ri],sel=rkG('sel','goku'),prog=ri>=7?100:Math.round(100*(xp-RKXP[ri])/(RKXP[ri+1]-RKXP[ri])),lk=lvLuck(),S=rkSorte?Math.round(lvSorte()):0;
+function ysStartH(){const xp=rkG('rp',0),ri=rkRank(xp),L=RKLVS[ri],sel=rkG('sel','goku'),prog=ri>=RKTOP?100:Math.round(100*(xp-RKXP[ri])/(RKXP[ri+1]-RKXP[ri])),lk=lvLuck(),S=rkSorte?Math.round(lvSorte()):0;
   const selB=(x0,y0,x1,y1,c)=>`<button class="ysSelA" data-a="sel" style="${rkB(x0,y0,x1,y1)}"><span><small>LUTAR COM</small><b>${CH[sel]?CH[sel].name:''}</b><em>trocar ›</em></span></button><div class="ysPort" style="${rkB(...c)}"><img src="${IMG[sel]?IMG[sel].src:''}" alt=""></div>`;
   if(YS.tab==='rank'){const pas=[];const PS=rkPSlv(ri);for(const k in PS)if(PS[k])pas.push(k);const CX=[[640,770],[790,918],[937,1067],[1087,1218],[1238,1362],[1380,1505],[1523,1650],[1668,1792]];
     return `<button class="hs" data-a="back" style="${rkB(140,12,240,88)}"></button>
@@ -1022,10 +1032,10 @@ function ysStartH(){const xp=rkG('rp',0),ri=rkRank(xp),L=RKLVS[ri],sel=rkG('sel'
     <div class="ysTabA on" style="${rkB(1040,22,1392,82)}">👑 RANQUEADO<small>dá XP de rank</small></div>
     <div class="ysTabA tm" style="${rkB(1418,22,1740,82)}">⏳ ${ysLeft()}<small>evento do Yuta</small></div>
     <div class="ysEmb" style="${rkB(645,140,770,258)}">${rkEmb(ri,'ban')}</div>
-    <div class="ysRkN" style="${rkB(815,140,1300,212)}"><b style="color:${RKR[ri].c}">${RKR[ri].n}</b><span>${rkFmtN(xp)} / ${ri>=7?'∞':rkFmtN(RKXP[ri+1])} XP</span></div>
+    <div class="ysRkN" style="${rkB(815,140,1300,212)}"><b style="color:${RKR[ri].c}">${RKR[ri].n}</b><span>${rkFmtN(xp)} / ${ri>=RKTOP?'∞':rkFmtN(RKXP[ri+1])} XP</span></div>
     <div class="ysBarA" style="${rkB(820,224,1200,242)}"><s style="width:${prog}%;background:${RKR[ri].c}"></s></div>
     <div class="ysWL w" style="${rkB(1600,165,1683,216)}"><small>VITÓRIA</small><b>+${RKXW[ri]*(rkEvX()?rkEvX()[2]:1)}</b></div><div class="ysWL l" style="${rkB(1699,165,1783,216)}"><small>DERROTA</small><b>-${RKXL[ri]}</b></div>
-    ${CX.map(([a,b],i)=>`<div class="ysLvA ${i===ri?'on':i<ri?'ok':'lk'}" style="${rkB(a,280,b,328)}">${i<ri?'✔ ':i>ri?'🔒 ':'★ '}${i+1}</div>`).join('')}
+    ${CX.map(([a,b],j)=>{const i=j+Math.max(0,ri-7);return `<div class="ysLvA ${i===ri?'on':i<ri?'ok':'lk'}" style="${rkB(a,280,b,328)}">${i<ri?'✔ ':i>ri?'🔒 ':'★ '}${i+1}</div>`}).join('')}
     <div class="ysInfoA" style="${rkB(645,360,1780,645)}"><h5>YUTA NÍVEL ${ri+1} · igual ao seu rank</h5><span>❤️ ${rkPhB(ri)[0]} barras → DESPERTAR com ${rkPhB(ri)[1]} barras (3x velocidade, +60% dano)</span><span>💪 resistência ${L.v}% · ⚔️ dano ${L.d}% · 💨 velocidade ${L.s}% · 🧠 ${RKPAS[ri][1]}</span>
       <span>🛡️ Passivas: ${pas.length?pas.map(k=>YSPN[k][0]+' '+YSPN[k][1]).join(' · '):'nenhuma'} · passiva do Yuta: contra-ataque a cada 4 golpes</span>
       <span>🎁 Vitória: 💎 5–15 · 🔴 5–10 · baú · pó · ✦ drops do Boss · bônus de recorde e de combo</span></div>
@@ -1065,7 +1075,7 @@ function ysFight(){if(!ysOn()){rkToast('⏳ O evento do Yuta acabou','#cfd6ea');
   if(after.length)setTimeout(async()=>{for(const f of after)await f()},R.won?2200:300);return r}}
 /* ================= v244: BÔNUS DOS TÍTULOS (título em uso) e ADM +60% em tudo ================= */
 const TBUF={ini:{dano:2},gue:{dano:3,vel:2},con:{dano:5,def:3},sem:{dano:6,crit:5},tor:{dano:8,crit:5,vel:5},inf:{dano:5,st:5},
-  rk0:{def:1},rk1:{def:2},rk2:{dano:3},rk3:{dano:4,crit:2},rk4:{dano:5,crit:3},rk5:{dano:6,crit:4,vel:3},rk6:{dano:8,crit:5,def:5},rk7:{dano:10,crit:6,def:6,st:5}};
+  rk0:{def:1},rk1:{def:2},rk2:{dano:3},rk3:{dano:4,crit:2},rk4:{dano:5,crit:3},rk5:{dano:6,crit:4,vel:3},rk6:{dano:8,crit:5,def:5},rk7:{dano:10,crit:6,def:6,st:5},rk8:{dano:12,crit:7,def:7,st:6},rk9:{dano:14,crit:8,def:8,st:8},rk10:{dano:16,crit:10,def:10,st:10}};
 const tbOf=k=>TBUF[k]||(TWTIT[k]&&TWTIT[k].yt?{crit:5}:{});
 const tbTxt=k=>{const B=tbOf(k),o=[];if(B.dano)o.push('+'+B.dano+'% dano');if(B.def)o.push('+'+B.def+'% defesa');if(B.vel)o.push('+'+B.vel+'% velocidade');if(B.crit)o.push('+'+B.crit+'% crítico');if(B.st)o.push('+'+B.st+' sorte');return o.join(' · ')};
 for(const k in TWTIT){const t=tbTxt(k);if(k==='adm')TWTIT[k].d='Administrador do jogo · ✦ +60% em TUDO (dano, defesa, velocidade, crítico, energia, sorte e drops)';else if(t)TWTIT[k].d=(TWTIT[k].d||'')+' · ✦ Bônus em uso: '+t}
@@ -1077,17 +1087,17 @@ twAdmBuff=function(){try{if(!G.p||G.gmode==='boss')return;tbApply(G.p[0])}catch(
 {const _pt3=pfTitH;pfTitH=function(t,n,adm){if(t==='adm'&&adm)return `<span class="pfAdmI"><i class="gl"></i><img src="${RQA.tit_adm}" alt="ADM"><i class="sw"></i><i class="sp a">✦</i><i class="sp b">✦</i><i class="sp c">✦</i><i class="sp d">✦</i></span>`;return _pt3.apply(this,arguments)}}
 /* ================= v245: MOLDURAS da foto do perfil (artes do dono) ================= */
 const MDL={adm:{n:'ADMINISTRADOR',d:'Só para quem tem o título ADM',ok:()=>twTits().includes('adm'),cls:'adm'},
-  rk0:{n:'MADEIRA',r:0},rk1:{n:'BRONZE',r:1},rk2:{n:'PRATA',r:2},rk3:{n:'OURO',r:3},rk4:{n:'DIAMANTE',r:4},rk5:{n:'LENDÁRIO',r:5},rk6:{n:'DRAGÃO LENDÁRIO',r:6},rk7:{n:'DIVINDADE',r:7},
+  rk0:{n:'MADEIRA',r:0},rk1:{n:'BRONZE',r:1},rk2:{n:'PRATA',r:2},rk3:{n:'OURO',r:3},rk4:{n:'DIAMANTE',r:4},rk5:{n:'LENDÁRIO',r:5},rk6:{n:'DRAGÃO LENDÁRIO',r:6},rk7:{n:'DIVINDADE',r:7},rk8:{n:'DIVINDADE SUPREMA',r:8},rk9:{n:'DIVINDADE CELESTIAL',r:9},rk10:{n:'DEUS CELESTIAL',r:10},
   top1:{n:'TOP 1',d:'1º do ranking de RANK nesta semana',top:1,cls:'top'},top2:{n:'TOP 2',d:'Top 2 do ranking de RANK nesta semana',top:2,cls:'top'},top3:{n:'TOP 3',d:'Top 3 do ranking de RANK nesta semana',top:3,cls:'top'},
   ytob:{n:'YUTA OBTIDO',d:'Ter o Yuta',ok:()=>rkG('own',[]).includes('yuta'),cls:'ev yt'},
   yt100:{n:'YUTA 100%',d:'Vencer o Yuta nas 5 dificuldades do farm do evento',ok:()=>((rkSt().ysW||0)&31)===31,cls:'ev yt',pr:()=>[[0,1,2,3,4].filter(i=>(rkSt().ysW||0)&(1<<i)).length,5]},
   br100:{n:'BROLY 100%',d:'Vencer o Broly nos 8 níveis (o farm conta)',ok:()=>((rkSt().brW||0)&255)===255,cls:'ev br',pr:()=>[[0,1,2,3,4,5,6,7].filter(i=>(rkSt().brW||0)&(1<<i)).length,8]}};
-for(const k in MDL){const M=MDL[k];if(M.r!=null){M.d='Chegar ao rank '+M.n+' (rank máximo)';M.ok=()=>pfRkMax()>=M.r;M.cls='rk r'+M.r}if(M.top)M.ok=()=>{const T=rkG('topw',null);return !!T&&T.w===twWk(Date.now())&&T.n<=M.top}}
+for(const k in MDL){const M=MDL[k];if(M.r!=null){M.d='Chegar ao rank '+M.n+' (rank máximo)';M.ok=()=>pfRkMax()>=M.r;M.cls='rk r'+M.r+(M.r>7?' r7':'')}if(M.top)M.ok=()=>{const T=rkG('topw',null);return !!T&&T.w===twWk(Date.now())&&T.n<=M.top}}
 const mdOk=k=>{try{return !!MDL[k]&&MDL[k].ok()}catch(e){return false}},mdCur=()=>{const k=rkG('mold','');return mdOk(k)?k:''};
 /* moldura por cima do quadrado da foto (x0,y0,x1,y1 = quadrado na arte); o "buraco" da moldura encaixa no quadrado */
 function mdH(k,x0,y0,x1,y1,yMax){const A=k&&RQA.mold[k],M=MDL[k];if(!A||!M)return '';const [hx0,hy0,hx1,hy1]=A.h,cy=(y0+y1)/2;let W=(x1-x0)/(hx1-hx0);let H=W/A.ar;
   if(yMax){const lim=(yMax-cy)/(1-(hy0+hy1)/2);if(H>lim){H=lim;W=H*A.ar}}const X=(x0+x1)/2-(hx0+hx1)/2*W,Y=cy-(hy0+hy1)/2*H;
-  return `<div class="pfMold ${M.cls}" style="${rkB2(X,Y,X+W,Y+H)}">${M.r===7||k==='adm'?'<i class="gr"></i><i class="gh"></i>':''}<i class="gl"></i><img src="${A.src}" alt=""><i class="sw"></i>${M.cls==='adm'||/top|ev/.test(M.cls)||M.r>=5?'<i class="sp a">✦</i><i class="sp b">✦</i><i class="sp c">✦</i><i class="sp d">✦</i>':''}</div>`}
+  return `<div class="pfMold ${M.cls}" style="${rkB2(X,Y,X+W,Y+H)}">${M.r>=7||k==='adm'?'<i class="gr"></i><i class="gh"></i>':''}<i class="gl"></i><img src="${A.src}" alt=""><i class="sw"></i>${M.cls==='adm'||/top|ev/.test(M.cls)||M.r>=5?'<i class="sp a">✦</i><i class="sp b">✦</i><i class="sp c">✦</i><i class="sp d">✦</i>':''}</div>`}
 async function mdTopCheck(){try{const A=(await rkLoadRk('rp')).sort((a,b)=>b.rp-a.rp),i=A.findIndex(e=>e.uid===twUid());if(i<0||i>2)return;const w=twWk(Date.now()),T=rkG('topw',null);if(!T||T.w!==w||i+1<T.n)rkS('topw',{w,n:i+1})}catch(e){}}
 function mdPick(){mdTopCheck().then(()=>{if(document.querySelector('#rkModal .mdG'))mdPick0()});mdPick0()}
 function mdPick0(){const cur=rkG('mold','');
@@ -1100,3 +1110,24 @@ function mdPick0(){const cur=rkG('mold','');
   /* v249: item OBSCURO fica sempre equipado */
   const Q=twEqp();let cq=0;for(const it of I)if(rkLock(it)&&!rkLock(I.find(x=>x.id===Q[it.t]))){Q[it.t]=it.id;cq=1}if(cq)twLS.s('tw_eqp',Q)}catch(e){}})();
 window.__rk={lvSorte,lvLuck,lvBonus,lvOf,rkExtra,twEqB:s=>twEqB(s)};
+
+/* ================= v250: POÇÕES DE CURA e DE DROP, ANÉIS DE DROP (raridades comum → secreta) =================
+   Cura: cura X% da vida máxima 1 vez quando a vida fica abaixo de 35% (próxima luta). Drop: +X% de drop na próxima luta.
+   Anel de drop: +X% de drop enquanto equipado (soma com Rika e com a poção). */
+const RKPR=['comum','rara','epica','lend','mit','sec'],RKPKV={cura:[3,15,20,45,75,100],drop:[3,15,20,45,75,100]},RKANV=[5,7,10,15,20,35];
+const rkPkI=r=>Math.max(0,RKPR.indexOf(r)),rkRarN=r=>(TWEQR.find(q=>q.k===r)||TWEQR[0]).n;
+const rkPkTxt=x=>(x.pk==='cura'?'Cura '+x.v+'% da vida quando ela ficar abaixo de 35% (1 vez)':'Drop +'+x.v+'% (itens, anéis, poções, tickets, pó, cristais)')+' · uso único, vale na próxima luta';
+function rkPoRoll(){const pk=Math.random()<.5?'cura':'drop';let R=twPoRoll();let k=R.k;if(Math.random()<.01*rkDropF())k='sec';return {k,pk,v:RKPKV[pk][rkPkI(k)]}}
+function rkRingRoll(){let r=twEqRoll().k;if(Math.random()<.01*rkDropF())r='sec';return r}
+twAddPoc=function(R){const L=twPocs();L.push(Object.assign({id:Date.now().toString(36)+Math.random().toString(36).slice(2,6),r:R.k,v:R.v},R.pk?{pk:R.pk}:{}));twLS.s('tw_poc',L);TW.capOut=twCap()};
+function rkAddRing(r){const I=twInv(),it={id:'an'+Date.now().toString(36)+Math.random().toString(36).slice(2,5),t:'anel',r,v:0,drop:RKANV[rkPkI(r)],nm:'ANEL DE DROP'};I.push(it);twLS.s('tw_inv',I);
+  const Q=twEqp(),cur=I.find(x=>x.id===Q.anel);if(!cur||(!rkIsY(cur)&&(cur.drop||0)<it.drop)){Q.anel=it.id;twLS.s('tw_eqp',Q)}TW.capOut=twCap();return it}
+/* começo da luta (Boss e Torre): arma a cura e liga o drop da poção */
+{const _ex=rkExtra;rkExtra=function(){const r=_ex.apply(this,arguments);try{if(!G.p)return r;const torre=typeof TW!=='undefined'&&TW.on&&G.gmode==='torre',boss=G.gmode==='boss';if(!torre&&!boss)return r;const p=G.p[0];
+  const c=rkG('pk_cura',null),d=rkG('pk_drop',null);p.rkCura=c?c.v:0;RKPDN=d?d.v:0;if(c)rkS('pk_cura',null);if(d)rkS('pk_drop',null);
+  if(c||d)setTimeout(()=>{try{txt(p.x,p.y-340,(c?'💚 CURA '+c.v+'% PRONTA':'')+(c&&d?' · ':'')+(d?'🎁 DROP +'+d.v+'%':''),'#7dff9a')}catch(e){}},2200)}catch(e){}return r}}
+function rkCuraTick(){const p=G.p&&G.p[0];if(!p||!p.rkCura||p.hp<=0||p.ko)return;const m=p.mhp||MAXHP;if(p.hp>=m*.35)return;
+  const h=Math.round(m*p.rkCura/100);p.hp=Math.min(m,p.hp+h);txt(p.x,p.y-300,'💚 POÇÃO DE CURA +'+p.rkCura+'%','#7dff9a');try{ring(p.x,p.y-150,'#7dff9a',220,22,7)}catch(e){}try{rkSfx('powerUp')}catch(e){}p.rkCura=0}
+/* o drop da poção vale só para a luta em que foi usada */
+{const _r3=rkResult;rkResult=function(){try{return _r3.apply(this,arguments)}finally{RKPDN=0}}}
+{const _tf3=twFinish;twFinish=function(){try{return _tf3.apply(this,arguments)}finally{RKPDN=0}}}

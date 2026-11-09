@@ -642,3 +642,16 @@
 .yobs img{filter:drop-shadow(0 0 .25em #000) drop-shadow(0 0 .5em #000) drop-shadow(0 0 .8em #7a2cff) drop-shadow(-.14em 0 0 rgba(255,30,74,.8)) drop-shadow(.14em 0 0 rgba(120,0,255,.8))!important}
 .yobs>b{color:#ff9ad0!important;text-shadow:0 0 .3em #000,0 0 .6em #ff1e4a!important}
 .eqT .eqGr{color:#7dff9a;font-weight:900;text-shadow:0 0 .4em rgba(125,255,154,.5)}
+/* v250: ranks 8-10 (Divindade Suprema / Celestial / Deus Celestial) */
+.rbCell.ov{padding:0;overflow:hidden}
+.rbCell .rbO{position:absolute;inset:-7%;border-radius:.8em;border:2px solid #5a3a1c;box-shadow:0 0 0 .5em #0b0607;background:linear-gradient(180deg,#1d0f12,#0a0607);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.2em;z-index:0;pointer-events:none}
+.rbCell .rbO .rkEmb{width:58%;height:auto;aspect-ratio:1}.rbCell .rbO em{font:italic 900 .95em var(--f-ui);color:#f3e6c8;text-shadow:0 1px 2px #000}
+.rbCell.ov>i{position:relative;z-index:1;margin:.3em}
+.pfRk.tdv .rg{background:radial-gradient(circle,#fff 0,color-mix(in srgb,var(--c) 75%,transparent) 28%,color-mix(in srgb,var(--c) 30%,transparent) 50%,transparent 72%)!important;animation:pfRg 1s ease-in-out infinite}
+.pfRk.tdv .rkEmb img{filter:drop-shadow(0 0 .4em #fff) drop-shadow(0 0 1em var(--c)) drop-shadow(0 0 2.2em var(--c))!important}
+.pfMold.r8{--rc:#ffd86b;--sc:#fff3b0}.pfMold.r9{--rc:#6fc8ff;--sc:#d8f2ff}.pfMold.r10{--rc:#e0a0ff;--sc:#f6e2ff}
+.pfMold.r9 img{filter:drop-shadow(0 0 .6em #d8f2ff) drop-shadow(0 0 1.6em #3d9bff) drop-shadow(0 0 3em rgba(80,170,255,.6))!important}
+.pfMold.r10 img{filter:drop-shadow(0 0 .6em #fff) drop-shadow(0 0 1.6em #c46aff) drop-shadow(0 0 3em rgba(255,200,60,.55))!important}
+.pfMold.r9 .gl{background:radial-gradient(closest-side,rgba(200,235,255,.7),rgba(60,150,255,.35) 60%,transparent)!important}
+.pfMold.r10 .gl{background:radial-gradient(closest-side,rgba(245,215,255,.75),rgba(190,90,255,.4) 60%,transparent)!important}
+.rk_rb .rkEvX{top:auto;bottom:.6%;left:37%;font-size:.85em}

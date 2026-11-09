@@ -1109,3 +1109,13 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - Stat novo `drop`: `eqDrop()`/`rkDropF()` — multiplica o `lvLuck` (pó, cristais, itens de elevação, gemas extras) e a chance de ticket e equipamento no fim da luta do Boss.
 - Rodapé da mochila: crítico agora conta o 50% fora do Yuta (`eqCrit`), mostra 🔥 dano na transformação se tiver, e **🍀 Sorte / 🎁 Drop em verde** (`.eqGr`).
 - Classe extra `.yobs` (via `rkYC(x)`) deixa o item obscuro mais escuro, com fumaça preta e brilho vermelho. Teste: `ferramentas/testes/trika_v249.js`.
+
+## v250 — 3 ranks acima da Divindade, poções de CURA e DROP, ANÉIS DE DROP
+- Artes do dono em `ferramentas/ranqueada_artes/v250/` (recorte: `cortar.py` → `saida.json`, juntado no `rk_assets.json`: `rank[8..10]`, `mold.rk8..rk10`, `pcu[6]`, `pdr[6]`, `anel[6]` na ordem comum, rara, épica, lendária, mítica, secreta).
+- Ranks novos: 8 DIVINDADE SUPREMA (50.000 XP), 9 DIVINDADE CELESTIAL (70.000), 10 DEUS CELESTIAL (100.000). `RKTOP=RKR.length-1` substitui os "7" fixos. Estendidos: `RKXP/RKXW/RKXL`, `RKLVS`, `RKBOSS[].ph`, `RKTD`, `RKPAS`, `RKRW` (recompensas), conquistas `dvs/dvc/dsc`, `TBUF.rk8..rk10`, molduras `MDL.rk8..rk10` (classe `r7` + `r8/r9/r10`). Perfil: `pfRk` ganha `t7 tdv` acima do 7.
+- Tela do Boss (arte com 8 quadros): a partir do nível 9 a fileira vira uma janela (`s0=lv-7`) com quadros desenhados por cima (`.rbCell.ov .rbO`). Mesma ideia na aba RANQUEADO do evento do Yuta.
+- Poções novas (no `tw_poc` com `pk:'cura'|'drop'`, `v` = valor): CURA 3/15/20/45/75/100% e DROP 3/15/20/45/75/100% (comum→secreta). Beber guarda em `rk_pk_cura` / `rk_pk_drop` (uma de cada, separada da poção de buff). No começo da próxima luta de Boss/Torre (`rkExtra`): a cura arma `p.rkCura` (cura 1 vez quando a vida fica abaixo de 35%, `rkCuraTick` a cada quadro via `extra/80_v250.py`) e o drop vira `RKPDN` só naquela luta.
+- Anel de drop (`t:'anel'`, `drop` 5/7/10/15/20/35%, `nm:'ANEL DE DROP'`): `rkAddRing(r)` equipa sozinho se for melhor (não troca anel do Yuta).
+- Drop total: `rkDropF()=1+(eqDrop()+RKPDN)/100` — entra no `lvLuck` e nas chances de ticket/equipamento/poção/anel do Boss.
+- Onde caem: vitória no Boss (fora do baú): 22% poção de cura/drop (farm 12%), 7% anel de drop (farm 4%), tudo × drop. Secreta = 1% × drop.
+- Teste: `ferramentas/testes/tv250.js`.

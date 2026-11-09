@@ -1,0 +1,63 @@
+{
+"pcu": [
+"a/34feff9e492891.webp",
+"a/b3ea55994f883f.webp",
+"a/3bc98eb3a7c103.webp",
+"a/79522a64e57948.webp",
+"a/3a17e9cb7b39d7.webp",
+"a/56c85bd19933bf.webp"
+],
+"pdr": [
+"a/46c4294c4519ef.webp",
+"a/5727741b10fd42.webp",
+"a/75242ad6c8aeda.webp",
+"a/cb6fda90503d0a.webp",
+"a/21b035d955998d.webp",
+"a/63e2c87eb2cd15.webp"
+],
+"anel": [
+"a/21e20624505d3d.webp",
+"a/ee43ea93ddee5a.webp",
+"a/fa046f88c25954.webp",
+"a/ffd93e202ef83b.webp",
+"a/2474ac797ed550.webp",
+"a/95eadf376d09b3.webp"
+],
+"rank": [
+"a/5cb45755713fd0.webp",
+"a/55c0b06c90b1de.webp",
+"a/ee9e051cdb2d51.webp"
+],
+"mold": {
+"rk8": {
+"src": "a/a275d2f7597cb2.webp",
+"h": [
+0.267,
+0.226,
+0.733,
+0.662
+],
+"ar": 1.0
+},
+"rk10": {
+"src": "a/3d9d0e786fccc7.webp",
+"h": [
+0.289,
+0.285,
+0.712,
+0.683
+],
+"ar": 1.0
+},
+"rk9": {
+"src": "a/41fa6fc2629ad1.webp",
+"h": [
+0.274,
+0.249,
+0.725,
+0.688
+],
+"ar": 1.0
+}
+}
+}
