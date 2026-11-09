@@ -68,4 +68,5 @@ rep("if(twBagItems().length>=TWBAG){E.className='twH err';E.textContent='Mochila
 rep("const TWBAG=20;","const TWBAG=40;")
 rep("prem:[{pos:1,it:{t:'esp',r:'mit',v:11,vel:5,nm:'LÂMINA SOMBRIA',","prem:[{pos:1,it:{t:'esp',r:'mit',v:25,vel:5,crit:15,st:5,uniq:1,nm:'LÂMINA SOMBRIA',")
 rep("{pos:2,it:{t:'esp',r:'lend',v:6,vel:2,nm:'LÂMINA DOURADA',","{pos:2,it:{t:'esp',r:'lend',v:25,vel:2,crit:15,st:5,uniq:1,nm:'LÂMINA DOURADA',")
+rep("twChat.iv=setInterval(()=>{if(!$('twModal').querySelector('.twChat')){clearInterval(twChat.iv);return}load()},8000","twChat.iv=setInterval(()=>{if(!$('twModal').querySelector('.twChat')){clearInterval(twChat.iv);return}load()},25000")
 open(P,'w').write(s);print('ok',len(s))

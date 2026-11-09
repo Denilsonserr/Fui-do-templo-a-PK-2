@@ -945,3 +945,11 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - `RKTD` (por rank 0–7) aplicado no inimigo em `twApply` (`rkTwDiff`): dano ×[1,1.05,1.1,1.15,1.22,1.4,1.55,1.65], barras ×[1,1,1.1,1.15,1.25,1.4,1.55,1.65], vel ×[1,1,1.02,1.04,1.06,1.1,1.14,1.16], IA +1 nível a partir do Lendário. Leve até o Diamante, bem mais difícil do Lendário para cima (para chegar no Dragão Lendário/Divindade).
 - RECOMPENSAS da Torre mostra a dificuldade do seu rank e a coluna 👹 Inimigos na tabela.
 - Teste `ferramentas/testes/ttorre_dif.js` (andar 1: Madeira 2 barras/dano ×1; Dragão 3 barras/dano ×1,55/IA 2).
+
+## v232 — servidor estourou o limite de LEITURAS do dia (plano grátis) → economia
+- 08/11 ~22h: Firestore respondeu 429 "Quota exceeded" (leituras; escrita ainda funcionava). O plano Spark dá 50 mil leituras/dia e zera à meia-noite do Pacífico (~05:00 de Brasília). Ferramenta `.github/workflows/status.yml` testa leitura e escrita.
+- Culpados: ranking do ranqueado/recordes (até 1000 docs por consulta), mapa de títulos (todos os `claim`), chat global a cada 10 s, online a cada 30 s.
+- `twFetchT` agora passa por um CACHE das consultas (`RKQC` + localStorage `qc_*`): títulos 30 min, ranking/recordes 5 min, outros rankings 3 min, online ~4 min, chat 25 s; nome/conta/uid sem cache. Se vier 429, para de consultar por 15 min (`RKQ429`), usa o que tem guardado e avisa "Servidor no limite de hoje".
+- Menos escritas também: online a cada 5 min (bucket `p`+5 min), salvamento da conta a cada 5 min, chat global atualiza a cada 30 s, chat da Torre a cada 25 s.
+- Se continuar estourando com muitos jogadores: o dono pode ativar o plano Blaze (pago por uso, centavos) no Firebase.
+- Teste `ferramentas/testes/tcache.js`.
