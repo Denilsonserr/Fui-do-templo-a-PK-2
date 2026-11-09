@@ -1205,3 +1205,10 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 
 ## v266 — 2 códigos de diamantes
 - `extra/9a_v266.py`: `74f1ed` = 15.000 💎 uso ÚNICO (1 pessoa no jogo inteiro); `2qr7un` = DIAMANTES DA SORTE, 500 a 1500 💎 aleatório, todo mundo 1 vez por conta (`ev:1,rnd:[500,1500]`, ramo novo `C.rnd` no `twCupom`). Texto só com o dono. Teste: `ferramentas/testes/tcodigos_v266.js`.
+
+## v267 — ABAS DE EVENTO + 2º TORNEIO DA TORRE (corrida)
+- Menu novo (`ferramentas/ranqueada_artes/v267/menu_ranqueado_v267_sem_ponto.png`: os "!" vermelhos pintados foram apagados; o jogo põe o pontinho só quando precisa). Botão "Abas de Evento" (`evMenu`, brilha + pontinho quando tem evento ou recado novo; `evAny`). Passe de Batalha mudou de lugar (`rkB(1682,420,1842,546)`).
+- Tela `rkView('ev')` com a arte `abas_evento.png` (`RQA.abas_ev`, 1672x941, `bpB0`): até 6 abas (`evList`): TORNEIO (TWEV), EVENTO 2x (RKEVX), EVENTO DO PASSE (BPEV), RECADOS DO ADM. As faixas que ficavam no meio da tela foram desligadas (`rkEvTxt` vazio).
+- RECADOS DO ADM: o ADM escreve e publica na própria aba (documento `avs_<ts>` com `avs:'1', tit, txt`; cache 20 s). Todo mundo lê. Assim códigos não ficam no GitHub. (Proteção do ADM é só no jogo.)
+- TORNEIO (`extra/9b_v267.py`): `TWEV` novo `ev20261109`, 09/11/2026 20:15–20:45 Brasília, `fast:1` = ranking por mais andares e depois MENOR TEMPO (troféus não contam). Prêmios: 1º `bp:2` (Passe Prêmio), 2º `bp:1` (Passe Pago), 3º `gem:3000`. Entrega automática pelo `twClaims` (agora também ao abrir o Ranqueado), com janela de parabéns. O chefe final continua com 2 vidas no torneio.
+- Teste: `ferramentas/testes/tabas_evento_v267.js` (abas ao vivo, recado do ADM, 3 vencedores recebendo, menu sem brilho fora de evento).
