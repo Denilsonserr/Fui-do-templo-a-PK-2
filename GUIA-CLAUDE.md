@@ -1088,3 +1088,10 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - `mdH(...,yMax)`: a moldura diminui para não passar do topo do painel dos ranks (y 438). O brilho grande das molduras fica num anel de fora (não pinta a foto).
 - Divindade (moldura rk7, moldura ADM e emblema do rank 7 no perfil): raios dourados girando, auréola flutuando, brilho mais forte.
 - Código 3000 DIAMANTES (hash em `ferramentas/web/extra/50_v246.py`, texto só com o dono): uso único no jogo inteiro.
+
+## v247 — itens secretos do Yuta com bônus certo e brilho negro "quebrando a realidade"
+- Bug: a RIKA (capacete, `RKSP.yrika`) tem `v:0` (o bônus está em `def/crit/st/fdmg`), então aparecia "+0%". Agora o selo usa `rkItV(x)` = maior valor entre v/def/crit/dmg/st/fdmg (Rika mostra +40%).
+- `rkIsY(x)` marca item secreto do Yuta (`ysec` ou `yt`+`r:'sec'`). Um reparo no carregamento reescreve os itens do Yuta guardados com os valores de `RKSP` (itens antigos sem `def/fdmg/ysec` voltam a dar bônus).
+- Vitrine do perfil (`pfMine`/`pfClean`) agora guarda `def, fdmg, trf, yt, ysec` e aceita `r:'sec'` e `t:'anel'`.
+- CSS `.ysec` (em `rk.css`): borda cônica preta/roxa, vazio escuro pulsando, rachaduras, imagem com glitch e tremida — no perfil, nos espaços da mochila, na lista e no detalhe do item.
+- Lembrar: item do Yuta em outro personagem vale 50% (`eqNf`), por isso no Naruto a Rika soma +20% de defesa.
