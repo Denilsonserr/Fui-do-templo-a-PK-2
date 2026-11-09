@@ -934,3 +934,9 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - Barra do nome: o nome saiu (ficava escuro/bugado); agora mostra só o TÍTULO ativo grande (`.rtTit`, cor do título) e o personagem embaixo.
 - Código CAIXA DA SORTE MÁXIMA (hash `1tg5gr8`, texto só com o dono): 100–1000 💎 totalmente aleatório; 1 vez por NOME (documentId `cupom_1tg5gr8_n<hash nome>`); precisa ter nome. `rkDiaBox(3)`.
 - Teste `ferramentas/testes/tsorte3.js`.
+
+## v230 — loja de poções sem "mochila cheia" falso + espadas do torneio ÚNICAS
+- Loja (`twShop`): agora usa as pilhas — a poção entra se já existe pilha igual com menos de 99 ou se há espaço livre (`twPocFits`). Mochila passou de 20 para 40 espaços (`TWBAG=40`), cada espaço com até 99 iguais.
+- Espadas do 1º Torneio (LÂMINA SOMBRIA do 1º = Vini_junior10, LÂMINA DOURADA do 2º = Denilson ADM): `rkUniqFix()` (ao abrir o jogo) transforma em ITEM ÚNICO: Ataque +25%, Crítico +15%, Sorte +5% (`st`, soma em `rkSorte`), mantém a velocidade, `uniq:1`. Prêmios do `TWEV.prem` também atualizados. Não podem ser vendidas.
+- Visual único (`.uniq`): borda arco-íris girando, brilho pulsando, ✦ piscando e item balançando com brilho na mochila.
+- Teste `ferramentas/testes/tunico.js`.

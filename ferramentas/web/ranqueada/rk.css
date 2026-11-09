@@ -211,3 +211,12 @@
 #tower #twBox.rkT{width:100vw;height:100vh;font-size:min(1vw,1.7757vh)}
 #twBox.rkT .twArt{object-fit:fill}
 .rtNm .rtTit{font:900 1.6em var(--f-display,var(--f-ui));color:var(--c);text-shadow:0 0 .4em var(--c),0 2px 3px #000;letter-spacing:.04em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+/* v230: ITEM ÚNICO brilhando */
+.eqI.uniq,.eqS.uniq,.eqD.uniq{--c:#fff0a0!important;border:2px solid transparent!important;background:linear-gradient(#120a1a,#120a1a) padding-box,conic-gradient(from var(--ua,0deg),#ff2e63,#ffd84a,#7dff9a,#4fb0ff,#c46aff,#ff2e63) border-box!important;animation:rkUq 2.4s linear infinite,rkUqG 1.2s ease-in-out infinite alternate;position:relative;overflow:visible}
+.eqI.uniq img,.eqS.uniq img,.eqD.uniq>img{filter:drop-shadow(0 0 .35em #fff) drop-shadow(0 0 .8em #ffd84a) drop-shadow(0 0 1.4em #ff2e63);animation:rkUqI 1.6s ease-in-out infinite alternate}
+.eqI.uniq::after,.eqS.uniq::after{content:'✦';position:absolute;right:-.3em;top:-.5em;font-size:1.2em;color:#fff;text-shadow:0 0 .4em #ffd84a,0 0 .8em #ff2e63;animation:rkUqS 1s ease-in-out infinite alternate}
+.eqD.uniq span{background:linear-gradient(90deg,#ff2e63,#ffd84a,#7dff9a,#4fb0ff,#c46aff);-webkit-background-clip:text;background-clip:text;color:transparent!important;font-size:.85em!important}
+@property --ua{syntax:'<angle>';inherits:false;initial-value:0deg}
+@keyframes rkUq{to{--ua:360deg}}@keyframes rkUqG{from{box-shadow:0 0 .5em #ffd84a,0 0 1em rgba(255,46,99,.5)}to{box-shadow:0 0 1.1em #fff0a0,0 0 2.2em rgba(196,106,255,.8)}}
+@keyframes rkUqI{from{transform:scale(1) rotate(-3deg)}to{transform:scale(1.12) rotate(3deg)}}@keyframes rkUqS{from{opacity:.4;transform:scale(.8)}to{opacity:1;transform:scale(1.25)}}
+.eqUq{font-style:normal;font-size:.65em;color:#ffd84a;text-align:center}
