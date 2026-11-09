@@ -1196,3 +1196,6 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - Teclas novas no `KM` (as antigas continuam): Espaço = pular, Shift = defender, Q = especial, E = transformar, R = super, G = voar, Tab = trocar. Mouse na luta: esquerdo = soco, direito = chute. Esc nos menus do Ranqueado fecha a janela aberta ou volta (inclusive `menuBack`).
 - "Como jogar" mostra o quadro das teclas no topo quando está no PC.
 - Teste: `ferramentas/testes/tpc_v263.js` (andar, pular, soco, clique, chute, defesa, ki, especial, F1, Esc, celular com toque).
+
+## v264 — 2 códigos únicos do PASSE PRÊMIO (Elite)
+- `extra/98_v264.py`: hashes `3c1czy` e `15an3rn` (`bp:2,uni:1`): cada um libera PAGO + PRÊMIO para UMA pessoa no jogo inteiro (documento `cupom_<hash>`). Texto só com o dono. Teste: `ferramentas/testes/tcodigos_v264.js`.
