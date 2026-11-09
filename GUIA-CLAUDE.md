@@ -1072,3 +1072,13 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - Placa nova do título ADM (arte do dono `titulo_adm_v244.png` → `RQA.tit_adm`) no perfil (`.pfAdmI`, brilho/flutuar/faixa de luz/estrelas) e nos rankings/chat (`.twTit.admI`).
 - Código 4000 DIAMANTES ADM (hash em `ferramentas/web/extra/40_v244.py`, texto só com o dono): uso único no jogo inteiro.
 - Teste `ferramentas/testes/tv244.js`.
+
+## v245 — perfil com a arte nova, MOLDURAS da foto e título ADMINISTRADOR
+- Arte nova do Perfil (`perfil_v245.png`, mesma chave `RQA.perfil`); coordenadas do `pfH` ajustadas (foto 297–482 × 143–332, ranks, vitrine, pedestal).
+- Título ADM: tirada a arte da v244; agora é a placa feita em código `.pfAdmX` (borda girando vermelho/dourado, "ADMINISTRADOR" em degradê vermelho animado, linhas de energia, raios passando, coroa, faixa de luz e estrelas) e `.twTit.admX` nos rankings/chat.
+- MOLDURAS (artes do dono em `ferramentas/ranqueada_artes/molduras/`; `cortar.py` recorta → `RQA.mold[k]` {src, h = buraco da foto em fração, ar}). Foto → 🖼️ MOLDURA (`mdPick`), salva em `rk_mold`; vai no perfil publicado (outros jogadores veem).
+  - adm: quem tem o título ADM (dourado com brilho forte, flutua, faixa de luz, estrelas).
+  - rk0..rk7: rank MÁXIMO alcançado (brilho cresce com o rank: `--k`).
+  - top1/top2/top3: posição no ranking de RANK na semana atual (`rk_topw` {w: twWk, n}); conferido ao abrir o menu (`mdTopCheck`). Vale até a semana virar.
+  - ytob: ter o Yuta. yt100: vencer as 5 dificuldades do farm do evento (`st.ysW`). br100: vencer o Broly nos 8 níveis, farm conta (`st.brW`).
+- Teste `ferramentas/testes/tmolduras.js`.

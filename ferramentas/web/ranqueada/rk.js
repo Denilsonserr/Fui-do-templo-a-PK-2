@@ -226,6 +226,7 @@ function rkAfter(w){G.mode='ranked';$('controls').hidden=true;$('pauseBtn').hidd
   const rp0=rkG('rp',0),r0=rkRank(rp0);let rp1=Math.max(0,rp0+drp);rkS('rp',rp1);const r1=rkRank(rp1);for(let i=0;i<=r1;i++)twGiveTit('rk'+i);
   rkStAdd(won?'wins':'loss',1);pfFight({cmb:F.cmb||0,frac,won});rkStAdd('dmgTot',dmg);rkStAdd('dmgMax',dmg,1);if(F.t1){const S=rkSt();if(!S.t1||F.t1/60<S.t1){S.t1=Math.round(F.t1/60);rkS('st',S)}}if(won){const S=rkSt();if(!S.tt||secs<S.tt){S.tt=secs;rkS('st',S)}if(lost<.25)rkStAdd('clean',1)}
   if(RKFL==null)rkSend({rp:rp1,dmg,t1:F.t1?Math.round(F.t1/60):0,tt:won?secs:0,won:won?1:0});
+  {const S=rkSt();if(won){if(RKBID==='broly')S.brW=(S.brW||0)|(1<<rkBL());else if(RKYD!=null)S.ysW=(S.ysW||0)|(1<<RKYD);rkS('st',S)}}
   const R={bn:rkBoss().n,yd:RKYD,farm:RKFL!=null?RKFL+1:0,won,secs,dmg,frac,red,gem,tic,eq,chest,poc,sp,drp,rp0,rp1,r0,r1,t1:F.t1?Math.round(F.t1/60):0,lost,cmb:F.cmb,xb,srv:R_SRV};R_SRV=0;
   {const fs=RKFL;rkOpen(RKBID==='yuta'?'yb':'boss');if(fs!=null&&RKYD==null)RKSEL=fs}setTimeout(()=>rkResult(R),200)}
 /* recordes de tempo por nível do Boss: servidor (RKSRV) e seu (st.rec) */
@@ -634,25 +635,25 @@ const PFRV=[[1331,316],[1478,404],[1478,567],[1331,648],[1193,570],[1184,407]],P
 /* dados do perfil (o seu = pfMine; de outro jogador = PFO, vindo do servidor) */
 function pfMine(){try{pfMoedas();pfMaxUp(rkG('rp',0))}catch(e){}const S=rkSt(),o=pfD(),rec=Object.entries(S.rec||{}).filter(e=>e[1]>0).sort((a,b)=>a[1]-b[1])[0];
   const n=twLS.g('tw_nome',''),VT=pfVit().map(e=>e&&{t:e.t,r:e.r,v:e.v,nm:e.nm||'',img:e.img||'',uniq:e.uniq?1:0,crit:e.crit||0,dmg:e.dmg||0,vel:e.vel||0,st:e.st||0});
-  return {uid:twUid(),nome:n,tit:twTitOn(),rp:rkG('rp',0)|0,mx:pfRkMax(),foto:rkG('foto',''),vit:VT,ped:pfPed(),R:pfRadar().map(r=>({n:r.n,v:r.v,t:r.t})),
+  return {uid:twUid(),mold:mdCur(),nome:n,tit:twTitOn(),rp:rkG('rp',0)|0,mx:pfRkMax(),foto:rkG('foto',''),vit:VT,ped:pfPed(),R:pfRadar().map(r=>({n:r.n,v:r.v,t:r.t})),
     h:{pt:rkPl(S)+(o.twf||0)+(o.twl||0),vw:(S.wins||0)+(o.twf||0),tw:o.tw||0,twc:o.twc||0,twf:o.twf||0,wins:S.wins||0,loss:S.loss||0,own:rkG('own',['goku']).filter(id=>CH[id]).length,tt:S.tt||0,rl:rec?(+rec[0]):-1}}}
 let PFO=null,PFRET=null;
 const pfCur=()=>PFO||pfMine();
 function pfH(){const D=pfCur(),me=!PFO,n=D.nome||'',adm=!!n&&n.toLowerCase()===String(TWADMN).toLowerCase(),t=D.tit,ri=rkRank(D.rp),mx=Math.max(ri,D.mx|0),VT=D.vit||[],ped=CH[D.ped]?D.ped:'goku',foto=PFO&&PFO.fh?'':D.foto;
-  const RC=[[412,690],[607,690],[804,690]];
+  const RC=[[395,690],[592,690],[787,690]];
   return `<button class="hs" data-a="back" style="${rkB2(40,0,200,100)}"></button>
   <button class="hs pfTab" data-a="pf" style="${rkB2(10,145,280,225)}"></button><button class="hs pfTab" data-a="hs" style="${rkB2(10,240,262,320)}"></button>
   ${me?'':`<div class="pfOth" style="${rkB2(560,8,1150,70)}">👀 PERFIL DE <b>${twEsc(n||'?')}</b>${PFO.old?'<small>ainda não atualizou o jogo</small>':''}</div>`}
-  <button class="pfFoto${me?'':' ro'}" data-a="pfFoto" style="${rkB2(311,151,473,315)}">${foto?`<img src="${foto}" alt="">${me?'<em>✎</em>':''}`:me?`<span><i>📷</i>FOTO</span>`:`<span class="h"><i>👤</i>${PFO&&PFO.fh?'FOTO<br>ESCONDIDA':''}</span>`}</button>
-  <div class="pfNm${adm?' adm':''}" style="${rkB2(500,194,1015,246)}">${n?twEsc(n):'<i>SEM NOME</i>'}</div>
-  <button class="pfTi${me?'':' ro'}" data-a="pfTit" style="${rkB2(500,256,1000,316)}">${me||t?pfTitH(t,n,adm):'<i>SEM TÍTULO</i>'}</button>
-  ${pfRkH(ri,rkB2(392,382,532,522))}${pfRkH(mx,rkB2(667,382,807,522))}
-  <div class="pfCap" style="${rkB2(345,572,580,600)}"><b style="color:${RKR[ri].c}">${RKR[ri].n}</b> · ATUAL</div>
-  <div class="pfCap" style="${rkB2(620,572,855,600)}"><b style="color:${RKR[mx].c}">${RKR[mx].n}</b> · MÁXIMO</div>
-  ${RC.map(([x,y],i)=>{const e=VT[i],ri2=e?Math.max(0,TWRK.indexOf(e.r)):0,c=e?rkItC(e):'#7a5cc8';return `<button class="pfV${e?' on r'+ri2:''}${e&&e.uniq?' uq':''}" data-a="pfVit" data-i="${i}" style="${rkB2(x-60,y-60,x+60,y+60)};--c:${c}">${e?`<i class="g"></i><i class="ry"></i><img src="${rkItIc(e)}" alt=""><b>+${e.v}%</b>`:me?'<span>＋</span>':''}</button><div class="pfCap sm" style="${rkB2(x-96,814,x+96,838)}">${e?`<b style="color:${e.uniq?'#fff0a0':c}">${e.uniq?'✦ ':''}${twEsc(rkItNm(e))}${e.nm?'':' '+(TWEQR.find(q=>q.k===e.r)||TWEQR[0]).n}</b>`:me?'toque para mostrar um item':'—'}</div>`}).join('')}
-  <button class="pfPed" data-a="${me?'pfPick':''}" style="${rkB2(1060,130,1520,690)}"><img src="${fullSrc(ped)}" alt=""></button>
+  ${mdH(D.mold,297,143,482,332)}<button class="pfFoto${me?'':' ro'}" data-a="pfFoto" style="${rkB2(303,149,476,326)}">${foto?`<img src="${foto}" alt="">${me?'<em>✎</em>':''}`:me?`<span><i>📷</i>FOTO</span>`:`<span class="h"><i>👤</i>${PFO&&PFO.fh?'FOTO<br>ESCONDIDA':''}</span>`}</button>
+  <div class="pfNm${adm?' adm':''}" style="${rkB2(505,180,1110,240)}">${n?twEsc(n):'<i>SEM NOME</i>'}</div>
+  <button class="pfTi${me?'':' ro'}" data-a="pfTit" style="${rkB2(505,266,1060,324)}">${me||t?pfTitH(t,n,adm):'<i>SEM TÍTULO</i>'}</button>
+  ${pfRkH(ri,rkB2(372,390,512,530))}${pfRkH(mx,rkB2(645,390,785,530))}
+  <div class="pfCap" style="${rkB2(325,582,560,608)}"><b style="color:${RKR[ri].c}">${RKR[ri].n}</b> · ATUAL</div>
+  <div class="pfCap" style="${rkB2(598,582,833,608)}"><b style="color:${RKR[mx].c}">${RKR[mx].n}</b> · MÁXIMO</div>
+  ${RC.map(([x,y],i)=>{const e=VT[i],ri2=e?Math.max(0,TWRK.indexOf(e.r)):0,c=e?rkItC(e):'#7a5cc8';return `<button class="pfV${e?' on r'+ri2:''}${e&&e.uniq?' uq':''}" data-a="pfVit" data-i="${i}" style="${rkB2(x-56,y-56,x+56,y+56)};--c:${c}">${e?`<i class="g"></i><i class="ry"></i><img src="${rkItIc(e)}" alt=""><b>+${e.v}%</b>`:me?'<span>＋</span>':''}</button><div class="pfCap sm" style="${rkB2(x-96,806,x+96,830)}">${e?`<b style="color:${e.uniq?'#fff0a0':c}">${e.uniq?'✦ ':''}${twEsc(rkItNm(e))}${e.nm?'':' '+(TWEQR.find(q=>q.k===e.r)||TWEQR[0]).n}</b>`:me?'toque para mostrar um item':'—'}</div>`}).join('')}
+  <button class="pfPed" data-a="${me?'pfPick':''}" style="${rkB2(1050,110,1530,655)}"><img src="${fullSrc(ped)}" alt=""></button>
   <div class="pfPedN" style="${rkB2(1090,848,1490,896)}">${CH[ped]?CH[ped].name:''}</div>
-  ${me?`<button class="pfLupa" data-a="pfPick" style="${rkB2(1528,700,1600,772)}" title="Trocar personagem">🔍</button>`:''}`}
+  ${me?`<button class="pfLupa" data-a="pfPick" style="${rkB2(1565,660,1637,732)}" title="Trocar personagem">🔍</button>`:''}`}
 function pfOn(){clearInterval(rkView.iv);if(!PFO)setTimeout(()=>pfPub(1),400)}
 function hsH(){const D=pfCur(),H=D.h,R=D.R,tot=['yuta',...RK_MIT,...RK_LEG,...RK_EPI].filter(id=>CH[id]).length,tx=H&&H.pt?Math.round(H.vw/H.pt*100):0,N=v=>H?rkFmtN(v||0):'—';
   const pts=R?R.map((r,i)=>{const [vx,vy]=PFRV[i];return [PFRC[0]+(vx-PFRC[0])*r.v/100,PFRC[1]+(vy-PFRC[1])*r.v/100].map(Math.round).join(',')}).join(' '):'';
@@ -674,8 +675,8 @@ function hsOn(){clearInterval(rkView.iv);const u=pfCur().uid;rkLoadRk('rp').then
 function hsInfo(k){const D=pfCur(),H=D.h;if(!H)return rkToast('Esse jogador ainda não atualizou o jogo','#cfd6ea');
   rkToast({tw:`🏯 ${H.tw} subidas · ${H.twc} completas · ${H.twf} andares vencidos`,boss:`💀 ${H.wins} vitórias · ${H.loss} derrotas contra o Broly`,chr:`🧑 ${H.own} personagens no ranqueado`,rec:H.tt?`🏆 Vitória mais rápida no Boss: ${twFmt(H.tt)}${H.rl>=0?' (nível '+(H.rl+1)+')':''}`:'🏆 Ainda não venceu o Broly'}[k]||'','#ffe9a0')}
 function pfRadarInfo(){const R=pfCur().R;if(!R)return;rkModal(`<div class="twM pfRI"><h3>📊 NÍVEL DE HABILIDADE</h3><p class="twH">Atualiza sozinho a cada luta ranqueada (Boss e Torre), sem gastar o servidor.</p>${R.map(r=>`<div><b>${r.n}</b><i class="bar"><s style="width:${r.v}%"></s></i><em>${r.v}</em><span>${twEsc(r.t)}</span></div>`).join('')}<div class="row"><button class="btn" id="rkMX">FECHAR</button></div></div>`);$('rkMX').onclick=()=>rkModal(null)}
-function pfFotoM(){const f=rkG('foto','');rkModal(`<div class="twM pfFM"><h3>FOTO DE PERFIL</h3><div class="pfFMb"><button class="btn main" id="pfF1">📷 TROCAR FOTO</button><button class="btn" id="pfF2">🏅 EMBLEMA</button>${f?'<button class="btn" id="pfF3">🗑️ TIRAR FOTO</button>':''}</div><p class="twH">Escolha uma foto do celular. Ela fica pequena para não pesar e vai junto no save da sua conta.</p><div class="row"><button class="btn" id="rkMX">FECHAR</button></div></div>`);
-  $('rkMX').onclick=()=>rkModal(null);$('pfF2').onclick=()=>{rkModal(null);rkSfx('clang');rkToast('🏅 Emblemas animados: em breve!','#cfd6ea')};if($('pfF3'))$('pfF3').onclick=()=>{rkS('foto','');rkModal(null);rkView('pf')};
+function pfFotoM(){const f=rkG('foto','');rkModal(`<div class="twM pfFM"><h3>FOTO DE PERFIL</h3><div class="pfFMb"><button class="btn main" id="pfF1">📷 TROCAR FOTO</button><button class="btn" id="pfF2">🖼️ MOLDURA</button>${f?'<button class="btn" id="pfF3">🗑️ TIRAR FOTO</button>':''}</div><p class="twH">Escolha uma foto do celular. Ela fica pequena para não pesar e vai junto no save da sua conta.</p><div class="row"><button class="btn" id="rkMX">FECHAR</button></div></div>`);
+  $('rkMX').onclick=()=>rkModal(null);$('pfF2').onclick=()=>mdPick();if($('pfF3'))$('pfF3').onclick=()=>{rkS('foto','');rkModal(null);rkView('pf')};
   $('pfF1').onclick=()=>{const I=document.createElement('input');I.type='file';I.accept='image/*';I.style.display='none';document.body.appendChild(I);I.onchange=()=>{const F=I.files&&I.files[0];I.remove();if(F)pfCrop(F)};I.click()}}
 function pfFotoLoad(F){const u=URL.createObjectURL(F),im=new Image();im.onload=()=>{try{const w=im.naturalWidth,h=im.naturalHeight,s=Math.min(w,h),c=document.createElement('canvas');c.width=c.height=200;const x=c.getContext('2d');x.fillStyle='#000';x.fillRect(0,0,200,200);x.drawImage(im,(w-s)/2,(h-s)/2,s,s,0,0,200,200);
     let q=.82,d=c.toDataURL('image/jpeg',q);while(d.length>40000&&q>.35){q-=.12;d=c.toDataURL('image/jpeg',q)}rkS('foto',d);rkModal(null);rkView('pf');rkSfx('powerUp');rkToast('📷 Foto atualizada!','#7dff9a')}catch(e){rkToast('Não deu para usar essa imagem','#ff8080')}URL.revokeObjectURL(u)};
@@ -731,7 +732,7 @@ async function pfLast(field,val){const body={structuredQuery:{from:[{collectionI
 /* tudo que vem do servidor passa por aqui (nada de HTML/links estranhos) */
 const PFIMG=/^(a\/[\w.-]+\.(webp|png|jpg)|data:image\/(png|webp|jpeg);base64,[A-Za-z0-9+\/=]+)$/;
 function pfClean(o,uid,nome){const N=(v,mx)=>Math.max(0,Math.min(mx||1e9,+v||0))|0,S=(v,l)=>String(v==null?'':v).slice(0,l||40);
-  return {uid,nome:S(nome||o.nome,16),tit:TWTIT[o.tit]?o.tit:'',rp:N(o.rp),mx:Math.min(7,N(o.mx)),foto:/^data:image\/jpeg;base64,[A-Za-z0-9+\/=]+$/.test(o.foto||'')?o.foto:'',
+  return {uid,mold:MDL[o.mold]?o.mold:'',nome:S(nome||o.nome,16),tit:TWTIT[o.tit]?o.tit:'',rp:N(o.rp),mx:Math.min(7,N(o.mx)),foto:/^data:image\/jpeg;base64,[A-Za-z0-9+\/=]+$/.test(o.foto||'')?o.foto:'',
     vit:(Array.isArray(o.vit)?o.vit:[]).slice(0,3).map(e=>e&&TWRK.includes(e.r)&&TWEQ.some(E=>E.k===e.t)?{t:e.t,r:e.r,v:N(e.v,999),nm:S(e.nm,30),img:PFIMG.test(e.img||'')?e.img:'',uniq:e.uniq?1:0,crit:N(e.crit,999),dmg:N(e.dmg,999),vel:N(e.vel,999),st:N(e.st,999)}:null),
     ped:CH[o.ped]?o.ped:'goku',R:Array.isArray(o.R)&&o.R.length===6?o.R.map((r,i)=>({n:['CRÍTICO','DANO','VELOCIDADE','RANK','COMBO','FARM'][i],v:Math.max(4,Math.min(100,N(r&&r.v))),t:S(r&&r.t,160)})):null,
     h:o.h&&typeof o.h==='object'?Object.assign(Object.fromEntries(['pt','vw','tw','twc','twf','wins','loss','own','tt'].map(k=>[k,N(o.h[k])])),{rl:Math.min(7,Math.max(-1,+o.h.rl|0))}):null}}
@@ -1067,4 +1068,23 @@ function tbApply(p){if(!p||p.cpu||p.tbOn)return;p.tbOn=1;const B=tbOf(twTitOn())
 twAdmBuff=function(){try{if(!G.p||G.gmode==='boss')return;tbApply(G.p[0])}catch(e){}};
 /* placa nova do título ADM (arte do dono) */
 {const _pt3=pfTitH;pfTitH=function(t,n,adm){if(t==='adm'&&adm)return `<span class="pfAdmI"><i class="gl"></i><img src="${RQA.tit_adm}" alt="ADM"><i class="sw"></i><i class="sp a">✦</i><i class="sp b">✦</i><i class="sp c">✦</i><i class="sp d">✦</i></span>`;return _pt3.apply(this,arguments)}}
+/* ================= v245: MOLDURAS da foto do perfil (artes do dono) ================= */
+const MDL={adm:{n:'ADMINISTRADOR',d:'Só para quem tem o título ADM',ok:()=>twTits().includes('adm'),cls:'adm'},
+  rk0:{n:'MADEIRA',r:0},rk1:{n:'BRONZE',r:1},rk2:{n:'PRATA',r:2},rk3:{n:'OURO',r:3},rk4:{n:'DIAMANTE',r:4},rk5:{n:'LENDÁRIO',r:5},rk6:{n:'DRAGÃO LENDÁRIO',r:6},rk7:{n:'DIVINDADE',r:7},
+  top1:{n:'TOP 1',d:'1º do ranking de RANK nesta semana',top:1,cls:'top'},top2:{n:'TOP 2',d:'Top 2 do ranking de RANK nesta semana',top:2,cls:'top'},top3:{n:'TOP 3',d:'Top 3 do ranking de RANK nesta semana',top:3,cls:'top'},
+  ytob:{n:'YUTA OBTIDO',d:'Ter o Yuta',ok:()=>rkG('own',[]).includes('yuta'),cls:'ev yt'},
+  yt100:{n:'YUTA 100%',d:'Vencer o Yuta nas 5 dificuldades do farm do evento',ok:()=>((rkSt().ysW||0)&31)===31,cls:'ev yt',pr:()=>[[0,1,2,3,4].filter(i=>(rkSt().ysW||0)&(1<<i)).length,5]},
+  br100:{n:'BROLY 100%',d:'Vencer o Broly nos 8 níveis (o farm conta)',ok:()=>((rkSt().brW||0)&255)===255,cls:'ev br',pr:()=>[[0,1,2,3,4,5,6,7].filter(i=>(rkSt().brW||0)&(1<<i)).length,8]}};
+for(const k in MDL){const M=MDL[k];if(M.r!=null){M.d='Chegar ao rank '+M.n+' (rank máximo)';M.ok=()=>pfRkMax()>=M.r;M.cls='rk r'+M.r}if(M.top)M.ok=()=>{const T=rkG('topw',null);return !!T&&T.w===twWk(Date.now())&&T.n<=M.top}}
+const mdOk=k=>{try{return !!MDL[k]&&MDL[k].ok()}catch(e){return false}},mdCur=()=>{const k=rkG('mold','');return mdOk(k)?k:''};
+/* moldura por cima do quadrado da foto (x0,y0,x1,y1 = quadrado na arte); o "buraco" da moldura encaixa no quadrado */
+function mdH(k,x0,y0,x1,y1){const A=k&&RQA.mold[k],M=MDL[k];if(!A||!M)return '';const [hx0,hy0,hx1,hy1]=A.h,W=(x1-x0)/(hx1-hx0)*1.04,H=W/A.ar,X=(x0+x1)/2-(hx0+hx1)/2*W,Y=(y0+y1)/2-(hy0+hy1)/2*H;
+  return `<div class="pfMold ${M.cls}" style="${rkB2(X,Y,X+W,Y+H)}"><i class="gl"></i><img src="${A.src}" alt=""><i class="sw"></i>${M.cls==='adm'||/top|ev/.test(M.cls)||M.r>=5?'<i class="sp a">✦</i><i class="sp b">✦</i><i class="sp c">✦</i><i class="sp d">✦</i>':''}</div>`}
+async function mdTopCheck(){try{const A=(await rkLoadRk('rp')).sort((a,b)=>b.rp-a.rp),i=A.findIndex(e=>e.uid===twUid());if(i<0||i>2)return;const w=twWk(Date.now()),T=rkG('topw',null);if(!T||T.w!==w||i+1<T.n)rkS('topw',{w,n:i+1})}catch(e){}}
+function mdPick(){mdTopCheck().then(()=>{if(document.querySelector('#rkModal .mdG'))mdPick0()});mdPick0()}
+function mdPick0(){const cur=rkG('mold','');
+  rkModal(`<div class="twM mdM"><h3>🖼️ MOLDURA DA FOTO</h3><p class="twH">Toque numa moldura liberada para usar. As de TOP valem durante a semana em que você ficou no top do ranking de RANK.</p><div class="mdG"><button class="mdC ${cur?'':'on'}" data-k=""><span class="no">SEM<br>MOLDURA</span><b>NENHUMA</b></button>${Object.keys(MDL).map(k=>{const M=MDL[k],ok=mdOk(k),pr=M.pr?M.pr():null;return `<button class="mdC ${ok?'':'lk'} ${cur===k&&ok?'on':''}" data-k="${k}"><div class="mdPv ${M.cls}"><img src="${RQA.mold[k].src}" alt=""></div><b>${M.n}</b><small>${ok?(cur===k?'EM USO':'USAR'):'🔒 '+M.d+(pr?' ('+pr[0]+'/'+pr[1]+')':'')}</small></button>`}).join('')}</div><div class="row"><button class="btn" id="rkMX">FECHAR</button></div></div>`);
+  $('rkMX').onclick=()=>rkModal(null);document.querySelectorAll('#rkModal .mdC').forEach(b=>b.onclick=()=>{const k=b.dataset.k;if(k&&!mdOk(k)){rkSfx('clang');rkToast('🔒 '+MDL[k].d,'#cfd6ea');return}rkS('mold',k);rkSfx('powerUp');rkModal(null);rkView('pf');if(k)rkToast('🖼️ Moldura '+MDL[k].n+'!','#ffd84a')})}
+/* título ADM: placa feita em código (vermelho/dourado com energia) */
+{const _pt4=pfTitH;pfTitH=function(t,n,adm){if(t==='adm'&&adm)return `<span class="pfAdmX"><i class="en"></i><i class="cr">👑</i><b data-t="ADMINISTRADOR">ADMINISTRADOR</b><i class="bolt a"></i><i class="bolt b"></i><i class="sw"></i><i class="sp a">✦</i><i class="sp b">✦</i><i class="sp c">✦</i></span>`;return _pt4.apply(this,arguments)}}
 window.__rk={lvSorte,lvLuck,lvBonus,lvOf,rkExtra,twEqB:s=>twEqB(s)};
