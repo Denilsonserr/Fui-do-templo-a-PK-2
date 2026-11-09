@@ -36,5 +36,5 @@
 - Espada do Yuta: +30% dano, +10% crítico.
 - Anel: +50% sorte, +30% velocidade de transformação.
 - Roupa (armadura): +60% defesa, +10% velocidade de transformação.
-- Rika (capacete): +40% defesa, +20% crítico, +10% sorte + aumento de dano na transformação (valor a confirmar).
+- Rika (capacete): +40% defesa, +20% crítico, +10% sorte +20% de dano na transformação (confirmado).
 - Em qualquer personagem que NÃO seja o Yuta, esses itens valem 50% (nerf).
