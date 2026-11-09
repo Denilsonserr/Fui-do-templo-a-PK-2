@@ -214,7 +214,7 @@ const RKEVX=[[Date.UTC(2026,10,8,23,0),Date.UTC(2026,10,9,1,0),3,'3x XP'],
   [Date.UTC(2026,10,9,15,30),Date.UTC(2026,10,10,1,30),2,'2x XP · 2x GEMAS · 2x SORTE',{gem:2,luck:2}]];
 const rkEvX=()=>{const t=Date.now();return RKEVX.find(e=>t>=e[0]&&t<e[1])||null};
 const rkEvG=()=>{const e=rkEvX();return (e&&e[4]&&e[4].gem)||1},rkEvL=()=>{const e=rkEvX();return (e&&e[4]&&e[4].luck)||1};
-const rkEvTxt=()=>{const e=rkEvX();if(!e)return '';const m=Math.max(0,Math.round((e[1]-Date.now())/60000));return `<div class="rkEvX">🔥 EVENTO <b>${e[3]}</b> NA RANQUEADA! · termina em ${m>=60?Math.floor(m/60)+'h'+String(m%60).padStart(2,'0'):m+' min'}</div>`};
+const rkEvTxt=()=>{const a=rkEvTxt0();return a+bpEvBan(a)};const rkEvTxt0=()=>{const e=rkEvX();if(!e)return '';const m=Math.max(0,Math.round((e[1]-Date.now())/60000));return `<div class="rkEvX">🔥 EVENTO <b>${e[3]}</b> NA RANQUEADA! · termina em ${m>=60?Math.floor(m/60)+'h'+String(m%60).padStart(2,'0'):m+' min'}</div>`};
 let R_SRV=0;
 function rkAfter(w){G.mode='ranked';$('controls').hidden=true;$('pauseBtn').hidden=true;rainSound(0);G.paused=false;G.diff=RKB.diff0;
   const F=RKB.fs||{t:0,t1:0,cmb:0,hp0:1},o=G.p[1],p=G.p[0],won=w===0,secs=Math.round(F.t/60);
@@ -1339,12 +1339,13 @@ const BPP=[[{g:500},{t:5}],[{j:3}],[{r:400},{pc:'lend'}],[{g:800}],[{an:'lend'},
 const BPMD=[['d1','Jogue 3 lutas (Boss ou Torre)','fights',3,60],['d2','Vença 2 lutas no Modo Boss','bossW',2,80],['d3','Vença 5 andares da Torre','floor',5,80],['d4','Gire 5 vezes no Gacha','spin',5,60],['d5','Gire 1 passiva','ps',1,40]];
 const BPMS=[['s1','Vença 25 lutas no Modo Boss','bossW',25,400],['s2','Vença 60 andares da Torre','floor',60,400],['s3','Complete a Torre 5 vezes','tower',5,400],['s4','Gire 80 vezes no Gacha','spin',80,300],['s5','Gire 15 passivas','ps',15,300],['s6','Jogue 100 lutas','fights',100,400]];
 const bpDay=()=>{const d=new Date();return d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate()};
-function bpG(){let o=rkG('bp',null);if(!o||o.s!==BPS.n)o={s:BPS.n,xp:0,c:{},dd:'',d:{},dc:[],sc:[],cf:[],cn:[],cp:[],own:0};if(o.dd!==bpDay()){o.dd=bpDay();o.d={};o.dc=[]}return o}
+function bpG(){let o=rkG('bp',null);if(!o||o.s!==BPS.n)o={s:BPS.n,xp:0,c:{},dd:'',d:{},dc:[],sc:[],cf:[],cn:[],cp:[],own:0};if(o.dd!==bpDay()){o.dd=bpDay();o.d={};o.dc=[]}if(o.ei!==BPEV.id){o.ei=BPEV.id;o.e={};o.ec=[]}return o}
 const bpS=o=>{rkS('bp',o);try{acSave()}catch(e){}};
 const bpLv=o=>Math.min(20,Math.floor((o.xp|0)/BPS.xpL)),bpOn2=()=>Date.now()<=BPS.fim;
-function bpAdd(k,n){try{if(!bpOn2())return;const o=bpG();o.c[k]=(o.c[k]|0)+n;o.d[k]=(o.d[k]|0)+n;bpS(o)}catch(e){}}
+function bpAdd(k,n){try{if(!bpOn2())return;const o=bpG();o.c[k]=(o.c[k]|0)+n;o.d[k]=(o.d[k]|0)+n;if(bpEvOn())o.e[k]=(o.e[k]|0)+n;bpS(o)}catch(e){}}
 function bpUnlock(t){const o=bpG();o.own=Math.max(o.own|0,t);bpS(o)}
 function bpPend(){try{const o=bpG(),L=bpLv(o);for(let i=0;i<L;i++){if(!o.cf.includes(i))return true;if(o.own>=1&&!o.cn.includes(i))return true;if(o.own>=2&&!o.cp.includes(i))return true}
+  if(bpEvOn()&&bpEvL().some(m=>bpEvV(o,m)>=m[3]&&!o.ec.includes(m[0])))return true;
   return BPMD.some(m=>(o.d[m[2]]|0)>=m[3]&&!o.dc.includes(m[0]))||BPMS.some(m=>(o.c[m[2]]|0)>=m[3]&&!o.sc.includes(m[0]))}catch(e){return false}}
 /* ícone e texto de cada prêmio */
 const BPRK=['comum','rara','epica','lend','mit','sec'],bpRI=k=>Math.max(0,BPRK.indexOf(k));
@@ -1400,14 +1401,38 @@ function bpPick(x){return new Promise(res=>{let L;if(x.ch==='pick'){const own=rk
   document.querySelectorAll(RKMS()+'.bpPkG button').forEach(b=>b.onclick=()=>{const k=b.dataset.k;rkModal(null);
     if(x.ch){const own=rkG('own',['goku']);if(!own.includes(k)){own.push(k);rkS('own',own)}rkToast('✦ '+CH[k].name+' liberado!','#ffd84a')}
     else if(k==='_mit')twAddItem(TWEQ.find(E=>E.k==='esp'),TWEQR.find(R=>R.k==='mit'));else rkGiveSp(k);res(true)})})}
-function bpMis(){const o=bpG(),row=(m,c,done)=>{const v=Math.min(m[3],c[m[2]]|0),ok=v>=m[3];return `<div class="bpMi ${done?'got':ok?'ok':''}"><span>${m[1]}</span><em>${v}/${m[3]}</em><b>+${m[4]} XP</b>${done?'<i>✔</i>':ok?`<button data-m="${m[0]}">PEGAR</button>`:''}</div>`};
-  rkModal(`<div class="twM bpMs"><h3>📋 MISSÕES DO PASSE</h3><p class="twH">Cada ${BPS.xpL} XP = 1 nível. As diárias voltam todo dia.</p><h4>☀️ DIÁRIAS</h4>${BPMD.map(m=>row(m,o.d,o.dc.includes(m[0]))).join('')}<h4>🏆 DA TEMPORADA</h4>${BPMS.map(m=>row(m,o.c,o.sc.includes(m[0]))).join('')}<div class="row"><button class="btn" id="rkMX">FECHAR</button></div></div>`);
+function bpMis(){const o=bpG(),X3=bpEvOn()?3:1,row=(m,c,done)=>{const v=m[2]==='rk'?rkRk():Math.min(m[3],c[m[2]]|0),ok=v>=m[3];return `<div class="bpMi ${done?'got':ok?'ok':''}"><span>${m[1]}</span><em>${m[2]==='rk'?(ok?'✔':'🔒'):v+'/'+m[3]}</em><b>+${m[4]*X3} XP</b>${done?'<i>✔</i>':ok?`<button data-m="${m[0]}">PEGAR</button>`:''}</div>`};
+  rkModal(`<div class="twM bpMs"><h3>📋 MISSÕES DO PASSE</h3><p class="twH">Cada ${BPS.xpL} XP = 1 nível. As diárias voltam todo dia.</p>${bpEvOn()?`<h4 class="bpEvH">⚡ EVENTO DO PASSE · 3x XP · termina em ${bpEvLeft()}</h4>${bpEvL().map(m=>row(m,o.e,o.ec.includes(m[0]))).join('')}`:''}<h4>☀️ DIÁRIAS${X3>1?' (3x)':''}</h4>${BPMD.map(m=>row(m,o.d,o.dc.includes(m[0]))).join('')}<h4>🏆 DA TEMPORADA${X3>1?' (3x)':''}</h4>${BPMS.map(m=>row(m,o.c,o.sc.includes(m[0]))).join('')}<div class="row"><button class="btn" id="rkMX">FECHAR</button></div></div>`);
   $('rkMX').onclick=()=>{rkModal(null);if(RKV==='bp')rkView('bp')};
-  document.querySelectorAll(RKMS()+'.bpMi button').forEach(b=>b.onclick=()=>{const o=bpG(),k=b.dataset.m,m=[...BPMD,...BPMS].find(x=>x[0]===k),d=k[0]==='d';if(!m)return;const C=d?o.d:o.c,K=d?'dc':'sc';if((C[m[2]]|0)<m[3]||o[K].includes(k))return;
-    const l0=bpLv(o);o[K].push(k);o.xp=(o.xp|0)+m[4];bpS(o);rkSfx('powerUp');const l1=bpLv(o);if(l1>l0)rkToast('⬆ PASSE NÍVEL '+l1+'!','#ffd84a');bpMis()})}
+  document.querySelectorAll(RKMS()+'.bpMi button').forEach(b=>b.onclick=()=>{const o=bpG(),k=b.dataset.m,m=[...BPMD,...BPMS,...bpEvL()].find(x=>x[0]===k),ty=k[0];if(!m)return;if(ty==='e'||ty==='r'){if(!bpEvOn()||bpEvV(o,m)<m[3]||o.ec.includes(k))return;o.ec.push(k)}else{const d=ty==='d',C=d?o.d:o.c,K=d?'dc':'sc';if((C[m[2]]|0)<m[3]||o[K].includes(k))return;o[K].push(k)}
+    const l0=bpLv(o);o.xp=(o.xp|0)+m[4]*(bpEvOn()?3:1);bpS(o);rkSfx('powerUp');const l1=bpLv(o);if(l1>l0)rkToast('⬆ PASSE NÍVEL '+l1+'!','#ffd84a');bpMis()})}
 /* contadores das missões */
 {const _r4=rkResult;rkResult=function(R){try{bpAdd('fights',1);if(R&&R.won)bpAdd('bossW',1)}catch(e){}return _r4.apply(this,arguments)}}
 {const _ta4=twAfter;twAfter=function(w){try{bpAdd('fights',1);if(w===0)bpAdd('floor',1)}catch(e){}return _ta4.apply(this,arguments)}}
 {const _tf4=twFinish;twFinish=function(won){try{if(won)bpAdd('tower',1)}catch(e){}return _tf4.apply(this,arguments)}}
 {const _sd=lvSpinDrops;lvSpinDrops=function(n){try{bpAdd('spin',n|0)}catch(e){}return _sd.apply(this,arguments)}}
 {const _pr=psRoll;psRoll=function(){try{bpAdd('ps',1)}catch(e){}return _pr.apply(this,arguments)}}
+
+/* ================= v261: EVENTO DO PASSE (4 horas) =================
+   09/11/2026 17:45 → 21:45 (Brasília). Missões extras fáceis (Torre, Boss, gacha, passiva, rank), 3x XP em TODAS as missões do passe,
+   e cada vitória (Boss ou andar da Torre) tem 0,5% de abrir o BAÚ DO EVENTO = PASSE PAGO liberado. Só UMA pessoa no jogo inteiro ganha
+   (documento fixo bpev_<id> no servidor: o primeiro cria, o resto recebe 409). Quem já tem o passe pago não participa do sorteio. */
+const BPEV={id:'e1',ini:Date.UTC(2026,10,9,20,45),fim:Date.UTC(2026,10,10,0,45)};
+const bpEvOn=()=>{const t=Date.now();return t>=BPEV.ini&&t<BPEV.fim},bpEvLeft=()=>{const m=Math.max(0,Math.round((BPEV.fim-Date.now())/6e4));return m>=60?Math.floor(m/60)+'h'+String(m%60).padStart(2,'0'):m+' min'};
+const BPME=[['e01','Vença 1 andar da Torre','floor',1,60],['e02','Vença 3 andares da Torre','floor',3,80],['e03','Vença 6 andares da Torre','floor',6,100],['e04','Vença 10 andares da Torre','floor',10,120],['e05','Vença 15 andares da Torre','floor',15,150],['e06','Complete a Torre 1 vez','tower',1,200],
+  ['e07','Jogue 2 lutas','fights',2,60],['e08','Jogue 6 lutas','fights',6,100],['e09','Vença 1 luta no Modo Boss','bossW',1,60],['e10','Vença 3 lutas no Modo Boss','bossW',3,100],['e11','Vença 6 lutas no Modo Boss','bossW',6,150],
+  ['e12','Gire 3 vezes no Gacha','spin',3,60],['e13','Gire 10 vezes no Gacha','spin',10,100],['e14','Gire 1 passiva','ps',1,60]];
+const bpEvL=()=>[...BPME,...RKR.slice(1).map((R,j)=>['r'+(j+1),'Esteja no rank '+R.n+' ou acima','rk',j+1,40+j*10])];
+const bpEvV=(o,m)=>m[2]==='rk'?rkRk():(o.e[m[2]]|0);
+/* faixa do evento */
+function bpEvBan(a){if(!bpEvOn())return '';return `<div class="rkEvX bpEvX${a?' two':''}">🎟️ EVENTO DO PASSE: <b>3x XP</b> nas missões + missões extras + <b>PASSE PAGO</b> no baú (0,5%) · termina em ${bpEvLeft()}</div>`}
+/* baú do evento */
+let bpEvBusy=0;async function bpEvChest(){try{if(!bpEvOn()||bpEvBusy||rkG('bpev_'+BPEV.id,0)||bpG().own>=1||Math.random()>=.005)return;bpEvBusy=1;
+  const r=await mnPost('bpev_'+BPEV.id,{bpe:mnSV('1')});
+  if(r.ok){rkS('bpev_'+BPEV.id,2);bpUnlock(1);try{acSave(1)}catch(e){}const msg='🎁 BAÚ DO EVENTO! Você ganhou o PASSE DE BATALHA PAGO! Só 1 pessoa no jogo inteiro ganha!';
+    setTimeout(()=>{try{rkSfx('powerUp');setTimeout(()=>rkSfx('boom'),300)}catch(e){}try{if(typeof twToast==='function')twToast(msg,'#ffd84a')}catch(e){}try{rkToast(msg,'#ffd84a')}catch(e){}},1800)}
+  else if(r.status===409||r.status===403)rkS('bpev_'+BPEV.id,1)}catch(e){}bpEvBusy=0}
+{const _r5=rkResult;rkResult=function(R){try{if(R&&R.won)bpEvChest()}catch(e){}return _r5.apply(this,arguments)}}
+{const _ta5=twAfter;twAfter=function(w){try{if(w===0)bpEvChest()}catch(e){}return _ta5.apply(this,arguments)}}
+/* aviso na tela do passe para quem ganhou */
+{const _bh=bpH;bpH=function(){return _bh()+(rkG('bpev_'+BPEV.id,0)===2?`<div class="bpWin" style="${bpB(615,206,1240,240)}">🎁 Você ganhou o PASSE PAGO no baú do evento!</div>`:bpEvOn()?`<div class="bpWin ev" style="${bpB(615,206,1240,240)}">⚡ EVENTO: 3x XP nas missões · missões extras · passe pago no baú (0,5%) · ${bpEvLeft()}</div>`:'')}}

@@ -1180,3 +1180,9 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 
 ## Próximo personagem (ainda NÃO começar): SHAKA DE VIRGEM
 - 09/11/2026: o dono mandou só 2 imagens de referência (`ferramentas/personagens/shaka/recebido/`). Esperar ele mandar o resto e dizer que mandou TUDO. Não inventar poderes.
+
+## v261 — EVENTO DO PASSE (4 horas)
+- `BPEV` (fim do rk.js): 09/11/2026 17:45–21:45 Brasília. Enquanto ligado: 3x XP em TODAS as missões do passe; seção "⚡ EVENTO" com 14 missões fáceis (`BPME`: Torre, Boss, lutas, gacha, passiva; contadores `o.e`, pegas em `o.ec`, zera quando muda `BPEV.id`) + missões de rank (`bpEvL`: "Esteja no rank X ou acima", uma por rank); faixa extra no topo (`bpEvBan`, junto do `rkEvTxt`).
+- BAÚ DO EVENTO: cada vitória (Boss `rkResult` ou andar `twAfter`) tem 0,5% → `bpEvChest` cria o documento fixo `bpev_<id>` no servidor; quem cria primeiro ganha o PASSE PAGO (`bpUnlock(1)`), o resto recebe 409 e para de tentar. Quem já tem o pago não entra no sorteio. Libera direto (não mostra o código, para ele não vazar).
+- Próximo evento igual: mudar `BPEV` (id novo + horário).
+- Teste: `ferramentas/testes/tevento_passe_v261.js` (missões, 3x, dois jogadores disputando o baú).
