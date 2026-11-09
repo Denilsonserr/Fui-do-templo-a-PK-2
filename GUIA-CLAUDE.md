@@ -1064,3 +1064,11 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - Drops do farm (`rkResult` com `R.yd`): 💎 2–14, pó 6–45, cristal 35%, equipamento 25–50% (raridade melhor nas altas), moeda vermelha; DIFÍCIL+ 0,3% item secreto do Yuta; MESTRE/SUPER 0,5% o próprio YUTA (Sorte Mítica + vídeo + título nº). Tudo × `lvLuck()` (sorte). Derrota: um pouco de pó.
 - Fora do horário (`YSEV`) o Yuta some do lobby ("ENCERRADO"). `window.__ysT` = deslocamento de tempo para testes.
 - Testes `ferramentas/testes/tevento_yuta.js` (lobby, telas, roleta, farm, ranqueado).
+
+## v244 — telas do evento com as artes do dono, bônus dos títulos, ADM +60% e código de 4000 💎
+- Tela de início do evento (`ysStartH`) agora usa as artes do dono: `RQA.ys_rank` (`yuta_rank_v244.png`) e `RQA.ys_farm` (`yuta_farm_v244.png`). O retratinho do Yuta do botão "LUTAR COM" é coberto pelo personagem escolhido (`.ysPort`). Os 4 espaços da esquerda mostram rank/sorte/recordes (ranqueado) ou sorte/gemas/pó/drop especial (farm).
+- BÔNUS DOS TÍTULOS (`TBUF`, só o título EM USO; vale em todas as lutas do jogador 1 — `twAdmBuff` foi trocado por `tbApply`; no Boss é aplicado depois do `rkApply`): Iniciante +2% dano · Guerreiro +3% dano +2% vel · Conquistador +5% dano +3% def · Campeão da Semana +6% dano +5% crít · Campeão do Torneio +8% dano +5% crít +5% vel · Influenciador +5% dano +5 sorte · ranks: Madeira +1% def … Divindade +10% dano +6% crít +6% def +5 sorte · Yuta nº +5% crít (além dos +10% de dano de ter o título). A descrição de cada título mostra o bônus.
+- ADM (quem tem o título ADM): +60% dano, defesa, velocidade, energia (Ki e transformação) e +60 de crítico em todas as lutas; sorte +60 (antes 30) e drops ×1,6 (`lvLuck`). Quando o dono mandar os itens com "taxa de drop", somar aqui.
+- Placa nova do título ADM (arte do dono `titulo_adm_v244.png` → `RQA.tit_adm`) no perfil (`.pfAdmI`, brilho/flutuar/faixa de luz/estrelas) e nos rankings/chat (`.twTit.admI`).
+- Código 4000 DIAMANTES ADM (hash em `ferramentas/web/extra/40_v244.py`, texto só com o dono): uso único no jogo inteiro.
+- Teste `ferramentas/testes/tv244.js`.

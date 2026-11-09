@@ -52,9 +52,9 @@ const RKLOCK='<span class="rkLk"><svg viewBox="0 0 24 24"><path d="M7 10V7a5 5 0
 function rkSfx(k){try{SFX[k]&&SFX[k]()}catch(e){}}
 function rkOpen(v){if(v==='pf'){PFO=null;PFRET=null}RKSEL=null;rkInit();rkMusPlay();setTimeout(rkDiaAuto,1200);audioInit();try{fsTry()}catch(e){}showScreen('ranked');rkView(v||'menu')}
 let RKV='menu';
-const RKD={rb:[1672,941],yrb:[1847,851],lvl:[1847,851],pf:[1672,941],hs:[1671,941]};const rkB2=(x0,y0,x1,y1)=>`left:${x0/16.72}%;top:${y0/9.41}%;width:${(x1-x0)/16.72}%;height:${(y1-y0)/9.41}%`;
+const RKD={rb:[1672,941],lvl:[1847,851],pf:[1672,941],hs:[1671,941]};const rkB2=(x0,y0,x1,y1)=>`left:${x0/16.72}%;top:${y0/9.41}%;width:${(x1-x0)/16.72}%;height:${(y1-y0)/9.41}%`;
 function rkView(v){RKV=v;const W=$('rkWrap');if(!W)return;clearInterval(rkView.iv);rkModal(null);
-  const H={menu:rkMenuH,boss:rkBossH,gacha:rkGachaH,shop:rkShopH,lib:rkLibH,rb:rkRbH,pf:pfH,hs:hsH,lvl:lvH,yb:ysLobbyH,yrb:ysStartH}[v]();const dm=RKD[v]||[RKW,RKH];W.innerHTML=`<div class="rkA rk_${v}" data-w="${dm[0]}" data-h="${dm[1]}"${['pf','hs','boss','rb','yb','yrb'].includes(v)?' data-full="1"':''} style="background-image:url(${RQA[{menu:'menu_ranqueado',boss:'modo_boss',gacha:(RKBAN==='mit'?'gacha_yt':'gacha'),shop:'loja_gemas',lib:(RKL.tab==='chr'?'bib_pf':'biblioteca'),rb:'ranqueada_boss',pf:'perfil',hs:'historico',lvl:'lv_ed',yb:'boss_yt',yrb:'boss_yt'}[v]]})">${H}${rkEvTxt()}<div id="rkToast"></div><button class="rkMusB" data-a="music" title="Música">🎵</button><button class="rkCodB" data-a="code">🎟️ CÓDIGO</button><button class="rkAcB" data-a="conta" title="Conta">👤</button></div>`;
+  const H={menu:rkMenuH,boss:rkBossH,gacha:rkGachaH,shop:rkShopH,lib:rkLibH,rb:rkRbH,pf:pfH,hs:hsH,lvl:lvH,yb:ysLobbyH,yrb:ysStartH}[v]();const dm=RKD[v]||[RKW,RKH];W.innerHTML=`<div class="rkA rk_${v}" data-w="${dm[0]}" data-h="${dm[1]}"${['pf','hs','boss','rb','yb','yrb'].includes(v)?' data-full="1"':''} style="background-image:url(${RQA[{menu:'menu_ranqueado',boss:'modo_boss',gacha:(RKBAN==='mit'?'gacha_yt':'gacha'),shop:'loja_gemas',lib:(RKL.tab==='chr'?'bib_pf':'biblioteca'),rb:'ranqueada_boss',pf:'perfil',hs:'historico',lvl:'lv_ed',yb:'boss_yt',yrb:(YS.tab==='rank'?'ys_rank':'ys_farm')}[v]]})">${H}${rkEvTxt()}<div id="rkToast"></div><button class="rkMusB" data-a="music" title="Música">🎵</button><button class="rkCodB" data-a="code">🎟️ CÓDIGO</button><button class="rkAcB" data-a="conta" title="Conta">👤</button></div>`;
   rkFit();W.querySelectorAll('[data-a]').forEach(b=>b.onclick=e=>{e.stopPropagation();rkAct(b.dataset.a,b)});({boss:rkBossOn,yb:rkBossOn,gacha:rkGachaOn,lib:rkLibOn,pf:pfOn,hs:hsOn,lvl:lvOn,yrb:()=>{clearInterval(rkView.iv);if(!RKSRV)rkSrvLoad()}}[v]||(()=>{}))()}
 function rkLocked(){rkSfx('clang');rkToast('🔒 Em breve!','#cfd6ea')}
 function rkAct(a,b){rkSfx('whoosh');
@@ -515,7 +515,7 @@ function acOpen(tab){const n=localStorage.getItem('ac_n'),k=localStorage.getItem
       msg('✔ Conta carregada! Recarregando o jogo...','ok');setTimeout(()=>location.reload(),900)}catch(e){B('acIn').disabled=false;msg('Sem internet agora. Tenta de novo.','err')}}}
 
 /* ================= MODO TORRE RANQUEADA (v228): mesma rank do Boss, dá mais XP, nova tela ================= */
-const RKTWX={fl:.6,top:2,loss:.5},RKTB=i=>({dano:i*2,def:i*2,vel:i,crit:i,sorte:i*3}),rkSorte=()=>RKTB(rkLvl()).sorte+(twIsAdm()?30:0)+rkEqSt(),rkEqSt=()=>{let v=0;try{const o=twEqOn();for(const k in o)v+=(o[k].st||0)*eqNf(o[k])}catch(e){}return Math.round(v)};
+const RKTWX={fl:.6,top:2,loss:.5},RKTB=i=>({dano:i*2,def:i*2,vel:i,crit:i,sorte:i*3}),rkSorte=()=>RKTB(rkLvl()).sorte+(twIsAdm()?60:0)+rkEqSt()+(tbOf(twTitOn()).st||0),rkEqSt=()=>{let v=0;try{const o=twEqOn();for(const k in o)v+=(o[k].st||0)*eqNf(o[k])}catch(e){}return Math.round(v)};
 function rkTorre(){const s=rkG('sel','goku'),own=rkG('own',['goku']);G.pick=CH[s]&&own.includes(s)?s:'goku';G.gmode='torre';try{audioInit()}catch(e){}try{fsTry()}catch(e){}twOpen()}
 /* dificuldade da Torre pelo rank (v231): leve no começo; bem mais difícil para chegar nos 2 últimos ranks */
 const RKTD={dm:[1,1.05,1.1,1.15,1.22,1.4,1.55,1.65],hp:[1,1,1.1,1.15,1.25,1.4,1.55,1.65],sp:[1,1,1.02,1.04,1.06,1.1,1.14,1.16],ai:[0,0,0,0,0,1,1,1]};
@@ -798,9 +798,9 @@ function lvBonus(id){const L=lvOf(id),B={dano:(L.lv-1)*.4,crit:(L.lv-1)*.15,vel:
   L.t.forEach((c,r)=>{if(c==null||c<0||!LVTREE[r]||!LVTREE[r][c]||L.lv<LVROW[r])return;const [k,v]=LVTREE[r][c];B[k]+=v});return B}
 /* sorte total (rank + ADM + equipamento + nível do personagem em uso) e o multiplicador de drops */
 const lvSorte=()=>{try{return rkSorte()+lvBonus(eqChar()).st}catch(e){return 0}};
-const lvLuck=()=>1+Math.max(0,lvSorte())/200;
+const lvLuck=()=>(1+Math.max(0,lvSorte())/200)*(twIsAdm()?1.6:1);
 /* ---------- bônus aplicados na luta (Boss e Torre ranqueada) ---------- */
-{const _ra=rkApply;rkApply=function(){_ra.apply(this,arguments);try{rkExtra()}catch(e){}}}
+{const _ra=rkApply;rkApply=function(){_ra.apply(this,arguments);try{rkExtra()}catch(e){}try{if(G.gmode==='boss'&&G.p)tbApply(G.p[0])}catch(e){}}}
 function rkExtra(){if(!G.p)return;const torre=typeof TW!=='undefined'&&TW.on&&G.gmode==='torre',boss=G.gmode==='boss';if(!torre&&!boss)return;const p=G.p[0],id=p.def.id;
   // crítico de todos os equipamentos (a Torre antiga só contava o capacete) com o corte de 50% dos itens do Yuta
   const o=twEqOn();const already=torre?((o.cap&&o.cap.crit)||0):Object.values(o).reduce((a,x)=>a+(x.crit||0),0);p.tcr=(p.tcr||0)-already+eqCrit();
@@ -1005,31 +1005,38 @@ function ysLobbyH(){const rp=rkG('rp',0),ri=rkRank(rp),sel=rkG('sel','goku');
   <button class="hs" data-a="start" style="${rkB(1185,735,1640,825)}"><span class="shine"></span></button>
   ${rkCurHTML().replace('rkCur','rkCur bt')}`}
 /* ---------- tela de início do evento (ranqueado / farm) ---------- */
-function ysStartH(){const xp=rkG('rp',0),ri=rkRank(xp),B=rkBoss(),L=RKLVS[ri],sel=rkG('sel','goku'),prog=ri>=7?100:Math.round(100*(xp-RKXP[ri])/(RKXP[ri+1]-RKXP[ri])),lk=lvLuck();
-  const head=`<div class="ysDim"></div><button class="hs" data-a="back" style="${rkB(18,18,140,96)}"></button>
-  <div class="ysTitle" style="${rkB(170,18,800,96)}"><b>EVENTO · YUTA</b><small>🌸 termina em ${ysLeft()} · domingo 23:59</small></div>
-  <div class="ysTabs" style="${rkB(1010,22,1820,96)}"><button data-a="ytab" data-t="rank" class="${YS.tab==='rank'?'on':''}">👑 RANQUEADO<small>dá XP de rank</small></button><button data-a="ytab" data-t="farm" class="${YS.tab==='farm'?'on':''}">🌸 FARM DO EVENTO<small>sem XP · drops do evento</small></button></div>
-  <div class="ysPed" style="${rkB(40,110,560,790)}"><i class="g"></i><i class="r"></i><img src="${fullSrc('yuta')}" alt=""><b>YUTA</b><small>${B.sub}</small></div>`;
-  const foot=`<button class="rkEqB wide ysEq" data-a="equip" style="${rkB(600,742,900,818)}"><i>🎒</i><b>EQUIPAMENTOS</b></button>
-  <button class="rkSel ysSel" data-a="sel" style="${rkB(915,738,1190,822)}"><img src="${IMG[sel]?IMG[sel].src:''}" alt=""><span><small>LUTAR COM</small><b>${CH[sel]?CH[sel].name:''}</b><em>trocar ›</em></span></button>
-  <button class="ysGo" data-a="${YS.tab==='rank'?'fight':'yfight'}" style="${rkB(1220,730,1800,826)}"><span class="shine"></span>⚔️ ${YS.tab==='rank'?'INICIAR RANQUEADA':'INICIAR FARM'}</button>`;
-  if(YS.tab==='rank'){const pas=[];for(const k in rkPSlv(ri))if(rkPSlv(ri)[k])pas.push(k);
-    return head+`<div class="ysPanel" style="${rkB(600,112,1800,720)}">
-      <div class="ysRk">${rkEmb(ri,'md')}<div><b style="color:${RKR[ri].c}">${RKR[ri].n}</b><span>${rkFmtN(xp)} / ${ri>=7?'∞':rkFmtN(RKXP[ri+1])} XP</span><i class="bar"><s style="width:${prog}%;background:${RKR[ri].c}"></s></i></div>
-        <div class="ysXp"><span class="w">VITÓRIA<b>+${RKXW[ri]*(rkEvX()?rkEvX()[2]:1)}</b></span><span class="l">DERROTA<b>-${RKXL[ri]}</b></span></div></div>
-      <div class="ysLv">${[0,1,2,3,4,5,6,7].map(i=>`<span class="${i===ri?'on':i<ri?'ok':'lk'}">${i<ri?'✔':i>ri?'🔒':'★'}<b>${i+1}</b></span>`).join('')}</div>
-      <div class="ysInfo"><h5>YUTA NÍVEL ${ri+1} · igual ao rank</h5><span>❤️ ${rkPhB(ri)[0]} barras → DESPERTAR com ${rkPhB(ri)[1]} barras (3x velocidade, +60% dano)</span><span>💪 resistência ${L.v}% · ⚔️ dano ${L.d}% · 💨 velocidade ${L.s}% · 🧠 ${RKPAS[ri][1]}</span>
-        <span>🛡️ Passivas: ${pas.length?pas.map(k=>YSPN[k][0]+' '+YSPN[k][1]).join(' · '):'nenhuma'} · passiva do Yuta: contra-ataque a cada 4 golpes</span>
-        <span class="rec">🏆 Recorde do servidor: ${RKSRV?(RKSRV[ri]?twFmt(RKSRV[ri].tt)+' ('+twEsc(RKSRV[ri].nome)+')':'ninguém ainda!'):'carregando...'} · 🏅 Seu: ${rkMyRec(ri)?twFmt(rkMyRec(ri)):'—'}</span>
-        <span>🎁 Vitória: 💎 5–15 · 🔴 5–10 · baú · pó · ✦ drops do Boss · bônus de recorde e de combo</span></div></div>`+foot}
-  const D=YSDIF[YS.d];
-  return head+`<div class="ysPanel" style="${rkB(600,112,1800,720)}">
-    <div class="ysDifs">${YSDIF.map((x,i)=>`<button data-a="ydif" data-i="${i}" class="${i===YS.d?'on':''}" style="--c:${x.c}"><b>${x.n}</b><small>${x.ph[0]}→${x.ph[1]} barras</small><small>${x.np.reduce((a,b)=>a+b,0)} passiva${x.np.reduce((a,b)=>a+b,0)>1?'s':''}</small>${x.yt?'<em class="y">✦ YUTA 0,5%</em>':''}${x.sec?'<em>✦ ITENS 0,3%</em>':''}</button>`).join('')}</div>
-    <div class="ysInfo"><h5 style="color:${D.c}">FARM ${D.n} · sem XP de rank</h5><span>❤️ ${D.ph[0]} barras → DESPERTAR com ${D.ph[1]} barras · força do nível ${D.lv+1}${D.k>1?' +'+Math.round((D.k-1)*100)+'% de dano':''}</span>
-      <span>🎰 Passivas sorteadas na roleta a cada luta: ${D.np[0]} fácil · ${D.np[1]} média · ${D.np[2]} difícil</span>
-      <span class="ysPool">${YSPOOL.map((P,t)=>D.np[t]?P.map(k=>`<i title="${YSPN[k][2]}">${YSPN[k][0]} ${YSPN[k][1]}</i>`).join(''):'').join('')}</span>
-      <span>🎁 Vitória: 💎 ${D.gem[0]}–${D.gem[1]} · 🟣 ${D.po[0]}–${D.po[1]} pó · 🛡️ equipamento ${Math.round(D.eq*100)}% · cristal 35% · 🔴 moeda vermelha${D.sec?` · <b style="color:#e2b6ff">✦ item do Yuta 0,3%</b>`:''}${D.yt?` · <b style="color:#ffd84a">✦ YUTA 0,5%</b>`:''}</span>
-      <span>🍀 Sua sorte: ${Math.round(lvSorte())} → drops do evento ×${lk.toFixed(2)}</span></div></div>`+foot}
+function ysStartH(){const xp=rkG('rp',0),ri=rkRank(xp),L=RKLVS[ri],sel=rkG('sel','goku'),prog=ri>=7?100:Math.round(100*(xp-RKXP[ri])/(RKXP[ri+1]-RKXP[ri])),lk=lvLuck(),S=rkSorte?Math.round(lvSorte()):0;
+  const selB=(x0,y0,x1,y1,c)=>`<button class="ysSelA" data-a="sel" style="${rkB(x0,y0,x1,y1)}"><span><small>LUTAR COM</small><b>${CH[sel]?CH[sel].name:''}</b><em>trocar ›</em></span></button><div class="ysPort" style="${rkB(...c)}"><img src="${IMG[sel]?IMG[sel].src:''}" alt=""></div>`;
+  if(YS.tab==='rank'){const pas=[];const PS=rkPSlv(ri);for(const k in PS)if(PS[k])pas.push(k);const CX=[[640,770],[790,918],[937,1067],[1087,1218],[1238,1362],[1380,1505],[1523,1650],[1668,1792]];
+    return `<button class="hs" data-a="back" style="${rkB(140,12,240,88)}"></button>
+    <div class="ysT2" style="${rkB(240,14,620,86)}"><b>EVENTO · YUTA</b><small>🌸 ${ysLeft()} · até domingo 23:59</small></div>
+    <button class="ysTabA" data-a="ytab" data-t="farm" style="${rkB(690,22,1008,82)}">🌸 FARM DO EVENTO<small>sem XP · drops do evento</small></button>
+    <div class="ysTabA on" style="${rkB(1040,22,1392,82)}">👑 RANQUEADO<small>dá XP de rank</small></div>
+    <div class="ysTabA tm" style="${rkB(1418,22,1740,82)}">⏳ ${ysLeft()}<small>evento do Yuta</small></div>
+    <div class="ysEmb" style="${rkB(645,140,770,258)}">${rkEmb(ri,'ban')}</div>
+    <div class="ysRkN" style="${rkB(815,140,1300,212)}"><b style="color:${RKR[ri].c}">${RKR[ri].n}</b><span>${rkFmtN(xp)} / ${ri>=7?'∞':rkFmtN(RKXP[ri+1])} XP</span></div>
+    <div class="ysBarA" style="${rkB(820,224,1200,242)}"><s style="width:${prog}%;background:${RKR[ri].c}"></s></div>
+    <div class="ysWL w" style="${rkB(1600,165,1683,216)}"><small>VITÓRIA</small><b>+${RKXW[ri]*(rkEvX()?rkEvX()[2]:1)}</b></div><div class="ysWL l" style="${rkB(1699,165,1783,216)}"><small>DERROTA</small><b>-${RKXL[ri]}</b></div>
+    ${CX.map(([a,b],i)=>`<div class="ysLvA ${i===ri?'on':i<ri?'ok':'lk'}" style="${rkB(a,280,b,328)}">${i<ri?'✔ ':i>ri?'🔒 ':'★ '}${i+1}</div>`).join('')}
+    <div class="ysInfoA" style="${rkB(645,360,1780,645)}"><h5>YUTA NÍVEL ${ri+1} · igual ao seu rank</h5><span>❤️ ${rkPhB(ri)[0]} barras → DESPERTAR com ${rkPhB(ri)[1]} barras (3x velocidade, +60% dano)</span><span>💪 resistência ${L.v}% · ⚔️ dano ${L.d}% · 💨 velocidade ${L.s}% · 🧠 ${RKPAS[ri][1]}</span>
+      <span>🛡️ Passivas: ${pas.length?pas.map(k=>YSPN[k][0]+' '+YSPN[k][1]).join(' · '):'nenhuma'} · passiva do Yuta: contra-ataque a cada 4 golpes</span>
+      <span>🎁 Vitória: 💎 5–15 · 🔴 5–10 · baú · pó · ✦ drops do Boss · bônus de recorde e de combo</span></div>
+    ${[['👑',RKR[ri].n,'seu rank'],['🍀','SORTE '+S,'drops ×'+lk.toFixed(2)],['🏆',RKSRV?(RKSRV[ri]?twFmt(RKSRV[ri].tt):'—'):'...','recorde do servidor'],['🏅',rkMyRec(ri)?twFmt(rkMyRec(ri)):'—','seu recorde']].map(([i,b,s],k)=>`<div class="ysHex" style="${rkB(45,295+k*85,250,355+k*85)}"><i>${i}</i><span><b>${b}</b><small>${s}</small></span></div>`).join('')}
+    <button class="ysEqA" data-a="equip" style="${rkB(600,705,905,782)}">🎒 EQUIPAMENTOS</button>${selB(1022,705,1212,782,[930,697,1020,785])}
+    <button class="ysGoA rk" data-a="fight" style="${rkB(1236,698,1808,786)}"><span class="shine"></span><b>INICIAR RANQUEADA</b></button>`}
+  const D=YSDIF[YS.d],DX=[[660,877],[893,1110],[1126,1342],[1357,1573],[1588,1805]];
+  return `<button class="hs" data-a="back" style="${rkB(92,22,200,84)}"></button>
+  <div class="ysT2" style="${rkB(205,24,615,84)}"><b>EVENTO · YUTA</b><small>🌸 ${ysLeft()} · até domingo 23:59</small></div>
+  <button class="ysTabA" data-a="ytab" data-t="rank" style="${rkB(818,24,1092,76)}">👑 RANQUEADO<small>dá XP de rank</small></button>
+  <div class="ysTabA on" style="${rkB(1130,22,1480,80)}">🌸 FARM DO EVENTO<small>sem XP · drops do evento</small></div>
+  ${YSDIF.map((x,i)=>`<button class="ysDifA ${i===YS.d?'on':''}" data-a="ydif" data-i="${i}" style="${rkB(DX[i][0],138,DX[i][1],288)};--c:${x.c}"><b>${x.n}</b><small>${x.ph[0]}→${x.ph[1]} barras</small><small>${x.np.reduce((a,b)=>a+b,0)} passiva${x.np.reduce((a,b)=>a+b,0)>1?'s':''}</small>${x.yt?'<em class="y">✦ YUTA 0,5%</em>':''}${x.sec?'<em>✦ ITENS 0,3%</em>':''}</button>`).join('')}
+  <div class="ysInfoA" style="${rkB(670,318,1790,640)}"><h5 style="color:${D.c}">FARM ${D.n} · sem XP de rank</h5><span>❤️ ${D.ph[0]} barras → DESPERTAR com ${D.ph[1]} barras · força do nível ${D.lv+1}${D.k>1?' +'+Math.round((D.k-1)*100)+'% de dano':''}</span>
+    <span>🎰 Passivas sorteadas na roleta a cada luta: ${D.np[0]} fácil · ${D.np[1]} média · ${D.np[2]} difícil</span>
+    <span class="ysPool">${YSPOOL.map((P,t)=>D.np[t]?P.map(k=>`<i title="${YSPN[k][2]}">${YSPN[k][0]} ${YSPN[k][1]}</i>`).join(''):'').join('')}</span>
+    <span>🎁 Vitória: 💎 ${D.gem[0]}–${D.gem[1]} · 🟣 ${D.po[0]}–${D.po[1]} pó · 🛡️ equipamento ${Math.round(D.eq*100)}% · cristal 35% · 🔴 moeda vermelha${D.sec?` · <b style="color:#e2b6ff">✦ item do Yuta 0,3%</b>`:''}${D.yt?` · <b style="color:#ffd84a">✦ YUTA 0,5%</b>`:''}</span></div>
+  ${[['🍀','SORTE '+S,'drops ×'+lk.toFixed(2)],['💎',D.gem[0]+'–'+D.gem[1],'gemas por vitória'],['🟣',D.po[0]+'–'+D.po[1],LVPON.toLowerCase()],['✦',D.yt?'YUTA 0,5%':D.sec?'ITENS 0,3%':'—','drop especial']].map(([i,b,s],k)=>`<div class="ysHex" style="${rkB(60,312+k*78,280,372+k*78)}"><i>${i}</i><span><b>${b}</b><small>${s}</small></span></div>`).join('')}
+  <button class="ysEqA" data-a="equip" style="${rkB(628,692,920,762)}">EQUIPAMENTOS</button>${selB(1030,694,1206,768,[945,692,1025,772])}
+  <button class="ysGoA" data-a="yfight" style="${rkB(1240,688,1806,776)}"><span class="shine"></span><b>INICIAR FARM</b></button><i class="ysFarmOn"></i>`}
 /* ---------- roleta de passivas e luta do farm ---------- */
 function ysFight(){if(!ysOn()){rkToast('⏳ O evento do Yuta acabou','#cfd6ea');return}RKYD=YS.d;const L=ysRoll(RKYD);YS.roll=L.slice();const all=Object.keys(YSPN);
   if(!L.length){rkBossStart();return}
@@ -1048,4 +1055,16 @@ function ysFight(){if(!ysOn()){rkToast('⏳ O evento do Yuta acabou','#cfd6ea');
   try{acSave()}catch(e){}
   const r=_rr2.apply(this,arguments);try{const C=document.querySelector(RKMS()+'.rkItems');if(C)C.insertAdjacentHTML('beforeend',it.join(''))}catch(e){}
   if(after.length)setTimeout(async()=>{for(const f of after)await f()},R.won?2200:300);return r}}
+/* ================= v244: BÔNUS DOS TÍTULOS (título em uso) e ADM +60% em tudo ================= */
+const TBUF={ini:{dano:2},gue:{dano:3,vel:2},con:{dano:5,def:3},sem:{dano:6,crit:5},tor:{dano:8,crit:5,vel:5},inf:{dano:5,st:5},
+  rk0:{def:1},rk1:{def:2},rk2:{dano:3},rk3:{dano:4,crit:2},rk4:{dano:5,crit:3},rk5:{dano:6,crit:4,vel:3},rk6:{dano:8,crit:5,def:5},rk7:{dano:10,crit:6,def:6,st:5}};
+const tbOf=k=>TBUF[k]||(TWTIT[k]&&TWTIT[k].yt?{crit:5}:{});
+const tbTxt=k=>{const B=tbOf(k),o=[];if(B.dano)o.push('+'+B.dano+'% dano');if(B.def)o.push('+'+B.def+'% defesa');if(B.vel)o.push('+'+B.vel+'% velocidade');if(B.crit)o.push('+'+B.crit+'% crítico');if(B.st)o.push('+'+B.st+' sorte');return o.join(' · ')};
+for(const k in TWTIT){const t=tbTxt(k);if(k==='adm')TWTIT[k].d='Administrador do jogo · ✦ +60% em TUDO (dano, defesa, velocidade, crítico, energia, sorte e drops)';else if(t)TWTIT[k].d=(TWTIT[k].d||'')+' · ✦ Bônus em uso: '+t}
+function tbApply(p){if(!p||p.cpu||p.tbOn)return;p.tbOn=1;const B=tbOf(twTitOn());
+  if(B.dano)p.tdm=(p.tdm||1)*(1+B.dano/100);if(B.vel)p.tsp=(p.tsp||1)*(1+B.vel/100);if(B.def)p.tdf=(p.tdf||1)/(1+B.def/100);if(B.crit)p.tcr=(p.tcr||0)+B.crit;
+  if(twIsAdm()){p.tdm=(p.tdm||1)*1.6;p.tsp=(p.tsp||1)*1.6;p.tdf=(p.tdf||1)/1.6;p.tcr=(p.tcr||0)+60;p.tki=(p.tki||1)*1.6;p.tsb=(p.tsb||1)*1.6}}
+twAdmBuff=function(){try{if(!G.p||G.gmode==='boss')return;tbApply(G.p[0])}catch(e){}};
+/* placa nova do título ADM (arte do dono) */
+{const _pt3=pfTitH;pfTitH=function(t,n,adm){if(t==='adm'&&adm)return `<span class="pfAdmI"><i class="gl"></i><img src="${RQA.tit_adm}" alt="ADM"><i class="sw"></i><i class="sp a">✦</i><i class="sp b">✦</i><i class="sp c">✦</i><i class="sp d">✦</i></span>`;return _pt3.apply(this,arguments)}}
 window.__rk={lvSorte,lvLuck,lvBonus,lvOf,rkExtra,twEqB:s=>twEqB(s)};

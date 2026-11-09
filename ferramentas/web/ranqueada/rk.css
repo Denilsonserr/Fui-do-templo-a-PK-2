@@ -498,3 +498,44 @@
 .ysInfo span{font-size:1.18em;line-height:1.3}.ysInfo h5{font-size:1.55em}.ysPool i{font-size:.9em}
 .ysPanel{gap:1.1em}
 .ysSlot em{white-space:nowrap;font-size:.7em}
+/* v244: telas do evento com as artes do dono */
+.rk_yrb .rkCodB,.rk_yrb .rkMusB,.rk_yrb .rkAcB{display:none}
+.ysT2{display:flex;flex-direction:column;justify-content:center;padding-left:.4em}.ysT2 b{font:900 2em var(--f-display,var(--f-ui));color:#fff;text-shadow:0 0 .4em #9a4dff,0 2px 3px #000;letter-spacing:.05em;white-space:nowrap}.ysT2 small{font:800 .85em var(--f-ui);color:#e2b6ff;white-space:nowrap}
+.ysTabA{display:flex;flex-direction:column;align-items:center;justify-content:center;border:0;background:transparent;color:#cdb8ff;font:900 1.2em var(--f-ui);letter-spacing:.04em;cursor:pointer;text-shadow:0 1px 3px #000;touch-action:manipulation}
+.ysTabA small{font:700 .6em var(--f-ui);color:#9f8acb}.ysTabA.on{color:#ffe9a0;text-shadow:0 0 .4em #ffb300,0 1px 3px #000;cursor:default}.ysTabA.tm{color:#f6eeff;cursor:default}
+.ysTabA:not(.on):not(.tm):active{transform:scale(.96)}
+.ysEmb{border-radius:50%}.ysRkN{display:flex;flex-direction:column;justify-content:center}.ysRkN b{font:900 2em var(--f-ui);text-shadow:0 0 .4em currentColor,0 2px 3px #000}.ysRkN span{font:800 1.05em var(--f-ui);color:#e8dcff}
+.ysBarA{border-radius:1em;overflow:hidden}.ysBarA s{display:block;height:100%;border-radius:1em;box-shadow:0 0 .6em currentColor}
+.ysWL{display:flex;flex-direction:column;align-items:center;justify-content:center;font:900 .65em var(--f-ui)}.ysWL b{font-size:2.2em}.ysWL.w{color:#7dff9a}.ysWL.l{color:#ff8a9a}
+.ysLvA{display:flex;align-items:center;justify-content:center;font:900 1.4em var(--f-ui);color:#8a7ab0}.ysLvA.ok{color:#9fff5a}.ysLvA.on{color:#fff4c0;text-shadow:0 0 .5em #ffb300}
+.ysInfoA{display:flex;flex-direction:column;gap:.55em;padding:.8em 1.1em}.ysInfoA h5{margin:0;font:900 1.6em var(--f-ui);color:#ffd84a;letter-spacing:.05em}.ysInfoA span{font:700 1.2em/1.3 var(--f-ui);color:#e8dcff;text-shadow:0 1px 2px #000}
+.ysHex{display:flex;align-items:center;gap:.5em;padding-left:1.1em}.ysHex i{font-style:normal;font-size:1.7em}.ysHex span{display:flex;flex-direction:column;line-height:1.05}.ysHex b{font:900 1.05em var(--f-ui);color:#fff;white-space:nowrap}.ysHex small{font:700 .7em var(--f-ui);color:#cdb8ff;white-space:nowrap}
+.ysEqA,.ysSelA,.ysGoA{border:0;background:transparent;color:#fff;cursor:pointer;touch-action:manipulation}
+.ysEqA{display:flex;align-items:center;justify-content:center;font:900 1.5em var(--f-ui);letter-spacing:.05em;text-shadow:0 0 .4em #ff9a00,0 2px 3px #000;padding-left:1.4em}
+.ysSelA span{display:flex;flex-direction:column;align-items:flex-start;line-height:1.05;padding-left:.4em}.ysSelA small{font:800 .75em var(--f-ui);color:#9fd0ff}.ysSelA b{font:900 1.5em var(--f-ui)}.ysSelA em{font:800 .75em var(--f-ui);color:#ffd84a;font-style:normal}
+.ysPort{border-radius:50%;overflow:hidden;pointer-events:none;background:#0a1430;box-shadow:inset 0 0 .5em #000}.ysPort img{width:100%;height:100%;object-fit:cover;object-position:50% 20%}
+.ysGoA{position:relative;overflow:hidden;border-radius:1em;font:900 2.2em var(--f-display,var(--f-ui));letter-spacing:.06em;text-shadow:0 0 .5em #c070ff,0 3px 3px #000;padding-left:2.2em;animation:rkEp 2.2s ease-in-out infinite}
+.ysGoA .shine{position:absolute;inset:0;background:linear-gradient(105deg,transparent 30%,rgba(255,255,255,.35) 45%,transparent 60%);transform:translateX(-120%);animation:sh 3s ease-in-out infinite}
+.ysDifA{--c:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.15em;border:0;background:transparent;border-radius:.8em;color:#fff;cursor:pointer;touch-action:manipulation}
+.ysDifA b{font:900 1.35em var(--f-ui);color:var(--c);text-shadow:0 0 .4em var(--c),0 2px 3px #000}.ysDifA small{font:800 .85em var(--f-ui);color:#e8dcff}.ysDifA em{font:900 .78em var(--f-ui);font-style:normal;color:#e2b6ff}.ysDifA em.y{color:#ffd84a}
+.ysDifA.on{box-shadow:0 0 1.2em var(--c),inset 0 0 1.4em color-mix(in srgb,var(--c) 45%,transparent);animation:rkEp 1.8s ease-in-out infinite}
+.ysGoA.rk{padding-left:5.2em;font-size:1.9em}
+.ysDifA{gap:0}.ysDifA b{font-size:1.15em}.ysDifA small{font-size:.75em}.ysDifA em{font-size:.66em}
+.ysSelA b{font-size:1.3em}
+.rk_yrb .ysFarmOn~.rkAcB,.rk_yrb .ysFarmOn~.rkMusB{display:block!important;opacity:0}
+.rk_yrb .ysFarmOn~.rkAcB{left:34.9%;top:1.8%;width:3.1%;height:6.8%;border-radius:50%}
+.rk_yrb .ysFarmOn~.rkMusB{left:39.2%;top:1.8%;width:3.1%;height:6.8%;border-radius:50%}
+.ysFarmOn{display:none}
+.rk_yrb .ysFarmOn~.rkAcB,.rk_yrb .ysFarmOn~.rkMusB{opacity:1!important;background:transparent!important;border:0!important;box-shadow:none!important;font-size:1.7em!important}
+/* título ADM (arte do dono) com brilho e animação */
+.pfAdmI{position:relative;display:inline-flex;align-items:center;justify-content:center;height:150%;margin-top:-1%;animation:admFl 2.6s ease-in-out infinite}
+.pfAdmI img{position:relative;height:100%;width:auto;z-index:2;filter:drop-shadow(0 0 .4em #ffd84a) drop-shadow(0 0 1em #b05aff);animation:admGlo 1.6s ease-in-out infinite alternate}
+.pfAdmI .gl{position:absolute;inset:-25% -10%;border-radius:50%;background:radial-gradient(closest-side,rgba(255,210,90,.55),rgba(170,80,255,.35) 55%,transparent);z-index:1;animation:pfRg 1.4s ease-in-out infinite}
+.pfAdmI .sw{position:absolute;inset:0;z-index:3;-webkit-mask:url() ;overflow:hidden;border-radius:30%;pointer-events:none}
+.pfAdmI .sw::after{content:'';position:absolute;top:-30%;bottom:-30%;width:18%;left:-30%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.85),transparent);transform:skewX(-20deg);animation:admSw 2.4s ease-in-out infinite;mix-blend-mode:screen}
+.pfAdmI .sp{position:absolute;z-index:4;font-style:normal;color:#fff;font-size:.9em;text-shadow:0 0 .4em #ffd84a,0 0 .9em #b05aff;animation:pfTw 1.5s ease-in-out infinite;opacity:0}
+.pfAdmI .sp.a{left:8%;top:5%}.pfAdmI .sp.b{right:10%;top:0;animation-delay:.4s}.pfAdmI .sp.c{left:30%;bottom:0;animation-delay:.8s}.pfAdmI .sp.d{right:28%;bottom:5%;animation-delay:1.1s}
+@keyframes admGlo{to{filter:drop-shadow(0 0 .6em #fff3b0) drop-shadow(0 0 1.6em #c070ff) brightness(1.15)}}
+@keyframes admFl{50%{transform:translateY(-4%) scale(1.03)}}@keyframes admSw{0%{left:-30%}60%,100%{left:120%}}
+.twTit.admI{border:0;background:none;padding:0;height:2.2em;vertical-align:middle;margin-left:.3em}.twTit.admI img{height:100%;filter:drop-shadow(0 0 .3em #ffd84a) drop-shadow(0 0 .6em #b05aff);animation:admGlo 1.4s ease-in-out infinite alternate}
+.pfTi:has(.pfAdmI){overflow:visible;z-index:5}.pfTi .pfAdmI{height:260%;margin-left:-.4em}
