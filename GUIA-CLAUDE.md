@@ -1202,3 +1202,6 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 
 ## v265 — código de 20.000 💎
 - `extra/99_v265.py`: hash `1q7f8pe` (`gem:20000`), uso ÚNICO no jogo inteiro (só 1 pessoa, 1 vez). Texto só com o dono. Teste: `ferramentas/testes/tcodigos_v265.js`.
+
+## v266 — 2 códigos de diamantes
+- `extra/9a_v266.py`: `74f1ed` = 15.000 💎 uso ÚNICO (1 pessoa no jogo inteiro); `2qr7un` = DIAMANTES DA SORTE, 500 a 1500 💎 aleatório, todo mundo 1 vez por conta (`ev:1,rnd:[500,1500]`, ramo novo `C.rnd` no `twCupom`). Texto só com o dono. Teste: `ferramentas/testes/tcodigos_v266.js`.
