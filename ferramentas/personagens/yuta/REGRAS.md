@@ -30,3 +30,11 @@
 - Usar SÓ os botões (não usar o HUD de vida/barras da arte). Tamanho padrão de todos os botões, encaixados como sempre.
 - Forma normal: botões normais (sem animação extra).
 - Despertar (transformado): chamas se movendo, raios e movimentos legais nos botões.
+
+## Itens SECRETOS da gacha do Yuta (`itens_secretos.png`)
+- A gacha mítica do Yuta também pode dar todos os equipamentos que já existem; estes 4 são secretos, drop bem difícil, PIEDADE 200, e não vem repetido (pegou um, ele não sai de novo).
+- Espada do Yuta: +30% dano, +10% crítico.
+- Anel: +50% sorte, +30% velocidade de transformação.
+- Roupa (armadura): +60% defesa, +10% velocidade de transformação.
+- Rika (capacete): +40% defesa, +20% crítico, +10% sorte + aumento de dano na transformação (valor a confirmar).
+- Em qualquer personagem que NÃO seja o Yuta, esses itens valem 50% (nerf).
