@@ -1148,3 +1148,6 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
   - Item de outro jogador passa por `mnClean` (só campos conhecidos, sem ÚNICO). Leituras do mercado ficam 20 s no cache (`RKQT`); ações limpam o cache. ATENÇÃO leituras: cada abertura lê até 600 anúncios + 1500 fechamentos (plano grátis = 50 mil leituras/dia).
 - Código 5 JOIAS NEGRAS: hash `nbnmp9` em `extra/92_v254.py` (texto só com o dono); `jn` agora conta 1 vez por conta/aparelho (igual ao código de evento).
 - Teste: `ferramentas/testes/tmercado_v254.js` (2 jogadores, servidor simulado: anunciar, comprar, sem saldo, cancelar, receber, não receber 2 vezes, código).
+
+## v255 — Joia Negra cai mais
+- Pedido do dono: chance da Joia Negra de 0,5% → **4% × `lvLuck()`** (a sorte aumenta; `lvLuck` já inclui drop, ADM +60% e evento) em cada vitória do Boss (rank/farm/evento) e em cada andar vencido da Torre.
