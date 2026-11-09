@@ -26,3 +26,10 @@
 - Pedestal com o personagem; painel do meio: nome no topo + 5 linhas (dano, crítico, velocidade, sorte, vel. ultimate) com os valores e os bônus somados.
 - Embaixo: quadrado do nível atual → quadrado do próximo nível + botão de SUBIR (seta dourada).
 - Direita: ÁRVORE DE HABILIDADE, 6 linhas × 4 quadradinhos. Cada quadradinho é uma opção (dano a mais, velocidade de ataque, crítico, sorte...). O jogador toca e escolhe o que o personagem vai ter. Fazer bem legal, com animação ao subir de nível.
+
+## Itens do nível (`itens_nivel_v239.png`, 3 linhas × 5 raridades: comum, rara, épica, lendária, mítica)
+- Linha 1 = sacos de PÓ (raridade = quantidade de pó que vem).
+- Linha 2 = CRISTAIS (novo): o dono deixou o Claude decidir a função, ligada a upar o personagem.
+- Linha 3 = itens de ELEVAÇÃO (mudou: não é mais 1-2-3-4-5 do mesmo item):
+  nível 10 = comum (pergaminho), 20 = raro (cubo), 30 = épico (máscara), 40 = lendário (chama azul), 50 = mítico (orbe).
+  Drop difícil, cada vez mais raro, COM piedade para não ficar impossível.
