@@ -56,13 +56,13 @@ const RKLOCK='<span class="rkLk"><svg viewBox="0 0 24 24"><path d="M7 10V7a5 5 0
 function rkSfx(k){try{SFX[k]&&SFX[k]()}catch(e){}}
 function rkOpen(v){if(v==='pf'){PFO=null;PFRET=null}RKSEL=null;rkInit();rkMusPlay();setTimeout(rkDiaAuto,1200);audioInit();try{fsTry()}catch(e){}showScreen('ranked');rkView(v||'menu')}
 let RKV='menu';
-const RKD={rb:[1672,941],lvl:[1847,851],pf:[1672,941],hs:[1671,941]};const rkB2=(x0,y0,x1,y1)=>`left:${x0/16.72}%;top:${y0/9.41}%;width:${(x1-x0)/16.72}%;height:${(y1-y0)/9.41}%`;
+const RKD={ps:[1672,941],rb:[1672,941],lvl:[1847,851],pf:[1672,941],hs:[1671,941]};const rkB2=(x0,y0,x1,y1)=>`left:${x0/16.72}%;top:${y0/9.41}%;width:${(x1-x0)/16.72}%;height:${(y1-y0)/9.41}%`;
 function rkView(v){RKV=v;const W=$('rkWrap');if(!W)return;clearInterval(rkView.iv);rkModal(null);
-  const H={menu:rkMenuH,boss:rkBossH,gacha:rkGachaH,shop:rkShopH,lib:rkLibH,rb:rkRbH,pf:pfH,hs:hsH,lvl:lvH,yb:ysLobbyH,yrb:ysStartH}[v]();const dm=RKD[v]||[RKW,RKH];W.innerHTML=`<div class="rkA rk_${v}" data-w="${dm[0]}" data-h="${dm[1]}"${['pf','hs','boss','rb','yb','yrb'].includes(v)?' data-full="1"':''} style="background-image:url(${RQA[{menu:'menu_ranqueado',boss:'modo_boss',gacha:(RKBAN==='mit'?'gacha_yt':'gacha'),shop:'loja_gemas',lib:(RKL.tab==='chr'?'bib_pf':'biblioteca'),rb:'ranqueada_boss',pf:'perfil',hs:'historico',lvl:'lv_ed',yb:'boss_yt',yrb:(YS.tab==='rank'?'ys_rank':'ys_farm')}[v]]})">${H}${rkEvTxt()}<div id="rkToast"></div><button class="rkMusB" data-a="music" title="Música">🎵</button><button class="rkCodB" data-a="code">🎟️ CÓDIGO</button><button class="rkAcB" data-a="conta" title="Conta">👤</button></div>`;
-  rkFit();W.querySelectorAll('[data-a]').forEach(b=>b.onclick=e=>{e.stopPropagation();rkAct(b.dataset.a,b)});({boss:rkBossOn,yb:rkBossOn,gacha:rkGachaOn,lib:rkLibOn,pf:pfOn,hs:hsOn,lvl:lvOn,yrb:()=>{clearInterval(rkView.iv);if(!RKSRV)rkSrvLoad()}}[v]||(()=>{}))()}
+  const H={menu:rkMenuH,boss:rkBossH,gacha:rkGachaH,shop:rkShopH,lib:rkLibH,rb:rkRbH,pf:pfH,hs:hsH,lvl:lvH,yb:ysLobbyH,yrb:ysStartH,ps:psH}[v]();const dm=RKD[v]||[RKW,RKH];W.innerHTML=`<div class="rkA rk_${v}" data-w="${dm[0]}" data-h="${dm[1]}"${['pf','hs','boss','rb','yb','yrb','ps'].includes(v)?' data-full="1"':''} style="background-image:url(${RQA[{menu:'menu_ranqueado',boss:'modo_boss',gacha:(RKBAN==='mit'?'gacha_yt':'gacha'),shop:'loja_gemas',lib:(RKL.tab==='chr'?'bib_pf':'biblioteca'),rb:'ranqueada_boss',pf:'perfil',hs:'historico',lvl:'lv_ed',yb:'boss_yt',yrb:(YS.tab==='rank'?'ys_rank':'ys_farm'),ps:'passiva'}[v]]})">${H}${rkEvTxt()}<div id="rkToast"></div><button class="rkMusB" data-a="music" title="Música">🎵</button><button class="rkCodB" data-a="code">🎟️ CÓDIGO</button><button class="rkAcB" data-a="conta" title="Conta">👤</button></div>`;
+  rkFit();W.querySelectorAll('[data-a]').forEach(b=>b.onclick=e=>{e.stopPropagation();rkAct(b.dataset.a,b)});({boss:rkBossOn,yb:rkBossOn,gacha:rkGachaOn,lib:rkLibOn,pf:pfOn,hs:hsOn,lvl:lvOn,ps:psOn,yrb:()=>{clearInterval(rkView.iv);if(!RKSRV)rkSrvLoad()}}[v]||(()=>{}))()}
 function rkLocked(){rkSfx('clang');rkToast('🔒 Em breve!','#cfd6ea')}
 function rkAct(a,b){rkSfx('whoosh');
-  switch(a){case 'back':if(RKV==='lvl')return rkView('lib');if(RKV==='yrb')return rkView('yb');if(RKV==='yb')return rkView('menu');if(RKV==='pf'||RKV==='hs'){if(PFO||PFRET)return pfBack();return showScreen('title')}return rkView(RKV==='shop'?'gacha':RKV==='rb'?'boss':'menu');case 'pf':return rkView('pf');case 'hs':return rkView('hs');case 'pfFoto':return PFO?pfAdmFoto():pfFotoM();case 'pfTit':return PFO?0:pfTitM();case 'pfPick':return PFO?0:pfPick();case 'pfRadar':return pfRadarInfo();case 'pfVit':if(PFO){const e=(PFO.vit||[])[+b.dataset.i];if(e)rkToast(rkItNm(e)+': '+rkItEf(e),rkItC(e));return}return pfVitPick(+b.dataset.i);case 'hsInfo':return hsInfo(b.dataset.k);case 'home':return showScreen('title');case 'menuBack':return showScreen('title');
+  switch(a){case 'back':if(RKV==='ps')return rkView(PSRET||'boss');if(RKV==='lvl')return rkView('lib');if(RKV==='yrb')return rkView('yb');if(RKV==='yb')return rkView('menu');if(RKV==='pf'||RKV==='hs'){if(PFO||PFRET)return pfBack();return showScreen('title')}return rkView(RKV==='shop'?'gacha':RKV==='rb'?'boss':'menu');case 'pf':return rkView('pf');case 'hs':return rkView('hs');case 'pfFoto':return PFO?pfAdmFoto():pfFotoM();case 'pfTit':return PFO?0:pfTitM();case 'pfPick':return PFO?0:pfPick();case 'pfRadar':return pfRadarInfo();case 'pfVit':if(PFO){const e=(PFO.vit||[])[+b.dataset.i];if(e)rkToast(rkItNm(e)+': '+rkItEf(e),rkItC(e));return}return pfVitPick(+b.dataset.i);case 'hsInfo':return hsInfo(b.dataset.k);case 'home':return showScreen('title');case 'menuBack':return showScreen('title');
     case 'boss':return rkView(RKBID==='yuta'&&ysOn()?'yb':(RKBID='broly','boss'));case 'gacha':return rkView('gacha');case 'shop':return rkView('shop');case 'lib':return rkView('lib');case 'lock':return rkLocked();
     case 'ranking':return rkRanking();case 'rewards':return rkRewards();case 'ach':return rkAch();case 'pos':return rkPos();
     case 'start':if(!RKSRV)rkSrvLoad();return rkView(RKBID==='yuta'?'yrb':'rb');case 'bsel':if(b.dataset.b==='yuta'&&!ysOn())return rkToast('⏳ O evento do Yuta acabou','#cfd6ea');RKBID=b.dataset.b;RKYD=null;RKSRV=null;try{localStorage.setItem('rk_bsel',RKBID)}catch(e){}return rkView(RKBID==='yuta'?'yb':'boss');case 'ytab':YS.tab=b.dataset.t;return rkView('yrb');case 'ydif':YS.d=+b.dataset.i;return rkView('yrb');case 'yfight':return ysFight();case 'equip':return rkEquip();case 'music':return rkMusic();case 'code':return rkCode();case 'torre':return rkTorre();case 'conta':return acOpen();case 'fight':RKYD=null;return rkBossStart();case 'lvp':return rkRbSel(-1);case 'lvn':return rkRbSel(1);case 'lvc':return rkRbSel(0,+b.dataset.i);case 'sel':return rkView('lib');case 'hist':return rkHist();case 'taxas':return rkTaxas();case 'pool':return rkTaxas();
@@ -123,14 +123,14 @@ function rkRbSel(d,i){const ri=rkLvl();let v=RKSEL==null?ri:RKSEL;v=i!=null?i:Ma
 /* ---------- EQUIPAR: personagem no meio com os espaços equipados em volta + itens da mochila ---------- */
 const RKSLOT=[['esp','🗡️','ESPADA'],['cap','⛑️','CAPACETE'],['anel','💍','ANEL'],['arm','🛡️','ARMADURA'],['bot','🥾','BOTAS'],['poc','🧪','POÇÃO']];
 /* pilhas: itens iguais ocupam 1 espaço (até 99 por espaço) */
-const twStKey=x=>x.k==='poc'?'p|'+(x.pk||'')+'|'+x.r+'|'+x.v:[x.t,x.r,x.v,x.crit||0,x.dmg||0,x.vel||0,x.nm||''].join('|');
+const twStKey=x=>x.k==='poc'?'p|'+(x.pk||'')+'|'+x.r+'|'+x.v:[x.t,x.r,x.v,x.crit||0,x.dmg||0,x.vel||0,x.nm||'',x.ps?x.ps.r+x.ps.i:''].join('|');
 function twStacks(){const M=new Map();for(const x of twBagItems()){const k=twStKey(x);if(!M.has(k))M.set(k,[]);M.get(k).push(x)}const out=[];for(const [k,L] of M)for(let i=0;i<L.length;i+=99){const g=L.slice(i,i+99);out.push(Object.assign({},g[0],{key:k+'#'+i,ids:g.map(y=>y.id),n:g.length}))}return out}
 twCap=function(){let S=twStacks(),out=null;while(S.length>TWBAG){const w=S.slice().sort((a,b)=>(a.ev?99:0)+a.v-(b.ev?99:0)-b.v)[0],ids=new Set(w.ids);if(w.k==='poc')twLS.s('tw_poc',twPocs().filter(x=>!ids.has(x.id)));else twLS.s('tw_inv',twInv().filter(x=>!ids.has(x.id)));out=w;S=twStacks()}return out};
 twBag=function(){rkEquip()};
 const rkItNm=x=>x.nm||(x.t==='poc'?(x.pk==='cura'?'POÇÃO DE CURA':x.pk==='drop'?'POÇÃO DE DROP':'POÇÃO'):x.t==='anel'?'ANEL':(TWEQ.find(E=>E.k===x.t)||{}).n||''),rkItIc=x=>x.img||(x.t==='poc'?(x.pk?RQA[x.pk==='cura'?'pcu':'pdr'][rkPkI(x.r)]:TWIMG.poc[Math.max(0,TWRK.indexOf(x.r))]):x.t==='anel'?RQA.anel[rkPkI(x.r)]:twIco(x.t,x.r)),rkItC=x=>x.r==='obs'?'#c46bff':rkHi(x.r)?'#e2b6ff':(TWEQR.find(q=>q.k===x.r)||TWEQR[0]).c;
-const rkHi=r=>r==='sec'||r==='obs',rkLock=x=>!!x&&x.r==='obs',rkYC=x=>rkIsY(x)?' ysec'+(x.r==='obs'?' yobs':''):'';
+const rkHi=r=>r==='sec'||r==='obs',rkLock=x=>!!x&&x.r==='obs',rkYC=x=>(rkIsY(x)?' ysec'+(x.r==='obs'?' yobs':''):'')+psCls(x);
 const rkIsY=x=>!!x&&(x.ysec||(x.yt&&rkHi(x.r))),rkItV=x=>Math.max(x.v||0,x.def||0,x.crit||0,x.dmg||0,x.st||0,x.fdmg||0,x.drop||0);
-const rkItEf=x=>x.t==='poc'&&x.pk?rkPkTxt(x):x.yt||x.t==='anel'?rkSpTxt(x):x.uniq?'✦ ITEM ÚNICO ✦ '+({esp:'Ataque',arm:'Defesa',bot:'Velocidade',cap:'Transformação'}[x.t]||'Bônus')+' +'+x.v+'%'+(x.dmg?' · Dano +'+x.dmg+'%':'')+(x.crit?' · Crítico +'+x.crit+'%':'')+(x.st?' · Sorte +'+x.st+'%':'')+(x.vel?' · Velocidade +'+x.vel+'%':'')+' (permanente)':x.img&&(x.crit||x.dmg)?rkSpTxt(x):x.t==='cap'?'Transformação +'+x.v+'% mais rápida · Crítico +'+(x.crit||0)+'%':x.vel?'Ataque +'+x.v+'% · Velocidade +'+x.vel+'%':x.t==='poc'?twPoTxt(x.r)+' (uso único, próxima luta)':({esp:'Ataque',arm:'Defesa',bot:'Velocidade'}[x.t]||'Bônus')+' +'+x.v+'%';
+const rkItEf=x=>rkItEf0(x)+(x&&x.ps&&psDef(x.ps)?' · ✦ PASSIVA '+psRN(x.ps.r)+': '+psDef(x.ps).n+' ('+psFx(psDef(x.ps))+')':'');const rkItEf0=x=>x.t==='poc'&&x.pk?rkPkTxt(x):x.yt||x.t==='anel'?rkSpTxt(x):x.uniq?'✦ ITEM ÚNICO ✦ '+({esp:'Ataque',arm:'Defesa',bot:'Velocidade',cap:'Transformação'}[x.t]||'Bônus')+' +'+x.v+'%'+(x.dmg?' · Dano +'+x.dmg+'%':'')+(x.crit?' · Crítico +'+x.crit+'%':'')+(x.st?' · Sorte +'+x.st+'%':'')+(x.vel?' · Velocidade +'+x.vel+'%':'')+' (permanente)':x.img&&(x.crit||x.dmg)?rkSpTxt(x):x.t==='cap'?'Transformação +'+x.v+'% mais rápida · Crítico +'+(x.crit||0)+'%':x.vel?'Ataque +'+x.v+'% · Velocidade +'+x.vel+'%':x.t==='poc'?twPoTxt(x.r)+' (uso único, próxima luta)':({esp:'Ataque',arm:'Defesa',bot:'Velocidade'}[x.t]||'Bônus')+' +'+x.v+'%';
 function rkEquip(f,sk){f=f||'all';const sel=showScreen.cur==='tower'&&TW.pick?TW.pick:rkG('sel','goku'),I=twInv(),Q=twEqp(),on=twPocOn(),SA=twStacks(),L=SA.filter(x=>f==='all'||x.t===f).sort((a,b)=>(TWRK.indexOf(b.r)-TWRK.indexOf(a.r))||(b.v-a.v)||(a.t>b.t?1:-1)),X=sk?SA.find(x=>x.key===sk):null;
   const slot=([k,i,n])=>{const x=k==='poc'?on&&Object.assign({t:'poc'},on):I.find(y=>y.id===Q[k]);return `<button class="eqS ${x?'on':''}${x&&x.uniq?' uniq':''}${rkYC(x)}" data-s="${k}" style="--c:${x?rkItC(x):'#556'}">${x?`<img src="${rkItIc(x)}" alt=""><b>+${rkItV(x)}%</b>`:`<i>${i}</i>`}<span>${x?rkItNm(x):n}</span></button>`};
   const tot=`⚔️ +${twEqB('dano')}% · 🛡️ +${twEqB('vida')}% · 💨 +${twEqB('vel')}% · 💥 +${Math.round(eqCrit())}% · ⚡ +${twEqB('trf')}%${eqFdmg()?' · 🔥 +'+Math.round(eqFdmg())+'%':''} · <b class="eqGr">🍀 Sorte +${rkEqSt()} · 🎁 Drop +${Math.round(eqDrop())}%</b>${on?' · 🧪 poção ativa':''}${rkG('pk_cura',null)?' · <b class="eqGr">💚 Cura '+rkG('pk_cura').v+'% pronta</b>':''}${rkG('pk_drop',null)?' · <b class="eqGr">🎁 Poção de drop +'+rkG('pk_drop').v+'% pronta</b>':''}`;
@@ -223,7 +223,7 @@ function rkAfter(w){G.mode='ranked';$('controls').hidden=true;$('pauseBtn').hidd
     if(Math.random()<(chest==='lend'?.4:chest==='epica'?.2:.12)*(FM?.5:1)*rkDropF())tic=1;if(Math.random()<(chest==='lend'?.2:.08)*(FM?.5:1)*rkDropF()){const E=TWEQ[(Math.random()*TWEQ.length)|0];eq={E,R:twEqRoll()}}drp=RKXW[rkLvl()];
     if(Math.random()<.3&&!['rara','lend','mit'].includes(chest))poc=twPoRoll();
     /* v250: poção de CURA/DROP e ANEL DE DROP (drop do Boss, fora do baú; o drop aumenta a chance) */
-    if(Math.random()<(FM?.12:.22)*rkDropF())pk2=rkPoRoll();if(Math.random()<(FM?.04:.07)*rkDropF())ring=rkRingRoll();  /* v240: baú raro/lendário/mítico não dá poção */
+    if(Math.random()<.005*rkDropF()){psAddJn(1);setTimeout(()=>rkToast('💠 JOIA NEGRA! (0,5%)','#c46bff'),1500)}if(Math.random()<(FM?.12:.22)*rkDropF())pk2=rkPoRoll();if(Math.random()<(FM?.04:.07)*rkDropF())ring=rkRingRoll();  /* v240: baú raro/lendário/mítico não dá poção */
     /* drops especiais do boss (bem difíceis) + piedade: garantido em 25 vitórias sem drop especial */
     const bp=rkG('bpity',0)+(FM?0:1),rr=Math.random()*100*(FM?2:1);let sk=null;if(rr<1.5)sk=['kam','gun'][(Math.random()*2)|0];else if(rr<5.5)sk=['band','bots','senzu'][(Math.random()*3)|0];else if(bp>=25)sk=['band','bots','senzu','band','bots','senzu','kam','gun'][(Math.random()*8)|0];
     if(sk){rkS('bpity',0);sp=sk}else rkS('bpity',bp)}
@@ -532,7 +532,7 @@ function acOpen(tab){const n=localStorage.getItem('ac_n'),k=localStorage.getItem
       msg('✔ Conta carregada! Recarregando o jogo...','ok');setTimeout(()=>location.reload(),900)}catch(e){B('acIn').disabled=false;msg('Sem internet agora. Tenta de novo.','err')}}}
 
 /* ================= MODO TORRE RANQUEADA (v228): mesma rank do Boss, dá mais XP, nova tela ================= */
-const RKTWX={fl:.6,top:2,loss:.5},RKTB=i=>({dano:i*2,def:i*2,vel:i,crit:i,sorte:i*3}),rkSorte=()=>RKTB(rkLvl()).sorte+(twIsAdm()?60:0)+rkEqSt()+(tbOf(twTitOn()).st||0),rkEqSt=()=>{let v=0;try{const o=twEqOn();for(const k in o)v+=(o[k].st||0)*eqNf(o[k])}catch(e){}return Math.round(v)};
+const RKTWX={fl:.6,top:2,loss:.5},RKTB=i=>({dano:i*2,def:i*2,vel:i,crit:i,sorte:i*3}),rkSorte=()=>psSum().st+RKTB(rkLvl()).sorte+(twIsAdm()?60:0)+rkEqSt()+(tbOf(twTitOn()).st||0),rkEqSt=()=>{let v=0;try{const o=twEqOn();for(const k in o)v+=(o[k].st||0)*eqNf(o[k])}catch(e){}return Math.round(v)};
 function rkTorre(){const s=rkG('sel','goku'),own=rkG('own',['goku']);G.pick=CH[s]&&own.includes(s)?s:'goku';G.gmode='torre';try{audioInit()}catch(e){}try{fsTry()}catch(e){}twOpen()}
 /* dificuldade da Torre pelo rank (v231): leve no começo; bem mais difícil para chegar nos 2 últimos ranks */
 const RKTD={dm:[1,1.05,1.1,1.15,1.22,1.4,1.55,1.65,1.75,1.85,2],hp:[1,1,1.1,1.15,1.25,1.4,1.55,1.65,1.75,1.85,2],sp:[1,1,1.02,1.04,1.06,1.1,1.14,1.16,1.18,1.2,1.22],ai:[0,0,0,0,0,1,1,1,1,1,1]};
@@ -650,7 +650,7 @@ function pfRadar(){const o=pfD(),ri=rkLvl(),rp=rkG('rp',0),B=RKTB(ri),q=twEqOn()
 const PFRV=[[1331,316],[1478,404],[1478,567],[1331,648],[1193,570],[1184,407]],PFRC=[1331,482];
 /* dados do perfil (o seu = pfMine; de outro jogador = PFO, vindo do servidor) */
 function pfMine(){try{pfMoedas();pfMaxUp(rkG('rp',0))}catch(e){}const S=rkSt(),o=pfD(),rec=Object.entries(S.rec||{}).filter(e=>e[1]>0).sort((a,b)=>a[1]-b[1])[0];
-  const n=twLS.g('tw_nome',''),VT=pfVit().map(e=>e&&{t:e.t,r:e.r,v:e.v,nm:e.nm||'',img:e.img||'',uniq:e.uniq?1:0,crit:e.crit||0,dmg:e.dmg||0,vel:e.vel||0,st:e.st||0,def:e.def||0,fdmg:e.fdmg||0,trf:e.trf||0,drop:e.drop||0,yt:e.yt?1:0,ysec:e.ysec?1:0});
+  const n=twLS.g('tw_nome',''),VT=pfVit().map(e=>e&&{t:e.t,r:e.r,v:e.v,nm:e.nm||'',img:e.img||'',uniq:e.uniq?1:0,crit:e.crit||0,dmg:e.dmg||0,vel:e.vel||0,st:e.st||0,def:e.def||0,fdmg:e.fdmg||0,trf:e.trf||0,drop:e.drop||0,yt:e.yt?1:0,ysec:e.ysec?1:0,ps:e.ps||null});
   return {uid:twUid(),mold:mdCur(),nome:n,tit:twTitOn(),rp:rkG('rp',0)|0,mx:pfRkMax(),foto:rkG('foto',''),vit:VT,ped:pfPed(),R:pfRadar().map(r=>({n:r.n,v:r.v,t:r.t})),
     h:{pt:rkPl(S)+(o.twf||0)+(o.twl||0),vw:(S.wins||0)+(o.twf||0),tw:o.tw||0,twc:o.twc||0,twf:o.twf||0,wins:S.wins||0,loss:S.loss||0,own:rkG('own',['goku']).filter(id=>CH[id]).length,tt:S.tt||0,rl:rec?(+rec[0]):-1}}}
 let PFO=null,PFRET=null;
@@ -749,7 +749,7 @@ async function pfLast(field,val){const body={structuredQuery:{from:[{collectionI
 const PFIMG=/^(a\/[\w.-]+\.(webp|png|jpg)|data:image\/(png|webp|jpeg);base64,[A-Za-z0-9+\/=]+)$/;
 function pfClean(o,uid,nome){const N=(v,mx)=>Math.max(0,Math.min(mx||1e9,+v||0))|0,S=(v,l)=>String(v==null?'':v).slice(0,l||40);
   return {uid,mold:MDL[o.mold]?o.mold:'',nome:S(nome||o.nome,16),tit:TWTIT[o.tit]?o.tit:'',rp:N(o.rp),mx:Math.min(RKTOP,N(o.mx)),foto:/^data:image\/jpeg;base64,[A-Za-z0-9+\/=]+$/.test(o.foto||'')?o.foto:'',
-    vit:(Array.isArray(o.vit)?o.vit:[]).slice(0,3).map(e=>e&&(TWRK.includes(e.r)||rkHi(e.r))&&(TWEQ.some(E=>E.k===e.t)||e.t==='anel')?{t:e.t,r:e.r,v:N(e.v,999),nm:S(e.nm,30),img:PFIMG.test(e.img||'')?e.img:'',uniq:e.uniq?1:0,crit:N(e.crit,999),dmg:N(e.dmg,999),vel:N(e.vel,999),st:N(e.st,999),def:N(e.def,999),fdmg:N(e.fdmg,999),trf:N(e.trf,999),drop:N(e.drop,999),yt:e.yt?1:0,ysec:e.ysec?1:0}:null),
+    vit:(Array.isArray(o.vit)?o.vit:[]).slice(0,3).map(e=>e&&(TWRK.includes(e.r)||rkHi(e.r))&&(TWEQ.some(E=>E.k===e.t)||e.t==='anel')?{t:e.t,r:e.r,v:N(e.v,999),nm:S(e.nm,30),img:PFIMG.test(e.img||'')?e.img:'',uniq:e.uniq?1:0,crit:N(e.crit,999),dmg:N(e.dmg,999),vel:N(e.vel,999),st:N(e.st,999),def:N(e.def,999),fdmg:N(e.fdmg,999),trf:N(e.trf,999),ps:e.ps&&RKPR.includes(e.ps.r)&&(e.ps.i|0)>=0&&(e.ps.i|0)<6?{r:e.ps.r,i:e.ps.i|0}:null,drop:N(e.drop,999),yt:e.yt?1:0,ysec:e.ysec?1:0}:null),
     ped:CH[o.ped]?o.ped:'goku',R:Array.isArray(o.R)&&o.R.length===6?o.R.map((r,i)=>({n:['CRÍTICO','DANO','VELOCIDADE','RANK','COMBO','FARM'][i],v:Math.max(4,Math.min(100,N(r&&r.v))),t:S(r&&r.t,160)})):null,
     h:o.h&&typeof o.h==='object'?Object.assign(Object.fromEntries(['pt','vw','tw','twc','twf','wins','loss','own','tt'].map(k=>[k,N(o.h[k])])),{rl:Math.min(RKTOP,Math.max(-1,+o.h.rl|0))}):null}}
 async function pfOpenOther(uid,nome,ret){if(!uid)return;if(ret.sc==='tower'){try{twModal(null)}catch(e){}showScreen('ranked')}else rkModal(null);
@@ -799,7 +799,7 @@ twEqOn=function(){const I=twInv(),Q=twEqp(),o={};for(const k of ['esp','arm','bo
 const EQMAIN={esp:'dano',arm:'vida',bot:'vel',cap:'trf',anel:'st'};
 twEqB=st=>{const o=twEqOn();let v=0;for(const k in o){const it=o[k],n=eqNf(it);if(EQMAIN[k]===st)v+=(it.v||0)*n;if(st==='vel'&&it.vel)v+=it.vel*n;if(st==='dano'&&it.dmg)v+=it.dmg*n;if(st==='vida'&&it.def)v+=it.def*n;if(st==='trf'&&it.trf)v+=it.trf*n}return Math.round(v*10)/10};
 const eqCrit=()=>{const o=twEqOn();let c=0;for(const k in o)c+=(o[k].crit||0)*eqNf(o[k]);return c};
-const eqDrop=()=>{const o=twEqOn();let c=0;for(const k in o)c+=(o[k].drop||0)*eqNf(o[k]);return c},rkDropF=()=>1+(eqDrop()+RKPDN)/100;let RKPDN=0;
+const eqDrop=()=>{const o=twEqOn();let c=0;for(const k in o)c+=(o[k].drop||0)*eqNf(o[k]);return c},rkDropF=()=>1+(eqDrop()+RKPDN+psSum().drop)/100;let RKPDN=0;
 const eqFdmg=()=>{const o=twEqOn();let c=0;for(const k in o)c+=(o[k].fdmg||0)*eqNf(o[k]);return c};
 /* ---------- NÍVEL dos personagens ---------- */
 const LVMAX=id=>({mit:50,lend:40,epica:30}[rkRar(id)]||30);
@@ -1145,3 +1145,80 @@ twPocFits=function(R){const k='p|'+(R.pk||'')+'|'+R.k+'|'+R.v,S=twStacks();retur
 function rkBauX(br){const F=rkDropF(),x=Math.random();let k=TWRK.includes(br)?br:'comum';if(x>=.35*F)return null;if(Math.random()<.01*F)k='sec';const R=TWEQR.find(q=>q.k===k)||TWEQR[0],i=rkPkI(k);
   if(x<.25*F){const pk=Math.random()<.5?'cura':'drop';return {t:'pk',pk:{k,pk,v:RKPKV[pk][i]},R,ic:RQA[pk==='cura'?'pcu':'pdr'][i],nm:pk==='cura'?'CURA':'DROP'}}
   return {t:'ring',ring:k,R,ic:RQA.anel[i],nm:'ANEL'}}
+
+/* ================= v253: PASSIVAS / ENCANTAMENTOS (Joia Negra) — regras do dono em ferramentas/ranqueada_artes/v253/REGRAS_PASSIVAS.txt =================
+   1 joia = 1 giro. Raridade: comum 50, rara 27, épica 14, lendária 6, mítica 2,5, secreta 0,5. Depois 1 das 6 passivas da raridade (iguais).
+   Alvos: personagem, espada, capacete, anel, armadura, botas — 1 passiva cada. Proteção: 50 sem lendária+ → lendária+; 200 sem mítica+ → mítica+.
+   Tudo guardado em rk_ps (uma chave só: joias, contadores, giro pendente, passivas dos personagens, aura). Passiva de item fica no item (it.ps={r,i}). */
+const PSW={comum:50,rara:27,epica:14,lend:6,mit:2.5,sec:.5};
+const PSV={comum:[['Golpe Preciso','cd',3],['Pele Resistente','def',2],['Punhos Ágeis','spd',2],['Recuperação Leve','reg',.15],['Caçador Iniciante','drop',3],['Pequena Fortuna','st',2]],
+  rara:[['Golpe Mortal','cd',6],['Armadura Reforçada','def',4],['Reflexos Rápidos','spd',4],['Regeneração Natural','reg',.3],['Caçador Experiente','drop',7],['Amuleto da Fortuna','st',5]],
+  epica:[['Instinto Assassino','cd',10],['Corpo de Aço','def',7],['Velocidade Sobrenatural','spd',7],['Sangue Regenerativo','reg',.5],['Caçador de Tesouros','drop',12],['Bênção da Sorte','st',9]],
+  lend:[['Destruidor de Destinos','cd',15],['Proteção Celestial','def',10],['Relâmpago Divino','spd',10],['Coração Imortal','reg',.75],['Imperador dos Tesouros','drop',20],['Fortuna Celestial','st',15]],
+  mit:[['Julgamento Divino','cd',21],['Corpo do Deus da Guerra','def',14],['Velocidade da Luz','spd',13],['Regeneração Divina','reg',1],['Soberano dos Drops','drop',30],['Destino Abençoado','st',22]],
+  sec:[['Olhos da Destruição','cd',30],['Corpo Absoluto','def',18],['Deus da Velocidade','spd',16],['Coração Eterno','reg',1.5],['Monarca dos Tesouros','drop',45],['Escolhido pelo Destino','st',35]]};
+const PSCAP={cd:60,def:35,spd:25,reg:2,drop:100,st:70},PSRC={comum:'#c3c8d2',rara:'#3d9bff',epica:'#b25bff',lend:'#ffc531',mit:'#ff2e63',sec:'#b06bff'},
+  PSTC={cd:'#ff3b3b',def:'#9fd0ff',spd:'#3cf0ff',reg:'#5dff8a',drop:'#ffd23a',st:'#c77dff'},PSTI={cd:'💥',def:'🛡️',spd:'⚡',reg:'💚',drop:'🎁',st:'🍀'};
+const psRN=r=>({comum:'COMUM',rara:'RARA',epica:'ÉPICA',lend:'LENDÁRIA',mit:'MÍTICA',sec:'SECRETA'}[r]||r),psRI=r=>RKPR.indexOf(r);
+const psDef=ps=>{const L=ps&&PSV[ps.r];const d=L&&L[ps.i];return d?{n:d[0],k:d[1],v:d[2],r:ps.r}:null};
+const psFx=d=>d.k==='cd'?'+'+d.v+'% de dano crítico':d.k==='def'?'+'+d.v+'% de defesa':d.k==='spd'?'+'+d.v+'% de velocidade de ataque':d.k==='reg'?'regenera '+String(d.v).replace('.',',')+'% da vida a cada 5 s':d.k==='drop'?'+'+d.v+'% de drop':'+'+d.v+'% de sorte';
+const psG=()=>Object.assign({jn:0,pl:0,pm:0,pend:null,ch:{},aura:{}},rkG('ps',{})),psS=o=>{rkS('ps',o);try{acSave()}catch(e){}};
+function psAddJn(n){const o=psG();o.jn=Math.max(0,(o.jn|0)+n);psS(o)}
+const psCls=x=>{const d=x&&x.ps&&psDef(x.ps);return d&&psRI(d.r)>=2?` psg psr_${d.r} pst_${d.k}`:''};
+/* soma das passivas do personagem + equipamentos colocados, com os limites globais */
+function psSum(id){const o={cd:0,def:0,spd:0,reg:0,drop:0,st:0};try{id=id||eqChar();const L=[psG().ch[id]];const q=twEqOn();for(const k in q)L.push(q[k].ps);for(const ps of L){const d=psDef(ps);if(d)o[d.k]+=d.v}for(const k in o)o[k]=Math.min(PSCAP[k],Math.round(o[k]*100)/100)}catch(e){}return o}
+/* sorteio (o resultado sai daqui, não da animação) */
+function psRoll(o){const el=o.pm>=200?['mit','sec']:o.pl>=50?['lend','mit','sec']:RKPR;const T=el.reduce((a,k)=>a+PSW[k],0);let x=Math.random()*T,r=el[el.length-1];for(const k of el){if((x-=PSW[k])<0){r=k;break}}
+  const ri=psRI(r);o.pl=ri>=3?0:(o.pl|0)+1;o.pm=ri>=4?0:(o.pm|0)+1;return {r,i:(Math.random()*6)|0}}
+let PSRET=null,PS={tg:'esp',sel:null,pg:0,busy:0,anim:0};
+const PSTG=[['ch','👤','PERSONAGEM'],['esp','🗡️','ESPADA'],['cap','⛑️','CAPACETE'],['anel','💍','ANEL'],['arm','🛡️','ARMADURA'],['bot','🥾','BOTAS']];
+function psOpen(){PSRET=RKV==='ps'?PSRET:RKV;const o=psG();if(o.pend){PS.tg=o.pend.tg.k==='ch'?'ch':(twInv().find(x=>x.id===o.pend.tg.id)||{}).t||PS.tg;PS.sel=o.pend.tg.id}rkModal(null);rkView('ps')}
+function psList(){if(PS.tg==='ch')return rkG('own',['goku']).filter(id=>CH[id]).map(id=>({k:'ch',id,img:(typeof PTH!=='undefined'&&PTH[id])||fullSrc(id),nm:CH[id].name,ps:psG().ch[id]||null}));
+  const I=twInv(),Q=twEqp(),seen=new Map(),L=[];for(const x of I.filter(x=>x.t===PS.tg).sort((a,b)=>(Q[b.t]===b.id)-(Q[a.t]===a.id)||(psRI(b.r)-psRI(a.r))||((b.v||0)-(a.v||0)))){const on=Q[x.t]===x.id,k=on?'#on':twStKey(x);if(seen.has(k)){seen.get(k).n++;continue}const e={k:'it',id:x.id,it:x,img:rkItIc(x),nm:rkItNm(x),ps:x.ps||null,on,n:1};seen.set(k,e);L.push(e)}return L}
+function psTarget(){const L=psList();let t=L.find(e=>e.id===PS.sel);if(!t&&PS.tg!=='ch'){const it=twInv().find(x=>x.id===PS.sel&&x.t===PS.tg);if(it)t={k:'it',id:it.id,it,img:rkItIc(it),nm:rkItNm(it),ps:it.ps||null}}return t||null}
+const psGemH=(ps,big)=>{const d=psDef(ps);return d?`<div class="psGem ${big?'big':''} psr_${d.r}" style="--rc:${PSRC[d.r]};--pc:${PSTC[d.k]}"><img src="${RQA.jn}" alt=""><i>${PSTI[d.k]}</i></div>`:''};
+const psTxtH=ps=>{const d=psDef(ps);return d?`<b style="color:${PSRC[d.r]}">${psRN(d.r)} · ${d.n}</b><small>${PSTI[d.k]} ${psFx(d)}</small>`:'<b class="no">SEM PASSIVA</b>'};
+function psH(){const o=psG(),L=psList(),np=Math.max(1,Math.ceil(L.length/9));PS.pg=Math.min(PS.pg,np-1);const t=psTarget(),pend=o.pend,cells=[[1272,212,1385,330],[1396,212,1505,330],[1515,212,1630,330],[1272,343,1385,460],[1396,343,1505,460],[1515,343,1630,460],[1272,472,1385,590],[1396,472,1505,590],[1515,472,1630,590]];
+  const pg=L.slice(PS.pg*9,PS.pg*9+9),S=psSum(t&&t.k==='ch'?t.id:undefined);
+  return `<button class="hs psBack" data-p="back" style="${rkB2(10,8,130,88)}">⬅</button>
+  <div class="psTit" style="${rkB2(150,14,560,74)}">💠 ENCANTAMENTO<small>1 Joia Negra = 1 giro</small></div>
+  <div class="psTabs" style="${rkB2(1262,140,1640,200)}">${PSTG.map(([k,i,n])=>`<button data-p="tg" data-k="${k}" class="${PS.tg===k?'on':''}" title="${n}">${i}</button>`).join('')}</div>
+  ${cells.map((c,j)=>{const e=pg[j];return `<button class="psCell ${e?'':'empty'} ${e&&t&&e.id===t.id?'sel':''}${e&&e.ps?psCls({ps:e.ps}):''}" ${e?`data-p="sel" data-id="${e.id}"`:''} style="${rkB2(...c)};${e&&e.ps?'--rc:'+PSRC[e.ps.r]:''}">${e?`<img src="${e.img}" alt=""><span>${twEsc(e.nm)}</span>${e.on?'<em class="on">EQUIPADO</em>':''}${e.n>1?`<em class="n">x${e.n}</em>`:''}${e.ps?`<i class="pd" style="background:${PSRC[e.ps.r]}"></i>`:''}`:''}</button>`}).join('')}
+  <div class="psPg" style="${rkB2(1300,598,1600,640)}"><button data-p="pg" data-d="-1">◀</button><span>${PS.pg+1}/${np}</span><button data-p="pg" data-d="1">▶</button></div>
+  <div class="psSlot" style="${rkB2(486,346,616,481)}">${t?`<img src="${t.img}" alt="">${t.ps?psGemH(t.ps):''}`:'<span>escolha<br>à direita</span>'}</div>
+  <div class="psLbl" style="${rkB2(425,492,680,572)}">${t?`<b class="nm">${twEsc(t.nm)}</b>${psTxtH(t.ps)}`:'<small>Escolha o personagem ou o item na lista</small>'}</div>
+  <div class="psWheel ${PS.anim?'spin':''}" id="psWheel" style="${rkB2(745,320,931,506)}">${pend&&!PS.anim?psGemH(pend,1):`<img class="jn" src="${RQA.jn}" alt="">`}<b id="psWT">${pend&&!PS.anim?psRN(pend.r):''}</b></div>
+  <div class="psSlot nw" style="${rkB2(1059,346,1190,481)}">${pend&&!PS.anim?psGemH(pend):'<span>nova<br>passiva</span>'}</div>
+  <div class="psLbl" style="${rkB2(995,492,1250,572)}">${pend&&!PS.anim?`<b class="nm">NOVA</b>${psTxtH(pend)}`:'<small>A passiva sorteada aparece aqui</small>'}</div>
+  <div class="psJn" style="${rkB2(512,778,610,848)}"><img src="${RQA.jn}" alt=""><b>${o.jn|0}</b></div>
+  <div class="psAct" style="${rkB2(640,770,1040,856)}">${pend&&!PS.anim?`<button data-p="apply" class="ok">✔ APLICAR NOVA</button><button data-p="keep">✖ MANTER ANTIGA</button>`:`<button data-p="spin" class="go" ${!t||(o.jn|0)<1||PS.anim?'disabled':''}>💠 GIRAR · 1 JOIA</button>`}</div>
+  <div class="psPity" style="${rkB2(1060,774,1186,852)}"><span>Lendária+ em <b>${Math.max(1,50-(o.pl|0))}</b></span><span>Mítica+ em <b>${Math.max(1,200-(o.pm|0))}</b></span></div>
+  <button class="psInfo" data-p="info" style="${rkB2(1590,600,1640,642)}">?</button>
+  <div class="psSum" style="${rkB2(30,880,1660,930)}">Total ${t&&t.k==='ch'?'de '+twEsc(t.nm):'do personagem em uso'}: 💥 +${S.cd}% crítico · 🛡️ +${S.def}% defesa · ⚡ +${S.spd}% vel. de ataque · 💚 ${String(S.reg).replace('.',',')}%/5s · 🎁 +${S.drop}% drop · 🍀 +${S.st}% sorte</div>`}
+function psOn(){const W=$('rkWrap');W.querySelectorAll('[data-p]').forEach(b=>b.onclick=e=>{e.stopPropagation();psAct(b.dataset.p,b)})}
+function psAct(a,b){const o=psG();
+  if(a==='back')return rkView(PSRET||'boss');
+  if(a==='info')return rkModal(`<div class="twM sm psInfoM"><h3>💠 COMO FUNCIONA</h3><p class="twH">1 Joia Negra = 1 giro. Cada personagem e cada item (espada, capacete, anel, armadura, botas) tem 1 espaço de passiva. Depois do giro você escolhe APLICAR a nova ou MANTER a antiga (a joia é gasta igual).</p><p class="twH">Chances: Comum 50% · Rara 27% · Épica 14% · Lendária 6% · Mítica 2,5% · Secreta 0,5%. Proteção: 50 giros sem Lendária+ garante Lendária+; 200 sem Mítica+ garante Mítica+.</p><p class="twH">Limites somando tudo: crítico +60 · defesa +35% · velocidade +25% · regeneração 2%/5s (máx. 15% da vida por luta) · drop +100% · sorte +70%.</p><p class="twH">Joia Negra: 0,5% de chance em cada vitória (Boss, farm, evento, Torre), códigos e mercado.</p><div class="row"><button class="btn" id="rkMX">OK</button></div></div>`),$('rkMX').onclick=()=>rkModal(null);
+  if(PS.anim||PS.busy)return;
+  if(a==='tg'||a==='sel'||a==='pg'){if(o.pend&&(a!=='pg')){rkSfx('clang');rkToast('Primeiro escolha: APLICAR ou MANTER a passiva sorteada','#ff8080');return}
+    if(a==='tg'){PS.tg=b.dataset.k;PS.sel=null;PS.pg=0}else if(a==='sel')PS.sel=b.dataset.id;else{const np=Math.max(1,Math.ceil(psList().length/9));PS.pg=(PS.pg+(+b.dataset.d)+np)%np}rkSfx('whoosh');return rkView('ps')}
+  if(a==='spin'){const t=psTarget();if(!t||o.pend)return;if((o.jn|0)<1){rkSfx('clang');rkToast('Sem Joia Negra!','#ff8080');return}PS.busy=1;
+    const R=psRoll(o);o.jn=(o.jn|0)-1;o.pend={tg:{k:t.k,id:t.id},r:R.r,i:R.i};psS(o);  /* gasta a joia e guarda o resultado juntos (uma gravação só) */
+    PS.anim=1;rkView('ps');psAnim(R.r,()=>{PS.anim=0;PS.busy=0;rkView('ps');const d=psDef(R);rkSfx(psRI(R.r)>=3?'boom':'powerUp');if(psRI(R.r)>=4)try{SFX.boom()}catch(e){}rkToast((psRI(R.r)>=3?'✨ ':'')+psRN(R.r)+': '+d.n,PSRC[R.r])});return}
+  if(a==='apply'||a==='keep'){const P=o.pend;if(!P)return;PS.busy=1;try{if(a==='apply'){if(P.tg.k==='ch'){o.ch[P.tg.id]={r:P.r,i:P.i}}else{const I=twInv(),it=I.find(x=>x.id===P.tg.id);if(it){it.ps={r:P.r,i:P.i};twLS.s('tw_inv',I)}}}
+    o.pend=null;psS(o)}finally{PS.busy=0}rkSfx(a==='apply'?'powerUp':'whoosh');rkToast(a==='apply'?'✔ Passiva aplicada!':'Passiva antiga mantida','#7dff9a');return rkView('ps')}}
+function psAnim(r,cb){const W=$('psWheel'),T=$('psWT');if(!W){cb();return}let n=0;const tot=26;const step=()=>{const k=n<tot-1?RKPR[n%6]:r;W.style.setProperty('--rc',PSRC[k]);T.textContent=psRN(k);T.style.color=PSRC[k];try{if(n%2===0)rkSfx('whoosh')}catch(e){}n++;if(n<tot)setTimeout(step,40+n*n*.35);else{W.classList.add('done','psr_'+r);setTimeout(cb,900)}};step()}
+/* começo da luta: crítico, defesa, velocidade de ataque, regeneração, aura da passiva secreta */
+{const _ex2=rkExtra;rkExtra=function(){const r=_ex2.apply(this,arguments);try{if(!G.p)return r;const torre=typeof TW!=='undefined'&&TW.on&&G.gmode==='torre',boss=G.gmode==='boss';if(!torre&&!boss)return r;const p=G.p[0],id=p.def.id,S=psSum(id);
+  p.tcd=(p.tcd||0)+S.cd;if(S.def)p.tdf=(p.tdf||1)/(1+S.def/100);p.pspd=S.spd;p.preg=S.reg;p.pregT=G.frame;p.pregTot=0;p._lhp=p.hp;
+  const cp=psG().ch[id],d=psDef(cp);if(d&&d.r==='sec'&&psG().aura[id]!==0){const c=PSTC[d.k];p.def=Object.assign({},p.def,{energy:c,energy2:'#ffffff',fe:c,fe2:'#ffffff',frame:c})}}catch(e){}return r}}
+function psRegTick(){const p=G.p&&G.p[0];if(!p||!p.preg||p.hp<=0||p.ko)return;const m=p.mhp||MAXHP;if(p._lhp!=null&&p.hp<p._lhp-.5)p.pregT=G.frame;p._lhp=p.hp;const dt=G.frame-(p.pregT||0);
+  if(dt>=300&&dt%300===0&&p.hp<m&&(p.pregTot||0)<m*.15){const h=Math.min(m*p.preg/100,m*.15-(p.pregTot||0),m-p.hp);p.hp+=h;p.pregTot=(p.pregTot||0)+h;p._lhp=p.hp;try{txt(p.x,p.y-300,'💚 +'+String(p.preg).replace('.',',')+'%','#5dff8a')}catch(e){}}}
+/* Torre: Joia Negra em cada andar vencido */
+{const _ta3=twAfter;twAfter=function(w){const r=_ta3.apply(this,arguments);try{if(w===0&&Math.random()<.005*rkDropF()){psAddJn(1);setTimeout(()=>twToast('💠 JOIA NEGRA! (0,5%)','#c46bff'),1200)}}catch(e){}return r}}
+/* mochila: botão ENCANTAR, joias e botão da aura (só com passiva SECRETA no personagem) */
+{const _eq=rkEquip;rkEquip=function(){const r=_eq.apply(this,arguments);try{const MS=RKMS(),row=document.querySelector(MS+'.rkEq .row'),sel=eqChar(),o=psG(),d=psDef(o.ch[sel]);if(!row)return r;
+  const T=document.querySelector(MS+'.rkEq p.eqT:last-of-type');if(T)T.insertAdjacentHTML('afterbegin',`<b class="eqGr">💠 Joias Negras: ${o.jn|0}</b> · `);
+  if(showScreen.cur==='ranked')row.insertAdjacentHTML('afterbegin','<button class="btn main" id="psGo">💠 ENCANTAR</button>');
+  if(d&&d.r==='sec')row.insertAdjacentHTML('afterbegin',`<button class="btn" id="psAu">✨ AURA DA PASSIVA: ${o.aura[sel]===0?'DESLIGADA':'LIGADA'}</button>`);
+  const g=$('psGo');if(g)g.onclick=()=>{rkModal(null);psOpen()};const au=$('psAu');if(au)au.onclick=()=>{const o2=psG();o2.aura[sel]=o2.aura[sel]===0?1:0;psS(o2);rkSfx('powerUp');rkEquip()}}catch(e){}return r}}

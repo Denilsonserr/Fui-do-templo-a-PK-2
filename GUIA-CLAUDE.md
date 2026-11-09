@@ -1128,3 +1128,13 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - Pedido do dono (a Torre é "o mais legal"). `rkBauX(r)` (fim do rk.js) é chamado em cada baú do `twBauOpen` (`extra/90_v252.py`): 25% poção de cura ou drop, 10% anel de drop, tudo × `rkDropF()`; senão segue o baú antigo (poção normal/equipamento). Raridade = a do baú; 1% × drop vira SECRETA.
 - Vale para todos os baús que usam `twBauOpen` (Torre, recompensas de rank, códigos de baú). A regra antiga "baú raro+ sem poção" continua só para a poção normal de buff.
 - Teste: `ferramentas/testes/tbau_v252.js`.
+
+## v253 — PASSIVAS / ENCANTAMENTOS com a JOIA NEGRA
+- Regras do dono: `ferramentas/ranqueada_artes/v253/REGRAS_PASSIVAS.txt` (36 passivas, chances, proteção, limites). Artes: `passiva.png` (tela, `RQA.passiva`), `joia_negra.png` (`RQA.jn`), `mercado_negro.png` (`RQA.mercado`, ainda não usado — Mercado Negro espera o dono dizer preço fixo/faixa e taxa).
+- Tudo no fim do rk.js ("v253"). Dados numa chave só `rk_ps` = {jn (joias), pl/pm (contadores 50/200), pend (giro sorteado esperando APLICAR/MANTER), ch (passiva por personagem), aura (0 = aura desligada)}. Passiva de item fica no item `it.ps={r,i}` (entra na chave da pilha e na vitrine do perfil).
+- Tela `rkView('ps')` (`psH/psOn/psAct`), aberta pelo botão 💠 ENCANTAR da mochila (só no Ranqueado). Abas: personagem, espada, capacete, anel, armadura, botas; grade 3×3 com páginas. O giro grava joia−1 + resultado juntos ANTES da animação (`psRoll` decide; `psAnim` só mostra). Com giro pendente não dá para trocar de alvo.
+- Efeitos (`psSum(id)` = personagem + itens equipados, com limites `PSCAP`): crítico → `p.tcd` (multiplicador do crítico); defesa → `p.tdf/(1+def/100)`; velocidade → `p.pspd` acelera só golpes `cat:'punch'|'kick'` (`extra/91_v253.py`); regeneração → `psRegTick` (5 s sem dano, a cada 5 s, máx. 15% da vida por luta); drop → `rkDropF`; sorte → `rkSorte`. Aplicado no começo da luta de Boss/Torre (`rkExtra`).
+- Aura: personagem com passiva SECRETA troca a cor da energia (`p.def` copiado com a cor `PSTC` do tipo). Botão "✨ AURA DA PASSIVA" na mochila liga/desliga.
+- Brilho: itens com passiva épica+ ganham `psg psr_<raridade> pst_<tipo>` (cor do tipo, mais forte quanto mais rara).
+- Joia Negra: 0,5% × drop em cada vitória do Boss (rank/farm/evento) e em cada andar da Torre. Código pode dar joias com `{nm:'...',jn:N}` no `TWCUP` (dia/ev não).
+- Teste: `ferramentas/testes/tpassivas_v253.js` (distribuição em 200 mil giros, proteção, pendente, aplicar, soma com limites, luta real com crítico/defesa/regen/aura).

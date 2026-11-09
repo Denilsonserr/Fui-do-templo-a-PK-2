@@ -1,0 +1,210 @@
+SISTEMA OFICIAL DE PASSIVAS E ENCANTAMENTOS — JOGO ANIME 2D
+
+Implemente um sistema completo de passivas e encantamentos no meu jogo de luta anime 2D. O sistema deve funcionar com os personagens, equipamentos, inventário, roleta, bosses, Torre, PvP e modo Ranqueado já existentes.
+
+IMPORTANTE: Não recrie nem substitua as interfaces, imagens ou personagens existentes. Utilize as artes que forneci e preserve a identidade visual do jogo.
+
+1. EQUIPAMENTOS QUE PODEM RECEBER PASSIVAS
+
+O jogador poderá selecionar um dos seguintes alvos para encantar:
+
+- Personagem
+- Armadura
+- Capacete
+- Anel
+- Bota
+- Espada
+
+Cada alvo poderá ter somente 1 passiva equipada.
+
+A passiva do personagem fica vinculada ao próprio personagem. As passivas dos equipamentos ficam vinculadas ao item, mesmo quando ele é retirado ou transferido no inventário.
+
+O jogador poderá substituir uma passiva por outra usando a roleta, mas nunca acumular duas passivas no mesmo espaço.
+
+2. MOEDA DE ENCANTAMENTO
+
+A moeda utilizada será a Gema Negra de Passiva, cuja imagem já foi criada.
+
+Regras:
+
+- 1 gema negra = 1 giro.
+- Cada giro consome exatamente uma gema.
+- Não permitir girar sem possuir gemas suficientes.
+- Exibir a quantidade de gemas no inventário.
+- Atualizar automaticamente o saldo após cada giro.
+- A gema não poderá ser utilizada como moeda comum.
+
+3. RARIDADES E PROBABILIDADES
+
+A roleta terá as seguintes chances:
+
+- Comum: 50%
+- Raro: 27%
+- Épico: 14%
+- Lendário: 6%
+- Mítico: 2,5%
+- Secreto: 0,5%
+
+A soma das probabilidades deve ser exatamente 100%.
+
+Primeiro, sortear a raridade. Depois, sortear uma das seis passivas dessa raridade com probabilidades iguais.
+
+O resultado deve ser calculado pelo sistema, e não pela animação visual da roleta.
+
+4. LISTA COMPLETA DE PASSIVAS
+
+COMUM
+
+1. Golpe Preciso: +3% de dano crítico.
+2. Pele Resistente: +2% de defesa.
+3. Punhos Ágeis: +2% de velocidade de ataque.
+4. Recuperação Leve: regenera 0,15% da vida máxima a cada 5 segundos.
+5. Caçador Iniciante: +3% de chance relativa de drop.
+6. Pequena Fortuna: +2% de sorte.
+
+RARO
+
+1. Golpe Mortal: +6% de dano crítico.
+2. Armadura Reforçada: +4% de defesa.
+3. Reflexos Rápidos: +4% de velocidade de ataque.
+4. Regeneração Natural: regenera 0,3% da vida máxima a cada 5 segundos.
+5. Caçador Experiente: +7% de drop.
+6. Amuleto da Fortuna: +5% de sorte.
+
+ÉPICO
+
+1. Instinto Assassino: +10% de dano crítico.
+2. Corpo de Aço: +7% de defesa.
+3. Velocidade Sobrenatural: +7% de velocidade de ataque.
+4. Sangue Regenerativo: regenera 0,5% da vida máxima a cada 5 segundos.
+5. Caçador de Tesouros: +12% de drop.
+6. Bênção da Sorte: +9% de sorte.
+
+LENDÁRIO
+
+1. Destruidor de Destinos: +15% de dano crítico.
+2. Proteção Celestial: +10% de defesa.
+3. Relâmpago Divino: +10% de velocidade de ataque.
+4. Coração Imortal: regenera 0,75% da vida máxima a cada 5 segundos.
+5. Imperador dos Tesouros: +20% de drop.
+6. Fortuna Celestial: +15% de sorte.
+
+MÍTICO
+
+1. Julgamento Divino: +21% de dano crítico.
+2. Corpo do Deus da Guerra: +14% de defesa.
+3. Velocidade da Luz: +13% de velocidade de ataque.
+4. Regeneração Divina: regenera 1% da vida máxima a cada 5 segundos.
+5. Soberano dos Drops: +30% de drop.
+6. Destino Abençoado: +22% de sorte.
+
+SECRETO
+
+1. Olhos da Destruição: +30% de dano crítico.
+2. Corpo Absoluto: +18% de defesa.
+3. Deus da Velocidade: +16% de velocidade de ataque.
+4. Coração Eterno: regenera 1,5% da vida máxima a cada 5 segundos.
+5. Monarca dos Tesouros: +45% de drop.
+6. Escolhido pelo Destino: +35% de sorte.
+
+5. REGRAS DE COMBATE E EQUILÍBRIO
+
+Dano crítico: o bônus aumenta o multiplicador de dano crítico, não a probabilidade de ocorrer um crítico. Exemplo: um crítico de 150% passa a causar 180% do dano básico com +30 pontos percentuais de dano crítico.
+
+Defesa: utilizar a fórmula:
+
+Dano recebido = Dano original / (1 + Defesa percentual / 100).
+
+Velocidade: acelerar somente as animações e recuperações dos ataques básicos. Não alterar a movimentação geral, a duração do atordoamento nem os tempos de recarga dos especiais. Impedir combos infinitos.
+
+Regeneração: começar após 5 segundos sem receber dano. Interromper imediatamente quando receber dano. Limitar a recuperação a 15% da vida máxima por rodada. Não permitir regeneração após a derrota.
+
+Drop: aplicar somente nas recompensas de PvE. Exemplo: um item com 2% de chance e bônus de +45% passa a ter 2,9% de chance.
+
+Sorte: melhorar a distribuição de raridades dos itens obtidos em PvE, sem alterar as probabilidades da roleta de passivas.
+
+Acúmulo de efeitos: somar os bônus das passivas equipadas e aplicar limites globais:
+
+- Dano crítico adicional: máximo +60 pontos percentuais.
+- Defesa adicional: máximo +35%.
+- Velocidade de ataque adicional: máximo +25%.
+- Regeneração total: máximo 2% da vida máxima a cada 5 segundos.
+- Drop adicional: máximo +100%.
+- Sorte adicional: máximo +70%.
+
+Esses limites devem considerar todas as passivas ativas do personagem e dos equipamentos.
+
+6. SISTEMA DE PROTEÇÃO DA ROLETA
+
+Criar dois contadores independentes:
+
+- Após 50 giros consecutivos sem lendária ou superior, o próximo giro garante pelo menos lendária.
+- Após 200 giros consecutivos sem mítica ou superior, o próximo giro garante pelo menos mítica.
+
+Quando uma raridade elegível aparecer, reiniciar seu contador correspondente.
+
+Os contadores devem ser persistentes, inclusive quando o jogador sair e retornar ao jogo.
+
+Quando houver garantia, redistribuir proporcionalmente as probabilidades apenas entre as raridades elegíveis.
+
+7. FUNCIONAMENTO DA INTERFACE
+
+Utilizar as interfaces e artes já fornecidas.
+
+Fluxo:
+
+1. O jogador abre a área de encantamentos.
+2. Escolhe personagem, armadura, capacete, anel, bota ou espada.
+3. Seleciona o personagem ou item específico do inventário.
+4. Visualiza a passiva atual, caso exista.
+5. Confere a quantidade de gemas negras.
+6. Pressiona o botão de girar.
+7. O sistema consome uma gema e sorteia a passiva.
+8. A roleta apresenta uma animação com a raridade sorteada.
+9. O jogador visualiza o nome, a raridade e os atributos da nova passiva.
+10. O jogador escolhe entre manter a passiva antiga ou aplicar a nova.
+
+Se o jogador cancelar a substituição, mantém a passiva antiga, mas não recupera a gema utilizada.
+
+A nova passiva sorteada não poderá ser aplicada em outro equipamento.
+
+8. SEGURANÇA E SALVAMENTO
+
+- Salvar passivas permanentemente.
+- Não perder encantamentos ao fechar o jogo.
+- Impedir giros duplicados por cliques rápidos.
+- Consumir a gema e registrar o resultado em uma única operação segura.
+- Nunca cobrar duas gemas pelo mesmo giro.
+- Evitar que erros de conexão dupliquem recompensas.
+- Validar as probabilidades e o saldo no sistema responsável pelos dados do jogador.
+- Atualizar automaticamente os atributos quando um equipamento for colocado ou retirado.
+- Impedir que uma passiva seja aplicada duas vezes ao mesmo personagem.
+
+9. REGRAS VISUAIS
+
+Manter o estilo anime 2D HD do meu jogo.
+
+Usar a Gema Negra de Passiva como símbolo principal.
+
+As cores das raridades serão:
+
+- Comum: cinza/prata.
+- Raro: azul.
+- Épico: roxo.
+- Lendário: dourado.
+- Mítico: vermelho.
+- Secreto: roxo cósmico com detalhes negros.
+
+Não gerar personagens novos, ícones aleatórios ou elementos que não pertençam ao sistema existente.
+
+Utilizar os espaços vazios das interfaces fornecidas para adicionar nomes, números e informações dinamicamente pelo próprio jogo.
+
+10. RESULTADO ESPERADO
+
+Quero um sistema de passivas completo, equilibrado, funcional e integrado ao jogo.
+
+As passivas devem modificar os atributos reais dos personagens e equipamentos, não apenas mostrar números na interface.
+
+Implementar as regras mantendo os sistemas atuais do jogo funcionando, sem apagar ou modificar recursos não relacionados.
+
+Antes de concluir, testar os giros, as probabilidades, os encantamentos, o salvamento e os efeitos de todas as 36 passivas.
