@@ -1054,3 +1054,13 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - Na tela "Ranqueada · Modo Boss" os níveis ABAIXO do rank agora são jogáveis (🌾 FARM). `RKFL` = nível do farm (definido no `rkBossStart` a partir do `RKSEL`); `rkBL()` = nível usado pelo Broly (farm ou rank).
 - No farm: não ganha nem perde XP de rank (vitória, derrota e desistência), não conta recorde e não envia para o ranking (`rkSend` não roda). Gemas e moeda vermelha normais. Menores: baú (lendário→épico, épico/raro→raro), ticket e equipamento (metade), drops especiais (metade e sem avançar a piedade), pó/cristais (metade), item de elevação (metade e sem avançar a piedade).
 - LUTAR DE NOVO mantém o nível do farm. Teste `ferramentas/testes/tfarm.js`.
+
+## v243 — EVENTO DO YUTA no Modo Boss (até domingo 15/11 23:59)
+- Arte do dono `ferramentas/ranqueada_artes/boss_yuta_v243.png` (`RQA.boss_yt`). Telas do Boss em TELA CHEIA (`boss`, `rb`, `yb`, `yrb` com `data-full`).
+- Lobby do Broly: o 2º espaço virou o botão do Yuta (`ysSlotOld`, com o tempo que falta). Lobby do Yuta (`yb`, `ysLobbyH`): 1º espaço volta ao Broly; chat, online, emblema do rank, recompensas (💎, pó, equipamento, ✦ 0,5%). Escolha salva em `rk_bsel`; `RKBID` = boss atual ('broly'|'yuta'), `rkBoss()`.
+- `RKBOSS` ganhou o Yuta (mais barras e mais forte que o Broly em cada nível; fase 2 = Despertar com o vídeo dele). Todo o código do Boss usa `rkBoss()` (fases, banners, resultado "YUTA DERROTADO!"). Recordes separados (`rkr` 'Y'+nível, `st.recY`).
+- Tela de início `yrb` (`ysStartH`) com 2 abas: RANQUEADO (igual ao Broly: nível = rank, dá/tira XP, passivas por nível) e FARM DO EVENTO.
+- FARM DO EVENTO (`RKYD` = dificuldade, `YSDIF`): FÁCIL/NORMAL/DIFÍCIL/MESTRE/SUPER DIFÍCIL (força dos níveis 1/3/5/7/8 do rank, barras 2→3 … 8→15, Super +25% dano). Sem XP de rank. Passivas SORTEADAS a cada luta pela ROLETA (`ysFight`, `ysRoll`, pools `YSPOOL` fácil/média/difícil; novas: olho amaldiçoado +20% crít., energia cheia, maldição +25% dano 10 s, Rika protetora, roubo de vida 25%). Passivas agora são um conjunto (`o.rkPS`; no ranqueado `rkPSlv(nível)`).
+- Drops do farm (`rkResult` com `R.yd`): 💎 2–14, pó 6–45, cristal 35%, equipamento 25–50% (raridade melhor nas altas), moeda vermelha; DIFÍCIL+ 0,3% item secreto do Yuta; MESTRE/SUPER 0,5% o próprio YUTA (Sorte Mítica + vídeo + título nº). Tudo × `lvLuck()` (sorte). Derrota: um pouco de pó.
+- Fora do horário (`YSEV`) o Yuta some do lobby ("ENCERRADO"). `window.__ysT` = deslocamento de tempo para testes.
+- Testes `ferramentas/testes/tevento_yuta.js` (lobby, telas, roleta, farm, ranqueado).

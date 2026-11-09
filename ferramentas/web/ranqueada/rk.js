@@ -16,8 +16,12 @@ const RKPAS=[['Boss normal, sem passivas especiais','IA básica: ataques e bloqu
   ['Regenera 3% da vida máxima uma vez ao chegar a 40%','Combos mais longos'],['Ao chegar a 50% da vida: +15% de dano por 8 s','IA mais agressiva'],['Barreira que absorve 10% da vida máxima (1 vez por luta)','Ataques especiais com mais frequência'],
   ['Ao chegar a 30%: MODO FURIOSO, +15% de velocidade por 10 s','Esquivas e contra-ataques avançados'],['Ao chegar a 25%: FASE SUPREMA — barreira de 15% e +20% de dano por 12 s','Usa os melhores combos e especiais']];
 /* configuração reutilizável de bosses (para adicionar outros no futuro) */
-const RKBOSS=[{id:'broly',n:'BROLY',sub:'O Super Saiyajin Lendário',ph:[[2,3],[2,4],[3,5],[3,6],[4,8],[5,10],[6,12],[7,14]],b1:{dm:.65,df:1.2,sp:.92},b2:{dm:.8,df:1.05,sp:1}}];
-const rkPhB=lv=>RKBOSS[0].ph[Math.max(0,Math.min(7,lv))];
+const RKBOSS=[{id:'broly',n:'BROLY',sub:'O Super Saiyajin Lendário',ph:[[2,3],[2,4],[3,5],[3,6],[4,8],[5,10],[6,12],[7,14]],b1:{dm:.65,df:1.2,sp:.92},b2:{dm:.8,df:1.05,sp:1},c:'#5cff4a'},
+  /* v243: Yuta do EVENTO — mais forte que o Broly em cada nível (no Despertar ele já ganha velocidade x3 e dano +60% do próprio personagem) */
+  {id:'yuta',n:'YUTA',sub:'Feiticeiro de Jujutsu',ph:[[3,4],[3,5],[4,6],[4,7],[5,9],[6,11],[7,13],[8,15]],b1:{dm:.78,df:1.12,sp:.96},b2:{dm:.72,df:1,sp:.62},c:'#b57bff'}];
+/* v243: boss atual (Broly ou Yuta do evento) */
+let RKBID='broly';const rkBoss=()=>RKBOSS.find(b=>b.id===RKBID)||RKBOSS[0],rkBP=()=>RKBID==='yuta'?'Y':'L';
+const rkPhB=lv=>rkBoss().ph[Math.max(0,Math.min(7,lv))];
 /* IA por nível (react = tempo de reação, agg = agressividade, blk = defesa, combo = continuar combos) */
 const RKAI=[{react:24,agg:.42,blk:.18,combo:.35,idle:24},{react:18,agg:.52,blk:.3,combo:.5,idle:16},{react:13,agg:.62,blk:.45,combo:.66,idle:11},{react:8,agg:.77,blk:.62,combo:.86,idle:6},
   {react:6,agg:.86,blk:.68,combo:.9,idle:4},{react:5,agg:.9,blk:.74,combo:.94,idle:3},{react:4,agg:.94,blk:.82,combo:.97,idle:2},{react:3,agg:.97,blk:.86,combo:1,idle:1}];
@@ -48,16 +52,16 @@ const RKLOCK='<span class="rkLk"><svg viewBox="0 0 24 24"><path d="M7 10V7a5 5 0
 function rkSfx(k){try{SFX[k]&&SFX[k]()}catch(e){}}
 function rkOpen(v){if(v==='pf'){PFO=null;PFRET=null}RKSEL=null;rkInit();rkMusPlay();setTimeout(rkDiaAuto,1200);audioInit();try{fsTry()}catch(e){}showScreen('ranked');rkView(v||'menu')}
 let RKV='menu';
-const RKD={rb:[1672,941],lvl:[1847,851],pf:[1672,941],hs:[1671,941]};const rkB2=(x0,y0,x1,y1)=>`left:${x0/16.72}%;top:${y0/9.41}%;width:${(x1-x0)/16.72}%;height:${(y1-y0)/9.41}%`;
+const RKD={rb:[1672,941],yrb:[1847,851],lvl:[1847,851],pf:[1672,941],hs:[1671,941]};const rkB2=(x0,y0,x1,y1)=>`left:${x0/16.72}%;top:${y0/9.41}%;width:${(x1-x0)/16.72}%;height:${(y1-y0)/9.41}%`;
 function rkView(v){RKV=v;const W=$('rkWrap');if(!W)return;clearInterval(rkView.iv);rkModal(null);
-  const H={menu:rkMenuH,boss:rkBossH,gacha:rkGachaH,shop:rkShopH,lib:rkLibH,rb:rkRbH,pf:pfH,hs:hsH,lvl:lvH}[v]();const dm=RKD[v]||[RKW,RKH];W.innerHTML=`<div class="rkA rk_${v}" data-w="${dm[0]}" data-h="${dm[1]}"${v==='pf'||v==='hs'?' data-full="1"':''} style="background-image:url(${RQA[{menu:'menu_ranqueado',boss:'modo_boss',gacha:(RKBAN==='mit'?'gacha_yt':'gacha'),shop:'loja_gemas',lib:(RKL.tab==='chr'?'bib_pf':'biblioteca'),rb:'ranqueada_boss',pf:'perfil',hs:'historico',lvl:'lv_ed'}[v]]})">${H}${rkEvTxt()}<div id="rkToast"></div><button class="rkMusB" data-a="music" title="Música">🎵</button><button class="rkCodB" data-a="code">🎟️ CÓDIGO</button><button class="rkAcB" data-a="conta" title="Conta">👤</button></div>`;
-  rkFit();W.querySelectorAll('[data-a]').forEach(b=>b.onclick=e=>{e.stopPropagation();rkAct(b.dataset.a,b)});({boss:rkBossOn,gacha:rkGachaOn,lib:rkLibOn,pf:pfOn,hs:hsOn,lvl:lvOn}[v]||(()=>{}))()}
+  const H={menu:rkMenuH,boss:rkBossH,gacha:rkGachaH,shop:rkShopH,lib:rkLibH,rb:rkRbH,pf:pfH,hs:hsH,lvl:lvH,yb:ysLobbyH,yrb:ysStartH}[v]();const dm=RKD[v]||[RKW,RKH];W.innerHTML=`<div class="rkA rk_${v}" data-w="${dm[0]}" data-h="${dm[1]}"${['pf','hs','boss','rb','yb','yrb'].includes(v)?' data-full="1"':''} style="background-image:url(${RQA[{menu:'menu_ranqueado',boss:'modo_boss',gacha:(RKBAN==='mit'?'gacha_yt':'gacha'),shop:'loja_gemas',lib:(RKL.tab==='chr'?'bib_pf':'biblioteca'),rb:'ranqueada_boss',pf:'perfil',hs:'historico',lvl:'lv_ed',yb:'boss_yt',yrb:'boss_yt'}[v]]})">${H}${rkEvTxt()}<div id="rkToast"></div><button class="rkMusB" data-a="music" title="Música">🎵</button><button class="rkCodB" data-a="code">🎟️ CÓDIGO</button><button class="rkAcB" data-a="conta" title="Conta">👤</button></div>`;
+  rkFit();W.querySelectorAll('[data-a]').forEach(b=>b.onclick=e=>{e.stopPropagation();rkAct(b.dataset.a,b)});({boss:rkBossOn,yb:rkBossOn,gacha:rkGachaOn,lib:rkLibOn,pf:pfOn,hs:hsOn,lvl:lvOn,yrb:()=>{clearInterval(rkView.iv);if(!RKSRV)rkSrvLoad()}}[v]||(()=>{}))()}
 function rkLocked(){rkSfx('clang');rkToast('🔒 Em breve!','#cfd6ea')}
 function rkAct(a,b){rkSfx('whoosh');
-  switch(a){case 'back':if(RKV==='lvl')return rkView('lib');if(RKV==='pf'||RKV==='hs'){if(PFO||PFRET)return pfBack();return showScreen('title')}return rkView(RKV==='shop'?'gacha':RKV==='rb'?'boss':'menu');case 'pf':return rkView('pf');case 'hs':return rkView('hs');case 'pfFoto':return PFO?pfAdmFoto():pfFotoM();case 'pfTit':return PFO?0:pfTitM();case 'pfPick':return PFO?0:pfPick();case 'pfRadar':return pfRadarInfo();case 'pfVit':if(PFO){const e=(PFO.vit||[])[+b.dataset.i];if(e)rkToast(rkItNm(e)+': '+rkItEf(e),rkItC(e));return}return pfVitPick(+b.dataset.i);case 'hsInfo':return hsInfo(b.dataset.k);case 'home':return showScreen('title');case 'menuBack':return showScreen('title');
-    case 'boss':return rkView('boss');case 'gacha':return rkView('gacha');case 'shop':return rkView('shop');case 'lib':return rkView('lib');case 'lock':return rkLocked();
+  switch(a){case 'back':if(RKV==='lvl')return rkView('lib');if(RKV==='yrb')return rkView('yb');if(RKV==='yb')return rkView('menu');if(RKV==='pf'||RKV==='hs'){if(PFO||PFRET)return pfBack();return showScreen('title')}return rkView(RKV==='shop'?'gacha':RKV==='rb'?'boss':'menu');case 'pf':return rkView('pf');case 'hs':return rkView('hs');case 'pfFoto':return PFO?pfAdmFoto():pfFotoM();case 'pfTit':return PFO?0:pfTitM();case 'pfPick':return PFO?0:pfPick();case 'pfRadar':return pfRadarInfo();case 'pfVit':if(PFO){const e=(PFO.vit||[])[+b.dataset.i];if(e)rkToast(rkItNm(e)+': '+rkItEf(e),rkItC(e));return}return pfVitPick(+b.dataset.i);case 'hsInfo':return hsInfo(b.dataset.k);case 'home':return showScreen('title');case 'menuBack':return showScreen('title');
+    case 'boss':return rkView(RKBID==='yuta'&&ysOn()?'yb':(RKBID='broly','boss'));case 'gacha':return rkView('gacha');case 'shop':return rkView('shop');case 'lib':return rkView('lib');case 'lock':return rkLocked();
     case 'ranking':return rkRanking();case 'rewards':return rkRewards();case 'ach':return rkAch();case 'pos':return rkPos();
-    case 'start':if(!RKSRV)rkSrvLoad();return rkView('rb');case 'equip':return rkEquip();case 'music':return rkMusic();case 'code':return rkCode();case 'torre':return rkTorre();case 'conta':return acOpen();case 'fight':return rkBossStart();case 'lvp':return rkRbSel(-1);case 'lvn':return rkRbSel(1);case 'lvc':return rkRbSel(0,+b.dataset.i);case 'sel':return rkView('lib');case 'hist':return rkHist();case 'taxas':return rkTaxas();case 'pool':return rkTaxas();
+    case 'start':if(!RKSRV)rkSrvLoad();return rkView(RKBID==='yuta'?'yrb':'rb');case 'bsel':if(b.dataset.b==='yuta'&&!ysOn())return rkToast('⏳ O evento do Yuta acabou','#cfd6ea');RKBID=b.dataset.b;RKYD=null;RKSRV=null;try{localStorage.setItem('rk_bsel',RKBID)}catch(e){}return rkView(RKBID==='yuta'?'yb':'boss');case 'ytab':YS.tab=b.dataset.t;return rkView('yrb');case 'ydif':YS.d=+b.dataset.i;return rkView('yrb');case 'yfight':return ysFight();case 'equip':return rkEquip();case 'music':return rkMusic();case 'code':return rkCode();case 'torre':return rkTorre();case 'conta':return acOpen();case 'fight':RKYD=null;return rkBossStart();case 'lvp':return rkRbSel(-1);case 'lvn':return rkRbSel(1);case 'lvc':return rkRbSel(0,+b.dataset.i);case 'sel':return rkView('lib');case 'hist':return rkHist();case 'taxas':return rkTaxas();case 'pool':return rkTaxas();
     case 'sum1':return rkSummon(1);case 'sum10':return rkSummon(10);case 'chat':return rkChatSend();
     case 'buy':return rkBuy(+b.dataset.i);case 'tab':return rkLibTab(b.dataset.t);case 'up':return rkLibPage(-1);case 'down':return rkLibPage(1);case 'filt':return rkLibFilt();case 'libUse':return rkLibUse();
     case 'boxinfo':return rkToast(b.dataset.t,'#bfe8ff');
@@ -76,7 +80,7 @@ function rkMenuH(){const rp=rkG('rp',0),ri=rkRank(rp);
 function rkBossH(){const rp=rkG('rp',0),ri=rkRank(rp),sel=rkG('sel','goku'),eqI=TWIMG.esp[3];
   return `<button class="hs" data-a="back" style="${rkB(25,25,135,100)}"></button>
   <button class="hs on" data-a="boxinfo" data-t="Broly nível ${ri+1}: ${rkPhB(ri)[0]} barras · depois se transforma com ${rkPhB(ri)[1]} barras!" style="${rkB(10,200,445,300)}"></button>
-  ${[[325,415],[440,530],[555,650]].map(([a,b])=>`<button class="hs" data-a="lock" style="${rkB(10,a,415,b)}"></button>`).join('')}
+  ${ysSlotOld()}${[[440,530],[555,650]].map(([a,b])=>`<button class="hs" data-a="lock" style="${rkB(10,a,415,b)}"></button>`).join('')}
   <div class="rkBox" style="${rkB(478,678,588,785)}" data-a="boxinfo" data-t="💎 Geminhas: 5 a 15 por vitória"><img src="${RQA.coin[0]}" alt=""><b>5-15</b></div>
   <div class="rkBox" style="${rkB(603,678,713,785)}" data-a="boxinfo" data-t="🔴 Moeda Vermelha: 5 a 10 por vitória (mais jogando bem) · derrota: até 2"><img src="${RQA.coin[1]}" alt=""><b>5-10</b></div>
   <div class="rkBox" style="${rkB(730,678,840,785)}" data-a="boxinfo" data-t="🎟️ Ticket de giro: difícil (melhor no baú lendário)"><img src="${RQA.coin[2]}" alt=""><b>RARO</b></div>
@@ -90,7 +94,7 @@ function rkBossH(){const rp=rkG('rp',0),ri=rkRank(rp),sel=rkG('sel','goku'),eqI=
   <button class="rkSel" data-a="sel" style="${rkB(985,722,1175,830)}"><img src="${IMG[sel]?IMG[sel].src:''}" alt=""><span><small>LUTAR COM</small><b>${CH[sel]?CH[sel].name:''}</b><em>trocar ›</em></span></button>
   <button class="hs" data-a="start" style="${rkB(1185,735,1635,825)}"><span class="shine"></span></button>
   ${rkCurHTML().replace('rkCur','rkCur bt')}`}
-function rkBossOn(){rkSrvLoad();const I=$('rkChI');if(I)I.onkeydown=e=>{if(e.key==='Enter')rkChatSend()};rkChatLoad();rkOnline();let n=0;rkView.iv=setInterval(()=>{if(RKV!=='boss'||showScreen.cur!=='ranked'){clearInterval(rkView.iv);return}n++;rkChatLoad();if(n%4===0)rkOnline()},30000)}
+function rkBossOn(){rkSrvLoad();const I=$('rkChI');if(I)I.onkeydown=e=>{if(e.key==='Enter')rkChatSend()};rkChatLoad();rkOnline();let n=0;rkView.iv=setInterval(()=>{if((RKV!=='boss'&&RKV!=='yb')||showScreen.cur!=='ranked'){clearInterval(rkView.iv);return}n++;rkChatLoad();if(n%4===0)rkOnline()},30000)}
 let RKSEL=null;
 function rkRbH(){const xp=rkG('rp',0),ri=rkRank(xp),lv=RKSEL==null?ri:RKSEL,B=RKBOSS[0],L=RKLVS[lv],nx=Math.min(7,ri+1),prog=ri>=7?100:Math.round(100*(xp-RKXP[ri])/(RKXP[ri+1]-RKXP[ri]));
   const cells=[[100,500,270,685],[300,505,453,685],[490,505,642,685],[682,505,835,685],[872,505,1025,685],[1065,505,1218,685],[1256,505,1408,685],[1447,505,1600,685]];
@@ -167,35 +171,35 @@ function rkChatSend(){const I=$('rkChI');if(!I)return;const t=I.value.replace(/[
 const RKB={fs:null,diff0:1};
 /* v242: MODO FARM — lutar num nível ABAIXO do seu rank: sem XP de rank (nem perde), gemas e moeda vermelha normais, o resto dos drops menor */
 let RKFL=null;const rkBL=()=>RKFL!=null?RKFL:rkLvl();
-function rkBossStart(){rkInit();const sel=rkG('sel','goku');if(!SPR_OK)return;fsTry();RKFL=RKSEL!=null&&RKSEL<rkLvl()?RKSEL:null;G.pick=sel;G.opp='broly';G.gmode='boss';RKB.diff0=G.diff;{const lv=rkBL();G.diff=lv<2?1:lv<4?2:3}
+function rkBossStart(){rkInit();const sel=rkG('sel','goku');if(!SPR_OK)return;fsTry();RKFL=RKYD!=null?YSDIF[RKYD].lv:RKBID==='broly'&&RKSEL!=null&&RKSEL<rkLvl()?RKSEL:null;G.pick=sel;G.opp=RKBID;G.gmode='boss';RKB.diff0=G.diff;{const lv=rkBL();G.diff=lv<2?1:lv<4?2:3}
   const sk=Object.keys(STG).filter(k=>!STG[k].hid);G.nextStg=sk[(Math.random()*sk.length)|0];try{nv('vMChallenge',.05,1)}catch(e){}
   const PM=prepMatch([G.pick,G.opp],G.nextStg);showVS(()=>PM.then(()=>{vsLoadEnd();startMatch()}),PM)}
-function rkApply(){if(G.gmode!=='boss'||!G.p)return;const [p,o]=G.p;p.tdm=(p.tdm||1)*(1+twEqB('dano')/100);p.tsp=(p.tsp||1)*(1+twEqB('vel')/100);p.tdf=(p.tdf||1)/(1+twEqB('vida')/100);{const q=twEqOn();p.tcr=0;for(const k in q)p.tcr+=q[k].crit||0}{const t=twEqB('trf');if(t)p.tsb=1+t/100}{const pon=twPocOn();if(pon){const E=twPoE(pon.r);p.tdm+=E[1]/100;p.tcr=(p.tcr||0)+E[2];p.tsb=(p.tsb||1)+E[0]/100;twLS.s('tw_pocOn',null);setTimeout(()=>{try{txt(p.x,p.y-300,'🧪 POÇÃO: +'+E[1]+'% DANO +'+E[2]+'% CRÍT.','#7dff9a')}catch(e){}},1500)}}const lv=rkBL(),L=RKLVS[lv],B=RKBOSS[0];o.rkL=lv;o.rkB={dm:B.b1.dm*L.d/100,df:B.b1.df*100/L.v,sp:B.b1.sp*L.s/100};o.rkPhB=rkPhB(lv);o.mhp=o.rkPhB[0]*LAYER;o.hp=o.hpLag=o.mhp;o.tdm=o.rkB.dm;o.tdf=o.rkB.df;o.tsp=o.rkB.sp;o.sb=0;o.rkPh=1;o.rkP={};o.rkSh=0;o.rkHp=o.hp;
+function rkApply(){if(G.gmode!=='boss'||!G.p)return;const [p,o]=G.p;p.tdm=(p.tdm||1)*(1+twEqB('dano')/100);p.tsp=(p.tsp||1)*(1+twEqB('vel')/100);p.tdf=(p.tdf||1)/(1+twEqB('vida')/100);{const q=twEqOn();p.tcr=0;for(const k in q)p.tcr+=q[k].crit||0}{const t=twEqB('trf');if(t)p.tsb=1+t/100}{const pon=twPocOn();if(pon){const E=twPoE(pon.r);p.tdm+=E[1]/100;p.tcr=(p.tcr||0)+E[2];p.tsb=(p.tsb||1)+E[0]/100;twLS.s('tw_pocOn',null);setTimeout(()=>{try{txt(p.x,p.y-300,'🧪 POÇÃO: +'+E[1]+'% DANO +'+E[2]+'% CRÍT.','#7dff9a')}catch(e){}},1500)}}const lv=rkBL(),L=RKLVS[lv],B=rkBoss();o.rkL=lv;o.rkB={dm:B.b1.dm*L.d/100,df:B.b1.df*100/L.v,sp:B.b1.sp*L.s/100};o.rkPhB=rkPhB(lv);ysApply(o);o.mhp=o.rkPhB[0]*LAYER;o.hp=o.hpLag=o.mhp;o.tdm=o.rkB.dm;o.tdf=o.rkB.df;o.tsp=o.rkB.sp;o.sb=0;o.rkPh=1;o.rkP={};o.rkSh=0;o.rkHp=o.hp;
   RKB.fs={t:0,t1:0,cmb:0,hp0:p.hp/(p.mhp||MAXHP)}}
-function rkBossGo(){if(G.gmode!=='boss'||!G.p)return;if(G.tlim!==0)G.timer=300;const o=G.p[1],P=o.rkPhB||[7,14];banner('MODO BOSS','#ff3030',100,'BROLY NÍVEL '+((o.rkL||0)+1)+' · '+P[0]+' BARRAS')}
+function rkBossGo(){if(G.gmode!=='boss'||!G.p)return;if(G.tlim!==0)G.timer=300;const o=G.p[1],P=o.rkPhB||[7,14];banner(RKYD!=null?'EVENTO · FARM':'MODO BOSS',RKBID==='yuta'?'#c58bff':'#ff3030',100,RKYD!=null?'YUTA '+YSDIF[RKYD].n+' · '+P[0]+' BARRAS':rkBoss().n+' NÍVEL '+((o.rkL||0)+1)+' · '+P[0]+' BARRAS')}
 function rkTick(){const F=RKB.fs;if(!F||!G.p)return;const o=G.p[1];if(!(G.paused||G.trans||G.ws||G.cine||G.comic))F.t++;const c=G.p[0].combo||0;if(c>F.cmb)F.cmb=c;
   if(o.rkPh===1)o.sb=0;else if(o.rkPh===2&&o.form)o.formT=FORM_T;rkPassTick(o)}
 /* passivas do Boss por nível (acumulativas, cada uma 1 vez por luta) */
 function rkTot(o){const P=o.rkPhB||rkPhB(o.rkL||0),m1=P[0]*LAYER,m2=P[1]*LAYER;return o.rkPh===1?(Math.max(0,o.hp)+m2)/(m1+m2):Math.max(0,o.hp)/(m1+m2)}
-function rkPassTick(o){if(!o.rkB||o.ko)return;const lv=o.rkL||0,P=o.rkP,t=rkTot(o),fr=G.frame;
+function rkPassTick(o){if(!o.rkB||o.ko)return;const lv=o.rkL||0,P=o.rkP,t=rkTot(o),fr=G.frame,PS=o.rkPS||rkPSlv(lv);ysTick(o,PS,t);
   /* barreira: devolve a vida do dano que ela absorveu */
   if(o.rkSh>0&&o.hp<o.rkHp&&o.rkPh===(o.rkShPh||o.rkPh)){const lost=o.rkHp-o.hp,ab=Math.min(lost,o.rkSh);o.hp+=ab;o.hpLag=Math.max(o.hpLag,o.hp);o.rkSh-=ab;if(G.frame%6===0)ring(o.x,o.y-150,'#7fd8ff',150,10,3);if(o.rkSh<=0){txt(o.x,o.y-300,'BARREIRA QUEBRADA!','#9fe0ff');ring(o.x,o.y-150,'#ffffff',220,18,6)}}
   if(o.rkSh>0&&fr%8===0)ring(o.x,o.y-150,'#7fd8ff',170,16,3);
-  if(lv>=3&&!P.reg&&t<=.4){P.reg=1;const add=.03*o.mhp;o.hp=Math.min(o.mhp,o.hp+add);o.hpLag=Math.max(o.hpLag,o.hp);txt(o.x,o.y-300,'REGENEROU!','#7dff9a');ring(o.x,o.y-150,'#7dff9a',200,20,6)}
-  if(lv>=4&&!P.rage&&t<=.5){P.rage=1;P.dmgU=fr+8*60;P.dmgK=.15;txt(o.x,o.y-300,'+15% DANO!','#ff8a3a');banner('BROLY ENFURECEU','#ff5a2a',70,'+15% DE DANO POR 8 s')}
-  if(lv>=5&&!P.bar&&t<=.7){P.bar=1;o.rkSh=.1*o.mhp;o.rkShPh=o.rkPh;txt(o.x,o.y-300,'BARREIRA!','#7fd8ff');ring(o.x,o.y-150,'#7fd8ff',240,24,7)}
-  if(lv>=6&&!P.fury&&t<=.3){P.fury=1;P.spU=fr+10*60;P.spK=.15;banner('MODO FURIOSO','#ff2a2a',80,'+15% DE VELOCIDADE POR 10 s')}
-  if(lv>=7&&!P.sup&&t<=.25){P.sup=1;o.rkSh=.15*o.mhp;o.rkShPh=o.rkPh;P.dmgU=fr+12*60;P.dmgK=.2;G.flash=10;G.flashCol='#fff2c0';banner('FASE SUPREMA','#ffd84a',110,'BARREIRA 15% · +20% DE DANO POR 12 s');for(const r of [320,200])ring(o.x,o.y-150,'#ffd84a',r,26,8)}
+  if(PS.reg&&!P.reg&&t<=.4){P.reg=1;const add=.03*o.mhp;o.hp=Math.min(o.mhp,o.hp+add);o.hpLag=Math.max(o.hpLag,o.hp);txt(o.x,o.y-300,'REGENEROU!','#7dff9a');ring(o.x,o.y-150,'#7dff9a',200,20,6)}
+  if(PS.rage&&!P.rage&&t<=.5){P.rage=1;P.dmgU=fr+8*60;P.dmgK=.15;txt(o.x,o.y-300,'+15% DANO!','#ff8a3a');banner(rkBoss().n+' ENFURECEU','#ff5a2a',70,'+15% DE DANO POR 8 s')}
+  if(PS.bar&&!P.bar&&t<=.7){P.bar=1;o.rkSh=.1*o.mhp;o.rkShPh=o.rkPh;txt(o.x,o.y-300,'BARREIRA!','#7fd8ff');ring(o.x,o.y-150,'#7fd8ff',240,24,7)}
+  if(PS.fury&&!P.fury&&t<=.3){P.fury=1;P.spU=fr+10*60;P.spK=.15;banner('MODO FURIOSO','#ff2a2a',80,'+15% DE VELOCIDADE POR 10 s')}
+  if(PS.sup&&!P.sup&&t<=.25){P.sup=1;o.rkSh=.15*o.mhp;o.rkShPh=o.rkPh;P.dmgU=fr+12*60;P.dmgK=.2;G.flash=10;G.flashCol='#fff2c0';banner('FASE SUPREMA','#ffd84a',110,'BARREIRA 15% · +20% DE DANO POR 12 s');for(const r of [320,200])ring(o.x,o.y-150,'#ffd84a',r,26,8)}
   const dk=P.dmgU>fr?P.dmgK:0,sk=P.spU>fr?P.spK:0;o.tdm=o.rkB.dm*(1+dk);o.tsp=o.rkB.sp*(1+sk);if((dk||sk)&&fr%5===0)addP({x:o.x+rand(-60,60),y:o.y-rand(30,260),vx:0,vy:-rand(1,3),life:20,max:20,c:dk?'#ff4a2a':'#ffd84a',type:'glow',sz:rand(3,6),g:0});o.rkHp=o.hp}
 /* bloqueio (nível 2+) e esquiva (nível 3+) com tempo de recarga */
-function rkPassHit(a,d,h){if(!d.rkB||d.ko||!d.grounded||G.trans||h.kind==='beam')return;const lv=d.rkL||0,fr=G.frame,P=d.rkP;if(d.state==='attack'||d.state==='hit'||d.state==='airhit')return;
-  if(lv>=2&&fr>(P.dgCd||0)&&Math.random()<.15){P.dgCd=fr+90;d.inv=14;d.x=clamp(d.x-d.facing*90,40,WW-40);txt(d.x,d.y-280,'ESQUIVOU!','#bfe8ff');for(let i=0;i<10;i++)addP({x:d.x+rand(-40,40),y:d.y-rand(20,240),vx:-d.facing*rand(1,4),vy:0,life:14,max:14,c:'#bfe8ff',type:'glow',sz:rand(3,6),g:0});return false}
-  if(lv>=1&&fr>(P.blCd||0)&&Math.random()<.1){P.blCd=fr+60;d.state='blockstun';d.st=0;d.hitstun=8;d.vx=a.facing*2;txt(d.x,d.y-280,'BLOQUEOU!','#9fd8ff');ring(h.px||d.x,h.py||d.y-150,'#9fd8ff',110,12,4);try{SFX.block()}catch(e){}return true}}
+function rkPassHit(a,d,h){if(!d.rkB||d.ko||!d.grounded||G.trans||h.kind==='beam')return;const lv=d.rkL||0,fr=G.frame,P=d.rkP,PS=d.rkPS||rkPSlv(lv);if(d.state==='attack'||d.state==='hit'||d.state==='airhit')return;
+  if(PS.dge&&fr>(P.dgCd||0)&&Math.random()<.15){P.dgCd=fr+90;d.inv=14;d.x=clamp(d.x-d.facing*90,40,WW-40);txt(d.x,d.y-280,'ESQUIVOU!','#bfe8ff');for(let i=0;i<10;i++)addP({x:d.x+rand(-40,40),y:d.y-rand(20,240),vx:-d.facing*rand(1,4),vy:0,life:14,max:14,c:'#bfe8ff',type:'glow',sz:rand(3,6),g:0});return false}
+  if(PS.blk&&fr>(P.blCd||0)&&Math.random()<.1){P.blCd=fr+60;d.state='blockstun';d.st=0;d.hitstun=8;d.vx=a.facing*2;txt(d.x,d.y-280,'BLOQUEOU!','#9fd8ff');ring(h.px||d.x,h.py||d.y-150,'#9fd8ff',110,12,4);try{SFX.block()}catch(e){}return true}}
 /* desistir durante o combate conta como derrota */
 function rkQuit(){if(G.gmode!=='boss'||!G.p)return;G.diff=RKB.diff0;if(RKFL!=null){rkStAdd('loss',1);G.gmode='pve';return}const ri=rkLvl(),rp0=rkG('rp',0),rp1=Math.max(0,rp0-RKXL[ri]);rkS('rp',rp1);rkStAdd('loss',1);rkSend({rp:rp1,dmg:0,t1:0,tt:0,won:0});G.gmode='pve'}
-function rkPhase2(a,d){d.rkPh=2;if(RKB.fs)RKB.fs.t1=RKB.fs.t;d.ko=false;{const L=RKLVS[d.rkL||0],B=RKBOSS[0];d.rkB={dm:B.b2.dm*L.d/100,df:B.b2.df*100/L.v,sp:B.b2.sp*L.s/100};d.mhp=(d.rkPhB||rkPhB(d.rkL||0))[1]*LAYER;d.hp=d.hpLag=d.mhp;d.rkHp=d.hp;d.tdm=d.rkB.dm;d.tdf=d.rkB.df;d.tsp=d.rkB.sp}d.state='idle';d.st=0;d.vx=0;d.vy=0;d.y=FLOOR;d.grounded=true;d.flying=false;d.move=null;d.hitstun=0;d.inv=60;
-  a.vx=-a.facing*10;G.hitstop=Math.max(G.hitstop,20);G.shake=30;G.flash=12;G.flashCol='#d8ffc8';for(const r of [380,250,130])ring(d.x,d.y-150,r===130?'#ffffff':'#5cff4a',r,28,8);
-  banner('O BROLY DESPERTOU!','#5cff4a',120,'2ª FASE · '+(d.rkPhB||[0,14])[1]+' BARRAS');d.sb=SB_COST;try{startTransform(d)}catch(e){d.form=1;d.formT=FORM_T}buzz(200)}
+function rkPhase2(a,d){d.rkPh=2;if(RKB.fs)RKB.fs.t1=RKB.fs.t;d.ko=false;{const L=RKLVS[d.rkL||0],B=rkBoss();d.rkB={dm:B.b2.dm*(d.ysK||1)*L.d/100,df:B.b2.df*100/L.v,sp:B.b2.sp*L.s/100};d.mhp=(d.rkPhB||rkPhB(d.rkL||0))[1]*LAYER;d.hp=d.hpLag=d.mhp;d.rkHp=d.hp;d.tdm=d.rkB.dm;d.tdf=d.rkB.df;d.tsp=d.rkB.sp}d.state='idle';d.st=0;d.vx=0;d.vy=0;d.y=FLOOR;d.grounded=true;d.flying=false;d.move=null;d.hitstun=0;d.inv=60;
+  a.vx=-a.facing*10;G.hitstop=Math.max(G.hitstop,20);G.shake=30;G.flash=12;G.flashCol='#d8ffc8';for(const r of [380,250,130])ring(d.x,d.y-150,r===130?'#ffffff':rkBoss().c,r,28,8);
+  banner(RKBID==='yuta'?'O YUTA DESPERTOU!':'O BROLY DESPERTOU!',rkBoss().c,120,'2ª FASE · '+(d.rkPhB||[0,14])[1]+' BARRAS');d.sb=SB_COST;try{startTransform(d)}catch(e){d.form=1;d.formT=FORM_T}buzz(200)}
 /* EVENTOS de XP (hora de Brasília, UTC-3): [início, fim, multiplicador, nome] */
 const RKEVX=[[Date.UTC(2026,10,8,23,0),Date.UTC(2026,10,9,1,0),3,'3x XP']];
 const rkEvX=()=>{const t=Date.now();return RKEVX.find(e=>t>=e[0]&&t<e[1])||null};
@@ -205,7 +209,7 @@ function rkAfter(w){G.mode='ranked';$('controls').hidden=true;$('pauseBtn').hidd
   const F=RKB.fs||{t:0,t1:0,cmb:0,hp0:1},o=G.p[1],p=G.p[0],won=w===0,secs=Math.round(F.t/60);
   const PB=o.rkPhB||[7,14],dmg=Math.round(o.rkPh===2?PB[0]*LAYER+(PB[1]*LAYER-Math.max(0,o.hp)):(PB[0]*LAYER-Math.max(0,o.hp))),frac=Math.min(1,dmg/((PB[0]+PB[1])*LAYER)),lost=Math.max(0,1-Math.max(0,p.hp)/(p.mhp||MAXHP));
   let red,gem=0,tic=0,eq=null,chest=null,drp,poc=null,sp=null;
-  if(won){const q=Math.min(1,Math.max(0,(300-secs)/220))*.6+(1-lost)*.4;red=Math.round(5+5*q);gem=5+((Math.random()*11)|0);chest=secs<150&&lost<.4?'lend':secs<220?'epica':'rara';const FM=RKFL!=null;if(FM)chest=chest==='lend'?'epica':'rara';
+  if(won){const q=Math.min(1,Math.max(0,(300-secs)/220))*.6+(1-lost)*.4;red=Math.round(5+5*q);gem=5+((Math.random()*11)|0);chest=secs<150&&lost<.4?'lend':secs<220?'epica':'rara';const FM=RKFL!=null&&RKYD==null;if(FM)chest=chest==='lend'?'epica':'rara';
     if(Math.random()<(chest==='lend'?.4:chest==='epica'?.2:.12)*(FM?.5:1))tic=1;if(Math.random()<(chest==='lend'?.2:.08)*(FM?.5:1)){const E=TWEQ[(Math.random()*TWEQ.length)|0];eq={E,R:twEqRoll()}}drp=RKXW[rkLvl()];
     if(Math.random()<.3&&!['rara','lend','mit'].includes(chest))poc=twPoRoll();  /* v240: baú raro/lendário/mítico não dá poção */
     /* drops especiais do boss (bem difíceis) + piedade: garantido em 25 vitórias sem drop especial */
@@ -213,36 +217,36 @@ function rkAfter(w){G.mode='ranked';$('controls').hidden=true;$('pauseBtn').hidd
     if(sk){rkS('bpity',0);sp=sk}else rkS('bpity',bp)}
   else{red=frac>.5?2:frac>.2?1:0;gem=0;drp=-RKXL[rkLvl()]}
   const lvB=rkBL(),xb=[];if(won&&RKFL==null){xb.push(['Vitória',drp]);const cb=Math.min(RKXB.cmb,(F.cmb||0)*2);if(cb>0){xb.push(['👊 Combo '+F.cmb,cb]);drp+=cb}
-    const me=rkMyRec(lvB),sx=Math.max(1,secs);if(!me||sx<me){xb.push([me?'🏅 SEU RECORDE ('+twFmt(me)+' → '+twFmt(sx)+')':'🏅 1ª vitória neste nível',RKXB.me]);drp+=RKXB.me;const S=rkSt();S.rec=Object.assign({},S.rec,{[lvB]:sx});rkS('st',S)}
+    const me=rkMyRec(lvB),sx=Math.max(1,secs);if(!me||sx<me){xb.push([me?'🏅 SEU RECORDE ('+twFmt(me)+' → '+twFmt(sx)+')':'🏅 1ª vitória neste nível',RKXB.me]);drp+=RKXB.me;const S=rkSt();S[RKBID==='yuta'?'recY':'rec']=Object.assign({},S[RKBID==='yuta'?'recY':'rec'],{[lvB]:sx});rkS('st',S)}
     if(RKSRV){const sv=RKSRV[lvB];if(!sv||sx<sv.tt){xb.push(['🏆 RECORDE DO SERVIDOR!',RKXB.srv]);drp+=RKXB.srv;RKSRV[lvB]={tt:sx,nome:twLS.g('tw_nome','')||'Você'};R_SRV=1}}}
   else{const db=Math.round(RKXL[lvB]*RKXB.dmg*frac);xb.push(['Derrota',drp]);if(db>0){xb.push(['💥 Dano '+Math.round(frac*100)+'%','+'+db]);drp+=db}}
   {const ev=rkEvX();if(ev&&won){const ex=drp*(ev[2]-1);xb.push(['🔥 EVENTO '+ev[3],'+'+ex]);drp+=ex}}
-  if(RKFL!=null){xb.length=0;xb.push(['🌾 MODO FARM · nível '+(RKFL+1)+' · sem XP de rank','0']);drp=0;R_SRV=0}
+  if(RKFL!=null){xb.length=0;xb.push([RKYD!=null?'🌸 FARM DO EVENTO · '+YSDIF[RKYD].n+' · sem XP de rank':'🌾 MODO FARM · nível '+(RKFL+1)+' · sem XP de rank','0']);drp=0;R_SRV=0}
   rkAdd('red',red);rkAdd('gem',gem);rkAdd('tic',tic);if(eq)twAddItem(eq.E,eq.R);if(poc)twAddPoc(poc);if(sp){if(sp==='senzu')rkAddSenzu(1);else rkGiveSp(sp)}
   const rp0=rkG('rp',0),r0=rkRank(rp0);let rp1=Math.max(0,rp0+drp);rkS('rp',rp1);const r1=rkRank(rp1);for(let i=0;i<=r1;i++)twGiveTit('rk'+i);
   rkStAdd(won?'wins':'loss',1);pfFight({cmb:F.cmb||0,frac,won});rkStAdd('dmgTot',dmg);rkStAdd('dmgMax',dmg,1);if(F.t1){const S=rkSt();if(!S.t1||F.t1/60<S.t1){S.t1=Math.round(F.t1/60);rkS('st',S)}}if(won){const S=rkSt();if(!S.tt||secs<S.tt){S.tt=secs;rkS('st',S)}if(lost<.25)rkStAdd('clean',1)}
   if(RKFL==null)rkSend({rp:rp1,dmg,t1:F.t1?Math.round(F.t1/60):0,tt:won?secs:0,won:won?1:0});
-  const R={farm:RKFL!=null?RKFL+1:0,won,secs,dmg,frac,red,gem,tic,eq,chest,poc,sp,drp,rp0,rp1,r0,r1,t1:F.t1?Math.round(F.t1/60):0,lost,cmb:F.cmb,xb,srv:R_SRV};R_SRV=0;
-  {const fs=RKFL;rkOpen('boss');if(fs!=null)RKSEL=fs}setTimeout(()=>rkResult(R),200)}
+  const R={bn:rkBoss().n,yd:RKYD,farm:RKFL!=null?RKFL+1:0,won,secs,dmg,frac,red,gem,tic,eq,chest,poc,sp,drp,rp0,rp1,r0,r1,t1:F.t1?Math.round(F.t1/60):0,lost,cmb:F.cmb,xb,srv:R_SRV};R_SRV=0;
+  {const fs=RKFL;rkOpen(RKBID==='yuta'?'yb':'boss');if(fs!=null&&RKYD==null)RKSEL=fs}setTimeout(()=>rkResult(R),200)}
 /* recordes de tempo por nível do Boss: servidor (RKSRV) e seu (st.rec) */
 let RKSRV=null;
-async function rkSrvLoad(){try{const lv0=rkLvl(),L=(await rkQ('rkr','L'+lv0,300)).map(e=>({nome:e.nome,tt:e.tt|0,won:1,rp:e.rp|0,lv:lv0})),M={};for(const e of L){if(!e.won||!e.tt)continue;const lv=e.lv!=null?e.lv:rkRank(e.rp||0);if(!M[lv]||e.tt<M[lv].tt)M[lv]={tt:e.tt,nome:e.nome}}RKSRV=M;if(RKV==='rb'&&showScreen.cur==='ranked'&&!$('rkModal').innerHTML)rkView('rb')}catch(e){}}
+async function rkSrvLoad(){try{const lv0=rkLvl(),L=(await rkQ('rkr',rkBP()+lv0,300)).map(e=>({nome:e.nome,tt:e.tt|0,won:1,rp:e.rp|0,lv:lv0})),M={};for(const e of L){if(!e.won||!e.tt)continue;const lv=e.lv!=null?e.lv:rkRank(e.rp||0);if(!M[lv]||e.tt<M[lv].tt)M[lv]={tt:e.tt,nome:e.nome}}RKSRV=M;if(RKV==='rb'&&showScreen.cur==='ranked'&&!$('rkModal').innerHTML)rkView('rb')}catch(e){}}
 async function rkLoadRkAll(){const L=await rkQ('rk','1',1000);return L.map(e=>({nome:e.nome,tt:e.tt|0,won:e.won|0,rp:e.rp|0,lv:e.lv!=null&&e.lv!==''?(e.lv|0):null}))}
-const rkMyRec=lv=>(rkSt().rec||{})[lv]||0;
+const rkMyRec=lv=>(rkSt()[RKBID==='yuta'?'recY':'rec']||{})[lv]||0;
 function rkSend(x){const n=twLS.g('tw_nome','');if(!n)return;const IV=v=>({integerValue:String(Math.max(0,Math.round(v)))});
-  const f={nome:{stringValue:n},andar:IV(0),tempo:IV(0),uid:{stringValue:twUid()},tit:{stringValue:twTitOn()},rk:{stringValue:'1'},rp:IV(x.rp),lv:IV(x.lv!=null?x.lv:rkLvl()),dmg:IV(x.dmg),...(x.won&&x.tt>0?{rkr:{stringValue:'L'+(x.lv!=null?x.lv:rkLvl())},tw:IV(x.tt)}:{}),...(x.t1>0?{t1w:IV(x.t1)}:{}),t1:IV(x.t1),tt:IV(x.tt),won:IV(x.won),char:{stringValue:G.pick||''},v:IV(213)};
+  const f={nome:{stringValue:n},andar:IV(0),tempo:IV(0),uid:{stringValue:twUid()},tit:{stringValue:twTitOn()},rk:{stringValue:'1'},rp:IV(x.rp),lv:IV(x.lv!=null?x.lv:rkLvl()),dmg:IV(x.dmg),...(x.won&&x.tt>0?{rkr:{stringValue:rkBP()+(x.lv!=null?x.lv:rkLvl())},tw:IV(x.tt)}:{}),...(x.t1>0?{t1w:IV(x.t1)}:{}),t1:IV(x.t1),tt:IV(x.tt),won:IV(x.won),char:{stringValue:G.pick||''},v:IV(213)};
   twFetchT(TWURL+'/torre?key='+TWFB.apiKey,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({fields:f})}).catch(()=>{})}
 function rkResult(R){const it=[];it.push(`<span><img src="${RQA.coin[1]}" alt="">+${R.red}</span>`);if(R.gem)it.push(`<span><img src="${RQA.coin[0]}" alt="">+${R.gem}</span>`);if(R.tic)it.push(`<span><img src="${RQA.coin[2]}" alt="">+1 TICKET</span>`);
   if(R.poc)it.push(`<span style="--c:${R.poc.c}"><img src="${TWIMG.poc[TWRK.indexOf(R.poc.k)]}" alt="">POÇÃO ${R.poc.n}</span>`);
   if(R.sp){const S=R.sp==='senzu'?{nm:'SEMENTE DOS DEUSES',img:RQA.sp.senzu,r:'lend'}:RKSP[R.sp];it.push(`<span class="spd" style="--c:${TWEQR.find(q=>q.k===S.r).c}"><img src="${S.img}" alt="">✦ ${S.nm}</span>`)}
   if(R.eq)it.push(`<span style="--c:${R.eq.R.c}"><img src="${twIco(R.eq.E.k,R.eq.R.k)}" alt="">${R.eq.E.n} ${R.eq.R.n}</span>`);
   const up=R.r1>R.r0,down=R.r1<R.r0,ri=R.r1,ci=R.chest?TWRK.indexOf(R.chest):0;
-  rkModal(`<div class="twM rkRes ${R.won?'gold':''}"><h3>${R.won?'🏆 BROLY DERROTADO!':'💀 O BROLY VENCEU'}${R.farm?' <small style="color:#9fff5a">🌾 FARM</small>':''}</h3>
+  rkModal(`<div class="twM rkRes ${R.won?'gold':''}"><h3>${R.won?'🏆 '+(R.bn||'BROLY')+' DERROTADO!':'💀 '+(R.bn==='YUTA'?'O YUTA':'O BROLY')+' VENCEU'}${R.yd!=null?' <small style="color:#e2b6ff">🌸 EVENTO</small>':R.farm?' <small style="color:#9fff5a">🌾 FARM</small>':''}</h3>
     <p class="twH">⏱ ${twFmt(R.secs)}${R.t1?' · 1ª fase em '+twFmt(R.t1):''} · 💥 ${rkFmtN(R.dmg)} de dano (${Math.round(R.frac*100)}%) · 👊 combo ${R.cmb}</p>
     ${R.won?`<div class="rkChest" id="rkChest" style="--c:${TWEQR[ci].c}"><img class="cf" src="${TWIMG.bf[ci]}" alt=""><img class="ca" src="${TWIMG.ba[ci]}" alt=""><b>TOQUE PARA ABRIR O BAÚ!</b></div><div class="rkItems" id="rkItems" hidden>${it.join('')}</div>`:`<div class="rkItems">${it.join('')}</div>`}
     <div class="rkRp">${rkEmb(ri,'md'+(up?' up':down?' down':''))}<div><b style="color:${RKR[ri].c}">${RKR[ri].n}${up?' ⬆ SUBIU DE RANK!':down?' ⬇ CAIU DE RANK':''}</b><span>${R.rp1-R.rp0>=0?'+':''}${R.rp1-R.rp0} XP · ${rkFmtN(R.rp1)}${ri<7?' / '+rkFmtN(RKXP[ri+1]):''} XP · Boss nível ${ri+1}</span><i class="bar"><s style="width:${rkProg(R.rp1)}%;background:${RKR[ri].c}"></s></i></div></div>${R.xb&&R.xb.length?`<div class="rkXb">${R.xb.map(([t,v])=>`<span class="${/SERVIDOR/.test(t)?'srv':/RECORDE|1ª/.test(t)?'me':''}">${t} <b>${typeof v==='string'?v:(v>=0?'+':'')+v}</b></span>`).join('')}</div>`:''}
     <div class="row"><button class="btn main" id="rkAgain">LUTAR DE NOVO</button><button class="btn" id="rkOk">OK</button></div></div>`);
-  $('rkOk').onclick=()=>{rkModal(null);rkView('boss')};$('rkAgain').onclick=()=>{rkModal(null);rkBossStart()};
+  $('rkOk').onclick=()=>{rkModal(null);rkView('boss')};$('rkAgain').onclick=()=>{rkModal(null);if(RKYD!=null)ysFight();else rkBossStart()};
   const C=$('rkChest');if(C)C.onclick=()=>{if(C.classList.contains('open'))return;C.classList.add('open');rkSfx('boom');setTimeout(()=>{rkSfx('powerUp');$('rkItems').hidden=false},350)};
   if(R.srv){rkSfx('boom');setTimeout(()=>rkSfx('powerUp'),300);rkToast('🏆 VOCÊ BATEU O RECORDE DO SERVIDOR! +'+RKXB.srv+' XP','#ffd84a')}
   if(up){rkSfx('powerUp');setTimeout(()=>rkToast('⬆ NOVO RANK: '+RKR[ri].n+'! Boss agora é nível '+(ri+1),'#ffd84a'),600)}if(down){rkSfx('clang');setTimeout(()=>rkToast('⬇ Caiu para '+RKR[ri].n,'#ff8080'),600)}}
@@ -945,4 +949,103 @@ function rkInfGift(){const PO=70,MO=900,GM=1000;rkAdd('gem',GM);rkS('po',lvPo()+
     $('rkDt').style.visibility='visible';$('rkDt2').style.visibility='visible';$('rkDok').textContent='PEGAR'};$('rkDbx').onclick=go;$('rkDok').onclick=go}
 /* v241: na arte nova da Biblioteca os botões 👤 🎵 CÓDIGO ficam exatamente em cima dos desenhados na arte */
 {const _lo=rkLibOn;rkLibOn=function(){const A=document.querySelector('#rkWrap .rkA');if(A)A.classList.toggle('lbArt',RKL.tab==='chr');return _lo.apply(this,arguments)}}
+/* ================= v243: EVENTO DO YUTA no Modo Boss (7 dias, até domingo 15/11 23:59 de Brasília) =================
+   Lobby: 1º espaço = Broly, 2º = Yuta (arte do dono, RQA.boss_yt). INICIAR → tela "yrb" com 2 abas:
+   RANQUEADO = igual ao Broly (nível do boss = rank, dá/tira XP de rank, passivas por nível, recordes separados 'Y'+nível).
+   FARM DO EVENTO = 5 dificuldades, sem XP de rank, passivas SORTEADAS a cada luta (roleta), Yuta transforma na 2ª fase,
+   drops do evento (💎 um pouco, pó, cristais, equipamento) + Yuta 0,5% (Mestre/Super) + itens do Yuta 0,3% (Difícil+). Sorte multiplica tudo. */
+const YSEV={ini:Date.UTC(2026,10,9,12,0),fim:Date.UTC(2026,10,16,2,59,59)};
+const ysNow=()=>Date.now()+((window.__ysT)||0),ysOn=()=>{const t=ysNow();return t>=YSEV.ini&&t<=YSEV.fim};
+const ysLeft=()=>{const ms=Math.max(0,YSEV.fim-ysNow()),d=Math.floor(ms/864e5),h=Math.floor(ms%864e5/36e5),m=Math.floor(ms%36e5/6e4);return d?d+'d '+h+'h':h+'h '+m+'min'};
+let RKYD=null;const YS={tab:'rank',d:1,roll:null};
+try{const b=localStorage.getItem('rk_bsel');if(b==='yuta'&&ysOn())RKBID='yuta'}catch(e){}
+const YSPN={blk:['🛡️','BLOQUEIO','10% de chance de bloquear'],dge:['💨','ESQUIVA','15% de chance de esquivar'],crit:['🎯','OLHO AMALDIÇOADO','+20% de crítico'],ki:['🔥','ENERGIA CHEIA','começa com 100 de Ki'],
+  reg:['💚','REGENERAÇÃO','cura 3% a 40% da vida'],rage:['😡','FÚRIA','+15% de dano por 8 s a 50%'],bar:['🔷','BARREIRA','escudo de 10% a 70%'],curse:['☠️','MALDIÇÃO','+25% de dano nos primeiros 10 s'],
+  fury:['⚡','MODO FURIOSO','+15% de velocidade por 10 s a 30%'],sup:['👑','FASE SUPREMA','escudo 15% + 20% de dano a 25%'],rika:['👹','RIKA PROTETORA','a Rika ataca sozinha a 60%'],vamp:['🩸','ROUBO DE VIDA','cura 25% do dano que causa']};
+const YSPOOL=[['blk','dge','crit','ki'],['reg','rage','bar','curse'],['fury','sup','rika','vamp']];
+const YSDIF=[
+  {n:'FÁCIL',c:'#7dff9a',lv:0,ph:[2,3],k:1,np:[1,0,0],gem:[2,4],po:[6,10],eq:.25,er:0},
+  {n:'NORMAL',c:'#5ab8ff',lv:2,ph:[3,5],k:1,np:[1,1,0],gem:[3,6],po:[10,16],eq:.3,er:1},
+  {n:'DIFÍCIL',c:'#c46aff',lv:4,ph:[4,8],k:1.05,np:[1,1,1],gem:[4,8],po:[15,24],eq:.35,er:1,sec:.3},
+  {n:'MESTRE',c:'#ffc531',lv:6,ph:[6,12],k:1.12,np:[0,2,2],gem:[6,10],po:[22,34],eq:.4,er:2,sec:.3,yt:.5},
+  {n:'SUPER DIFÍCIL',c:'#ff2e63',lv:7,ph:[8,15],k:1.25,np:[1,2,2],gem:[8,14],po:[30,45],eq:.5,er:2,sec:.3,yt:.5}];
+const rkPSlv=lv=>({blk:lv>=1,dge:lv>=2,reg:lv>=3,rage:lv>=4,bar:lv>=5,fury:lv>=6,sup:lv>=7});
+const ysRnd=([a,b])=>a+Math.floor(Math.random()*(b-a+1));
+function ysRoll(d){const D=YSDIF[d],out=[];D.np.forEach((n,t)=>{const P=YSPOOL[t].slice();for(let i=0;i<n&&P.length;i++)out.push(P.splice((Math.random()*P.length)|0,1)[0])});return out}
+/* aplicado no rkApply (só no boss Yuta) */
+function ysApply(o){if(RKBID!=='yuta')return;o.rkPS=null;o.ysK=1;if(RKYD==null)return;const D=YSDIF[RKYD];o.ysK=D.k;o.rkPhB=D.ph.slice();o.mhp=o.rkPhB[0]*LAYER;o.hp=o.hpLag=o.mhp;o.rkHp=o.hp;o.rkB.dm*=D.k;o.tdm=o.rkB.dm;
+  const L=YS.roll||ysRoll(RKYD);o.rkPS={};for(const k of L)o.rkPS[k]=1;YS.roll=null;
+  setTimeout(()=>{try{if(L.length)txt(o.x,o.y-330,L.map(k=>YSPN[k][0]+' '+YSPN[k][1]).join(' · '),'#e2b6ff')}catch(e){}},2200)}
+/* passivas novas do farm */
+function ysTick(o,PS,t){const P=o.rkP,fr=G.frame;if(!P)return;
+  if(PS.crit&&!P.crit){P.crit=1;o.tcr=(o.tcr||0)+20}
+  if(PS.ki&&!P.ki){P.ki=1;o.ki=100}
+  if(PS.curse&&!P.curse){P.curse=1;P.dmgU=fr+600;P.dmgK=.25;txt(o.x,o.y-300,'☠️ MALDIÇÃO: +25% DANO','#d8a8ff')}
+  if(PS.rika&&!P.rika&&t<=.6&&isYt(o)){const p=G.p[0];if(p&&!p.ko&&!G.ws&&!G.trans&&o.state!=='whtS'){P.rika=1;banner('RIKA PROTETORA','#c58bff',70,'A RIKA ATACOU SOZINHA!');ytRika(o,p)}}}
+{const _ah2=applyHit;applyHit=function(a,d,h){const h0=d?d.hp:0,r=_ah2.apply(this,arguments);try{if(r&&a&&a.rkPS&&a.rkPS.vamp&&!a.ko&&d&&h0>d.hp){a.hp=Math.min(a.mhp||MAXHP,a.hp+(h0-d.hp)*.25);a.hpLag=Math.max(a.hpLag||0,a.hp)}}catch(e){}return r}}
+/* ---------- lobby ---------- */
+function ysSlotOld(){const on=ysOn();return `<button class="ysSlot ${on?'':'off'}" data-a="bsel" data-b="yuta" style="${rkB(12,325,415,415)}"><img src="${IMG.yuta?IMG.yuta.src:''}" alt=""><b>Yuta</b><em>${on?'EVENTO · '+ysLeft():'ENCERRADO'}</em></button>`}
+function ysLobbyH(){const rp=rkG('rp',0),ri=rkRank(rp),sel=rkG('sel','goku');
+  return `<button class="hs" data-a="back" style="${rkB(20,22,140,100)}"></button>
+  <button class="hs" data-a="bsel" data-b="broly" style="${rkB(10,190,435,282)}"></button>
+  <button class="hs on" data-a="boxinfo" data-t="Yuta do evento: ranqueado no nível do seu rank (${rkPhB(ri)[0]} barras → ${rkPhB(ri)[1]} despertado) · farm com 5 dificuldades" style="${rkB(10,298,440,395)}"></button>
+  ${[[410,495],[505,590],[600,690]].map(([a,b])=>`<button class="hs" data-a="lock" style="${rkB(10,a,415,b)}"></button>`).join('')}
+  <div class="ysEvT" style="${rkB(480,410,960,452)}">🌸 EVENTO · termina em ${ysLeft()}</div>
+  <div class="rkBox" style="${rkB(478,680,588,786)}" data-a="boxinfo" data-t="💎 Ranqueado: 5 a 15 · Farm do evento: 2 a 14 (pela dificuldade)"><img src="${RQA.coin[0]}" alt=""><b>2-15</b></div>
+  <div class="rkBox" style="${rkB(605,680,715,786)}" data-a="boxinfo" data-t="🟣 ${LVPON}, cristais e itens de elevação · muito mais no farm do evento"><img src="${RQA.lvi.po[3]}" alt=""><b>PÓ</b></div>
+  <div class="rkBox" style="${rkB(732,680,842,786)}" data-a="boxinfo" data-t="🛡️ Equipamentos normais do jogo (25% a 50% no farm, raridade melhor nas dificuldades altas)"><img src="${twIco('arm','epica')}" alt=""><b>EQUIP.</b></div>
+  <div class="rkBox ysY" style="${rkB(860,680,970,786)}" data-a="boxinfo" data-t="✦ Farm MESTRE e SUPER DIFÍCIL: 0,5% de ganhar o YUTA · DIFÍCIL para cima: 0,3% de um item secreto do Yuta · a SORTE aumenta as chances"><img src="${RQA.ysp.yesp}" alt=""><b>✦ 0,5%</b></div>
+  <div class="rkBan" style="${rkB(1628,50,1772,196)}">${rkEmb(ri,'ban')}</div><div class="rkBanN" style="${rkB(1590,232,1810,268)};color:${RKR[ri].c}">${RKR[ri].n}</div>
+  <div class="rkOn ys" style="${rkB(1600,538,1728,570)}"><i></i><span id="rkOnN">...</span></div>
+  <div class="rkChL" id="rkChL" style="${rkB(1112,578,1728,654)}"><p class="twH">Carregando...</p></div>
+  <input class="rkChI" id="rkChI" maxlength="140" placeholder="" autocomplete="off" style="${rkB(1182,662,1660,700)}">
+  <button class="hs" data-a="chat" style="${rkB(1672,660,1722,702)}"></button>
+  <button class="rkEqB" data-a="equip" style="${rkB(985,632,1095,716)}"><i>🎒</i><b>EQUIPAR</b></button>
+  <button class="rkSel" data-a="sel" style="${rkB(985,722,1175,830)}"><img src="${IMG[sel]?IMG[sel].src:''}" alt=""><span><small>LUTAR COM</small><b>${CH[sel]?CH[sel].name:''}</b><em>trocar ›</em></span></button>
+  <button class="hs" data-a="start" style="${rkB(1185,735,1640,825)}"><span class="shine"></span></button>
+  ${rkCurHTML().replace('rkCur','rkCur bt')}`}
+/* ---------- tela de início do evento (ranqueado / farm) ---------- */
+function ysStartH(){const xp=rkG('rp',0),ri=rkRank(xp),B=rkBoss(),L=RKLVS[ri],sel=rkG('sel','goku'),prog=ri>=7?100:Math.round(100*(xp-RKXP[ri])/(RKXP[ri+1]-RKXP[ri])),lk=lvLuck();
+  const head=`<div class="ysDim"></div><button class="hs" data-a="back" style="${rkB(18,18,140,96)}"></button>
+  <div class="ysTitle" style="${rkB(170,18,800,96)}"><b>EVENTO · YUTA</b><small>🌸 termina em ${ysLeft()} · domingo 23:59</small></div>
+  <div class="ysTabs" style="${rkB(1010,22,1820,96)}"><button data-a="ytab" data-t="rank" class="${YS.tab==='rank'?'on':''}">👑 RANQUEADO<small>dá XP de rank</small></button><button data-a="ytab" data-t="farm" class="${YS.tab==='farm'?'on':''}">🌸 FARM DO EVENTO<small>sem XP · drops do evento</small></button></div>
+  <div class="ysPed" style="${rkB(40,110,560,790)}"><i class="g"></i><i class="r"></i><img src="${fullSrc('yuta')}" alt=""><b>YUTA</b><small>${B.sub}</small></div>`;
+  const foot=`<button class="rkEqB wide ysEq" data-a="equip" style="${rkB(600,742,900,818)}"><i>🎒</i><b>EQUIPAMENTOS</b></button>
+  <button class="rkSel ysSel" data-a="sel" style="${rkB(915,738,1190,822)}"><img src="${IMG[sel]?IMG[sel].src:''}" alt=""><span><small>LUTAR COM</small><b>${CH[sel]?CH[sel].name:''}</b><em>trocar ›</em></span></button>
+  <button class="ysGo" data-a="${YS.tab==='rank'?'fight':'yfight'}" style="${rkB(1220,730,1800,826)}"><span class="shine"></span>⚔️ ${YS.tab==='rank'?'INICIAR RANQUEADA':'INICIAR FARM'}</button>`;
+  if(YS.tab==='rank'){const pas=[];for(const k in rkPSlv(ri))if(rkPSlv(ri)[k])pas.push(k);
+    return head+`<div class="ysPanel" style="${rkB(600,112,1800,720)}">
+      <div class="ysRk">${rkEmb(ri,'md')}<div><b style="color:${RKR[ri].c}">${RKR[ri].n}</b><span>${rkFmtN(xp)} / ${ri>=7?'∞':rkFmtN(RKXP[ri+1])} XP</span><i class="bar"><s style="width:${prog}%;background:${RKR[ri].c}"></s></i></div>
+        <div class="ysXp"><span class="w">VITÓRIA<b>+${RKXW[ri]*(rkEvX()?rkEvX()[2]:1)}</b></span><span class="l">DERROTA<b>-${RKXL[ri]}</b></span></div></div>
+      <div class="ysLv">${[0,1,2,3,4,5,6,7].map(i=>`<span class="${i===ri?'on':i<ri?'ok':'lk'}">${i<ri?'✔':i>ri?'🔒':'★'}<b>${i+1}</b></span>`).join('')}</div>
+      <div class="ysInfo"><h5>YUTA NÍVEL ${ri+1} · igual ao rank</h5><span>❤️ ${rkPhB(ri)[0]} barras → DESPERTAR com ${rkPhB(ri)[1]} barras (3x velocidade, +60% dano)</span><span>💪 resistência ${L.v}% · ⚔️ dano ${L.d}% · 💨 velocidade ${L.s}% · 🧠 ${RKPAS[ri][1]}</span>
+        <span>🛡️ Passivas: ${pas.length?pas.map(k=>YSPN[k][0]+' '+YSPN[k][1]).join(' · '):'nenhuma'} · passiva do Yuta: contra-ataque a cada 4 golpes</span>
+        <span class="rec">🏆 Recorde do servidor: ${RKSRV?(RKSRV[ri]?twFmt(RKSRV[ri].tt)+' ('+twEsc(RKSRV[ri].nome)+')':'ninguém ainda!'):'carregando...'} · 🏅 Seu: ${rkMyRec(ri)?twFmt(rkMyRec(ri)):'—'}</span>
+        <span>🎁 Vitória: 💎 5–15 · 🔴 5–10 · baú · pó · ✦ drops do Boss · bônus de recorde e de combo</span></div></div>`+foot}
+  const D=YSDIF[YS.d];
+  return head+`<div class="ysPanel" style="${rkB(600,112,1800,720)}">
+    <div class="ysDifs">${YSDIF.map((x,i)=>`<button data-a="ydif" data-i="${i}" class="${i===YS.d?'on':''}" style="--c:${x.c}"><b>${x.n}</b><small>${x.ph[0]}→${x.ph[1]} barras</small><small>${x.np.reduce((a,b)=>a+b,0)} passiva${x.np.reduce((a,b)=>a+b,0)>1?'s':''}</small>${x.yt?'<em class="y">✦ YUTA 0,5%</em>':''}${x.sec?'<em>✦ ITENS 0,3%</em>':''}</button>`).join('')}</div>
+    <div class="ysInfo"><h5 style="color:${D.c}">FARM ${D.n} · sem XP de rank</h5><span>❤️ ${D.ph[0]} barras → DESPERTAR com ${D.ph[1]} barras · força do nível ${D.lv+1}${D.k>1?' +'+Math.round((D.k-1)*100)+'% de dano':''}</span>
+      <span>🎰 Passivas sorteadas na roleta a cada luta: ${D.np[0]} fácil · ${D.np[1]} média · ${D.np[2]} difícil</span>
+      <span class="ysPool">${YSPOOL.map((P,t)=>D.np[t]?P.map(k=>`<i title="${YSPN[k][2]}">${YSPN[k][0]} ${YSPN[k][1]}</i>`).join(''):'').join('')}</span>
+      <span>🎁 Vitória: 💎 ${D.gem[0]}–${D.gem[1]} · 🟣 ${D.po[0]}–${D.po[1]} pó · 🛡️ equipamento ${Math.round(D.eq*100)}% · cristal 35% · 🔴 moeda vermelha${D.sec?` · <b style="color:#e2b6ff">✦ item do Yuta 0,3%</b>`:''}${D.yt?` · <b style="color:#ffd84a">✦ YUTA 0,5%</b>`:''}</span>
+      <span>🍀 Sua sorte: ${Math.round(lvSorte())} → drops do evento ×${lk.toFixed(2)}</span></div></div>`+foot}
+/* ---------- roleta de passivas e luta do farm ---------- */
+function ysFight(){if(!ysOn()){rkToast('⏳ O evento do Yuta acabou','#cfd6ea');return}RKYD=YS.d;const L=ysRoll(RKYD);YS.roll=L.slice();const all=Object.keys(YSPN);
+  if(!L.length){rkBossStart();return}
+  rkModal(`<div class="twM ysRol"><h3>🎰 ROLETA DE PASSIVAS · ${YSDIF[RKYD].n}</h3><div class="ysRs">${L.map((k,i)=>`<div class="s" id="ysR${i}"><i>❔</i><b>...</b></div>`).join('')}</div><p class="twH">O Yuta vai lutar com estas passivas nesta partida.</p></div>`);
+  let t=0;const iv=setInterval(()=>{t++;L.forEach((k,i)=>{const el=$('ysR'+i);if(!el)return;const stop=t>10+i*5;const kk=stop?k:all[(Math.random()*all.length)|0];el.innerHTML=`<i>${YSPN[kk][0]}</i><b>${YSPN[kk][1]}</b>${stop?`<small>${YSPN[kk][2]}</small>`:''}`;el.classList.toggle('ok',stop)});
+    if(t%2===0)rkSfx('whoosh');if(t>10+(L.length-1)*5+1){clearInterval(iv);rkSfx('powerUp');setTimeout(()=>{rkModal(null);rkBossStart()},1300)}},90)}
+/* ---------- drops do evento (farm) e o Yuta / itens secretos ---------- */
+{const _rr2=rkResult;rkResult=function(R){if(R.yd==null||R.bn!=='YUTA')return _rr2.apply(this,arguments);const D=YSDIF[R.yd],L=lvLuck(),it=[],after=[];
+  if(R.won){const g=Math.round(ysRnd(D.gem)*L);rkAdd('gem',g);it.push(`<span style="--c:#5ab8ff"><img src="${RQA.coin[0]}" alt="">🌸 +${g}</span>`);
+    const po=Math.round(ysRnd(D.po)*L);rkS('po',lvPo()+po);it.push(`<span style="--c:#b57bff"><img src="${poIco(po)}" alt="">🌸 +${po} PÓ</span>`);
+    if(Math.random()<.35*L){const c=Math.min(4,lvCrRoll()+(D.er>1?1:0));lvGive({cr:[c,1]});it.push(`<span style="--c:${RKRC[c]}"><img src="${RQA.lvi.cr[c]}" alt="">CRISTAL ${RKRNM[c]}</span>`)}
+    if(Math.random()<D.eq*L){const E=TWEQ[(Math.random()*TWEQ.length)|0];let Rr=twEqRoll();for(let i=0;i<D.er;i++){const R2=twEqRoll();if(TWEQR.indexOf(R2)>TWEQR.indexOf(Rr))Rr=R2}twAddItem(E,Rr);it.push(`<span style="--c:${Rr.c}"><img src="${twIco(E.k,Rr.k)}" alt="">${E.n} ${Rr.n}</span>`)}
+    if(D.sec){const left=ytSecLeft();if(left.length&&Math.random()*100<D.sec*L){const k=left[(Math.random()*left.length)|0];rkGiveSp(k);it.push(`<span class="spd" style="--c:#e2b6ff"><img src="${RKSP[k].img}" alt="">✦ ${RKSP[k].nm}</span>`);after.push(()=>rkSecWin(k))}}
+    if(D.yt&&!ytOwned()&&Math.random()*100<D.yt*L){const own=rkG('own',[]);own.push('yuta');rkS('own',own);it.push(`<span class="spd" style="--c:#ffd84a"><img src="${IMG.yuta.src}" alt="">✦ YUTA!</span>`);after.push(()=>rkMegaY().then(()=>rkCharWin('yuta',1,1)).then(()=>ytTitClaim(1)))}}
+  else{const po=Math.round(ysRnd([2,5])*L);rkS('po',lvPo()+po);it.push(`<span style="--c:#b57bff"><img src="${poIco(po)}" alt="">🌸 +${po} PÓ</span>`)}
+  try{acSave()}catch(e){}
+  const r=_rr2.apply(this,arguments);try{const C=document.querySelector(RKMS()+'.rkItems');if(C)C.insertAdjacentHTML('beforeend',it.join(''))}catch(e){}
+  if(after.length)setTimeout(async()=>{for(const f of after)await f()},R.won?2200:300);return r}}
 window.__rk={lvSorte,lvLuck,lvBonus,lvOf,rkExtra,twEqB:s=>twEqB(s)};
