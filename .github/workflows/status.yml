@@ -1,0 +1,12 @@
+name: Status do servidor (ferramenta)
+on: workflow_dispatch
+jobs:
+  q:
+    runs-on: ubuntu-latest
+    steps:
+      - name: status
+        run: |
+          U='https://firestore.googleapis.com/v1/projects/furia-do-templo/databases/(default)/documents'
+          K='key=AIzaSyDXTjvRMcKtJ5vq2vl-F2B_w2M-7hd_QY0'
+          echo '== leitura'; curl -sS -w '\nHTTP %{http_code}\n' -X POST "$U:runQuery?$K" -H 'Content-Type: application/json' -d '{"structuredQuery":{"from":[{"collectionId":"torre"}],"limit":1}}' | tail -c 600
+          echo '== escrita'; curl -sS -w '\nHTTP %{http_code}\n' -X POST "$U/torre?$K" -H 'Content-Type: application/json' -d '{"fields":{"nome":{"stringValue":"status"},"andar":{"integerValue":"0"},"tempo":{"integerValue":"0"}}}' | tail -c 400
