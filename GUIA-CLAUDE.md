@@ -940,3 +940,8 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - Espadas do 1º Torneio (LÂMINA SOMBRIA do 1º = Vini_junior10, LÂMINA DOURADA do 2º = Denilson ADM): `rkUniqFix()` (ao abrir o jogo) transforma em ITEM ÚNICO: Ataque +25%, Crítico +15%, Sorte +5% (`st`, soma em `rkSorte`), mantém a velocidade, `uniq:1`. Prêmios do `TWEV.prem` também atualizados. Não podem ser vendidas.
 - Visual único (`.uniq`): borda arco-íris girando, brilho pulsando, ✦ piscando e item balançando com brilho na mochila.
 - Teste `ferramentas/testes/tunico.js`.
+
+## v231 — Torre mais difícil conforme o rank
+- `RKTD` (por rank 0–7) aplicado no inimigo em `twApply` (`rkTwDiff`): dano ×[1,1.05,1.1,1.15,1.22,1.4,1.55,1.65], barras ×[1,1,1.1,1.15,1.25,1.4,1.55,1.65], vel ×[1,1,1.02,1.04,1.06,1.1,1.14,1.16], IA +1 nível a partir do Lendário. Leve até o Diamante, bem mais difícil do Lendário para cima (para chegar no Dragão Lendário/Divindade).
+- RECOMPENSAS da Torre mostra a dificuldade do seu rank e a coluna 👹 Inimigos na tabela.
+- Teste `ferramentas/testes/ttorre_dif.js` (andar 1: Madeira 2 barras/dano ×1; Dragão 3 barras/dano ×1,55/IA 2).

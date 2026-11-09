@@ -55,7 +55,7 @@ rep('<button class="mb mb3" id="mTorre" aria-label="Modo Torre"><span class="shi
 rep("for(const [id,n] of [['mHist','História'],['mOnline','Online']])","for(const [id,n] of [['mHist','História'],['mOnline','Online'],['mPerfil','Perfil']])")
 rep("for(const k of TWC){const im=new Image();im.src=TWA[k]}}","for(const k of TWC){const im=new Image();im.src=TWA[k]}rkTwSkin()}")
 rep("  $('twGo').classList.toggle('off',TW.busy)}","  $('twGo').classList.toggle('off',TW.busy);rkTwRender()}")
-rep("TW.fs={t:0,cmb:0,ult:0,hp0:p.hp/p.mhp}}","rkTwBuff(p);TW.fs={t:0,cmb:0,ult:0,hp0:p.hp/p.mhp}}")
+rep("TW.fs={t:0,cmb:0,ult:0,hp0:p.hp/p.mhp}}","rkTwBuff(p);rkTwDiff(o);TW.fs={t:0,cmb:0,ult:0,hp0:p.hp/p.mhp}}")
 rep("if(!TW.on){TW.last=null;showScreen('select');return}","if(!TW.on){TW.last=null;rkOpen('menu');return}")
 rep("$('twOut').onclick=()=>{twModal(null);TW.last=null;menuSetupKeep();showScreen('title')};","$('twOut').onclick=()=>{twModal(null);TW.last=null;rkOpen('menu')};")
 rep("TW.last={won,quit,rec,best,ks:ks||null};","TW.last={won,quit,rec,best,ks:ks||null,xp:rkTwXP(won,quit,andar)};")

@@ -5976,7 +5976,7 @@ function twFight(){if(TW.busy)return;TW.busy=true;TW.evBoss=TW.fl===TWN-1&&twEvS
 function twApply(){if(!(TW.on&&G.gmode==='torre'))return;const [p,o]=G.p,b=TW.fl===TWN-1;
   p.mhp=TW.bars*LAYER;p.hp=p.hpLag=Math.max(1,Math.min(p.mhp,Math.round(TW.hpv)));p.tdm=1+(TW.pas.dano+twEqB('dano'))/100;p.tsp=1+(TW.pas.vel+twEqB('vel'))/100;p.tdf=1/(1+(TW.pas.vida+twEqB('vida'))/100);const pon=twPocOn(),poE=pon?twPoE(pon.r):[0,0,0],trf=(TW.pas.trf||0)+poE[0]+twEqB('trf');{const o=twEqOn();p.tcr=0;for(const k in o)p.tcr+=o[k].crit||0}p.tsb=1+trf/100;if(trf)p.sb=Math.max(p.sb||0,Math.min(SB_COST*.9,SB_COST*trf/200));if(pon){p.tdm+=poE[1]/100;p.tcr=(p.tcr||0)+poE[2];twLS.s('tw_pocOn',null);TW.pocMsg='🧪 POÇÃO: +'+poE[0]+'% TRANSF. +'+poE[1]+'% DANO +'+poE[2]+'% CRÍT.'}
   o.mhp=TWOB[TW.fl]*LAYER;o.hp=o.hpLag=o.mhp;o.tdm=b?1.55:1+.07*TW.fl;o.tsp=b?1.3:1+.045*TW.fl;o.tdf=b?.85:1;if(TW.fl>=3)o.ki=60;if(b){o.ki=100;o.sb=Math.max(o.sb||0,SB_COST)}
-  rkTwBuff(p);TW.fs={t:0,cmb:0,ult:0,hp0:p.hp/p.mhp}}
+  rkTwBuff(p);rkTwDiff(o);TW.fs={t:0,cmb:0,ult:0,hp0:p.hp/p.mhp}}
 /* tempo da torre: NÃO conta durante ultimate, transformação, cinemáticas, especiais com vídeo nem pausado (configuração) */
 function twTick(){const F=TW.fs;if(!F||!G.p)return;if(!(G.paused||G.trans||G.ws||G.cine||G.comic||G.zsp||G.sc||G.rush||G.wfs||G.xu))F.t++;const c=G.p[0].combo||0;if(c>F.cmb)F.cmb=c}
 function twHudT(){return 'TORRE '+twFmt(TW.time+(TW.fs?TW.fs.t/60:0))}
@@ -6783,6 +6783,10 @@ function acOpen(tab){const n=localStorage.getItem('ac_n'),k=localStorage.getItem
 /* ================= MODO TORRE RANQUEADA (v228): mesma rank do Boss, dá mais XP, nova tela ================= */
 const RKTWX={fl:.6,top:2,loss:.5},RKTB=i=>({dano:i*2,def:i*2,vel:i,crit:i,sorte:i*3}),rkSorte=()=>RKTB(rkLvl()).sorte+(twIsAdm()?30:0)+rkEqSt(),rkEqSt=()=>{let v=0;try{const o=twEqOn();for(const k in o)v+=o[k].st||0}catch(e){}return v};
 function rkTorre(){const s=rkG('sel','goku'),own=rkG('own',['goku']);G.pick=CH[s]&&own.includes(s)?s:'goku';G.gmode='torre';try{audioInit()}catch(e){}try{fsTry()}catch(e){}twOpen()}
+/* dificuldade da Torre pelo rank (v231): leve no começo; bem mais difícil para chegar nos 2 últimos ranks */
+const RKTD={dm:[1,1.05,1.1,1.15,1.22,1.4,1.55,1.65],hp:[1,1,1.1,1.15,1.25,1.4,1.55,1.65],sp:[1,1,1.02,1.04,1.06,1.1,1.14,1.16],ai:[0,0,0,0,0,1,1,1]};
+function rkTwDiff(o){const i=rkLvl();o.mhp=Math.max(1,Math.round(o.mhp/LAYER*RKTD.hp[i]))*LAYER;o.hp=o.hpLag=o.mhp;o.tdm*=RKTD.dm[i];o.tsp*=RKTD.sp[i];G.diff=Math.min(3,(G.diff||1)+RKTD.ai[i]);o.rkTd=i}
+const rkTdTxt=i=>i?`Inimigos: dano +${Math.round((RKTD.dm[i]-1)*100)}% · vida +${Math.round((RKTD.hp[i]-1)*100)}% · vel. +${Math.round((RKTD.sp[i]-1)*100)}%${RKTD.ai[i]?' · IA mais esperta':''}`:'Inimigos normais';
 function rkTwBuff(p){const B=RKTB(rkLvl());p.tdm+=B.dano/100;p.tsp+=B.vel/100;p.tdf=p.tdf/(1+B.def/100);p.tcr=(p.tcr||0)+B.crit}
 function rkTwXP(won,quit,andar){const lv=rkLvl(),parts=[];let d=0;
   if(andar>0){const a=Math.round(RKXW[lv]*RKTWX.fl)*andar;parts.push(['🏯 '+andar+' andar'+(andar>1?'es':''),a]);d+=a}
@@ -6833,8 +6837,8 @@ function rkTwRw(){const ri=rkLvl(),w=RKXW[ri];
     <p class="twH">A Torre usa a <b>mesma rank do Modo Boss</b> e dá <b>mais XP</b>:</p>
     <div class="rkXb"><span>🏯 Cada andar vencido <b>+${Math.round(w*RKTWX.fl)} XP</b></span><span class="srv">👑 Completar os 7 <b>+${Math.round(w*RKTWX.top)} XP</b></span><span>💀 Cair no 1º andar <b>-${Math.round(RKXL[ri]*RKTWX.loss)} XP</b></span>${rkEvX()?`<span class="srv">🔥 EVENTO ${rkEvX()[3]}</span>`:''}</div>
     <p class="twH">Também: 🪙 moedas por vitória, baús e equipamentos, troféus 🏆 e passivas entre os andares.</p>
-    <h3 style="font-size:1.2em">BÔNUS DE RANK (vale em toda luta da Torre)</h3>
-    <table class="rkTx"><tr><th>Rank</th><th>⚔️ Dano</th><th>🛡️ Defesa</th><th>⚡ Vel.</th><th>🎯 Crít.</th><th>🍀 Sorte</th></tr>${RKR.map((R,i)=>{const B=RKTB(i);return `<tr style="${i===ri?'background:#2a2008':''}"><td style="color:${R.c}">${i===ri?'▶ ':''}${R.n}</td><td>+${B.dano}%</td><td>+${B.def}%</td><td>+${B.vel}%</td><td>+${B.crit}%</td><td>+${B.sorte}%</td></tr>`}).join('')}</table>
+    <p class="twH">⚠️ <b>Dificuldade no seu rank:</b> ${rkTdTxt(ri)}. Fica um pouco mais difícil a cada rank e <b>bem mais difícil</b> do Lendário para cima (para chegar no Dragão Lendário e na Divindade).</p><h3 style="font-size:1.2em">BÔNUS DE RANK (vale em toda luta da Torre)</h3>
+    <table class="rkTx"><tr><th>Rank</th><th>⚔️ Dano</th><th>🛡️ Defesa</th><th>⚡ Vel.</th><th>🎯 Crít.</th><th>🍀 Sorte</th><th>👹 Inimigos</th></tr>${RKR.map((R,i)=>{const B=RKTB(i);return `<tr style="${i===ri?'background:#2a2008':''}"><td style="color:${R.c}">${i===ri?'▶ ':''}${R.n}</td><td>+${B.dano}%</td><td>+${B.def}%</td><td>+${B.vel}%</td><td>+${B.crit}%</td><td>+${B.sorte}%</td><td style="color:${i>=5?'#ff6a6a':'#cdd6ea'}">+${Math.round((RKTD.dm[i]-1)*100)}%</td></tr>`}).join('')}</table>
     <p class="twH">🍀 Sorte = chance de baús, passivas e equipamentos virem de raridade melhor.</p><div class="row"><button class="btn" id="rtRwX">FECHAR</button></div></div>`);$('rtRwX').onclick=()=>twModal(null)}
 
 /* ---------- v230: espadas dos campeões do 1º Torneio viram ITENS ÚNICOS (+25% dano, +15% crít, +5% sorte, brilho) ---------- */
