@@ -205,7 +205,7 @@ function rkAfter(w){G.mode='ranked';$('controls').hidden=true;$('pauseBtn').hidd
   let red,gem=0,tic=0,eq=null,chest=null,drp,poc=null,sp=null;
   if(won){const q=Math.min(1,Math.max(0,(300-secs)/220))*.6+(1-lost)*.4;red=Math.round(5+5*q);gem=5+((Math.random()*11)|0);chest=secs<150&&lost<.4?'lend':secs<220?'epica':'rara';
     if(Math.random()<(chest==='lend'?.4:chest==='epica'?.2:.12))tic=1;if(Math.random()<(chest==='lend'?.2:.08)){const E=TWEQ[(Math.random()*TWEQ.length)|0];eq={E,R:twEqRoll()}}drp=RKXW[rkLvl()];
-    if(Math.random()<.3)poc=twPoRoll();
+    if(Math.random()<.3&&!['rara','lend','mit'].includes(chest))poc=twPoRoll();  /* v240: baú raro/lendário/mítico não dá poção */
     /* drops especiais do boss (bem difíceis) + piedade: garantido em 25 vitórias sem drop especial */
     const bp=rkG('bpity',0)+1,rr=Math.random()*100;let sk=null;if(rr<1.5)sk=['kam','gun'][(Math.random()*2)|0];else if(rr<5.5)sk=['band','bots','senzu'][(Math.random()*3)|0];else if(bp>=25)sk=['band','bots','senzu','band','bots','senzu','kam','gun'][(Math.random()*8)|0];
     if(sk){rkS('bpity',0);sp=sk}else rkS('bpity',bp)}
@@ -444,8 +444,8 @@ function rkPos(){const rp=rkG('rp',0),ri=rkRank(rp),S=rkSt();
 const TWDIAN=["oqqh4h","13uxsah","x5a5kc","srbzgm","u2go56","10jasju","xq65nl","1g9ac0y","1vaplua","1cuadjd","z7e3m8","zf435s","vhy4to","1gn6q7b","1ry3d2h","io4fdx","8sa57d","1vla1n5","1rn8e9q","1nvlie","1cpy0l3","y5adqo","1twinyn","1mdayar"],TWDIAU=["13vlve8","14wfhw9","wurbwp","11ytymg","1v9nlbt","1off6cc","74xllj","1q475c8","1lgy2bh","xofqbu","1ilefnk","1idoq9v","1u5wgl5","1x8vi6l","1n9cqgu","y3wxz2","ld8n0d"];
 const RKDIA=[[100,25],[200,20],[300,16],[400,13],[500,10],[600,7],[700,4],[800,2.5],[900,1.5],[1000,1]];
 function rkDiaRoll(){let r=Math.random()*100;for(const [v,w] of RKDIA){if(r<w)return v;r-=w}return 100}
-function rkDiaBox(kind){if(kind===4)return rkAdmGift();const v=kind===3?100+((Math.random()*901)|0):kind===2?100+((Math.random()*501)|0):rkDiaRoll();rkAdd('gem',v);
-  twModal(`<div class="twM gold rkDia"><h3>${kind===3?'🍀 CAIXA DA SORTE MÁXIMA':kind===2?'🍀 CAIXA DA SORTE':'💎 CAIXA DE DIAMANTES'}</h3><p class="twH">${kind===3?'De 100 a 1000 diamantes, totalmente aleatório!':kind===2?'De 100 a 600 diamantes, totalmente aleatório!':'Presente para quem jogou o Modo Torre!'} Toque na caixa.</p><div class="dbx" id="rkDbx"><img class="cf" src="${TWIMG.bf[3]}" alt=""><img class="ca" src="${TWIMG.ba[3]}" alt=""><i class="rays"></i><b id="rkDn"><img src="${RQA.coin[0]}" alt=""><span>0</span></b></div>
+function rkDiaBox(kind){if(kind===4)return rkAdmGift();if(kind===5)return rkInfGift();const v=kind===3||kind===6?100+((Math.random()*901)|0):kind===2?100+((Math.random()*501)|0):rkDiaRoll();rkAdd('gem',v);
+  twModal(`<div class="twM gold rkDia"><h3>${kind===6?'💎 CAIXA DE GEMAS':kind===3?'🍀 CAIXA DA SORTE MÁXIMA':kind===2?'🍀 CAIXA DA SORTE':'💎 CAIXA DE DIAMANTES'}</h3><p class="twH">${kind===3||kind===6?'De 100 a 1000 diamantes, totalmente aleatório!':kind===2?'De 100 a 600 diamantes, totalmente aleatório!':'Presente para quem jogou o Modo Torre!'} Toque na caixa.</p><div class="dbx" id="rkDbx"><img class="cf" src="${TWIMG.bf[3]}" alt=""><img class="ca" src="${TWIMG.ba[3]}" alt=""><i class="rays"></i><b id="rkDn"><img src="${RQA.coin[0]}" alt=""><span>0</span></b></div>
     ${kind>=2?'':`<p class="twH">Chances: 100 (25%) · 200 (20%) · 300 (16%) · 400 (13%) · 500 (10%) · 600 (7%) · 700 (4%) · 800 (2,5%) · 900 (1,5%) · 1000 (1%)</p>`}<p class="twH ok" id="rkDt" style="visibility:hidden">Os diamantes já estão no MODO RANQUEADO (Gacha e Loja)!</p><div class="row"><button class="btn main" id="rkDok">ABRIR</button></div></div>`);
   let op=0;const go=()=>{if(op){twModal(null);return}op=1;const X=$('rkDbx');X.classList.add('open');twSfx('boom');setTimeout(()=>twSfx('powerUp'),300);const S=document.querySelector('#rkDn span');let n=0;const st=Math.max(10,v/40);const iv=setInterval(()=>{n=Math.min(v,n+st);S.textContent=Math.round(n);if(n>=v){clearInterval(iv);if(v>=500)twSfx('boom')}},30);$('rkDt').style.visibility='visible';$('rkDok').textContent='PEGAR'};
   $('rkDbx').onclick=go;$('rkDok').onclick=go}
@@ -923,4 +923,21 @@ function lvInfo(){rkModal(`<div class="twM"><h3>⬆ COMO EVOLUIR O PERSONAGEM</h
   lvArr('cr').forEach((n,i)=>add.push({id:'cr'+i,k:'it',r:RKRN[i],has:n>0,img:RQA.lvi.cr[i],big:RQA.lvi.cr[i],nm:'CRISTAL '+RKRNM[i],d:'Você tem '+n+' · escolhe habilidades da árvore (linha '+(i+1)+(i===4?' e 6':'')+')'}));
   lvArr('el').forEach((n,i)=>add.push({id:'el'+i,k:'it',r:RKRN[i],has:n>0,img:RQA.lvi.el[i],big:RQA.lvi.el[i],nm:LVELN[i],d:'Você tem '+n+' · necessário para chegar ao nível '+(i+1)*10}));
   return add.filter(x=>(!q||x.nm.toLowerCase().includes(q))&&(RKL.f===0||(RKL.f===1?x.has:!x.has))).concat(R)}}
+/* ================= v240: vídeo de invocação do Yuta, código do INFLUENCIADOR (1000 💎 + pó + moedas + título) e CAIXA DE GEMAS (100–1000 💎) ================= */
+let RKYF=null,RKYP=null;
+const rkYPre=()=>{if(!RKYF){const P=rkPre(RQA.invy);RKYF=P.ims;RKYP=P.p}};
+{const _go=rkGachaOn;rkGachaOn=function(){_go.apply(this,arguments);if(RKBAN==='mit')rkYPre()}}
+{const _pv=rkPlayVid;rkPlayVid=function(cb){if(RKBAN!=='mit')return _pv(cb);rkYPre();const O=document.createElement('div');O.className='rkFx';O.innerHTML='<span>toque para pular</span>';rkHost().appendChild(O);
+  const stop=rkPlayFrames(O,RKYF,RKYP,()=>{O.remove();cb()});O.onclick=()=>stop();try{SFX.powerUp()}catch(e){}}}
+TWTIT.inf={n:'INFLUENCIADOR',i:'📣',c:'#ff4fd8',d:'Parceiro oficial do Fúria do Templo',hid:1,inf:1};
+{const _pt2=pfTitH;pfTitH=function(t,n,adm){if(t==='inf')return `<span class="pfInf"><i class="mc">📣</i><b>INFLUENCIADOR</b><i class="sp a">✦</i><i class="sp b">✦</i><i class="sp c">✦</i><i class="sw"></i></span>`;return _pt2.apply(this,arguments)}}
+function rkInfGift(){const PO=70,MO=900,GM=1000;rkAdd('gem',GM);rkS('po',lvPo()+PO);twLS.s('tw_moedas',(twLS.g('tw_moedas',0)|0)+MO);
+  const L=twTits();if(!L.includes('inf')){L.push('inf');twLS.s('tw_tit',L)}twLS.s('tw_titOn','inf');try{twTitSync()}catch(e){}try{acSave(1)}catch(e){}
+  twModal(`<div class="twM gold rkDia rkAg rkInfG"><h3 class="agH"><i>📣</i> <span class="agT">PRESENTE DE INFLUENCIADOR</span> <i>✨</i></h3><p class="twH">Obrigado por divulgar o jogo! Toque no baú.</p>
+    <div class="dbx agB" id="rkDbx"><i class="agR"></i><i class="agR2"></i><i class="agG"></i><img class="cf" src="${TWIMG.bf[4]}" alt=""><img class="ca" src="${TWIMG.ba[4]}" alt=""><i class="rays"></i><i class="agS"><s></s><s></s><s></s><s></s><s></s><s></s></i>
+      <b id="rkDn" class="agP"><img src="${RQA.coin[0]}" alt=""><span>0</span></b></div>
+    <div class="rkItems infIt" id="rkDt" style="visibility:hidden"><span style="--c:#5ab8ff"><img src="${RQA.coin[0]}" alt="">+${GM} GEMAS</span><span style="--c:#b57bff"><img src="${RQA.lvi.po[2]}" alt="">+${PO} ${LVPON}</span><span style="--c:#ffd84a">🪙 +${MO} MOEDAS</span></div>
+    <div class="infTt" id="rkDt2" style="visibility:hidden">${pfTitH('inf')}<p class="twH">Pó + moedas = o bastante para subir um personagem do nível 1 até o 7 (Biblioteca → Personagens → EVOLUIR). O título já está em uso!</p></div><div class="row"><button class="btn main" id="rkDok">ABRIR</button></div></div>`);
+  let op=0;const go=()=>{if(op){twModal(null);return}op=1;$('rkDbx').classList.add('open');twSfx('boom');setTimeout(()=>twSfx('powerUp'),300);setTimeout(()=>twSfx('boom'),800);const S=document.querySelector('#rkDn span');let n=0;const iv=setInterval(()=>{n=Math.min(GM,n+25);S.textContent=n;if(n>=GM)clearInterval(iv)},30);
+    $('rkDt').style.visibility='visible';$('rkDt2').style.visibility='visible';$('rkDok').textContent='PEGAR'};$('rkDbx').onclick=go;$('rkDok').onclick=go}
 window.__rk={lvSorte,lvLuck,lvBonus,lvOf,rkExtra,twEqB:s=>twEqB(s)};

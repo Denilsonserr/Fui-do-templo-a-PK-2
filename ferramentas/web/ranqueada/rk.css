@@ -439,3 +439,16 @@
 .gbTabs button.lk{opacity:1;filter:grayscale(.7) brightness(.7)}
 .lvRl{background:rgba(10,6,24,.85);font-size:.7em}
 .ytTw{font-size:4vh}
+/* v240: título INFLUENCIADOR (rosa/neon arco-íris) */
+.pfInf{position:relative;overflow:hidden;display:inline-flex;align-items:center;gap:.4em;height:86%;padding:0 1.3em 0 .6em;border-radius:.55em;border:.16em solid transparent;background:linear-gradient(90deg,#3a0634,#14041a 60%,#2a0640) padding-box,conic-gradient(from var(--ua,0deg),#ff4fd8,#ffd84a,#4fe0ff,#b57bff,#ff4fd8) border-box;animation:rkUq 1.8s linear infinite,infP 1.2s ease-in-out infinite alternate;box-shadow:0 0 1em #ff4fd8,0 0 2.2em rgba(79,224,255,.45)}
+.pfInf .mc{font-style:normal;font-size:1.6em;filter:drop-shadow(0 0 .35em #ff4fd8);animation:admC 1s ease-in-out infinite}
+.pfInf b{font:900 1.6em var(--f-display,var(--f-ui));letter-spacing:.12em;background:linear-gradient(90deg,#ff4fd8,#ffd84a,#4fe0ff,#b57bff,#ff4fd8);background-size:300% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:admT 1.4s linear infinite;filter:drop-shadow(0 0 .3em rgba(255,79,216,.9)) drop-shadow(0 2px 2px #000)}
+.pfInf .sp{position:absolute;font-style:normal;color:#fff;font-size:.9em;text-shadow:0 0 .4em #ff4fd8,0 0 .8em #4fe0ff;animation:pfTw 1.3s ease-in-out infinite;opacity:0}.pfInf .sp.a{left:1.8em;top:-.1em}.pfInf .sp.b{left:6em;bottom:-.1em;animation-delay:.4s}.pfInf .sp.c{right:.4em;top:.1em;animation-delay:.8s}
+.pfInf .sw{position:absolute;top:-30%;bottom:-30%;width:28%;left:-40%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.8),transparent);transform:skewX(-20deg);animation:admS 1.8s ease-in-out infinite;pointer-events:none}
+@keyframes infP{to{box-shadow:0 0 1.6em #ff4fd8,0 0 3em rgba(79,224,255,.7)}}
+.twTit.inf{position:relative;overflow:hidden;border-color:#ff4fd8;color:#fff;background:linear-gradient(90deg,#ff4fd8,#b57bff,#4fe0ff);box-shadow:0 0 .6em #ff4fd8;animation:rkUqG 1s ease-in-out infinite alternate}
+.twTit.inf::after{content:'';position:absolute;top:-50%;bottom:-50%;width:35%;left:-60%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.9),transparent);transform:skewX(-20deg);animation:admS 1.8s ease-in-out infinite}
+.rkInfG .infIt .tt{border:0;background:none;font-size:1.2em;padding:0;height:2.6em}
+.rkInfG .agT{background:linear-gradient(90deg,#ff4fd8,#ffd84a,#4fe0ff,#ff4fd8);background-size:250% 100%;-webkit-background-clip:text;background-clip:text}
+.rkInfG .infTt{display:flex;flex-direction:column;align-items:center;gap:.4em;font-size:1.3em}.rkInfG .infTt .pfInf{height:2.4em}.rkInfG .infTt .twH{font-size:.6em}
+.rkInfG .dbx{margin-top:1.6em;height:11em}

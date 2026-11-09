@@ -1038,3 +1038,11 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - `lvSorte()` = rank + ADM + equipamento (anel!) + árvore do personagem; `lvLuck()` = 1 + sorte/200. Multiplica pó, cristais, itens de elevação, geminhas e moeda vermelha do Boss e as moedas da Torre (além da raridade dos baús, que já existia).
 - Teste `ferramentas/testes/tsorte_crit.js`: crítico = ×1,6 (+ dano crítico da árvore), roubo de vida cura, anel do Yuta = 50 de sorte no Yuta e 25 em outros.
 - Testes: `tv239.js` (gacha, Sorte Mítica, título nº, item secreto, biblioteca, nível, mochila), `tyuta.js`. `window.__rk` expõe funções para testes.
+
+## v240 — vídeo de invocação do Yuta, código do INFLUENCIADOR, CAIXA DE GEMAS e baús sem poção
+- Invocação Mítica: o vídeo da invocação é o do dono (`ferramentas/personagens/yuta/videos/invocacao.mp4`, 10,6 s, sem som, 128 quadros `RQA.invy`). A aba Especial continua com o vídeo antigo (`rkPlayVid`/`rkGachaOn` com `RKBAN`).
+- Código PRESENTE DE INFLUENCIADOR (hash `1p6oul2`, `dia:5`, texto só com o dono): 1000 💎 + 70 Pó Amaldiçoado + 900 🪙 (dá para subir um personagem do nível 1 ao 7) + título INFLUENCIADOR (`TWTIT.inf`, rosa/neon arco-íris, já entra em uso). `rkInfGift`.
+- Código CAIXA DE GEMAS (hash `9zxei9`, `dia:6`): 100–1000 💎 aleatório (`rkDiaBox(6)`).
+- Os dois (e o Presente do ADM): 1 vez por CONTA (`dia>=4` → documentId `cupom_<hash>_a<hash da conta>`); sem conta não usa.
+- Baús RAROS, LENDÁRIOS e MÍTICOS não dão mais poção: `twBauOpen` (códigos/elos), `twChests` (Torre: se a poção sorteada for rara/lendária/mítica vira equipamento da mesma raridade) e o baú do Boss (`rkAfter`). Comum e épico continuam podendo dar poção.
+- Patch `ferramentas/web/extra/30_v240.py`. Teste `ferramentas/testes/tv240.js` (`C1`/`C2` = códigos).
