@@ -953,3 +953,9 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - Menos escritas também: online a cada 5 min (bucket `p`+5 min), salvamento da conta a cada 5 min, chat global atualiza a cada 30 s, chat da Torre a cada 25 s.
 - Se continuar estourando com muitos jogadores: o dono pode ativar o plano Blaze (pago por uso, centavos) no Firebase.
 - Teste `ferramentas/testes/tcache.js`.
+
+## v233 — códigos de poções e do PEITORAL LENDÁRIO ÚNICO
+- Código 6 POÇÕES MÍTICAS + 7 LENDÁRIAS (hash `1a7bd9w`): uso único no jogo inteiro. `TWCUP` aceita `poc:[[raridade,qtd],...]` (vão direto para a mochila, em pilhas).
+- Código PEITORAL LENDÁRIO ÚNICO (hash `bb4q7b`): uso único; armadura lendária `uniq` Defesa +25%, Dano +5%, Sorte +5%, já equipada. Itens de código agora guardam todos os campos (`Object.assign`), e o texto de item único mostra o atributo certo de cada tipo.
+- `TWCUP.bau` pode ser lista (`rkBauSeq`), esperando os baús automáticos de um lote terminarem antes do próximo.
+- Teste `ferramentas/testes/tcod_v233.js`.
