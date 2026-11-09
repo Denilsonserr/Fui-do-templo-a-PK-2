@@ -592,3 +592,22 @@
 .pfMold .gl{-webkit-mask:radial-gradient(closest-side,transparent 62%,#000 78%);mask:radial-gradient(closest-side,transparent 62%,#000 78%)}
 .pfFoto em{z-index:6}
 .mdC{position:relative}
+/* v246: Divindade (e ADM) com raios dourados de deus */
+.pfMold .gr{position:absolute;inset:-38%;z-index:0;pointer-events:none;border-radius:50%;background:repeating-conic-gradient(from 0deg,rgba(255,230,140,.75) 0 4deg,transparent 4deg 14deg,rgba(255,200,60,.5) 14deg 16deg,transparent 16deg 26deg);
+  -webkit-mask:radial-gradient(closest-side,transparent 30%,#000 45%,transparent 72%);mask:radial-gradient(closest-side,transparent 30%,#000 45%,transparent 72%);animation:rkEr 7s linear infinite,mdRy 1.6s ease-in-out infinite alternate;mix-blend-mode:screen}
+.pfMold .gh{position:absolute;left:18%;right:18%;top:-14%;height:22%;z-index:3;pointer-events:none;border-radius:50%;border:.25em solid #ffe9a0;box-shadow:0 0 .8em #ffd84a,0 0 1.6em #ffb300,inset 0 0 .6em #ffd84a;animation:mdHalo 2.2s ease-in-out infinite}
+.pfMold.r7{--sc:#fff3b0}.pfMold.r7 img{filter:drop-shadow(0 0 .6em #fff6c8) drop-shadow(0 0 1.6em #ffc531) drop-shadow(0 0 3em rgba(255,200,60,.6))}
+.pfMold.r7 .gl{inset:-18%;background:radial-gradient(closest-side,rgba(255,240,180,.7),rgba(255,190,40,.35) 60%,transparent);opacity:1;animation:pfRg 1s ease-in-out infinite}
+.pfMold.r7 .sp{font-size:1.5em;animation-duration:1.1s}
+@keyframes mdRy{to{opacity:.55;transform:scale(1.08)}}@keyframes mdHalo{50%{transform:translateY(-12%);box-shadow:0 0 1.2em #fff6c8,0 0 2.4em #ffc531,inset 0 0 .8em #ffd84a}}
+.pfMold .gr{-webkit-mask:radial-gradient(closest-side,transparent 56%,#000 64%,transparent 78%);mask:radial-gradient(closest-side,transparent 56%,#000 64%,transparent 78%)}
+.pfMold.r7 .gl,.pfMold.adm .gl{-webkit-mask:radial-gradient(closest-side,transparent 64%,#000 80%);mask:radial-gradient(closest-side,transparent 64%,#000 80%)}
+/* v246: o brilho não invade a foto (sombra curta na moldura; o brilho grande fica no anel de fora) */
+.pfMold img,.pfMold.adm img,.pfMold.r7 img,.pfMold.top img,.pfMold.yt img,.pfMold.br img,.pfMold.rk img{filter:drop-shadow(0 0 .22em var(--sc,#ffd84a)) brightness(1.05);animation:mdBri 1.4s ease-in-out infinite alternate}
+@keyframes mdBri{to{filter:drop-shadow(0 0 .3em #fff) brightness(1.22)}}
+.pfMold.r7 .gl,.pfMold.adm .gl{inset:-22%;background:radial-gradient(closest-side,transparent 55%,rgba(255,225,130,.75) 66%,rgba(255,180,30,.35) 78%,transparent 92%);-webkit-mask:none;mask:none}
+.pfMold.rk:not(.r7) .gl{background:radial-gradient(closest-side,transparent 55%,color-mix(in srgb,var(--rc) 55%,transparent) 68%,transparent 88%);-webkit-mask:none;mask:none}
+.pfMold.top .gl,.pfMold.yt .gl,.pfMold.br .gl{-webkit-mask:radial-gradient(closest-side,transparent 60%,#000 72%);mask:radial-gradient(closest-side,transparent 60%,#000 72%)}
+/* v246: emblema DIVINDADE com raios dourados de deus */
+.pfRk.t7::before{content:'';position:absolute;inset:-55%;z-index:0;pointer-events:none;border-radius:50%;background:repeating-conic-gradient(from 0deg,rgba(255,235,150,.85) 0 3deg,transparent 3deg 12deg,rgba(255,200,60,.55) 12deg 14deg,transparent 14deg 24deg);-webkit-mask:radial-gradient(closest-side,transparent 30%,#000 40%,transparent 75%);mask:radial-gradient(closest-side,transparent 30%,#000 40%,transparent 75%);animation:rkEr 6s linear infinite,mdRy 1.3s ease-in-out infinite alternate;mix-blend-mode:screen}
+.pfRk.t7::after{content:'';position:absolute;left:22%;right:22%;top:-12%;height:18%;z-index:6;pointer-events:none;border-radius:50%;border:.2em solid #ffe9a0;box-shadow:0 0 .7em #ffd84a,0 0 1.4em #ffb300;animation:mdHalo 2s ease-in-out infinite}

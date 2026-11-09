@@ -1082,3 +1082,9 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
   - top1/top2/top3: posição no ranking de RANK na semana atual (`rk_topw` {w: twWk, n}); conferido ao abrir o menu (`mdTopCheck`). Vale até a semana virar.
   - ytob: ter o Yuta. yt100: vencer as 5 dificuldades do farm do evento (`st.ysW`). br100: vencer o Broly nos 8 níveis, farm conta (`st.brW`).
 - Teste `ferramentas/testes/tmolduras.js`.
+
+## v246 — perfil (arte nova de novo), moldura sem tampar o rank, Divindade divina e código de 3000 💎
+- Arte `perfil_v246.png` (`RQA.perfil`): ranks mais para baixo; coordenadas do `pfH` refeitas (foto 290–490 × 170–382).
+- `mdH(...,yMax)`: a moldura diminui para não passar do topo do painel dos ranks (y 438). O brilho grande das molduras fica num anel de fora (não pinta a foto).
+- Divindade (moldura rk7, moldura ADM e emblema do rank 7 no perfil): raios dourados girando, auréola flutuando, brilho mais forte.
+- Código 3000 DIAMANTES (hash em `ferramentas/web/extra/50_v246.py`, texto só com o dono): uso único no jogo inteiro.
