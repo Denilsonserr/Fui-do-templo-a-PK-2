@@ -1046,3 +1046,6 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - Os dois (e o Presente do ADM): 1 vez por CONTA (`dia>=4` → documentId `cupom_<hash>_a<hash da conta>`); sem conta não usa.
 - Baús RAROS, LENDÁRIOS e MÍTICOS não dão mais poção: `twBauOpen` (códigos/elos), `twChests` (Torre: se a poção sorteada for rara/lendária/mítica vira equipamento da mesma raridade) e o baú do Boss (`rkAfter`). Comum e épico continuam podendo dar poção.
 - Patch `ferramentas/web/extra/30_v240.py`. Teste `ferramentas/testes/tv240.js` (`C1`/`C2` = códigos).
+
+## v241 — botões do topo da Biblioteca no lugar certo
+- Na arte nova da Biblioteca (Personagens) os botões 👤, 🎵 e CÓDIGO já vêm desenhados: os botões do jogo ficam invisíveis exatamente em cima deles (`.rkA.lbArt`, ligado no `rkLibOn`). Campo de busca sem texto duplicado (a arte já tem "Buscar...").

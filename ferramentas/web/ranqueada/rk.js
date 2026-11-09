@@ -868,7 +868,7 @@ function lvStatRows(id){const B=lvBonus(id);return [['dano','+'+B.dano.toFixed(1
 {const _lh=rkLibH;rkLibH=function(){if(RKL.tab!=='chr')return _lh();
   return `<button class="hs" data-a="back" style="${rkB(20,10,145,80)}"></button><button class="hs" data-a="home" style="${rkB(1735,5,1840,80)}"></button>
   ${[['chr',145,225],['eq',240,320],['it',335,410],['col',428,505]].map(([t,a,b])=>`<button class="hs tab ${RKL.tab===t?'on':''}" data-a="tab" data-t="${t}" style="${rkB(10,a,275,b)}"></button>`).join('')}
-  <input class="rkSrch" id="rkSrch" placeholder="Buscar..." autocomplete="off" value="${twEsc(RKL.q)}" style="${rkB(1255,100,1640,150)}"><button class="hs" data-a="filt" style="${rkB(1675,95,1760,155)}"><span class="rkFl" id="rkFl">${['TODOS','TENHO','FALTA'][RKL.f]}</span></button>
+  <input class="rkSrch" id="rkSrch" placeholder="" autocomplete="off" value="${twEsc(RKL.q)}" style="${rkB(1255,100,1640,150)}"><button class="hs" data-a="filt" style="${rkB(1675,95,1760,155)}"><span class="rkFl" id="rkFl">${['TODOS','TENHO','FALTA'][RKL.f]}</span></button>
   <div id="rkGrid"></div><button class="hs" data-a="up" style="${rkB(1762,178,1812,228)}"></button><button class="hs" data-a="down" style="${rkB(1762,712,1812,762)}"></button>
   <div class="rkPed lbP" id="rkPed" style="${rkB(250,120,880,615)}"></div>
   <div class="lbNm" id="lbNm" style="${rkB(440,642,725,698)}"></div>
@@ -940,4 +940,6 @@ function rkInfGift(){const PO=70,MO=900,GM=1000;rkAdd('gem',GM);rkS('po',lvPo()+
     <div class="infTt" id="rkDt2" style="visibility:hidden">${pfTitH('inf')}<p class="twH">Pó + moedas = o bastante para subir um personagem do nível 1 até o 7 (Biblioteca → Personagens → EVOLUIR). O título já está em uso!</p></div><div class="row"><button class="btn main" id="rkDok">ABRIR</button></div></div>`);
   let op=0;const go=()=>{if(op){twModal(null);return}op=1;$('rkDbx').classList.add('open');twSfx('boom');setTimeout(()=>twSfx('powerUp'),300);setTimeout(()=>twSfx('boom'),800);const S=document.querySelector('#rkDn span');let n=0;const iv=setInterval(()=>{n=Math.min(GM,n+25);S.textContent=n;if(n>=GM)clearInterval(iv)},30);
     $('rkDt').style.visibility='visible';$('rkDt2').style.visibility='visible';$('rkDok').textContent='PEGAR'};$('rkDbx').onclick=go;$('rkDok').onclick=go}
+/* v241: na arte nova da Biblioteca os botões 👤 🎵 CÓDIGO ficam exatamente em cima dos desenhados na arte */
+{const _lo=rkLibOn;rkLibOn=function(){const A=document.querySelector('#rkWrap .rkA');if(A)A.classList.toggle('lbArt',RKL.tab==='chr');return _lo.apply(this,arguments)}}
 window.__rk={lvSorte,lvLuck,lvBonus,lvOf,rkExtra,twEqB:s=>twEqB(s)};

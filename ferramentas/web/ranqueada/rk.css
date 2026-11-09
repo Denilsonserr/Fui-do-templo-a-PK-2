@@ -452,3 +452,8 @@
 .rkInfG .agT{background:linear-gradient(90deg,#ff4fd8,#ffd84a,#4fe0ff,#ff4fd8);background-size:250% 100%;-webkit-background-clip:text;background-clip:text}
 .rkInfG .infTt{display:flex;flex-direction:column;align-items:center;gap:.4em;font-size:1.3em}.rkInfG .infTt .pfInf{height:2.4em}.rkInfG .infTt .twH{font-size:.6em}
 .rkInfG .dbx{margin-top:1.6em;height:11em}
+/* v241: Biblioteca (arte nova) — botões invisíveis em cima dos desenhados na arte */
+.rkA.lbArt .rkAcB,.rkA.lbArt .rkMusB,.rkA.lbArt .rkCodB{opacity:0;padding:0;border:0;box-shadow:none;font-size:1em}
+.rkA.lbArt .rkAcB{left:33.73%;top:1.29%;width:3.68%;height:7.99%;border-radius:50%}
+.rkA.lbArt .rkMusB{left:37.68%;top:1.29%;width:3.68%;height:7.99%;border-radius:50%}
+.rkA.lbArt .rkCodB{left:43.15%;top:2.47%;width:7.53%;height:4.7%}
