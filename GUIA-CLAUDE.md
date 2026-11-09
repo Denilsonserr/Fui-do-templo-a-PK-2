@@ -959,3 +959,10 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - Código PEITORAL LENDÁRIO ÚNICO (hash `bb4q7b`): uso único; armadura lendária `uniq` Defesa +25%, Dano +5%, Sorte +5%, já equipada. Itens de código agora guardam todos os campos (`Object.assign`), e o texto de item único mostra o atributo certo de cada tipo.
 - `TWCUP.bau` pode ser lista (`rkBauSeq`), esperando os baús automáticos de um lote terminarem antes do próximo.
 - Teste `ferramentas/testes/tcod_v233.js`.
+
+## v234 — muito menos leituras no servidor
+- Ranking do ranqueado: em vez de ler até 1000 docs `rk`, usa consultas ORDENADAS pequenas (`rkOQ`): RANK `rp` desc 150, DANO `dmg` desc 100, MAIS RÁPIDO `tw` asc 100, 1ª FASE `t1w` asc 100. `rkSend` agora grava `tw` (tempo da vitória), `t1w` e `rkr:'L'+nível` (só vitórias).
+- Recorde do servidor: lê só as vitórias do nível atual (`rkQ('rkr','L'+nível)`). Docs antigos (antes da v234) não contam nesses rankings/recordes novos.
+- Chats por HORA: global grava `gh:'h'+hora` e lê só as últimas 6 horas; Torre grava `ch` e lê as últimas 6 horas (antes lia o dia inteiro / 3 dias a cada poucos segundos).
+- Ranking da Torre (`twFetch`) lê 150 em vez de 300. Cache: títulos 6 h, rankings ordenados e recordes 10 min, semana/evento 10 min.
+- Teste `ferramentas/testes/tchat2.js` (servidor simulado com where/orderBy; conta leituras).
