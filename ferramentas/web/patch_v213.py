@@ -43,7 +43,7 @@ rep("setInterval(()=>{const want=G.mode==='fight'&&MCUR>=0&&","setInterval(()=>{
 rep("function musPick(){if(MSEL==='none'){MCUR=-1;return}","function musPick(){if(G.gmode==='boss'){rkMusPlay();return}if(MSEL==='none'){MCUR=-1;return}")
 rep("__dbg={stg:()=>STAGE.key,","__dbg={mus:()=>[MCUR,MEL.src.split('/').pop()],stg:()=>STAGE.key,")
 rep("sc==='vs'||sc==='modes'||sc==='tower')){last=now;","sc==='vs'||sc==='modes'||sc==='tower'||sc==='ranked')){last=now;")
-rep("const TWCUP={'706xst':","const TWCUP={'1kd7i6l':{nm:'1000 DIAMANTES',gem:1000},'1jzhy5g':{nm:'CAIXA DA SORTE',dia:2},'1b2e1xu':{nm:'CAIXA DE DIAMANTES',dia:1},'706xst':")
+rep("const TWCUP={'706xst':","const TWCUP={'17hle64':{nm:'2000 DIAMANTES',gem:2000},'1kd7i6l':{nm:'1000 DIAMANTES',gem:1000},'1jzhy5g':{nm:'CAIXA DA SORTE',dia:2},'1b2e1xu':{nm:'CAIXA DE DIAMANTES',dia:1},'706xst':")
 rep("E.className='twH';E.textContent='Conferindo o código...';const IV=","let dk='';if(C.dia===2)dk='_u'+twHash(twUid());else if(C.dia){const nm=String(twLS.g('tw_nome','')||'').toLowerCase().trim(),u=twUid(),oU=TWDIAU.includes(twHash(u)),oN=nm&&TWDIAN.includes(twHash(nm));if(!oU&&!oN){E.className='twH err';E.textContent='❌ Esse código é só para quem já jogou o Modo Torre (lista de jogadores).';twSfx('clang');return true}dk='_'+(oU?'u'+twHash(u):'n'+twHash(nm))}\n  E.className='twH';E.textContent='Conferindo o código...';const IV=")
 rep("'/torre?documentId=cupom_'+h+'&key='","'/torre?documentId=cupom_'+h+dk+'&key='")
 rep("r.status===409||r.status===403?'❌ Esse código já foi usado por outro jogador.'","r.status===409||r.status===403?(C.dia?'❌ Você já usou esse código.':'❌ Esse código já foi usado por outro jogador.')")

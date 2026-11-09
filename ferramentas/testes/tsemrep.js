@@ -1,0 +1,11 @@
+// v227: gacha sem personagem repetido + código de 2000 💎 (uso único)
+const {chromium}=require('playwright');
+(async()=>{const b=await chromium.launch();const IDS=new Set();const p=await b.newPage({viewport:{width:915,height:412}});const errs=[];p.on('pageerror',e=>errs.push(e.message));await p.route(/fonts\.g/,r=>r.abort());
+await p.route(/firestore\.googleapis\.com/,async r=>{const u=r.request().url();if(/:runQuery/.test(u))return r.fulfill({status:200,contentType:'application/json',body:'[]'});const m=u.match(/documentId=([^&]+)/);if(m){if(IDS.has(m[1]))return r.fulfill({status:409,body:'{}'});IDS.add(m[1])}return r.fulfill({status:200,contentType:'application/json',body:'{}'})});
+await p.addInitScript(()=>{if(!sessionStorage.d){sessionStorage.d=1;localStorage.clear();Object.assign(localStorage,{tw_nome:'"T"',tw_uid:'"u1"',rk_ini:'1',rk_xpv2:'1',rk_own:'["goku","aylla","zedry","zaykon"]',rk_sel:'"goku"',rk_gem:'100000',rk_dia:'1'})}});
+await p.goto('file:///home/claude/fui-do-templo-a-pk-2/www/index.html');await p.waitForFunction(()=>!document.getElementById('goSelect').disabled,null,{timeout:120000});
+await p.click('#mRank');await p.waitForTimeout(500);await p.click('#rkWrap [data-a="code"]');await p.fill('#rkCdI','gema-659k-ryn3');await p.click('#rkCdOk');await p.waitForTimeout(1500);const msg=await p.evaluate(()=>document.getElementById('rkCdE').textContent);const g=await p.evaluate(()=>localStorage.rk_gem);await p.click('#rkMX');
+await p.click('#rkWrap [data-a="gacha"]');await p.waitForTimeout(400);
+for(let k=0;k<6;k++){await p.click('#rkWrap [data-a="sum10"]');await p.waitForSelector('.rkRes2',{timeout:60000});await p.waitForTimeout(200);await p.evaluate(()=>document.querySelectorAll('.rkMega,.rkWin,.rkRes2,.rkFx').forEach(e=>e.remove()));await p.click('#rkWrap [data-a="gacha"]').catch(()=>{});await p.waitForTimeout(200)}
+const H=await p.evaluate(()=>JSON.parse(localStorage.rk_hist||'[]'));const dups=H.filter(x=>x.k==='chr'&&x.dup).length,chrs=H.filter(x=>x.k==='chr').map(x=>x.id);
+console.log(JSON.stringify({msg,gemAposCodigo:g,personagensSorteados:chrs,repetidos:dups,own:await p.evaluate(()=>localStorage.rk_own)}),'ERROS',JSON.stringify(errs));await b.close()})();

@@ -913,3 +913,8 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 
 ## v226 — aviso de ticket discreto
 - O dono achou feia a etiqueta amarela em cima do preço. Agora é uma faixinha escura pequena ACIMA de cada botão (`.rkTk`, fora do botão): "🎫 usa 1 ticket (não gasta 💎)" / "🎫 usa 4 tickets + 270 💎". O preço original do botão aparece normal.
+
+## v227 — gacha sem personagem repetido + código de 2000 💎
+- `rkNewChr(r)`: lendário/épico só sorteia personagem que o jogador NÃO tem (nem repetido dentro do mesmo giro de 10, via `RKMTMP`). Se já tem todos daquela raridade, vem um equipamento da mesma raridade. Míticos já eram assim (v224).
+- Código 2000 DIAMANTES (hash `17hle64`, texto só com o dono): uso único no jogo inteiro.
+- Teste `ferramentas/testes/tsemrep.js`.
