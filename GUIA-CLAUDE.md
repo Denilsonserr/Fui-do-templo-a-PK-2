@@ -1101,3 +1101,11 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - Evento em `RKEVX` (rk.js): `[ini,fim,multXP,texto,{gem,luck}]`. Novo: 09/11/2026 15:30–10/11 01:30 UTC (12:30–22:30 Brasília): 2x XP de rank, 2x gemas (`rkEvG()` nas lutas de Boss/farm e no evento do Yuta) e 2x sorte (`rkEvL()` dentro do `lvLuck`). A sorte também aumenta gemas/pó/drops, então somado fica bem forte (de propósito, é evento). Códigos NÃO dobram.
 - Faixa do evento no menu do Ranqueado foi para a esquerda (`.rk_menu .rkEvX`) para não tampar o painel de rank/moedas.
 - Código de EVENTO (hash `w9rmwq` em `ferramentas/web/extra/60_v248.py`, texto só com o dono): 1000 💎 + 20 🎫. Tipo novo `ev:1` no `twCupom`: todo mundo pode usar, 1 vez por CONTA (sem conta, 1 vez por aparelho). Teste: `ferramentas/testes/tevento_v248.js`.
+
+## v249 — RIKA vira OBSCURA (acima da SECRETA), sempre equipada, Sorte/Drop no verde
+- Bug: a Rika tem `v:0`, então o `twAddItem` (base) trocava ela por QUALQUER capacete novo (`it.v>cur.v`), e o `twCap` (mochila cheia) jogava fora o item "mais fraco" = a Rika. Agora (`extra/70_v249.py`): drop novo não troca item do Yuta (`rkIsY`), e a mochila cheia nunca descarta item do Yuta.
+- Nova raridade `obs` = **OBSCURA** (cor `#c46bff`, venda 10000, `TWEQR`), acima da SECRETA. `rkHi(r)` = sec ou obs. `rkLock(x)` = item obscuro: sempre equipado (o reparo no carregamento re-equipa), não dá pra tirar, trocar nem vender (mochila do Ranqueado e da Torre).
+- RIKA nova: `{r:'obs',def:40,crit:20,st:30,drop:30}` — saiu o "Dano na transformação", entrou **Drop +30%** e Sorte foi para 30. O reparo apaga campos antigos (ex.: `fdmg`).
+- Stat novo `drop`: `eqDrop()`/`rkDropF()` — multiplica o `lvLuck` (pó, cristais, itens de elevação, gemas extras) e a chance de ticket e equipamento no fim da luta do Boss.
+- Rodapé da mochila: crítico agora conta o 50% fora do Yuta (`eqCrit`), mostra 🔥 dano na transformação se tiver, e **🍀 Sorte / 🎁 Drop em verde** (`.eqGr`).
+- Classe extra `.yobs` (via `rkYC(x)`) deixa o item obscuro mais escuro, com fumaça preta e brilho vermelho. Teste: `ferramentas/testes/trika_v249.js`.

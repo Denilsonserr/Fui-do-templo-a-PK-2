@@ -1,0 +1,14 @@
+const {chromium}=require('playwright');const S=process.env.S;
+(async()=>{const b=await chromium.launch();const p=await b.newPage({viewport:{width:915,height:412},deviceScaleFactor:2});const errs=[];p.on('pageerror',e=>errs.push(e.message));await p.route(/fonts\.g|firestore/,r=>r.abort());
+await p.addInitScript(()=>{if(!sessionStorage.d){sessionStorage.d=1;localStorage.clear();const inv=[{id:'a',t:'cap',r:'sec',v:0,def:40,crit:20,st:10,fdmg:20,nm:'RIKA',yt:1,ysec:1},{id:'b',t:'arm',r:'sec',v:60,trf:10,nm:'UNIFORME DO YUTA',yt:1,ysec:1},{id:'c',t:'cap',r:'rara',v:5,crit:2}];for(let i=0;i<40;i++)inv.push({id:'z'+i,t:'bot',r:'comum',v:1});
+ Object.assign(localStorage,{tw_nome:'"T"',rk_ini:'1',rk_xpv2:'1',rk_own:'["goku","yuta"]',rk_sel:'"yuta"',rk_rp:'16000',rk_dia:'1',tw_inv:JSON.stringify(inv),tw_eqp:'{"cap":"c","arm":"b"}'})}});
+await p.goto('file:///home/claude/fui-do-templo-a-pk-2/www/_t.html');await p.waitForFunction(()=>!document.getElementById('goSelect').disabled,null,{timeout:120000});
+const st=()=>p.evaluate(()=>{const I=JSON.parse(localStorage.tw_inv),Q=JSON.parse(localStorage.tw_eqp);return {eq:Q,rika:I.find(x=>x.nm==='RIKA'),n:I.length}});
+console.log('load',JSON.stringify(await st()));
+await p.evaluate(()=>{const [E,R]=__eq();for(let i=0;i<5;i++)__ta(E.find(x=>x.k==='cap'),R.find(x=>x.k==='mit'))});
+console.log('after drops',JSON.stringify(await st()));
+await p.click('#mRank');await p.waitForTimeout(500);await p.click('#rkWrap [data-a="boss"]');await p.waitForTimeout(700);await p.click('#rkWrap [data-a="equip"]');await p.waitForTimeout(800);
+await p.click('#rkModal .eqS[data-s="cap"]');await p.waitForTimeout(400);console.log('after tirar',JSON.stringify((await st()).eq));
+await p.waitForTimeout(1500);await p.screenshot({path:S+'rk_eq.png'});
+console.log(await p.evaluate(()=>document.querySelector('#rkModal p.eqT:last-of-type').textContent));
+console.log(errs);await b.close()})();
