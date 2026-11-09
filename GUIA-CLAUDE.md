@@ -984,3 +984,11 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
   - RANK: rank + progresso. COMBO: média do maior combo por luta (30 = máximo). FARM: tudo que juntou (💎 + 🔴×3 + 🪙/10, escala log).
   - Dados em `rk_pf` (tw, twc, twf, twl, n, cmb, df, hit, crit, farm, mo). Ganchos: `rkAfter` (Boss), `twAfter`/`twFinish` (Torre), `rkAdd` (💎/🔴).
 - Teste `ferramentas/testes/tperfil.js` (`FOTO=<imagem> SH=<pasta> node ...`). `ttorre_rk.js` não clica mais no Perfil.
+
+## v236 — Perfil em tela cheia, recorte da foto, vitrine de equipamentos, ranks e título ADM
+- Perfil e Histórico ocupam a tela inteira (`data-full` no `.rkA` → `rkFit` estica a arte para `innerWidth×innerHeight`, como a Torre da v229).
+- Foto: TROCAR FOTO abre o recorte (`pfCrop`): arrastar move, barra/2 dedos/roda dá zoom, prévia "assim vai ficar"; salva 200×200 jpg em `rk_foto`.
+- As 3 bolinhas de baixo agora são a VITRINE (pedido do dono): toque → escolher um equipamento da mochila (`pfVitPick`, `rk_vit` = ids). Brilho por raridade (`.pfV.r0..r4`: comum simples → mítica com raios e brilho forte; item único com arco-íris). Nome + raridade embaixo. Os personagens mais usados continuam contando (`rk_use`) e decidem o pedestal automático.
+- Ranks (`pfRkH`): quanto mais alto, mais efeito (`--k` = rank/7): brilho maior; raios girando a partir da Prata; faíscas orbitando a partir do Diamante; estrelinhas a partir do Lendário; anel de fogo no Dragão/Divindade; Divindade com brilho dourado extra.
+- Título (`pfTitH`): placa grande com a cor do título (emblema para títulos de rank). ADM: placa dourada com borda animada, coroa, "ADM" dourado animado, "ADMINISTRADOR", brilhos piscando e faixa de luz passando.
+- Teste `ferramentas/testes/tperfil.js` atualizado (recorte e vitrine).
