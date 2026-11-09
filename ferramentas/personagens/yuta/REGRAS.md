@@ -41,5 +41,5 @@
 
 ## Decisões de 09/11 09:05
 - Anel ganha um ESPAÇO NOVO na mochila/equipar (o dono vai mandar mais anéis para o jogo).
-- Yuta garantido em 190 giros na gacha mítica (chance por giro: decisão do Claude).
+- Yuta garantido em 250 giros na gacha mítica (mudou de 190 para 250) (chance por giro: decisão do Claude).
 - O dono deixou o Claude decidir: nome do pó, especial (golpe de espada roxo), vitória (pose parado + aura), vídeo ao ganhar (super ataque), preço igual (50/450 💎, aceita tickets), tabela de custo de nível e uso dos cristais (árvore de habilidade).
