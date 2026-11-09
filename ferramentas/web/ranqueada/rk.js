@@ -24,9 +24,9 @@ const RKAI=[{react:24,agg:.42,blk:.18,combo:.35,idle:24},{react:18,agg:.52,blk:.
 RKR.forEach((R,i)=>{TWTIT['rk'+i]={n:R.n,i:'',c:R.c,d:'Chegar ao rank '+R.n+' no Modo Ranqueado',rk:i}});
 const rkG=(k,d)=>twLS.g('rk_'+k,d),rkS=(k,v)=>{twLS.s('rk_'+k,v);if(k==='rp')pfMaxUp(v)};
 const RK_MIT=['naruto','madara','garou'],RK_LEG=['goku','aokiji','zoro','broly','vegeta','gogeta','gojo','luffy','rengoku'],RK_EPI=['aylla','zedry','zaykon','qingqing'];
-const rkRar=id=>RK_MIT.includes(id)?'mit':RK_LEG.includes(id)?'lend':'epica';
+const rkRar=id=>id==='yuta'||RK_MIT.includes(id)?'mit':RK_LEG.includes(id)?'lend':'epica';
 /* vídeo da ULTIMATE de cada personagem MÍTICO (aparece quando ganha no gacha) */
-const RKUV={naruto:()=>NRU,madara:()=>MDU,garou:()=>GRU};
+const RKUV={naruto:()=>NRU,madara:()=>MDU,garou:()=>GRU,yuta:()=>YTU};
 function rkInit(){if(!rkG('ini',0)){rkS('ini',1);rkS('gem',100);rkS('tic',1);rkS('red',0);rkS('own',['goku']);rkS('sel','goku');rkS('rp',0);rkS('st',{})}
   if(!rkG('xpv2',0)){const old=rkG('rp',0),oi=[0,100,250,450,700,1000,1400,1900].reduce((a,m,i)=>old>=m?i:a,0);rkS('rp',RKXP[oi]);rkS('xpv2',1)}
   const own=rkG('own',['goku']);if(!own.includes('goku')){own.push('goku');rkS('own',own)}if(!own.includes(rkG('sel','goku')))rkS('sel','goku')}
@@ -48,19 +48,20 @@ const RKLOCK='<span class="rkLk"><svg viewBox="0 0 24 24"><path d="M7 10V7a5 5 0
 function rkSfx(k){try{SFX[k]&&SFX[k]()}catch(e){}}
 function rkOpen(v){if(v==='pf'){PFO=null;PFRET=null}RKSEL=null;rkInit();rkMusPlay();setTimeout(rkDiaAuto,1200);audioInit();try{fsTry()}catch(e){}showScreen('ranked');rkView(v||'menu')}
 let RKV='menu';
-const RKD={rb:[1672,941],pf:[1672,941],hs:[1671,941]};const rkB2=(x0,y0,x1,y1)=>`left:${x0/16.72}%;top:${y0/9.41}%;width:${(x1-x0)/16.72}%;height:${(y1-y0)/9.41}%`;
+const RKD={rb:[1672,941],lvl:[1847,851],pf:[1672,941],hs:[1671,941]};const rkB2=(x0,y0,x1,y1)=>`left:${x0/16.72}%;top:${y0/9.41}%;width:${(x1-x0)/16.72}%;height:${(y1-y0)/9.41}%`;
 function rkView(v){RKV=v;const W=$('rkWrap');if(!W)return;clearInterval(rkView.iv);rkModal(null);
-  const H={menu:rkMenuH,boss:rkBossH,gacha:rkGachaH,shop:rkShopH,lib:rkLibH,rb:rkRbH,pf:pfH,hs:hsH}[v]();const dm=RKD[v]||[RKW,RKH];W.innerHTML=`<div class="rkA rk_${v}" data-w="${dm[0]}" data-h="${dm[1]}"${v==='pf'||v==='hs'?' data-full="1"':''} style="background-image:url(${RQA[{menu:'menu_ranqueado',boss:'modo_boss',gacha:'gacha',shop:'loja_gemas',lib:'biblioteca',rb:'ranqueada_boss',pf:'perfil',hs:'historico'}[v]]})">${H}${rkEvTxt()}<div id="rkToast"></div><button class="rkMusB" data-a="music" title="Música">🎵</button><button class="rkCodB" data-a="code">🎟️ CÓDIGO</button><button class="rkAcB" data-a="conta" title="Conta">👤</button></div>`;
-  rkFit();W.querySelectorAll('[data-a]').forEach(b=>b.onclick=e=>{e.stopPropagation();rkAct(b.dataset.a,b)});({boss:rkBossOn,gacha:rkGachaOn,lib:rkLibOn,pf:pfOn,hs:hsOn}[v]||(()=>{}))()}
+  const H={menu:rkMenuH,boss:rkBossH,gacha:rkGachaH,shop:rkShopH,lib:rkLibH,rb:rkRbH,pf:pfH,hs:hsH,lvl:lvH}[v]();const dm=RKD[v]||[RKW,RKH];W.innerHTML=`<div class="rkA rk_${v}" data-w="${dm[0]}" data-h="${dm[1]}"${v==='pf'||v==='hs'?' data-full="1"':''} style="background-image:url(${RQA[{menu:'menu_ranqueado',boss:'modo_boss',gacha:(RKBAN==='mit'?'gacha_yt':'gacha'),shop:'loja_gemas',lib:(RKL.tab==='chr'?'bib_pf':'biblioteca'),rb:'ranqueada_boss',pf:'perfil',hs:'historico',lvl:'lv_ed'}[v]]})">${H}${rkEvTxt()}<div id="rkToast"></div><button class="rkMusB" data-a="music" title="Música">🎵</button><button class="rkCodB" data-a="code">🎟️ CÓDIGO</button><button class="rkAcB" data-a="conta" title="Conta">👤</button></div>`;
+  rkFit();W.querySelectorAll('[data-a]').forEach(b=>b.onclick=e=>{e.stopPropagation();rkAct(b.dataset.a,b)});({boss:rkBossOn,gacha:rkGachaOn,lib:rkLibOn,pf:pfOn,hs:hsOn,lvl:lvOn}[v]||(()=>{}))()}
 function rkLocked(){rkSfx('clang');rkToast('🔒 Em breve!','#cfd6ea')}
 function rkAct(a,b){rkSfx('whoosh');
-  switch(a){case 'back':if(RKV==='pf'||RKV==='hs'){if(PFO||PFRET)return pfBack();return showScreen('title')}return rkView(RKV==='shop'?'gacha':RKV==='rb'?'boss':'menu');case 'pf':return rkView('pf');case 'hs':return rkView('hs');case 'pfFoto':return PFO?pfAdmFoto():pfFotoM();case 'pfTit':return PFO?0:pfTitM();case 'pfPick':return PFO?0:pfPick();case 'pfRadar':return pfRadarInfo();case 'pfVit':if(PFO){const e=(PFO.vit||[])[+b.dataset.i];if(e)rkToast(rkItNm(e)+': '+rkItEf(e),rkItC(e));return}return pfVitPick(+b.dataset.i);case 'hsInfo':return hsInfo(b.dataset.k);case 'home':return showScreen('title');case 'menuBack':return showScreen('title');
+  switch(a){case 'back':if(RKV==='lvl')return rkView('lib');if(RKV==='pf'||RKV==='hs'){if(PFO||PFRET)return pfBack();return showScreen('title')}return rkView(RKV==='shop'?'gacha':RKV==='rb'?'boss':'menu');case 'pf':return rkView('pf');case 'hs':return rkView('hs');case 'pfFoto':return PFO?pfAdmFoto():pfFotoM();case 'pfTit':return PFO?0:pfTitM();case 'pfPick':return PFO?0:pfPick();case 'pfRadar':return pfRadarInfo();case 'pfVit':if(PFO){const e=(PFO.vit||[])[+b.dataset.i];if(e)rkToast(rkItNm(e)+': '+rkItEf(e),rkItC(e));return}return pfVitPick(+b.dataset.i);case 'hsInfo':return hsInfo(b.dataset.k);case 'home':return showScreen('title');case 'menuBack':return showScreen('title');
     case 'boss':return rkView('boss');case 'gacha':return rkView('gacha');case 'shop':return rkView('shop');case 'lib':return rkView('lib');case 'lock':return rkLocked();
     case 'ranking':return rkRanking();case 'rewards':return rkRewards();case 'ach':return rkAch();case 'pos':return rkPos();
     case 'start':if(!RKSRV)rkSrvLoad();return rkView('rb');case 'equip':return rkEquip();case 'music':return rkMusic();case 'code':return rkCode();case 'torre':return rkTorre();case 'conta':return acOpen();case 'fight':return rkBossStart();case 'lvp':return rkRbSel(-1);case 'lvn':return rkRbSel(1);case 'lvc':return rkRbSel(0,+b.dataset.i);case 'sel':return rkView('lib');case 'hist':return rkHist();case 'taxas':return rkTaxas();case 'pool':return rkTaxas();
     case 'sum1':return rkSummon(1);case 'sum10':return rkSummon(10);case 'chat':return rkChatSend();
     case 'buy':return rkBuy(+b.dataset.i);case 'tab':return rkLibTab(b.dataset.t);case 'up':return rkLibPage(-1);case 'down':return rkLibPage(1);case 'filt':return rkLibFilt();case 'libUse':return rkLibUse();
-    case 'boxinfo':return rkToast(b.dataset.t,'#bfe8ff')}}
+    case 'boxinfo':return rkToast(b.dataset.t,'#bfe8ff');
+    case 'ban':RKBAN=b.dataset.b;try{localStorage.setItem('rk_ban',RKBAN)}catch(e){}return rkView('gacha');case 'evo':return lvOpen(RKL.cur&&RKL.cur.id);case 'lvUp':return lvUp();case 'lvNode':return lvNode(+b.dataset.r,+b.dataset.c);case 'lvInfo':return lvInfo()}}
 /* ---------------- MENU DO RANQUEADO ---------------- */
 function rkMenuH(){const rp=rkG('rp',0),ri=rkRank(rp);
   return `<button class="hs" data-a="menuBack" style="${rkB(5,15,110,95)}"></button>
@@ -112,21 +113,21 @@ function rkRbH(){const xp=rkG('rp',0),ri=rkRank(xp),lv=RKSEL==null?ri:RKSEL,B=RK
   <button class="hs" data-a="fight" style="${rkB2(1185,758,1645,872)}"><span class="shine"></span></button>`}
 function rkRbSel(d,i){const ri=rkLvl();let v=RKSEL==null?ri:RKSEL;v=i!=null?i:Math.max(0,Math.min(7,v+d));RKSEL=v;rkView('rb')}
 /* ---------- EQUIPAR: personagem no meio com os espaços equipados em volta + itens da mochila ---------- */
-const RKSLOT=[['esp','🗡️','ESPADA'],['cap','⛑️','CAPACETE'],['arm','🛡️','ARMADURA'],['bot','🥾','BOTAS'],['poc','🧪','POÇÃO']];
+const RKSLOT=[['esp','🗡️','ESPADA'],['cap','⛑️','CAPACETE'],['anel','💍','ANEL'],['arm','🛡️','ARMADURA'],['bot','🥾','BOTAS'],['poc','🧪','POÇÃO']];
 /* pilhas: itens iguais ocupam 1 espaço (até 99 por espaço) */
 const twStKey=x=>x.k==='poc'?'p|'+x.r+'|'+x.v:[x.t,x.r,x.v,x.crit||0,x.dmg||0,x.vel||0,x.nm||''].join('|');
 function twStacks(){const M=new Map();for(const x of twBagItems()){const k=twStKey(x);if(!M.has(k))M.set(k,[]);M.get(k).push(x)}const out=[];for(const [k,L] of M)for(let i=0;i<L.length;i+=99){const g=L.slice(i,i+99);out.push(Object.assign({},g[0],{key:k+'#'+i,ids:g.map(y=>y.id),n:g.length}))}return out}
 twCap=function(){let S=twStacks(),out=null;while(S.length>TWBAG){const w=S.slice().sort((a,b)=>(a.ev?99:0)+a.v-(b.ev?99:0)-b.v)[0],ids=new Set(w.ids);if(w.k==='poc')twLS.s('tw_poc',twPocs().filter(x=>!ids.has(x.id)));else twLS.s('tw_inv',twInv().filter(x=>!ids.has(x.id)));out=w;S=twStacks()}return out};
 twBag=function(){rkEquip()};
-const rkItNm=x=>x.nm||(x.t==='poc'?'POÇÃO':(TWEQ.find(E=>E.k===x.t)||{}).n||''),rkItIc=x=>x.img||(x.t==='poc'?TWIMG.poc[Math.max(0,TWRK.indexOf(x.r))]:twIco(x.t,x.r)),rkItC=x=>(TWEQR.find(q=>q.k===x.r)||TWEQR[0]).c;
-const rkItEf=x=>x.uniq?'✦ ITEM ÚNICO ✦ '+({esp:'Ataque',arm:'Defesa',bot:'Velocidade',cap:'Transformação'}[x.t]||'Bônus')+' +'+x.v+'%'+(x.dmg?' · Dano +'+x.dmg+'%':'')+(x.crit?' · Crítico +'+x.crit+'%':'')+(x.st?' · Sorte +'+x.st+'%':'')+(x.vel?' · Velocidade +'+x.vel+'%':'')+' (permanente)':x.img&&(x.crit||x.dmg)?rkSpTxt(x):x.t==='cap'?'Transformação +'+x.v+'% mais rápida · Crítico +'+(x.crit||0)+'%':x.vel?'Ataque +'+x.v+'% · Velocidade +'+x.vel+'%':x.t==='poc'?twPoTxt(x.r)+' (uso único, próxima luta)':({esp:'Ataque',arm:'Defesa',bot:'Velocidade'}[x.t]||'Bônus')+' +'+x.v+'%';
+const rkItNm=x=>x.nm||(x.t==='poc'?'POÇÃO':x.t==='anel'?'ANEL':(TWEQ.find(E=>E.k===x.t)||{}).n||''),rkItIc=x=>x.img||(x.t==='poc'?TWIMG.poc[Math.max(0,TWRK.indexOf(x.r))]:twIco(x.t,x.r)),rkItC=x=>x.r==='sec'?'#e2b6ff':(TWEQR.find(q=>q.k===x.r)||TWEQR[0]).c;
+const rkItEf=x=>x.yt||x.t==='anel'?rkSpTxt(x):x.uniq?'✦ ITEM ÚNICO ✦ '+({esp:'Ataque',arm:'Defesa',bot:'Velocidade',cap:'Transformação'}[x.t]||'Bônus')+' +'+x.v+'%'+(x.dmg?' · Dano +'+x.dmg+'%':'')+(x.crit?' · Crítico +'+x.crit+'%':'')+(x.st?' · Sorte +'+x.st+'%':'')+(x.vel?' · Velocidade +'+x.vel+'%':'')+' (permanente)':x.img&&(x.crit||x.dmg)?rkSpTxt(x):x.t==='cap'?'Transformação +'+x.v+'% mais rápida · Crítico +'+(x.crit||0)+'%':x.vel?'Ataque +'+x.v+'% · Velocidade +'+x.vel+'%':x.t==='poc'?twPoTxt(x.r)+' (uso único, próxima luta)':({esp:'Ataque',arm:'Defesa',bot:'Velocidade'}[x.t]||'Bônus')+' +'+x.v+'%';
 function rkEquip(f,sk){f=f||'all';const sel=showScreen.cur==='tower'&&TW.pick?TW.pick:rkG('sel','goku'),I=twInv(),Q=twEqp(),on=twPocOn(),SA=twStacks(),L=SA.filter(x=>f==='all'||x.t===f).sort((a,b)=>(TWRK.indexOf(b.r)-TWRK.indexOf(a.r))||(b.v-a.v)||(a.t>b.t?1:-1)),X=sk?SA.find(x=>x.key===sk):null;
   const slot=([k,i,n])=>{const x=k==='poc'?on&&Object.assign({t:'poc'},on):I.find(y=>y.id===Q[k]);return `<button class="eqS ${x?'on':''}${x&&x.uniq?' uniq':''}" data-s="${k}" style="--c:${x?rkItC(x):'#556'}">${x?`<img src="${rkItIc(x)}" alt=""><b>+${x.v}%</b>`:`<i>${i}</i>`}<span>${x?rkItNm(x):n}</span></button>`};
   const tot=`⚔️ +${twEqB('dano')}% · 🛡️ +${twEqB('vida')}% · 💨 +${twEqB('vel')}% · 💥 +${(()=>{let c=0;const o=twEqOn();for(const k in o)c+=o[k].crit||0;return c})()}% · ⚡ +${twEqB('trf')}%${on?' · 🧪 poção ativa':''}`;
   const pr=x=>TWSELL[x.r]||100;
   const det=X?`<div class="eqD${X.uniq?' uniq':''}" style="--c:${rkItC(X)}"><img src="${rkItIc(X)}" alt=""><div><span style="color:${rkItC(X)}">${X.uniq?'✦ ÚNICA ✦':(TWEQR.find(q=>q.k===X.r)||TWEQR[0]).n}${X.n>1?' · x'+X.n:''}</span><b>${rkItNm(X)} +${X.v}%</b><em>${rkItEf(X)}</em></div><div class="eqDb">${X.k==='poc'?`<button class="btn main" data-d="beber" ${on?'disabled':''}>${on?'JÁ TEM UMA ATIVA':'🧪 BEBER'}</button><button class="btn" data-d="del">DESCARTAR 1</button>`:`<button class="btn main" data-d="eq">EQUIPAR</button>${X.uniq?'<em class="eqUq">item único · não pode vender</em>':''}<button class="btn sell" data-d="sell" ${X.uniq?'hidden':''}>VENDER 1 · 🪙 ${pr(X)}</button>${X.n>1?`<button class="btn sell" data-d="sellAll">VENDER ${X.n} · 🪙 ${pr(X)*X.n}</button>`:''}`}</div></div>`:'<p class="twH eqT">Toque num item para ver e equipar / vender. Itens iguais ficam juntos no mesmo espaço (até 99).</p>';
-  rkModal(`<div class="twM rkEq"><h3>🎒 MOCHILA E EQUIPAMENTOS <small>${SA.length}/${TWBAG} espaços · 🪙 ${rkFmtN(twCoins())}</small></h3><div class="eqW"><div class="eqP"><div class="col">${RKSLOT.slice(0,2).map(slot).join('')}</div><div class="chr"><img src="${fullSrc(sel)}" alt=""><b>${CH[sel]?CH[sel].name:''}</b><small>🌱 Semente dos Deuses: ${rkSenzu()}</small></div><div class="col">${RKSLOT.slice(2).map(slot).join('')}</div></div>
-    <div class="eqR"><div class="seg twTab">${[['all','TUDO'],['esp','🗡️'],['cap','⛑️'],['arm','🛡️'],['bot','🥾'],['poc','🧪']].map(([k,t])=>`<button data-f="${k}" aria-pressed="${f===k}">${t}</button>`).join('')}</div>
+  rkModal(`<div class="twM rkEq"><h3>🎒 MOCHILA E EQUIPAMENTOS <small>${SA.length}/${TWBAG} espaços · 🪙 ${rkFmtN(twCoins())}</small></h3><div class="eqW"><div class="eqP"><div class="col">${RKSLOT.slice(0,3).map(slot).join('')}</div><div class="chr"><img src="${fullSrc(sel)}" alt=""><b>${CH[sel]?CH[sel].name:''}</b><small>🌱 Semente dos Deuses: ${rkSenzu()}</small></div><div class="col">${RKSLOT.slice(3).map(slot).join('')}</div></div>
+    <div class="eqR"><div class="seg twTab">${[['all','TUDO'],['esp','🗡️'],['cap','⛑️'],['anel','💍'],['arm','🛡️'],['bot','🥾'],['poc','🧪']].map(([k,t])=>`<button data-f="${k}" aria-pressed="${f===k}">${t}</button>`).join('')}</div>
     <div class="eqG">${L.length?L.map(x=>`<button class="eqI ${X&&X.key===x.key?'sel':''}${x.uniq?' uniq':''}" data-k="${x.key}" style="--c:${rkItC(x)}"><img src="${rkItIc(x)}" alt=""><b>+${x.v}%</b>${x.n>1?`<i class="eqN">x${x.n}</i>`:''}<span>${rkItNm(x)}</span></button>`).join(''):'<p class="twH">Nada aqui. Ganhe equipamentos no Boss, na Torre e no Gacha!</p>'}</div>${det}</div></div>
     <p class="twH eqT">${tot} · Toque num espaço equipado para tirar.</p><div class="row"><button class="btn" id="rkMX">FECHAR</button></div></div>`);
   const MS=RKMS(),re=k=>rkEquip(f,k);$('rkMX').onclick=()=>{rkModal(null);if(showScreen.cur==='tower')twRender()};document.querySelectorAll(MS+'.twTab button').forEach(b=>b.onclick=()=>rkEquip(b.dataset.f));
@@ -252,12 +253,15 @@ const RKSP={sec:{t:'esp',r:'sec',v:15,vel:5,crit:10,nm:'LÂMINA NEGRA',img:RQA.s
   arm:{t:'arm',r:'mit',v:10,nm:'ARMADURA SAIYAJIN',img:RQA.sp.armadura},
   /* drops do MODO BOSS */
   band:{t:'cap',r:'lend',v:20,crit:20,nm:'BANDANA DA FOLHA',img:RQA.sp.bandana,boss:1},bots:{t:'bot',r:'lend',v:7,dmg:3,nm:'BOTAS SAIYAJIN',img:RQA.sp.botas,boss:1},
-  kam:{t:'esp',r:'mit',v:10,vel:5,crit:15,nm:'ADAGA KAMISH',img:RQA.sp.kamish,boss:1},gun:{t:'esp',r:'mit',v:12,vel:3,dmg:3,nm:'GUNBAI DO MADARA',img:RQA.sp.gunbai,boss:1}};
+  kam:{t:'esp',r:'mit',v:10,vel:5,crit:15,nm:'ADAGA KAMISH',img:RQA.sp.kamish,boss:1},gun:{t:'esp',r:'mit',v:12,vel:3,dmg:3,nm:'GUNBAI DO MADARA',img:RQA.sp.gunbai,boss:1},
+  /* v239: itens SECRETOS da Invocação Mítica do Yuta (50% de força em quem não é o Yuta) */
+  yesp:{t:'esp',r:'sec',v:30,crit:10,nm:'ESPADA DO YUTA',img:RQA.ysp.yesp,yt:1,ysec:1},yanel:{t:'anel',r:'sec',v:50,st:50,trf:30,nm:'ANEL DO YUTA',img:RQA.ysp.yanel,yt:1,ysec:1},
+  yrou:{t:'arm',r:'sec',v:60,trf:10,nm:'UNIFORME DO YUTA',img:RQA.ysp.yrou,yt:1,ysec:1},yrika:{t:'cap',r:'sec',v:0,def:40,crit:20,st:10,fdmg:20,nm:'RIKA',img:RQA.ysp.yrika,yt:1,ysec:1}};
 /* Semente dos Deuses: quando você morre (Modo Boss e Torre), volta com a vida cheia (usa 1) */
 const rkSenzu=()=>twLS.g('tw_senzu',0)|0,rkAddSenzu=n=>twLS.s('tw_senzu',Math.max(0,rkSenzu()+n));
 function rkSenzuRevive(d){if(rkSenzu()<=0||d.cpu||d.rkSz)return false;d.rkSz=1;rkAddSenzu(-1);d.ko=false;d.hp=d.hpLag=(d.mhp||MAXHP);d.state='idle';d.st=0;d.vx=0;d.vy=0;d.y=FLOOR;d.grounded=true;d.flying=false;d.move=null;d.hitstun=0;d.inv=90;
   G.flash=10;G.flashCol='#d8ffb0';G.hitstop=Math.max(G.hitstop,16);for(const r of [300,180])ring(d.x,d.y-150,'#9fff5a',r,24,7);banner('SEMENTE DOS DEUSES!','#9fff5a',100,'VIDA RESTAURADA');rkSfx('powerUp');return true}
-const rkSpTxt=x=>[x.t==='esp'?'Ataque +'+x.v+'%':x.t==='arm'?'Defesa +'+x.v+'%':'Transformação +'+x.v+'%',x.dmg?'Dano +'+x.dmg+'%':'',x.vel?'Velocidade +'+x.vel+'%':'',x.crit?'Crítico +'+x.crit+'%':''].filter(Boolean).join(' · ');
+const rkSpTxt=x=>[x.v?(x.t==='esp'?'Ataque +'+x.v+'%':x.t==='arm'?'Defesa +'+x.v+'%':x.t==='anel'?'Sorte +'+x.v+'%':x.t==='bot'?'Velocidade +'+x.v+'%':'Transformação +'+x.v+'%'):'',x.def?'Defesa +'+x.def+'%':'',x.dmg?'Dano +'+x.dmg+'%':'',x.vel?'Velocidade +'+x.vel+'%':'',x.crit?'Crítico +'+x.crit+'%':'',x.st&&x.t!=='anel'?'Sorte +'+x.st+'%':'',x.trf?'Transformação +'+x.trf+'%':'',x.fdmg?'Dano na transformação +'+x.fdmg+'%':'',x.yt?'(50% em quem não é o Yuta)':''].filter(Boolean).join(' · ');
 function rkGiveSp(k){const S=RKSP[k],I=twInv(),it=Object.assign({id:'gs'+k+Date.now().toString(36)+Math.random().toString(36).slice(2,5)},S);I.push(it);twLS.s('tw_inv',I);const Q=twEqp(),cur=I.find(x=>x.id===Q[S.t]);if(!cur||(S.v+(S.crit||0)+(S.dmg||0))>(cur.v+(cur.crit||0)+(cur.dmg||0))){Q[S.t]=it.id;twLS.s('tw_eqp',Q)}TW.capOut=twCap();return it}
 let RKMTMP=[];const rkMitLeft=()=>{const o=rkG('own',[]);return RK_MIT.filter(id=>!o.includes(id)).length};
 /* personagem NUNCA repetido: só sorteia quem o jogador não tem; se já tem todos daquela raridade, vem um equipamento da mesma raridade */
@@ -296,10 +300,10 @@ function rkSummon(n){rkInit();const C=rkCost(n);
   if(rkG('gem',0)<C.g){rkSfx('clang');rkToast(C.t?`Faltam 💎: precisa de ${C.g} (já usando ${C.t} 🎫)`:'Geminhas insuficientes! Compre na Loja 🛒','#ff8080');return}
   if(C.t)rkAdd('tic',-C.t);if(C.g)rkAdd('gem',-C.g);if(C.t)rkToast('🎫 Usou '+C.t+' ticket'+(C.t>1?'s':'')+(C.g?' + '+C.g+' 💎':''),'#ffd84a');
   RKMTMP=[];const L=[];for(let i=0;i<n;i++)L.push(rkRoll());
-  if(n===10&&!L.some(x=>(x.k==='chr')||(x.k==='sp')||(x.k==='eq'&&['epica','lend','mit'].includes(x.r))))L[9]=rkNewChr('epica');
+  if(n===10&&RKBAN!=='mit'&&!L.some(x=>(x.k==='chr')||(x.k==='sp')||(x.k==='eq'&&['epica','lend','mit'].includes(x.r))))L[9]=rkNewChr('epica');
   const own=rkG('own',['goku']);
   for(const x of L){if(x.k==='chr'){if(own.includes(x.id)){x.dup=x.r==='mit'?60:x.r==='lend'?25:5;rkAdd('gem',x.dup)}else{own.push(x.id);x.nw=1}}else if(x.k==='eq')twAddItem(x.E,TWEQR.find(R=>R.k===x.r));else if(x.k==='sp')rkGiveSp(x.s);else rkAdd('red',x.n)}
-  rkS('own',own);rkStAdd('spins',n);if(L.some(x=>x.k==='chr'&&(x.r==='lend'||x.r==='mit')&&x.nw))rkStAdd('legs',L.filter(x=>x.k==='chr'&&(x.r==='lend'||x.r==='mit')&&x.nw).length);
+  rkS('own',own);rkStAdd('spins',n);try{lvSpinDrops(n)}catch(e){}if(L.some(x=>x.k==='chr'&&(x.r==='lend'||x.r==='mit')&&x.nw))rkStAdd('legs',L.filter(x=>x.k==='chr'&&(x.r==='lend'||x.r==='mit')&&x.nw).length);
   const H=rkG('hist',[]);for(const x of L)H.unshift({k:x.k,r:x.r,id:x.id,s:x.s,t:x.E?x.E.k:'',n:x.n||0,dup:x.dup||0,d:Date.now()});rkS('hist',H.slice(0,60));
   for(const x of L)if(x.k==='chr'&&(x.r==='mit'||(x.nw&&x.r==='lend'))){try{const V=x.r==='mit'?RKUV:RKTV,F=V[x.id]&&V[x.id]().f;if(F)RKCWP[x.r+x.id]=rkPre(F)}catch(e){}}
   rkPlayVid(()=>rkCards(L))}
@@ -315,21 +319,21 @@ function rkCards(L){const O=document.createElement('div');O.className='rkRes2';c
     <div class="row"><button class="btn" id="rkCdAll">REVELAR TUDO</button><button class="btn main" id="rkCdOk" hidden>OK</button></div>`;
   rkHost().appendChild(O);const C=[...O.querySelectorAll('.rkCd')];let k=0;
   const rev=async el=>{if(!el||el.classList.contains('rv')||el.dataset.b)return;el.dataset.b=1;const x=L[+el.dataset.i];
-    if(x.k==='chr'&&x.r==='mit')await rkMega();
+    if(x.k==='chr'&&x.r==='mit')await (x.id==='yuta'?rkMegaY():rkMega());
     if((x.r==='lend'&&x.k==='chr')||x.r==='sec'){O.classList.add('dim');await new Promise(r=>setTimeout(r,500));O.classList.remove('dim')}
-    el.classList.add('rv');rkSfx(x.r==='lend'||x.r==='mit'?'boom':'whoosh');if(x.r==='lend'||x.r==='mit'||x.r==='sec')setTimeout(()=>rkSfx('powerUp'),200);if(x.r==='sec'){await new Promise(r=>setTimeout(r,400));await rkSecWin()}
-    if(x.k==='chr'&&x.r==='mit'){await new Promise(r=>setTimeout(r,500));await rkCharWin(x.id,1,x.nw)}
+    el.classList.add('rv');rkSfx(x.r==='lend'||x.r==='mit'?'boom':'whoosh');if(x.r==='lend'||x.r==='mit'||x.r==='sec')setTimeout(()=>rkSfx('powerUp'),200);if(x.r==='sec'){await new Promise(r=>setTimeout(r,400));await rkSecWin(x.s||'sec')}
+    if(x.k==='chr'&&x.r==='mit'){await new Promise(r=>setTimeout(r,500));await rkCharWin(x.id,1,x.nw);if(x.id==='yuta'&&x.nw)await ytTitClaim(1)}
     else if(x.k==='chr'&&x.nw&&x.r==='lend'){await new Promise(r=>setTimeout(r,500));await rkCharWin(x.id)}
     if(C.every(c=>c.classList.contains('rv'))){$('rkCdAll').hidden=true;$('rkCdOk').hidden=false}};
   C.forEach(el=>el.onclick=()=>rev(el));const auto=async()=>{for(const el of C){if(!O.isConnected)return;await rev(el);await new Promise(r=>setTimeout(r,one?300:260))}};setTimeout(auto,500);
   $('rkCdAll').onclick=async()=>{for(const el of C)await rev(el)};$('rkCdOk').onclick=()=>{O.remove();rkView('gacha')}}
-function rkSecWin(){return new Promise(res=>{const S=RKSP.sec,O=document.createElement('div');O.className='rkWin end sec';O.innerHTML=`<div class="t"><b>✦ DROP SECRETO! ✦</b><span>${S.nm}</span></div><img class="fl" src="${S.img}" alt=""><i class="rays"></i><div class="t2">${rkSpTxt(S)}</div>`;rkHost().appendChild(O);rkSfx('boom');setTimeout(()=>rkSfx('powerUp'),300);setTimeout(()=>{O.onclick=()=>{O.remove();res()}},500)})}
+function rkSecWin(k){return new Promise(res=>{const S=RKSP[k||'sec']||RKSP.sec,O=document.createElement('div');O.className='rkWin end sec';O.innerHTML=`<div class="t"><b>✦ DROP SECRETO! ✦</b><span>${S.nm}</span></div><img class="fl" src="${S.img}" alt=""><i class="rays"></i><div class="t2">${rkSpTxt(S)}</div>`;rkHost().appendChild(O);rkSfx('boom');setTimeout(()=>rkSfx('powerUp'),300);setTimeout(()=>{O.onclick=()=>{O.remove();res()}},500)})}
 /* personagem lendário novo: passa o vídeo da transformação dele */
 const RKTV={goku:()=>GKV,aokiji:()=>AOV,zoro:()=>ZRV,broly:()=>BRV,vegeta:()=>VGV,gogeta:()=>GGV,madara:()=>MDV,gojo:()=>GJV,luffy:()=>LFV,rengoku:()=>RGV,naruto:()=>NRV,garou:()=>GRV,qingqing:()=>QQV,zaykon:()=>ZKV,zedry:()=>ZGV};
 function rkMega(){return new Promise(res=>{const O=document.createElement('div');O.className='rkMega';O.innerHTML='<i class="rays"></i><i class="fl"></i><div class="tx"><small>✦ ✦ ✦</small><b>SUPER</b><b>MEGA SORTE!</b><span>UM PERSONAGEM MÍTICO APARECEU!</span></div>';rkHost().appendChild(O);
   rkSfx('boom');setTimeout(()=>rkSfx('powerUp'),500);setTimeout(()=>rkSfx('boom'),1100);setTimeout(()=>rkSfx('powerUp'),1700);let d=0;const end=()=>{if(d)return;d=1;O.classList.add('out');setTimeout(()=>{O.remove();res()},350)};setTimeout(end,2900);setTimeout(()=>{O.onclick=end},900)})}
 function rkCharWin(id,mit,nw){return new Promise(res=>{let F=null;const V=mit?RKUV:RKTV;try{F=V[id]&&V[id]().f}catch(e){}
-  const O=document.createElement('div');O.className='rkWin'+(mit?' mit':'');O.innerHTML=`<img class="v" alt=""><div class="t"><b>${mit?(nw?'✦ NOVO PERSONAGEM MÍTICO! ✦':'✦ MÍTICO REPETIDO (+60 💎) ✦'):'NOVO PERSONAGEM LENDÁRIO!'}</b><span>${CH[id]?CH[id].name:''}</span></div><img class="fl" src="${fullSrc(id)}" alt="" hidden><i class="rays"></i>`;rkHost().appendChild(O);
+  const O=document.createElement('div');O.className='rkWin'+(mit?' mit':'')+(id==='yuta'?' ytm':'');O.innerHTML=`<img class="v" alt=""><div class="t"><b>${id==='yuta'?(nw?'✦ SSR YUTA · SORTE MÍTICA! ✦':'✦ YUTA ✦'):mit?(nw?'✦ NOVO PERSONAGEM MÍTICO! ✦':'✦ MÍTICO REPETIDO (+60 💎) ✦'):'NOVO PERSONAGEM LENDÁRIO!'}</b><span>${CH[id]?CH[id].name:''}</span></div><img class="fl" src="${fullSrc(id)}" alt="" hidden><i class="rays"></i>`;rkHost().appendChild(O);
   const v=O.querySelector('.v'),fl=O.querySelector('.fl');v.remove();let done=false,stop=null;const fin=()=>{if(done)return;done=true;if(stop)stop();fl.hidden=false;O.classList.add('end');rkSfx('powerUp');setTimeout(()=>{O.onclick=()=>{O.remove();res()}},400)};
   O.onclick=()=>fin();if(F&&F.length){const P=RKCWP[(mit?'mit':'lend')+id]||rkPre(F);stop=rkPlayFrames(O,P.ims,P.p,fin)}else fin()})}
 function rkHist(){const H=rkG('hist',[]);rkModal(`<div class="twM"><h3>📜 HISTÓRICO</h3><div class="rkHl">${H.length?H.map(x=>{const R=TWEQR.find(q=>q.k===x.r)||TWEQR[0];return `<div style="--c:${R.c}"><b>${x.k==='chr'?(CH[x.id]?CH[x.id].name:x.id):x.k==='eq'?TWEQ.find(E=>E.k===x.t).n:x.k==='sp'?RKSP[x.s].nm:'+'+x.n+' 🔴'}</b><span>${x.k==='chr'?'PERSONAGEM '+(x.r==='mit'?'MÍTICO':x.r==='lend'?'LENDÁRIO':'ÉPICO')+(x.dup?' (repetido +'+x.dup+'💎)':''):x.k==='eq'?'EQUIPAMENTO '+R.n:x.k==='sp'?(x.r==='sec'?'✦ SECRETO ✦':'MÍTICO ESPECIAL'):'MOEDA VERMELHA'}</span><small>${new Date(x.d).toLocaleString('pt-BR').slice(0,17)}</small></div>`}).join(''):'<p class="twH">Nenhum giro ainda.</p>'}</div><div class="row"><button class="btn" id="rkMX">FECHAR</button></div></div>`);$('rkMX').onclick=()=>rkModal(null)}
@@ -356,7 +360,7 @@ function rkLibH(){return `<button class="hs" data-a="back" style="${rkB(20,10,14
   <div class="rkPed" id="rkPed" style="${rkB(380,120,920,640)}"></div><div class="rkInfo" id="rkInfo" style="${rkB(300,700,1000,800)}"></div>
   <button class="rkUse" id="rkUse" data-a="libUse" style="${rkB(18,600,268,668)}" hidden></button>`}
 function rkLibItems(){const own=rkG('own',['goku']),inv=twInv(),Q=twEqp(),R=[];
-  if(RKL.tab==='chr'){for(const id of RK_MIT.concat(RK_LEG,RK_EPI))R.push({id,k:'chr',r:rkRar(id),has:own.includes(id),img:IMG[id]?IMG[id].src:'',big:fullSrc(id),nm:CH[id].name,d:({mit:'✦ PERSONAGEM MÍTICO',lend:'PERSONAGEM LENDÁRIO'}[rkRar(id)]||'PERSONAGEM ÉPICO')+(rkG('sel','goku')===id?' · EM USO NA RANQUEADA':'')})}
+  if(RKL.tab==='chr'){for(const id of ['yuta'].concat(RK_MIT,RK_LEG,RK_EPI).filter(i=>CH[i]))R.push({id,k:'chr',r:rkRar(id),has:own.includes(id),img:IMG[id]?IMG[id].src:'',big:fullSrc(id),nm:CH[id].name,d:({mit:'✦ PERSONAGEM MÍTICO',lend:'PERSONAGEM LENDÁRIO'}[rkRar(id)]||'PERSONAGEM ÉPICO')+(rkG('sel','goku')===id?' · EM USO NA RANQUEADA':'')})}
   else if(RKL.tab==='eq'){for(const k in RKSP){const S=RKSP[k];const has=inv.some(x=>x.nm===S.nm);R.push({id:'sp'+k,k:'eq',r:S.r,has,img:S.img,big:S.img,nm:S.nm,d:(S.r==='sec'?'✦ SECRETO · ':S.r==='lend'?'LENDÁRIO ESPECIAL · ':'MÍTICO ESPECIAL · ')+rkSpTxt(S)+(S.boss?' · drop do Modo Boss':' · só no gacha')})}
     for(const E of TWEQ)for(const Rr of TWEQR.filter(q=>q.k!=='sec')){const has=inv.some(x=>x.t===E.k&&x.r===Rr.k);const v=E.k==='cap'?TWCAPV[Rr.k]:null;R.push({id:E.k+Rr.k,k:'eq',r:Rr.k,has,img:twIco(E.k,Rr.k),big:twIco(E.k,Rr.k),nm:E.n+' '+Rr.n,d:E.k==='cap'?'Transformação +'+v[0]+'% · Crítico +'+v[1]+'%':E.d.replace('Aumenta o ','').replace('Aumenta a ','')+' +'+Rr.v+'%'})}}
   else if(RKL.tab==='it'){R.push({id:'gem',k:'it',r:'rara',has:1,img:RQA.coin[0],big:RQA.coin[0],nm:'GEMINHAS',d:'Você tem '+rkFmtN(rkG('gem',0))+' · usadas na Invocação'});R.push({id:'tic',k:'it',r:'lend',has:1,img:RQA.coin[2],big:RQA.coin[2],nm:'TICKET DE GIRO',d:'Você tem '+rkFmtN(rkG('tic',0))+' · 1 ticket = 1 giro'});
@@ -504,7 +508,7 @@ function acOpen(tab){const n=localStorage.getItem('ac_n'),k=localStorage.getItem
       msg('✔ Conta carregada! Recarregando o jogo...','ok');setTimeout(()=>location.reload(),900)}catch(e){B('acIn').disabled=false;msg('Sem internet agora. Tenta de novo.','err')}}}
 
 /* ================= MODO TORRE RANQUEADA (v228): mesma rank do Boss, dá mais XP, nova tela ================= */
-const RKTWX={fl:.6,top:2,loss:.5},RKTB=i=>({dano:i*2,def:i*2,vel:i,crit:i,sorte:i*3}),rkSorte=()=>RKTB(rkLvl()).sorte+(twIsAdm()?30:0)+rkEqSt(),rkEqSt=()=>{let v=0;try{const o=twEqOn();for(const k in o)v+=o[k].st||0}catch(e){}return v};
+const RKTWX={fl:.6,top:2,loss:.5},RKTB=i=>({dano:i*2,def:i*2,vel:i,crit:i,sorte:i*3}),rkSorte=()=>RKTB(rkLvl()).sorte+(twIsAdm()?30:0)+rkEqSt(),rkEqSt=()=>{let v=0;try{const o=twEqOn();for(const k in o)v+=(o[k].st||0)*eqNf(o[k])}catch(e){}return Math.round(v)};
 function rkTorre(){const s=rkG('sel','goku'),own=rkG('own',['goku']);G.pick=CH[s]&&own.includes(s)?s:'goku';G.gmode='torre';try{audioInit()}catch(e){}try{fsTry()}catch(e){}twOpen()}
 /* dificuldade da Torre pelo rank (v231): leve no começo; bem mais difícil para chegar nos 2 últimos ranks */
 const RKTD={dm:[1,1.05,1.1,1.15,1.22,1.4,1.55,1.65],hp:[1,1,1.1,1.15,1.25,1.4,1.55,1.65],sp:[1,1,1.02,1.04,1.06,1.1,1.14,1.16],ai:[0,0,0,0,0,1,1,1]};
@@ -643,7 +647,7 @@ function pfH(){const D=pfCur(),me=!PFO,n=D.nome||'',adm=!!n&&n.toLowerCase()===S
   <div class="pfPedN" style="${rkB2(1090,848,1490,896)}">${CH[ped]?CH[ped].name:''}</div>
   ${me?`<button class="pfLupa" data-a="pfPick" style="${rkB2(1528,700,1600,772)}" title="Trocar personagem">🔍</button>`:''}`}
 function pfOn(){clearInterval(rkView.iv);if(!PFO)setTimeout(()=>pfPub(1),400)}
-function hsH(){const D=pfCur(),H=D.h,R=D.R,tot=[...RK_MIT,...RK_LEG,...RK_EPI].filter(id=>CH[id]).length,tx=H&&H.pt?Math.round(H.vw/H.pt*100):0,N=v=>H?rkFmtN(v||0):'—';
+function hsH(){const D=pfCur(),H=D.h,R=D.R,tot=['yuta',...RK_MIT,...RK_LEG,...RK_EPI].filter(id=>CH[id]).length,tx=H&&H.pt?Math.round(H.vw/H.pt*100):0,N=v=>H?rkFmtN(v||0):'—';
   const pts=R?R.map((r,i)=>{const [vx,vy]=PFRV[i];return [PFRC[0]+(vx-PFRC[0])*r.v/100,PFRC[1]+(vy-PFRC[1])*r.v/100].map(Math.round).join(',')}).join(' '):'';
   const CHP=[[1428,282],[1548,418],[1548,642],[1400,728],[1150,694],[1138,482]];
   return `<button class="hs" data-a="back" style="${rkB2(40,0,200,90)}"></button>
@@ -759,3 +763,164 @@ function rkAdmGift(){const own=rkG('own',['goku']),P=[...RK_MIT,...RK_LEG,...RK_
     if(R.k==='gem'){const S=document.querySelector('#rkDn span');let n=0;const st=Math.max(10,R.v/40);const iv=setInterval(()=>{n=Math.min(R.v,n+st);S.textContent=Math.round(n);if(n>=R.v){clearInterval(iv);if(R.v>=450)twSfx('boom')}},30)}else setTimeout(()=>twSfx('boom'),500);
     $('rkDt').style.visibility='visible';$('rkDok').textContent='PEGAR'};
   $('rkDbx').onclick=go;$('rkDok').onclick=go}
+/* ================= v239: YUTA na Invocação MÍTICA, títulos numerados, ANEL, itens do Yuta (50% em outros), SISTEMA DE NÍVEL dos personagens, sorte nos drops =================
+   Dados novos no aparelho (entram no save da conta): rk_lv {id:{lv,t:[escolha por linha]}}, rk_po (pó), rk_cr [5] cristais, rk_el [5] itens de elevação, rk_elp [5] piedade,
+   rk_pityY (Yuta, 250), rk_pityYS (itens secretos, 200), rk_yttp (título pendente). Servidor: torre/yttit_N (N=1..10) com documentId fixo = quem pegou o Yuta primeiro. */
+let RKBAN=(()=>{try{return localStorage.getItem('rk_ban')||'mit'}catch(e){return 'mit'}})();
+const RKRN=['comum','rara','epica','lend','mit'],RKRNM=['COMUM','RARO','ÉPICO','LENDÁRIO','MÍTICO'],RKRC=['#c3c8d2','#3d9bff','#b25bff','#ffc531','#ff2e63'];
+/* ---------- equipamento: ANEL + bônus extras + itens do Yuta valem 50% em outros personagens ---------- */
+const eqChar=()=>{try{if(typeof TW!=='undefined'&&TW.on&&TW.pick)return TW.pick;if(G.gmode==='boss'&&G.pick)return G.pick}catch(e){}return rkG('sel','goku')};
+const eqNf=it=>it&&it.yt&&eqChar()!=='yuta'?.5:1;
+twEqOn=function(){const I=twInv(),Q=twEqp(),o={};for(const k of ['esp','arm','bot','cap','anel']){const it=I.find(x=>x.id===Q[k]);if(it)o[k]=it}return o};
+const EQMAIN={esp:'dano',arm:'vida',bot:'vel',cap:'trf',anel:'st'};
+twEqB=st=>{const o=twEqOn();let v=0;for(const k in o){const it=o[k],n=eqNf(it);if(EQMAIN[k]===st)v+=(it.v||0)*n;if(st==='vel'&&it.vel)v+=it.vel*n;if(st==='dano'&&it.dmg)v+=it.dmg*n;if(st==='vida'&&it.def)v+=it.def*n;if(st==='trf'&&it.trf)v+=it.trf*n}return Math.round(v*10)/10};
+const eqCrit=()=>{const o=twEqOn();let c=0;for(const k in o)c+=(o[k].crit||0)*eqNf(o[k]);return c};
+const eqFdmg=()=>{const o=twEqOn();let c=0;for(const k in o)c+=(o[k].fdmg||0)*eqNf(o[k]);return c};
+/* ---------- NÍVEL dos personagens ---------- */
+const LVMAX=id=>({mit:50,lend:40,epica:30}[rkRar(id)]||30);
+const LVCOST=lv=>lv<10?[150,10]:lv<20?[300,20]:lv<30?[500,35]:lv<40?[900,60]:[1800,120];
+const LVROW=[1,10,20,30,40,50];   /* nível em que cada linha da árvore abre */
+const LVSTAT={dano:{n:'DANO',i:'⚔️'},cd:{n:'DANO CRÍTICO',i:'💥'},crit:{n:'CRÍTICO',i:'🎯'},vel:{n:'VELOCIDADE',i:'💨'},st:{n:'SORTE',i:'🍀'},ls:{n:'ROUBO DE VIDA',i:'❤️'},uv:{n:'VEL. ULTIMATE',i:'🔥'}};
+const LVTREE=[[['dano',3],['crit',2],['vel',2],['st',5]],[['dano',8],['cd',10],['crit',5],['vel',5]],[['ls',4],['st',10],['dano',8],['uv',10]],
+  [['cd',10],['crit',5],['vel',5],['ls',4]],[['dano',8],['cd',10],['st',10],['uv',10]],[['dano',10],['cd',15],['crit',7],['ls',5]]];
+const LVCRN=[[0,1],[1,1],[2,1],[3,1],[4,1],[4,2]];  /* cristal [raridade, quantidade] para escolher em cada linha */
+const lvAll=()=>rkG('lv',{}),lvOf=id=>{const L=lvAll()[id]||{};return {lv:Math.max(1,L.lv|0),t:Array.isArray(L.t)?L.t:[]}},lvSave=(id,o)=>{const A=lvAll();A[id]=o;rkS('lv',A)};
+const lvArr=k=>{const a=rkG(k,[0,0,0,0,0]);while(a.length<5)a.push(0);return a};
+const lvPo=()=>rkG('po',0)|0;
+function lvBonus(id){const L=lvOf(id),B={dano:(L.lv-1)*.4,crit:(L.lv-1)*.15,vel:0,st:0,cd:0,ls:0,uv:0};
+  L.t.forEach((c,r)=>{if(c==null||c<0||!LVTREE[r]||!LVTREE[r][c]||L.lv<LVROW[r])return;const [k,v]=LVTREE[r][c];B[k]+=v});return B}
+/* sorte total (rank + ADM + equipamento + nível do personagem em uso) e o multiplicador de drops */
+const lvSorte=()=>{try{return rkSorte()+lvBonus(eqChar()).st}catch(e){return 0}};
+const lvLuck=()=>1+Math.max(0,lvSorte())/200;
+/* ---------- bônus aplicados na luta (Boss e Torre ranqueada) ---------- */
+{const _ra=rkApply;rkApply=function(){_ra.apply(this,arguments);try{rkExtra()}catch(e){}}}
+function rkExtra(){if(!G.p)return;const torre=typeof TW!=='undefined'&&TW.on&&G.gmode==='torre',boss=G.gmode==='boss';if(!torre&&!boss)return;const p=G.p[0],id=p.def.id;
+  // crítico de todos os equipamentos (a Torre antiga só contava o capacete) com o corte de 50% dos itens do Yuta
+  const o=twEqOn();const already=torre?((o.cap&&o.cap.crit)||0):Object.values(o).reduce((a,x)=>a+(x.crit||0),0);p.tcr=(p.tcr||0)-already+eqCrit();
+  p.tfd=eqFdmg();
+  const B=lvBonus(id);p.tdm=(p.tdm||1)+B.dano/100;p.tcr=(p.tcr||0)+B.crit;p.tsp=(p.tsp||1)+B.vel/100;p.tcd=B.cd;p.tls=B.ls;p.tki=1+B.uv/100;
+  if(twTits().some(k=>/^yt\d+$/.test(k)))p.tdm+=.10}
+/* ---------- drops do sistema de nível ---------- */
+const LVELC=[15,12,10,5,3],LVELP=[8,20,40,80,150];
+function lvGive(o){if(o.po)rkS('po',lvPo()+o.po);if(o.cr){const a=lvArr('cr');a[o.cr[0]]+=o.cr[1]||1;rkS('cr',a)}if(o.el!=null){const a=lvArr('el');a[o.el]++;rkS('el',a)}}
+function lvCrRoll(){let q=Math.random()*100;const W=[60,25,10,4,1];for(let i=0;i<5;i++){if((q-=W[i])<0)return i}return 0}
+function lvElRoll(mult){const p=lvArr('elp');let got=null;for(let i=4;i>=0;i--){p[i]++;if(got==null&&(Math.random()*100<LVELC[i]*mult*lvLuck()||p[i]>=LVELP[i])){got=i;p[i]=0}}rkS('elp',p);return got}
+const poIco=n=>RQA.lvi.po[n>=150?4:n>=60?3:n>=25?2:n>=10?1:0];
+function lvDropsHTML(D){const it=[];if(D.po)it.push(`<span style="--c:#b57bff"><img src="${poIco(D.po)}" alt="">+${D.po} PÓ</span>`);if(D.cr)it.push(`<span style="--c:${RKRC[D.cr[0]]}"><img src="${RQA.lvi.cr[D.cr[0]]}" alt="">CRISTAL ${RKRNM[D.cr[0]]}</span>`);
+  if(D.el!=null)it.push(`<span class="spd" style="--c:${RKRC[D.el]}"><img src="${RQA.lvi.el[D.el]}" alt="">✦ ${LVELN[D.el]}</span>`);if(D.gem)it.push(`<span style="--c:#7dff9a"><img src="${RQA.coin[0]}" alt="">🍀 +${D.gem}</span>`);if(D.red)it.push(`<span style="--c:#7dff9a"><img src="${RQA.coin[1]}" alt="">🍀 +${D.red}</span>`);return it.join('')}
+const LVELN=['PERGAMINHO DE ELEVAÇÃO','CUBO DE ELEVAÇÃO','MÁSCARA DE ELEVAÇÃO','CHAMA DE ELEVAÇÃO','ORBE DE ELEVAÇÃO'];
+const LVPON='PÓ AMALDIÇOADO';
+/* Boss: depois da luta (vitória = mais), a sorte aumenta pó, cristais, itens, geminhas e moeda vermelha */
+{const _rr=rkResult;rkResult=function(R){const L=lvLuck(),D={};
+  D.po=Math.round((R.won?8+Math.random()*8:2+Math.random()*3)*L);if(Math.random()<(R.won?.3:.06)*L)D.cr=[lvCrRoll(),1];if(R.won){const e=lvElRoll(1);if(e!=null)D.el=e}
+  if(R.won&&L>1){D.gem=Math.round((R.gem||0)*(L-1));D.red=Math.round((R.red||0)*(L-1));if(D.gem)rkAdd('gem',D.gem);if(D.red)rkAdd('red',D.red)}
+  lvGive(D);const r=_rr.apply(this,arguments);try{const C=document.querySelector(RKMS()+'.rkItems');if(C)C.insertAdjacentHTML('beforeend',lvDropsHTML(D))}catch(e){}return r}}
+/* Torre: cada andar vencido dá pó (e às vezes cristal); completar a torre = chance dobrada de item de elevação; sorte aumenta as moedas */
+{const _ta2=twAfter;twAfter=function(w){const m0=twLS.g('tw_moedas',0)|0;const r=_ta2.apply(this,arguments);try{if(w===0){const L=lvLuck(),D={po:Math.round((3+Math.random()*4)*L)};if(Math.random()<.1*L)D.cr=[lvCrRoll(),1];lvGive(D);
+    const m1=twLS.g('tw_moedas',0)|0,b=Math.round(Math.max(0,m1-m0)*(L-1));if(b>0)twLS.s('tw_moedas',m1+b);TW.lvD=TW.lvD||{po:0};TW.lvD.po+=D.po;if(D.cr)TW.lvD.cr=D.cr}}catch(e){}return r}}
+{const _tf2=twFinish;twFinish=function(won,quit){try{if(won){const e=lvElRoll(2);if(e!=null){lvGive({el:e});TW.lvD=TW.lvD||{po:0};TW.lvD.el=e}}const D=TW.lvD;TW.lvD=null;if(D&&(D.po||D.el!=null))setTimeout(()=>{try{twToast('🟣 +'+(D.po||0)+' '+LVPON+(D.el!=null?' · ✦ '+LVELN[D.el]+'!':'')+(D.cr?' · 💎 cristal '+RKRNM[D.cr[0]]:''),'#d8a8ff')}catch(x){}},1600)}catch(e){}return _tf2.apply(this,arguments)}}
+/* Gacha: cada giro dá pó; às vezes cristal ou item de elevação */
+function lvSpinDrops(n){const L=lvLuck();let po=0,cr=0,el=[];for(let i=0;i<n;i++){po+=Math.round((2+Math.random()*4)*L);if(Math.random()<.06*L){lvGive({cr:[lvCrRoll(),1]});cr++}if(Math.random()<.01*L){const e=Math.random()<.5?0:Math.random()<.6?1:Math.random()<.6?2:Math.random()<.7?3:4;lvGive({el:e});el.push(e)}}
+  lvGive({po});setTimeout(()=>rkToast('🟣 +'+po+' '+LVPON+(cr?' · '+cr+' cristal'+(cr>1?'s':''):'')+(el.length?' · ✦ '+el.map(e=>LVELN[e]).join(', '):''),'#d8a8ff'),400)}
+/* ================= INVOCAÇÃO MÍTICA (só o Yuta) ================= */
+const YTSEC=['yesp','yanel','yrou','yrika'];
+const ytOwned=()=>rkG('own',[]).includes('yuta'),ytSecLeft=()=>{const I=twInv();return YTSEC.filter(k=>!I.some(x=>x.nm===RKSP[k].nm))};
+function rkRollY(){
+  if(!ytOwned()&&!RKMTMP.includes('yuta')){const p=rkG('pityY',0)+1;if(p>=250||Math.random()*100<.4){rkS('pityY',0);RKMTMP.push('yuta');return {k:'chr',r:'mit',id:'yuta'}}rkS('pityY',p)}
+  {const L=ytSecLeft().filter(k=>!RKMTMP.includes(k));if(L.length){const p=rkG('pityYS',0)+1;if(p>=200||Math.random()*100<.3){rkS('pityYS',0);const s=L[(Math.random()*L.length)|0];RKMTMP.push(s);return {k:'sp',r:'sec',s}}rkS('pityYS',p)}}
+  let r=Math.random()*100;
+  if(r<30){let q=Math.random()*100,R='comum';for(const [k,w] of RKEQW){if((q-=w)<0){R=k;break}}return {k:'eq',r:R,E:TWEQ[(Math.random()*TWEQ.length)|0]}}
+  return {k:'red',r:'comum',n:1+((Math.random()*5)|0)}}
+{const _roll=rkRoll;rkRoll=function(){return RKBAN==='mit'?rkRollY():_roll()}}
+{const _tx=rkTaxas;rkTaxas=function(){if(RKBAN!=='mit')return _tx();rkModal(`<div class="twM"><h3>% TAXAS DA INVOCAÇÃO MÍTICA · YUTA</h3><table class="rkTx"><tr><th>Resultado</th><th>Chance</th></tr>
+  <tr><td style="color:#c58bff">✦ SSR YUTA (só aqui) · garantido em 250 giros</td><td>0,4%</td></tr><tr><td style="color:#e8f6ff">✦ SECRETO: Espada, Anel, Uniforme ou Rika do Yuta · garantido em 200 giros · nunca repetido</td><td>0,3%</td></tr>
+  <tr><td>Equipamento</td><td>30%</td></tr><tr><td style="color:#ff5a5a">Moeda Vermelha (1 a 5)</td><td>69,3%</td></tr></table>
+  <p class="twH">Todo giro também dá ${LVPON} (2 a 5) e às vezes cristal (6%) ou item de elevação (1%). A SORTE aumenta esses drops.<br>Só existe 1 Yuta por jogador: depois que você pega, ele para de aparecer. Os 10 primeiros do servidor ganham o título numerado do Yuta (+10% de dano).<br>Itens do Yuta: 100% no Yuta, 50% em outros personagens.</p><div class="row"><button class="btn" id="rkMX">FECHAR</button></div></div>`);$('rkMX').onclick=()=>rkModal(null)}}
+{const _gh=rkGachaH;rkGachaH=function(){const tabs=`<button class="hs ${RKBAN==='mit'?'on':''}" data-a="ban" data-b="mit" style="${rkB(15,115,395,258)}"></button><button class="hs ${RKBAN==='esp'?'on':''}" data-a="ban" data-b="esp" style="${rkB(15,268,380,392)}"></button><button class="hs lk dim" data-a="lock" style="${rkB(15,402,380,518)}">${RKLOCK}</button>`;
+  if(RKBAN!=='mit'){const h=_gh();return h.replace(/<button class="hs on" style="[^"]*" data-a="boxinfo"[^>]*><\/button>\s*<button class="hs lk dim" data-a="lock"[^>]*>.*?<\/button><button class="hs lk dim" data-a="lock"[^>]*>.*?<\/button>/,'')+`<div class="gbTabs" style="${rkB(10,110,400,525)}"><button data-a="ban" data-b="mit"><i>✦</i>Invocação<br>Mítica<em>YUTA</em></button><button class="on" data-a="ban" data-b="esp"><i>★</i>Invocação<br>Especial</button><button class="lk" data-a="lock"><i>🔒</i>Invocação<br>Padrão</button></div>`}
+  const own=ytOwned(),pY=rkG('pityY',0),pS=rkG('pityYS',0),sl=ytSecLeft().length;
+  return `<button class="hs" data-a="back" style="${rkB(15,10,130,85)}"></button><button class="hs" data-a="home" style="${rkB(1740,10,1840,85)}"></button>
+  <div class="rkNum" style="${rkB(1240,22,1360,62)}">${rkFmtN(rkG('gem',0))}</div><button class="hs" data-a="shop" style="${rkB(1365,18,1418,68)}"></button>
+  <div class="rkNum" style="${rkB(1530,22,1650,62)}">${rkFmtN(rkG('tic',0))}</div><button class="hs" data-a="lock" style="${rkB(1655,18,1710,68)}"></button>${tabs}
+  <div class="ytTaxa" style="${rkB(1312,470,1832,615)}"><i class="g"></i><i class="s"><s></s><s></s><s></s><s></s><s></s></i></div>
+  <div class="ytEvB" style="${rkB(420,212,862,302)}"></div>
+  <button class="hs" data-a="shop" style="${rkB(40,700,125,800)}"></button><button class="hs" data-a="hist" style="${rkB(165,700,265,800)}"></button><button class="hs" data-a="taxas" style="${rkB(300,700,390,800)}"></button>
+  <button class="hs" data-a="sum1" style="${rkB(540,690,985,805)}"><span class="shine"></span></button><button class="hs" data-a="sum10" style="${rkB(1030,690,1480,805)}"><span class="shine"></span></button>${(()=>{const c1=rkCost(1),c10=rkCost(10);return (c1.t?`<div class="rkTk" style="${rkB(600,655,925,688)}">🎫 usa 1 ticket (não gasta 💎)</div>`:'')+(c10.t?`<div class="rkTk" style="${rkB(1060,655,1445,688)}">🎫 usa ${c10.t} ticket${c10.t>1?'s':''}${c10.g?' + '+c10.g+' 💎':' (não gasta 💎)'}</div>`:'')})()}
+  ${own?`<div class="ytOwn" style="${rkB(420,575,860,640)}">✔ VOCÊ JÁ TEM O YUTA</div>`:''}
+  <div class="rkPity" style="${rkB(540,812,1480,845)}">${own?'':`<span style="color:#d8a8ff">✦ Yuta em <b>${250-pY}</b></span> · `}${sl?`✦ Secreto em <b>${200-pS}</b> · `:''}🎟️ 1 ticket = 1 giro · 🟣 +pó</div>`}}
+/* ---------- SORTE MÍTICA (tudo roxo) ---------- */
+function rkMegaY(){return new Promise(res=>{const O=document.createElement('div');O.className='rkMega ytm';O.innerHTML='<i class="rays"></i><i class="fl"></i><i class="ring"></i><div class="tx"><small>✦ ✦ ✦ ✦ ✦</small><b>SORTE</b><b>MÍTICA!</b><span>O YUTA APARECEU!</span></div>';rkHost().appendChild(O);
+  rkSfx('boom');setTimeout(()=>rkSfx('powerUp'),400);setTimeout(()=>rkSfx('boom'),900);setTimeout(()=>rkSfx('powerUp'),1500);setTimeout(()=>rkSfx('boom'),2200);let d=0;const end=()=>{if(d)return;d=1;O.classList.add('out');setTimeout(()=>{O.remove();res()},400)};setTimeout(end,3400);setTimeout(()=>{O.onclick=end},900)})}
+/* ---------- TÍTULO numerado dos 10 primeiros que pegaram o Yuta ---------- */
+for(let n=1;n<=10;n++)TWTIT['yt'+n]={n:'YUTA Nº'+n,i:'🗡️',c:n===1?'#ffe9a0':n<=3?'#e2b6ff':'#b57bff',d:'Um dos 10 primeiros do servidor a pegar o Yuta · +10% de dano',hid:1,yt:n};
+async function ytTitClaim(show){if(twTits().some(k=>/^yt\d+$/.test(k))){rkS('yttp',0);return}rkS('yttp',1);const nm=String(twLS.g('tw_nome','')||'?').slice(0,16),IV=v=>({integerValue:String(v)});
+  for(let n=1;n<=10;n++){let r;try{r=await twFetchT(TWURL+'/torre?documentId=yttit_'+n+'&key='+TWFB.apiKey,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({fields:{nome:{stringValue:nm},andar:IV(0),tempo:IV(0),uid:{stringValue:twUid()},ytt:{stringValue:String(n)},v:IV(239)}})})}catch(e){return}
+    if(r.ok){rkS('yttp',0);const L=twTits();L.push('yt'+n);twLS.s('tw_tit',L);twLS.s('tw_titOn','yt'+n);try{twTitSync()}catch(e){}if(show)await ytTitWin(n);return}
+    if(r.status!==409&&r.status!==403)return}
+  rkS('yttp',0)}
+function ytTitWin(n){return new Promise(res=>{const O=document.createElement('div');O.className='rkWin end ytw';O.innerHTML=`<div class="t"><b>✦ VOCÊ É O Nº ${n} DO SERVIDOR! ✦</b><span>TÍTULO</span></div><div class="ytTw">${pfTitH('yt'+n,'',false)}</div><i class="rays"></i><div class="t2">Um dos 10 primeiros a pegar o Yuta · +10% de dano em todas as lutas ranqueadas</div>`;rkHost().appendChild(O);rkSfx('boom');setTimeout(()=>rkSfx('powerUp'),300);setTimeout(()=>{O.onclick=()=>{O.remove();res()}},600)})}
+{const _op=rkOpen;rkOpen=function(v){const r=_op.apply(this,arguments);if(rkG('yttp',0)&&rkG('own',[]).includes('yuta'))setTimeout(()=>ytTitClaim(1),2500);return r}}
+/* título do Yuta na placa do perfil: quanto menor o número, mais brilho */
+{const _pt=pfTitH;pfTitH=function(t,n,adm){const T=TWTIT[t];if(T&&T.yt){const k=T.yt===1?1:T.yt<=3?2:T.yt<=6?3:4;return `<span class="pfTt ytt y${k}" style="--c:${T.c}"><i>🗡️</i><b>YUTA</b><em>Nº ${T.yt}</em>${k<=2?'<i class="sp a">✦</i><i class="sp b">✦</i><i class="sp c">✦</i>':''}<i class="sw"></i></span>`}return _pt.apply(this,arguments)}}
+/* ================= BIBLIOTECA → PERSONAGENS (arte nova) + TELA DE NÍVEL ================= */
+const lvUltTxt=id=>{const d=(ROS[id]&&ROS[id].d)||'';const m=d.split(/(?<=\.)\s+/).filter(x=>/Ultimate|Super|ULTIMATE/i.test(x));return (m.join(' ')||d).slice(0,170)};
+function lvStatRows(id){const B=lvBonus(id);return [['dano','+'+B.dano.toFixed(1)+'%'],['crit',(5+B.crit).toFixed(1)+'%'+(B.cd?' 💥+'+B.cd+'%':'')],['vel','+'+B.vel+'%'],['st','+'+B.st+'%'],['uv','+'+B.uv+'%'+(B.ls?' ❤️'+B.ls+'%':'')]]}
+{const _lh=rkLibH;rkLibH=function(){if(RKL.tab!=='chr')return _lh();
+  return `<button class="hs" data-a="back" style="${rkB(20,10,145,80)}"></button><button class="hs" data-a="home" style="${rkB(1735,5,1840,80)}"></button>
+  ${[['chr',145,225],['eq',240,320],['it',335,410],['col',428,505]].map(([t,a,b])=>`<button class="hs tab ${RKL.tab===t?'on':''}" data-a="tab" data-t="${t}" style="${rkB(10,a,275,b)}"></button>`).join('')}
+  <input class="rkSrch" id="rkSrch" placeholder="Buscar..." autocomplete="off" value="${twEsc(RKL.q)}" style="${rkB(1255,100,1640,150)}"><button class="hs" data-a="filt" style="${rkB(1675,95,1760,155)}"><span class="rkFl" id="rkFl">${['TODOS','TENHO','FALTA'][RKL.f]}</span></button>
+  <div id="rkGrid"></div><button class="hs" data-a="up" style="${rkB(1762,178,1812,228)}"></button><button class="hs" data-a="down" style="${rkB(1762,712,1812,762)}"></button>
+  <div class="rkPed lbP" id="rkPed" style="${rkB(250,120,880,615)}"></div>
+  <div class="lbNm" id="lbNm" style="${rkB(440,642,725,698)}"></div>
+  <div class="lbBar" id="lbBar" style="${rkB(282,722,880,750)}"><s></s><b></b></div>
+  <div class="lbAt" id="lbAt" style="${rkB(965,232,1075,465)}"></div>
+  <div class="lbUl" id="lbUl" style="${rkB(800,522,1058,598)}"></div>
+  <div class="rkInfo" id="rkInfo" hidden></div>
+  <button class="rkUse" id="rkUse" data-a="libUse" style="${rkB(14,548,268,612)}" hidden></button>
+  <button class="lbEvo" id="lbEvo" data-a="evo" style="${rkB(14,625,268,700)}" hidden>⬆ EVOLUIR</button>`}}
+{const _lg=rkLibGrid;rkLibGrid=function(){if(RKL.tab!=='chr')return _lg();const L=rkLibItems(),G0=$('rkGrid');if(!G0)return;const pages=Math.max(1,Math.ceil(L.length/16));RKL.pg=Math.min(RKL.pg,pages-1);const X=[1132,1289,1445,1602],Y=[180,330,478,626];
+  G0.innerHTML=L.slice(RKL.pg*16,RKL.pg*16+16).map((x,i)=>{const c=(TWEQR.find(R=>R.k===x.r)||TWEQR[0]).c,lv=x.has?lvOf(x.id).lv:0;return `<button class="rkCell lbC ${x.has?'':'no'} ${RKL.cur&&RKL.cur.id===x.id?'on':''}" data-id="${x.id}" style="${rkB(X[i%4],Y[(i/4)|0],X[i%4]+138,Y[(i/4)|0]+132)};--c:${c}"><img src="${x.img}" alt="">${x.has?`<em>Nv ${lv}</em>`:'<span class="lk">🔒</span>'}<b>${twEsc(x.nm)}</b></button>`}).join('')+(pages>1?`<div class="rkPg" style="${rkB(1762,450,1812,480)}">${RKL.pg+1}/${pages}</div>`:'');
+  G0.querySelectorAll('.rkCell').forEach(b=>b.onclick=()=>{const x=L.find(y=>y.id===b.dataset.id);if(x){rkSfx('whoosh');rkLibShow(x);rkLibGrid()}})}}
+{const _ls=rkLibShow;rkLibShow=function(x){_ls.apply(this,arguments);if(RKL.tab!=='chr'||!$('lbNm'))return;const id=x.id,L=lvOf(id),mx=LVMAX(id),c=(TWEQR.find(R=>R.k===x.r)||TWEQR[0]).c;
+  $('lbNm').innerHTML=`<b style="--c:${c}">${twEsc(CH[id].name)}</b>`;const B=$('lbBar');B.querySelector('s').style.width=(L.lv/mx*100)+'%';B.querySelector('b').textContent=x.has?'NÍVEL '+L.lv+' / '+mx:'🔒 BLOQUEADO · '+twEsc(x.d);
+  $('lbAt').innerHTML=lvStatRows(id).map(([k,v])=>`<span>${v}</span>`).join('');$('lbUl').textContent=lvUltTxt(id);$('lbEvo').hidden=!x.has}}
+function lvOpen(id){if(!id||!CH[id]||!rkG('own',[]).includes(id))return;LVC.id=id;rkView('lvl')}
+const LVC={id:null};
+function lvH(){const id=LVC.id,L=lvOf(id),mx=LVMAX(id),cr=lvArr('cr'),el=lvArr('el'),c=RKRC[['epica','lend','mit'].indexOf(rkRar(id))+2];
+  const need=lvNeed(id),S=lvStatRows(id),RY=[170,277,384,490,597,705],CX=[1215,1350,1485,1620];
+  return `<button class="hs" data-a="back" style="${rkB(10,8,125,78)}"></button><button class="hs" data-a="home" style="${rkB(1735,8,1840,78)}"></button>
+  <div class="lvPed" style="${rkB(120,40,600,600)};--c:${c}"><i class="glw"></i><img src="${fullSrc(id)}" alt=""></div>
+  <div class="lvNm" style="${rkB(640,165,950,222)}">${twEsc(CH[id].name)}<small>${{mit:'MÍTICO',lend:'LENDÁRIO',epica:'ÉPICO'}[rkRar(id)]} · máx. ${mx}</small></div>
+  ${S.map(([k,v],i)=>`<div class="lvSt" style="${rkB(722,258+i*67,935,302+i*67)}"><b>${LVSTAT[k].n}</b><span>${v}</span></div>`).join('')}
+  <div class="lvBx" style="${rkB(120,680,235,790)}"><small>NÍVEL</small><b>${L.lv}</b></div>
+  <div class="lvBx nx" style="${rkB(340,680,455,790)}">${L.lv>=mx?'<small>MÁX.</small><b>★</b>':need.el!=null?`<img src="${RQA.lvi.el[need.el]}" alt=""><small>${el[need.el]}/1</small>`:`<small>NÍVEL</small><b>${L.lv+1}</b>`}</div>
+  <button class="lvUp ${need.ok?'':'no'}" data-a="lvUp" style="${rkB(612,698,925,768)}">${L.lv>=mx?'NÍVEL MÁXIMO':need.el!=null?'✦ ELEVAR':'⬆ SUBIR'}<small>${L.lv>=mx?'':`🪙 ${rkFmtN(need.c)} · 🟣 ${need.p}${need.el!=null?' · '+LVELN[need.el]:''}`}</small></button>
+  <div class="lvRes" style="${rkB(470,632,950,672)}">🪙 ${rkFmtN(twLS.g('tw_moedas',0)|0)} · 🟣 ${rkFmtN(lvPo())} ${LVPON}<button data-a="lvInfo">?</button></div>
+  ${LVTREE.map((row,r)=>{const open=L.lv>=LVROW[r],has=r<lvRows(id),pick=L.t[r];return `<div class="lvRl ${open?'on':''} ${has?'':'x'}" style="${rkB(1028,RY[r]+24,1098,RY[r]+46)}">${has?'Nv '+LVROW[r]:'—'}</div>`+row.map(([k,v],ci)=>`<button class="lvNd ${!has?'x':open?'on':'lk'} ${pick===ci?'sel':''} ${pick!=null&&pick>=0&&pick!==ci?'off':''}" data-a="lvNode" data-r="${r}" data-c="${ci}" style="${rkB(CX[ci],RY[r]-42,CX[ci]+85,RY[r]+42)};--c:${RKRC[Math.min(4,r)]}"><i>${LVSTAT[k].i}</i><b>+${v}%</b></button>`).join('')}).join('')}
+  <div class="lvCr" style="${rkB(1150,770,1780,815)}">${cr.map((n,i)=>`<span style="--c:${RKRC[i]}"><img src="${RQA.lvi.cr[i]}" alt="">${n}</span>`).join('')}${el.map((n,i)=>n?`<span style="--c:${RKRC[i]}"><img src="${RQA.lvi.el[i]}" alt="">${n}</span>`:'').join('')}</div>`}
+function lvOn(){clearInterval(rkView.iv)}
+const lvRows=id=>LVROW.filter(l=>l<=LVMAX(id)).length;
+function lvNeed(id){const L=lvOf(id),mx=LVMAX(id);if(L.lv>=mx)return {ok:false,max:1};const [c,p]=LVCOST(L.lv),nx=L.lv+1,ei=[10,20,30,40,50].indexOf(nx),el=ei>=0?ei:null,coins=twLS.g('tw_moedas',0)|0;
+  const ok=coins>=c&&lvPo()>=p&&(el==null||lvArr('el')[el]>=1);return {ok,c,p,el}}
+function lvUp(){const id=LVC.id,N=lvNeed(id);if(N.max){rkToast('★ Nível máximo!','#ffd84a');return}
+  if(!N.ok){rkSfx('clang');const coins=twLS.g('tw_moedas',0)|0;rkToast(coins<N.c?'Faltam 🪙 moedas douradas (ganhe na Torre)':lvPo()<N.p?'Falta '+LVPON+' (Boss, Torre e Gacha)':'Falta o '+LVELN[N.el]+' (drop do Boss, da Torre e do Gacha)','#ff8080');return}
+  twLS.s('tw_moedas',(twLS.g('tw_moedas',0)|0)-N.c);rkS('po',lvPo()-N.p);if(N.el!=null){const a=lvArr('el');a[N.el]--;rkS('el',a)}
+  const L=lvOf(id);L.lv++;lvSave(id,L);rkSfx('powerUp');if(N.el!=null)setTimeout(()=>rkSfx('boom'),200);rkView('lvl');
+  const P=document.querySelector('.lvPed');if(P){P.classList.add('up');if(N.el!=null)P.classList.add('el')}
+  const rowOpen=LVROW.indexOf(L.lv);rkToast(N.el!=null?'✦ ELEVADO! '+CH[id].name+' agora é nível '+L.lv+(rowOpen>0?' · nova habilidade liberada!':''):'⬆ Nível '+L.lv+'!',N.el!=null?'#ffd84a':'#7dff9a')}
+function lvNode(r,ci){const id=LVC.id,L=lvOf(id);if(r>=lvRows(id)){rkToast('Este personagem vai só até o nível '+LVMAX(id),'#cfd6ea');return}if(L.lv<LVROW[r]){rkSfx('clang');rkToast('🔒 Libera no nível '+LVROW[r],'#cfd6ea');return}
+  if(L.t[r]===ci)return;const [k,v]=LVTREE[r][ci],[cr,q]=LVCRN[r],have=lvArr('cr')[cr],troca=L.t[r]!=null&&L.t[r]>=0;
+  rkModal(`<div class="twM sm"><h3>${LVSTAT[k].i} ${LVSTAT[k].n} +${v}%</h3><p class="twH">${troca?'Trocar a escolha desta linha':'Escolher esta habilidade'} para <b>${twEsc(CH[id].name)}</b>.</p><p class="twH">Custo: <img src="${RQA.lvi.cr[cr]}" alt="" style="width:1.6em;vertical-align:middle"> ${q} cristal ${RKRNM[cr]} (você tem ${have})</p><div class="row"><button class="btn main" id="lvOk" ${have<q?'disabled':''}>${have<q?'FALTA CRISTAL':'CONFIRMAR'}</button><button class="btn" id="rkMX">CANCELAR</button></div></div>`);
+  $('rkMX').onclick=()=>rkModal(null);$('lvOk').onclick=()=>{const a=lvArr('cr');if(a[cr]<q)return;a[cr]-=q;rkS('cr',a);const L2=lvOf(id);while(L2.t.length<=r)L2.t.push(-1);L2.t[r]=ci;lvSave(id,L2);rkModal(null);rkSfx('powerUp');rkView('lvl');rkToast('✔ '+LVSTAT[k].n+' +'+v+'%','#7dff9a')}}
+function lvInfo(){rkModal(`<div class="twM"><h3>⬆ COMO EVOLUIR O PERSONAGEM</h3><p class="twH">Cada nível dá um pouco de dano (+0,4%) e de crítico (+0,15%). Épico vai até o 30, lendário até o 40 e mítico até o 50. O bônus é somado à força normal do personagem e vale no Modo Boss e na Torre Ranqueada.</p>
+  <table class="rkTx"><tr><th>Níveis</th><th>Custo por nível</th></tr><tr><td>1 → 10</td><td>🪙 150 · 🟣 10</td></tr><tr><td>10 → 20</td><td>🪙 300 · 🟣 20</td></tr><tr><td>20 → 30</td><td>🪙 500 · 🟣 35</td></tr><tr><td>30 → 40</td><td>🪙 900 · 🟣 60</td></tr><tr><td>40 → 50</td><td>🪙 1.800 · 🟣 120</td></tr></table>
+  <p class="twH">✦ ELEVAÇÃO: para chegar no nível 10 precisa do Pergaminho (comum), 20 do Cubo (raro), 30 da Máscara (épica), 40 da Chama (lendária) e 50 do Orbe (mítico). Drop por vitória no Boss: 15% · 12% · 10% · 5% · 3% (Torre completa: o dobro). Piedade: garantido em 8 · 20 · 40 · 80 · 150 lutas.</p>
+  <p class="twH">🌳 ÁRVORE: cada linha abre num nível (1, 10, 20, 30, 40, 50). Escolha 1 dos 4 bônus usando cristais (linha 1 comum … linha 6 mítico). Dá para trocar depois pagando de novo.</p>
+  <p class="twH">🟣 ${LVPON}: vitória no Boss 8–15, derrota 2–4, andar da Torre 3–6, cada giro do Gacha 2–5. 🍀 A SORTE aumenta pó, cristais, itens de elevação, geminhas, moeda vermelha e moedas da Torre (100 de sorte = +50%). Sua sorte agora: <b>${Math.round(lvSorte())}</b>.</p><div class="row"><button class="btn" id="rkMX">FECHAR</button></div></div>`);$('rkMX').onclick=()=>rkModal(null)}
+/* itens do sistema de nível na Biblioteca → Itens */
+{const _li=rkLibItems;rkLibItems=function(){const R=_li.apply(this,arguments);if(RKL.tab!=='it')return R;const q=RKL.q.toLowerCase(),add=[];
+  add.push({id:'po',k:'it',r:'epica',has:lvPo()>0,img:RQA.lvi.po[2],big:RQA.lvi.po[2],nm:LVPON,d:'Você tem '+rkFmtN(lvPo())+' · usado para subir o nível dos personagens'});
+  lvArr('cr').forEach((n,i)=>add.push({id:'cr'+i,k:'it',r:RKRN[i],has:n>0,img:RQA.lvi.cr[i],big:RQA.lvi.cr[i],nm:'CRISTAL '+RKRNM[i],d:'Você tem '+n+' · escolhe habilidades da árvore (linha '+(i+1)+(i===4?' e 6':'')+')'}));
+  lvArr('el').forEach((n,i)=>add.push({id:'el'+i,k:'it',r:RKRN[i],has:n>0,img:RQA.lvi.el[i],big:RQA.lvi.el[i],nm:LVELN[i],d:'Você tem '+n+' · necessário para chegar ao nível '+(i+1)*10}));
+  return add.filter(x=>(!q||x.nm.toLowerCase().includes(q))&&(RKL.f===0||(RKL.f===1?x.has:!x.has))).concat(R)}}
+window.__rk={lvSorte,lvLuck,lvBonus,lvOf,rkExtra,twEqB:s=>twEqB(s)};

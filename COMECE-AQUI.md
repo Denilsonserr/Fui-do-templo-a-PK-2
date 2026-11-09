@@ -1,6 +1,6 @@
 # FÚRIA DO TEMPLO — GUIA DE PASSAGEM PARA A CONTA NOVA
 
-Versão do jogo neste momento: **v238** (09/11/2026).
+Versão do jogo neste momento: **v239** (09/11/2026).
 Este arquivo tem duas partes: a **Parte 1** é para o dono (Denilson) e a **Parte 2** é para o Claude da conta nova.
 
 ---
@@ -12,7 +12,7 @@ Este arquivo tem duas partes: a **Parte 1** é para o dono (Denilson) e a **Part
    - Dê acesso ao repositório **Denilsonserr/Fui-do-templo-a-PK-2**.
 3. Comece uma conversa nova escolhendo esse repositório e mande este arquivo (ou só a mensagem abaixo):
 
-   > Continua o meu jogo Fúria do Templo. Repositório: Denilsonserr/Fui-do-templo-a-PK-2. Lê primeiro os arquivos COMECE-AQUI.md e GUIA-CLAUDE.md inteiros e segue as regras deles. A versão atual é a v238.
+   > Continua o meu jogo Fúria do Templo. Repositório: Denilsonserr/Fui-do-templo-a-PK-2. Lê primeiro os arquivos COMECE-AQUI.md e GUIA-CLAUDE.md inteiros e segue as regras deles. A versão atual é a v239.
 
 4. Depois é só pedir as coisas do mesmo jeito de sempre. Cada versão nova gera sozinha:
    - o **site**: https://denilsonserr.github.io/Fui-do-templo-a-PK-2/?v=NÚMERO
@@ -86,7 +86,7 @@ Este arquivo tem duas partes: a **Parte 1** é para o dono (Denilson) e a **Part
 - O histórico completo, versão por versão, está em `GUIA-CLAUDE.md`.
 
 ### Personagens de anime: como fazer um novo (parte técnica)
-- Roster atual (`ALLC`): aylla, zedry, zaykon, qingqing (originais do dono) + goku, aokiji, zoro, broly, vegeta, gogeta, madara, gojo, luffy, rengoku, naruto, garou.
+- Roster atual (`ALLC`): aylla, zedry, zaykon, qingqing (originais do dono) + goku, aokiji, zoro, broly, vegeta, gogeta, madara, gojo, luffy, rengoku, naruto, garou, yuta (v239, modelo mais novo: `ferramentas/personagens/yuta/`).
 - O dono manda as artes e os vídeos; o Claude recorta, melhora com IA e programa. **Não desenhe nem busque arte desses personagens por conta própria.** É jogo de uso pessoal do dono.
 - **Leia no `GUIA-CLAUDE.md`:**
   - "Como o dono gosta de trabalhar" e "Estrutura do código";
@@ -139,7 +139,7 @@ Este arquivo tem duas partes: a **Parte 1** é para o dono (Denilson) e a **Part
 
   Disparar: `gh api -X POST repos/Denilsonserr/Fui-do-templo-a-PK-2/actions/workflows/ARQUIVO.yml/dispatches -f ref=main`. Ler: `gh api repos/Denilsonserr/Fui-do-templo-a-PK-2/actions/runs/ID/logs > l.zip` e `unzip`.
 
-### O que existe hoje (v235)
+### O que existe hoje (v239)
 - **Menu principal (arte do dono):**
   - Batalha;
   - História 🔒;
@@ -171,4 +171,4 @@ Este arquivo tem duas partes: a **Parte 1** é para o dono (Denilson) e a **Part
 - O plano Blaze não foi ativado (erro do Google OR_BACR2_59).
 - Ainda não existem: Desafio do Tempo, História, Online. Esperar o dono mandar as artes e as regras.
 - Perfil: faltam os EMBLEMAS animados da foto (o dono vai mandar) e as abas vazias da arte.
-- Personagem novo: YUTA (Jujutsu Kaisen). O dono mandou só a imagem de corpo inteiro (para a tela VS); falta mandar o resto.
+- O dono vai mandar mais ANÉIS (o espaço do anel já existe: `t:'anel'`).

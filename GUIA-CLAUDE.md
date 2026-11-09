@@ -1009,3 +1009,32 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - Prêmio (só um, `rkAdmGift`, chamado por `rkDiaBox(4)`): 10% personagem que o jogador não tem (qualquer raridade; se já tem todos, vira tickets/diamantes), 50% 10 tickets de giro, 40% 100–600 💎. Salva a conta logo depois (`acSave(1)`).
 - Caixa: baú mítico com raios dourados girando, anel arco-íris, brilho pulsando, estrelinhas e título "🎁 PRESENTE DO ADM 👑" dourado animado (`.rkAg`). Personagem sai de dentro da caixa com o nome.
 - Teste `ferramentas/testes/tpresente.js` (`CODE=<código> SH=<pasta> node ...`).
+
+## v239 — YUTA, Invocação Mítica, títulos numerados, ANEL, SISTEMA DE NÍVEL e sorte nos drops
+### Yuta (id `yuta`, sid `yt` normal / `ytd` Despertar)
+- Material do dono em `ferramentas/personagens/yuta/` (`poses/01..20`, `videos/`, botões, itens secretos, `REGRAS.md` com tudo o que ele pediu).
+- Ferramentas: `seg_yt.py` (recorte; fundos transparente/branco/preto; a folha 04 de fundo xadrez escuro NÃO é usada), `build_yuta.py [ai]` (gera `yt_ai.json`; ~10 min com IA), `yt.js` (bloco do personagem), patch `ferramentas/web/extra/20_yuta.py` (lê `ferramentas/personagens/yuta/build/*.json`; as imagens já estão em `www/a`).
+- Golpes (prefixo `u` normal / `w` Despertar; `startMove` troca `v*`): soco = cadeia de espadadas (ujab→ujab2→ujab3→uknee lançador→ustr), chute = chutes acrobáticos (ukick→ukick2→ukick3 estrela/rasteira→uhkick lançador); todo golpe que acerta cancela no próximo (soco↔chute, ou Ki). Ki (toque) = Corte Relâmpago `ytk` (4 Ki). Combo (3 s) = folha 18 (`ytc`). Smash = corte roxo (folha 06).
+- Passiva (as 2 formas): a cada 4 golpes recebidos → `ytCounter` (contra-ataque com CRÍTICO forçado, `h.ycrit`).
+- Despertar (vídeo do dono cortado para ~3,3 s, sem som): velocidade ×3 (`speedMul`), dano total +60% (`ytBuff`: tdm ×1.6/1.45 por cima do ×1.45 geral), crítico +50, aura = chama do Gojo recolorida em roxo (2 camadas) + raios `ZPAL.purp`. Golpes que acertam podem chamar a RIKA (`ytRika`, estado `ytr`, sprite vira a Rika = o Yuta some; 24% soco / 16% chute, espera 2,5 s). Combo alterna os 2 combos da Rika (`cmb` = folha 19, `cmb1` = folha 20).
+- Ultimate (100 Ki, nas 2 formas) = vídeo do super ataque sem as partes brancas/pretas e 25% mais rápido (~5,3 s), 7 impactos + explosão roxa final.
+- Botões do dono: `HUDA.yuta` (normal e despertar; só os botões, sem o HUD de vida); `HUTH.yuta` = chamas/raios roxos no despertar.
+- Não está nos personagens normais do gacha: só sai na Invocação Mítica. Teste `ferramentas/testes/tyuta.js`.
+### Invocação Mítica (`RKBAN` = 'mit' | 'esp', salvo em `rk_ban`)
+- Arte nova `RQA.gacha_yt` (aba Mítica); a antiga do Gojo virou a aba ESPECIAL (abas desenhadas por cima: `.gbTabs`). Padrão 🔒.
+- `rkRollY`: Yuta 0,4% (garantido em 250, `rk_pityY`; só 1 por jogador), itens secretos do Yuta 0,3% (garantido em 200, `rk_pityYS`, nunca repetido), equipamento 30%, moeda vermelha o resto. Sem a garantia de épico no giro de 10.
+- Ganhou o Yuta: `rkMegaY` "SORTE MÍTICA!" roxo → vídeo da ultimate → `ytTitClaim`: tenta criar `torre/yttit_1..10` (documentId fixo; 409 = já tem dono) e dá o título `ytN` (+10% de dano no Boss e na Torre). Sem internet fica pendente (`rk_yttp`) e tenta de novo ao abrir o ranqueado. Brilho do título por número (`.ytt y1..y4`).
+- Itens secretos (RKSP `yesp`,`yanel`,`yrou`,`yrika`, `yt:1`): valem 50% em quem não é o Yuta (`eqNf`). Faixa "Taxa Aumentada!" com brilho/flutuando (`.ytTaxa`).
+### Equipamento: espaço do ANEL
+- `twEqOn` agora inclui `anel`; `twEqB` (virou `let` no `10_v239.py`) soma extras dos itens (`dmg`, `def`, `vel`, `trf`) e o corte de 50%. Crítico de TODOS os equipamentos agora vale também na Torre (antes só o capacete) — `rkExtra`. `fdmg` = dano extra na transformação (`a.tfd`). Tela da mochila com visual novo (roxo, espaços redondos, personagem flutuando).
+### Sistema de NÍVEL (Biblioteca → Personagens → ⬆ EVOLUIR)
+- Arte nova da Biblioteca de personagens (`RQA.bib_pf`): nome, barra de nível, atributos, texto da ultimate. Tela de nível `lvl` (`RQA.lv_ed`): pedestal, atributos, nível atual→próximo, SUBIR/ELEVAR, árvore 6×4.
+- Máx.: épico 30, lendário 40, mítico 50. Custo por nível `LVCOST` (🪙 da Torre + Pó Amaldiçoado `rk_po`): 150/10, 300/20, 500/35, 900/60, 1800/120. Cada nível +0,4% dano +0,15% crítico.
+- Elevação para os níveis 10/20/30/40/50: Pergaminho/Cubo/Máscara/Chama/Orbe (`rk_el`). Drop por vitória no Boss 15/12/10/5/3% (Torre completa ×2), piedade 8/20/40/80/150 (`rk_elp`); gacha 1%.
+- Árvore `LVTREE` (linhas abrem no nível 1,10,20,30,40,50): dano, dano crítico (`tcd`), crítico, velocidade, sorte, roubo de vida (`tls`), vel. ultimate (`tki` = Ki mais rápido). Escolher/trocar custa cristal (`rk_cr`, linha 1 comum … linha 6 2× mítico).
+- Bônus aplicados em `rkExtra` (depois do `rkApply`, Boss e Torre). Ganchos no jogo base em `10_v239.py`.
+- Drops: Boss (vitória pó 8–15, derrota 2–4, cristal 30%/6%), Torre (pó 3–6 por andar, cristal 10%), Gacha (pó 2–5 por giro, cristal 6%). Aparecem no resultado do Boss / toast.
+### SORTE
+- `lvSorte()` = rank + ADM + equipamento (anel!) + árvore do personagem; `lvLuck()` = 1 + sorte/200. Multiplica pó, cristais, itens de elevação, geminhas e moeda vermelha do Boss e as moedas da Torre (além da raridade dos baús, que já existia).
+- Teste `ferramentas/testes/tsorte_crit.js`: crítico = ×1,6 (+ dano crítico da árvore), roubo de vida cura, anel do Yuta = 50 de sorte no Yuta e 25 em outros.
+- Testes: `tv239.js` (gacha, Sorte Mítica, título nº, item secreto, biblioteca, nível, mochila), `tyuta.js`. `window.__rk` expõe funções para testes.
