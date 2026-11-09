@@ -6,3 +6,18 @@
 - A cada elevação (10, 20, 30, 40, 50) o jogador ESCOLHE um bônus para montar a build: +10% dano crítico, ou dano, ou velocidade, ou sorte, ou roubo de vida, ou crítico.
 - Para subir de nível: MOEDA DOURADA da Torre (🪙 tw_moedas) + um PÓ novo, ganho no gacha, no ranqueado e em todos os modos.
 - O dono vai mandar a arte da tela de editar o personagem.
+
+## Tela nova da Biblioteca → Personagens (`biblioteca_personagem_v239.png`)
+- Painel ATRIBUTOS: preencher Dano, Crítico, Velocidade, Sorte e Vel. Ultimate (velocidade da ultimate) do personagem.
+- Faixa com "NARUTO" desenhado: apagar o nome da arte e escrever o nome do personagem escolhido.
+- Barra embaixo do nome: barra de XP/nível que enche com cor + "Nível N".
+- Caixa "Ultimate": texto explicando como funciona a ultimate do personagem.
+- Quadradinhos à direita: personagens. Pedestal: personagem em pé.
+- O dono ainda vai mandar a tela de EDITAR os níveis.
+
+## Tabela proposta ao dono (esperando aprovação)
+- Custo por nível: 1→10 150🪙+10 pó; 10→20 300🪙+20; 20→30 500🪙+35; 30→40 900🪙+60; 40→50 1800🪙+120.
+- Pó: Boss vitória 8–15, derrota 2–4; Torre 3–6 por andar; gacha 2–5 por giro; baús.
+- Item de elevação: Boss vitória 5%; Torre completa 1; gacha 1%/giro; baús lendário/mítico às vezes.
+- Por nível: +0,4% dano, +0,15% crítico. Elevação (escolha): dano crítico +10%, dano +8%, vel +5%, sorte +10%, roubo de vida +4%, crítico +5%.
+- Nomes sugeridos: Pó Amaldiçoado, Pedra de Elevação.
