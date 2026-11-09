@@ -18,6 +18,9 @@ for f in files:
     elif mode=='vale':
         tree=(g>r+30)&(g>b+15)&(g>90)&(Y<900)&(Y>80)
         water=(b>r+45)&(b>110)&(Y>835)&(Y<990)
+    elif mode=='shib':
+        tree=(g>r+25)&(g>b+20)&(g>90)&(Y<800)&(Y>330)
+        water=(b>r+40)&(b>120)&(Y>800)&(Y<990)&(X>1600)
     elif mode=='folha':
         tree=(g>r+18)&(g>b+12)&(g>80)&(Y<700)&(Y>380)
         water=np.zeros_like(tree)
