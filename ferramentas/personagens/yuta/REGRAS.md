@@ -18,3 +18,10 @@
 - Contra-ataque depois de 4 golpes (entendido como 4 golpes recebidos), com dano crítico.
 ## Falta
 - Raridade no gacha; especial (botão de baixo); pose de vitória.
+
+## Gacha do Yuta (arte `ferramentas/ranqueada_artes/gacha_yuta_v239.png`)
+- Nova aba "Invocação MÍTICA" (a de cima, com o Yuta): só dá para pegar o Yuta lá (e itens dele que o dono vai mandar, com os drops que ele disser).
+- O banner atual (o do Gojo, personagens normais) passa para a "Invocação ESPECIAL" (a do meio). Padrão continua bloqueada.
+- Faixa "Taxa Aumentada!" com brilho e flutuando (efeito em código).
+- Ao pegar o Yuta: animação com o vídeo dele, "SORTE MÍTICA", tudo fica roxo, bem top.
+- TÍTULO numerado do Yuta para os 10 PRIMEIROS que pegarem (nº 1 a 10, ordem do servidor). Quanto menor o número, mais brilho. O título dá +10% de dano.
