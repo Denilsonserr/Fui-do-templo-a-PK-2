@@ -1177,3 +1177,6 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 ## v260 — 6 músicas novas
 - Mandadas pelo dono (o jogo é só para o grupo de amigos, sem cobrar): Dark Aria (Solo Leveling), Rap da Akatsuki, Madara (Tauz), Monster (Tauz), Obito (Tauz), Garou (Okabe). Convertidas para mp3 112k em `www/a/` e adicionadas no `MUS` + botões `#msel` 12–17 (`extra/96_v260.py`). Aparecem na escolha de música da luta, no Ranqueado (🎵) e no aleatório.
 - Lembrar: o site e o repositório são públicos (qualquer um com o link acessa).
+
+## Próximo personagem (ainda NÃO começar): SHAKA DE VIRGEM
+- 09/11/2026: o dono mandou só 2 imagens de referência (`ferramentas/personagens/shaka/recebido/`). Esperar ele mandar o resto e dizer que mandou TUDO. Não inventar poderes.
