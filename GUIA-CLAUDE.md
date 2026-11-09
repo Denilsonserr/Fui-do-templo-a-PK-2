@@ -1186,3 +1186,6 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - BAÚ DO EVENTO: cada vitória (Boss `rkResult` ou andar `twAfter`) tem 0,5% → `bpEvChest` cria o documento fixo `bpev_<id>` no servidor; quem cria primeiro ganha o PASSE PAGO (`bpUnlock(1)`), o resto recebe 409 e para de tentar. Quem já tem o pago não entra no sorteio. Libera direto (não mostra o código, para ele não vazar).
 - Próximo evento igual: mudar `BPEV` (id novo + horário).
 - Teste: `ferramentas/testes/tevento_passe_v261.js` (missões, 3x, dois jogadores disputando o baú).
+
+## v262 — faixas de evento paradas
+- `.rkEvX` usava a animação `rkEp` (scale) que apagava o `translateX(-50%)` e fazia a faixa tremer. Agora usa só brilho (`rkEvG`, e `bpEvG` na roxa do passe). Posição testada parada.
