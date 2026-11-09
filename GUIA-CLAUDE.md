@@ -1173,3 +1173,7 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - Dados `rk_bp` (vai junto com a conta). O "pego" é salvo antes de entregar; escolher personagem/espada abre lista (`bpPick`) e só marca como pego depois de escolher. Personagem aleatório já tendo todos → 1500/3000 💎; à escolha tendo todos → 5000 💎.
 - Códigos (`extra/95_v259.py`, texto só com o dono): `17lixq` libera o PAGO, `xoi9kg` libera o PRÊMIO (que libera o PAGO também). 1 vez por conta/aparelho — quem tiver o código consegue usar.
 - Teste: `ferramentas/testes/tpasse_v259.js` (somas das trilhas, missões, código, pegar tudo, escolha de personagem e espada; os 60 prêmios).
+
+## v260 — 6 músicas novas
+- Mandadas pelo dono (o jogo é só para o grupo de amigos, sem cobrar): Dark Aria (Solo Leveling), Rap da Akatsuki, Madara (Tauz), Monster (Tauz), Obito (Tauz), Garou (Okabe). Convertidas para mp3 112k em `www/a/` e adicionadas no `MUS` + botões `#msel` 12–17 (`extra/96_v260.py`). Aparecem na escolha de música da luta, no Ranqueado (🎵) e no aleatório.
+- Lembrar: o site e o repositório são públicos (qualquer um com o link acessa).
