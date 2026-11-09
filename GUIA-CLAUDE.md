@@ -1156,3 +1156,7 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - `o9m3i1` = 40 JOIAS NEGRAS, uso ÚNICO no jogo inteiro (`uni:1` faz o `jn` não usar chave de conta → documentId `cupom_o9m3i1`, o 2º recebe "já foi usado por outro jogador").
 - `n8jwhl` = PRESENTE DAS PASSIVAS: 1000 💎 + 20 🎫 + 5 💠, todo mundo 1 vez (`ev:1`; o ramo `ev` agora também dá `jn`).
 - Arquivo `extra/93_v256.py`. Teste: `ferramentas/testes/tcodigos_v256.js`.
+
+## v257 — Biblioteca mostra TODOS os bônus do personagem
+- `cbAll(id)` (fim do rk.js) soma por origem: nível (`lvBonus`), equipamentos colocados (com 50% dos itens do Yuta em outro personagem), título em uso (`tbOf`), passivas (`psSum`), rank (`RKTB`) e ADM (+60). O painel "Atributos" agora mostra os totais (`cbRows`, com defesa, dano crítico, vel. de ataque, drop e roubo de vida pequenos ao lado) e o botão "🔍 TUDO" (`#lbAll`) abre a tabela por origem (`cbModal`).
+- Só mostra; não muda como os bônus funcionam na luta. Teste: `ferramentas/testes/tbonus_v257.js`.

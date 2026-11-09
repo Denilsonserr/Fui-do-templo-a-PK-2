@@ -724,3 +724,9 @@
 .mnBtn button{flex:1;height:76%;font:900 1em var(--f-ui);color:#2a1200;background:transparent;border:0;cursor:pointer;text-shadow:0 1px 0 #ffe9a8;letter-spacing:.04em}.mnBtn button span{font-size:1.1em;color:#0a2a5a;margin-right:.3em}.mnBtn button:disabled{opacity:.55;cursor:default}
 .mnBtn input{width:42%;height:62%;font:900 1em var(--f-ui);text-align:center;border:2px solid #7a4a10;border-radius:.4em;background:#fff7dc;color:#2a1200}
 .mnAdm input{width:5.5em;font:900 .62em var(--f-ui);border-radius:.3em;border:1px solid #ffd84a;text-align:center}
+/* v257: bônus completos do personagem */
+.lbAll{background:transparent;border:0;cursor:pointer;display:flex;align-items:flex-start;justify-content:flex-end;padding:0}.lbAll i{font:900 .7em var(--f-ui);font-style:normal;color:#d9c3ff;background:rgba(20,6,40,.85);border:1px solid #b06bff;border-radius:.6em;padding:.15em .5em;margin:.9em .5em 0 0;box-shadow:0 0 .6em #9a4dff;animation:rkEp 1.6s ease-in-out infinite}
+.lbAt span{font-size:.92em}
+.cbM{max-width:96%}.cbT{overflow-x:auto;max-height:58vh;overflow-y:auto}.cbT table{border-collapse:collapse;width:100%;font:800 .9em var(--f-ui);color:#e6d6ff}
+.cbT th{font:900 .75em var(--f-ui);color:#ffd84a;padding:.3em .4em;border-bottom:1px solid #5a3a8a;position:sticky;top:0;background:#140826}.cbT td{padding:.25em .4em;text-align:center;border-bottom:1px solid rgba(120,80,180,.25);color:#7c6a9a}
+.cbT td.on{color:#7dff9a}.cbT td.nm{text-align:left;color:#fff;white-space:nowrap}.cbT .tt{color:#ffd84a;font-weight:900;background:rgba(255,216,74,.08)}.cbN{font-size:.75em!important;opacity:.85}

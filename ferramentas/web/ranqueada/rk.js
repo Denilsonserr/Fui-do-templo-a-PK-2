@@ -909,7 +909,8 @@ function lvStatRows(id){const B=lvBonus(id);return [['dano','+'+B.dano.toFixed(1
   G0.querySelectorAll('.rkCell').forEach(b=>b.onclick=()=>{const x=L.find(y=>y.id===b.dataset.id);if(x){rkSfx('whoosh');rkLibShow(x);rkLibGrid()}})}}
 {const _ls=rkLibShow;rkLibShow=function(x){_ls.apply(this,arguments);if(RKL.tab!=='chr'||!$('lbNm'))return;const id=x.id,L=lvOf(id),mx=LVMAX(id),c=(TWEQR.find(R=>R.k===x.r)||TWEQR[0]).c;
   $('lbNm').innerHTML=`<b style="--c:${c}">${twEsc(CH[id].name)}</b>`;const B=$('lbBar');B.querySelector('s').style.width=(L.lv/mx*100)+'%';B.querySelector('b').textContent=x.has?'NÍVEL '+L.lv+' / '+mx:'🔒 BLOQUEADO · '+twEsc(x.d);
-  $('lbAt').innerHTML=lvStatRows(id).map(([k,v])=>`<span>${v}</span>`).join('');$('lbUl').textContent=lvUltTxt(id);$('lbEvo').hidden=!x.has}}
+  $('lbAt').innerHTML=cbRows(id).map(v=>`<span>${v}</span>`).join('');$('lbUl').textContent=lvUltTxt(id);$('lbEvo').hidden=!x.has;
+  if(!$('lbAll')){$('lbAt').insertAdjacentHTML('afterend',`<button class="lbAll" id="lbAll" style="${rkB(840,192,1172,500)}"><i>🔍 TUDO</i></button>`)}$('lbAll').onclick=()=>cbModal(id)}}
 function lvOpen(id){if(!id||!CH[id]||!rkG('own',[]).includes(id))return;LVC.id=id;rkView('lvl')}
 const LVC={id:null};
 function lvH(){const id=LVC.id,L=lvOf(id),mx=LVMAX(id),cr=lvArr('cr'),el=lvArr('el'),c=RKRC[['epica','lend','mit'].indexOf(rkRar(id))+2];
@@ -1306,3 +1307,24 @@ let mnClaiming=0;async function mnClaim(quiet){if(mnClaiming)return;mnClaiming=1
   rkS('mkc',done);rkS('mkpend',pend);if(got){try{acSave(1)}catch(x){}rkSfx('powerUp');rkToast('💰 Mercado Negro: '+(gem?'+'+rkFmtN(gem)+' 💎 ':'')+(it?it+' item(ns) de volta':''),'#ffd84a')}else if(!quiet&&RKV==='mn')rkToast('Nada para receber agora.','#bfe8ff')}catch(e){}mnClaiming=0;if(got&&RKV==='mn')rkView('mn')}
 /* ao abrir o ranqueado, recebe as vendas sozinho */
 {const _o=rkOpen;rkOpen=function(){const r=_o.apply(this,arguments);setTimeout(()=>{try{mnClaim(1)}catch(e){}},4000);return r}}
+
+/* ================= v257: TODOS OS BÔNUS DO PERSONAGEM (Biblioteca → Personagens) =================
+   nível + equipamentos + título + passivas + rank + ADM. O painel mostra o total; "🔍 ver tudo" abre a tabela por origem. */
+const CBK=[['dano','⚔️ Dano','%'],['def','🛡️ Defesa','%'],['crit','🎯 Chance de crítico','%'],['cd','💥 Dano crítico','%'],['vel','💨 Velocidade','%'],['spd','⚡ Vel. de ataque','%'],['trf','🌀 Transformação','%'],['fdmg','🔥 Dano transformado','%'],['uv','✨ Vel. Ultimate','%'],['ls','❤️ Roubo de vida','%'],['reg','💚 Regeneração','%/5s'],['st','🍀 Sorte',''],['drop','🎁 Drop','%']];
+const CBS=[['nv','NÍVEL'],['eq','EQUIP.'],['tit','TÍTULO'],['ps','PASSIVA'],['rk','RANK'],['adm','ADM']];
+function cbAll(id){const Z=()=>Object.fromEntries(CBK.map(k=>[k[0],0])),S={};for(const [k] of CBS)S[k]=Z();
+  try{const L=lvBonus(id);for(const k of ['dano','crit','vel','st','cd','ls','uv'])S.nv[k]=+L[k]||0}catch(e){}
+  try{const q=twEqOn();for(const t in q){const it=q[t],n=it.yt&&id!=='yuta'?.5:1,m=EQMAIN[t];if(m==='dano')S.eq.dano+=(it.v||0)*n;if(m==='vida')S.eq.def+=(it.v||0)*n;if(m==='vel')S.eq.vel+=(it.v||0)*n;if(m==='trf')S.eq.trf+=(it.v||0)*n;
+    S.eq.dano+=(it.dmg||0)*n;S.eq.def+=(it.def||0)*n;S.eq.vel+=(it.vel||0)*n;S.eq.trf+=(it.trf||0)*n;S.eq.crit+=(it.crit||0)*n;S.eq.st+=(it.st||0)*n;S.eq.fdmg+=(it.fdmg||0)*n;S.eq.drop+=(it.drop||0)*n}}catch(e){}
+  try{const B=tbOf(twTitOn());for(const k of ['dano','def','vel','crit','st'])S.tit[k]=B[k]||0}catch(e){}
+  try{const P=psSum(id);S.ps.cd=P.cd;S.ps.def=P.def;S.ps.spd=P.spd;S.ps.reg=P.reg;S.ps.drop=P.drop;S.ps.st=P.st}catch(e){}
+  try{const R=RKTB(rkLvl());S.rk.dano=R.dano;S.rk.def=R.def;S.rk.vel=R.vel;S.rk.crit=R.crit;S.rk.st=R.sorte}catch(e){}
+  if(twIsAdm()){Object.assign(S.adm,{dano:60,def:60,vel:60,crit:60,uv:60,trf:60,st:60,drop:60})}
+  const T=Z();for(const [s] of CBS)for(const [k] of CBK)T[k]+=S[s][k];for(const k in T)T[k]=Math.round(T[k]*100)/100;return {S,T}}
+const cbN=v=>{v=Math.round(v*100)/100;return String(v).replace('.',',')};
+function cbRows(id){const T=cbAll(id).T;return ['+'+cbN(T.dano)+'%'+(T.def?' 🛡️+'+cbN(T.def)+'%':''),cbN(5+T.crit)+'%'+(T.cd?' 💥+'+cbN(T.cd)+'%':''),'+'+cbN(T.vel)+'%'+(T.spd?' ⚡+'+cbN(T.spd)+'%':''),'+'+cbN(T.st)+(T.drop?' 🎁+'+cbN(T.drop)+'%':''),'+'+cbN(T.uv)+'%'+(T.ls?' ❤️'+cbN(T.ls)+'%':'')]}
+function cbModal(id){const {S,T}=cbAll(id),rows=CBK.filter(([k])=>T[k]||k==='dano'||k==='crit');
+  rkModal(`<div class="twM cbM"><h3>📊 BÔNUS DE ${twEsc(CH[id]?CH[id].name:id)}</h3><p class="twH">Tudo o que está somando agora: nível do personagem, equipamentos colocados, título em uso, passivas, rank${twIsAdm()?' e ADM':''}. ${id!=='yuta'?'Itens do Yuta valem 50% aqui.':''}</p>
+  <div class="cbT"><table><tr><th></th>${CBS.filter(([s])=>s!=='adm'||twIsAdm()).map(([,n])=>`<th>${n}</th>`).join('')}<th class="tt">TOTAL</th></tr>
+  ${rows.map(([k,n,u])=>`<tr><td class="nm">${n}</td>${CBS.filter(([s])=>s!=='adm'||twIsAdm()).map(([s])=>`<td class="${S[s][k]?'on':''}">${S[s][k]?'+'+cbN(S[s][k])+u:'—'}</td>`).join('')}<td class="tt">${k==='crit'?cbN(5+T[k])+'%':'+'+cbN(T[k])+u}</td></tr>`).join('')}</table></div>
+  <p class="twH cbN">Crítico: a chance começa em 5%. Passivas têm limite somando tudo (crítico +60, defesa +35%, vel. de ataque +25%, regeneração 2%/5s, drop +100%, sorte +70). O RANK vale na Torre; a sorte do rank vale em todo lugar.</p><div class="row"><button class="btn" id="rkMX">FECHAR</button></div></div>`);$('rkMX').onclick=()=>rkModal(null)}
