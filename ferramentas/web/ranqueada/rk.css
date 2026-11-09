@@ -179,3 +179,31 @@
 .acRs{color:#ffd84a;font-weight:800}
 .rkTk{display:flex;align-items:center;justify-content:center;white-space:nowrap;font:800 .85em var(--f-ui);color:#ffe9a8;background:rgba(8,6,20,.62);border:1px solid rgba(255,216,120,.45);border-radius:.8em;text-shadow:0 1px 2px #000;pointer-events:none}
 .rkEvX{position:absolute;left:50%;top:9.5%;transform:translateX(-50%);z-index:6;white-space:nowrap;padding:.3em 1em;border-radius:1em;background:linear-gradient(90deg,#7a0a00,#d23a00,#7a0a00);border:2px solid #ffd84a;color:#fff;font:900 1.05em var(--f-ui);text-shadow:0 1px 2px #000;box-shadow:0 0 1em rgba(255,120,0,.7);pointer-events:none;animation:rkEp 1.4s ease-in-out infinite}.rkEvX b{color:#ffd84a}
+/* ===== v228: MOCHILA com pilhas ===== */
+.eqI.sel{outline:3px solid #fff;box-shadow:0 0 1em var(--c)}.eqI .eqN{position:absolute;left:.3em;top:.2em;font:900 .75em var(--f-ui);font-style:normal;color:#fff;background:rgba(0,0,0,.7);border-radius:.6em;padding:0 .35em}
+.eqD{display:flex;align-items:center;gap:.6em;padding:.4em .6em;border:2px solid var(--c);border-radius:.6em;background:#0b0f20}.eqD>img{width:3.4em;height:3.4em;object-fit:contain}.eqD>div{display:flex;flex-direction:column;flex:1;min-width:0}.eqD span{font:900 .7em var(--f-ui)}.eqD b{font:900 .95em var(--f-ui)}.eqD em{font-style:normal;font-size:.7em;color:#cdd6ea}
+.eqD .eqDb{flex:none;flex-direction:column;gap:.25em}.eqD .eqDb .btn{font-size:.7em;padding:.35em .7em}.eqD .btn.sell{background:linear-gradient(180deg,#5a4a08,#2a2004);border-color:#ffd84a;color:#ffd84a}
+.twM h3 small{font-size:.55em;color:#9fb0d0}
+#twModal .rkEq{width:min(96vw,100em)}
+/* ===== v228: MODO TORRE RANQUEADA (tela nova) ===== */
+#twBox.rkT #twInfo{left:43%;top:1.6%;width:21.5%;padding:.4em .7em;gap:.25em;background:rgba(10,4,8,.72);font-size:.85em}
+#twBox.rkT #twInfo .bt,#twBox.rkT #twInfo .ps,#twBox.rkT #twInfo .nm{display:none}
+#twBox.rkT .tws{background:transparent}#twBox.rkT .tws .twf{display:none}#twBox.rkT .tws .twq{font-size:3em}#twBox.rkT .tws .twn{font-size:1.4em}
+#twBox.rkT #twMe{left:49.6%;bottom:22.5%;height:31em}
+#twBox.rkT #twGoL{left:38.5%;top:83.6%;width:23%;height:4.2%;justify-content:center;border-radius:.6em;border:1px solid #ff4a4a;font-size:1.3em}
+#twBox.rkT #twToast{left:50%;top:47%}
+#rtUI{position:absolute;inset:0;pointer-events:none}#rtUI>*{position:absolute;pointer-events:auto}#rtUI .rtXp,#rtUI .rtBn,#rtUI .rtNm,#rtUI .rtCoin{pointer-events:none}
+.rtAv{border-radius:50%;overflow:hidden;border:0;padding:0;background:radial-gradient(circle,#3a1a08,#000 70%);cursor:pointer}.rtAv img{width:86%;height:86%;margin:7%;object-fit:contain;filter:drop-shadow(0 0 .4em #ffb000)}.rtAv i{position:absolute;left:0;right:0;bottom:8%;text-align:center;font:900 .75em var(--f-ui);font-style:normal;color:#ffd84a;text-shadow:0 1px 2px #000}.rtAv.lk i{display:none}
+.rtNm{display:flex;flex-direction:column;justify-content:center;padding-left:.6em;color:#fff;overflow:hidden}.rtNm b{font:900 1.5em var(--f-ui);white-space:nowrap;text-overflow:ellipsis;overflow:hidden}.rtNm small{font:700 .8em var(--f-ui);color:#ffcf6a}
+.rtXp{border-radius:1em;overflow:hidden}.rtXp s{position:absolute;left:0;top:0;bottom:0;border-radius:1em;opacity:.85}.rtXp b{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font:900 .95em var(--f-ui);color:#fff;text-shadow:0 1px 2px #000,0 0 3px #000}
+.rtBn{display:flex;align-items:center;gap:.3em;font:900 1.25em var(--f-ui);color:#7dff9a;text-shadow:0 1px 2px #000;white-space:nowrap}.rtBn small{font-size:.6em;color:#d6c7c7}
+.rtRow{display:flex;gap:.4em;align-items:stretch}.rtRow button{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.1em;border:1px solid #ff4a4a;border-radius:.6em;background:linear-gradient(180deg,rgba(90,10,14,.92),rgba(30,4,8,.92));color:#fff;cursor:pointer;box-shadow:0 0 .6em rgba(255,40,40,.35)}.rtRow i{font-style:normal;font-size:1.6em;line-height:1}.rtRow b{font:900 .7em var(--f-ui);letter-spacing:.04em}
+.rtCoin{display:flex;align-items:center;justify-content:center;gap:.3em;border-radius:1.2em;background:rgba(8,4,10,.8);border:1px solid #ffd84a;color:#fff;font:900 1.05em var(--f-ui)}.rtCoin b{color:#ffd84a}
+#rtEvDot{position:absolute;right:6%;top:6%;width:.9em;height:.9em;border-radius:50%;display:none}#rtEvDot.live{display:block;background:#ff3030;box-shadow:0 0 .6em #f00}#rtEvDot.soon{display:block;background:#ffc531}
+.rtCP{display:grid;grid-template-columns:repeat(auto-fill,minmax(7em,1fr));gap:.5em;max-height:55vh;overflow:auto}.rtCP button{display:flex;flex-direction:column;align-items:center;gap:.2em;padding:.3em;border-radius:.6em;border:2px solid #4a1a20;background:#100;color:#fff;cursor:pointer}.rtCP button.on{border-color:#ffd84a;box-shadow:0 0 .8em #ffd84a}.rtCP img{width:4.5em;height:4.5em;border-radius:50%;object-fit:cover}.rtCP span{font:800 .75em var(--f-ui)}
+.rtXpR{margin:.3em 0}
+/* ===== v228: menu principal novo (Perfil no lugar da Torre) ===== */
+#mm .mb1{top:18.6%;height:7.9%;width:26.2%}#mm .mb2{top:28%;height:7.9%;width:26.2%}#mm .mb6{top:37.4%;height:7.9%;width:26.2%}#mm .mb4{top:46.8%;height:7.9%;width:26.2%}#mm .mb7{top:56.2%;height:7.9%;width:26.2%;animation-delay:.8s}#mm .mb5{top:65.4%;height:7.9%;width:26.2%}
+#mm .mb7 .pfLk{position:absolute;right:7%;top:50%;transform:translateY(-50%);display:flex;align-items:center;gap:.3em;font:900 clamp(8px,1.05cqw,16px) var(--f-ui);color:#fff;background:rgba(0,0,0,.55);border-radius:.4em;padding:.15em .5em;letter-spacing:.06em}
+.rtXpR{justify-content:center}.rtXpR .rkEmb{flex:none}
+.twSt b.twCh{width:auto;height:auto;animation:none;cursor:default;display:flex;align-items:center;gap:.3em}

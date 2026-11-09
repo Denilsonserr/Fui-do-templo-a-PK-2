@@ -5,7 +5,7 @@ const errs=[];p.on('pageerror',e=>{errs.push((e.stack||e.message).slice(0,300))}
 await p.goto('file:///home/claude/fui-do-templo-a-pk-2/www/index.html');await p.waitForFunction(()=>!document.getElementById('goSelect').disabled,null,{timeout:120000});
 const shot=n=>p.screenshot({path:SH+'t6_'+n+'.png'});const wait=ms=>p.waitForTimeout(ms);
 await p.evaluate(()=>{localStorage.setItem('tw_nome','"Teste"');localStorage.removeItem('tw_inv');localStorage.removeItem('tw_eqp')});
-await p.click('#mTorre');await wait(500);await p.click('.tile[data-c="garou"]');await wait(300);await p.click('#goStage');await wait(800);
+await p.evaluate(()=>{Object.assign(localStorage,{rk_ini:'1',rk_xpv2:'1',rk_dia:'1',rk_own:'["goku","garou"]',rk_sel:'"garou"'})});await p.click('#mRank');await p.waitForTimeout(500);await p.click('#rkWrap [data-a="torre"]');await p.waitForTimeout(1200);
 await p.click('#twGo');await wait(1600);
 const fight=async()=>{await p.click('#twGo');await p.waitForFunction(()=>__dbg.G.mode==='fight'&&__dbg.G.phase==='fight',null,{timeout:120000});await wait(400);
   const st=await p.evaluate(()=>{const [a]=__dbg.G.p;return {tdm:a.tdm,tsp:a.tsp,tdf:+a.tdf.toFixed(3)}});console.log('LUTA',JSON.stringify(st));
@@ -16,8 +16,8 @@ await p.waitForSelector('#twCards:not([hidden])',{timeout:15000});await wait(900
 await p.click('#twModal .twp[data-i="0"]');await wait(2500);await shot('painel');
 console.log('INV',JSON.stringify(await p.evaluate(()=>({inv:JSON.parse(localStorage.tw_inv),eqp:JSON.parse(localStorage.tw_eqp)}))));
 await fight();await p.waitForSelector('#twModal .twCh');await p.click('#twModal .twCh[data-i="0"]');await p.click('#twModal .twCh[data-i="1"]');await p.click('#twModal .twCh[data-i="2"]');await p.waitForSelector('#twCards:not([hidden])');await p.click('#twModal .twp[data-i="1"]');await wait(1500);
-await p.click('#twBagB');await wait(700);await shot('mochila');
+await p.click('#rtUI .rtRow button[data-c="twBagB"]');await wait(700);await shot('mochila');await p.click('#twModal #rkMX');await wait(300);
 const ids=await p.evaluate(()=>JSON.parse(localStorage.tw_inv).map(x=>x.id+':'+x.t));console.log('IDS',ids);
-await p.click('#twModal .bgi:not(.on)').catch(()=>{});await wait(400);await shot('mochila2');await p.click('#twBagX');await wait(400);
+
 await fight();
 console.log('ERROS',JSON.stringify(errs));await b.close()})();

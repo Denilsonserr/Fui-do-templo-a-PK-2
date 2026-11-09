@@ -918,3 +918,13 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - `rkNewChr(r)`: lendário/épico só sorteia personagem que o jogador NÃO tem (nem repetido dentro do mesmo giro de 10, via `RKMTMP`). Se já tem todos daquela raridade, vem um equipamento da mesma raridade. Míticos já eram assim (v224).
 - Código 2000 DIAMANTES (hash `17hle64`, texto só com o dono): uso único no jogo inteiro.
 - Teste `ferramentas/testes/tsemrep.js`.
+
+## v228 — MODO TORRE dentro do Ranqueado + menu novo + mochila nova com pilhas
+- Artes do dono (`ferramentas/ranqueada_artes/*_v228.png`): menu principal novo (sem Torre; Perfil 🔒 EM BREVE), menu do ranqueado novo (Modo Boss, Torre, Desafio do Tempo 🔒, Gacha) e tela "MODO TORRE RANQUEADA" (`RQA.torre_rk`, 1671×941).
+- Menu principal: `#mTorre` escondido; `#mPerfil` bloqueado (toast "em breve"). Posições `#mm .mbN` no rk.css.
+- Torre só pelo Ranqueado (`rkTorre()`): usa o personagem selecionado do ranqueado (só os que o jogador tem). `twBackF`/SAIR voltam ao menu do ranqueado.
+- Tela da Torre: `rkTwSkin()` (no fim do `twBuild`) troca a arte e reposiciona tudo (`RTSLOT` = andares; `rtB()` = coordenadas na arte). `rkTwRender()` (fim do `twRender`): emblema do rank no círculo (toque = recompensas de rank), nome + título + personagem (🔍 = trocar personagem, `rkTwPick`), barra de XP do rank, BÔNUS (⚔️ DANO, ❤️ barras, 🛡️ DF, ⚡ VEL, 🎯 CRÍT, 🍀 ST). Botões da arte: RANKING, RECOMPENSAS (`rkTwRw`, explica XP e tabela de bônus), TEMPORADA (evento/semana), RANKS (`rkRewards`). Linha extra: EQUIPAR, LOJA, TÍTULOS, CHAT, NOME, TROFÉUS (clicam os botões antigos escondidos do `#twInfo`). O painel antigo virou o placar pequeno no topo.
+- Mesma rank do Boss (`rk_rp`). XP da Torre (`rkTwXP` no `twFinish`, mostrado no fim): cada andar `RKXW*0,6`, completar `RKXW*2`, cair no 1º andar `-RKXL*0,5`; evento de XP multiplica.
+- BÔNUS DE RANK na Torre (`RKTB(i)`: dano 2i%, defesa 2i%, vel i%, crít i%, sorte 3i%), aplicado no `twApply` (`rkTwBuff`). Sorte (`rkSorte`, ADM +30) melhora `twRoll`/`twEqRoll`/`twPoRoll` (substitui a sorte só do ADM).
+- Mochila: `twBag` agora abre a mochila nova (`rkEquip`, funciona na Torre e no Ranqueado — `rkModal`/`rkToast`/`RKMS()`/`rkHost()` usam a janela da Torre quando a tela é a Torre). Itens iguais (e poções iguais) ficam numa PILHA que ocupa 1 espaço (até 99): `twStacks()`; `twCap` conta pilhas (20). Toque no item → detalhe: EQUIPAR / VENDER 1 / VENDER TODOS / BEBER / DESCARTAR.
+- Testes: `ttorre_rk.js` (novo); `tequipar.js`, `tcupom*.js`, `tdiamante.js` atualizados para o caminho novo. `ttorre_bau.js` (v196) já estava desatualizado (tela de andar vencido mudou depois).
