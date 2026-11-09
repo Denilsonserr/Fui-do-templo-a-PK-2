@@ -21,3 +21,8 @@
 - Item de elevação: Boss vitória 5%; Torre completa 1; gacha 1%/giro; baús lendário/mítico às vezes.
 - Por nível: +0,4% dano, +0,15% crítico. Elevação (escolha): dano crítico +10%, dano +8%, vel +5%, sorte +10%, roubo de vida +4%, crítico +5%.
 - Nomes sugeridos: Pó Amaldiçoado, Pedra de Elevação.
+
+## Tela de EDITAR o nível (`editar_nivel_v239.png`)
+- Pedestal com o personagem; painel do meio: nome no topo + 5 linhas (dano, crítico, velocidade, sorte, vel. ultimate) com os valores e os bônus somados.
+- Embaixo: quadrado do nível atual → quadrado do próximo nível + botão de SUBIR (seta dourada).
+- Direita: ÁRVORE DE HABILIDADE, 6 linhas × 4 quadradinhos. Cada quadradinho é uma opção (dano a mais, velocidade de ataque, crítico, sorte...). O jogador toca e escolhe o que o personagem vai ter. Fazer bem legal, com animação ao subir de nível.
