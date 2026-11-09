@@ -33,3 +33,6 @@
 - Linha 3 = itens de ELEVAÇÃO (mudou: não é mais 1-2-3-4-5 do mesmo item):
   nível 10 = comum (pergaminho), 20 = raro (cubo), 30 = épico (máscara), 40 = lendário (chama azul), 50 = mítico (orbe).
   Drop difícil, cada vez mais raro, COM piedade para não ficar impossível.
+- Chances de drop dos itens de elevação (definidas pelo dono): pergaminho comum 15%, cubo raro 12%, máscara épica 10%, chama azul lendária 5%, orbe mítico 3% (vitória no Boss). Torre completa: o dobro (comum 50%). Piedades propostas: 8 / 20 / 40 / 80 / 150 lutas.
+- Cristais (linha 2): ativar/trocar escolha na árvore de habilidade (linha 1 comum … linha 6 mítico) — proposto, dono não negou.
+- Sacos de pó: comum 10, raro 25, épico 60, lendário 150, mítico 400.
