@@ -1123,3 +1123,8 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 ## v251 — poções de CURA na loja da Torre
 - `twShop` embrulhado no fim do rk.js: embaixo das poções normais aparece "💚 POÇÕES DE CURA" com as 6 raridades. Preços `TWSHCU` (moedas da torre): comum 1000, rara 2000, épica 4000, lendária 5000 (o dono não falou a lendária; ficou entre épica e mítica), mítica 6000, secreta 20000.
 - `twPocFits` refeito com a chave nova das pilhas (`p|pk|r|v`). A loja rola para baixo se não couber (`.twShop{max-height:96vh;overflow-y:auto}`). Teste: `ferramentas/testes/tloja_cura_v251.js`.
+
+## v252 — baús da Torre dão poção de CURA/DROP e ANEL DE DROP
+- Pedido do dono (a Torre é "o mais legal"). `rkBauX(r)` (fim do rk.js) é chamado em cada baú do `twBauOpen` (`extra/90_v252.py`): 25% poção de cura ou drop, 10% anel de drop, tudo × `rkDropF()`; senão segue o baú antigo (poção normal/equipamento). Raridade = a do baú; 1% × drop vira SECRETA.
+- Vale para todos os baús que usam `twBauOpen` (Torre, recompensas de rank, códigos de baú). A regra antiga "baú raro+ sem poção" continua só para a poção normal de buff.
+- Teste: `ferramentas/testes/tbau_v252.js`.

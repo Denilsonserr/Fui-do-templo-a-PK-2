@@ -1,0 +1,10 @@
+const {chromium}=require('playwright');const S=process.env.S;const W='/home/claude/fui-do-templo-a-pk-2/www/';const fs=require('fs');
+fs.writeFileSync(W+'_t.html',fs.readFileSync(W+'index.html','utf8').replace('window.__G=G;','window.__G=G;window.__v25=()=>({twBauOpen,rkBauX});'));
+(async()=>{const b=await chromium.launch();const p=await b.newPage({viewport:{width:915,height:412},deviceScaleFactor:2});const errs=[];p.on('pageerror',e=>errs.push(e.message));await p.route(/fonts\.g|firestore/,r=>r.abort());
+await p.addInitScript(()=>{if(!sessionStorage.d){sessionStorage.d=1;localStorage.clear();Object.assign(localStorage,{tw_nome:'"T"',rk_ini:'1',rk_xpv2:'1',rk_dia:'1'})}});
+await p.goto('file://'+W+'_t.html');await p.waitForFunction(()=>!document.getElementById('goSelect').disabled,null,{timeout:120000});
+console.log(await p.evaluate(()=>{const c={pk:0,ring:0,none:0,sec:0};for(let i=0;i<10000;i++){const x=__v25().rkBauX('lend');if(!x)c.none++;else{c[x.t==='pk'?'pk':'ring']++;if(x.R.k==='sec')c.sec++}}return JSON.stringify(c)}));
+await p.click('#mRank');await p.waitForTimeout(500);await p.click('#rkWrap [data-a="torre"]');await p.waitForTimeout(1200);
+await p.evaluate(()=>{const _r=Math.random;let n=0;Math.random=()=>{n++;return n<40?(n%3?0.05:0.3):_r()};__v25().twBauOpen({r:'lend',n:4});Math.random=_r});
+await p.waitForTimeout(5500);await p.screenshot({path:S+'bau.png'});await p.click('#twCpOk');await p.waitForTimeout(800);
+console.log(await p.evaluate(()=>localStorage.tw_poc+' | '+localStorage.tw_inv));console.log(errs);await b.close();fs.unlinkSync(W+'_t.html')})();

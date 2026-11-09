@@ -1140,3 +1140,8 @@ const TWSHCU=[1000,2000,4000,5000,6000,20000];
     if(twCoins()<TWSHCU[i]){E.className='twH err';E.textContent='Moedas insuficientes.';twSfx('clang');return}
     twAddCoins(-TWSHCU[i]);twAddPoc(P);twSfx('powerUp');twToast('💚 POÇÃO DE CURA '+(TWEQR.find(q=>q.k===P.k)||TWEQR[0]).n+' comprada! Está na mochila','#7dff9a');twShop()})}catch(e){}return r}}
 twPocFits=function(R){const k='p|'+(R.pk||'')+'|'+R.k+'|'+R.v,S=twStacks();return S.some(x=>x.key.split('#')[0]===k&&x.n<99)||S.length<TWBAG};
+/* ================= v252: BAÚS DA TORRE dão poção de CURA/DROP e ANEL DE DROP =================
+   Cada baú: 25% poção de cura ou drop, 10% anel de drop (× drop). A raridade é a do baú; 1% × drop vira SECRETA. */
+function rkBauX(br){const F=rkDropF(),x=Math.random();let k=TWRK.includes(br)?br:'comum';if(x>=.35*F)return null;if(Math.random()<.01*F)k='sec';const R=TWEQR.find(q=>q.k===k)||TWEQR[0],i=rkPkI(k);
+  if(x<.25*F){const pk=Math.random()<.5?'cura':'drop';return {t:'pk',pk:{k,pk,v:RKPKV[pk][i]},R,ic:RQA[pk==='cura'?'pcu':'pdr'][i],nm:pk==='cura'?'CURA':'DROP'}}
+  return {t:'ring',ring:k,R,ic:RQA.anel[i],nm:'ANEL'}}
