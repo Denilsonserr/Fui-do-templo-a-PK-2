@@ -808,6 +808,27 @@ h2{margin:0;font-family:var(--f-display);font-weight:400;font-size:clamp(26px,8v
 #rkModal .twRk .rw[data-pu]:not([data-pu=""]):active,#rkChL .cm[data-pu]:not([data-pu=""]):active,#twChL .cm[data-pu]:not([data-pu=""]):active{filter:brightness(1.35)}
 .pfHint{margin:.2em 0 .4em;color:#c9b6ff!important}
 .pfFoto span.h{font-size:.72em}
+/* v238: PRESENTE DO ADM — caixa brilhando bastante */
+.rkAg .agT{font-size:2.1em;background:linear-gradient(90deg,#ffb300,#fff7d0 30%,#ffd84a 45%,#ff7a2a 60%,#ffe680 80%,#ffb300);background-size:250% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:admT 1.8s linear infinite;filter:drop-shadow(0 0 .3em rgba(255,200,60,.9))}
+.rkAg .agB{isolation:isolate;animation:twChShk .5s ease-in-out infinite,agPulse 1.2s ease-in-out infinite}
+.rkAg .agB.open{animation:none}
+.rkAg .agB img.cf,.rkAg .agB img.ca{z-index:2;filter:drop-shadow(0 0 .4em #fff) drop-shadow(0 0 1em #ffd84a) drop-shadow(0 0 2em #ff7a2a)}
+.rkAg .agG{position:absolute;inset:-35%;border-radius:50%;background:radial-gradient(circle,#fff9 0,#ffd84acc 18%,#ff7a2a66 38%,transparent 66%);animation:pfRg 1s ease-in-out infinite;z-index:0}
+.rkAg .agR{position:absolute;inset:-60%;border-radius:50%;background:repeating-conic-gradient(from 0deg,#ffe680cc 0 5deg,transparent 5deg 16deg);-webkit-mask:radial-gradient(circle,#000 18%,transparent 66%);mask:radial-gradient(circle,#000 18%,transparent 66%);animation:rkEr 6s linear infinite;z-index:0}
+.rkAg .agR2{position:absolute;inset:-45%;border-radius:50%;background:conic-gradient(from var(--ua,0deg),#ff2e6399,#ffd84a99,#7dff9a99,#4fb0ff99,#c46aff99,#ff2e6399);-webkit-mask:radial-gradient(circle,transparent 30%,#000 40%,transparent 64%);mask:radial-gradient(circle,transparent 30%,#000 40%,transparent 64%);filter:blur(4px);animation:rkUq 2.2s linear infinite;z-index:1}
+.rkAg .agB.open .agR{animation-duration:2.5s}.rkAg .agB.open .agG{inset:-55%}
+.rkAg .agS{position:absolute;inset:-25%;z-index:3;pointer-events:none}
+.rkAg .agS s{position:absolute;width:10%;height:10%;background:radial-gradient(circle,#fff 0 12%,transparent 13%),linear-gradient(transparent 46%,#fff 46% 54%,transparent 54%),linear-gradient(90deg,transparent 46%,#fff 46% 54%,transparent 54%);filter:drop-shadow(0 0 .3em #ffd84a);animation:pfTw 1.4s ease-in-out infinite;opacity:0}
+.rkAg .agS s:nth-child(1){top:5%;left:15%}.rkAg .agS s:nth-child(2){top:12%;right:10%;animation-delay:.3s}.rkAg .agS s:nth-child(3){bottom:15%;left:5%;animation-delay:.6s}.rkAg .agS s:nth-child(4){bottom:8%;right:18%;animation-delay:.9s}.rkAg .agS s:nth-child(5){top:45%;left:-2%;animation-delay:1.1s}.rkAg .agS s:nth-child(6){top:40%;right:-3%;animation-delay:.45s}
+.rkAg .agP{z-index:4;color:#fff3c0!important;text-shadow:0 0 .3em #ffb300,0 .08em 0 #000!important}.rkAg .agP.chr{flex-direction:column}
+.rkAg .agP .agC{width:auto!important;height:3.4em!important;filter:drop-shadow(0 0 .3em #fff) drop-shadow(0 0 .8em #ffd84a)}
+.rkAg .agP:not(.chr) span{font-size:1em}
+.rkAg #rkDt{position:relative;z-index:5;font-size:1.05em;text-shadow:0 0 .3em #000,0 1px 2px #000,0 0 .6em #000}
+@keyframes agPulse{50%{filter:brightness(1.25)}}
+.rkAg .agH i{font-style:normal;filter:drop-shadow(0 0 .3em #ffd84a)}.rkAg .agH .agT{font-size:1em}
+.rkAg .agB.open .agP.chr{transform:translate(-50%,-18%) scale(1)}
+.rkAg .agP.chr .agC{height:4.6em!important}
+.rkAg .agP.chr span{font-size:.62em;background:rgba(40,10,0,.75);padding:0 .4em;border-radius:.3em;border:1px solid #ffd84a}
 
 .twBag .bgw{display:flex;gap:1em;justify-content:center;align-items:flex-start;margin:.4em 0}
 .twBag .bgc{flex:1;max-width:16em;display:flex;flex-direction:column;gap:.4em;max-height:52vh;overflow:auto;padding:.2em}
@@ -6272,10 +6293,10 @@ const twHash=s=>{let h=0x811c9dc5;for(const c of s){h^=c.charCodeAt(0);h=Math.im
 /* nome proibido: qualquer forma de "ADM" (maiúscula, espaço, ponto, acento, 4DM, @dm...) */
 const twBadName=n=>{const t=String(n).normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase().replace(/[4@]/g,'a').replace(/[0]/g,'o').replace(/[1!|]/g,'i').replace(/3/g,'e').replace(/[^a-z]/g,'');return t.includes('adm')};
 const twIsAdm=()=>twTits().includes('adm');const TWALIAS={'denilson_dw adm':'Denilson ADM'};const twAl=n=>TWALIAS[String(n).toLowerCase().trim()]||n;
-const TWCUP={'1a7bd9w':{nm:'6 POÇÕES MÍTICAS + 7 POÇÕES LENDÁRIAS',poc:[['mit',6],['lend',7]]},'bb4q7b':{nm:'PEITORAL LENDÁRIO ÚNICO',it:[{t:'arm',r:'lend',v:25,dmg:5,st:5,uniq:1,nm:'PEITORAL LENDÁRIO'}],eq:1},'1tg5gr8':{nm:'CAIXA DA SORTE MÁXIMA',dia:3},'17hle64':{nm:'2000 DIAMANTES',gem:2000},'1kd7i6l':{nm:'1000 DIAMANTES',gem:1000},'1jzhy5g':{nm:'CAIXA DA SORTE',dia:2},'1b2e1xu':{nm:'CAIXA DE DIAMANTES',dia:1},'706xst':{nm:'2 BAÚS LENDÁRIOS',bau:{r:'lend',n:2}},'1polqg8':{nm:'TODOS OS EQUIPAMENTOS MÍTICOS',it:[{t:'esp',r:'mit',v:10},{t:'arm',r:'mit',v:10},{t:'bot',r:'mit',v:10}],eq:1}};
+const TWCUP={'1a7bd9w':{nm:'6 POÇÕES MÍTICAS + 7 POÇÕES LENDÁRIAS',poc:[['mit',6],['lend',7]]},'bb4q7b':{nm:'PEITORAL LENDÁRIO ÚNICO',it:[{t:'arm',r:'lend',v:25,dmg:5,st:5,uniq:1,nm:'PEITORAL LENDÁRIO'}],eq:1},'1tg5gr8':{nm:'CAIXA DA SORTE MÁXIMA',dia:3},'17hle64':{nm:'2000 DIAMANTES',gem:2000},'1kd7i6l':{nm:'1000 DIAMANTES',gem:1000},'1ho2mzo':{nm:'PRESENTE DO ADM',dia:4},'1jzhy5g':{nm:'CAIXA DA SORTE',dia:2},'1b2e1xu':{nm:'CAIXA DE DIAMANTES',dia:1},'706xst':{nm:'2 BAÚS LENDÁRIOS',bau:{r:'lend',n:2}},'1polqg8':{nm:'TODOS OS EQUIPAMENTOS MÍTICOS',it:[{t:'esp',r:'mit',v:10},{t:'arm',r:'mit',v:10},{t:'bot',r:'mit',v:10}],eq:1}};
 async function twCupom(code,E){const h=twHash(code.toUpperCase()),C=TWCUP[h];if(!C)return false;const used=twLS.g('tw_cup',{});
   if(used[h]){E.className='twH err';E.textContent='Você já usou esse código.';return true}
-  let dk='';if(C.dia===3){const nm=String(twLS.g('tw_nome','')||'').toLowerCase().trim();if(!nm){E.className='twH err';E.textContent='Escolha seu nome primeiro (botão ✏️ NOME na Torre).';return true}dk='_n'+twHash(nm)}else if(C.dia===2)dk='_u'+twHash(twUid());else if(C.dia){const nm=String(twLS.g('tw_nome','')||'').toLowerCase().trim(),u=twUid(),oU=TWDIAU.includes(twHash(u)),oN=nm&&TWDIAN.includes(twHash(nm));if(!oU&&!oN){E.className='twH err';E.textContent='❌ Esse código é só para quem já jogou o Modo Torre (lista de jogadores).';twSfx('clang');return true}dk='_'+(oU?'u'+twHash(u):'n'+twHash(nm))}
+  let dk='';if(C.dia===4){const an=String(localStorage.getItem('ac_n')||'').toLowerCase().trim();if(!an||!localStorage.getItem('ac_k')){E.className='twH err';E.textContent='❌ Esse código é só para quem tem CONTA. Crie ou entre na sua conta (botão 👤) e tente de novo.';twSfx('clang');return true}dk='_a'+twHash(an)}else if(C.dia===3){const nm=String(twLS.g('tw_nome','')||'').toLowerCase().trim();if(!nm){E.className='twH err';E.textContent='Escolha seu nome primeiro (botão ✏️ NOME na Torre).';return true}dk='_n'+twHash(nm)}else if(C.dia===2)dk='_u'+twHash(twUid());else if(C.dia){const nm=String(twLS.g('tw_nome','')||'').toLowerCase().trim(),u=twUid(),oU=TWDIAU.includes(twHash(u)),oN=nm&&TWDIAN.includes(twHash(nm));if(!oU&&!oN){E.className='twH err';E.textContent='❌ Esse código é só para quem já jogou o Modo Torre (lista de jogadores).';twSfx('clang');return true}dk='_'+(oU?'u'+twHash(u):'n'+twHash(nm))}
   E.className='twH';E.textContent='Conferindo o código...';const IV=v=>({integerValue:String(v)});
   const f={nome:{stringValue:String(twLS.g('tw_nome','')||'?').slice(0,16)},andar:IV(0),tempo:IV(0),uid:{stringValue:twUid()},cupom:{stringValue:h},v:IV(206)};
   let r;try{r=await twFetchT(TWURL+'/torre?documentId=cupom_'+h+dk+'&key='+TWFB.apiKey,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({fields:f})})}catch(e){E.className='twH err';E.textContent='Precisa de internet para usar o código.';return true}
@@ -6824,7 +6845,7 @@ function rkPos(){const rp=rkG('rp',0),ri=rkRank(rp),S=rkSt();
 const TWDIAN=["oqqh4h","13uxsah","x5a5kc","srbzgm","u2go56","10jasju","xq65nl","1g9ac0y","1vaplua","1cuadjd","z7e3m8","zf435s","vhy4to","1gn6q7b","1ry3d2h","io4fdx","8sa57d","1vla1n5","1rn8e9q","1nvlie","1cpy0l3","y5adqo","1twinyn","1mdayar"],TWDIAU=["13vlve8","14wfhw9","wurbwp","11ytymg","1v9nlbt","1off6cc","74xllj","1q475c8","1lgy2bh","xofqbu","1ilefnk","1idoq9v","1u5wgl5","1x8vi6l","1n9cqgu","y3wxz2","ld8n0d"];
 const RKDIA=[[100,25],[200,20],[300,16],[400,13],[500,10],[600,7],[700,4],[800,2.5],[900,1.5],[1000,1]];
 function rkDiaRoll(){let r=Math.random()*100;for(const [v,w] of RKDIA){if(r<w)return v;r-=w}return 100}
-function rkDiaBox(kind){const v=kind===3?100+((Math.random()*901)|0):kind===2?100+((Math.random()*501)|0):rkDiaRoll();rkAdd('gem',v);
+function rkDiaBox(kind){if(kind===4)return rkAdmGift();const v=kind===3?100+((Math.random()*901)|0):kind===2?100+((Math.random()*501)|0):rkDiaRoll();rkAdd('gem',v);
   twModal(`<div class="twM gold rkDia"><h3>${kind===3?'🍀 CAIXA DA SORTE MÁXIMA':kind===2?'🍀 CAIXA DA SORTE':'💎 CAIXA DE DIAMANTES'}</h3><p class="twH">${kind===3?'De 100 a 1000 diamantes, totalmente aleatório!':kind===2?'De 100 a 600 diamantes, totalmente aleatório!':'Presente para quem jogou o Modo Torre!'} Toque na caixa.</p><div class="dbx" id="rkDbx"><img class="cf" src="${TWIMG.bf[3]}" alt=""><img class="ca" src="${TWIMG.ba[3]}" alt=""><i class="rays"></i><b id="rkDn"><img src="${RQA.coin[0]}" alt=""><span>0</span></b></div>
     ${kind>=2?'':`<p class="twH">Chances: 100 (25%) · 200 (20%) · 300 (16%) · 400 (13%) · 500 (10%) · 600 (7%) · 700 (4%) · 800 (2,5%) · 900 (1,5%) · 1000 (1%)</p>`}<p class="twH ok" id="rkDt" style="visibility:hidden">Os diamantes já estão no MODO RANQUEADO (Gacha e Loja)!</p><div class="row"><button class="btn main" id="rkDok">ABRIR</button></div></div>`);
   let op=0;const go=()=>{if(op){twModal(null);return}op=1;const X=$('rkDbx');X.classList.add('open');twSfx('boom');setTimeout(()=>twSfx('powerUp'),300);const S=document.querySelector('#rkDn span');let n=0;const st=Math.max(10,v/40);const iv=setInterval(()=>{n=Math.min(v,n+st);S.textContent=Math.round(n);if(n>=v){clearInterval(iv);if(v>=500)twSfx('boom')}},30);$('rkDt').style.visibility='visible';$('rkDok').textContent='PEGAR'};
@@ -7130,6 +7151,19 @@ function pfAdmFoto(){if(!PFO||!pfIsAdm())return;const hid=!!PFO.fh;
   $('rkMX').onclick=()=>rkModal(null);$('pfAh').onclick=async()=>{const u=PFO.uid,ts=Date.now(),IV=v=>({integerValue:String(v)});const f={nome:{stringValue:TWADMN},andar:IV(0),tempo:IV(0),uid:{stringValue:twUid()},pfh:{stringValue:u},pfa:{stringValue:hid?'s':'h'},v:IV(237)};
     try{const r=await twFetchT(TWURL+'/torre?documentId=pfh_'+twHash(u)+'_'+ts.toString(36).padStart(9,'0')+'&key='+TWFB.apiKey,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({fields:f})});if(!r.ok)throw 0;
       for(const k in RKQC)if(k.includes('"pfh"'))delete RKQC[k];if(PFO&&PFO.uid===u)PFO.fh=hid?0:1;rkModal(null);rkView('pf');rkToast(hid?'👁️ Foto liberada':'🚫 Foto escondida','#7dff9a')}catch(e){rkToast('Não deu (sem internet?)','#ff8080')}}}
+/* ================= v238: PRESENTE DO ADM (código dia:4, 1 vez por conta) =================
+   10% personagem que o jogador não tem (qualquer raridade) · 50% 10 tickets de giro · 40% 100–600 💎. Só UM prêmio. */
+function rkAdmGift(){const own=rkG('own',['goku']),P=[...RK_MIT,...RK_LEG,...RK_EPI].filter(id=>CH[id]&&!own.includes(id)),r=Math.random();
+  let R;if(r<.1&&P.length){const id=P[(Math.random()*P.length)|0];own.push(id);rkS('own',own);R={k:'chr',id}}else if(r<.6){rkAdd('tic',10);R={k:'tic'}}else{const v=100+((Math.random()*501)|0);rkAdd('gem',v);R={k:'gem',v}}
+  try{acSave(1)}catch(e){}
+  twModal(`<div class="twM gold rkDia rkAg"><h3 class="agH"><i>🎁</i> <span class="agT">PRESENTE DO ADM</span> <i>👑</i></h3><p class="twH">Um presente especial do administrador! Toque na caixa.</p>
+    <div class="dbx agB" id="rkDbx"><i class="agR"></i><i class="agR2"></i><i class="agG"></i><img class="cf" src="${TWIMG.bf[4]}" alt=""><img class="ca" src="${TWIMG.ba[4]}" alt=""><i class="rays"></i><i class="agS"><s></s><s></s><s></s><s></s><s></s><s></s></i>
+      <b id="rkDn" class="agP${R.k==='chr'?' chr':''}">${R.k==='gem'?`<img src="${RQA.coin[0]}" alt=""><span>0</span>`:R.k==='tic'?`<img src="${RQA.coin[2]}" alt=""><span>x10</span>`:`<img class="agC" src="${fullSrc(R.id)}" alt=""><span>${CH[R.id].name}</span>`}</b></div>
+    <p class="twH ok" id="rkDt" style="visibility:hidden">${R.k==='chr'?'✦ NOVO PERSONAGEM: '+CH[R.id].name+'! Já está no Modo Ranqueado.':R.k==='tic'?'🎫 10 TICKETS DE GIRO no Gacha!':'💎 Os diamantes já estão no Modo Ranqueado!'}</p><div class="row"><button class="btn main" id="rkDok">ABRIR</button></div></div>`);
+  let op=0;const go=()=>{if(op){twModal(null);return}op=1;const X=$('rkDbx');X.classList.add('open');twSfx('boom');setTimeout(()=>twSfx('powerUp'),300);
+    if(R.k==='gem'){const S=document.querySelector('#rkDn span');let n=0;const st=Math.max(10,R.v/40);const iv=setInterval(()=>{n=Math.min(R.v,n+st);S.textContent=Math.round(n);if(n>=R.v){clearInterval(iv);if(R.v>=450)twSfx('boom')}},30)}else setTimeout(()=>twSfx('boom'),500);
+    $('rkDt').style.visibility='visible';$('rkDok').textContent='PEGAR'};
+  $('rkDbx').onclick=go;$('rkDok').onclick=go}
 
 function twTrofList(){const tc=twLS.g('tw_tc',{}),run={};for(const t of TW.tr)run[t.k]=(run[t.k]||0)+1;
   twModal(`<div class="twM"><h3>🎖️ TROFÉUS</h3><div class="twTL">${Object.keys(TWTR).map(k=>{const T=TWTR[k];return `<div class="${tc[k]||run[k]?'got':''}"><i>${T.i}</i><b>${T.n}</b><span>${T.d}</span><em>+${T.p} 🏆</em><small>${run[k]?'nesta subida: '+run[k]+' · ':''}total: ${(tc[k]||0)}</small></div>`}).join('')}</div>

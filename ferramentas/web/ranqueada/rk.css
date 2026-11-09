@@ -324,3 +324,24 @@
 #rkModal .twRk .rw[data-pu]:not([data-pu=""]):active,#rkChL .cm[data-pu]:not([data-pu=""]):active,#twChL .cm[data-pu]:not([data-pu=""]):active{filter:brightness(1.35)}
 .pfHint{margin:.2em 0 .4em;color:#c9b6ff!important}
 .pfFoto span.h{font-size:.72em}
+/* v238: PRESENTE DO ADM — caixa brilhando bastante */
+.rkAg .agT{font-size:2.1em;background:linear-gradient(90deg,#ffb300,#fff7d0 30%,#ffd84a 45%,#ff7a2a 60%,#ffe680 80%,#ffb300);background-size:250% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:admT 1.8s linear infinite;filter:drop-shadow(0 0 .3em rgba(255,200,60,.9))}
+.rkAg .agB{isolation:isolate;animation:twChShk .5s ease-in-out infinite,agPulse 1.2s ease-in-out infinite}
+.rkAg .agB.open{animation:none}
+.rkAg .agB img.cf,.rkAg .agB img.ca{z-index:2;filter:drop-shadow(0 0 .4em #fff) drop-shadow(0 0 1em #ffd84a) drop-shadow(0 0 2em #ff7a2a)}
+.rkAg .agG{position:absolute;inset:-35%;border-radius:50%;background:radial-gradient(circle,#fff9 0,#ffd84acc 18%,#ff7a2a66 38%,transparent 66%);animation:pfRg 1s ease-in-out infinite;z-index:0}
+.rkAg .agR{position:absolute;inset:-60%;border-radius:50%;background:repeating-conic-gradient(from 0deg,#ffe680cc 0 5deg,transparent 5deg 16deg);-webkit-mask:radial-gradient(circle,#000 18%,transparent 66%);mask:radial-gradient(circle,#000 18%,transparent 66%);animation:rkEr 6s linear infinite;z-index:0}
+.rkAg .agR2{position:absolute;inset:-45%;border-radius:50%;background:conic-gradient(from var(--ua,0deg),#ff2e6399,#ffd84a99,#7dff9a99,#4fb0ff99,#c46aff99,#ff2e6399);-webkit-mask:radial-gradient(circle,transparent 30%,#000 40%,transparent 64%);mask:radial-gradient(circle,transparent 30%,#000 40%,transparent 64%);filter:blur(4px);animation:rkUq 2.2s linear infinite;z-index:1}
+.rkAg .agB.open .agR{animation-duration:2.5s}.rkAg .agB.open .agG{inset:-55%}
+.rkAg .agS{position:absolute;inset:-25%;z-index:3;pointer-events:none}
+.rkAg .agS s{position:absolute;width:10%;height:10%;background:radial-gradient(circle,#fff 0 12%,transparent 13%),linear-gradient(transparent 46%,#fff 46% 54%,transparent 54%),linear-gradient(90deg,transparent 46%,#fff 46% 54%,transparent 54%);filter:drop-shadow(0 0 .3em #ffd84a);animation:pfTw 1.4s ease-in-out infinite;opacity:0}
+.rkAg .agS s:nth-child(1){top:5%;left:15%}.rkAg .agS s:nth-child(2){top:12%;right:10%;animation-delay:.3s}.rkAg .agS s:nth-child(3){bottom:15%;left:5%;animation-delay:.6s}.rkAg .agS s:nth-child(4){bottom:8%;right:18%;animation-delay:.9s}.rkAg .agS s:nth-child(5){top:45%;left:-2%;animation-delay:1.1s}.rkAg .agS s:nth-child(6){top:40%;right:-3%;animation-delay:.45s}
+.rkAg .agP{z-index:4;color:#fff3c0!important;text-shadow:0 0 .3em #ffb300,0 .08em 0 #000!important}.rkAg .agP.chr{flex-direction:column}
+.rkAg .agP .agC{width:auto!important;height:3.4em!important;filter:drop-shadow(0 0 .3em #fff) drop-shadow(0 0 .8em #ffd84a)}
+.rkAg .agP:not(.chr) span{font-size:1em}
+.rkAg #rkDt{position:relative;z-index:5;font-size:1.05em;text-shadow:0 0 .3em #000,0 1px 2px #000,0 0 .6em #000}
+@keyframes agPulse{50%{filter:brightness(1.25)}}
+.rkAg .agH i{font-style:normal;filter:drop-shadow(0 0 .3em #ffd84a)}.rkAg .agH .agT{font-size:1em}
+.rkAg .agB.open .agP.chr{transform:translate(-50%,-18%) scale(1)}
+.rkAg .agP.chr .agC{height:4.6em!important}
+.rkAg .agP.chr span{font-size:.62em;background:rgba(40,10,0,.75);padding:0 .4em;border-radius:.3em;border:1px solid #ffd84a}

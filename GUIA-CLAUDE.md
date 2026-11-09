@@ -1002,3 +1002,10 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - Perfil de outro: faixa "👀 PERFIL DE <nome>"; nada é editável; toque num item da vitrine mostra o efeito; sem 🔍.
 - ADM (título ADM + nome Denilson ADM) toca na foto de outro jogador → 🚫 ESCONDER FOTO / 👁️ MOSTRAR FOTO: doc `pfh_<hash>_<ts36>` com `pfh`=uid, `pfa`='h'/'s', nome Denilson ADM (vale o mais novo; leva até 5 min para os outros verem). Limitação: as regras do Firestore não conferem quem criou o doc.
 - Teste `ferramentas/testes/tperfil_outro.js` (2 jogadores, servidor simulado com orderBy `__name__`).
+
+## v238 — código PRESENTE DO ADM
+- `TWCUP['1ho2mzo']={nm:'PRESENTE DO ADM',dia:4}` (rep no fim do `patch_v213.py`). Texto do código só com o dono.
+- Só para quem tem CONTA conectada (`ac_n` + `ac_k`); sem conta: "❌ Esse código é só para quem tem CONTA...". 1 vez por conta: documentId `cupom_1ho2mzo_a<twHash(nome da conta minúsculo)>` (mesma conta em outro aparelho = "Você já usou esse código").
+- Prêmio (só um, `rkAdmGift`, chamado por `rkDiaBox(4)`): 10% personagem que o jogador não tem (qualquer raridade; se já tem todos, vira tickets/diamantes), 50% 10 tickets de giro, 40% 100–600 💎. Salva a conta logo depois (`acSave(1)`).
+- Caixa: baú mítico com raios dourados girando, anel arco-íris, brilho pulsando, estrelinhas e título "🎁 PRESENTE DO ADM 👑" dourado animado (`.rkAg`). Personagem sai de dentro da caixa com o nome.
+- Teste `ferramentas/testes/tpresente.js` (`CODE=<código> SH=<pasta> node ...`).
