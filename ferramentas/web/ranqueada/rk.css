@@ -631,3 +631,7 @@
 .pfV.ysec{animation:ysShake 2.6s steps(1) infinite}
 .pfV.ysec::before{inset:-34%}
 @keyframes ysShake{0%,100%{transform:none}12%{transform:translate(-2px,1px)}13%{transform:translate(2px,-1px)}58%{transform:translate(1px,2px)}59%{transform:translate(-2px,0)}}
+
+/* v248: o .ysec (position:relative) tirava a vitrine do lugar — volta a ser absoluta dentro da tela */
+.rkA>.ysec{position:absolute}
+.rk_menu .rkEvX{top:12.5%;left:33%;font-size:.92em}

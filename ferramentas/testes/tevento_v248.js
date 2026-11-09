@@ -1,0 +1,12 @@
+const {chromium}=require('playwright');const S=process.env.S;
+(async()=>{const b=await chromium.launch();const p=await b.newPage({viewport:{width:915,height:412},deviceScaleFactor:1});const errs=[];p.on('pageerror',e=>errs.push(e.message));
+let posts=[];await p.route(/fonts\.g/,r=>r.abort());await p.route(/firestore/,r=>{const u=r.request().url();if(r.request().method()==='POST'&&u.includes('cupom_')){posts.push(u.match(/cupom_[^&]*/)[0]);return r.fulfill({status:posts.filter(x=>x===posts[posts.length-1]).length>1?409:200,body:'{}'})}return r.abort()});
+await p.addInitScript(()=>{const T=Date.UTC(2026,10,9,18,0)-Date.now(),_n=Date.now;Date.now=()=>_n()+T;if(!sessionStorage.d){sessionStorage.d=1;localStorage.clear();Object.assign(localStorage,{tw_nome:'"T"',rk_ini:'1',rk_xpv2:'1',rk_own:'["goku","yuta"]',rk_sel:'"yuta"',rk_rp:'16000',rk_dia:'1',rk_gem:'0',rk_tic:'0',
+ tw_inv:JSON.stringify([{id:'a',t:'cap',r:'sec',v:0,nm:'RIKA',yt:1},{id:'b',t:'arm',r:'sec',v:60,trf:10,nm:'UNIFORME DO YUTA',yt:1},{id:'c',t:'esp',r:'lend',v:25,crit:15,uniq:1,nm:'LÂMINA DOURADA'}]),rk_vit:'["c","a","b"]'})}});
+await p.goto('file:///home/claude/fui-do-templo-a-pk-2/www/index.html');await p.waitForFunction(()=>!document.getElementById('goSelect').disabled,null,{timeout:120000});
+await p.click('#mPerfil');await p.waitForTimeout(1300);await p.screenshot({path:S+'ev_pf.png'});
+const pos=await p.evaluate(()=>[...document.querySelectorAll('.pfV')].map(e=>{const r=e.getBoundingClientRect();return [Math.round(r.x),Math.round(r.y),getComputedStyle(e).position]}));console.log(pos);
+await p.click('#rkWrap [data-a="back"]');await p.click('#mRank');await p.waitForTimeout(600);await p.screenshot({path:S+'ev_menu.png'});
+const code=async()=>{await p.click('#rkWrap [data-a="code"]');await p.waitForTimeout(300);await p.fill('#rkCdI','furia2x');await p.click('#rkCdOk');await p.waitForTimeout(1200);const m=await p.evaluate(()=>{const e=document.querySelector('#rkModal .twH.ok,#rkModal .twH.err');return (e&&e.textContent)+' | gem '+localStorage.rk_gem+' tic '+localStorage.rk_tic});await p.screenshot({path:S+'ev_cod.png'});return m};
+console.log(await code());await p.evaluate(()=>localStorage.removeItem('tw_cup'));await p.keyboard.press('Escape');await p.evaluate(()=>{const x=document.getElementById('rkMX');if(x)x.click()});await p.waitForTimeout(300);console.log(await code(),posts);
+console.log(errs);await b.close()})();

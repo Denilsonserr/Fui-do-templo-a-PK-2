@@ -1095,3 +1095,9 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - Vitrine do perfil (`pfMine`/`pfClean`) agora guarda `def, fdmg, trf, yt, ysec` e aceita `r:'sec'` e `t:'anel'`.
 - CSS `.ysec` (em `rk.css`): borda cônica preta/roxa, vazio escuro pulsando, rachaduras, imagem com glitch e tremida — no perfil, nos espaços da mochila, na lista e no detalhe do item.
 - Lembrar: item do Yuta em outro personagem vale 50% (`eqNf`), por isso no Naruto a Rika soma +20% de defesa.
+
+## v248 — vitrine do Yuta no lugar, EVENTO DE ATUALIZAÇÃO (10h) e código de evento
+- Bug: `.ysec{position:relative}` vencia o `.rkA>*{position:absolute}` e jogava a vitrine do perfil (Uniforme do Yuta) para baixo. Corrigido com `.rkA>.ysec{position:absolute}`.
+- Evento em `RKEVX` (rk.js): `[ini,fim,multXP,texto,{gem,luck}]`. Novo: 09/11/2026 15:30–10/11 01:30 UTC (12:30–22:30 Brasília): 2x XP de rank, 2x gemas (`rkEvG()` nas lutas de Boss/farm e no evento do Yuta) e 2x sorte (`rkEvL()` dentro do `lvLuck`). A sorte também aumenta gemas/pó/drops, então somado fica bem forte (de propósito, é evento). Códigos NÃO dobram.
+- Faixa do evento no menu do Ranqueado foi para a esquerda (`.rk_menu .rkEvX`) para não tampar o painel de rank/moedas.
+- Código de EVENTO (hash `w9rmwq` em `ferramentas/web/extra/60_v248.py`, texto só com o dono): 1000 💎 + 20 🎫. Tipo novo `ev:1` no `twCupom`: todo mundo pode usar, 1 vez por CONTA (sem conta, 1 vez por aparelho). Teste: `ferramentas/testes/tevento_v248.js`.
