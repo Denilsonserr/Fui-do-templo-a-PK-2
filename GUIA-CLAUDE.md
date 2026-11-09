@@ -9,7 +9,7 @@
 4. Ferramentas de montagem (recorte de poses, IA de qualidade, cenários, versão web, testes) estão em `ferramentas/`.
 5. A versão do navegador (artifact) da conta antiga não é acessível na conta nova: publique um artifact novo (ver "Publicação").
 
-## ⚠️ Estado atual (v220) e como montar o index.html
+## ⚠️ Estado atual e como montar o index.html (use `bash ferramentas/web/montar.sh`; patches novos de personagem vão em `ferramentas/web/extra/`)
 - O `www/index.html` atual é gerado assim (sempre a partir da base, nunca editar o index à mão):
   `cp ferramentas/web/base_v212.html www/index.html && python3 ferramentas/web/patch_v213.py www/index.html`
   - Base = jogo até a v212 (`ferramentas/web/base_v212.html`). O `patch_v213.py` injeta `ferramentas/web/ranqueada/rk.js` + `rk.css` + artes (`ranqueada/rk_assets.json`) e todas as mudanças da v213 até a v220.
