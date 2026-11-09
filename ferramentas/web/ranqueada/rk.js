@@ -105,9 +105,9 @@ function rkRbH(){const xp=rkG('rp',0),ri=rkRank(xp),lv=RKSEL==null?ri:RKSEL,B=RK
   <div class="rbBar" style="${rkB2(1114,252,1455,267)}"><s style="width:${prog}%;background:${RKR[ri].c}"></s></div>
   <div class="rbCov rbW" style="${rkB2(1528,140,1632,178)}">+${RKXW[ri]*(rkEvX()?rkEvX()[2]:1)}</div><div class="rbCov rbL" style="${rkB2(1540,226,1632,264)}">-${RKXL[ri]}</div>
   <div class="rbPas" style="${rkB2(1122,330,1645,452)}"><h5>PASSIVAS DO BOSS · NÍVEL ${lv+1}</h5>${pas.length?pas.map(p=>`<span>✦ ${p}</span>`).join(''):'<span>Nenhuma passiva especial</span>'}</div>
-  ${cells.map((c,i)=>`<button class="rbCell ${i===lv?'sel':''} ${i===ri?'cur':''} ${i>ri?'lock':''}" data-a="lvc" data-i="${i}" style="${rkB2(...c)}">${i>ri?'<i>🔒</i>':i<ri?'<i class="ok">✔</i>':'<i class="now">ATUAL</i>'}</button>`).join('')}
+  ${cells.map((c,i)=>`<button class="rbCell ${i===lv?'sel':''} ${i===ri?'cur':''} ${i>ri?'lock':''}" data-a="lvc" data-i="${i}" style="${rkB2(...c)}">${i>ri?'<i>🔒</i>':i<ri?'<i class="ok farm">🌾<small>FARM</small></i>':'<i class="now">ATUAL</i>'}</button>`).join('')}${lv<ri?`<div class="rbFarm" style="${rkB2(1122,458,1645,498)}">🌾 MODO FARM · NÍVEL ${lv+1}</div>`:''}
   <div class="rbCov rbLvT" style="${rkB2(62,727,232,762)}">Nível ${lv+1}</div>
-  <div class="rbDesc" style="${rkB2(62,768,550,895)}"><span>❤️ ${rkPhB(lv)[0]} barras → transformado ${rkPhB(lv)[1]} · resistência ${L.v}% · ⚔️ Dano ${L.d}% · 💨 Velocidade ${L.s}%</span><span>🧠 ${RKPAS[lv][1]}</span><span>⭐ Rank ${RKR[lv].n} · vitória +${RKXW[lv]} XP · derrota −${RKXL[lv]} XP</span><span class="rec">🏆 Recorde do servidor: ${RKSRV?(RKSRV[lv]?twFmt(RKSRV[lv].tt)+' ('+twEsc(RKSRV[lv].nome)+')':'ninguém ainda!'):'carregando...'} · 🏅 Seu: ${rkMyRec(lv)?twFmt(rkMyRec(lv)):'—'}</span><span class="rec2">Bater recorde: servidor +${RKXB.srv} XP · seu +${RKXB.me} XP · dano diminui a derrota</span>${lv!==ri?`<em>${lv>ri?'🔒 Suba de rank para chegar neste nível':'Você já passou deste nível'} — você sempre luta no nível do seu rank (${ri+1})</em>`:''}</div>
+  <div class="rbDesc" style="${rkB2(62,768,550,895)}"><span>❤️ ${rkPhB(lv)[0]} barras → transformado ${rkPhB(lv)[1]} · resistência ${L.v}% · ⚔️ Dano ${L.d}% · 💨 Velocidade ${L.s}%</span><span>🧠 ${RKPAS[lv][1]}</span>${lv<ri?'':`<span>⭐ Rank ${RKR[lv].n} · vitória +${RKXW[lv]} XP · derrota −${RKXL[lv]} XP</span>`}${lv<ri?'':`<span class="rec">🏆 Recorde do servidor: ${RKSRV?(RKSRV[lv]?twFmt(RKSRV[lv].tt)+' ('+twEsc(RKSRV[lv].nome)+')':'ninguém ainda!'):'carregando...'} · 🏅 Seu: ${rkMyRec(lv)?twFmt(rkMyRec(lv)):'—'}</span><span class="rec2">Bater recorde: servidor +${RKXB.srv} XP · seu +${RKXB.me} XP · dano diminui a derrota</span>`}${lv>ri?`<em>🔒 Suba de rank para chegar neste nível (seu nível é ${ri+1})</em>`:lv<ri?`<em class="farm">🌾 FARM: sem XP de rank · 💎🔴 normais · resto menor</em>`:''}</div>
   <div class="rbNx" style="${rkB2(632,785,716,868)}">${ri<7?rkEmb(nx,'ban'):''}</div><div class="rbCov rbNxT" style="${rkB2(728,790,880,860)}">${ri<7?`<b style="color:${RKR[nx].c}">${RKR[nx].n}</b><small>(Nível ${nx+1} · ${rkFmtN(RKXP[nx])} XP)</small>`:'<b style="color:#fff4c0">RANK MÁXIMO</b>'}</div>
   <button class="rkEqB wide" data-a="equip" style="${rkB2(1235,694,1600,750)}"><i>🎒</i><b>EQUIPAMENTOS</b></button>
   <button class="hs" data-a="fight" style="${rkB2(1185,758,1645,872)}"><span class="shine"></span></button>`}
@@ -165,10 +165,12 @@ function rkChatSend(){const I=$('rkChI');if(!I)return;const t=I.value.replace(/[
   twFetchT(TWURL+'/torre?key='+TWFB.apiKey,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({fields:f})}).catch(()=>rkToast('Mensagem não enviada (sem internet?)','#ff8080'))}
 /* ---------------- LUTA CONTRA O BROLY (7 barras -> transformado 14 barras) ---------------- */
 const RKB={fs:null,diff0:1};
-function rkBossStart(){rkInit();const sel=rkG('sel','goku');if(!SPR_OK)return;fsTry();G.pick=sel;G.opp='broly';G.gmode='boss';RKB.diff0=G.diff;{const lv=rkLvl();G.diff=lv<2?1:lv<4?2:3}
+/* v242: MODO FARM — lutar num nível ABAIXO do seu rank: sem XP de rank (nem perde), gemas e moeda vermelha normais, o resto dos drops menor */
+let RKFL=null;const rkBL=()=>RKFL!=null?RKFL:rkLvl();
+function rkBossStart(){rkInit();const sel=rkG('sel','goku');if(!SPR_OK)return;fsTry();RKFL=RKSEL!=null&&RKSEL<rkLvl()?RKSEL:null;G.pick=sel;G.opp='broly';G.gmode='boss';RKB.diff0=G.diff;{const lv=rkBL();G.diff=lv<2?1:lv<4?2:3}
   const sk=Object.keys(STG).filter(k=>!STG[k].hid);G.nextStg=sk[(Math.random()*sk.length)|0];try{nv('vMChallenge',.05,1)}catch(e){}
   const PM=prepMatch([G.pick,G.opp],G.nextStg);showVS(()=>PM.then(()=>{vsLoadEnd();startMatch()}),PM)}
-function rkApply(){if(G.gmode!=='boss'||!G.p)return;const [p,o]=G.p;p.tdm=(p.tdm||1)*(1+twEqB('dano')/100);p.tsp=(p.tsp||1)*(1+twEqB('vel')/100);p.tdf=(p.tdf||1)/(1+twEqB('vida')/100);{const q=twEqOn();p.tcr=0;for(const k in q)p.tcr+=q[k].crit||0}{const t=twEqB('trf');if(t)p.tsb=1+t/100}{const pon=twPocOn();if(pon){const E=twPoE(pon.r);p.tdm+=E[1]/100;p.tcr=(p.tcr||0)+E[2];p.tsb=(p.tsb||1)+E[0]/100;twLS.s('tw_pocOn',null);setTimeout(()=>{try{txt(p.x,p.y-300,'🧪 POÇÃO: +'+E[1]+'% DANO +'+E[2]+'% CRÍT.','#7dff9a')}catch(e){}},1500)}}const lv=rkLvl(),L=RKLVS[lv],B=RKBOSS[0];o.rkL=lv;o.rkB={dm:B.b1.dm*L.d/100,df:B.b1.df*100/L.v,sp:B.b1.sp*L.s/100};o.rkPhB=rkPhB(lv);o.mhp=o.rkPhB[0]*LAYER;o.hp=o.hpLag=o.mhp;o.tdm=o.rkB.dm;o.tdf=o.rkB.df;o.tsp=o.rkB.sp;o.sb=0;o.rkPh=1;o.rkP={};o.rkSh=0;o.rkHp=o.hp;
+function rkApply(){if(G.gmode!=='boss'||!G.p)return;const [p,o]=G.p;p.tdm=(p.tdm||1)*(1+twEqB('dano')/100);p.tsp=(p.tsp||1)*(1+twEqB('vel')/100);p.tdf=(p.tdf||1)/(1+twEqB('vida')/100);{const q=twEqOn();p.tcr=0;for(const k in q)p.tcr+=q[k].crit||0}{const t=twEqB('trf');if(t)p.tsb=1+t/100}{const pon=twPocOn();if(pon){const E=twPoE(pon.r);p.tdm+=E[1]/100;p.tcr=(p.tcr||0)+E[2];p.tsb=(p.tsb||1)+E[0]/100;twLS.s('tw_pocOn',null);setTimeout(()=>{try{txt(p.x,p.y-300,'🧪 POÇÃO: +'+E[1]+'% DANO +'+E[2]+'% CRÍT.','#7dff9a')}catch(e){}},1500)}}const lv=rkBL(),L=RKLVS[lv],B=RKBOSS[0];o.rkL=lv;o.rkB={dm:B.b1.dm*L.d/100,df:B.b1.df*100/L.v,sp:B.b1.sp*L.s/100};o.rkPhB=rkPhB(lv);o.mhp=o.rkPhB[0]*LAYER;o.hp=o.hpLag=o.mhp;o.tdm=o.rkB.dm;o.tdf=o.rkB.df;o.tsp=o.rkB.sp;o.sb=0;o.rkPh=1;o.rkP={};o.rkSh=0;o.rkHp=o.hp;
   RKB.fs={t:0,t1:0,cmb:0,hp0:p.hp/(p.mhp||MAXHP)}}
 function rkBossGo(){if(G.gmode!=='boss'||!G.p)return;if(G.tlim!==0)G.timer=300;const o=G.p[1],P=o.rkPhB||[7,14];banner('MODO BOSS','#ff3030',100,'BROLY NÍVEL '+((o.rkL||0)+1)+' · '+P[0]+' BARRAS')}
 function rkTick(){const F=RKB.fs;if(!F||!G.p)return;const o=G.p[1];if(!(G.paused||G.trans||G.ws||G.cine||G.comic))F.t++;const c=G.p[0].combo||0;if(c>F.cmb)F.cmb=c;
@@ -190,7 +192,7 @@ function rkPassHit(a,d,h){if(!d.rkB||d.ko||!d.grounded||G.trans||h.kind==='beam'
   if(lv>=2&&fr>(P.dgCd||0)&&Math.random()<.15){P.dgCd=fr+90;d.inv=14;d.x=clamp(d.x-d.facing*90,40,WW-40);txt(d.x,d.y-280,'ESQUIVOU!','#bfe8ff');for(let i=0;i<10;i++)addP({x:d.x+rand(-40,40),y:d.y-rand(20,240),vx:-d.facing*rand(1,4),vy:0,life:14,max:14,c:'#bfe8ff',type:'glow',sz:rand(3,6),g:0});return false}
   if(lv>=1&&fr>(P.blCd||0)&&Math.random()<.1){P.blCd=fr+60;d.state='blockstun';d.st=0;d.hitstun=8;d.vx=a.facing*2;txt(d.x,d.y-280,'BLOQUEOU!','#9fd8ff');ring(h.px||d.x,h.py||d.y-150,'#9fd8ff',110,12,4);try{SFX.block()}catch(e){}return true}}
 /* desistir durante o combate conta como derrota */
-function rkQuit(){if(G.gmode!=='boss'||!G.p)return;G.diff=RKB.diff0;const ri=rkLvl(),rp0=rkG('rp',0),rp1=Math.max(0,rp0-RKXL[ri]);rkS('rp',rp1);rkStAdd('loss',1);rkSend({rp:rp1,dmg:0,t1:0,tt:0,won:0});G.gmode='pve'}
+function rkQuit(){if(G.gmode!=='boss'||!G.p)return;G.diff=RKB.diff0;if(RKFL!=null){rkStAdd('loss',1);G.gmode='pve';return}const ri=rkLvl(),rp0=rkG('rp',0),rp1=Math.max(0,rp0-RKXL[ri]);rkS('rp',rp1);rkStAdd('loss',1);rkSend({rp:rp1,dmg:0,t1:0,tt:0,won:0});G.gmode='pve'}
 function rkPhase2(a,d){d.rkPh=2;if(RKB.fs)RKB.fs.t1=RKB.fs.t;d.ko=false;{const L=RKLVS[d.rkL||0],B=RKBOSS[0];d.rkB={dm:B.b2.dm*L.d/100,df:B.b2.df*100/L.v,sp:B.b2.sp*L.s/100};d.mhp=(d.rkPhB||rkPhB(d.rkL||0))[1]*LAYER;d.hp=d.hpLag=d.mhp;d.rkHp=d.hp;d.tdm=d.rkB.dm;d.tdf=d.rkB.df;d.tsp=d.rkB.sp}d.state='idle';d.st=0;d.vx=0;d.vy=0;d.y=FLOOR;d.grounded=true;d.flying=false;d.move=null;d.hitstun=0;d.inv=60;
   a.vx=-a.facing*10;G.hitstop=Math.max(G.hitstop,20);G.shake=30;G.flash=12;G.flashCol='#d8ffc8';for(const r of [380,250,130])ring(d.x,d.y-150,r===130?'#ffffff':'#5cff4a',r,28,8);
   banner('O BROLY DESPERTOU!','#5cff4a',120,'2ª FASE · '+(d.rkPhB||[0,14])[1]+' BARRAS');d.sb=SB_COST;try{startTransform(d)}catch(e){d.form=1;d.formT=FORM_T}buzz(200)}
@@ -203,24 +205,25 @@ function rkAfter(w){G.mode='ranked';$('controls').hidden=true;$('pauseBtn').hidd
   const F=RKB.fs||{t:0,t1:0,cmb:0,hp0:1},o=G.p[1],p=G.p[0],won=w===0,secs=Math.round(F.t/60);
   const PB=o.rkPhB||[7,14],dmg=Math.round(o.rkPh===2?PB[0]*LAYER+(PB[1]*LAYER-Math.max(0,o.hp)):(PB[0]*LAYER-Math.max(0,o.hp))),frac=Math.min(1,dmg/((PB[0]+PB[1])*LAYER)),lost=Math.max(0,1-Math.max(0,p.hp)/(p.mhp||MAXHP));
   let red,gem=0,tic=0,eq=null,chest=null,drp,poc=null,sp=null;
-  if(won){const q=Math.min(1,Math.max(0,(300-secs)/220))*.6+(1-lost)*.4;red=Math.round(5+5*q);gem=5+((Math.random()*11)|0);chest=secs<150&&lost<.4?'lend':secs<220?'epica':'rara';
-    if(Math.random()<(chest==='lend'?.4:chest==='epica'?.2:.12))tic=1;if(Math.random()<(chest==='lend'?.2:.08)){const E=TWEQ[(Math.random()*TWEQ.length)|0];eq={E,R:twEqRoll()}}drp=RKXW[rkLvl()];
+  if(won){const q=Math.min(1,Math.max(0,(300-secs)/220))*.6+(1-lost)*.4;red=Math.round(5+5*q);gem=5+((Math.random()*11)|0);chest=secs<150&&lost<.4?'lend':secs<220?'epica':'rara';const FM=RKFL!=null;if(FM)chest=chest==='lend'?'epica':'rara';
+    if(Math.random()<(chest==='lend'?.4:chest==='epica'?.2:.12)*(FM?.5:1))tic=1;if(Math.random()<(chest==='lend'?.2:.08)*(FM?.5:1)){const E=TWEQ[(Math.random()*TWEQ.length)|0];eq={E,R:twEqRoll()}}drp=RKXW[rkLvl()];
     if(Math.random()<.3&&!['rara','lend','mit'].includes(chest))poc=twPoRoll();  /* v240: baú raro/lendário/mítico não dá poção */
     /* drops especiais do boss (bem difíceis) + piedade: garantido em 25 vitórias sem drop especial */
-    const bp=rkG('bpity',0)+1,rr=Math.random()*100;let sk=null;if(rr<1.5)sk=['kam','gun'][(Math.random()*2)|0];else if(rr<5.5)sk=['band','bots','senzu'][(Math.random()*3)|0];else if(bp>=25)sk=['band','bots','senzu','band','bots','senzu','kam','gun'][(Math.random()*8)|0];
+    const bp=rkG('bpity',0)+(FM?0:1),rr=Math.random()*100*(FM?2:1);let sk=null;if(rr<1.5)sk=['kam','gun'][(Math.random()*2)|0];else if(rr<5.5)sk=['band','bots','senzu'][(Math.random()*3)|0];else if(bp>=25)sk=['band','bots','senzu','band','bots','senzu','kam','gun'][(Math.random()*8)|0];
     if(sk){rkS('bpity',0);sp=sk}else rkS('bpity',bp)}
   else{red=frac>.5?2:frac>.2?1:0;gem=0;drp=-RKXL[rkLvl()]}
-  const lvB=rkLvl(),xb=[];if(won){xb.push(['Vitória',drp]);const cb=Math.min(RKXB.cmb,(F.cmb||0)*2);if(cb>0){xb.push(['👊 Combo '+F.cmb,cb]);drp+=cb}
+  const lvB=rkBL(),xb=[];if(won&&RKFL==null){xb.push(['Vitória',drp]);const cb=Math.min(RKXB.cmb,(F.cmb||0)*2);if(cb>0){xb.push(['👊 Combo '+F.cmb,cb]);drp+=cb}
     const me=rkMyRec(lvB),sx=Math.max(1,secs);if(!me||sx<me){xb.push([me?'🏅 SEU RECORDE ('+twFmt(me)+' → '+twFmt(sx)+')':'🏅 1ª vitória neste nível',RKXB.me]);drp+=RKXB.me;const S=rkSt();S.rec=Object.assign({},S.rec,{[lvB]:sx});rkS('st',S)}
     if(RKSRV){const sv=RKSRV[lvB];if(!sv||sx<sv.tt){xb.push(['🏆 RECORDE DO SERVIDOR!',RKXB.srv]);drp+=RKXB.srv;RKSRV[lvB]={tt:sx,nome:twLS.g('tw_nome','')||'Você'};R_SRV=1}}}
   else{const db=Math.round(RKXL[lvB]*RKXB.dmg*frac);xb.push(['Derrota',drp]);if(db>0){xb.push(['💥 Dano '+Math.round(frac*100)+'%','+'+db]);drp+=db}}
   {const ev=rkEvX();if(ev&&won){const ex=drp*(ev[2]-1);xb.push(['🔥 EVENTO '+ev[3],'+'+ex]);drp+=ex}}
+  if(RKFL!=null){xb.length=0;xb.push(['🌾 MODO FARM · nível '+(RKFL+1)+' · sem XP de rank','0']);drp=0;R_SRV=0}
   rkAdd('red',red);rkAdd('gem',gem);rkAdd('tic',tic);if(eq)twAddItem(eq.E,eq.R);if(poc)twAddPoc(poc);if(sp){if(sp==='senzu')rkAddSenzu(1);else rkGiveSp(sp)}
   const rp0=rkG('rp',0),r0=rkRank(rp0);let rp1=Math.max(0,rp0+drp);rkS('rp',rp1);const r1=rkRank(rp1);for(let i=0;i<=r1;i++)twGiveTit('rk'+i);
   rkStAdd(won?'wins':'loss',1);pfFight({cmb:F.cmb||0,frac,won});rkStAdd('dmgTot',dmg);rkStAdd('dmgMax',dmg,1);if(F.t1){const S=rkSt();if(!S.t1||F.t1/60<S.t1){S.t1=Math.round(F.t1/60);rkS('st',S)}}if(won){const S=rkSt();if(!S.tt||secs<S.tt){S.tt=secs;rkS('st',S)}if(lost<.25)rkStAdd('clean',1)}
-  rkSend({rp:rp1,dmg,t1:F.t1?Math.round(F.t1/60):0,tt:won?secs:0,won:won?1:0});
-  const R={won,secs,dmg,frac,red,gem,tic,eq,chest,poc,sp,drp,rp0,rp1,r0,r1,t1:F.t1?Math.round(F.t1/60):0,lost,cmb:F.cmb,xb,srv:R_SRV};R_SRV=0;
-  rkOpen('boss');setTimeout(()=>rkResult(R),200)}
+  if(RKFL==null)rkSend({rp:rp1,dmg,t1:F.t1?Math.round(F.t1/60):0,tt:won?secs:0,won:won?1:0});
+  const R={farm:RKFL!=null?RKFL+1:0,won,secs,dmg,frac,red,gem,tic,eq,chest,poc,sp,drp,rp0,rp1,r0,r1,t1:F.t1?Math.round(F.t1/60):0,lost,cmb:F.cmb,xb,srv:R_SRV};R_SRV=0;
+  {const fs=RKFL;rkOpen('boss');if(fs!=null)RKSEL=fs}setTimeout(()=>rkResult(R),200)}
 /* recordes de tempo por nível do Boss: servidor (RKSRV) e seu (st.rec) */
 let RKSRV=null;
 async function rkSrvLoad(){try{const lv0=rkLvl(),L=(await rkQ('rkr','L'+lv0,300)).map(e=>({nome:e.nome,tt:e.tt|0,won:1,rp:e.rp|0,lv:lv0})),M={};for(const e of L){if(!e.won||!e.tt)continue;const lv=e.lv!=null?e.lv:rkRank(e.rp||0);if(!M[lv]||e.tt<M[lv].tt)M[lv]={tt:e.tt,nome:e.nome}}RKSRV=M;if(RKV==='rb'&&showScreen.cur==='ranked'&&!$('rkModal').innerHTML)rkView('rb')}catch(e){}}
@@ -234,7 +237,7 @@ function rkResult(R){const it=[];it.push(`<span><img src="${RQA.coin[1]}" alt=""
   if(R.sp){const S=R.sp==='senzu'?{nm:'SEMENTE DOS DEUSES',img:RQA.sp.senzu,r:'lend'}:RKSP[R.sp];it.push(`<span class="spd" style="--c:${TWEQR.find(q=>q.k===S.r).c}"><img src="${S.img}" alt="">✦ ${S.nm}</span>`)}
   if(R.eq)it.push(`<span style="--c:${R.eq.R.c}"><img src="${twIco(R.eq.E.k,R.eq.R.k)}" alt="">${R.eq.E.n} ${R.eq.R.n}</span>`);
   const up=R.r1>R.r0,down=R.r1<R.r0,ri=R.r1,ci=R.chest?TWRK.indexOf(R.chest):0;
-  rkModal(`<div class="twM rkRes ${R.won?'gold':''}"><h3>${R.won?'🏆 BROLY DERROTADO!':'💀 O BROLY VENCEU'}</h3>
+  rkModal(`<div class="twM rkRes ${R.won?'gold':''}"><h3>${R.won?'🏆 BROLY DERROTADO!':'💀 O BROLY VENCEU'}${R.farm?' <small style="color:#9fff5a">🌾 FARM</small>':''}</h3>
     <p class="twH">⏱ ${twFmt(R.secs)}${R.t1?' · 1ª fase em '+twFmt(R.t1):''} · 💥 ${rkFmtN(R.dmg)} de dano (${Math.round(R.frac*100)}%) · 👊 combo ${R.cmb}</p>
     ${R.won?`<div class="rkChest" id="rkChest" style="--c:${TWEQR[ci].c}"><img class="cf" src="${TWIMG.bf[ci]}" alt=""><img class="ca" src="${TWIMG.ba[ci]}" alt=""><b>TOQUE PARA ABRIR O BAÚ!</b></div><div class="rkItems" id="rkItems" hidden>${it.join('')}</div>`:`<div class="rkItems">${it.join('')}</div>`}
     <div class="rkRp">${rkEmb(ri,'md'+(up?' up':down?' down':''))}<div><b style="color:${RKR[ri].c}">${RKR[ri].n}${up?' ⬆ SUBIU DE RANK!':down?' ⬇ CAIU DE RANK':''}</b><span>${R.rp1-R.rp0>=0?'+':''}${R.rp1-R.rp0} XP · ${rkFmtN(R.rp1)}${ri<7?' / '+rkFmtN(RKXP[ri+1]):''} XP · Boss nível ${ri+1}</span><i class="bar"><s style="width:${rkProg(R.rp1)}%;background:${RKR[ri].c}"></s></i></div></div>${R.xb&&R.xb.length?`<div class="rkXb">${R.xb.map(([t,v])=>`<span class="${/SERVIDOR/.test(t)?'srv':/RECORDE|1ª/.test(t)?'me':''}">${t} <b>${typeof v==='string'?v:(v>=0?'+':'')+v}</b></span>`).join('')}</div>`:''}
@@ -804,7 +807,7 @@ function rkExtra(){if(!G.p)return;const torre=typeof TW!=='undefined'&&TW.on&&G.
 const LVELC=[15,12,10,5,3],LVELP=[8,20,40,80,150];
 function lvGive(o){if(o.po)rkS('po',lvPo()+o.po);if(o.cr){const a=lvArr('cr');a[o.cr[0]]+=o.cr[1]||1;rkS('cr',a)}if(o.el!=null){const a=lvArr('el');a[o.el]++;rkS('el',a)}}
 function lvCrRoll(){let q=Math.random()*100;const W=[60,25,10,4,1];for(let i=0;i<5;i++){if((q-=W[i])<0)return i}return 0}
-function lvElRoll(mult){const p=lvArr('elp');let got=null;for(let i=4;i>=0;i--){p[i]++;if(got==null&&(Math.random()*100<LVELC[i]*mult*lvLuck()||p[i]>=LVELP[i])){got=i;p[i]=0}}rkS('elp',p);return got}
+function lvElRoll(mult,np){const p=lvArr('elp');let got=null;for(let i=4;i>=0;i--){if(!np)p[i]++;if(got==null&&(Math.random()*100<LVELC[i]*mult*lvLuck()||p[i]>=LVELP[i])){got=i;p[i]=0}}rkS('elp',p);return got}
 const poIco=n=>RQA.lvi.po[n>=150?4:n>=60?3:n>=25?2:n>=10?1:0];
 function lvDropsHTML(D){const it=[];if(D.po)it.push(`<span style="--c:#b57bff"><img src="${poIco(D.po)}" alt="">+${D.po} PÓ</span>`);if(D.cr)it.push(`<span style="--c:${RKRC[D.cr[0]]}"><img src="${RQA.lvi.cr[D.cr[0]]}" alt="">CRISTAL ${RKRNM[D.cr[0]]}</span>`);
   if(D.el!=null)it.push(`<span class="spd" style="--c:${RKRC[D.el]}"><img src="${RQA.lvi.el[D.el]}" alt="">✦ ${LVELN[D.el]}</span>`);if(D.gem)it.push(`<span style="--c:#7dff9a"><img src="${RQA.coin[0]}" alt="">🍀 +${D.gem}</span>`);if(D.red)it.push(`<span style="--c:#7dff9a"><img src="${RQA.coin[1]}" alt="">🍀 +${D.red}</span>`);return it.join('')}
@@ -812,7 +815,7 @@ const LVELN=['PERGAMINHO DE ELEVAÇÃO','CUBO DE ELEVAÇÃO','MÁSCARA DE ELEVA�
 const LVPON='PÓ AMALDIÇOADO';
 /* Boss: depois da luta (vitória = mais), a sorte aumenta pó, cristais, itens, geminhas e moeda vermelha */
 {const _rr=rkResult;rkResult=function(R){const L=lvLuck(),D={};
-  D.po=Math.round((R.won?8+Math.random()*8:2+Math.random()*3)*L);if(Math.random()<(R.won?.3:.06)*L)D.cr=[lvCrRoll(),1];if(R.won){const e=lvElRoll(1);if(e!=null)D.el=e}
+  const FK=R.farm?.5:1;D.po=Math.round((R.won?8+Math.random()*8:2+Math.random()*3)*L*FK);if(Math.random()<(R.won?.3:.06)*L*FK)D.cr=[lvCrRoll(),1];if(R.won){const e=lvElRoll(FK,!!R.farm);if(e!=null)D.el=e}
   if(R.won&&L>1){D.gem=Math.round((R.gem||0)*(L-1));D.red=Math.round((R.red||0)*(L-1));if(D.gem)rkAdd('gem',D.gem);if(D.red)rkAdd('red',D.red)}
   lvGive(D);const r=_rr.apply(this,arguments);try{const C=document.querySelector(RKMS()+'.rkItems');if(C)C.insertAdjacentHTML('beforeend',lvDropsHTML(D))}catch(e){}return r}}
 /* Torre: cada andar vencido dá pó (e às vezes cristal); completar a torre = chance dobrada de item de elevação; sorte aumenta as moedas */

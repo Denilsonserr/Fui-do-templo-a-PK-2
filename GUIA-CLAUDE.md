@@ -1049,3 +1049,8 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 
 ## v241 — botões do topo da Biblioteca no lugar certo
 - Na arte nova da Biblioteca (Personagens) os botões 👤, 🎵 e CÓDIGO já vêm desenhados: os botões do jogo ficam invisíveis exatamente em cima deles (`.rkA.lbArt`, ligado no `rkLibOn`). Campo de busca sem texto duplicado (a arte já tem "Buscar...").
+
+## v242 — MODO FARM no Boss
+- Na tela "Ranqueada · Modo Boss" os níveis ABAIXO do rank agora são jogáveis (🌾 FARM). `RKFL` = nível do farm (definido no `rkBossStart` a partir do `RKSEL`); `rkBL()` = nível usado pelo Broly (farm ou rank).
+- No farm: não ganha nem perde XP de rank (vitória, derrota e desistência), não conta recorde e não envia para o ranking (`rkSend` não roda). Gemas e moeda vermelha normais. Menores: baú (lendário→épico, épico/raro→raro), ticket e equipamento (metade), drops especiais (metade e sem avançar a piedade), pó/cristais (metade), item de elevação (metade e sem avançar a piedade).
+- LUTAR DE NOVO mantém o nível do farm. Teste `ferramentas/testes/tfarm.js`.
