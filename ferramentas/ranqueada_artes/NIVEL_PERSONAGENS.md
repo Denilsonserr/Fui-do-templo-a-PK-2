@@ -1,5 +1,5 @@
 # Sistema de NÍVEL dos personagens (Modo Ranqueado) — pedido do dono em 09/11/2026 (ainda não feito)
-- Lendários: nível 1 a 40. Míticos: nível 1 a 50. (Épicos: perguntar.)
+- Épicos: nível 1 a 30. Lendários: 1 a 40. Míticos: 1 a 50.
 - Cada nível: um pouquinho de dano e de crítico (bem pouco).
 - A cada 10 níveis é preciso ELEVAR o personagem com um item especial (ganho no ranqueado, nos modos e nas caixas):
   nível 10 = 1 item, 20 = 2, 30 = 3, 40 = 4, 50 = 5.
