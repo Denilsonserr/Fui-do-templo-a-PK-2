@@ -634,7 +634,7 @@
 
 /* v248: o .ysec (position:relative) tirava a vitrine do lugar — volta a ser absoluta dentro da tela */
 .rkA>.ysec{position:absolute}
-.rk_menu .rkEvX{top:12.5%;left:33%;font-size:.92em}
+.rk_menu .rkEvX{top:23.5%;left:33%;font-size:.92em}
 /* v249: raridade OBSCURA (acima da SECRETA) — mais escura, fumaça negra e rachaduras vermelhas */
 .yobs{--c:#c46bff!important}
 .eqI.yobs,.eqS.yobs,.eqD.yobs{background:radial-gradient(circle at 50% 45%,#000 0,#12001f 60%,#000 100%) padding-box,conic-gradient(from var(--ua,0deg),#000,#ff1e4a,#000,#5a00b0,#000,#ff1e4a,#000) border-box!important;box-shadow:0 0 .8em #000,0 0 1.6em #6a00ff,0 0 2.6em rgba(255,30,74,.35)!important}
@@ -702,3 +702,25 @@
 .psr_sec.psg:not(.ysec)::after{content:'✦✦';color:#fff;text-shadow:0 0 .4em var(--pc),0 0 .8em #b06bff}
 .btn#psGo{background:linear-gradient(#5a1d99,#2a0a4a);border-color:#c9a24a}
 .rk_ps .rkEvX{display:none}
+/* ================= v254: MENU (Passivas / Mercado Negro) e MERCADO NEGRO ================= */
+.rk_menu .rkTop{right:auto;left:62.5%;top:1.5%}
+.hs.rd{border-radius:50%}
+.rk_mn .rkEvX{display:none}
+.mnBack{border-radius:1em}
+.mnCur{display:flex;align-items:center;justify-content:center;font:900 1.15em var(--f-ui);color:#fff;text-shadow:0 1px 2px #000,0 0 .4em #000;pointer-events:none}
+.mnTab{background:transparent;border:0;cursor:pointer;display:flex;align-items:flex-end;justify-content:center;padding-bottom:.15em;border-radius:.4em}.mnTab small{font:900 .58em var(--f-ui);color:#f3dcb0;letter-spacing:.08em;text-shadow:0 1px 2px #000}
+.mnTab.t_buy:not(.on){background:rgba(25,6,14,.62)}.mnTab.on:not(.t_buy){box-shadow:inset 0 0 1.4em rgba(255,190,60,.75),0 0 1em rgba(255,170,40,.6);background:rgba(255,170,40,.18)}.mnTab .dot{position:absolute;top:10%;right:12%}
+.mnCell{--c:#999;background:transparent;border:0;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:.3em;border-radius:.5em}
+.mnCell img{width:76%;height:68%;object-fit:contain;filter:drop-shadow(0 0 .35em var(--c)) drop-shadow(0 0 .2em #000)}.mnCell span{font:900 .62em var(--f-ui);color:var(--c);text-align:center;line-height:1.05;text-shadow:0 1px 2px #000,0 0 .3em #000;max-height:2.2em;overflow:hidden}
+.mnCell.sel{box-shadow:0 0 0 .2em #ffd84a,0 0 1.4em rgba(255,190,60,.8)}.mnCell em{position:absolute;top:.35em;right:.4em;font:900 .6em var(--f-ui);font-style:normal;color:#fff;background:rgba(0,0,0,.7);padding:.05em .35em;border-radius:.3em}
+.mnCell em.st{left:.4em;right:auto}.st_buy{color:#7dff9a!important}.st_cx{color:#ffd84a!important}.st_rm{color:#ff8080!important}.st_on{color:#7fd8ff!important}
+.mnPrc{display:flex;align-items:center;font:900 .95em var(--f-ui);color:#bfe8ff;text-shadow:0 1px 2px #000;pointer-events:none}
+.mnMsg{display:flex;align-items:center;justify-content:center;text-align:center;font:800 1.1em var(--f-ui);color:#e8d2ff;text-shadow:0 1px 2px #000;pointer-events:none}
+.mnPg{display:flex;align-items:center;justify-content:center;gap:.6em;font:900 1em var(--f-ui);color:#f3dcb0}.mnPg button{font:900 1em var(--f-ui);color:#ffd84a;background:rgba(30,6,14,.85);border:2px solid #8a5a2a;border-radius:.3em;padding:0 .6em;cursor:pointer}
+.mnBig{display:flex;align-items:center;justify-content:center;pointer-events:none}.mnBig img{width:88%;height:88%;object-fit:contain;filter:drop-shadow(0 0 .6em #000)}
+.mnDet{display:flex;flex-direction:column;align-items:center;justify-content:flex-start;gap:.2em;text-align:center;padding-top:.6em;text-shadow:0 1px 2px #000}.mnDet b{font:900 1em var(--f-ui)}.mnDet small{font:700 .7em var(--f-ui);color:#eadcff}.mnDet em{font:800 .68em var(--f-ui);font-style:normal;color:#ffd9a0}
+.mnAdm{display:flex;gap:.3em;margin-top:.2em}.mnAdm button{font:900 .62em var(--f-ui);color:#fff;background:#5a0a14;border:1px solid #ffd84a;border-radius:.3em;padding:.2em .5em;cursor:pointer}
+.mnBtn{display:flex;align-items:center;justify-content:center;gap:.3em;padding:0 .4em 0 4.2em;box-sizing:border-box}
+.mnBtn button{flex:1;height:76%;font:900 1em var(--f-ui);color:#2a1200;background:transparent;border:0;cursor:pointer;text-shadow:0 1px 0 #ffe9a8;letter-spacing:.04em}.mnBtn button span{font-size:1.1em;color:#0a2a5a;margin-right:.3em}.mnBtn button:disabled{opacity:.55;cursor:default}
+.mnBtn input{width:42%;height:62%;font:900 1em var(--f-ui);text-align:center;border:2px solid #7a4a10;border-radius:.4em;background:#fff7dc;color:#2a1200}
+.mnAdm input{width:5.5em;font:900 .62em var(--f-ui);border-radius:.3em;border:1px solid #ffd84a;text-align:center}

@@ -1138,3 +1138,13 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - Brilho: itens com passiva épica+ ganham `psg psr_<raridade> pst_<tipo>` (cor do tipo, mais forte quanto mais rara).
 - Joia Negra: 0,5% × drop em cada vitória do Boss (rank/farm/evento) e em cada andar da Torre. Código pode dar joias com `{nm:'...',jn:N}` no `TWCUP` (dia/ev não).
 - Teste: `ferramentas/testes/tpassivas_v253.js` (distribuição em 200 mil giros, proteção, pendente, aplicar, soma com limites, luta real com crítico/defesa/regen/aura).
+
+## v254 — MENU com PASSIVAS e MERCADO NEGRO, código 5 Joias Negras
+- Arte nova do menu do Ranqueado (`ferramentas/ranqueada_artes/v254/menu_ranqueado_v254.png`, `RQA.menu_ranqueado`) com 2 botões redondos: Passivas (`data-a="psMenu"` → `rkView('ps')`) e Mercado Negro (`mnMenu` → `mnOpen()`). O painel de rank/moedas (`.rk_menu .rkTop`) foi para o meio de cima.
+- MERCADO NEGRO (`rkView('mn')`, arte `RQA.mercado`, fim do rk.js "v254"): preço LIVRE (dono decidiu), sem taxa. Abas: 🛒 comprar, ⇄ vender (itens da mochila menos ÚNICOS, poções, Joia Negra — 1 por anúncio), 💰 minhas vendas (status e RECEBER).
+  - Firestore só cria: anúncio `mk_<lid>` {mk:'1', mkv:chave do vendedor (twHash do tw_uid), it:JSON, preco}; fechamento `mkb_<lid>` {mkx:'1', mks, tipo buy|cx|rm, preco} com documentId fixo (só um compra/cancela — 409 para o resto); preço do ADM `mkp_<lid>_<ts>` (vale o mais novo); recebimento `mkc_<lid>` (vendedor recebe 1 vez). Todos levam nome/andar:0/tempo:0 por causa das regras.
+  - Anunciar tira o item da mochila antes (se o envio falhar, devolve). Comprar só tira os 💎 e dá o item depois do servidor aceitar. Vendedor recebe sozinho ao abrir o Ranqueado e na aba 💰 (`mnClaim`).
+  - ADM (`twIsAdm()`): no detalhe aparece campo de preço + ✏️ MUDAR e 🗑️ REMOVER (o item volta para o vendedor).
+  - Item de outro jogador passa por `mnClean` (só campos conhecidos, sem ÚNICO). Leituras do mercado ficam 20 s no cache (`RKQT`); ações limpam o cache. ATENÇÃO leituras: cada abertura lê até 600 anúncios + 1500 fechamentos (plano grátis = 50 mil leituras/dia).
+- Código 5 JOIAS NEGRAS: hash `nbnmp9` em `extra/92_v254.py` (texto só com o dono); `jn` agora conta 1 vez por conta/aparelho (igual ao código de evento).
+- Teste: `ferramentas/testes/tmercado_v254.js` (2 jogadores, servidor simulado: anunciar, comprar, sem saldo, cancelar, receber, não receber 2 vezes, código).

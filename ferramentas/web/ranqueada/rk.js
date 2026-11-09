@@ -56,13 +56,13 @@ const RKLOCK='<span class="rkLk"><svg viewBox="0 0 24 24"><path d="M7 10V7a5 5 0
 function rkSfx(k){try{SFX[k]&&SFX[k]()}catch(e){}}
 function rkOpen(v){if(v==='pf'){PFO=null;PFRET=null}RKSEL=null;rkInit();rkMusPlay();setTimeout(rkDiaAuto,1200);audioInit();try{fsTry()}catch(e){}showScreen('ranked');rkView(v||'menu')}
 let RKV='menu';
-const RKD={ps:[1672,941],rb:[1672,941],lvl:[1847,851],pf:[1672,941],hs:[1671,941]};const rkB2=(x0,y0,x1,y1)=>`left:${x0/16.72}%;top:${y0/9.41}%;width:${(x1-x0)/16.72}%;height:${(y1-y0)/9.41}%`;
+const RKD={mn:[1672,941],ps:[1672,941],rb:[1672,941],lvl:[1847,851],pf:[1672,941],hs:[1671,941]};const rkB2=(x0,y0,x1,y1)=>`left:${x0/16.72}%;top:${y0/9.41}%;width:${(x1-x0)/16.72}%;height:${(y1-y0)/9.41}%`;
 function rkView(v){RKV=v;const W=$('rkWrap');if(!W)return;clearInterval(rkView.iv);rkModal(null);
-  const H={menu:rkMenuH,boss:rkBossH,gacha:rkGachaH,shop:rkShopH,lib:rkLibH,rb:rkRbH,pf:pfH,hs:hsH,lvl:lvH,yb:ysLobbyH,yrb:ysStartH,ps:psH}[v]();const dm=RKD[v]||[RKW,RKH];W.innerHTML=`<div class="rkA rk_${v}" data-w="${dm[0]}" data-h="${dm[1]}"${['pf','hs','boss','rb','yb','yrb','ps'].includes(v)?' data-full="1"':''} style="background-image:url(${RQA[{menu:'menu_ranqueado',boss:'modo_boss',gacha:(RKBAN==='mit'?'gacha_yt':'gacha'),shop:'loja_gemas',lib:(RKL.tab==='chr'?'bib_pf':'biblioteca'),rb:'ranqueada_boss',pf:'perfil',hs:'historico',lvl:'lv_ed',yb:'boss_yt',yrb:(YS.tab==='rank'?'ys_rank':'ys_farm'),ps:'passiva'}[v]]})">${H}${rkEvTxt()}<div id="rkToast"></div><button class="rkMusB" data-a="music" title="Música">🎵</button><button class="rkCodB" data-a="code">🎟️ CÓDIGO</button><button class="rkAcB" data-a="conta" title="Conta">👤</button></div>`;
-  rkFit();W.querySelectorAll('[data-a]').forEach(b=>b.onclick=e=>{e.stopPropagation();rkAct(b.dataset.a,b)});({boss:rkBossOn,yb:rkBossOn,gacha:rkGachaOn,lib:rkLibOn,pf:pfOn,hs:hsOn,lvl:lvOn,ps:psOn,yrb:()=>{clearInterval(rkView.iv);if(!RKSRV)rkSrvLoad()}}[v]||(()=>{}))()}
+  const H={menu:rkMenuH,boss:rkBossH,gacha:rkGachaH,shop:rkShopH,lib:rkLibH,rb:rkRbH,pf:pfH,hs:hsH,lvl:lvH,yb:ysLobbyH,yrb:ysStartH,ps:psH,mn:mnH}[v]();const dm=RKD[v]||[RKW,RKH];W.innerHTML=`<div class="rkA rk_${v}" data-w="${dm[0]}" data-h="${dm[1]}"${['pf','hs','boss','rb','yb','yrb','ps','mn'].includes(v)?' data-full="1"':''} style="background-image:url(${RQA[{menu:'menu_ranqueado',boss:'modo_boss',gacha:(RKBAN==='mit'?'gacha_yt':'gacha'),shop:'loja_gemas',lib:(RKL.tab==='chr'?'bib_pf':'biblioteca'),rb:'ranqueada_boss',pf:'perfil',hs:'historico',lvl:'lv_ed',yb:'boss_yt',yrb:(YS.tab==='rank'?'ys_rank':'ys_farm'),ps:'passiva',mn:'mercado'}[v]]})">${H}${rkEvTxt()}<div id="rkToast"></div><button class="rkMusB" data-a="music" title="Música">🎵</button><button class="rkCodB" data-a="code">🎟️ CÓDIGO</button><button class="rkAcB" data-a="conta" title="Conta">👤</button></div>`;
+  rkFit();W.querySelectorAll('[data-a]').forEach(b=>b.onclick=e=>{e.stopPropagation();rkAct(b.dataset.a,b)});({boss:rkBossOn,yb:rkBossOn,gacha:rkGachaOn,lib:rkLibOn,pf:pfOn,hs:hsOn,lvl:lvOn,ps:psOn,mn:mnOn,yrb:()=>{clearInterval(rkView.iv);if(!RKSRV)rkSrvLoad()}}[v]||(()=>{}))()}
 function rkLocked(){rkSfx('clang');rkToast('🔒 Em breve!','#cfd6ea')}
 function rkAct(a,b){rkSfx('whoosh');
-  switch(a){case 'back':if(RKV==='ps')return rkView(PSRET||'boss');if(RKV==='lvl')return rkView('lib');if(RKV==='yrb')return rkView('yb');if(RKV==='yb')return rkView('menu');if(RKV==='pf'||RKV==='hs'){if(PFO||PFRET)return pfBack();return showScreen('title')}return rkView(RKV==='shop'?'gacha':RKV==='rb'?'boss':'menu');case 'pf':return rkView('pf');case 'hs':return rkView('hs');case 'pfFoto':return PFO?pfAdmFoto():pfFotoM();case 'pfTit':return PFO?0:pfTitM();case 'pfPick':return PFO?0:pfPick();case 'pfRadar':return pfRadarInfo();case 'pfVit':if(PFO){const e=(PFO.vit||[])[+b.dataset.i];if(e)rkToast(rkItNm(e)+': '+rkItEf(e),rkItC(e));return}return pfVitPick(+b.dataset.i);case 'hsInfo':return hsInfo(b.dataset.k);case 'home':return showScreen('title');case 'menuBack':return showScreen('title');
+  switch(a){case 'psMenu':PSRET='menu';return rkView('ps');case 'mnMenu':return mnOpen();case 'back':if(RKV==='ps')return rkView(PSRET||'boss');if(RKV==='mn')return rkView('menu');if(RKV==='lvl')return rkView('lib');if(RKV==='yrb')return rkView('yb');if(RKV==='yb')return rkView('menu');if(RKV==='pf'||RKV==='hs'){if(PFO||PFRET)return pfBack();return showScreen('title')}return rkView(RKV==='shop'?'gacha':RKV==='rb'?'boss':'menu');case 'pf':return rkView('pf');case 'hs':return rkView('hs');case 'pfFoto':return PFO?pfAdmFoto():pfFotoM();case 'pfTit':return PFO?0:pfTitM();case 'pfPick':return PFO?0:pfPick();case 'pfRadar':return pfRadarInfo();case 'pfVit':if(PFO){const e=(PFO.vit||[])[+b.dataset.i];if(e)rkToast(rkItNm(e)+': '+rkItEf(e),rkItC(e));return}return pfVitPick(+b.dataset.i);case 'hsInfo':return hsInfo(b.dataset.k);case 'home':return showScreen('title');case 'menuBack':return showScreen('title');
     case 'boss':return rkView(RKBID==='yuta'&&ysOn()?'yb':(RKBID='broly','boss'));case 'gacha':return rkView('gacha');case 'shop':return rkView('shop');case 'lib':return rkView('lib');case 'lock':return rkLocked();
     case 'ranking':return rkRanking();case 'rewards':return rkRewards();case 'ach':return rkAch();case 'pos':return rkPos();
     case 'start':if(!RKSRV)rkSrvLoad();return rkView(RKBID==='yuta'?'yrb':'rb');case 'bsel':if(b.dataset.b==='yuta'&&!ysOn())return rkToast('⏳ O evento do Yuta acabou','#cfd6ea');RKBID=b.dataset.b;RKYD=null;RKSRV=null;try{localStorage.setItem('rk_bsel',RKBID)}catch(e){}return rkView(RKBID==='yuta'?'yb':'boss');case 'ytab':YS.tab=b.dataset.t;return rkView('yrb');case 'ydif':YS.d=+b.dataset.i;return rkView('yrb');case 'yfight':return ysFight();case 'equip':return rkEquip();case 'music':return rkMusic();case 'code':return rkCode();case 'torre':return rkTorre();case 'conta':return acOpen();case 'fight':RKYD=null;return rkBossStart();case 'lvp':return rkRbSel(-1);case 'lvn':return rkRbSel(1);case 'lvc':return rkRbSel(0,+b.dataset.i);case 'sel':return rkView('lib');case 'hist':return rkHist();case 'taxas':return rkTaxas();case 'pool':return rkTaxas();
@@ -77,6 +77,7 @@ function rkMenuH(){const rp=rkG('rp',0),ri=rkRank(rp);
   <button class="hs" data-a="torre" style="${rkB(15,270,610,380)}"><span class="shine"></span></button>
   <button class="hs lk" data-a="lock" style="${rkB(15,405,610,505)}">${RKLOCK}</button>
   <button class="hs" data-a="gacha" style="${rkB(15,530,610,635)}"><span class="shine"></span></button>
+  <button class="hs rd" data-a="psMenu" style="${rkB(1592,92,1718,232)}"></button><button class="hs rd" data-a="mnMenu" style="${rkB(1720,92,1846,246)}">${mnBadge()?'<i class="dot"></i>':''}</button>
   <button class="hs" data-a="ranking" style="${rkB(185,690,470,800)}"></button><button class="hs" data-a="rewards" style="${rkB(480,690,760,800)}">${rkRwPend()?'<i class="dot"></i>':''}</button>
   <button class="hs" data-a="ach" style="${rkB(770,690,1040,800)}">${rkAchPend()?'<i class="dot"></i>':''}</button><button class="hs" data-a="lib" style="${rkB(1050,690,1335,800)}"></button><button class="hs" data-a="pos" style="${rkB(1345,690,1645,800)}"></button>
   <div class="rkTop">${rkEmb(ri,'sm')}<div><b style="color:${RKR[ri].c}">${RKR[ri].n}</b><small>${rkFmtN(rp)} XP · Boss Nv.${ri+1}</small></div>${rkCurHTML()}</div>`}
@@ -602,7 +603,7 @@ function twPocFits(R){const k='p|'+R.k+'|'+R.v,S=twStacks();return S.some(x=>x.k
 /* ---------- v232: ECONOMIA DE LEITURAS do servidor (plano grátis: 50 mil leituras/dia) ----------
    cache das consultas (rankings/títulos/recordes guardados por alguns minutos, também no aparelho) + se o servidor disser "limite atingido" (429), para de consultar por 15 min e usa o que tem guardado */
 const _twFetchT=twFetchT,RKQC={};let RKQ429=0;
-const RKQT=b=>/"pf[uh]"/.test(b)?300e3:/"claim"/.test(b)?6*3600e3:/"(gh|ch)"/.test(b)?25e3:/"on"/.test(b)?250e3:/"(sv|nome|nomeL|uid)"/.test(b)?0:/"(rkr|orderBy)"/.test(b)?600e3:/"(sem|ev)"/.test(b)?600e3:300e3;
+const RKQT=b=>/"mk[xpsv]?"/.test(b)?20e3:/"pf[uh]"/.test(b)?300e3:/"claim"/.test(b)?6*3600e3:/"(gh|ch)"/.test(b)?25e3:/"on"/.test(b)?250e3:/"(sv|nome|nomeL|uid)"/.test(b)?0:/"(rkr|orderBy)"/.test(b)?600e3:/"(sem|ev)"/.test(b)?600e3:300e3;
 twFetchT=function(url,o,ms){if(!/:runQuery/.test(url)||!o||!o.body)return _twFetchT(url,o,ms);const b=o.body,ttl=RKQT(b),now=Date.now(),mk=t=>new Response(t,{status:200,headers:{'Content-Type':'application/json'}});
   let c=RKQC[b];if(!c&&ttl>=180e3){try{const x=localStorage.getItem('qc_'+twHash(b));if(x)c=RKQC[b]=JSON.parse(x)}catch(e){}}
   if(c&&(now-c.t<ttl||now<RKQ429))return Promise.resolve(mk(c.v));
@@ -1222,3 +1223,86 @@ function psRegTick(){const p=G.p&&G.p[0];if(!p||!p.preg||p.hp<=0||p.ko)return;co
   if(showScreen.cur==='ranked')row.insertAdjacentHTML('afterbegin','<button class="btn main" id="psGo">💠 ENCANTAR</button>');
   if(d&&d.r==='sec')row.insertAdjacentHTML('afterbegin',`<button class="btn" id="psAu">✨ AURA DA PASSIVA: ${o.aura[sel]===0?'DESLIGADA':'LIGADA'}</button>`);
   const g=$('psGo');if(g)g.onclick=()=>{rkModal(null);psOpen()};const au=$('psAu');if(au)au.onclick=()=>{const o2=psG();o2.aura[sel]=o2.aura[sel]===0?1:0;psS(o2);rkSfx('powerUp');rkEquip()}}catch(e){}return r}}
+
+/* ================= v254: MERCADO NEGRO (jogadores vendem por diamantes, preço livre; ADM muda preço ou remove) =================
+   Firestore só deixa CRIAR documentos, então:
+   - anúncio  mk_<lid>  {mk:'1', mkv:<chave do vendedor>, lid, nome, it(JSON), preco}
+   - fechamento (compra / cancelamento / ADM removeu)  mkb_<lid>  {mkx:'1', mks:<chave do vendedor>, lid, tipo:'buy'|'cx'|'rm', preco}  → documentId fixo = só UM consegue (409 para o resto)
+   - preço do ADM  mkp_<lid>_<ts>  {mkp:'1', lid, preco}  → vale o mais novo
+   - recebimento  mkc_<lid>  → o vendedor recebe 1 vez só (diamantes ou o item de volta) */
+const mnKey=()=>twHash(twUid());let MN={tab:'buy',pg:0,sel:null,L:null,C:null,P:null,load:0,busy:0};
+const mnIV=v=>({integerValue:String(Math.max(0,Math.round(v)))}),mnSV=v=>({stringValue:String(v)});
+async function mnPost(id,f){return twFetchT(TWURL+'/torre?documentId='+id+'&key='+TWFB.apiKey,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({fields:Object.assign({nome:mnSV(String(twLS.g('tw_nome','')||'?').slice(0,16)),andar:mnIV(0),tempo:mnIV(0),uid:mnSV(twUid()),v:mnIV(254)},f)})})}
+const mnBadge=()=>{try{return (rkG('mkpend',0)|0)>0}catch(e){return false}};
+function mnOpen(){MN.tab='buy';MN.pg=0;MN.sel=null;rkView('mn');mnLoad()}
+async function mnLoad(fresh){MN.load=1;if(fresh!==0)for(const k in RKQC)if(k.includes('"mk'))delete RKQC[k];try{const [L,C,P]=await Promise.all([rkQ('mk','1',600),rkQ('mkx','1',1500),rkQ('mkp','1',600)]);MN.L=L;MN.C=new Map(C.map(c=>[c.lid,c]));MN.P={};for(const x of P.sort((a,b)=>a._ct-b._ct))MN.P[x.lid]=x.preco|0;MN.err=0}catch(e){MN.err=1}MN.load=0;if(RKV==='mn')rkView('mn');mnClaim(1)}
+const mnPrice=l=>MN.P&&MN.P[l.lid]!=null?MN.P[l.lid]:(l.preco|0);
+function mnIt(l){try{return JSON.parse(l.it)}catch(e){return null}}
+/* item do anúncio → objeto de vitrine (ícone, nome, cor, texto) */
+function mnView(o){if(!o)return null;if(o.k==='jn')return {img:RQA.jn,nm:'JOIA NEGRA',c:'#c46bff',r:'sec',ef:'Usada para girar PASSIVAS (1 joia = 1 giro)',x:null};
+  if(o.k==='poc'){const x={t:'poc',r:o.p.r,v:o.p.v,pk:o.p.pk};return {img:rkItIc(x),nm:rkItNm(x),c:rkItC(x),r:x.r,ef:rkItEf(x),x}}
+  const x=o.it;return {img:rkItIc(x),nm:rkItNm(x),c:rkItC(x),r:x.r,ef:rkItEf(x),x}}
+/* limpa um item vindo de outro jogador */
+function mnClean(o){if(!o||typeof o!=='object')return null;const N=(v,m)=>Math.max(0,Math.min(m,+v||0)),R=[...RKPR,'obs'];
+  if(o.k==='jn')return {k:'jn'};
+  if(o.k==='poc'&&o.p&&R.includes(o.p.r))return {k:'poc',p:{r:o.p.r,v:N(o.p.v,100),...(o.p.pk==='cura'||o.p.pk==='drop'?{pk:o.p.pk}:{})}};
+  const x=o.it;if(o.k!=='eq'||!x||!R.includes(x.r)||!['esp','arm','bot','cap','anel'].includes(x.t)||x.uniq)return null;
+  const it={t:x.t,r:x.r,v:N(x.v,999)};for(const k of ['crit','dmg','vel','st','def','fdmg','trf','drop'])if(x[k])it[k]=N(x[k],999);if(x.nm)it.nm=String(x.nm).slice(0,30);if(x.img&&/^a\/[0-9a-f]+\.webp$/.test(x.img))it.img=x.img;if(x.yt)it.yt=1;if(x.ysec)it.ysec=1;
+  if(x.ps&&PSV[x.ps.r]&&(x.ps.i|0)>=0&&(x.ps.i|0)<6)it.ps={r:x.ps.r,i:x.ps.i|0};return {k:'eq',it}}
+function mnGive(o){o=mnClean(o);if(!o)return false;if(o.k==='jn'){psAddJn(1);return true}if(o.k==='poc'){twAddPoc({k:o.p.r,v:o.p.v,pk:o.p.pk});return true}
+  const I=twInv();I.push(Object.assign({id:'mk'+Date.now().toString(36)+Math.random().toString(36).slice(2,6)},o.it));twLS.s('tw_inv',I);TW.capOut=twCap();return true}
+/* o que eu posso vender */
+function mnMine(){const L=[],seen=new Map();const o=psG();if((o.jn|0)>0)L.push({key:'jn',k:'jn',n:o.jn|0,v:mnView({k:'jn'})});
+  for(const x of twInv()){if(x.uniq)continue;const k='e|'+twStKey(x);if(seen.has(k)){seen.get(k).n++;seen.get(k).ids.push(x.id);continue}const e={key:k,k:'eq',ids:[x.id],n:1,v:mnView({k:'eq',it:x})};seen.set(k,e);L.push(e)}
+  for(const x of twPocs()){const k='p|'+(x.pk||'')+'|'+x.r+'|'+x.v;if(seen.has(k)){seen.get(k).n++;seen.get(k).ids.push(x.id);continue}const e={key:k,k:'poc',ids:[x.id],n:1,v:mnView({k:'poc',p:{r:x.r,v:x.v,pk:x.pk}})};seen.set(k,e);L.push(e)}
+  return L}
+function mnRows(){const me=mnKey();if(MN.tab==='sell')return mnMine().map(e=>({key:e.key,v:e.v,n:e.n,e}));
+  if(!MN.L)return [];const act=MN.L.filter(l=>!MN.C.has(l.lid));
+  if(MN.tab==='buy')return act.sort((a,b)=>b._ct-a._ct).map(l=>({key:l.lid,v:mnView(mnIt(l)),preco:mnPrice(l),l,mine:l.mkv===me})).filter(r=>r.v);
+  return MN.L.filter(l=>l.mkv===me).sort((a,b)=>b._ct-a._ct).map(l=>{const c=MN.C.get(l.lid);return {key:l.lid,v:mnView(mnIt(l)),preco:c&&c.tipo==='buy'?c.preco|0:mnPrice(l),l,st:c?c.tipo:'on',got:(rkG('mkc',[])).includes(l.lid)}}).filter(r=>r.v)}
+function mnH(){const R=mnRows(),np=Math.max(1,Math.ceil(R.length/8));MN.pg=Math.min(MN.pg,np-1);const pg=R.slice(MN.pg*8,MN.pg*8+8),cells=[[475,318,655,548],[677,318,857,548],[878,318,1058,548],[1080,318,1260,548],[475,568,655,798],[677,568,857,798],[878,568,1058,798],[1080,568,1260,798]];
+  const X=R.find(r=>r.key===MN.sel)||null,adm=twIsAdm(),ST={on:'À VENDA',buy:'VENDIDO',cx:'CANCELADO',rm:'REMOVIDO PELO ADM'};
+  let det='',btn='';if(X){det=`<b style="color:${X.v.c}">${twEsc(X.v.nm)} ${X.v.r?rkRarN(X.v.r):''}</b><small>${twEsc(X.v.ef)}</small>${X.l?`<em>Vendedor: ${twEsc(typeof twAl==='function'?twAl(X.l.nome):X.l.nome)}</em>`:''}${X.n>1?`<em>Você tem ${X.n}</em>`:''}${MN.tab==='mine'?`<em class="st st_${X.st}">${ST[X.st]}${X.st==='buy'?' por '+rkFmtN(X.preco)+' 💎':''}${X.got?' · já recebido':''}</em>`:''}`;
+    if(MN.tab==='buy')btn=X.mine?`<button data-m="cancel">CANCELAR ANÚNCIO</button>`:`<button data-m="buy"><span>${rkFmtN(X.preco)}</span> COMPRAR</button>`;
+    else if(MN.tab==='sell')btn=`<input id="mnPr" type="number" min="1" max="999999" inputmode="numeric" placeholder="preço"><button data-m="list">ANUNCIAR 1</button>`;
+    else btn=X.st==='on'?`<button data-m="cancel">CANCELAR ANÚNCIO</button>`:X.got?`<button disabled>RECEBIDO</button>`:`<button data-m="claim">RECEBER</button>`;
+    if(adm&&X.l&&!MN.C.has(X.l.lid))det+=`<div class="mnAdm"><input id="mnAP" type="number" min="1" max="999999" inputmode="numeric" placeholder="novo preço"><button data-m="admP">✏️ MUDAR</button><button data-m="admR">🗑️ REMOVER</button></div>`}
+  return `<button class="hs mnBack" data-m="back" style="${rkB2(20,20,170,140)}"></button>
+  <div class="mnCur" style="${rkB2(1135,22,1290,68)}">${rkFmtN(rkG('gem',0))}</div><div class="mnCur" style="${rkB2(1440,22,1595,68)}">${rkFmtN(twCoins())}</div>
+  ${[['buy',545,815],['sell',840,1100],['mine',1110,1365]].map(([k,a,b])=>`<button class="mnTab ${MN.tab===k?'on':''} t_${k}" data-m="tab" data-k="${k}" style="${rkB2(a,170,b,248)}">${k==='mine'&&rkG('mkpend',0)?'<i class="dot"></i>':''}<small>${{buy:'COMPRAR',sell:'VENDER',mine:'MINHAS VENDAS'}[k]}</small></button>`).join('')}
+  ${MN.tab!=='sell'&&!MN.L?`<div class="mnMsg" style="${rkB2(475,318,1260,798)}">${MN.err?'Sem internet. Tente de novo.':'Carregando o mercado...'}</div>`:!R.length?`<div class="mnMsg" style="${rkB2(475,318,1260,798)}">${MN.tab==='buy'?'Nenhum item à venda agora.':MN.tab==='sell'?'Nada para vender (itens ÚNICOS não podem ser vendidos).':'Você ainda não anunciou nada.'}</div>`:''}
+  ${cells.map((c,j)=>{const r=pg[j];if(!r)return '';return `<button class="mnCell${r.key===MN.sel?' sel':''}${r.v.x?rkYC(r.v.x):''}" data-m="sel" data-k="${twEsc(r.key)}" style="${rkB2(c[0],c[1],c[2],c[3]-48)};--c:${r.v.c}"><img src="${r.v.img}" alt=""><span>${twEsc(r.v.nm)}</span>${r.n>1?`<em>x${r.n}</em>`:''}${r.st&&r.st!=='on'?`<em class="st st_${r.st}">${{buy:'VENDIDO',cx:'CANCELADO',rm:'REMOVIDO'}[r.st]}</em>`:''}</button><div class="mnPrc" style="${rkB2(c[0]+72,c[3]-46,c[2]-6,c[3]-4)}">${r.preco!=null?rkFmtN(r.preco):'—'}</div>`}).join('')}
+  <div class="mnPg" style="${rkB2(620,830,1110,875)}"><button data-m="pg" data-d="-1">◀</button><span>${MN.pg+1}/${np}</span><button data-m="pg" data-d="1">▶</button><button data-m="reload">⟳</button></div>
+  <div class="mnBig" style="${rkB2(1398,300,1550,450)}">${X?`<img src="${X.v.img}" alt="">`:''}</div>
+  <div class="mnDet" style="${rkB2(1318,512,1634,694)}">${X?det:'<small>Toque num item para ver.</small>'}</div>
+  <div class="mnBtn" style="${rkB2(1340,718,1625,800)}">${btn}</div>`}
+function mnOn(){try{const w=$('rkWrap');w.scrollLeft=0;w.scrollTop=0;if(document.scrollingElement){document.scrollingElement.scrollLeft=0;document.scrollingElement.scrollTop=0}}catch(e){}$('rkWrap').querySelectorAll('[data-m]').forEach(b=>b.onclick=e=>{e.stopPropagation();mnAct(b.dataset.m,b)})}
+async function mnAct(a,b){if(a==='back')return rkView('menu');
+  if(a==='tab'){MN.tab=b.dataset.k;MN.pg=0;MN.sel=null;rkSfx('whoosh');rkView('mn');if(MN.tab==='mine')mnClaim();return}
+  if(a==='sel'){MN.sel=b.dataset.k;rkSfx('whoosh');return rkView('mn')}
+  if(a==='pg'){const np=Math.max(1,Math.ceil(mnRows().length/8));MN.pg=(MN.pg+(+b.dataset.d)+np)%np;return rkView('mn')}
+  if(a==='reload'){MN.L=null;rkView('mn');return mnLoad()}
+  if(MN.busy)return;const R=mnRows(),X=R.find(r=>r.key===MN.sel);if(!X)return;MN.busy=1;try{
+  if(a==='list'){const pr=Math.round(+($('mnPr').value||0));if(!(pr>=1&&pr<=999999)){rkSfx('clang');rkToast('Coloque um preço de 1 a 999.999 💎','#ff8080');return}
+    let o;const e=X.e;if(e.k==='jn'){const g=psG();if((g.jn|0)<1)return;g.jn-=1;psS(g);o={k:'jn'}}
+    else if(e.k==='poc'){const id=e.ids[0],P=twPocs(),x=P.find(y=>y.id===id);if(!x)return;twLS.s('tw_poc',P.filter(y=>y.id!==id));o={k:'poc',p:{r:x.r,v:x.v,pk:x.pk}}}
+    else{const id=e.ids[0],I=twInv(),x=I.find(y=>y.id===id);if(!x||x.uniq)return;const Q=twEqp();for(const k in Q)if(Q[k]===id)delete Q[k];twLS.s('tw_eqp',Q);twLS.s('tw_inv',I.filter(y=>y.id!==id));const c=Object.assign({},x);delete c.id;o={k:'eq',it:c}}
+    const lid=mnKey()+'_'+Date.now().toString(36);let ok=false;try{const r=await mnPost('mk_'+lid,{mk:mnSV('1'),mkv:mnSV(mnKey()),lid:mnSV(lid),it:mnSV(JSON.stringify(o)),preco:mnIV(pr)});ok=r.ok}catch(x){}
+    if(!ok){mnGive(o);rkSfx('clang');rkToast('Não deu para anunciar (sem internet?). O item voltou.','#ff8080');return}
+    try{acSave(1)}catch(x){}rkSfx('powerUp');rkToast('🏷️ Anunciado por '+rkFmtN(pr)+' 💎!','#7dff9a');MN.sel=null;MN.busy=0;return mnLoad()}
+  if(a==='buy'){const l=X.l,pr=mnPrice(l);if(rkG('gem',0)<pr){rkSfx('clang');rkToast('Diamantes insuficientes!','#ff8080');return}const o=mnClean(mnIt(l));if(!o){rkToast('Item inválido','#ff8080');return}
+    let r;try{r=await mnPost('mkb_'+l.lid,{mkx:mnSV('1'),mks:mnSV(l.mkv),lid:mnSV(l.lid),tipo:mnSV('buy'),preco:mnIV(pr)})}catch(x){rkToast('Precisa de internet.','#ff8080');return}
+    if(!r.ok){rkSfx('clang');rkToast(r.status===409||r.status===403?'❌ Alguém comprou antes (ou foi cancelado).':'Erro '+r.status,'#ff8080');MN.busy=0;return mnLoad()}
+    rkAdd('gem',-pr);mnGive(o);try{acSave(1)}catch(x){}rkSfx('powerUp');setTimeout(()=>rkSfx('boom'),250);rkToast('🛒 Comprado! Já está na mochila.','#7dff9a');MN.sel=null;MN.busy=0;return mnLoad()}
+  if(a==='cancel'||a==='admR'){const l=X.l;let r;try{r=await mnPost('mkb_'+l.lid,{mkx:mnSV('1'),mks:mnSV(l.mkv),lid:mnSV(l.lid),tipo:mnSV(a==='admR'?'rm':'cx'),preco:mnIV(0)})}catch(x){rkToast('Precisa de internet.','#ff8080');return}
+    rkToast(r.ok?(a==='admR'?'🗑️ Anúncio removido (o item volta para o vendedor)':'Anúncio cancelado. Pegue o item em MINHAS VENDAS.'):'❌ Já foi vendido.',r.ok?'#7dff9a':'#ff8080');MN.busy=0;if(a==='cancel'&&r.ok){MN.tab='mine'}return mnLoad()}
+  if(a==='admP'){const v=Math.round(+(($('mnAP')||{}).value)||0);if(!(v>=1&&v<=999999)){rkToast('Digite o novo preço (1 a 999.999)','#ff8080');return}try{const r=await mnPost('mkp_'+X.l.lid+'_'+Date.now().toString(36),{mkp:mnSV('1'),lid:mnSV(X.l.lid),preco:mnIV(v)});rkToast(r.ok?'✏️ Preço mudado para '+rkFmtN(v)+' 💎':'Erro '+r.status,r.ok?'#7dff9a':'#ff8080')}catch(x){rkToast('Precisa de internet.','#ff8080')}MN.busy=0;return mnLoad()}
+  if(a==='claim'){MN.busy=0;return mnClaim()}}finally{MN.busy=0}}
+/* vendedor recebe: diamantes (vendido) ou o item de volta (cancelado/removido) — 1 vez só (mkc_<lid>) */
+let mnClaiming=0;async function mnClaim(quiet){if(mnClaiming)return;mnClaiming=1;let got=0,gem=0,it=0;try{if(!quiet)for(const k in RKQC)if(k.includes('"mk'))delete RKQC[k];const me=mnKey(),C=await rkQ('mks',me,500),done=rkG('mkc',[]);let pend=0;
+  const mine=MN.L?MN.L.filter(l=>l.mkv===me):await rkQ('mkv',me,500);
+  for(const c of C){if(done.includes(c.lid))continue;const l=mine.find(x=>x.lid===c.lid);if(!l)continue;let r;try{r=await mnPost('mkc_'+c.lid,{mkc:mnSV('1'),lid:mnSV(c.lid)})}catch(x){pend++;continue}
+    if(r.ok){if(c.tipo==='buy'){rkAdd('gem',c.preco|0);gem+=c.preco|0}else{mnGive(mnIt(l));it++}got++}done.push(c.lid)}
+  rkS('mkc',done);rkS('mkpend',pend);if(got){try{acSave(1)}catch(x){}rkSfx('powerUp');rkToast('💰 Mercado Negro: '+(gem?'+'+rkFmtN(gem)+' 💎 ':'')+(it?it+' item(ns) de volta':''),'#ffd84a')}else if(!quiet&&RKV==='mn')rkToast('Nada para receber agora.','#bfe8ff')}catch(e){}mnClaiming=0;if(got&&RKV==='mn')rkView('mn')}
+/* ao abrir o ranqueado, recebe as vendas sozinho */
+{const _o=rkOpen;rkOpen=function(){const r=_o.apply(this,arguments);setTimeout(()=>{try{mnClaim(1)}catch(e){}},4000);return r}}
