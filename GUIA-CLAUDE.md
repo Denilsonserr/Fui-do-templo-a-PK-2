@@ -1451,3 +1451,10 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 ## v307
 - **Código sem servidor e sem conta (`off:1`):** wrapper do `twCupom` que confere só no aparelho (`tw_cup`, 1 vez por aparelho) e dá o prêmio (gem, chr, bpx, gx) sem falar com o Firestore. O de 70.000 💎 (`h5wrl3`) agora é assim. Cuidado: código `off` não tem trava de "1 pessoa no jogo todo" — só entregar a quem deve usar. Teste: `toff_v307.js` (servidor bloqueado).
 - Obs.: no rk.js não escrever `if(C.gem){rkAdd('gem',C.gem);` — um patch antigo procura esse texto e exige que exista 1 vez só.
+
+## v308
+- **"Jogo sem internet" = Firestore no LIMITE DE LEITURAS do dia** (plano grátis: 50 mil leituras/dia; erro 429 "Quota exceeded"; escrita continua funcionando; zera à meia-noite do Pacífico = 05:00 de Brasília). Conferido com status.yml (que agora também testa o site da Cloudflare e o Pages).
+- **Economia de leituras:** chat das horas que já passaram fica guardado 6 h (`RKQH`), chat da hora atual 60 s, só as últimas 3 horas no lobby do Boss (eram 6), lobby atualiza o chat a cada 60 s (era 30 s) e o "online" a cada ~10 min (era 2 min, cache 10 min), rankings da Caça/rank 15 min.
+- **Mensagem certa:** com o servidor no limite aparece "⏳ O servidor chegou no limite de hoje (... voltam às 05:00 de Brasília). O jogo funciona normal." em vez de "Sem internet" (`rkNetMsg()`).
+- Solução definitiva (decisão do dono): plano Blaze do Firebase (paga só o que passar do grátis, ~US$0,06 por 100 mil leituras) com alerta de gasto.
+- Teste: `t429_v308.js`.

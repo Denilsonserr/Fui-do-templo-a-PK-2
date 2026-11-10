@@ -7661,7 +7661,7 @@ function rkBossH(){const rp=rkG('rp',0),ri=rkRank(rp),sel=rkG('sel','goku'),eqI=
   <button class="rkSel" data-a="sel" style="${rkB(985,722,1175,830)}"><img src="${IMG[sel]?IMG[sel].src:''}" alt=""><span><small>LUTAR COM</small><b>${CH[sel]?CH[sel].name:''}</b><em>trocar ›</em></span></button>
   <button class="hs" data-a="start" style="${rkB(1185,735,1635,825)}"><span class="shine"></span></button>
   ${rkCurHTML().replace('rkCur','rkCur bt')}`}
-function rkBossOn(){rkSrvLoad();const I=$('rkChI');if(I)I.onkeydown=e=>{if(e.key==='Enter')rkChatSend()};rkChatLoad();rkOnline();let n=0;rkView.iv=setInterval(()=>{if((RKV!=='boss'&&RKV!=='yb')||showScreen.cur!=='ranked'){clearInterval(rkView.iv);return}n++;rkChatLoad();if(n%4===0)rkOnline()},30000)}
+function rkBossOn(){rkSrvLoad();const I=$('rkChI');if(I)I.onkeydown=e=>{if(e.key==='Enter')rkChatSend()};rkChatLoad();rkOnline();let n=0;rkView.iv=setInterval(()=>{if((RKV!=='boss'&&RKV!=='yb')||showScreen.cur!=='ranked'){clearInterval(rkView.iv);return}n++;rkChatLoad();if(n%10===0)rkOnline()},60000)}
 let RKSEL=null;
 function rkRbH(){const xp=rkG('rp',0),ri=rkRank(xp),lv=RKSEL==null?ri:RKSEL,B=RKBOSS[0],L=RKLVS[lv],nx=Math.min(RKTOP,ri+1),prog=ri>=RKTOP?100:Math.round(100*(xp-RKXP[ri])/(RKXP[ri+1]-RKXP[ri]));
   const cells=[[100,500,270,685],[300,505,453,685],[490,505,642,685],[682,505,835,685],[872,505,1025,685],[1065,505,1218,685],[1256,505,1408,685],[1447,505,1600,685]];
@@ -7727,10 +7727,10 @@ async function rkQ(field,val,lim){const body={structuredQuery:{from:[{collection
   for(const x of (Array.isArray(j)?j:[])){const F=x&&x.document&&x.document.fields;if(!F)continue;const e={_ct:Date.parse(x.document.createTime||'')||0};for(const k in F){const v=F[k];e[k]=v.stringValue!=null?v.stringValue:v.integerValue!=null?+v.integerValue:v.doubleValue}o.push(e)}return o}
 async function rkOnline(){try{const t=Date.now(),A=(await rkQ('on',rkBk(t),500)).concat(await rkQ('on',rkBk(t-300000),500));const n=new Set(A.map(e=>e.uid)).size||1;const E=$('rkOnN');if(E)E.textContent=rkFmtN(n)}catch(e){const E=$('rkOnN');if(E)E.textContent='?'}}
 /* ---------- chat global ---------- */
-async function rkChatLoad(){try{const hs=[0,1,2,3,4,5].map(i=>'h'+(Math.floor(Date.now()/36e5)-i));let L=[];for(const d of hs)L=L.concat(await rkQ('gh',d,100));
+async function rkChatLoad(){try{const hs=[0,1,2].map(i=>'h'+(Math.floor(Date.now()/36e5)-i));let L=[];for(const d of hs)L=L.concat(await rkQ('gh',d,100));
     L=L.filter(m=>m.msg).map(m=>({nome:String(m.nome||'?').slice(0,16),tit:m.tit||'',uid:m.uid||'',msg:String(m.msg).slice(0,140),ct:m._ct})).sort((a,b)=>a.ct-b.ct).slice(-60);
     const pend=(rkChatLoad.p||[]).filter(m=>!L.some(y=>y.uid===m.uid&&y.msg===m.msg));L=L.concat(pend);rkChatLoad.L=L;const E=$('rkChL');if(E){const st=E.scrollTop+E.clientHeight>=E.scrollHeight-20;E.innerHTML=twChatHTML(L);if(st||!rkChatLoad.d){E.scrollTop=E.scrollHeight;rkChatLoad.d=1}}}
-  catch(e){const E=$('rkChL');if(E&&!(rkChatLoad.L||[]).length)E.innerHTML='<p class="twH err">Sem internet agora.</p>'}}
+  catch(e){const E=$('rkChL');if(E&&!(rkChatLoad.L||[]).length)E.innerHTML='<p class="twH err">'+rkNetMsg()+'</p>'}}
 function rkChatSend(){const I=$('rkChI');if(!I)return;const t=I.value.replace(/[<>]/g,'').trim().slice(0,140);if(!t)return;const nome=twLS.g('tw_nome','');
   if(!nome){rkToast('Escolha seu nome no Modo Torre (✏️ NOME) para usar o chat','#ff8080');return}
   if(Date.now()-(rkChatSend.l||0)<4000){rkToast('Calma! Espere uns segundos','#ff8080');return}rkChatSend.l=Date.now();I.value='';
@@ -7983,7 +7983,7 @@ function rkRanking(tab){tab=tab||'rp';rkRanking.tab=tab;rkModal(`<div class="twM
     <div id="rkRkL"><p class="twH">Carregando...</p></div><div class="row"><button class="btn" id="rkMX">FECHAR</button></div></div>`);
   $('rkMX').onclick=()=>rkModal(null);document.querySelectorAll(RKMS()+'.twTab button').forEach(b=>b.onclick=()=>rkRanking(b.dataset.t));
   rkLoadRk(tab).then(A=>{let L=A.slice();if(tab==='rp')L.sort((a,b)=>b.rp-a.rp);else if(tab==='dmg')L.sort((a,b)=>b.dmg-a.dmg);else{L=L.filter(e=>e[tab]>0).sort((a,b)=>a[tab]-b[tab])}L=L.slice(0,50);const me=twUid(),E=$('rkRkL');if(!E)return;
-    E.innerHTML=L.length?'<p class="twH pfHint">👆 Toque num jogador para ver o perfil</p><div class="twRk">'+L.map((e,i)=>{const ri=rkRank(e.rp);return `<div class="rw${e.uid===me?' me':''}${i<3?' t'+(i+1):''}" data-pu="${twEsc(e.uid||'')}" data-pn="${twEsc(e.nome||'')}"><span class="ps">${i<3?['🥇','🥈','🥉'][i]:i+1}</span><img src="${RQA.rank[ri]}" alt=""><span class="nm">${twEsc(e.nome)}${twTitTag(twTN(e),e.nome)}<small style="color:${RKR[ri].c}">${RKR[ri].n}</small></span><span class="an">${tab==='rp'?'⭐ '+rkFmtN(e.rp)+' XP':tab==='dmg'?'💥 '+rkFmtN(e.dmg):'⏱ '+twFmt(e[tab])}</span></div>`}).join('')+'</div>':'<p class="twH">Ninguém no ranking ainda. Seja o primeiro!</p>'}).catch(()=>{const E=$('rkRkL');if(E)E.innerHTML='<p class="twH err">Sem internet agora.</p>'})}
+    E.innerHTML=L.length?'<p class="twH pfHint">👆 Toque num jogador para ver o perfil</p><div class="twRk">'+L.map((e,i)=>{const ri=rkRank(e.rp);return `<div class="rw${e.uid===me?' me':''}${i<3?' t'+(i+1):''}" data-pu="${twEsc(e.uid||'')}" data-pn="${twEsc(e.nome||'')}"><span class="ps">${i<3?['🥇','🥈','🥉'][i]:i+1}</span><img src="${RQA.rank[ri]}" alt=""><span class="nm">${twEsc(e.nome)}${twTitTag(twTN(e),e.nome)}<small style="color:${RKR[ri].c}">${RKR[ri].n}</small></span><span class="an">${tab==='rp'?'⭐ '+rkFmtN(e.rp)+' XP':tab==='dmg'?'💥 '+rkFmtN(e.dmg):'⏱ '+twFmt(e[tab])}</span></div>`}).join('')+'</div>':'<p class="twH">Ninguém no ranking ainda. Seja o primeiro!</p>'}).catch(()=>{const E=$('rkRkL');if(E)E.innerHTML='<p class="twH err">'+rkNetMsg()+'</p>'})}
 const rkRwPend=()=>{const c=rkG('rwc2',[]),ri=rkRank(rkG('rp',0));for(let i=1;i<=ri;i++)if(!c.includes(i))return true;return false};
 /* prêmios de cada elo (v218): diamantes, tickets, baús da Torre, sementes e CAIXA SECRETA nos dois últimos */
 const RKRW=[null,{g:200,bau:[['rara',1]]},{g:350,tic:2,bau:[['epica',1]]},{g:500,tic:3,bau:[['epica',2]],sz:1},{g:800,tic:5,bau:[['lend',1]],sz:2},
@@ -8088,17 +8088,17 @@ function acOpen(tab){const n=localStorage.getItem('ac_n'),k=localStorage.getItem
   acM(`<div class="twM sm"><h3>👤 CONTA</h3>${tabs}${body}<div class="row"><button class="btn" id="acX">FECHAR</button></div></div>`);
   const E=()=>document.getElementById('acE'),msg=(t,c)=>{const e=E();if(e){e.className='twH '+(c||'');e.textContent=t}},B=id=>document.getElementById(id);
   B('acX').onclick=()=>acM(null);document.querySelectorAll('#acM .twTab button').forEach(b=>b.onclick=()=>acOpen(b.dataset.t));
-  if(B('acSv'))B('acSv').onclick=async()=>{msg('Salvando...');localStorage.removeItem('ac_h');const ok=await acSave(1);msg(ok?'✔ Salvo!':'Sem internet agora. Tenta de novo.',ok?'ok':'err');if(ok)B('acLt').textContent=acT(localStorage.getItem('ac_t'))};
+  if(B('acSv'))B('acSv').onclick=async()=>{msg('Salvando...');localStorage.removeItem('ac_h');const ok=await acSave(1);msg(ok?'✔ Salvo!':rkNetMsg()+' Tenta de novo.',ok?'ok':'err');if(ok)B('acLt').textContent=acT(localStorage.getItem('ac_t'))};
   if(B('acOut'))B('acOut').onclick=()=>{['ac_k','ac_n','ac_h','ac_t'].forEach(x=>localStorage.removeItem(x));acOpen('entrar')};
   if(B('acNew'))B('acNew').onclick=async()=>{const p=B('acP1').value,p2=B('acP2').value;if(p.length<4)return msg('A senha precisa de pelo menos 4 letras/números.','err');if(p!==p2)return msg('As senhas não são iguais.','err');
     B('acNew').disabled=true;msg('Criando conta...');try{const acc=await acId(me),L=await acList(acc);if(L.length){B('acNew').disabled=false;return msg('Esse nome já tem conta. Se a conta é sua, toque em 🔑 ENTRAR (em cima) e digite a senha.','err')}
-      const k=await acKey(me,p);localStorage.setItem('ac_k',k);localStorage.setItem('ac_n',me);localStorage.removeItem('ac_h');const ok=await acSave(1);if(!ok){['ac_k','ac_n'].forEach(x=>localStorage.removeItem(x));B('acNew').disabled=false;return msg('Sem internet agora. Tenta de novo.','err')}
-      try{rkSfx('powerUp')}catch(e){}acOpen('ok')}catch(e){B('acNew').disabled=false;msg('Sem internet agora. Tenta de novo.','err')}};
+      const k=await acKey(me,p);localStorage.setItem('ac_k',k);localStorage.setItem('ac_n',me);localStorage.removeItem('ac_h');const ok=await acSave(1);if(!ok){['ac_k','ac_n'].forEach(x=>localStorage.removeItem(x));B('acNew').disabled=false;return msg(rkNetMsg()+' Tenta de novo.','err')}
+      try{rkSfx('powerUp')}catch(e){}acOpen('ok')}catch(e){B('acNew').disabled=false;msg(rkNetMsg()+' Tenta de novo.','err')}};
   if(B('acIn'))B('acIn').onclick=async()=>{const nn=B('acN').value.trim(),p=B('acP').value;if(!nn||!p)return msg('Digite o nome e a senha.','err');B('acIn').disabled=true;msg('Entrando...');
     try{const acc=await acId(nn),L=await acList(acc);if(!L.length){B('acIn').disabled=false;return msg('Conta não encontrada. Confira o nome.','err')}const k=await acKey(nn,p),x=await acFind(acc,k,L);if(!x){B('acIn').disabled=false;return msg('Senha errada.','err')}
       const D=JSON.parse(x.d);for(const kk of Object.keys(localStorage))if(/^(tw_|rk_)/.test(kk))localStorage.removeItem(kk);for(const kk in D)localStorage.setItem(kk,D[kk]);
       localStorage.setItem('ac_k',k);localStorage.setItem('ac_n',(()=>{try{return JSON.parse(D.tw_nome)}catch(e){return nn}})()||nn);localStorage.setItem('ac_h',twHash(acData()));localStorage.setItem('ac_t',String(x.ts));
-      msg('✔ Conta carregada! Recarregando o jogo...','ok');setTimeout(()=>location.reload(),900)}catch(e){B('acIn').disabled=false;msg('Sem internet agora. Tenta de novo.','err')}}}
+      msg('✔ Conta carregada! Recarregando o jogo...','ok');setTimeout(()=>location.reload(),900)}catch(e){B('acIn').disabled=false;msg(rkNetMsg()+' Tenta de novo.','err')}}}
 
 /* ================= MODO TORRE RANQUEADA (v228): mesma rank do Boss, dá mais XP, nova tela ================= */
 /* v268: no torneio (TWEV.flat) a torre é igual para todos: rank mais baixo, sem bônus de rank */
@@ -8173,7 +8173,8 @@ function twPocFits(R){const k='p|'+R.k+'|'+R.v,S=twStacks();return S.some(x=>x.k
 /* ---------- v232: ECONOMIA DE LEITURAS do servidor (plano grátis: 50 mil leituras/dia) ----------
    cache das consultas (rankings/títulos/recordes guardados por alguns minutos, também no aparelho) + se o servidor disser "limite atingido" (429), para de consultar por 15 min e usa o que tem guardado */
 const _twFetchT=twFetchT,RKQC={};let RKQ429=0;
-const RKQT=b=>/"(mk[xpsv]?|avs)"/.test(b)?20e3:/"pf[uh]"/.test(b)?300e3:/"claim"/.test(b)?6*3600e3:/"(gh|ch)"/.test(b)?25e3:/"on"/.test(b)?250e3:/"(sv|nome|nomeL|uid)"/.test(b)?0:/"(rkr|orderBy)"/.test(b)?600e3:/"(sem|ev)"/.test(b)?600e3:300e3;
+const RKQH=b=>{const m=b.match(/"stringValue":"h(\d+)"/);return m&&+m[1]<Math.floor(Date.now()/36e5)};
+const RKQT=b=>/"(gh|ch)"/.test(b)&&RKQH(b)?6*3600e3:/"(mk[xpsv]?|avs)"/.test(b)?20e3:/"pf[uh]"/.test(b)?300e3:/"claim"/.test(b)?6*3600e3:/"(gh|ch)"/.test(b)?60e3:/"on"/.test(b)?600e3:/"(ca|rk)"/.test(b)?900e3:/"(sv|nome|nomeL|uid)"/.test(b)?0:/"(rkr|orderBy)"/.test(b)?600e3:/"(sem|ev)"/.test(b)?600e3:300e3;
 twFetchT=function(url,o,ms){if(!/:runQuery/.test(url)||!o||!o.body)return _twFetchT(url,o,ms);const b=o.body,ttl=RKQT(b),now=Date.now(),mk=t=>new Response(t,{status:200,headers:{'Content-Type':'application/json'}});
   let c=RKQC[b];if(!c&&ttl>=180e3){try{const x=localStorage.getItem('qc_'+twHash(b));if(x)c=RKQC[b]=JSON.parse(x)}catch(e){}}
   if(c&&(now-c.t<ttl||now<RKQ429))return Promise.resolve(mk(c.v));
@@ -9633,7 +9634,7 @@ let CARKT='clv',CARKL=null;
 async function caRank(){caRankH();try{const L=await rkQ('ca','1',1000),M={};for(const e of L){const k=e.uid||e.nome;const m=M[k]||(M[k]={nome:e.nome,tit:e.tit,uid:e.uid,clv:0,cdm:0,ccr:0,ctt:0,crg:0,_ct:0});
     if((e._ct||0)>=m._ct){m.nome=e.nome;m.tit=e.tit;m._ct=e._ct||0}for(const [f,,,hi] of CARK){const v=e[f]|0;if(!v)continue;if(hi?v>m[f]:(!m[f]||v<m[f]))m[f]=v}}CARKL=Object.values(M)}catch(e){CARKL='err'}caRankH()}
 function caRankH(){const T=CARK.find(x=>x[0]===CARKT),f=T[0],hi=T[3];let rows='<p class="twH">Carregando...</p>';
-  if(CARKL==='err')rows='<p class="twH err">Sem internet agora.</p>';else if(CARKL){const L=CARKL.filter(e=>e[f]>0).sort((a,b)=>hi?b[f]-a[f]:a[f]-b[f]);const me=L.findIndex(e=>e.uid===twUid());
+  if(CARKL==='err')rows='<p class="twH err">'+rkNetMsg()+'</p>';else if(CARKL){const L=CARKL.filter(e=>e[f]>0).sort((a,b)=>hi?b[f]-a[f]:a[f]-b[f]);const me=L.findIndex(e=>e.uid===twUid());
     rows=L.length?L.slice(0,30).map((e,i)=>`<div class="caRkR ${e.uid===twUid()?'me':''} p${i+1}"><b>${i<3?['🥇','🥈','🥉'][i]:i+1+'º'}</b><span>${String(e.nome||'?').replace(/[<>&]/g,'')}${e.tit&&TWTIT[e.tit]?` <small style="color:${TWTIT[e.tit].c}">${TWTIT[e.tit].i||'🏅'} ${TWTIT[e.tit].n}</small>`:''}</span><em ${f==='crg'?`style="color:${ANC[Math.floor((e[f]-1)/10)][1]}"`:''}>${T[2](e[f])}</em></div>`).join('')+(me>=30?`<div class="caRkR me"><b>${me+1}º</b><span>VOCÊ</span><em>${T[2](L[me][f])}</em></div>`:''):'<p class="twH">Ninguém ainda. Seja o primeiro!</p>'}
   const B=rkG('caBest',{});
   rkModal(`<div class="twM caRkM"><h3>🏆 RANKING DA CAÇA · LOBO NEGRO</h3><div class="caRkT">${CARK.map(x=>`<button data-f="${x[0]}" class="${x[0]===CARKT?'on':''}">${x[1]}</button>`).join('')}</div>
@@ -9662,8 +9663,8 @@ function acRecOpen(){const nm=localStorage.getItem('ac_rec');if(!nm)return;
     B.disabled=true;msg('Recuperando a conta...');try{const acc=await acId(nm),L=await acList(acc);if(!L.length){B.disabled=false;return msg('Conta não encontrada.','err')}const x=L[0],D=JSON.parse(x.d);
       for(const kk of Object.keys(localStorage))if(/^(tw_|rk_)/.test(kk))localStorage.removeItem(kk);for(const kk in D)localStorage.setItem(kk,D[kk]);
       const n2=(()=>{try{return JSON.parse(D.tw_nome)}catch(e){return nm}})()||nm,k=await acKey(n2,p);localStorage.setItem('ac_k',k);localStorage.setItem('ac_n',n2);localStorage.removeItem('ac_h');
-      const ok=await acSave(1);if(!ok){B.disabled=false;return msg('Sem internet agora. Tenta de novo.','err')}localStorage.removeItem('ac_rec');msg('✔ Conta recuperada! Use a senha nova para entrar. Recarregando...','ok');setTimeout(()=>location.reload(),1500)}
-    catch(e){B.disabled=false;msg('Sem internet agora. Tenta de novo.','err')}}}
+      const ok=await acSave(1);if(!ok){B.disabled=false;return msg(rkNetMsg()+' Tenta de novo.','err')}localStorage.removeItem('ac_rec');msg('✔ Conta recuperada! Use a senha nova para entrar. Recarregando...','ok');setTimeout(()=>location.reload(),1500)}
+    catch(e){B.disabled=false;msg(rkNetMsg()+' Tenta de novo.','err')}}}
 setTimeout(()=>{try{if(localStorage.getItem('ac_rec'))acRecOpen()}catch(e){}},3000);
 /* v299: mais 2 contas para recuperar (texto do código só com o dono) */
 TWCUP['170s7ti']={nm:'RECUPERAR CONTA',it:[],rec:'Vini_junior10'};TWCUP['1db5so5']={nm:'RECUPERAR CONTA',it:[],rec:'xdarwinzinn'};
@@ -9694,6 +9695,9 @@ TWCUP['h5wrl3'].off=1;
   if(C.chr){const own=rkG('own',['goku']);if(!own.includes(C.chr)){own.push(C.chr);rkS('own',own)}t='🎁 Código aceito! Você ganhou o '+C.nm+'!'}
   if(C.bpx){try{bpUnlock(2);const o=bpG();o.xp=Math.max(o.xp|0,20*BPS.xpL);bpS(o)}catch(e){}}if(C.gx)rkAdd('gem',C.gx);
   try{acSave(1)}catch(e){}E.className='twH ok';E.textContent=t;try{twSfx('powerUp');setTimeout(()=>twSfx('boom'),300)}catch(e){}return true}}
+
+/* v308: servidor no LIMITE DE LEITURAS do dia (erro 429) — avisar certo em vez de "sem internet" */
+function rkNetMsg(){try{if(Date.now()<RKQ429)return '⏳ O servidor chegou no limite de hoje (rankings, chat e entrar na conta voltam às 05:00 de Brasília). O jogo funciona normal.'}catch(e){}return 'Sem internet agora.'}
 
 function twTrofList(){const tc=twLS.g('tw_tc',{}),run={};for(const t of TW.tr)run[t.k]=(run[t.k]||0)+1;
   twModal(`<div class="twM"><h3>🎖️ TROFÉUS</h3><div class="twTL">${Object.keys(TWTR).map(k=>{const T=TWTR[k];return `<div class="${tc[k]||run[k]?'got':''}"><i>${T.i}</i><b>${T.n}</b><span>${T.d}</span><em>+${T.p} 🏆</em><small>${run[k]?'nesta subida: '+run[k]+' · ':''}total: ${(tc[k]||0)}</small></div>`}).join('')}</div>
@@ -9860,7 +9864,7 @@ window.__dbg={mus:()=>[MCUR,MEL.src.split('/').pop()],stg:()=>STAGE.key,prepMatc
 })();
 </script>
 <style>#updB{position:fixed;left:50%;top:max(8px,env(safe-area-inset-top));transform:translateX(-50%);z-index:99999;padding:10px 22px;border-radius:14px;border:2px solid #fff3c0;background:linear-gradient(#ffd84a,#e08a10);color:#3a1d00;font:900 15px system-ui,sans-serif;box-shadow:0 0 18px #ffb21f;cursor:pointer;animation:updP 1s ease-in-out infinite alternate}@keyframes updP{to{transform:translateX(-50%) scale(1.05)}}</style>
-<script>(function(){const V='f876303cb722';if(!/^https?:/.test(location.protocol))return;let nv=null;
+<script>(function(){const V='4ec14ecc6462';if(!/^https?:/.test(location.protocol))return;let nv=null;
 function show(){if(document.getElementById('updB'))return;try{if(typeof G!=='undefined'&&G.mode==='fight')return}catch(e){}const b=document.createElement('button');b.id='updB';b.textContent='🔄 ATUALIZAÇÃO NOVA! Toque para atualizar';
   b.onclick=()=>{b.textContent='⏳ Atualizando...';try{acSave(1)}catch(e){}setTimeout(()=>location.reload(),900)};document.body.appendChild(b)}
 async function chk(){if(document.hidden)return;if(nv){show();return}try{const r=await fetch('versao.txt?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const t=(await r.text()).trim();if(/^[0-9a-f]{8,40}$/.test(t)&&t!==V){nv=t;show()}}catch(e){}}
