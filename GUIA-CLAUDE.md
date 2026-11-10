@@ -1332,3 +1332,6 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - Folhas novas do dono: `poses/15_guarda_defesa.png` (guarda de luta → `idle`; último quadro = defesa `block`), `16_em_pe.png` (em pé com o cabelo mexendo → `relax`/entrada), `17_vitoria.png` (vitória). As 16 e 17 vêm transparentes com um brilho vermelho em volta: `seg_sk.py` tira (alfa < 70 e borda vermelha).
 - Escudo da mandala (folha 10) saiu da defesa.
 - Teste: `ferramentas/testes/tshaka_v283.js`.
+
+## v284 — Shaka: escudo da mandala (folha 10) fora do jogo
+- O dono confirmou: a defesa é SÓ a folha 15 (braços cruzados na frente do rosto). A folha 10 (palma + mandala) não é usada em nenhuma animação (a animação `shield` saiu do `build_sk.py`).
