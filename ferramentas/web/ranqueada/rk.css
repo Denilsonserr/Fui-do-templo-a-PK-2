@@ -1022,3 +1022,10 @@ body:not(.pcMode) #how .pcKeys{display:none}#how .pcKeys{margin:0 auto .6em;max-
 .rkCd.rv.r_mit.skCd .frm,.rkCd.r_mit.skCd .frm{animation:none;filter:grayscale(1) sepia(1) saturate(1.8) brightness(1.6) drop-shadow(0 0 .8vh #fff) drop-shadow(0 0 2.2vh #ffe08a) drop-shadow(0 0 4vh #ffc21f)}
 .rkCd.rv.r_mit.skCd::after{inset:-40%;border-radius:50%;background:repeating-conic-gradient(rgba(255,255,255,.6) 0 4deg,transparent 4deg 16deg);-webkit-mask:radial-gradient(circle,#000 25%,transparent 68%);mask:radial-gradient(circle,#000 25%,transparent 68%);animation:rkEr 6s linear infinite}
 .rkCd.skCd .in{z-index:3}
+
+/* v291 */
+.rk_pf .pfAnR{position:absolute;display:block;pointer-events:none;animation:anRb 3s ease-in-out infinite}
+.rk_pf .pfAnR img{width:100%;height:100%;object-fit:fill;filter:drop-shadow(0 0 .3em rgba(255,255,255,.4))}
+.rk_pf .pfAnR img:not(.gl){animation:anRg 2.4s ease-in-out infinite}
+.rk_pf .pfAnR.b{z-index:1;clip-path:inset(0 0 50% 0)}.rk_pf .pfAnR.f{z-index:4;clip-path:inset(50% 0 0 0)}
+.rk_pf .pfPed{z-index:2}

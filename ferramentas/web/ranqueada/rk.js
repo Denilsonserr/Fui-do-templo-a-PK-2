@@ -290,8 +290,8 @@ const RKSP={sec:{t:'esp',r:'sec',v:15,vel:5,crit:10,nm:'LÂMINA NEGRA',img:RQA.s
   yrou:{t:'arm',r:'sec',v:60,trf:10,nm:'UNIFORME DO YUTA',img:RQA.ysp.yrou,yt:1,ysec:1},yrika:{t:'cap',r:'obs',v:0,def:40,crit:20,st:30,drop:30,nm:'RIKA',img:RQA.ysp.yrika,yt:1,ysec:1},
   /* v280: itens SECRETOS do Shaka (Invocação Ilimitada); 50% em quem não é o Shaka; Shaka com o set completo = +10% em cada item */
   skcap:{t:'cap',r:'sec',v:0,def:60,crit:40,nm:'ELMO DE VIRGEM',img:RQA.ssp.skcap,sk:1,ysec:1},skarm:{t:'arm',r:'sec',v:0,dmg:50,crit:40,nm:'ARMADURA DE VIRGEM',img:RQA.ssp.skarm,sk:1,ysec:1},
-  skluv:{t:'esp',r:'sec',v:10,vel:40,nm:'LUVAS DE VIRGEM',img:RQA.ssp.skluv,sk:1,ysec:1},skbot:{t:'bot',r:'sec',v:40,dmg:30,nm:'BOTAS DE VIRGEM',img:RQA.ssp.skbot,sk:1,ysec:1},
-  skros:{t:'anel',r:'sec',v:60,drop:30,nm:'ROSÁRIO DE SHAKA',img:RQA.ssp.skros,sk:1,ysec:1}};
+  skluv:{t:'anel',r:'sec',v:0,dmg:10,vel:40,nm:'LUVAS DE VIRGEM',img:RQA.ssp.skluv,sk:1,ysec:1},skbot:{t:'bot',r:'sec',v:40,dmg:30,nm:'BOTAS DE VIRGEM',img:RQA.ssp.skbot,sk:1,ysec:1},
+  skros:{t:'esp',r:'sec',v:0,st:60,drop:30,nm:'ROSÁRIO DE SHAKA',img:RQA.ssp.skros,sk:1,ysec:1}};
 /* Semente dos Deuses: quando você morre (Modo Boss e Torre), volta com a vida cheia (usa 1) */
 const rkSenzu=()=>twLS.g('tw_senzu',0)|0,rkAddSenzu=n=>twLS.s('tw_senzu',Math.max(0,rkSenzu()+n));
 function rkSenzuRevive(d){if(rkSenzu()<=0||d.cpu||d.rkSz)return false;d.rkSz=1;rkAddSenzu(-1);d.ko=false;d.hp=d.hpLag=(d.mhp||MAXHP);d.state='idle';d.st=0;d.vx=0;d.vy=0;d.y=FLOOR;d.grounded=true;d.flying=false;d.move=null;d.hitstun=0;d.inv=90;
@@ -919,8 +919,8 @@ function lvStatRows(id){const B=lvBonus(id);return [['dano','+'+B.dano.toFixed(1
   <div class="lbAt" id="lbAt" style="${rkB(965,232,1075,465)}"></div>
   <div class="lbUl" id="lbUl" style="${rkB(800,522,1058,598)}"></div>
   <div class="rkInfo" id="rkInfo" hidden></div>
-  <button class="rkUse" id="rkUse" data-a="libUse" style="${rkB(14,548,268,612)}" hidden></button>
-  <button class="lbEvo" id="lbEvo" data-a="evo" style="${rkB(14,625,268,700)}" hidden>⬆ EVOLUIR</button>`}}
+  <button class="rkUse" id="rkUse" data-a="libUse" style="${rkB(14,603,268,660)}" hidden></button>
+  <button class="lbEvo" id="lbEvo" data-a="evo" style="${rkB(14,670,268,740)}" hidden>⬆ EVOLUIR</button>`}}
 {const _lg=rkLibGrid;rkLibGrid=function(){if(RKL.tab!=='chr')return _lg();const L=rkLibItems(),G0=$('rkGrid');if(!G0)return;const pages=Math.max(1,Math.ceil(L.length/16));RKL.pg=Math.min(RKL.pg,pages-1);const X=[1132,1289,1445,1602],Y=[180,330,478,626];
   G0.innerHTML=L.slice(RKL.pg*16,RKL.pg*16+16).map((x,i)=>{const c=(TWEQR.find(R=>R.k===x.r)||TWEQR[0]).c,lv=x.has?lvOf(x.id).lv:0;return `<button class="rkCell lbC ${x.has?'':'no'} ${RKL.cur&&RKL.cur.id===x.id?'on':''}" data-id="${x.id}" style="${rkB(X[i%4],Y[(i/4)|0],X[i%4]+138,Y[(i/4)|0]+132)};--c:${c}"><img src="${x.img}" alt="">${x.has?`<em>Nv ${lv}</em>`:'<span class="lk">🔒</span>'}<b>${twEsc(x.nm)}</b></button>`}).join('')+(pages>1?`<div class="rkPg" style="${rkB(1762,450,1812,480)}">${RKL.pg+1}/${pages}</div>`:'');
   G0.querySelectorAll('.rkCell').forEach(b=>b.onclick=()=>{const x=L.find(y=>y.id===b.dataset.id);if(x){rkSfx('whoosh');rkLibShow(x);rkLibGrid()}})}}
@@ -1825,7 +1825,7 @@ function anSlot(i){const id=AN.ch,n=anSlots(id),E=anEq(id);if(i>=n){rkSfx('clang
   const r=E[i]&&anL().find(x=>x.i===E[i]);if(r)return anInfo(r);
   const free=anL().filter(x=>!anWho(x));if(!free.length)return rkToast('Nenhum anel livre · eles caem do Lobo Negro (Caça)','#d9b3ff');rkToast('Escolha um anel na lista da direita','#d9b3ff')}
 {const _h=rkLibH;rkLibH=function(){if(RKL.tab==='an')return anH();const pf=RKL.tab==='chr';let h=_h.apply(this,arguments);if(!pf)h=h.split(rkB(18,600,268,668)).join(rkB(18,652,268,716));
-  return h+`<button class="hs anTabB" data-a="tab" data-t="an" style="${pf?rkB(12,517,276,594):rkB(8,555,279,640)}"><img src="${RQA.anel2[0]}" alt=""><span>Anéis</span></button>`}}
+  return h+`<button class="hs anTabB" data-a="tab" data-t="an" style="${pf?rkB(12,515,276,590):rkB(8,555,279,640)}"><img src="${RQA.anel2[0]}" alt=""><span>Anéis</span></button>`}}
 {const _o=rkLibOn;rkLibOn=function(){if(RKL.tab==='an')return anOn();return _o.apply(this,arguments)}}
 /* bônus na luta (Boss, Torre e Caça): personagem em uso */
 {const _ra=rkApply;rkApply=function(){_ra.apply(this,arguments);try{const tw=typeof TW!=='undefined'&&TW.on&&G.gmode==='torre';if(!G.p||!(tw||G.gmode==='boss'||G.gmode==='caca'))return;const p=G.p[0],A=anSum(p.def.id);
@@ -1983,3 +1983,12 @@ function skTitWin(n){return new Promise(res=>{const O=document.createElement('di
 /* +20% de dano só lutando com o Shaka (Boss, Torre, Caça) */
 const skTitOn=()=>twTits().some(k=>/^sk\d+$/.test(k));
 {const _ra=rkApply;rkApply=function(){_ra.apply(this,arguments);try{const tw=typeof TW!=='undefined'&&TW.on&&G.gmode==='torre';if(!G.p||!(tw||G.gmode==='boss'||G.gmode==='caca'))return;const p=G.p[0];if(p.def.id==='shaka'&&skTitOn())p.tdm=(p.tdm||1)+.20}catch(e){}}}
+
+/* ================= v291: Rosário do Shaka vai no lugar da ARMA e as Luvas no do ANEL; itens do Shaka brilhando dourado; anéis da alma flutuando no personagem do PERFIL ================= */
+(function(){try{const I=twInv(),Q=twEqp();let ch=0;for(const it of I){if(it.nm==='ROSÁRIO DE SHAKA'&&it.t!=='esp'){if(Q.anel===it.id)delete Q.anel;Object.assign(it,{t:'esp',v:0,st:60,drop:30});ch=1}if(it.nm==='LUVAS DE VIRGEM'&&it.t!=='anel'){if(Q.esp===it.id)delete Q.esp;Object.assign(it,{t:'anel',v:0,dmg:10,vel:40});ch=1}}if(ch){twLS.s('tw_inv',I);twLS.s('tw_eqp',Q)}}catch(e){}})();
+(function(){try{const L=Object.values(RQA.ssp||{}).map(x=>x.split('/').pop());const st=document.createElement('style');
+  st.textContent=L.map(f=>`img[src$="${f}"]`).join(',')+'{animation:skItG 1.8s ease-in-out infinite;border-radius:14%}'+
+  '@keyframes skItG{0%,100%{filter:drop-shadow(0 0 .25em #fff) drop-shadow(0 0 .6em #ffd76a) brightness(1.05)}50%{filter:drop-shadow(0 0 .45em #fff) drop-shadow(0 0 1.3em #ffc21f) drop-shadow(0 0 2.2em rgba(255,215,110,.8)) brightness(1.3)}}';document.head.appendChild(st)}catch(e){}})();
+{const _h=pfH;pfH=function(){let h=_h.apply(this,arguments);if(PFO)return h;try{const D=pfCur(),ped=CH[D.ped]?D.ped:'goku',L=anL(),E=anEq(ped).map(i=>i&&L.find(z=>z.i===i)).filter(Boolean);if(!E.length)return h;
+  const R=E.map((r,k)=>{const y=560-k*72,w=290+k*6,g=anGl(r),gl=g?` class="gl g${g}" style="--c:${ANC[r.c][1]}"`:'';return `<i class="pfAnR b" style="${rkB2(1310-w/2,y-40,1310+w/2,y+40)};animation-delay:${(k*.37).toFixed(2)}s"><img src="${RQA.anel2[r.c]}" alt=""${gl}></i><i class="pfAnR f" style="${rkB2(1310-w/2,y-40,1310+w/2,y+40)};animation-delay:${(k*.37).toFixed(2)}s"><img src="${RQA.anel2[r.c]}" alt=""${gl}></i>`}).join('');
+  h=h.replace('<button class="pfPed"',R+'<button class="pfPed"')}catch(e){}return h}}

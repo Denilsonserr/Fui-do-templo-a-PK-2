@@ -1369,3 +1369,9 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 ## APK LEVE (10/11/2026) — o app abre o site do Cloudflare por dentro
 - `capacitor.config.json`: `server.url` = https://fui-do-templo-a-pk-2.denilsinend.workers.dev e `webDir` = `apk_www` (só uma página "precisa de internet" de reserva). O APK fica com poucos MB, atualiza sozinho (é o site) e o online funciona (mesmo endereço do site). O jogo em si continua em `www/` (publicado pelo Cloudflare e pelo GitHub Pages).
 - Quem jogava no APK antigo sem conta: o progresso ficava no app (endereço interno) e não passa para o novo — precisa entrar na CONTA.
+
+## v291 — Biblioteca, perfil com anéis, itens do Shaka
+- Biblioteca (aba Personagens): o botão "Anéis" tampava o "USAR NA RANQUEADA" → Anéis `rkB(12,515,276,590)`, Usar `rkB(14,603,268,660)`, Evoluir `rkB(14,670,268,740)`.
+- Perfil (o seu): os anéis da alma equipados no personagem do pedestal flutuam em volta do corpo (`.pfAnR`, mesma ideia da aba Anéis, com o brilho por nível).
+- Itens do Shaka brilham dourado em qualquer tela (CSS gerado por `img[src$=...]` dos ícones `RQA.ssp`).
+- O dono pediu: ROSÁRIO vai no espaço da ARMA (sorte 60, drop 30) e as LUVAS no do ANEL (vel 40, dano 10). Itens já ganhos são convertidos ao abrir o jogo (e tirados do espaço errado).
