@@ -1335,3 +1335,7 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 
 ## v284 — Shaka: escudo da mandala (folha 10) fora do jogo
 - O dono confirmou: a defesa é SÓ a folha 15 (braços cruzados na frente do rosto). A folha 10 (palma + mandala) não é usada em nenhuma animação (a animação `shield` saiu do `build_sk.py`).
+
+## v285 — Shaka carrega energia EM PÉ + gacha do Shaka abre 13:20
+- `pw` (carregar energia/transformação) = folha 01 (em pé com o rosário na mão), quadros [0,0,1,1,2,2,1,1]. As imagens da folha 01 tinham sido apagadas na limpeza da v283 (não eram usadas): `build_sk.py` refaz o que falta (o cache em `/home/claude/sk_build/cache_ai.json` foi limpo das entradas sem arquivo). ATENÇÃO ao limpar `www/a`: só apagar o que nenhum JSON de build usa.
+- Invocação Ilimitada do Shaka: abre 10/11/2026 **13:20** (Brasília) (`SKG0`), 7 dias a partir daí.

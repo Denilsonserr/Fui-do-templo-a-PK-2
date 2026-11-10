@@ -1912,10 +1912,10 @@ function lsOpen(){const I=lsInv(),E=lsEq();
   return R.concat(add.filter(x=>(!q||x.nm.toLowerCase().includes(q))&&(RKL.f===0||(RKL.f===1?x.has:!x.has))))}}
 
 /* ================= v280: SHAKA — Invocação ILIMITADA (3ª aba, no lugar da do Madara) + nível 70 =================
-   Abre 10/11/2026 12:45 (Brasília) e fica 7 dias. 70 💎 / 700 💎 (aceita tickets), Shaka 0,35% garantido em 170 (rk_pityS),
+   Abre 10/11/2026 13:20 (Brasília) e fica 7 dias. 70 💎 / 700 💎 (aceita tickets), Shaka 0,35% garantido em 170 (rk_pityS),
    itens secretos do Shaka 0,25% garantido em 220 (rk_pitySS, nunca repetido). */
-const SKG0=Date.UTC(2026,10,10,15,45),SKG1=SKG0+7*864e5;
-const skgOpen=()=>{const n=Date.now();return n>=SKG0&&n<SKG1},skgHHMM=()=>'12:45';
+const SKG0=Date.UTC(2026,10,10,16,20),SKG1=SKG0+7*864e5;
+const skgOpen=()=>{const n=Date.now();return n>=SKG0&&n<SKG1},skgHHMM=()=>'13:20';
 const skOwned=()=>rkG('own',[]).includes('shaka');const SKSEC=['skcap','skarm','skluv','skbot','skros'];
 const skSecLeft=()=>{const I=twInv();return SKSEC.filter(k=>!I.some(x=>x.nm===RKSP[k].nm))};
 function rkRollS(){
