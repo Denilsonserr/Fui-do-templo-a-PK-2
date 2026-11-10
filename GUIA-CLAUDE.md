@@ -1246,3 +1246,11 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - Se o dash + garra baixa não acertarem (errou/defendeu), o combo para. Depois do combo ou do erro: **BRECHA!** (ofegante, toma +30% de dano, ~0,7s). Combo tem recarga de 4–6s.
 - Quadros novos de dano: apanhou em pé (cai 0/1), voando (2/3), no chão (4→5), morte (2→5).
 - Teste: `ferramentas/testes/tcaca_v271.js` (combo inteiro, combo errado → brecha, apanha, KO).
+
+## v272 — nova tela "Modos de Jogo" (arte do dono: Shaka, Yuta, lobo, serpentes)
+- Arte em `ferramentas/ranqueada_artes/v272/` (`fazer.py`: redimensiona p/ 1847×851, apaga o "!" vermelho pintado nas Abas de Evento com inpaint, gera webp → `RQA.menu_ranqueado`). A arte antiga (v267) saiu do www/a.
+- Botões novos (rkB): Modo Boss, Torre, **Caçador** (no lugar do antigo Desafio do Tempo), Gacha; Passivas, Mercado Negro, Abas de Evento, Passe; barra de baixo (Ranking, Recompensas, Conquistas, Personagem, Minha Posição).
+- **Caçador com cadeado**: só quem tem o título ADM (`twIsAdm()`) entra (`data-a="caca"`, etiqueta "ADM · TESTE"); os outros veem o cadeado e o aviso (`cacaLk`).
+- Efeitos (`rkMenuFx`, CSS `.mfx`/`.mB`): brilho correndo nos botões (vermelho Boss, dourado Torre, roxo Caçador, azul Gacha), névoa roxa passando, vaga-lumes roxos, faíscas douradas subindo no cabelo do Shaka, olhos do lobo (vermelho) e das serpentes (roxo) piscando, orbe do Yuta pulsando, lua brilhando, raio roxo de vez em quando.
+- Caixa de rank/moedas (`.rkTop`) agora pequena numa linha no canto de cima à direita (não tampa o Yuta).
+- Teste: `ferramentas/testes/tmenu_v272.js`.
