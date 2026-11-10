@@ -1,5 +1,5 @@
 name: Importar do Firebase para o servidor novo (ferramenta)
-# Copia do Firebase (Firestore) para o servidor da Cloudflare (worker + D1): títulos, códigos usados, rankings, perfis, mercado e as contas
+# Copia do Firebase (Firestore) para o servidor da Cloudflare (worker + D1): títulos, códigos usados, perfis, mercado e as contas
 # salvas nos últimos dias (3 salvamentos mais novos de cada conta). Rodar DEPOIS das 05:00 (limite de leituras do Firebase zera).
 on:
   workflow_dispatch:
@@ -25,11 +25,10 @@ jobs:
           def add(L,tag):
               for d in L:D[d['name'].split('/')[-1]]=d
               print(tag,len(L),flush=True)
-          for f in ['cupom','claim','rk','rkr','ca','pfu','pfh','mk','mkp','mks','mkv','mkx','avs','char','nomeL','sem','ev']:
+          # v311: rankings (rk, rkr, ca, Torre: pontos/char/sem/ev) NÃO são copiados — o dono quer que comecem do zero (o do RANK vem do celular de cada um)
+          for f in ['cupom','claim','pfu','pfh','mk','mkp','mks','mkv','mkx','avs','nomeL']:
               try:add(q(F({'where':{'fieldFilter':{'field':{'fieldPath':f},'op':'GREATER_THAN','value':{'stringValue':''}}},'limit':3000})),f)
               except Exception as e:print('ERRO',f,e)
-          try:add(q(F({'orderBy':[{'field':{'fieldPath':'pontos'},'direction':'DESCENDING'}],'limit':400})),'pontos')
-          except Exception as e:print('ERRO pontos',e)
           ts=int(time.time()*1000)-int(os.environ['DIAS'])*864e5
           try:
               S=q(F({'where':{'fieldFilter':{'field':{'fieldPath':'ts'},'op':'GREATER_THAN','value':{'integerValue':str(int(ts))}}},'limit':8000}))

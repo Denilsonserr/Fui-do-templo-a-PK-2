@@ -1478,3 +1478,8 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 ## v310
 - Servidor novo começou vazio → ranking do Boss vazio. Agora cada jogador, ao abrir o jogo (só no servidor novo, 1 vez: `rk_rksync310`), manda o seu RANK atual (`rkSend` com o rp do aparelho) e os recordes da Caça (`caSend`). O ranking volta a encher conforme o pessoal abre o jogo; o histórico completo vem do Firebase às 05:20 (importar.yml, tarefa agendada).
 - Teste: `trk_v310.js` (precisa do servidor local).
+
+## v311
+- Pedido do dono: o ranking do **RANK** (ranqueada) continua — vem do rank salvo no celular de cada um (v310). Os **outros rankings começam do zero**: Boss (dano no Broly, mais rápido, 1ª fase), Caça e Torre.
+- `importar.yml` não copia mais rk/rkr/ca/pontos/char/sem/ev (só códigos usados, títulos nº, perfis, mercado e contas).
+- Caça: `caSend` agora manda `v:311` e o ranking da Caça só conta documentos v≥311; os recordes da Caça guardados no aparelho zeram 1 vez (`rk_carst311`). O envio dos recordes da Caça ao abrir o jogo (v310) foi tirado.

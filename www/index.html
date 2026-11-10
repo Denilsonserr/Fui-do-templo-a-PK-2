@@ -9627,12 +9627,12 @@ setTimeout(()=>{try{caTitCheck({lv:rkG('caRec',0),tt:rkG('caBest',{}).tt||0,crt:
     if(S.lv>(B.lv||0)){B.lv=S.lv;up=1}if(S.dmg>(B.dmg||0)){B.dmg=S.dmg;up=1}if(S.crt>(B.crt||0)){B.crt=S.crt;up=1}if(S.tt&&(!B.tt||S.tt<B.tt)){B.tt=S.tt;up=1}if(S.ring>(B.ring==null?-1:B.ring)){B.ring=S.ring;up=1}
     rkS('caBest',B);caTitCheck(S);if(up)caSend(B)}catch(e){}return r}}
 function caSend(B){const n=twLS.g('tw_nome','');if(!n)return;const IV=v=>({integerValue:String(Math.max(0,Math.round(v||0)))});
-  const f={nome:{stringValue:String(n).slice(0,16)},andar:IV(0),tempo:IV(0),uid:{stringValue:twUid()},tit:{stringValue:twTitOn()},ca:{stringValue:'1'},clv:IV(B.lv),cdm:IV(B.dmg),ccr:IV(B.crt),ctt:IV(B.tt),crg:IV((B.ring==null?-1:B.ring)+1),char:{stringValue:rkG('sel','goku')},v:IV(295)};
+  const f={nome:{stringValue:String(n).slice(0,16)},andar:IV(0),tempo:IV(0),uid:{stringValue:twUid()},tit:{stringValue:twTitOn()},ca:{stringValue:'1'},clv:IV(B.lv),cdm:IV(B.dmg),ccr:IV(B.crt),ctt:IV(B.tt),crg:IV((B.ring==null?-1:B.ring)+1),char:{stringValue:rkG('sel','goku')},v:IV(311)};
   twFetchT(TWURL+'/torre?key='+TWFB.apiKey,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({fields:f})}).catch(()=>{})}
 /* tela do ranking */
 const CARK=[['clv','🐺 MAIS LONGE',v=>v>=10?'👑 10 NÍVEIS':'NÍVEL '+v,1],['cdm','⚔️ MAIS DANO',v=>rkFmtN(v),1],['ccr','🎯 MAIS CRÍTICOS',v=>v+' críticos',1],['ctt','⏱️ MAIS RÁPIDO',v=>Math.floor(v/60)+':'+String(v%60).padStart(2,'0'),0],['crg','💍 ANEL MAIS RARO',v=>caRingN(v-1),1]];
 let CARKT='clv',CARKL=null;
-async function caRank(){caRankH();try{const L=await rkQ('ca','1',1000),M={};for(const e of L){const k=e.uid||e.nome;const m=M[k]||(M[k]={nome:e.nome,tit:e.tit,uid:e.uid,clv:0,cdm:0,ccr:0,ctt:0,crg:0,_ct:0});
+async function caRank(){caRankH();try{const L=await rkQ('ca','1',1000),M={};for(const e of L){if((e.v|0)<311)continue;const k=e.uid||e.nome;const m=M[k]||(M[k]={nome:e.nome,tit:e.tit,uid:e.uid,clv:0,cdm:0,ccr:0,ctt:0,crg:0,_ct:0});
     if((e._ct||0)>=m._ct){m.nome=e.nome;m.tit=e.tit;m._ct=e._ct||0}for(const [f,,,hi] of CARK){const v=e[f]|0;if(!v)continue;if(hi?v>m[f]:(!m[f]||v<m[f]))m[f]=v}}CARKL=Object.values(M)}catch(e){CARKL='err'}caRankH()}
 function caRankH(){const T=CARK.find(x=>x[0]===CARKT),f=T[0],hi=T[3];let rows='<p class="twH">Carregando...</p>';
   if(CARKL==='err')rows='<p class="twH err">'+rkNetMsg()+'</p>';else if(CARKL){const L=CARKL.filter(e=>e[f]>0).sort((a,b)=>hi?b[f]-a[f]:a[f]-b[f]);const me=L.findIndex(e=>e.uid===twUid());
@@ -9708,7 +9708,10 @@ setTimeout(()=>{try{if(!/\/fs\/v1\//.test(TWURL)||rkG('pub310',0))return;const n
   const B=rkG('caBest',null);if(B&&(B.lv||B.dmg))caSend(B);try{pfPub(1)}catch(e){}}catch(e){}},6000);
 /* v310: servidor novo começou vazio — cada jogador que abre o jogo manda 1 vez o seu RANK atual (e os recordes da Caça) para o ranking voltar a encher na hora */
 setTimeout(()=>{try{if(!/\/fs\/v1\//.test(TWURL)||localStorage.getItem('rk_rksync310'))return;if(!twLS.g('tw_nome',''))return;
-  rkSend({rp:rkG('rp',0),dmg:0,t1:0,tt:0,won:0});const B=rkG('caBest',null);if(B&&(B.lv||B.dmg||B.ring!=null))caSend(B);localStorage.setItem('rk_rksync310','1')}catch(e){}},6000);
+  rkSend({rp:rkG('rp',0),dmg:0,t1:0,tt:0,won:0});localStorage.setItem('rk_rksync310','1')}catch(e){}},6000);
+/* v311: dono: o ranking do RANK continua (vem do celular de cada um); os OUTROS rankings (Boss dano/tempo, Caça, Torre) começam do zero.
+   Caça: recordes guardados no aparelho zeram 1 vez e só contam documentos da v311 em diante. */
+try{if(!localStorage.getItem('rk_carst311')){rkS('caBest',{});localStorage.setItem('rk_carst311','1')}}catch(e){}
 
 function twTrofList(){const tc=twLS.g('tw_tc',{}),run={};for(const t of TW.tr)run[t.k]=(run[t.k]||0)+1;
   twModal(`<div class="twM"><h3>🎖️ TROFÉUS</h3><div class="twTL">${Object.keys(TWTR).map(k=>{const T=TWTR[k];return `<div class="${tc[k]||run[k]?'got':''}"><i>${T.i}</i><b>${T.n}</b><span>${T.d}</span><em>+${T.p} 🏆</em><small>${run[k]?'nesta subida: '+run[k]+' · ':''}total: ${(tc[k]||0)}</small></div>`}).join('')}</div>
@@ -9875,7 +9878,7 @@ window.__dbg={mus:()=>[MCUR,MEL.src.split('/').pop()],stg:()=>STAGE.key,prepMatc
 })();
 </script>
 <style>#updB{position:fixed;left:50%;top:max(8px,env(safe-area-inset-top));transform:translateX(-50%);z-index:99999;padding:10px 22px;border-radius:14px;border:2px solid #fff3c0;background:linear-gradient(#ffd84a,#e08a10);color:#3a1d00;font:900 15px system-ui,sans-serif;box-shadow:0 0 18px #ffb21f;cursor:pointer;animation:updP 1s ease-in-out infinite alternate}@keyframes updP{to{transform:translateX(-50%) scale(1.05)}}</style>
-<script>(function(){const V='24aceeb6e3d4';if(!/^https?:/.test(location.protocol))return;let nv=null;
+<script>(function(){const V='778ed2a2b2f6';if(!/^https?:/.test(location.protocol))return;let nv=null;
 function show(){if(document.getElementById('updB'))return;try{if(typeof G!=='undefined'&&G.mode==='fight')return}catch(e){}const b=document.createElement('button');b.id='updB';b.textContent='🔄 ATUALIZAÇÃO NOVA! Toque para atualizar';
   b.onclick=()=>{b.textContent='⏳ Atualizando...';try{acSave(1)}catch(e){}setTimeout(()=>location.reload(),900)};document.body.appendChild(b)}
 async function chk(){if(document.hidden)return;if(nv){show();return}try{const r=await fetch('versao.txt?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const t=(await r.text()).trim();if(/^[0-9a-f]{8,40}$/.test(t)&&t!==V){nv=t;show()}}catch(e){}}
