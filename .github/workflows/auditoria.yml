@@ -23,10 +23,12 @@ jobs:
           for acc,(ts,nm,dd) in sorted(A.items(),key=lambda z:-z[1][0]):
               try:D=json.loads(dd)
               except Exception:continue
-              g=lambda k,v=None:json.loads(D[k]) if k in D else v
+              def g(k,v=None):
+                  try:return json.loads(D[k]) if k in D else v
+                  except Exception:return D.get(k,v)
               own=g('rk_own',[]);H=g('rk_hist',[]) or [];ps=g('rk_pityS',0);pss=g('rk_pitySS',0);ban=g('rk_ban','')
               hs=[h for h in H if h.get('d',0)>1794325200000]
               shk='shaka' in own;sec=[h for h in hs if h.get('k')=='sp' and str(h.get('s','')).startswith('sk')]
-              if shk or ps or pss or ban=='sk':
+              if True:
                   print('ROW',json.dumps({'nome':nm,'conta':acc,'salvo':datetime.datetime.utcfromtimestamp(ts/1000).isoformat(),'shaka':shk,'pityS':ps,'pitySS':pss,'giros_desde':len(hs),'itens_shaka':[h.get('s') for h in sec],'gem':g('rk_gem',0),'tic':g('rk_tic',0)},ensure_ascii=False))
           PY
