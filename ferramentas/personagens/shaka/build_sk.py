@@ -3,16 +3,16 @@ import json,numpy as np,os,hashlib
 from PIL import Image,ImageFilter
 import sys;sys.path.insert(0,'/home/claude/fui-do-templo-a-pk-2/ferramentas/ia');import esr
 OUT='/home/claude/fui-do-templo-a-pk-2/www/a';TGT=292.0;RES=2.4
-U={'01':664,'02':519,'03':535,'04':450,'05':602,'06':527,'07':560,'08':473,'09':579,'10':583,'11':550,'12':623,'13':530,'14':600}
+U={'01':664,'02':519,'03':535,'04':450,'05':602,'06':527,'07':560,'08':473,'09':579,'10':583,'11':550,'12':623,'13':530,'14':600,'15':589,'16':643,'17':645}
 def G(t,ix):return [(t,i) for i in ix]
-Y={'relax':G('01',[0]*8),'gin':G('01',[0,1,2,3,4]),'idle':G('01',[3,3,4,4,5,5,4,4]),'walk':G('13',[0,1,2,3,4,5,0,1]),'run':G('13',[0,1,2,3,4,5,0,1]),
+Y={'relax':G('16',[0,1,2,3,4,5,4,3]),'gin':G('16',[0,2])+G('15',[0,1,2]),'idle':G('15',[2,2,3,3,4,4,3,3]),'walk':G('13',[0,1,2,3,4,5,0,1]),'run':G('13',[0,1,2,3,4,5,0,1]),
   'dashf':G('04',[1,2,3,3,3,4,4,4]),'dash2':G('04',[1,2,3,3,4,4,4,4]),'dashb':G('03',[1,2,3,3,2,1,1,1]),'dodge':G('03',[1,2,3,3,2,1,1,1]),
   'jab':G('14',[1,2,3,4,4,4,5,5]),'cross':G('14',[2,3,4,4,4,5,5,1]),'jab2':G('14',[3,4,4,4,4,5,5,5]),'str':G('02',[0,4,4,4,4,4,5,5]),
   'upper':G('02',[1,2,3,3,3,3,0,0]),'kick':G('05',[1,2,3,3,3,2,1,1]),'hkick':G('05',[1,2,4,4,4,4,5,5]),'sweep':G('08',[1,2,3,4,4,4,5,5]),
   'kick2':G('06',[1,2,3,3,3,5,5,5]),'kick3':G('06',[2,3,4,4,4,5,5,5]),
-  'block':G('10',[2,3,3,3,3,3,3,3]),'cblock':G('07',[1]*8),'crouch':G('07',[0,1,1,1,1,1,1,1]),
+  'block':G('15',[4,5,5,5,5,5,5,5]),'cblock':G('07',[1]*8),'crouch':G('07',[0,1,1,1,1,1,1,1]),
   'hit':G('09',[0,1,2,2,1,1,0,0]),'hhit':G('09',[1,2,3,3,2,2,0,0]),'launch':G('09',[3,4,4,4,4,4,4,4]),'fall':G('09',[4,4,4,4,4]),'drop':G('09',[5,5,5]),
-  'getup':G('11',[4,4,3])+G('01',[3,3,3,3,3]),'win':G('12',[0,1,2,3,4,5,5,5]),'lose':G('11',[0,1,2,3,4,5,5,5]),
+  'getup':G('11',[4,4,3])+G('15',[2,2,2,2,2]),'win':G('17',[0,1,2,3,4,5,5,5]),'lose':G('11',[0,1,2,3,4,5,5,5]),
   'pw':G('07',[0,1,2,3,4,5,5,5]),'ki1':G('04',[0,1,2,3,3,4,4,4]),'ki2':G('02',[0,1,2,4,4,4,5,5]),'seals':G('07',[4]*8),'subst':G('03',[0,1,2,3,4,5]),
   'palm':G('02',[0,1,2,3,4,4,5,5]),'roxo':G('02',[0,4,4,4,5,5]),'shield':G('10',[0,1,2,3,4,5]),
   'cmb':G('04',[1,2,3])+G('14',[3,4])+G('05',[2,4])+G('06',[3,4])+G('08',[3,4])+G('14',[4])+G('02',[2,3,4,5]),
@@ -29,7 +29,9 @@ def anchor(a,air,lying):
     if lying:return (np.where(al)[1]).mean()
     if air:hb=al[top:top+int((bot-top)*.25)];return np.where(hb)[1].mean()
     band=al[int(top+(bot-top)*.55):int(top+(bot-top)*.78)];return np.median(np.where(band)[1]) if band.any() else a.shape[1]/2
-cache={}
+CF='cache_ai.json';cache={}
+if os.path.exists(CF):
+    for k_,v_ in json.load(open(CF)).items():t_,i_,a_=k_.split(',');cache[(t_,int(i_),bool(int(a_)))]=v_
 def frame(t,i,air):
     key=(t,i,air)
     if key in cache:return cache[key]
@@ -41,4 +43,4 @@ def frame(t,i,air):
     fr={'w':round(gw,1),'h':round(gh,1),'ax':round(ax*k,1),'ay':round(ay*k,1),'rx':round((rx-ax)*k),'ry':round((ay-ry)*k),'src':sv(np.asarray(o).astype(float))}
     cache[key]=fr;print(t,i,flush=True);return fr
 J={'sk':{an:[frame(t,i,an in AIR) for t,i in L] for an,L in Y.items()}};J['skd']=J['sk']
-B=os.path.dirname(os.path.abspath(__file__))+'/build';json.dump(J,open(B+'/sk.json','w'),separators=(',',':'));print('ok',len(cache))
+B=os.path.dirname(os.path.abspath(__file__))+'/build';json.dump(J,open(B+'/sk.json','w'),separators=(',',':'));json.dump({f'{k[0]},{k[1]},{int(k[2])}':v for k,v in cache.items()},open(CF,'w'));print('ok',len(cache))

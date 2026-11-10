@@ -6,6 +6,15 @@ SRC=os.path.join(os.path.dirname(os.path.abspath(__file__)),'poses');os.makedirs
 def border_lab(m):
     lab,k=nd.label(m);b=set(np.unique(np.concatenate([lab[0],lab[-1],lab[:,0],lab[:,-1]])))-{0};return np.isin(lab,list(b))
 def alpha(p):
+    im=Image.open(p)
+    if im.mode=='RGBA' and (np.asarray(im)[...,3]<10).mean()>.2:   # v283: folha já transparente (16, 17): tira o brilho vermelho fraco em volta
+        a=np.asarray(im).astype(float);al=a[...,3].copy();r,g=a[...,0],a[...,1];al[al<70]=0
+        for _ in range(4):
+            bg=al==0;ring=nd.binary_dilation(bg,iterations=1)&~bg&(r>120)&(r>g*1.6)
+            if not ring.any():break
+            al[ring]=0
+        m=al>0;lab,k=nd.label(m);sz=nd.sum(m,lab,range(1,k+1));al[np.isin(lab,[i+1 for i in range(k) if sz[i]<40])]=0
+        a[...,3]=al;return a
     a=np.asarray(Image.open(p).convert('RGB')).astype(float);mn=a.min(2);mx=a.max(2);sat=mx-mn;lum=a.mean(2)
     bgish=(mn>=232)&(sat<=14);bg=border_lab(bgish)
     lab,k=nd.label(bgish&~bg)

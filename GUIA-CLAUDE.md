@@ -1326,3 +1326,9 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - Botões do dono (`ferramentas/personagens/shaka/botoes/normal.png` e `olhos_abertos.png`), só os botões (sem HUD): `hud_sk.py` recorta cada botão em círculo pelas posições da arte (1670×942) → `build/hud_shaka.json` → `HUDA.shaka`; `HUTH.shaka` dourado (chamas/raios nos botões). Olhos abertos: classe `#controls.skf` = botões pulsando em brilho dourado + brilho nos cantos.
 - `seg_sk.py`: tira o contorno branco do desenho encostado no fundo e os buraquinhos brancos fechados (ex.: entre o rosário e a mão).
 - `build_sk.py` agora passa a IA 2x (Real-ESRGAN, `ferramentas/ia/esr.py`) em cada quadro (~25 min) — entra na versão seguinte quando terminar.
+
+## v283 — Shaka: qualidade com IA + guarda/defesa, em pé e vitória novas
+- Todos os quadros do Shaka passaram pela IA 2x (Real-ESRGAN). `build_sk.py` guarda o resultado em `/home/claude/sk_build/cache_ai.json` (só refaz quadros novos).
+- Folhas novas do dono: `poses/15_guarda_defesa.png` (guarda de luta → `idle`; último quadro = defesa `block`), `16_em_pe.png` (em pé com o cabelo mexendo → `relax`/entrada), `17_vitoria.png` (vitória). As 16 e 17 vêm transparentes com um brilho vermelho em volta: `seg_sk.py` tira (alfa < 70 e borda vermelha).
+- Escudo da mandala (folha 10) saiu da defesa.
+- Teste: `ferramentas/testes/tshaka_v283.js`.
