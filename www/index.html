@@ -9685,6 +9685,15 @@ TWCUP['gs2l5f']={nm:'PASSE MÁXIMO + 18.000 💎',it:[],bpx:1,gx:18000};
 TWCUP['2rq1y4']={nm:'PASSE FULL',it:[],bpx:1};
 /* v306: código de 1 pessoa: 70.000 💎 (texto só com o dono) */
 TWCUP['h5wrl3']={nm:'70.000 DIAMANTES',gem:70000};
+/* v307: código SEM SERVIDOR e SEM CONTA (off:1): confere só no aparelho (1 vez por aparelho). O de 70.000 💎 passa a ser assim. */
+TWCUP['h5wrl3'].off=1;
+{const _cp4=twCupom;twCupom=async function(code,E){const h=twHash(String(code).toUpperCase()),C=TWCUP[h];if(!C||!C.off)return _cp4.apply(this,arguments);
+  const used=twLS.g('tw_cup',{});if(used[h]){E.className='twH err';E.textContent='Você já usou esse código.';return true}used[h]=1;twLS.s('tw_cup',used);
+  let t='🎁 Código aceito! '+C.nm;
+  if(C.gem>0){const gq=C.gem;rkAdd('gem',gq);t='🎁 Código aceito! +'+rkFmtN(gq)+' 💎'}
+  if(C.chr){const own=rkG('own',['goku']);if(!own.includes(C.chr)){own.push(C.chr);rkS('own',own)}t='🎁 Código aceito! Você ganhou o '+C.nm+'!'}
+  if(C.bpx){try{bpUnlock(2);const o=bpG();o.xp=Math.max(o.xp|0,20*BPS.xpL);bpS(o)}catch(e){}}if(C.gx)rkAdd('gem',C.gx);
+  try{acSave(1)}catch(e){}E.className='twH ok';E.textContent=t;try{twSfx('powerUp');setTimeout(()=>twSfx('boom'),300)}catch(e){}return true}}
 
 function twTrofList(){const tc=twLS.g('tw_tc',{}),run={};for(const t of TW.tr)run[t.k]=(run[t.k]||0)+1;
   twModal(`<div class="twM"><h3>🎖️ TROFÉUS</h3><div class="twTL">${Object.keys(TWTR).map(k=>{const T=TWTR[k];return `<div class="${tc[k]||run[k]?'got':''}"><i>${T.i}</i><b>${T.n}</b><span>${T.d}</span><em>+${T.p} 🏆</em><small>${run[k]?'nesta subida: '+run[k]+' · ':''}total: ${(tc[k]||0)}</small></div>`}).join('')}</div>
@@ -9851,7 +9860,7 @@ window.__dbg={mus:()=>[MCUR,MEL.src.split('/').pop()],stg:()=>STAGE.key,prepMatc
 })();
 </script>
 <style>#updB{position:fixed;left:50%;top:max(8px,env(safe-area-inset-top));transform:translateX(-50%);z-index:99999;padding:10px 22px;border-radius:14px;border:2px solid #fff3c0;background:linear-gradient(#ffd84a,#e08a10);color:#3a1d00;font:900 15px system-ui,sans-serif;box-shadow:0 0 18px #ffb21f;cursor:pointer;animation:updP 1s ease-in-out infinite alternate}@keyframes updP{to{transform:translateX(-50%) scale(1.05)}}</style>
-<script>(function(){const V='600e3343132b';if(!/^https?:/.test(location.protocol))return;let nv=null;
+<script>(function(){const V='f876303cb722';if(!/^https?:/.test(location.protocol))return;let nv=null;
 function show(){if(document.getElementById('updB'))return;try{if(typeof G!=='undefined'&&G.mode==='fight')return}catch(e){}const b=document.createElement('button');b.id='updB';b.textContent='🔄 ATUALIZAÇÃO NOVA! Toque para atualizar';
   b.onclick=()=>{b.textContent='⏳ Atualizando...';try{acSave(1)}catch(e){}setTimeout(()=>location.reload(),900)};document.body.appendChild(b)}
 async function chk(){if(document.hidden)return;if(nv){show();return}try{const r=await fetch('versao.txt?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const t=(await r.text()).trim();if(/^[0-9a-f]{8,40}$/.test(t)&&t!==V){nv=t;show()}}catch(e){}}

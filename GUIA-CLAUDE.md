@@ -1447,3 +1447,7 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 
 ## v306
 - Código de 1 pessoa (hash `h5wrl3`, texto só com o dono): **70.000 💎** (`gem:70000`).
+
+## v307
+- **Código sem servidor e sem conta (`off:1`):** wrapper do `twCupom` que confere só no aparelho (`tw_cup`, 1 vez por aparelho) e dá o prêmio (gem, chr, bpx, gx) sem falar com o Firestore. O de 70.000 💎 (`h5wrl3`) agora é assim. Cuidado: código `off` não tem trava de "1 pessoa no jogo todo" — só entregar a quem deve usar. Teste: `toff_v307.js` (servidor bloqueado).
+- Obs.: no rk.js não escrever `if(C.gem){rkAdd('gem',C.gem);` — um patch antigo procura esse texto e exige que exista 1 vez só.

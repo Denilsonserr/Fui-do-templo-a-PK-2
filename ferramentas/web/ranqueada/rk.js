@@ -2131,3 +2131,12 @@ TWCUP['gs2l5f']={nm:'PASSE MÁXIMO + 18.000 💎',it:[],bpx:1,gx:18000};
 TWCUP['2rq1y4']={nm:'PASSE FULL',it:[],bpx:1};
 /* v306: código de 1 pessoa: 70.000 💎 (texto só com o dono) */
 TWCUP['h5wrl3']={nm:'70.000 DIAMANTES',gem:70000};
+/* v307: código SEM SERVIDOR e SEM CONTA (off:1): confere só no aparelho (1 vez por aparelho). O de 70.000 💎 passa a ser assim. */
+TWCUP['h5wrl3'].off=1;
+{const _cp4=twCupom;twCupom=async function(code,E){const h=twHash(String(code).toUpperCase()),C=TWCUP[h];if(!C||!C.off)return _cp4.apply(this,arguments);
+  const used=twLS.g('tw_cup',{});if(used[h]){E.className='twH err';E.textContent='Você já usou esse código.';return true}used[h]=1;twLS.s('tw_cup',used);
+  let t='🎁 Código aceito! '+C.nm;
+  if(C.gem>0){const gq=C.gem;rkAdd('gem',gq);t='🎁 Código aceito! +'+rkFmtN(gq)+' 💎'}
+  if(C.chr){const own=rkG('own',['goku']);if(!own.includes(C.chr)){own.push(C.chr);rkS('own',own)}t='🎁 Código aceito! Você ganhou o '+C.nm+'!'}
+  if(C.bpx){try{bpUnlock(2);const o=bpG();o.xp=Math.max(o.xp|0,20*BPS.xpL);bpS(o)}catch(e){}}if(C.gx)rkAdd('gem',C.gx);
+  try{acSave(1)}catch(e){}E.className='twH ok';E.textContent=t;try{twSfx('powerUp');setTimeout(()=>twSfx('boom'),300)}catch(e){}return true}}
