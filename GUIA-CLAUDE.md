@@ -1438,3 +1438,6 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 
 ## v303
 - Código de 1 pessoa (hash `gs2l5f`, texto só com o dono): **PASSE MÁXIMO** (`bpUnlock(2)` = passe prêmio/elite + xp do nível 20) **+ 18.000 💎** (flags `bpx`/`gx`, wrapper do twCupom). Vale para a temporada atual do passe (`BPS.n`).
+
+## v304
+- Código de 1 pessoa (hash `2rq1y4`, texto só com o dono): **PASSE FULL** (passe prêmio + nível 20, sem gemas extras; `bpx:1`).

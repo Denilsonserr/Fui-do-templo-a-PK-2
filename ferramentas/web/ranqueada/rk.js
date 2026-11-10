@@ -2126,4 +2126,6 @@ const ADMOUT=['M0,30 L-30,24 L-55,34 L-80,20','M400,30 L430,36 L452,25 L478,38',
 TWCUP['gs2l5f']={nm:'PASSE MÁXIMO + 18.000 💎',it:[],bpx:1,gx:18000};
 {const _cp3=twCupom;twCupom=async function(code,E){const C=TWCUP[twHash(String(code).toUpperCase())];const r=await _cp3.apply(this,arguments);
   if(C&&(C.bpx||C.gx)&&E&&/\bok\b/.test(E.className)){try{if(C.bpx){bpUnlock(2);const o=bpG();o.xp=Math.max(o.xp|0,20*BPS.xpL);bpS(o)}if(C.gx)rkAdd('gem',C.gx);acSave(1)}catch(e){}
-    E.textContent='👑 Código aceito! PASSE MÁXIMO liberado (nível 20) + '+rkFmtN(C.gx||0)+' 💎! Abra o Passe de Batalha para pegar os prêmios.';try{rkSfx('boom')}catch(e){}}return r}}
+    E.textContent='👑 Código aceito! PASSE MÁXIMO liberado (nível 20)'+(C.gx?' + '+rkFmtN(C.gx)+' 💎':'')+'! Abra o Passe de Batalha para pegar os prêmios.';try{rkSfx('boom')}catch(e){}}return r}}
+/* v304: código de 1 pessoa: PASSE FULL (passe prêmio + nível 20), sem gemas extras */
+TWCUP['2rq1y4']={nm:'PASSE FULL',it:[],bpx:1};
