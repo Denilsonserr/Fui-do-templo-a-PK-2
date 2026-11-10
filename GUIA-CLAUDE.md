@@ -1375,3 +1375,11 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - Perfil (o seu): os anéis da alma equipados no personagem do pedestal flutuam em volta do corpo (`.pfAnR`, mesma ideia da aba Anéis, com o brilho por nível).
 - Itens do Shaka brilham dourado em qualquer tela (CSS gerado por `img[src$=...]` dos ícones `RQA.ssp`).
 - O dono pediu: ROSÁRIO vai no espaço da ARMA (sorte 60, drop 30) e as LUVAS no do ANEL (vel 40, dano 10). Itens já ganhos são convertidos ao abrir o jogo (e tirados do espaço errado).
+
+## v292
+- **Bug dos itens do Shaka sumindo:** a mochila cheia (`twCap`) descartava o item de menor `v` — e os itens do Shaka têm `v:0`, então eram apagados primeiro. Agora `twCap` nunca descarta item secreto/obscuro/único/evento (`ysec`, `sk`, `uniq`, `ev`, `rkHi`) e ordena os comuns por `rkItV`.
+- **Devolução:** bloco único (`rk_skfix292`) que olha o histórico do gacha (`rk_hist`, últimos 60) e devolve itens do Shaka (`sk`) que não estão na mochila.
+- **Item secreto (Yuta/Shaka) não pode mais ser vendido** (botão escondido + checagem no clique).
+- **Rika pode ser tirada:** `rkLock` agora retorna sempre `false` (fim do "obscuro sempre equipado" da v249).
+- **Itens do Shaka ~40–50% mais fortes que os do Yuta (mesmo slot):** Elmo def90 crit60 st20 · Armadura dmg60 crit45 · Luvas dmg45 vel70 st75 · Botas v50 dmg40 · Rosário st70 drop40. A migração da v247 agora também copia `dmg`, `vel` e `sk`, então itens já guardados recebem os valores novos.
+- Teste: `ferramentas/testes/titens_v292.js`.
