@@ -1817,7 +1817,8 @@ function anPut(id,slot,ring,quiet){if(slot<0)return;const A=anEqAll(),E=anEq(id)
 function anSlot(i){const id=AN.ch,n=anSlots(id),E=anEq(id);if(i>=n){rkSfx('clang');return rkToast('🔒 Essa vaga abre no nível '+(i+1)*10+' do personagem','#d9b3ff')}
   const r=E[i]&&anL().find(x=>x.i===E[i]);if(r)return anInfo(r);
   const free=anL().filter(x=>!anWho(x));if(!free.length)return rkToast('Nenhum anel livre · eles caem do Lobo Negro (Caça)','#d9b3ff');rkToast('Escolha um anel na lista da direita','#d9b3ff')}
-{const _h=rkLibH;rkLibH=function(){if(RKL.tab==='an')return anH();return _h.apply(this,arguments)+`<button class="hs anTabB" data-a="tab" data-t="an" style="${rkB(12,515,272,588)}"><span>💍 Anéis</span></button>`}}
+{const _h=rkLibH;rkLibH=function(){if(RKL.tab==='an')return anH();const pf=RKL.tab==='chr';let h=_h.apply(this,arguments);if(!pf)h=h.split(rkB(18,600,268,668)).join(rkB(18,652,268,716));
+  return h+`<button class="hs anTabB" data-a="tab" data-t="an" style="${pf?rkB(12,517,276,594):rkB(8,555,279,640)}"><img src="${RQA.anel2[0]}" alt=""><span>Anéis</span></button>`}}
 {const _o=rkLibOn;rkLibOn=function(){if(RKL.tab==='an')return anOn();return _o.apply(this,arguments)}}
 /* bônus na luta (Boss, Torre e Caça): personagem em uso */
 {const _ra=rkApply;rkApply=function(){_ra.apply(this,arguments);try{const tw=typeof TW!=='undefined'&&TW.on&&G.gmode==='torre';if(!G.p||!(tw||G.gmode==='boss'||G.gmode==='caca'))return;const p=G.p[0],A=anSum(p.def.id);

@@ -924,3 +924,15 @@ body:not(.pcMode) #how .pcKeys{display:none}#how .pcKeys{margin:0 auto .6em;max-
 
 .rk_lib #anGrid{position:absolute;inset:0;z-index:3;pointer-events:none}.rk_lib #anGrid>*{pointer-events:auto}
 .rk_lib .anCh{height:100%}
+
+/* v278: botão Anéis igual aos outros botões da arte (mesmo tamanho, borda azul, cantos cortados) */
+.rk_lib .anTabB{display:flex;align-items:center;justify-content:flex-start;gap:0;padding:0;border:0;border-radius:0;background:none;box-shadow:none}
+.rk_lib .anTabB::before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(8,14,44,.96),rgba(3,6,24,.96));clip-path:polygon(5% 0,100% 0,100% 68%,94% 100%,0 100%,0 32%);
+  box-shadow:none;filter:drop-shadow(0 0 .5em rgba(60,150,255,.9))}
+.rk_lib .anTabB::after{content:"";position:absolute;inset:0;border:none;clip-path:polygon(5% 0,100% 0,100% 68%,94% 100%,0 100%,0 32%,0 32%,2.2% 33%,2.2% 96%,93% 96%,97.8% 67%,97.8% 4%,6% 4%,2.2% 33%,0 32%);background:#3f9dff;box-shadow:0 0 .8em #3f9dff}
+.rk_lib .anTabB img{position:relative;z-index:1;width:30%;margin-left:7%;filter:drop-shadow(0 0 .3em #9fd0ff)}
+.rk_lib .anTabB span{position:relative;z-index:1;flex:1;text-align:center;font:italic 700 1.55em Georgia,'Times New Roman',serif;color:#fff;text-shadow:0 0 .35em #4aa8ff,0 2px 2px #000;margin-right:6%}
+.rk_lib .anTabB:hover::after{background:#7cc0ff}
+.rk_lib .anTabB::before{inset:0;background:#3f9dff;filter:drop-shadow(0 0 .45em rgba(60,150,255,.95))}
+.rk_lib .anTabB::after{inset:3px;background:linear-gradient(180deg,rgba(8,14,44,.97),rgba(3,6,24,.97));box-shadow:none;clip-path:polygon(5% 0,100% 0,100% 68%,94% 100%,0 100%,0 32%)}
+.rk_lib .anTabB:hover::after{background:linear-gradient(180deg,rgba(14,26,70,.97),rgba(5,10,36,.97))}

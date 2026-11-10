@@ -1291,3 +1291,7 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - Bônus: Boss, Torre e Caça (`rkApply` → dano/crítico/velocidade/vel. ultimate do personagem em luta); sorte e drop entram pelo `psSum()` (sem id). Coluna **ANÉIS** no "TUDO" (`CBS`).
 - Drop: só do LOBO NEGRO, por nível derrotado (`anDropLobo`): chance 25%→80% (nv1→10, × sorte até 1,6); cor: branco sempre, amarelo nv3+, roxo nv5+, preto nv7+ (50 mil+ só nv9-10), vermelho só nv9-10 (bem raro). Aviso na luta e lista no fim da caçada. Jogar fora: botão no anel.
 - Teste: `ferramentas/testes/taneis_v277.js`.
+
+## v278 — botão "Anéis" da Biblioteca no lugar certo
+- O botão desenhado por cima das artes antigas estava em cima do "Coleções" na arte `biblioteca` (abas Equip./Itens/Coleções). Agora fica logo abaixo de Coleções, do mesmo tamanho e no mesmo estilo (borda azul brilhando, cantos cortados, ícone do anel, letra itálica): `bib_pf` (aba Personagens) em `rkB(12,517,276,594)`, `biblioteca` em `rkB(8,555,279,640)`; nessa arte o botão "USAR TÍTULO" desceu para `rkB(18,652,268,716)`.
+- Teste: `ferramentas/testes/tbib_v278.js`.

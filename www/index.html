@@ -1409,6 +1409,18 @@ body:not(.pcMode) #how .pcKeys{display:none}#how .pcKeys{margin:0 auto .6em;max-
 .rk_lib #anGrid{position:absolute;inset:0;z-index:3;pointer-events:none}.rk_lib #anGrid>*{pointer-events:auto}
 .rk_lib .anCh{height:100%}
 
+/* v278: botão Anéis igual aos outros botões da arte (mesmo tamanho, borda azul, cantos cortados) */
+.rk_lib .anTabB{display:flex;align-items:center;justify-content:flex-start;gap:0;padding:0;border:0;border-radius:0;background:none;box-shadow:none}
+.rk_lib .anTabB::before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(8,14,44,.96),rgba(3,6,24,.96));clip-path:polygon(5% 0,100% 0,100% 68%,94% 100%,0 100%,0 32%);
+  box-shadow:none;filter:drop-shadow(0 0 .5em rgba(60,150,255,.9))}
+.rk_lib .anTabB::after{content:"";position:absolute;inset:0;border:none;clip-path:polygon(5% 0,100% 0,100% 68%,94% 100%,0 100%,0 32%,0 32%,2.2% 33%,2.2% 96%,93% 96%,97.8% 67%,97.8% 4%,6% 4%,2.2% 33%,0 32%);background:#3f9dff;box-shadow:0 0 .8em #3f9dff}
+.rk_lib .anTabB img{position:relative;z-index:1;width:30%;margin-left:7%;filter:drop-shadow(0 0 .3em #9fd0ff)}
+.rk_lib .anTabB span{position:relative;z-index:1;flex:1;text-align:center;font:italic 700 1.55em Georgia,'Times New Roman',serif;color:#fff;text-shadow:0 0 .35em #4aa8ff,0 2px 2px #000;margin-right:6%}
+.rk_lib .anTabB:hover::after{background:#7cc0ff}
+.rk_lib .anTabB::before{inset:0;background:#3f9dff;filter:drop-shadow(0 0 .45em rgba(60,150,255,.95))}
+.rk_lib .anTabB::after{inset:3px;background:linear-gradient(180deg,rgba(8,14,44,.97),rgba(3,6,24,.97));box-shadow:none;clip-path:polygon(5% 0,100% 0,100% 68%,94% 100%,0 100%,0 32%)}
+.rk_lib .anTabB:hover::after{background:linear-gradient(180deg,rgba(14,26,70,.97),rgba(5,10,36,.97))}
+
 .twBag .bgw{display:flex;gap:1em;justify-content:center;align-items:flex-start;margin:.4em 0}
 .twBag .bgc{flex:1;max-width:16em;display:flex;flex-direction:column;gap:.4em;max-height:52vh;overflow:auto;padding:.2em}
 .twBag h5{margin:0 0 .2em;font:900 1em var(--f-ui);letter-spacing:.1em;color:#ffcf4a;display:flex;flex-direction:column}.twBag h5 small{font-size:.65em;color:#cdbfcf;letter-spacing:0}
@@ -8993,7 +9005,8 @@ function anPut(id,slot,ring,quiet){if(slot<0)return;const A=anEqAll(),E=anEq(id)
 function anSlot(i){const id=AN.ch,n=anSlots(id),E=anEq(id);if(i>=n){rkSfx('clang');return rkToast('🔒 Essa vaga abre no nível '+(i+1)*10+' do personagem','#d9b3ff')}
   const r=E[i]&&anL().find(x=>x.i===E[i]);if(r)return anInfo(r);
   const free=anL().filter(x=>!anWho(x));if(!free.length)return rkToast('Nenhum anel livre · eles caem do Lobo Negro (Caça)','#d9b3ff');rkToast('Escolha um anel na lista da direita','#d9b3ff')}
-{const _h=rkLibH;rkLibH=function(){if(RKL.tab==='an')return anH();return _h.apply(this,arguments)+`<button class="hs anTabB" data-a="tab" data-t="an" style="${rkB(12,515,272,588)}"><span>💍 Anéis</span></button>`}}
+{const _h=rkLibH;rkLibH=function(){if(RKL.tab==='an')return anH();const pf=RKL.tab==='chr';let h=_h.apply(this,arguments);if(!pf)h=h.split(rkB(18,600,268,668)).join(rkB(18,652,268,716));
+  return h+`<button class="hs anTabB" data-a="tab" data-t="an" style="${pf?rkB(12,517,276,594):rkB(8,555,279,640)}"><img src="${RQA.anel2[0]}" alt=""><span>Anéis</span></button>`}}
 {const _o=rkLibOn;rkLibOn=function(){if(RKL.tab==='an')return anOn();return _o.apply(this,arguments)}}
 /* bônus na luta (Boss, Torre e Caça): personagem em uso */
 {const _ra=rkApply;rkApply=function(){_ra.apply(this,arguments);try{const tw=typeof TW!=='undefined'&&TW.on&&G.gmode==='torre';if(!G.p||!(tw||G.gmode==='boss'||G.gmode==='caca'))return;const p=G.p[0],A=anSum(p.def.id);
