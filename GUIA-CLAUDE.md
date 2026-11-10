@@ -1435,3 +1435,6 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 
 ## v302
 - **Título ADM novo (`.pfAdmG`, wrapper de `pfTitH` para t='adm' e nome do ADM):** "♛ ADMINISTRADOR" em ouro metálico pulsando sobre uma galáxia girando (nebulosa, estrelas, anel de luz 3D), rachaduras douradas que se espalham dentro e para fora da placa (SVG, `ADMCK`/`ADMOUT`), estilhaços voando, brilho passando e um glitch rápido ("realidade quebrando"). Fundo dentro de `.bg` com overflow escondido (sem isso a galáxia vazava pela tela). Teste: `tadm_v302.js` (nome "Denilson ADM" + tw_tit ["adm"]).
+
+## v303
+- Código de 1 pessoa (hash `gs2l5f`, texto só com o dono): **PASSE MÁXIMO** (`bpUnlock(2)` = passe prêmio/elite + xp do nível 20) **+ 18.000 💎** (flags `bpx`/`gx`, wrapper do twCupom). Vale para a temporada atual do passe (`BPS.n`).

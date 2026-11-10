@@ -2122,3 +2122,8 @@ const ADMOUT=['M0,30 L-30,24 L-55,34 L-80,20','M400,30 L430,36 L452,25 L478,38',
   const ck=(L,c)=>L.map((d,i)=>`<path class="${c}" d="${d}" style="animation-delay:${(i*.37).toFixed(2)}s"/>`).join('');
   return `<span class="pfAdmG"><i class="bg"><i class="gx"></i><i class="neb"></i><i class="st"></i><i class="ring"></i><svg class="ck" viewBox="0 0 400 60" preserveAspectRatio="none">${ck(ADMCK,'c')}</svg><i class="sw"></i></i><svg class="ck out" viewBox="-100 -40 600 140" preserveAspectRatio="none">${ck(ADMOUT,'o')}</svg>
   <i class="cr">♛</i><b data-t="ADMINISTRADOR">ADMINISTRADOR</b>${[1,2,3,4,5,6].map(i=>`<i class="sh s${i}"></i>`).join('')}<i class="sp a">✦</i><i class="sp b">✦</i><i class="sp c">✦</i><i class="sp d">✦</i></span>`}}
+/* v303: código de 1 pessoa: PASSE MÁXIMO (passe prêmio/elite + nível 20) + 18.000 💎 (texto do código só com o dono) */
+TWCUP['gs2l5f']={nm:'PASSE MÁXIMO + 18.000 💎',it:[],bpx:1,gx:18000};
+{const _cp3=twCupom;twCupom=async function(code,E){const C=TWCUP[twHash(String(code).toUpperCase())];const r=await _cp3.apply(this,arguments);
+  if(C&&(C.bpx||C.gx)&&E&&/\bok\b/.test(E.className)){try{if(C.bpx){bpUnlock(2);const o=bpG();o.xp=Math.max(o.xp|0,20*BPS.xpL);bpS(o)}if(C.gx)rkAdd('gem',C.gx);acSave(1)}catch(e){}
+    E.textContent='👑 Código aceito! PASSE MÁXIMO liberado (nível 20) + '+rkFmtN(C.gx||0)+' 💎! Abra o Passe de Batalha para pegar os prêmios.';try{rkSfx('boom')}catch(e){}}return r}}
