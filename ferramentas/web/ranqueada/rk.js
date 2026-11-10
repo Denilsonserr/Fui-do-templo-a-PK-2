@@ -58,16 +58,16 @@ function rkOpen(v){if(v==='pf'){PFO=null;PFRET=null}RKSEL=null;rkInit();rkMusPla
 let RKV='menu';
 const RKD={ca:[1672,941],ev:[1672,941],bp:[1774,887],mn:[1672,941],ps:[1672,941],rb:[1672,941],lvl:[1847,851],pf:[1672,941],hs:[1671,941]};const rkB2=(x0,y0,x1,y1)=>`left:${x0/16.72}%;top:${y0/9.41}%;width:${(x1-x0)/16.72}%;height:${(y1-y0)/9.41}%`;
 function rkView(v){RKV=v;const W=$('rkWrap');if(!W)return;clearInterval(rkView.iv);rkModal(null);
-  const H={ca:caH,menu:rkMenuH,boss:rkBossH,gacha:rkGachaH,shop:rkShopH,lib:rkLibH,rb:rkRbH,pf:pfH,hs:hsH,lvl:lvH,yb:ysLobbyH,yrb:ysStartH,ps:psH,mn:mnH,bp:bpH,ev:evH}[v]();const dm=RKD[v]||[RKW,RKH];W.innerHTML=`<div class="rkA rk_${v}" data-w="${dm[0]}" data-h="${dm[1]}"${['pf','hs','boss','rb','yb','yrb','ps','mn','bp','ev','ca'].includes(v)?' data-full="1"':''} style="background-image:url(${RQA[{ca:'caca_menu',menu:'menu_ranqueado',boss:'modo_boss',gacha:(RKBAN==='mit'?'gacha_yt':'gacha'),shop:'loja_gemas',lib:(RKL.tab==='chr'?'bib_pf':'biblioteca'),rb:'ranqueada_boss',pf:'perfil',hs:'historico',lvl:'lv_ed',yb:'boss_yt',yrb:(YS.tab==='rank'?'ys_rank':'ys_farm'),ps:'passiva',mn:'mercado',bp:'passe',ev:'abas_ev'}[v]]})">${H}${rkEvTxt()}<div id="rkToast"></div><button class="rkMusB" data-a="music" title="Música">🎵</button><button class="rkCodB" data-a="code">🎟️ CÓDIGO</button><button class="rkAcB" data-a="conta" title="Conta">👤</button></div>`;
+  const H={ca:caH,menu:rkMenuH,boss:rkBossH,gacha:rkGachaH,shop:rkShopH,lib:rkLibH,rb:rkRbH,pf:pfH,hs:hsH,lvl:lvH,yb:ysLobbyH,yrb:ysStartH,ps:psH,mn:mnH,bp:bpH,ev:evH}[v]();const dm=RKD[v]||[RKW,RKH];W.innerHTML=`<div class="rkA rk_${v}" data-w="${dm[0]}" data-h="${dm[1]}"${['pf','hs','boss','rb','yb','yrb','ps','mn','bp','ev','ca'].includes(v)?' data-full="1"':''} style="background-image:url(${RQA[{ca:'caca_menu',menu:'menu_ranqueado',boss:'modo_boss',gacha:(RKBAN==='mit'?'gacha_yt':'gacha'),shop:'loja_gemas',lib:(RKL.tab==='chr'?'bib_pf':RKL.tab==='an'?'aneis':'biblioteca'),rb:'ranqueada_boss',pf:'perfil',hs:'historico',lvl:'lv_ed',yb:'boss_yt',yrb:(YS.tab==='rank'?'ys_rank':'ys_farm'),ps:'passiva',mn:'mercado',bp:'passe',ev:'abas_ev'}[v]]})">${H}${rkEvTxt()}<div id="rkToast"></div><button class="rkMusB" data-a="music" title="Música">🎵</button><button class="rkCodB" data-a="code">🎟️ CÓDIGO</button><button class="rkAcB" data-a="conta" title="Conta">👤</button></div>`;
   rkFit();W.querySelectorAll('[data-a]').forEach(b=>b.onclick=e=>{e.stopPropagation();rkAct(b.dataset.a,b)});({boss:rkBossOn,yb:rkBossOn,gacha:rkGachaOn,lib:rkLibOn,pf:pfOn,hs:hsOn,lvl:lvOn,ps:psOn,mn:mnOn,bp:bpOn,ev:evOn,yrb:()=>{clearInterval(rkView.iv);if(!RKSRV)rkSrvLoad()}}[v]||(()=>{}))()}
 function rkLocked(){rkSfx('clang');rkToast('🔒 Em breve!','#cfd6ea')}
 function rkAct(a,b){rkSfx('whoosh');
-  switch(a){case 'caca':return rkView('ca');case 'caGo':return caStart();case 'caInfo':return caInfo();case 'caLk':rkSfx('clang');return rkToast('🔒 Nova besta em breve!','#d9b3ff');case 'caStg':return rkToast('🌲 FLORESTA SOMBRIA · fica mais destruída a cada nível do lobo','#9fd8ff');case 'caRing':{const r=CARING[+b.dataset.i];return rkToast('💍 Anel '+r[1]+' · '+r[2]+' · drop em breve','#ffffff')}case 'perfil':PFO=null;PFRET={back:()=>rkView('menu')};return rkView('pf');case 'cacaLk':rkSfx('clang');return rkToast('🔒 Modo Caçador em teste · só quem tem o título ADM','#d9b3ff');case 'evMenu':return evOpen();case 'bpMenu':return rkView('bp');case 'psMenu':PSRET='menu';return rkView('ps');case 'mnMenu':return mnOpen();case 'back':if(RKV==='ps')return rkView(PSRET||'boss');if(RKV==='mn')return rkView('menu');if(RKV==='lvl')return rkView('lib');if(RKV==='yrb')return rkView('yb');if(RKV==='yb')return rkView('menu');if(RKV==='pf'||RKV==='hs'){if(PFO||PFRET)return pfBack();return showScreen('title')}return rkView(RKV==='shop'?'gacha':RKV==='rb'?'boss':'menu');case 'pf':return rkView('pf');case 'hs':return rkView('hs');case 'pfFoto':return PFO?pfAdmFoto():pfFotoM();case 'pfTit':return PFO?0:pfTitM();case 'pfPick':return PFO?0:pfPick();case 'pfRadar':return pfRadarInfo();case 'pfVit':if(PFO){const e=(PFO.vit||[])[+b.dataset.i];if(e)rkToast(rkItNm(e)+': '+rkItEf(e),rkItC(e));return}return pfVitPick(+b.dataset.i);case 'hsInfo':return hsInfo(b.dataset.k);case 'home':return showScreen('title');case 'menuBack':return showScreen('title');
+  switch(a){case 'caca':return rkView('ca');case 'caGo':return caStart();case 'caInfo':return caInfo();case 'caLk':rkSfx('clang');return rkToast('🔒 Nova besta em breve!','#d9b3ff');case 'caStg':return rkToast('🌲 FLORESTA SOMBRIA · fica mais destruída a cada nível do lobo','#9fd8ff');case 'caRing':{const r=CARING[+b.dataset.i];return rkToast('💍 Anel '+r[1]+' · '+r[2]+' · '+['cai em qualquer nível','cai do nível 3','cai do nível 5','cai do nível 7 (50 mil+ no 9 e 10)','só nos níveis 9 e 10'][+b.dataset.i],'#ffffff')}case 'perfil':PFO=null;PFRET={back:()=>rkView('menu')};return rkView('pf');case 'cacaLk':rkSfx('clang');return rkToast('🔒 Modo Caçador em teste · só quem tem o título ADM','#d9b3ff');case 'evMenu':return evOpen();case 'bpMenu':return rkView('bp');case 'psMenu':PSRET='menu';return rkView('ps');case 'mnMenu':return mnOpen();case 'back':if(RKV==='ps')return rkView(PSRET||'boss');if(RKV==='mn')return rkView('menu');if(RKV==='lvl')return rkView('lib');if(RKV==='yrb')return rkView('yb');if(RKV==='yb')return rkView('menu');if(RKV==='pf'||RKV==='hs'){if(PFO||PFRET)return pfBack();return showScreen('title')}return rkView(RKV==='shop'?'gacha':RKV==='rb'?'boss':'menu');case 'pf':return rkView('pf');case 'hs':return rkView('hs');case 'pfFoto':return PFO?pfAdmFoto():pfFotoM();case 'pfTit':return PFO?0:pfTitM();case 'pfPick':return PFO?0:pfPick();case 'pfRadar':return pfRadarInfo();case 'pfVit':if(PFO){const e=(PFO.vit||[])[+b.dataset.i];if(e)rkToast(rkItNm(e)+': '+rkItEf(e),rkItC(e));return}return pfVitPick(+b.dataset.i);case 'hsInfo':return hsInfo(b.dataset.k);case 'home':return showScreen('title');case 'menuBack':return showScreen('title');
     case 'boss':return rkView(RKBID==='yuta'&&ysOn()?'yb':(RKBID='broly','boss'));case 'gacha':return rkView('gacha');case 'shop':return rkView('shop');case 'lib':return rkView('lib');case 'lock':return rkLocked();
     case 'ranking':return rkRanking();case 'rewards':return rkRewards();case 'ach':return rkAch();case 'pos':return rkPos();
     case 'start':if(!RKSRV)rkSrvLoad();return rkView(RKBID==='yuta'?'yrb':'rb');case 'bsel':if(b.dataset.b==='yuta'&&!ysOn())return rkToast('⏳ O evento do Yuta acabou','#cfd6ea');RKBID=b.dataset.b;RKYD=null;RKSRV=null;try{localStorage.setItem('rk_bsel',RKBID)}catch(e){}return rkView(RKBID==='yuta'?'yb':'boss');case 'ytab':YS.tab=b.dataset.t;return rkView('yrb');case 'ydif':YS.d=+b.dataset.i;return rkView('yrb');case 'yfight':return ysFight();case 'equip':return rkEquip();case 'music':return rkMusic();case 'code':return rkCode();case 'torre':return rkTorre();case 'conta':return acOpen();case 'fight':RKYD=null;return rkBossStart();case 'lvp':return rkRbSel(-1);case 'lvn':return rkRbSel(1);case 'lvc':return rkRbSel(0,+b.dataset.i);case 'sel':return rkView('lib');case 'hist':return rkHist();case 'taxas':return rkTaxas();case 'pool':return rkTaxas();
     case 'sum1':return rkSummon(1);case 'sum10':return rkSummon(10);case 'chat':return rkChatSend();
-    case 'buy':return rkBuy(+b.dataset.i);case 'tab':return rkLibTab(b.dataset.t);case 'up':return rkLibPage(-1);case 'down':return rkLibPage(1);case 'filt':return rkLibFilt();case 'libUse':return rkLibUse();
+    case 'buy':return rkBuy(+b.dataset.i);case 'tab':return rkLibTab(b.dataset.t);case 'anSlot':return anSlot(+b.dataset.i);case 'anUp':AN.pg=Math.max(0,AN.pg-1);return anGrid();case 'anDn':AN.pg++;return anGrid();case 'anFilt':AN.f=(AN.f+1)%6;AN.pg=0;$('anFl').textContent=ANFL[AN.f];return anGrid();case 'up':return rkLibPage(-1);case 'down':return rkLibPage(1);case 'filt':return rkLibFilt();case 'libUse':return rkLibUse();
     case 'boxinfo':return rkToast(b.dataset.t,'#bfe8ff');
     case 'ban':RKBAN=b.dataset.b;try{localStorage.setItem('rk_ban',RKBAN)}catch(e){}return rkView('gacha');case 'evo':return lvOpen(RKL.cur&&RKL.cur.id);case 'lvUp':return lvUp();case 'lvNode':return lvNode(+b.dataset.r,+b.dataset.c);case 'lvInfo':return lvInfo()}}
 /* ---------------- MENU DO RANQUEADO ---------------- */
@@ -409,7 +409,7 @@ function rkLibShow(x){RKL.cur=x;const P=$('rkPed'),I=$('rkInfo'),U=$('rkUse');if
   P.style.setProperty('--c',c);P.className='rkPed '+x.k+(x.has?'':' no');P.innerHTML=`<i class="glw"></i>${x.big?`<img src="${x.big}" alt="">`:`<span class="ico">${x.bigI||''}</span>`}`;
   I.innerHTML=`<b style="color:${c}">${twEsc(x.nm)}</b><span>${x.has?'':'🔒 '}${twEsc(x.d)}</span>`;
   U.hidden=!(x.k==='chr'&&x.has&&rkG('sel','goku')!==x.id)&&!(x.k==='col'&&x.tit&&x.has);U.textContent=x.k==='chr'?'USAR NA RANQUEADA':twTitOn()===x.tit?'TÍTULO EM USO':'USAR TÍTULO'}
-function rkLibTab(t){RKL.tab=t;RKL.pg=0;RKL.cur=null;rkView('lib')}
+function rkLibTab(t){if(t==='an'&&RKL.tab==='chr'&&RKL.cur&&RKL.cur.has)AN.ch=RKL.cur.id;RKL.tab=t;RKL.pg=0;RKL.cur=null;rkView('lib')}
 function rkLibPage(d){RKL.pg=Math.max(0,RKL.pg+d);rkLibGrid()}
 function rkLibFilt(){RKL.f=(RKL.f+1)%3;RKL.pg=0;$('rkFl').textContent=['TODOS','TENHO','FALTA'][RKL.f];rkLibGrid()}
 function rkLibUse(){const x=RKL.cur;if(!x)return;if(x.k==='chr'){rkS('sel',x.id);rkSfx('powerUp');rkToast('✔ '+CH[x.id].name+' vai lutar na ranqueada','#7dff9a')}else if(x.tit){twLS.s('tw_titOn',x.tit);try{twTitSync()}catch(e){}rkToast('✔ Título em uso','#7dff9a')}const y=rkLibItems().find(z=>z.id===x.id)||x;rkLibShow(y);rkLibGrid()}
@@ -1321,7 +1321,7 @@ let mnClaiming=0;async function mnClaim(quiet){if(mnClaiming)return;mnClaiming=1
 /* ================= v257: TODOS OS BÔNUS DO PERSONAGEM (Biblioteca → Personagens) =================
    nível + equipamentos + título + passivas + rank + ADM. O painel mostra o total; "🔍 ver tudo" abre a tabela por origem. */
 const CBK=[['dano','⚔️ Dano','%'],['def','🛡️ Defesa','%'],['crit','🎯 Chance de crítico','%'],['cd','💥 Dano crítico','%'],['vel','💨 Velocidade','%'],['spd','⚡ Vel. de ataque','%'],['trf','🌀 Transformação','%'],['fdmg','🔥 Dano transformado','%'],['uv','✨ Vel. Ultimate','%'],['ls','❤️ Roubo de vida','%'],['reg','💚 Regeneração','%/5s'],['st','🍀 Sorte',''],['drop','🎁 Drop','%']];
-const CBS=[['nv','NÍVEL'],['eq','EQUIP.'],['tit','TÍTULO'],['ps','PASSIVA'],['rk','RANK'],['adm','ADM']];
+const CBS=[['an','ANÉIS'],['nv','NÍVEL'],['eq','EQUIP.'],['tit','TÍTULO'],['ps','PASSIVA'],['rk','RANK'],['adm','ADM']];
 function cbAll(id){const Z=()=>Object.fromEntries(CBK.map(k=>[k[0],0])),S={};for(const [k] of CBS)S[k]=Z();
   try{const L=lvBonus(id);for(const k of ['dano','crit','vel','st','cd','ls','uv'])S.nv[k]=+L[k]||0}catch(e){}
   try{const q=twEqOn();for(const t in q){const it=q[t],n=it.yt&&id!=='yuta'?.5:1,m=EQMAIN[t];if(m==='dano')S.eq.dano+=(it.v||0)*n;if(m==='vida')S.eq.def+=(it.v||0)*n;if(m==='vel')S.eq.vel+=(it.v||0)*n;if(m==='trf')S.eq.trf+=(it.v||0)*n;
@@ -1330,7 +1330,8 @@ function cbAll(id){const Z=()=>Object.fromEntries(CBK.map(k=>[k[0],0])),S={};for
   try{const P=psSum(id);S.ps.cd=P.cd;S.ps.def=P.def;S.ps.spd=P.spd;S.ps.reg=P.reg;S.ps.drop=P.drop;S.ps.st=P.st}catch(e){}
   try{const R=RKTB(rkLvl());S.rk.dano=R.dano;S.rk.def=R.def;S.rk.vel=R.vel;S.rk.crit=R.crit;S.rk.st=R.sorte}catch(e){}
   if(twIsAdm()){Object.assign(S.adm,{dano:60,def:60,vel:60,crit:60,uv:60,trf:60,st:60,drop:60})}
-  const T=Z();for(const [s] of CBS)for(const [k] of CBK)T[k]+=S[s][k];for(const k in T)T[k]=Math.round(T[k]*100)/100;return {S,T}}
+  try{const A=anSum(id);for(const k in A)if(k in S.an)S.an[k]=A[k]}catch(e){}
+  const T=Z();for(const [s] of CBS)for(const [k] of CBK)T[k]+=(S[s]||{})[k]||0;for(const k in T)T[k]=Math.round(T[k]*100)/100;return {S,T}}
 const cbN=v=>{v=Math.round(v*100)/100;return String(v).replace('.',',')};
 function cbRows(id){const T=cbAll(id).T;return ['+'+cbN(T.dano)+'%'+(T.def?' 🛡️+'+cbN(T.def)+'%':''),cbN(5+T.crit)+'%'+(T.cd?' 💥+'+cbN(T.cd)+'%':''),'+'+cbN(T.vel)+'%'+(T.spd?' ⚡+'+cbN(T.spd)+'%':''),'+'+cbN(T.st)+(T.drop?' 🎁+'+cbN(T.drop)+'%':''),'+'+cbN(T.uv)+'%'+(T.ls?' ❤️'+cbN(T.ls)+'%':'')]}
 function cbModal(id){const {S,T}=cbAll(id),rows=CBK.filter(([k])=>T[k]||k==='dano'||k==='crit');
@@ -1669,7 +1670,7 @@ function caStart(){rkInit();if(!SPR_OK)return;const sel=rkG('sel','goku');fsTry(
 function caEnd(w){const o=G.p&&G.p[1],won=!!(o&&o.ko&&(o.bLv||1)>=10),lv=(o&&o.bLv)||1,dft=won?10:lv-1,pas=((o&&o.bPas)||[]).map(k=>CAPS[k][0]);
   const rec=rkG('caRec',0);if(dft>rec)rkS('caRec',dft);
   G.mode='ranked';$('controls').hidden=true;$('pauseBtn').hidden=true;try{$('pcHud').hidden=true}catch(e){}rainSound(0);G.paused=false;G.diff=RKB.diff0;G.gmode='pve';CA.on=0;
-  rkOpen('ca');CA.rs=1;const sh=()=>{if(!CA.rs||showScreen.cur!=='ranked'||!$('rkModal').hidden)return;rkModal(`<div class="twM ${won?'gold':''}"><h3>${won?'👑 VOCÊ CAÇOU O REI DA FLORESTA!':dft?'🐺 VOCÊ DERROTOU O LOBO '+dft+'X':'💀 O LOBO NEGRO VENCEU'}</h3><p class="twH">Chegou no <b>NÍVEL ${lv} de 10</b>${dft>rec?' · <b style="color:#ffd34a">NOVO RECORDE!</b>':''}</p>${pas.length?'<p class="twH">Passivas que o lobo ganhou: '+pas.join(' · ')+'</p>':''}<p class="twH">Modo em teste · os anéis ainda não caem.</p><div class="row"><button class="btn main" id="caAg">⚔️ CAÇAR DE NOVO</button><button class="btn" id="rkMX">FECHAR</button></div></div>`);$('rkMX').onclick=()=>{CA.rs=0;rkModal(null)};$('caAg').onclick=()=>{CA.rs=0;rkModal(null);caStart()}};for(const t of [300,1800,3500,6000])setTimeout(sh,t)}
+  rkOpen('ca');CA.rs=1;const sh=()=>{if(!CA.rs||showScreen.cur!=='ranked'||!$('rkModal').hidden)return;rkModal(`<div class="twM ${won?'gold':''}"><h3>${won?'👑 VOCÊ CAÇOU O REI DA FLORESTA!':dft?'🐺 VOCÊ DERROTOU O LOBO '+dft+'X':'💀 O LOBO NEGRO VENCEU'}</h3><p class="twH">Chegou no <b>NÍVEL ${lv} de 10</b>${dft>rec?' · <b style="color:#ffd34a">NOVO RECORDE!</b>':''}</p>${pas.length?'<p class="twH">Passivas que o lobo ganhou: '+pas.join(' · ')+'</p>':''}<div class="row"><button class="btn main" id="caAg">⚔️ CAÇAR DE NOVO</button><button class="btn" id="rkMX">FECHAR</button></div></div>`);$('rkMX').onclick=()=>{CA.rs=0;rkModal(null)};$('caAg').onclick=()=>{CA.rs=0;rkModal(null);caStart()}};for(const t of [300,1800,3500,6000])setTimeout(sh,t)}
 
 /* ================= v273: MENU PRINCIPAL novo (arte do dono) =================
    BATALHA AVENTURA = entra no modo Ranqueado (Modos de Jogo) · Batalha Treino = luta normal (escolher lutadores) · História = em breve · Configuração.
@@ -1688,7 +1689,7 @@ function caEnd(w){const o=G.p&&G.p[1],won=!!(o&&o.ko&&(o.bLv||1)>=10),lv=(o&&o.b
 const CALV={hp:[3,3.5,4,4.5,5,6,7,8,9,10],dm:[.6,.75,.9,1.05,1.2,1.4,1.6,1.85,2.1,2.4],df:[1,.9,.82,.74,.66,.58,.4,.31,.24,.17],sp:[1,1,1.05,1.1,1.16,1.22,1.28,1.35,1.42,1.5],cd:[1.3,1.2,1.1,1,.9,.8,.7,.6,.5,.45]};
 const CAPS={reg:['🩸 REGENERAÇÃO','recupera vida sozinho'],def:['🛡️ COURO DE AÇO','toma 15% menos dano'],cri:['🗡️ PRESAS CRÍTICAS','+15% de crítico'],lif:['🧛 SEDE DE SANGUE','rouba 15% do dano que causa'],arm:['🌑 COURAÇA SOMBRIA','não para no dash nem no bote'],vel:['⚡ INSTINTO SELVAGEM','+10% de velocidade'],frc:['🔥 FÚRIA LUPINA','+15% de dano'],cmb:['🌀 CAÇADOR INCANSÁVEL','auto combo volta 2x mais rápido'],esq:['💨 ESQUIVA ANIMAL','12% de chance de desviar']};
 const CASC=[0,1,1,2,2,3,3,4,4,4];
-const CARING=[['#eef0ff','BRANCO','100 anos'],['#ffc928','AMARELO','1.000 anos'],['#c27aff','ROXO','10.000 anos'],['#b9b2c8','PRETO','50 a 75 mil anos'],['#ff3b4a','VERMELHO','100.000 anos']];
+const CARING=[['#eef0ff','BRANCO','100 anos'],['#ffc928','AMARELO','1.000 anos'],['#c27aff','ROXO','10.000 anos'],['#b9b2c8','PRETO','25 a 75 mil anos'],['#ff3b4a','VERMELHO','100.000 anos']];
 const CACOL=['','170,70,255','190,60,255','255,50,90','255,40,60','255,30,40','255,20,30','230,10,20','200,0,20','150,0,30'];
 const cHex=c=>'#'+c.split(',').map(v=>(+v).toString(16).padStart(2,'0')).join('');
 function caLvApply(f){const i=f.bLv-1,P=f.bPas||[],has=k=>P.includes(k);
@@ -1752,7 +1753,81 @@ function caH(){const rec=rkG('caRec',0),P=(x,y)=>`left:${x/16.72}%;top:${y/9.41}
   <button class="hs caGo" data-a="caGo" style="${rkB2(1140,750,1595,875)}"><span class="mSw"></span></button>
   <div class="caBar" style="${rkB2(370,884,1070,932)}">🐺 LOBO NEGRO · 10 NÍVEIS · RECORDE: <b>${rec?(rec>=10?'👑 CAÇOU OS 10':'DERROTOU '+rec+'X'):'—'}</b></div>`}
 function caInfo(){rkModal(`<div class="twM"><h3>🐺 LOBO NEGRO · 10 NÍVEIS</h3><p class="twH">Cada vez que você derruba o lobo, ele <b>levanta de novo</b> com a vida cheia: mais forte, mais rápido, mais resistente, maior e com uma <b>passiva nova</b>. A floresta vai sendo destruída a cada nível. Você ganha +10% de vida a cada nível que vence.</p>
-  <p class="twH">Passivas que ele pode ganhar: ${Object.values(CAPS).map(p=>p[0]).join(' · ')}</p><p class="twH">Derrote o NÍVEL 10 para caçar o Rei da Floresta. Anéis: em breve.</p><div class="row"><button class="btn main" id="rkMX">ENTENDI</button></div></div>`);$('rkMX').onclick=()=>rkModal(null)}
+  <p class="twH">Passivas que ele pode ganhar: ${Object.values(CAPS).map(p=>p[0]).join(' · ')}</p><p class="twH">Derrote o NÍVEL 10 para caçar o Rei da Floresta.<br>💍 Cada nível derrotado pode soltar um ANEL: branco em qualquer nível, amarelo do nível 3, roxo do 5, preto do 7 (50 mil anos ou mais só no 9 e 10) e vermelho só no 9 e 10. Nota E até SSS (S, SS e SSS são raríssimas).</p><div class="row"><button class="btn main" id="rkMX">ENTENDI</button></div></div>`);$('rkMX').onclick=()=>rkModal(null)}
 
 /* v275: VS do modo caça mostra o LOBO NEGRO em pé (foto do dono) no lugar do adversário usado por baixo (Goku) */
 {const _sv=showVS;showVS=function(cb,PM){const r=_sv.apply(this,arguments);if(G.gmode==='caca'){try{$('vs2').src=RQA.lobo.vs;$('vsn2').textContent=BSD.name;$('vs').style.setProperty('--c2','#ff2a3a')}catch(e){}}return r}}
+
+/* ================= v277: ANÉIS DO PODER (inspirado em Soul Land) =================
+   Aba "Anéis" na Biblioteca (arte do dono `RQA.aneis`). 8 vagas por personagem: abre 1 a cada 10 níveis do personagem (nv10=1 ... nv80=8; hoje o máximo é nv50 mítico).
+   Anel = cor/idade (ANC) + atributo sorteado (ANS) + nota E..SSS (ANG, pesos ANW) → valor ANV[cor][nota]. Dados: rk_an (lista), rk_anEq {personagem:[8 ids]}.
+   Os anéis equipados giram/flutuam em volta do corpo do personagem (metade de trás atrás do corpo, metade da frente na frente).
+   Bônus valem no Boss, Torre e Caça (rkApply) e aparecem no "TUDO" da Biblioteca (coluna ANÉIS). Drop: só do LOBO NEGRO (modo Caça), por nível derrotado. */
+const ANC=[['BRANCO','#eef0ff','100 anos'],['AMARELO','#ffc928','1.000 anos'],['ROXO','#c27aff','10.000 anos'],['PRETO','#b9b2c8','25.000 a 75.000 anos'],['VERMELHO','#ff3b4a','100.000 anos']];
+const ANG=['E','D','C','B','A','S','SS','SSS'],ANW=[40,30,17,9,3.5,.4,.08,.02];
+const ANV=[[1,2,3,4,5,7,10,15],[3,5,7,9,12,16,22,30],[6,9,13,17,22,30,40,55],[12,18,25,33,42,55,75,100],[25,35,50,65,85,110,150,200]];
+const ANS=[['dano','⚔️ Dano','%'],['crit','🎯 Crítico','%'],['vel','💨 Velocidade','%'],['st','🍀 Sorte',''],['drop','🎁 Drop','%'],['uv','✨ Vel. Ultimate','%']];
+const ANFL=['TODOS','BRANCO','AMARELO','ROXO','PRETO','VERMELHO'];
+const AN={pg:0,f:0,q:'',ch:null,sel:null};
+const anL=()=>rkG('an',[]),anEqAll=()=>rkG('anEq',{}),anEq=id=>{const e=(anEqAll()[id]||[]).slice(0,8);while(e.length<8)e.push(null);return e};
+const anSlots=id=>Math.min(8,Math.floor(lvOf(id).lv/10));
+const anAge=r=>r.c===3?(r.a||25000).toLocaleString('pt-BR')+' anos':ANC[r.c][2];
+const anSt=k=>ANS.find(x=>x[0]===k)||ANS[0];
+const anTxt=r=>{const S=anSt(r.s);return S[1]+' +'+r.v+S[2]};
+function anSum(id){const o={dano:0,crit:0,vel:0,st:0,drop:0,uv:0};const L=anL(),E=anEq(id);for(const i of E){if(!i)continue;const r=L.find(x=>x.i===i);if(r)o[r.s]+=r.v}return o}
+function anWho(r){const A=anEqAll();for(const id in A)if((A[id]||[]).includes(r.i))return id;return null}
+/* sorteio de um anel */
+function anRoll(c,lv){let q=Math.random()*100,g=0;for(let i=0;i<8;i++){if((q-=ANW[i])<0){g=i;break}}const s=ANS[(Math.random()*ANS.length)|0][0];
+  const a=c===3?(lv>=9?50000+((Math.random()*25001)|0):25000+((Math.random()*25000)|0)):0;return {i:Date.now().toString(36)+Math.random().toString(36).slice(2,6),c,g,s,v:ANV[c][g],a}}
+function anGive(r){const L=anL();L.push(r);rkS('an',L);return r}
+/* drop do Lobo Negro: L = nível que acabou de ser derrotado */
+function anDropLobo(L){const ch=[.25,.3,.35,.4,.45,.5,.55,.6,.7,.8][L-1]*Math.min(1.6,lvLuck());if(Math.random()>=Math.min(.95,ch))return null;
+  const W=[[0,70],[1,L>=3?25:0],[2,L>=5?6:0],[3,L>=7?(L>=9?1.6:.8):0],[4,L>=9?(L>=10?.35:.15):0]];let t=W.reduce((a,x)=>a+x[1],0),q=Math.random()*t,c=0;for(const [k,w] of W){if((q-=w)<0){c=k;break}}
+  return anGive(anRoll(c,L))}
+/* tela */
+function anH(){const id=AN.ch&&(rkG('own',['goku']).includes(AN.ch))?AN.ch:(AN.ch=rkG('sel','goku'));const E=anEq(id),n=anSlots(id),L=anL(),lv=lvOf(id).lv,T=anSum(id),SP=[[583,163],[720,232],[775,352],[720,477],[583,532],[445,477],[390,352],[445,232]];
+  const tabs=[['chr',138,212],['an',225,298],['eq',310,383],['it',395,468],['col',482,555]].map(([t,a,b])=>`<button class="hs tab ${t==='an'?'on':''}" data-a="tab" data-t="${t}" style="${rkB(10,a,278,b)}"></button>`).join('');
+  const slots=SP.map(([x,y],i)=>{const r=E[i]&&L.find(z=>z.i===E[i]);return `<button class="hs anSl ${i<n?'':'lk'} ${r?'on':''}" data-a="anSlot" data-i="${i}" style="${rkB(x-42,y-40,x+42,y+40)};${r?'--c:'+ANC[r.c][1]:''}">${r?`<img src="${RQA.anel2[r.c]}" alt=""><b>${ANG[r.g]}</b>`:i<n?'<i>+</i>':`<i>🔒</i><small>NV ${(i+1)*10}</small>`}</button>`}).join('');
+  const eqR=E.map(x=>x&&L.find(z=>z.i===x)).filter(Boolean);
+  const rings=eqR.map((r,k)=>{const y=488-k*40,w=230+k*3;return `<i class="anR b" style="${rkB(583-w/2,y-36,583+w/2,y+36)};animation-delay:${(k*.37).toFixed(2)}s"><img src="${RQA.anel2[r.c]}" alt=""></i><i class="anR f" style="${rkB(583-w/2,y-36,583+w/2,y+36)};animation-delay:${(k*.37).toFixed(2)}s"><img src="${RQA.anel2[r.c]}" alt=""></i>`}).join('');
+  const nx=n>=8?'TODAS AS VAGAS ABERTAS':'PRÓXIMA VAGA NO NÍVEL '+(n+1)*10;
+  return `<button class="hs" data-a="back" style="${rkB(18,8,145,75)}"></button><button class="hs" data-a="home" style="${rkB(1735,5,1842,75)}"></button>${tabs}
+  <div class="anPed" style="${rkB(475,205,690,505)}"><img class="anCh" src="${fullSrc(id)}" alt=""></div>${rings}${slots}
+  ${[['dano',235],['crit',281],['vel',326],['st',371],['uv',416]].map(([k,y])=>`<b class="anV" style="${rkB(985,y,1095,y+30)}">+${cbN(T[k])}${k==='st'?'':'%'}</b>`).join('')}
+  <div class="anBx" style="${rkB(852,505,1098,590)}"><span>🎁 Drop +${cbN(T.drop)}%</span><span>💍 ${eqR.length}/${n} anéis · ${n}/8 vagas</span></div>
+  <div class="anNm" style="${rkB(420,638,745,690)}">${twEsc(CH[id]?CH[id].name:id)}</div>
+  <div class="anBar" style="${rkB(280,716,862,748)}"><i style="width:${n>=8?100:(lv%10)*10}%"></i><span>NÍVEL ${lv} · ${nx}</span></div>
+  <input class="rkSrch anSrch" id="anSrch" placeholder="Buscar anel..." autocomplete="off" value="${twEsc(AN.q)}" style="${rkB(1255,100,1655,148)}"><button class="hs" data-a="anFilt" style="${rkB(1685,98,1765,152)}"><span class="rkFl" id="anFl">${ANFL[AN.f]}</span></button>
+  <div id="anGrid"></div><button class="hs" data-a="anUp" style="${rkB(1778,180,1822,228)}"></button><button class="hs" data-a="anDn" style="${rkB(1778,708,1822,756)}"></button>`}
+function anItems(){const q=AN.q.toLowerCase();return anL().filter(r=>(AN.f===0||r.c===AN.f-1)&&(!q||(ANC[r.c][0]+' '+anSt(r.s)[1]+' '+ANG[r.g]).toLowerCase().includes(q))).sort((a,b)=>b.c-a.c||b.g-a.g||b.v-a.v)}
+function anGrid(){const G0=$('anGrid');if(!G0)return;const L=anItems(),pages=Math.max(1,Math.ceil(L.length/16));AN.pg=Math.min(AN.pg,pages-1);const X=[1160,1318,1473,1626],Y=[180,325,472,618];
+  G0.innerHTML=L.length?L.slice(AN.pg*16,AN.pg*16+16).map((r,i)=>{const w=anWho(r);return `<button class="anCell" data-i="${r.i}" style="${rkB(X[i%4],Y[(i/4)|0],X[i%4]+142,Y[(i/4)|0]+130)};--c:${ANC[r.c][1]}"><img src="${RQA.anel2[r.c]}" alt=""><b class="g g${r.g}">${ANG[r.g]}</b><span>${anSt(r.s)[1].split(' ')[0]} +${r.v}${anSt(r.s)[2]}</span>${w?`<em>${w===AN.ch?'EM USO':'✔ '+twEsc((CH[w]||{}).name||w)}</em>`:''}</button>`}).join('')+(pages>1?`<div class="rkPg" style="${rkB(1776,450,1824,480)}">${AN.pg+1}/${pages}</div>`:'')
+    :`<div class="anVz" style="${rkB(1160,330,1765,470)}">Você ainda não tem anéis.<br>Eles caem do <b>LOBO NEGRO</b> no modo Caça.</div>`;
+  G0.querySelectorAll('.anCell').forEach(b=>b.onclick=()=>{const r=anL().find(x=>x.i===b.dataset.i);if(r){rkSfx('whoosh');anInfo(r)}})}
+function anOn(){const S=$('anSrch');if(S)S.oninput=()=>{AN.q=S.value;AN.pg=0;anGrid()};anGrid()}
+function anCard(r){return `<div class="anCard" style="--c:${ANC[r.c][1]}"><img src="${RQA.anel2[r.c]}" alt=""><div><b>ANEL ${ANC[r.c][0]} · ${anAge(r)}</b><span>Nota <b class="g g${r.g}">${ANG[r.g]}</b> · ${anTxt(r)}</span></div></div>`}
+function anInfo(r){const id=AN.ch,E=anEq(id),n=anSlots(id),w=anWho(r),free=E.slice(0,n).indexOf(null);
+  rkModal(`<div class="twM">${anCard(r)}${w?`<p class="twH">Equipado em ${twEsc((CH[w]||{}).name||w)}.</p>`:''}<div class="row">${w===id?'<button class="btn main" id="anOut">TIRAR</button>':`<button class="btn main" id="anIn">${w?'TRAZER PARA ':'EQUIPAR EM '}${twEsc((CH[id]||{}).name||id)}</button>`}<button class="btn" id="anDel">🗑️ JOGAR FORA</button><button class="btn" id="rkMX">FECHAR</button></div></div>`);
+  $('rkMX').onclick=()=>rkModal(null);
+  if($('anOut'))$('anOut').onclick=()=>{anPut(id,E.indexOf(r.i),null);rkModal(null)};
+  if($('anIn'))$('anIn').onclick=()=>{if(!n){rkSfx('clang');return rkToast('🔒 A 1ª vaga abre no nível 10 do personagem','#d9b3ff')}if(free<0){rkSfx('clang');return rkToast('Todas as '+n+' vagas estão ocupadas: tire um anel primeiro','#ffb0b0')}if(w)anPut(w,anEq(w).indexOf(r.i),null);anPut(id,free,r.i);rkModal(null)};
+  $('anDel').onclick=()=>{rkModal(`<div class="twM sm"><h3>JOGAR FORA?</h3>${anCard(r)}<p class="twH">O anel some para sempre.</p><div class="row"><button class="btn" id="rkMX">NÃO</button><button class="btn main" id="anOk">JOGAR FORA</button></div></div>`);$('rkMX').onclick=()=>rkModal(null);
+    $('anOk').onclick=()=>{const w2=anWho(r);if(w2)anPut(w2,anEq(w2).indexOf(r.i),null,1);rkS('an',anL().filter(x=>x.i!==r.i));rkModal(null);rkView('lib');rkToast('Anel jogado fora','#cfd6ea')}}}
+function anPut(id,slot,ring,quiet){if(slot<0)return;const A=anEqAll(),E=anEq(id);E[slot]=ring;A[id]=E;rkS('anEq',A);if(!quiet){rkSfx(ring?'powerUp':'whoosh');rkView('lib');rkToast(ring?'💍 Anel equipado!':'Anel guardado','#7dff9a')}}
+function anSlot(i){const id=AN.ch,n=anSlots(id),E=anEq(id);if(i>=n){rkSfx('clang');return rkToast('🔒 Essa vaga abre no nível '+(i+1)*10+' do personagem','#d9b3ff')}
+  const r=E[i]&&anL().find(x=>x.i===E[i]);if(r)return anInfo(r);
+  const free=anL().filter(x=>!anWho(x));if(!free.length)return rkToast('Nenhum anel livre · eles caem do Lobo Negro (Caça)','#d9b3ff');rkToast('Escolha um anel na lista da direita','#d9b3ff')}
+{const _h=rkLibH;rkLibH=function(){if(RKL.tab==='an')return anH();return _h.apply(this,arguments)+`<button class="hs anTabB" data-a="tab" data-t="an" style="${rkB(12,515,272,588)}"><span>💍 Anéis</span></button>`}}
+{const _o=rkLibOn;rkLibOn=function(){if(RKL.tab==='an')return anOn();return _o.apply(this,arguments)}}
+/* bônus na luta (Boss, Torre e Caça): personagem em uso */
+{const _ra=rkApply;rkApply=function(){_ra.apply(this,arguments);try{const tw=typeof TW!=='undefined'&&TW.on&&G.gmode==='torre';if(!G.p||!(tw||G.gmode==='boss'||G.gmode==='caca'))return;const p=G.p[0],A=anSum(p.def.id);
+  p.tdm=(p.tdm||1)+A.dano/100;p.tcr=(p.tcr||0)+A.crit;p.tsp=(p.tsp||1)+A.vel/100;p.tki=(p.tki||1)+A.uv/100}catch(e){}}}
+/* sorte e drop: somados onde a soma geral é feita (psSum() sem personagem = personagem em uso) */
+{const _ps=psSum;psSum=function(id){const o=_ps.apply(this,arguments);if(id)return o;try{const A=anSum(eqChar());o.st+=A.st;o.drop+=A.drop}catch(e){}return o}}
+/* drops na Caça */
+{const _lu=caLvUp;caLvUp=function(a,d){const L=d.bLv||1,was=d.bs==='rev';_lu.apply(this,arguments);if(was)return;const r=anDropLobo(L);if(r){(CA.an=CA.an||[]).push(r);anFx(r,d)}}}
+{const _k=ko;ko=function(a,d){if(G.gmode==='caca'&&isBs(d)&&G.phase==='fight'&&(d.bLv||1)>=10&&d.bs!=='rev'&&!d.ko){const r=anDropLobo(10);if(r){(CA.an=CA.an||[]).push(r);anFx(r,d)}}return _k.apply(this,arguments)}}
+function anFx(r,d){try{txt(d.x,d.y-240,'💍 ANEL '+ANC[r.c][0]+' ('+ANG[r.g]+')',ANC[r.c][1]);if(r.c>=3||r.g>=5){G.flash=8;G.flashCol=ANC[r.c][1];banner('💍 ANEL '+ANC[r.c][0]+'!',ANC[r.c][1],110,ANG[r.g]+' · '+anTxt(r))}SFX.powerUp&&SFX.powerUp()}catch(e){}}
+{const _cs=caStart;caStart=function(){CA.an=[];const r=_cs.apply(this,arguments);CA.an=[];return r}}
+{const _ce=caEnd;caEnd=function(w){const got=(CA.an||[]).slice();_ce.apply(this,arguments);const add=()=>{const M=$('rkModal');if(!M||M.hidden||M.querySelector('.anGot'))return;const p=M.querySelector('.twM .row');if(!p)return;
+    p.insertAdjacentHTML('beforebegin',`<div class="anGot">${got.length?'<p class="twH">💍 Anéis que caíram:</p>'+got.map(anCard).join(''):'<p class="twH">Nenhum anel caiu desta vez.</p>'}</div>`)};for(const t of [400,1900,3600,6100])setTimeout(add,t)}}

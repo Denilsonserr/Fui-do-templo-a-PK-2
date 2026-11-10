@@ -886,3 +886,41 @@ body:not(.pcMode) #how .pcKeys{display:none}#how .pcKeys{margin:0 auto .6em;max-
 .rk_ca .caBar{position:absolute;display:flex;align-items:center;justify-content:center;gap:.4em;border-radius:2em;background:rgba(10,4,24,.78);border:1px solid rgba(190,120,255,.6);color:#eadcff;font:900 .8em var(--f-ui);letter-spacing:.05em;box-shadow:0 0 1em rgba(150,60,255,.45)}
 .rk_ca .caBar b{color:#ffd34a}
 .rk_ca .caRgT{font-size:.78em}
+
+/* v277: Anéis */
+.rk_lib .anTabB{display:flex;align-items:center;justify-content:center;border-radius:.6em;background:linear-gradient(180deg,rgba(10,20,60,.92),rgba(4,8,30,.92));border:2px solid #4aa8ff;box-shadow:0 0 .8em rgba(70,160,255,.7),inset 0 0 .8em rgba(70,160,255,.35)}
+.rk_lib .anTabB span{font:italic 900 1.35em var(--f-ui);color:#fff;text-shadow:0 0 .4em #4aa8ff}
+.rk_lib .anPed{position:absolute;display:flex;align-items:flex-end;justify-content:center;pointer-events:none;z-index:2}
+.rk_lib .anCh{height:92%;max-width:100%;object-fit:contain;filter:drop-shadow(0 0 .8em rgba(190,120,255,.7));animation:anFl 3s ease-in-out infinite}
+@keyframes anFl{0%,100%{transform:translateY(0)}50%{transform:translateY(-2.2%)}}
+.rk_lib .anR{position:absolute;display:block;pointer-events:none;animation:anRb 3s ease-in-out infinite}
+.rk_lib .anR img{width:100%;height:100%;object-fit:fill;animation:anRg 2.4s ease-in-out infinite;filter:drop-shadow(0 0 .3em rgba(255,255,255,.4))}
+.rk_lib .anR.b{z-index:1;clip-path:inset(0 0 50% 0)}
+.rk_lib .anR.f{z-index:3;clip-path:inset(50% 0 0 0)}
+@keyframes anRb{0%,100%{transform:translateY(0)}50%{transform:translateY(-6%)}}
+@keyframes anRg{0%,100%{opacity:.85;transform:scaleX(1)}50%{opacity:1;transform:scaleX(1.035)}}
+.rk_lib .anSl{z-index:4;display:flex;flex-direction:column;align-items:center;justify-content:center;border-radius:.5em}
+.rk_lib .anSl i{font-style:normal;font:900 1.6em var(--f-ui);color:#ffcf6a;text-shadow:0 0 .5em #ff9a20}
+.rk_lib .anSl.lk i{font-size:1.1em}.rk_lib .anSl small{font:900 .6em var(--f-ui);color:#ffd98a}
+.rk_lib .anSl.on{box-shadow:0 0 .9em var(--c),inset 0 0 .7em var(--c)}
+.rk_lib .anSl img{width:92%;height:auto}.rk_lib .anSl b{position:absolute;right:6%;bottom:4%;font:900 .75em var(--f-ui);color:#fff;text-shadow:0 0 .4em var(--c),0 1px 2px #000}
+.rk_lib .anV{position:absolute;display:flex;align-items:center;justify-content:flex-end;font:900 1.05em var(--f-ui);color:#7dff9a;text-shadow:0 1px 3px #000}
+.rk_lib .anBx{position:absolute;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.2em;font:900 .82em var(--f-ui);color:#e6efff;text-align:center}
+.rk_lib .anNm{position:absolute;display:flex;align-items:center;justify-content:center;font:900 1.3em var(--f-ui);letter-spacing:.08em;color:#ffe2a0;text-shadow:0 0 .6em #ff9a20,0 1px 3px #000}
+.rk_lib .anBar{position:absolute;border-radius:1em;overflow:hidden}.rk_lib .anBar i{position:absolute;left:0;top:0;bottom:0;background:linear-gradient(90deg,#8a3cff,#3aa0ff);opacity:.85}
+.rk_lib .anBar span{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font:900 .78em var(--f-ui);color:#fff;text-shadow:0 1px 3px #000;letter-spacing:.05em}
+.rk_lib .anCell{position:absolute;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.1em;background:transparent;border:0;border-radius:.6em;cursor:pointer;padding:0}
+.rk_lib .anCell:hover{box-shadow:0 0 .8em var(--c)}
+.rk_lib .anCell img{width:86%;height:auto;filter:drop-shadow(0 0 .3em var(--c))}
+.rk_lib .anCell span{font:900 .62em var(--f-ui);color:#fff;text-shadow:0 1px 2px #000}
+.rk_lib .anCell em{position:absolute;left:6%;top:6%;font:normal 900 .5em var(--f-ui);background:#2a7a3a;color:#fff;padding:.1em .4em;border-radius:.4em}
+.anCell .g,.anSl .g,.anCard .g{font-style:normal}
+.rk_lib .anCell b.g{position:absolute;right:7%;top:5%;font:900 .9em var(--f-ui);color:#fff;text-shadow:0 0 .4em var(--c),0 1px 2px #000}
+.g.g5{color:#ffd34a!important}.g.g6{color:#ff9a3a!important}.g.g7{color:#ff3b4a!important;text-shadow:0 0 .5em #ff3b4a!important}
+.rk_lib .anVz{position:absolute;display:flex;align-items:center;justify-content:center;text-align:center;font:900 .95em var(--f-ui);color:#cfe0ff;line-height:1.4}
+.anCard{display:flex;align-items:center;gap:.8em;margin:.5em auto;padding:.5em .8em;max-width:30em;border-radius:.8em;background:rgba(6,8,24,.7);border:1px solid var(--c);box-shadow:0 0 .8em var(--c)}
+.anCard img{width:6em;height:auto}.anCard div{display:flex;flex-direction:column;gap:.2em;text-align:left}.anCard b{color:var(--c)}.anCard span{color:#e8eeff;font-size:.92em}.anCard span b.g{color:#fff}
+.rk_lib .anSrch{z-index:3}
+
+.rk_lib #anGrid{position:absolute;inset:0;z-index:3;pointer-events:none}.rk_lib #anGrid>*{pointer-events:auto}
+.rk_lib .anCh{height:100%}

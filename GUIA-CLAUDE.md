@@ -1281,3 +1281,13 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 ## v276 — Lobo Negro SEM raios
 - O dono pediu para tirar os raios do corpo: `CA_RAIOS=0` no rk.js (o código `caBolts` ficou, é só ligar se ele pedir de volta). Os olhos vermelhos fortes dos níveis finais continuam, e a energia roxa voltando quando ele levanta também.
 - Teste: `ferramentas/testes/tcaca_v276.js`.
+
+## v277 — ANÉIS DO PODER (inspirado em Soul Land)
+- Artes do dono em `ferramentas/aneis/recebido/` (5 anéis em fundo preto + arte da aba `biblioteca_aneis.png`). `ferramentas/aneis/fazer.py`: preto vira transparente (alfa = brilho) → `RQA.anel2` (5 anéis; `RQA.anel` é outra coisa, os anéis de drop da v250) e `RQA.aneis` (arte da aba).
+- Biblioteca: botão novo **💍 Anéis** (desenhado por cima das artes antigas, embaixo de Coleções) e a aba `RKL.tab='an'` com a arte nova (`anH/anOn/anGrid/anInfo/anPut/anSlot`, fim do rk.js "v277"). Personagem = o que estava aberto na aba Personagens (se for seu) ou o da ranqueada (`AN.ch`).
+- 8 vagas no círculo; abrem 1 a cada 10 níveis do personagem (`anSlots = nível/10`, máx 8). **Hoje o nível máximo é 50 (mítico)/40 (lendário)/30 (épico) → no máximo 5/4/3 anéis** — falta o dono decidir se sobe o limite para 80.
+- Anéis equipados flutuam em volta do corpo (`.anR`): cada um numa altura (de baixo pra cima), metade de trás atrás do personagem e a da frente na frente, balançando.
+- Anel: `{i,c,g,s,v,a}` cor 0-4 (`ANC`: branco 100 · amarelo 1.000 · roxo 10.000 · preto 25-75 mil · vermelho 100.000 anos), nota `ANG` E..SSS (pesos `ANW` 40/30/17/9/3,5/0,4/0,08/0,02), atributo sorteado `ANS` (dano, crítico, velocidade, sorte, drop, vel. ultimate), valor `ANV[cor][nota]` (branco 1..15, amarelo 3..30, roxo 6..55, preto 12..100, vermelho 25..200). Dados `rk_an`, `rk_anEq`.
+- Bônus: Boss, Torre e Caça (`rkApply` → dano/crítico/velocidade/vel. ultimate do personagem em luta); sorte e drop entram pelo `psSum()` (sem id). Coluna **ANÉIS** no "TUDO" (`CBS`).
+- Drop: só do LOBO NEGRO, por nível derrotado (`anDropLobo`): chance 25%→80% (nv1→10, × sorte até 1,6); cor: branco sempre, amarelo nv3+, roxo nv5+, preto nv7+ (50 mil+ só nv9-10), vermelho só nv9-10 (bem raro). Aviso na luta e lista no fim da caçada. Jogar fora: botão no anel.
+- Teste: `ferramentas/testes/taneis_v277.js`.
