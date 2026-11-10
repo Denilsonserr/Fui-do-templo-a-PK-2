@@ -1458,3 +1458,14 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - **Mensagem certa:** com o servidor no limite aparece "⏳ O servidor chegou no limite de hoje (... voltam às 05:00 de Brasília). O jogo funciona normal." em vez de "Sem internet" (`rkNetMsg()`).
 - Solução definitiva (decisão do dono): plano Blaze do Firebase (paga só o que passar do grátis, ~US$0,06 por 100 mil leituras) com alerta de gasto.
 - Teste: `t429_v308.js`.
+
+## v309 (preparado, ainda NÃO ligado) — SERVIDOR NOVO na Cloudflare (Workers + D1)
+- Motivo: Firebase grátis = 50 mil leituras/dia e acabou (v308); pagar o Firebase deu problema para o dono. D1 grátis = 5 milhões de leituras/dia e 100 mil escritas/dia.
+- `worker/index.js`: imita o pedaço da API REST do Firestore que o jogo usa (criar documento com/sem documentId e 409 se já existe; `runQuery` com fieldFilter EQUAL/>/</>=/<=, orderBy por campo numérico ou `__name__`, limit até 3000). Tabelas `docs(id,ct,f)` + `kv(id,k,s,n)` com índices (k,s,id) e (k,n) para as consultas lerem só as linhas certas. Só cria/consulta, nunca apaga. `/fs-admin/import` (só até 11/11/2026 15:00) e `/fs-admin/count`.
+- `ferramentas/servidor/local.mjs`: roda o worker no computador com D1 de mentira (node:sqlite) servindo o www — teste completo `tfs_v309.js` (criar conta, entrar em outro aparelho, código de 1 pessoa, chat, migração automática da conta, relatório de erro).
+- `ferramentas/servidor/9m_v309.py`: troca o `TWURL` do jogo para `<site>/fs/v1/...` e o relatório de erro também. Quando ligar: copiar para `ferramentas/web/extra/`.
+- Contas: bloco no rk.js (só age quando TWURL é o servidor novo) salva de novo a conta de quem está logado no aparelho → a conta passa a existir no servidor novo com a mesma senha.
+- `.github/workflows/importar.yml`: copia do Firebase (depois das 05:00) títulos, códigos usados, rankings, perfis, mercado e os 3 salvamentos mais novos de cada conta dos últimos N dias.
+- Achado: o relatório de erro da v293 nunca enviava (o script do `<head>` não enxerga `TWFB`/`TWURL`, que ficam dentro do script principal) — corrigido no 9m_v309.
+- Para ligar falta o **Database ID** do D1 (`furia`) criado pelo dono; o wrangler.jsonc fica:
+  `"main":"worker/index.js"`, `assets:{directory:"./www",binding:"ASSETS",not_found_handling:"single-page-application",run_worker_first:["/fs/*","/fs-admin/*"]}`, `d1_databases:[{binding:"DB",database_name:"furia",database_id:"<ID>"}]`.

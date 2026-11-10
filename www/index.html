@@ -9698,6 +9698,8 @@ TWCUP['h5wrl3'].off=1;
 
 /* v308: servidor no LIMITE DE LEITURAS do dia (erro 429) — avisar certo em vez de "sem internet" */
 function rkNetMsg(){try{if(Date.now()<RKQ429)return '⏳ O servidor chegou no limite de hoje (rankings, chat e entrar na conta voltam às 05:00 de Brasília). O jogo funciona normal.'}catch(e){}return 'Sem internet agora.'}
+/* v309: servidor novo (Cloudflare D1): quem já está logado no aparelho tem a conta copiada sozinha (salvamento assinado com a mesma senha) */
+setTimeout(()=>{try{if(!/\/fs\/v1\//.test(TWURL))return;if(localStorage.getItem('ac_k')&&localStorage.getItem('ac_n')&&!localStorage.getItem('ac_mig309')){localStorage.removeItem('ac_h');acSave(1).then(ok=>{if(ok)localStorage.setItem('ac_mig309','1')})}}catch(e){}},8000);
 
 function twTrofList(){const tc=twLS.g('tw_tc',{}),run={};for(const t of TW.tr)run[t.k]=(run[t.k]||0)+1;
   twModal(`<div class="twM"><h3>🎖️ TROFÉUS</h3><div class="twTL">${Object.keys(TWTR).map(k=>{const T=TWTR[k];return `<div class="${tc[k]||run[k]?'got':''}"><i>${T.i}</i><b>${T.n}</b><span>${T.d}</span><em>+${T.p} 🏆</em><small>${run[k]?'nesta subida: '+run[k]+' · ':''}total: ${(tc[k]||0)}</small></div>`}).join('')}</div>
@@ -9864,7 +9866,7 @@ window.__dbg={mus:()=>[MCUR,MEL.src.split('/').pop()],stg:()=>STAGE.key,prepMatc
 })();
 </script>
 <style>#updB{position:fixed;left:50%;top:max(8px,env(safe-area-inset-top));transform:translateX(-50%);z-index:99999;padding:10px 22px;border-radius:14px;border:2px solid #fff3c0;background:linear-gradient(#ffd84a,#e08a10);color:#3a1d00;font:900 15px system-ui,sans-serif;box-shadow:0 0 18px #ffb21f;cursor:pointer;animation:updP 1s ease-in-out infinite alternate}@keyframes updP{to{transform:translateX(-50%) scale(1.05)}}</style>
-<script>(function(){const V='4ec14ecc6462';if(!/^https?:/.test(location.protocol))return;let nv=null;
+<script>(function(){const V='73db31e3569c';if(!/^https?:/.test(location.protocol))return;let nv=null;
 function show(){if(document.getElementById('updB'))return;try{if(typeof G!=='undefined'&&G.mode==='fight')return}catch(e){}const b=document.createElement('button');b.id='updB';b.textContent='🔄 ATUALIZAÇÃO NOVA! Toque para atualizar';
   b.onclick=()=>{b.textContent='⏳ Atualizando...';try{acSave(1)}catch(e){}setTimeout(()=>location.reload(),900)};document.body.appendChild(b)}
 async function chk(){if(document.hidden)return;if(nv){show();return}try{const r=await fetch('versao.txt?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const t=(await r.text()).trim();if(/^[0-9a-f]{8,40}$/.test(t)&&t!==V){nv=t;show()}}catch(e){}}

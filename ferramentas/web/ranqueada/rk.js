@@ -2144,3 +2144,5 @@ TWCUP['h5wrl3'].off=1;
 
 /* v308: servidor no LIMITE DE LEITURAS do dia (erro 429) — avisar certo em vez de "sem internet" */
 function rkNetMsg(){try{if(Date.now()<RKQ429)return '⏳ O servidor chegou no limite de hoje (rankings, chat e entrar na conta voltam às 05:00 de Brasília). O jogo funciona normal.'}catch(e){}return 'Sem internet agora.'}
+/* v309: servidor novo (Cloudflare D1): quem já está logado no aparelho tem a conta copiada sozinha (salvamento assinado com a mesma senha) */
+setTimeout(()=>{try{if(!/\/fs\/v1\//.test(TWURL))return;if(localStorage.getItem('ac_k')&&localStorage.getItem('ac_n')&&!localStorage.getItem('ac_mig309')){localStorage.removeItem('ac_h');acSave(1).then(ok=>{if(ok)localStorage.setItem('ac_mig309','1')})}}catch(e){}},8000);

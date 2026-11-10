@@ -1,0 +1,57 @@
+name: Importar do Firebase para o servidor novo (ferramenta)
+# Copia do Firebase (Firestore) para o servidor da Cloudflare (worker + D1): títulos, códigos usados, rankings, perfis, mercado e as contas
+# salvas nos últimos dias (3 salvamentos mais novos de cada conta). Rodar DEPOIS das 05:00 (limite de leituras do Firebase zera).
+on:
+  workflow_dispatch:
+    inputs:
+      dias: {description: 'contas salvas nos últimos N dias', default: '5'}
+      site: {description: 'servidor novo', default: 'https://fui-do-templo-a-pk-2.denilsinend.workers.dev'}
+jobs:
+  imp:
+    runs-on: ubuntu-latest
+    steps:
+      - name: importar
+        env: {DIAS: '${{ inputs.dias }}', SITE: '${{ inputs.site }}'}
+        run: |
+          python3 - <<'P'
+          import json,urllib.request,os,time
+          K='AIzaSyDXTjvRMcKtJ5vq2vl-F2B_w2M-7hd_QY0'
+          U='https://firestore.googleapis.com/v1/projects/furia-do-templo/databases/(default)/documents:runQuery?key='+K
+          def q(sq):
+              r=urllib.request.Request(U,data=json.dumps({'structuredQuery':sq}).encode(),headers={'Content-Type':'application/json'})
+              return [x['document'] for x in json.load(urllib.request.urlopen(r)) if 'document' in x]
+          F=lambda c:{'from':[{'collectionId':'torre'}],**c}
+          D={}
+          def add(L,tag):
+              for d in L:D[d['name'].split('/')[-1]]=d
+              print(tag,len(L),flush=True)
+          for f in ['cupom','claim','rk','rkr','ca','pfu','pfh','mk','mkp','mks','mkv','mkx','avs','char','nomeL','sem','ev']:
+              try:add(q(F({'where':{'fieldFilter':{'field':{'fieldPath':f},'op':'GREATER_THAN','value':{'stringValue':''}}},'limit':3000})),f)
+              except Exception as e:print('ERRO',f,e)
+          try:add(q(F({'orderBy':[{'field':{'fieldPath':'pontos'},'direction':'DESCENDING'}],'limit':400})),'pontos')
+          except Exception as e:print('ERRO pontos',e)
+          ts=int(time.time()*1000)-int(os.environ['DIAS'])*864e5
+          try:
+              S=q(F({'where':{'fieldFilter':{'field':{'fieldPath':'ts'},'op':'GREATER_THAN','value':{'integerValue':str(int(ts))}}},'limit':8000}))
+              A={}
+              for d in S:
+                  f=d['fields']
+                  if 'sv' not in f:continue
+                  A.setdefault(f['sv']['stringValue'],[]).append(d)
+              n=0
+              for acc,L in A.items():
+                  L.sort(key=lambda d:int(d['fields']['ts']['integerValue']),reverse=True)
+                  for d in L[:3]:D[d['name'].split('/')[-1]]=d;n+=1
+              print('contas',len(A),'salvamentos',n)
+          except Exception as e:print('ERRO contas',e)
+          L=[{'id':k,'ct':d.get('createTime'),'fields':d.get('fields',{})} for k,d in D.items()]
+          print('total para importar',len(L),flush=True)
+          ok=0
+          for i in range(0,len(L),40):
+              r=urllib.request.Request(os.environ['SITE']+'/fs-admin/import',data=json.dumps(L[i:i+40]).encode(),headers={'Content-Type':'application/json'})
+              for t in range(3):
+                  try:urllib.request.urlopen(r).read();ok+=len(L[i:i+40]);break
+                  except Exception as e:print('tentando de novo',i,e);time.sleep(2)
+          print('importados',ok,'de',len(L))
+          print(urllib.request.urlopen(os.environ['SITE']+'/fs-admin/count').read().decode())
+          P
