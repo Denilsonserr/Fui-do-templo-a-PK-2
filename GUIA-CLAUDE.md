@@ -1216,3 +1216,6 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 ## v268 — torneio justo (20:20–20:50), chefe com 3 vidas, 1000 💎 por participar
 - `TWEV` agora 20:20–20:50 Brasília, `lives:3` (chefe final volta 2 vezes; `d.twRev` conta as voltas), `flat:1` (`rkTwLv()` no rk.js devolve 0 durante o torneio: inimigos do rank mais baixo e SEM bônus de rank; itens/passivas/nível continuam), `part:1000` (todo mundo que tem subida no ranking do torneio ganha 1000 💎 uma vez, no `twClaims`, `ec[id].part`).
 - Teste: `ferramentas/testes/ttorneio_v268.js` (4 jogadores: 3 premiados + participante).
+
+## v269 — código de sorteio do PASSE PAGO
+- `extra/9c_v269.py`: hash `189oqcd` (`bp:1,uni:1`): libera o Passe Pago para UMA pessoa no jogo inteiro. Texto só com o dono. Teste: `ferramentas/testes/tcodigos_v269.js`.
