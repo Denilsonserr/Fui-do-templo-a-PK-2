@@ -19,3 +19,4 @@
 - Fica na 3ª aba da Invocação (a que hoje tem o Madara e está trancada) → destrancar e virar **"Invocação Ilimitada"** com essa arte. Fica no ar **7 dias**.
 - **70 💎** um giro · **700 💎** dez giros (aceita tickets? confirmar — o Yuta aceita).
 - **Garantido em 170 giros** (piedade). Chance por giro **um pouco menor que a do Yuta**.
+- **Liberação:** a gacha do Shaka só abre hoje **10/11/2026 às 12:45 (Brasília)**. 7 dias a partir daí → fecha 17/11/2026 12:45 (confirmar).
