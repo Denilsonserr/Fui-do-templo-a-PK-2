@@ -1462,6 +1462,24 @@ body:not(.pcMode) #how .pcKeys{display:none}#how .pcKeys{margin:0 auto .6em;max-
 @keyframes skBtn{0%,100%{filter:drop-shadow(0 0 .25em #ffc21f) brightness(1)}50%{filter:drop-shadow(0 0 .9em #ffe27a) drop-shadow(0 0 1.6em rgba(255,200,40,.8)) brightness(1.25)}}
 #controls.skf::before{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(circle at 12% 80%,rgba(255,210,60,.18),transparent 30%),radial-gradient(circle at 85% 65%,rgba(255,210,60,.2),transparent 35%);animation:mfPul 2s ease-in-out infinite}
 
+/* v287 */
+.rkFx.skFx{background:#000}.rkFx.skFx video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}.rkFx.skFx span{z-index:2}
+.rkMega.skm2{background:radial-gradient(circle,#ffffff 0,#fff6d6 25%,#ffd76a 55%,#7a5200 85%,#1a0f00)}
+.rkMega.skm2 .tx b{color:#fff;text-shadow:0 0 .3em #fff,0 0 .8em #ffe9a0,0 0 1.6em #ffc21f,0 3px 4px #6a4500}.rkMega.skm2 .tx b:first-of-type{font-size:.8em}.rkMega.skm2 .tx span,.rkMega.skm2 .tx small{color:#5a3a00;text-shadow:0 0 .4em #fff}
+.rkMega.skm2 .r2{animation-delay:.4s!important}
+.rkWin.skw{background:radial-gradient(circle,rgba(255,255,240,.95),rgba(255,215,110,.85) 45%,rgba(60,35,0,.97))}.rkWin.skw .t b{color:#fff;text-shadow:0 0 .5em #fff,0 0 1.2em #ffc21f}
+.anR img.gl,.anCell img.gl{animation:anGlo 1.6s ease-in-out infinite}
+.gl.g1{--k:.35}.gl.g2{--k:.6}.gl.g3{--k:.9}.gl.g4{--k:1.25}.gl.g5{--k:1.7}
+@keyframes anGlo{0%,100%{filter:drop-shadow(0 0 calc(.25em*var(--k)) var(--c)) brightness(1)}50%{filter:drop-shadow(0 0 calc(.7em*var(--k)) var(--c)) drop-shadow(0 0 calc(1.4em*var(--k)) var(--c)) brightness(calc(1 + .25*var(--k)))}}
+.rkMega.skm2 .rays{background:repeating-conic-gradient(rgba(255,255,255,.75) 0 5deg,rgba(255,225,140,.25) 5deg 9deg,transparent 9deg 14deg);animation-duration:2s}
+.rkMega.skm2 .ring{position:absolute;width:60vh;height:60vh;border-radius:50%;border:1.2vh solid #fff;box-shadow:0 0 4vh #ffd76a,inset 0 0 4vh #ffd76a;animation:ytRg 1s ease-out infinite}
+.rkMega.skm2 .tx b{color:#fff;text-shadow:0 0 1vh #b47a00,0 0 3vh #ffc21f,0 .6vh 0 #6a4500,0 0 .2vh #6a4500}
+.rkMega.skm2 .tx b+b{color:#fff6c8;text-shadow:0 0 1.5vh #ffb21f,0 0 5vh #ffd76a,0 .6vh 0 #6a4500}
+.rkWin.mit.skw,.rkWin.mit.skw.end{background:radial-gradient(circle,#fffdf0 0,#ffe9a8 35%,#c88a10 70%,#2a1800)}
+.rkWin.mit.skw .rays{background:repeating-conic-gradient(rgba(255,255,255,.55) 0 6deg,transparent 6deg 20deg)}
+.rkWin.mit.skw .t b{color:#fff;text-shadow:0 0 1vh #b47a00,0 0 2.5vh #ffc21f,0 2px 3px #6a4500}.rkWin.mit.skw .t span{color:#6a4500;text-shadow:0 0 1vh #fff}
+.rkMega.skm2 .tx b:first-of-type{font-size:8vh}
+
 .twBag .bgw{display:flex;gap:1em;justify-content:center;align-items:flex-start;margin:.4em 0}
 .twBag .bgc{flex:1;max-width:16em;display:flex;flex-direction:column;gap:.4em;max-height:52vh;overflow:auto;padding:.2em}
 .twBag h5{margin:0 0 .2em;font:900 1em var(--f-ui);letter-spacing:.1em;color:#ffcf4a;display:flex;flex-direction:column}.twBag h5 small{font-size:.65em;color:#cdbfcf;letter-spacing:0}
@@ -9334,6 +9352,21 @@ function lvX(){const id=LVC.id,L=lvOf(id);rkModal(`<div class="twM lvXm"><h3>✦
   ${[6,7].map(r=>`<div class="lvXr"><b>NÍVEL ${LVROW[r]}${L.lv<LVROW[r]?' 🔒':''}</b>${LVTREE[r].map(([k,v],ci)=>`<button class="lvNd ${L.lv>=LVROW[r]?'on':'lk'} ${L.t[r]===ci?'sel':''}" data-r="${r}" data-c="${ci}" style="--c:#ffd84a"><i>${LVSTAT[k].i}</i><b>+${v}%</b><small>${LVSTAT[k].n}</small></button>`).join('')}</div>`).join('')}
   <p class="twH">Custo: nível 60 = 3 cristais míticos · nível 70 = 4 cristais míticos.</p><div class="row"><button class="btn" id="rkMX">FECHAR</button></div></div>`);
   $('rkMX').onclick=()=>rkModal(null);document.querySelectorAll('#rkModal .lvXr .lvNd').forEach(b=>b.onclick=()=>lvNode(+b.dataset.r,+b.dataset.c))}
+
+/* ================= v287: Invocação do Shaka com o VÍDEO do dono (com som, tela cheia), SUPER MEGA SORTE SECRETA (branco dourado) + animação dele ABRINDO OS OLHOS; anéis brilham pelo nível ================= */
+const SKINV='a/d99e2dad783e30.mp4';
+try{RKUV.shaka=()=>SKV}catch(e){}
+{const _pv=rkPlayVid;rkPlayVid=function(cb){if(RKBAN!=='sk')return _pv(cb);const O=document.createElement('div');O.className='rkFx skFx';O.innerHTML='<video playsinline preload="auto"></video><span>toque para pular</span>';rkHost().appendChild(O);
+  const v=O.querySelector('video');let d=0;const end=()=>{if(d)return;d=1;try{v.pause()}catch(e){}O.remove();cb()};v.src=SKINV;v.volume=1;v.onended=end;v.onerror=end;O.onclick=end;
+  const pr=v.play();if(pr&&pr.catch)pr.catch(()=>{v.muted=true;v.play().catch(end)});setTimeout(end,12000)}}
+rkMegaS=function(){return new Promise(res=>{const O=document.createElement('div');O.className='rkMega skm2';O.innerHTML='<i class="rays"></i><i class="fl"></i><i class="ring"></i><i class="ring r2"></i><div class="tx"><small>✦ ✦ ✦ ✦ ✦ ✦ ✦</small><b>SUPER MEGA</b><b>SORTE SECRETA!</b><span>O SHAKA DE VIRGEM APARECEU!</span></div>';rkHost().appendChild(O);
+  rkSfx('boom');setTimeout(()=>rkSfx('powerUp'),350);setTimeout(()=>rkSfx('boom'),800);setTimeout(()=>rkSfx('powerUp'),1300);setTimeout(()=>rkSfx('boom'),1900);setTimeout(()=>rkSfx('powerUp'),2500);let d=0;const end=()=>{if(d)return;d=1;O.classList.add('out');setTimeout(()=>{O.remove();res()},400)};setTimeout(end,4200);setTimeout(()=>{O.onclick=end},900)})};
+{const _cw=rkCharWin;rkCharWin=function(id,mit,nw){const r=_cw.apply(this,arguments);if(id==='shaka'){const O=[...document.querySelectorAll('.rkWin')].pop();if(O){O.classList.add('skw');const b=O.querySelector('.t b');if(b)b.textContent=nw?'✦ SECRETO · SHAKA DE VIRGEM ✦':'✦ SHAKA ✦'}}return r}}
+/* anéis: brilho da cor do anel, mais forte a cada 10 níveis */
+const anGl=r=>Math.min(5,Math.floor(anLvl(r)/10));
+{const _h=anH;anH=function(){let h=_h.apply(this,arguments);const L=anL(),E=anEq(AN.ch);
+  E.filter(Boolean).forEach(i=>{const r=L.find(z=>z.i===i);if(!r)return;const g=anGl(r);if(!g)return;const src=RQA.anel2[r.c];h=h.split(`<img src="${src}" alt=""></i>`).join(`<img src="${src}" alt="" class="gl g${g}" style="--c:${ANC[r.c][1]}"></i>`)});return h}}
+{const _g=anGrid;anGrid=function(){_g.apply(this,arguments);document.querySelectorAll('#anGrid .anCell').forEach(b=>{const r=anL().find(x=>x.i===b.dataset.i);if(!r)return;const g=anGl(r);if(g){const im=b.querySelector('img');im.classList.add('gl','g'+g);im.style.setProperty('--c',ANC[r.c][1])}})}}
 
 function twTrofList(){const tc=twLS.g('tw_tc',{}),run={};for(const t of TW.tr)run[t.k]=(run[t.k]||0)+1;
   twModal(`<div class="twM"><h3>🎖️ TROFÉUS</h3><div class="twTL">${Object.keys(TWTR).map(k=>{const T=TWTR[k];return `<div class="${tc[k]||run[k]?'got':''}"><i>${T.i}</i><b>${T.n}</b><span>${T.d}</span><em>+${T.p} 🏆</em><small>${run[k]?'nesta subida: '+run[k]+' · ':''}total: ${(tc[k]||0)}</small></div>`}).join('')}</div>

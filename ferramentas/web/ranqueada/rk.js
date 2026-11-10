@@ -1953,3 +1953,18 @@ function lvX(){const id=LVC.id,L=lvOf(id);rkModal(`<div class="twM lvXm"><h3>✦
   ${[6,7].map(r=>`<div class="lvXr"><b>NÍVEL ${LVROW[r]}${L.lv<LVROW[r]?' 🔒':''}</b>${LVTREE[r].map(([k,v],ci)=>`<button class="lvNd ${L.lv>=LVROW[r]?'on':'lk'} ${L.t[r]===ci?'sel':''}" data-r="${r}" data-c="${ci}" style="--c:#ffd84a"><i>${LVSTAT[k].i}</i><b>+${v}%</b><small>${LVSTAT[k].n}</small></button>`).join('')}</div>`).join('')}
   <p class="twH">Custo: nível 60 = 3 cristais míticos · nível 70 = 4 cristais míticos.</p><div class="row"><button class="btn" id="rkMX">FECHAR</button></div></div>`);
   $('rkMX').onclick=()=>rkModal(null);document.querySelectorAll('#rkModal .lvXr .lvNd').forEach(b=>b.onclick=()=>lvNode(+b.dataset.r,+b.dataset.c))}
+
+/* ================= v287: Invocação do Shaka com o VÍDEO do dono (com som, tela cheia), SUPER MEGA SORTE SECRETA (branco dourado) + animação dele ABRINDO OS OLHOS; anéis brilham pelo nível ================= */
+const SKINV='a/d99e2dad783e30.mp4';
+try{RKUV.shaka=()=>SKV}catch(e){}
+{const _pv=rkPlayVid;rkPlayVid=function(cb){if(RKBAN!=='sk')return _pv(cb);const O=document.createElement('div');O.className='rkFx skFx';O.innerHTML='<video playsinline preload="auto"></video><span>toque para pular</span>';rkHost().appendChild(O);
+  const v=O.querySelector('video');let d=0;const end=()=>{if(d)return;d=1;try{v.pause()}catch(e){}O.remove();cb()};v.src=SKINV;v.volume=1;v.onended=end;v.onerror=end;O.onclick=end;
+  const pr=v.play();if(pr&&pr.catch)pr.catch(()=>{v.muted=true;v.play().catch(end)});setTimeout(end,12000)}}
+rkMegaS=function(){return new Promise(res=>{const O=document.createElement('div');O.className='rkMega skm2';O.innerHTML='<i class="rays"></i><i class="fl"></i><i class="ring"></i><i class="ring r2"></i><div class="tx"><small>✦ ✦ ✦ ✦ ✦ ✦ ✦</small><b>SUPER MEGA</b><b>SORTE SECRETA!</b><span>O SHAKA DE VIRGEM APARECEU!</span></div>';rkHost().appendChild(O);
+  rkSfx('boom');setTimeout(()=>rkSfx('powerUp'),350);setTimeout(()=>rkSfx('boom'),800);setTimeout(()=>rkSfx('powerUp'),1300);setTimeout(()=>rkSfx('boom'),1900);setTimeout(()=>rkSfx('powerUp'),2500);let d=0;const end=()=>{if(d)return;d=1;O.classList.add('out');setTimeout(()=>{O.remove();res()},400)};setTimeout(end,4200);setTimeout(()=>{O.onclick=end},900)})};
+{const _cw=rkCharWin;rkCharWin=function(id,mit,nw){const r=_cw.apply(this,arguments);if(id==='shaka'){const O=[...document.querySelectorAll('.rkWin')].pop();if(O){O.classList.add('skw');const b=O.querySelector('.t b');if(b)b.textContent=nw?'✦ SECRETO · SHAKA DE VIRGEM ✦':'✦ SHAKA ✦'}}return r}}
+/* anéis: brilho da cor do anel, mais forte a cada 10 níveis */
+const anGl=r=>Math.min(5,Math.floor(anLvl(r)/10));
+{const _h=anH;anH=function(){let h=_h.apply(this,arguments);const L=anL(),E=anEq(AN.ch);
+  E.filter(Boolean).forEach(i=>{const r=L.find(z=>z.i===i);if(!r)return;const g=anGl(r);if(!g)return;const src=RQA.anel2[r.c];h=h.split(`<img src="${src}" alt=""></i>`).join(`<img src="${src}" alt="" class="gl g${g}" style="--c:${ANC[r.c][1]}"></i>`)});return h}}
+{const _g=anGrid;anGrid=function(){_g.apply(this,arguments);document.querySelectorAll('#anGrid .anCell').forEach(b=>{const r=anL().find(x=>x.i===b.dataset.i);if(!r)return;const g=anGl(r);if(g){const im=b.querySelector('img');im.classList.add('gl','g'+g);im.style.setProperty('--c',ANC[r.c][1])}})}}

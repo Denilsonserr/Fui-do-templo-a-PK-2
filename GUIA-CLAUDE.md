@@ -1346,3 +1346,9 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 ## v286 — código de DEVOLUÇÃO da gacha do Shaka (jogador Vn)
 - O jogador "Vn" deu 35 giros no banner do Shaka entre 12:45 e 13:20 (a v284 abria 12:45; o dono mudou para 13:20). Ferramenta nova `.github/workflows/auditoria.yml` (lê os salvamentos de conta `sv_*` depois de um horário e mostra quem tem o Shaka/piedade/giros).
 - Código ÚNICO (`extra/9f_v286.py`, hash `1xpdic`, texto só com o dono): +2450 💎 e zera `rk_pityS`/`rk_pitySS` (flag nova `rz` no `twCupom`: zera as chaves `rk_*` listadas).
+
+## v287 — Invocação do Shaka com vídeo + som, "SUPER MEGA SORTE SECRETA", anéis brilhando pelo nível
+- Girar na Invocação Ilimitada toca o vídeo do dono COM SOM em tela cheia (`<video>` object-fit:cover; `a/d99e2dad783e30.mp4` = ultimate do Shaka 720p, `SKINV`); toque pula. Se o navegador bloquear o som, toca mudo.
+- Pegou o Shaka: `rkMegaS` novo (branco dourado divino, "SUPER MEGA / SORTE SECRETA!", anéis de luz) → `rkCharWin` toca os quadros dele ABRINDO OS OLHOS (`RKUV.shaka=()=>SKV`) com fundo branco dourado (`.rkWin.skw`).
+- Anéis: a cada 10 níveis brilham mais na cor deles (`anGl` = nível/10, classes `.gl.g1..g5`), no corpo do personagem e na lista.
+- Teste: `ferramentas/testes/tgacha_sk_v287.js`.
