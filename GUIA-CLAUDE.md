@@ -1223,3 +1223,7 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 ## Ferramenta: publicar RECADO DO ADM sem abrir o jogo
 - `.github/workflows/recado.yml` (inputs `titulo`, `texto`): cria o documento `avs_<ts>` no servidor; aparece em Abas de Evento → Recados do ADM. Recados não dá para apagar (servidor só cria); para corrigir, publique outro (o mais novo aparece primeiro).
 - 09/11/2026: sorteio do dono — 1º recado (20 sorteios, 4/3/7/20 → 3) foi substituído por "SORTEIO REFEITO" (100 sorteios com o 13 incluído → **7**).
+
+## Ideia para amanhã (ainda NÃO fazer): MODO CAÇA ÀS BESTAS DE ALMA (estilo Soul Land)
+- 09/11/2026, o dono: vai ter um modo para caçar bestas de alma que dropam ANÉIS DE ALMA (cor pela idade). Vão ter VÁRIAS bestas; só as BESTAS BOSS mais fortes podem dropar os anéis de **70 mil anos** e de **100 mil anos**.
+- Ele vai mandar as REGRAS completas (e artes) amanhã. Esperar. Rascunho que o Claude sugeriu: anéis 10/100/1.000/10.000/(70.000)/100.000 anos, até 9 anéis por personagem, sorte/drop aumentam a chance, ossos de alma como drop super raro — tudo só sugestão até ele confirmar.
