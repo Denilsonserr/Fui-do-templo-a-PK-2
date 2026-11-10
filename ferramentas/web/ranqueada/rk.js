@@ -219,9 +219,11 @@ function rkPhase2(a,d){d.rkPh=2;if(RKB.fs)RKB.fs.t1=RKB.fs.t;d.ko=false;{const L
 /* EVENTOS de XP (hora de Brasília, UTC-3): [início, fim, multiplicador, nome] */
 const RKEVX=[[Date.UTC(2026,10,8,23,0),Date.UTC(2026,10,9,1,0),3,'3x XP'],
   /* v248: EVENTO DE ATUALIZAÇÃO — 10 horas (12:30 até 22:30 de Brasília, 09/11/2026): 2x XP de rank, 2x gemas, 2x sorte */
-  [Date.UTC(2026,10,9,15,30),Date.UTC(2026,10,10,1,30),2,'2x XP · 2x GEMAS · 2x SORTE',{gem:2,luck:2}]];
+  [Date.UTC(2026,10,9,15,30),Date.UTC(2026,10,10,1,30),2,'2x XP · 2x GEMAS · 2x SORTE',{gem:2,luck:2}],
+  /* v293: EVENTO 7 HORAS (15:30 até 22:30 de Brasília, 10/11/2026): 3x DROP, 2x SORTE, 2x XP de rank */
+  [Date.UTC(2026,10,10,18,30),Date.UTC(2026,10,11,1,30),2,'3x DROP · 2x SORTE · 2x XP',{luck:2,drop:3}]];
 const rkEvX=()=>{const t=Date.now();return RKEVX.find(e=>t>=e[0]&&t<e[1])||null};
-const rkEvG=()=>{const e=rkEvX();return (e&&e[4]&&e[4].gem)||1},rkEvL=()=>{const e=rkEvX();return (e&&e[4]&&e[4].luck)||1};
+const rkEvG=()=>{const e=rkEvX();return (e&&e[4]&&e[4].gem)||1},rkEvL=()=>{const e=rkEvX();return (e&&e[4]&&e[4].luck)||1},rkEvD=()=>{const e=rkEvX();return (e&&e[4]&&e[4].drop)||1};
 const rkEvTxt=()=>'';const rkEvTxt0=()=>{const e=rkEvX();if(!e)return '';const m=Math.max(0,Math.round((e[1]-Date.now())/60000));return `<div class="rkEvX">🔥 EVENTO <b>${e[3]}</b> NA RANQUEADA! · termina em ${m>=60?Math.floor(m/60)+'h'+String(m%60).padStart(2,'0'):m+' min'}</div>`};
 let R_SRV=0;
 function rkAfter(w){G.mode='ranked';$('controls').hidden=true;$('pauseBtn').hidden=true;rainSound(0);G.paused=false;G.diff=RKB.diff0;
@@ -815,7 +817,7 @@ twEqOn=function(){const I=twInv(),Q=twEqp(),o={};for(const k of ['esp','arm','bo
 const EQMAIN={esp:'dano',arm:'vida',bot:'vel',cap:'trf',anel:'st'};
 twEqB=st=>{const o=twEqOn();let v=0;for(const k in o){const it=o[k],n=eqNf(it);if(EQMAIN[k]===st)v+=(it.v||0)*n;if(st==='vel'&&it.vel)v+=it.vel*n;if(st==='dano'&&it.dmg)v+=it.dmg*n;if(st==='vida'&&it.def)v+=it.def*n;if(st==='trf'&&it.trf)v+=it.trf*n}return Math.round(v*10)/10};
 const eqCrit=()=>{const o=twEqOn();let c=0;for(const k in o)c+=(o[k].crit||0)*eqNf(o[k]);return c};
-const eqDrop=()=>{const o=twEqOn();let c=0;for(const k in o)c+=(o[k].drop||0)*eqNf(o[k]);return c},rkDropF=()=>1+(eqDrop()+RKPDN+psSum().drop)/100;let RKPDN=0;
+const eqDrop=()=>{const o=twEqOn();let c=0;for(const k in o)c+=(o[k].drop||0)*eqNf(o[k]);return c},rkDropF=()=>(1+(eqDrop()+RKPDN+psSum().drop)/100)*rkEvD();let RKPDN=0;
 const eqFdmg=()=>{const o=twEqOn();let c=0;for(const k in o)c+=(o[k].fdmg||0)*eqNf(o[k]);return c};
 /* ---------- NÍVEL dos personagens ---------- */
 const LVMAX=id=>id==='shaka'?70:({mit:50,lend:40,epica:30}[rkRar(id)]||30);
@@ -1495,7 +1497,7 @@ function evTor(){try{const st=twEvSt();if(st==='fim'&&Date.now()>TWEV.fim+6*36e5
   <div class="evBtns"><button class="btn main" data-e="torre">🗼 IR PARA A TORRE</button></div>`}}}catch(e){return null}}
 function ev2x(){const e=rkEvX();if(!e)return null;return {k:'x2',ic:'🔥',t:'EVENTO '+e[3].split('·')[0].trim(),st:'AO VIVO',on:1,hot:1,h:()=>`<h2>🔥 EVENTO NA RANQUEADA</h2><div class="evBig aovivo">🔴 AO VIVO · TERMINA EM <b>${evFmt(e[1]-Date.now())}</b></div>
   <p>📅 Das <b>${evHr(e[0])}</b> às <b>${evHr(e[1])}</b> (horário de Brasília).</p><ul>${e[3].split('·').map(x=>`<li>✨ <b>${x.trim()}</b></li>`).join('')}</ul>
-  <p>Vale no <b>Modo Boss</b> (rank, farm e evento do Yuta) e na <b>Torre</b>. XP de rank, gemas das lutas e sorte (que também aumenta os drops). Códigos não dobram.</p><div class="evBtns"><button class="btn main" data-e="boss">⚔️ IR PARA O MODO BOSS</button></div>`}}
+  <p>Vale no <b>Modo Boss</b> (rank, farm e evento do Yuta), na <b>Torre</b> e no <b>Modo Caça</b>. XP de rank, gemas das lutas, sorte e drop. Códigos não dobram.</p><div class="evBtns"><button class="btn main" data-e="boss">⚔️ IR PARA O MODO BOSS</button></div>`}}
 function evBp(){if(!bpEvOn())return null;return {k:'bp',ic:'🎟️',t:'EVENTO DO PASSE',st:'AO VIVO',on:1,hot:1,h:()=>`<h2>🎟️ EVENTO DO PASSE DE BATALHA</h2><div class="evBig aovivo">🔴 AO VIVO · TERMINA EM <b>${bpEvLeft()}</b></div>
   <ul><li>⚡ <b>3x XP</b> em todas as missões do passe</li><li>📋 <b>Missões extras</b> fáceis (Torre, Boss, gacha, passiva e rank)</li><li>🎁 Cada vitória tem <b>0,5%</b> de abrir o <b>BAÚ DO EVENTO</b>: o <b>PASSE PAGO</b> — só <b>1 pessoa</b> no jogo inteiro ganha!</li></ul>
   <div class="evBtns"><button class="btn main" data-e="bp">🎟️ ABRIR O PASSE</button></div>`}}
@@ -1964,7 +1966,7 @@ rkMegaS=function(){return new Promise(res=>{const O=document.createElement('div'
   rkSfx('boom');setTimeout(()=>rkSfx('powerUp'),350);setTimeout(()=>rkSfx('boom'),800);setTimeout(()=>rkSfx('powerUp'),1300);setTimeout(()=>rkSfx('boom'),1900);setTimeout(()=>rkSfx('powerUp'),2500);let d=0;const end=()=>{if(d)return;d=1;O.classList.add('out');setTimeout(()=>{O.remove();res()},400)};setTimeout(end,4200);setTimeout(()=>{O.onclick=end},900)})};
 {const _cw=rkCharWin;rkCharWin=function(id,mit,nw){const r=_cw.apply(this,arguments);if(id==='shaka'){const O=[...document.querySelectorAll('.rkWin')].pop();if(O){O.classList.add('skw');const b=O.querySelector('.t b');if(b)b.textContent=nw?'✦ SECRETO · SHAKA DE VIRGEM ✦':'✦ SHAKA ✦'}}return r}}
 /* anéis: brilho da cor do anel, mais forte a cada 10 níveis */
-const anGl=r=>Math.min(5,Math.floor(anLvl(r)/10));
+const anGl=r=>Math.min(5,1+Math.floor(anLvl(r)/12)+(r.c>=3?1:0)+(r.g>=6?1:0)); /* v293: todo anel brilha */
 {const _h=anH;anH=function(){let h=_h.apply(this,arguments);const L=anL(),E=anEq(AN.ch);
   E.filter(Boolean).forEach(i=>{const r=L.find(z=>z.i===i);if(!r)return;const g=anGl(r);if(!g)return;const src=RQA.anel2[r.c];h=h.split(`<img src="${src}" alt=""></i>`).join(`<img src="${src}" alt="" class="gl g${g}" style="--c:${ANC[r.c][1]}"></i>`)});return h}}
 {const _g=anGrid;anGrid=function(){_g.apply(this,arguments);document.querySelectorAll('#anGrid .anCell').forEach(b=>{const r=anL().find(x=>x.i===b.dataset.i);if(!r)return;const g=anGl(r);if(g){const im=b.querySelector('img');im.classList.add('gl','g'+g);im.style.setProperty('--c',ANC[r.c][1])}})}}
@@ -1997,3 +1999,38 @@ const skTitOn=()=>twTits().some(k=>/^sk\d+$/.test(k));
 (function(){try{if(rkG('skfix292',0))return;const H=rkG('hist',[]),I=twInv();let ch=0;
   for(const h of H){if(h.k!=='sp'||!RKSP[h.s]||!RKSP[h.s].sk)continue;const S=RKSP[h.s];if(I.some(x=>x.nm===S.nm))continue;I.push(Object.assign({id:'fx'+h.s+Date.now().toString(36)},S));ch++}
   if(ch){twLS.s('tw_inv',I);setTimeout(()=>{try{rkToast('✦ '+ch+' item(ns) do Shaka devolvido(s)!','#ffd84a')}catch(e){}},2500)}rkS('skfix292',1)}catch(e){}})();
+
+/* ================= v293: BAÚ DA CAÇA + CÓDIGOS + ITENS NO ESPAÇO CERTO + QUADRADOS DA MOCHILA =================
+   Cada nível do boss da Caça derrotado: 100% de anel (não dá para saber qual) + o loot daquele nível.
+   A luta PAUSA (G.hold): baú fechado treme → abre → o anel sobe do baú → quadro com os itens → CONTINUAR. Cor do baú = nível e raridade do anel. */
+TWCUP['ypw8yf']={nm:'TODOS OS EQUIPAMENTOS DO SHAKA',it:Object.keys(RKSP).filter(k=>RKSP[k].sk).map(k=>Object.assign({},RKSP[k])),eq:1};
+TWCUP['1r1gpju']={nm:'DIAMANTES PARA TODOS',ev:1,rnd:[1000,4000]};
+/* itens equipados no espaço errado (ex.: Rosário que era anel e virou espada) */
+(function(){try{const Q=twEqp(),I=twInv();let ch=0;for(const k of Object.keys(Q)){if(k==='poc')continue;const it=I.find(x=>x.id===Q[k]);if(!it){continue}if(it.t!==k){delete Q[k];if(!Q[it.t])Q[it.t]=it.id;ch=1}}if(ch)twLS.s('tw_eqp',Q)}catch(e){}})();
+/* quadrados da mochila */
+(function(){try{const st=document.createElement('style');st.textContent=`.eqI:not(.uniq):not(.ysec){border:0!important;background:url(${RQA.bauc.slot}) center/100% 100% no-repeat!important;box-shadow:inset 0 -1.4em 1.3em -.8em color-mix(in srgb,var(--c) 60%,transparent)}.eqI:not(.uniq):not(.ysec).sel{outline:3px solid #fff}.eqS:not(.on){border:0!important;background:url(${RQA.bauc.slot}) center/100% 100% no-repeat!important}`;document.head.appendChild(st)}catch(e){}})();
+/* anel 100%: tenta do mais raro ao mais comum (sorte multiplica); se nada, BRANCO */
+anDropLobo=function(L){const k=caLuck(),C=[[4,L>=10?.005:L>=9?.004:0],[3,L>=9?.02:L>=7?.012:0],[2,L>=5?.06:L>=3?.02:0],[1,L>=3?.2:.08]];let c=0;
+  for(const [q,p] of C){if(p&&Math.random()<p*k){c=q;break}}const r=anGive(anRoll(c,L));
+  const X0=JSON.parse(JSON.stringify(CA.loot||{gem:0,red:0,tic:0,pd:[0,0,0,0,0,0,0],set:[],bau:[]}));caLoot(L);const X=CA.loot||X0;
+  const it=[];const d=(a,b)=>(a||0)-(b||0);
+  if(d(X.gem,X0.gem))it.push([RQA.coin[0],'+'+d(X.gem,X0.gem),'#7fd8ff']);if(d(X.red,X0.red))it.push([RQA.coin[1],'+'+d(X.red,X0.red),'#ff5a5a']);if(d(X.tic,X0.tic))it.push([RQA.coin[2],'+'+d(X.tic,X0.tic),'#ffd34a']);
+  X.pd.forEach((n,t)=>{const m=n-(X0.pd[t]||0);if(m>0)it.push([RQA.pedra[t],'x'+m,PDC[t]])});
+  for(const [kk,rr] of X.set.slice(X0.set.length)){const ti=LST.findIndex(T=>T[0]===kk);it.push([RQA.lset[ti][rr],LSR[rr],LSC[rr]])}
+  for(const b of X.bau.slice(X0.bau.length))it.push([TWIMG.bf[Math.max(0,TWRK.indexOf(b))],'BAÚ',b==='mit'?'#ff3b4a':'#ffc928']);
+  BCQ.push({r,L,it});return r};
+const BCQ=[];
+const bcTier=(L,r)=>Math.min(5,Math.max([0,0,1,1,1,2,2,2,3,3][Math.max(0,Math.min(9,L-1))],[0,3,4,5,5][r.c]));
+anFx=function(r,d){const B=BCQ.shift();if(!B)return;bcShow(B)};
+function bcShow(B){if(document.querySelector('.bcO')){setTimeout(()=>bcShow(B),400);return}
+  const t=bcTier(B.L,B.r),A=RQA.bauc,col=['#d9dde8','#3aa0ff','#b45cff','#ffc928','#c27aff','#ff3b4a'][t],rc=ANC[B.r.c][1];G.hold=1;
+  const O=document.createElement('div');O.className='bcO t'+t;O.style.setProperty('--c',col);O.style.setProperty('--rc',rc);
+  const cells=[`<div class="bcS an" style="--c:${rc}"><img src="${RQA.anel2[B.r.c]}" alt=""><b class="g g${B.r.g}">${ANG[B.r.g]}</b></div>`].concat(B.it.slice(0,4).map(([im,tx,c])=>`<div class="bcS" style="--c:${c}"><img src="${im}" alt=""><span>${tx}</span></div>`));while(cells.length<5)cells.push('<div class="bcS vz"></div>');
+  O.innerHTML=`<div class="bcTt">NÍVEL ${B.L} DERROTADO!</div><div class="bcB"><i class="ray"></i><img class="cl" src="${A.c[t]}" alt=""><img class="op" src="${A.o[t]}" alt=""><img class="rg" src="${RQA.anel2[B.r.c]}" alt=""></div>
+  <div class="bcI"><b style="color:${rc}">💍 ANEL ${ANC[B.r.c][0]} · ${ANG[B.r.g]}</b><span>${anTxt(B.r)}</span></div>
+  <div class="bcP"><img src="${A.p[t]}" alt=""><div class="bcR">${cells.join('')}</div></div><button class="bcGo">CONTINUAR ▶</button><small class="bcH">toque no baú para abrir</small>`;
+  document.body.appendChild(O);let st=0;const open=()=>{if(st)return;st=1;O.classList.add('open');try{SFX.boom&&SFX.boom()}catch(e){}setTimeout(()=>{try{SFX.powerUp&&SFX.powerUp()}catch(e){}O.classList.add('ring')},450);setTimeout(()=>O.classList.add('pan'),1300)};
+  O.querySelector('.bcB').onclick=open;setTimeout(open,1500);try{SFX.whoosh&&SFX.whoosh()}catch(e){}
+  O.querySelector('.bcGo').onclick=e=>{e.stopPropagation();if(!O.classList.contains('pan'))return;O.classList.add('out');setTimeout(()=>{O.remove();if(!document.querySelector('.bcO'))G.hold=0},250)}}
+{const _cs=caStart;caStart=function(){BCQ.length=0;document.querySelectorAll('.bcO').forEach(x=>x.remove());G.hold=0;return _cs.apply(this,arguments)}}
+{const _tp=togglePause;togglePause=function(){if(document.querySelector('.bcO'))return;return _tp.apply(this,arguments)}}

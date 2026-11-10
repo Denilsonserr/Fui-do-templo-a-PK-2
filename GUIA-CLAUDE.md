@@ -1383,3 +1383,13 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - **Rika pode ser tirada:** `rkLock` agora retorna sempre `false` (fim do "obscuro sempre equipado" da v249).
 - **Itens do Shaka ~40–50% mais fortes que os do Yuta (mesmo slot):** Elmo def90 crit60 st20 · Armadura dmg60 crit45 · Luvas dmg45 vel70 st75 · Botas v50 dmg40 · Rosário st70 drop40. A migração da v247 agora também copia `dmg`, `vel` e `sk`, então itens já guardados recebem os valores novos.
 - Teste: `ferramentas/testes/titens_v292.js`.
+
+## v293
+- **Baú da Caça (arte do dono em `ferramentas/web/ranqueada/bau_caca/`, cortes em `cortes/`, RQA.bauc = {c:[6 fechados], o:[6 abertos], p:[6 quadros], slot}):** cada nível do boss da Caça derrotado dá **anel 100%** (`anDropLobo` nova: tenta do mais raro ao mais comum com a sorte; se nada, BRANCO) + o loot do nível. A luta PAUSA com `G.hold=1`: baú fechado treme → abre (toque ou 1,5 s) → o anel sobe → quadro com até 5 itens (anel + loot daquele nível) → **CONTINUAR**. Cor do baú = `bcTier(nível, raridade do anel)`. Pausa (ESC) bloqueada com o baú na tela; `caStart` e `startMatch` zeram `G.hold`.
+- **Códigos (texto só com o dono):** `ypw8yf` = todos os equipamentos do Shaka (1 pessoa no jogo todo, já equipa); `1r1gpju` = 1000–4000 💎 aleatórios para todos, 1 vez por pessoa (`ev:1` → conta ou aparelho).
+- **Itens no espaço certo:** migração que tira do `tw_eqp` item equipado num espaço de outro tipo (ex.: Rosário que estava no anel) e coloca no espaço certo.
+- **Luta travada / tela preta (9i_v293.py):** o `loop` agora tem try/catch (antes um erro matava o requestAnimationFrame e a luta congelava), vigia que religa o loop se ficar 2 s parado, `contextlost` do canvas, e **relatório de erro** no Firestore (`torre/er_*`: mensagem, stack, aparelho, nome, modo) — olhar esses documentos para achar o erro real.
+- **Evento 7h:** 10/11/2026 15:30–22:30 (Brasília): 3x DROP, 2x SORTE, 2x XP (`RKEVX` com `{luck:2,drop:3}`; `rkEvD` multiplica `rkDropF`, que vale no Boss, Torre e Caça).
+- **Anéis:** todo anel brilha (`anGl` mínimo 1, mais com nível, raridade preta/vermelha e nota alta), brilho branco + cor, halo e estrelinha nas células.
+- **Mochila:** quadrados do dono (`RQA.bauc.slot`) como fundo dos itens normais e dos espaços vazios.
+- Testes: `tbau_v293.js`, `tbau2_v293.js` (o `tloot_v279.js` antigo não clica no CONTINUAR do baú).

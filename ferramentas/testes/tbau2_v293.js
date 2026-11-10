@@ -1,0 +1,12 @@
+const {chromium}=require('playwright');const SH='/home/claude/fui-do-templo-a-pk-2/ferramentas/testes/shots/';
+(async()=>{const b=await chromium.launch();const p=await b.newPage({viewport:{width:915,height:412},deviceScaleFactor:2});const errs=[];p.on('pageerror',e=>errs.push(e.message));await p.route(/fonts\.g|firestore/,r=>r.abort());
+await p.addInitScript(()=>{if(!sessionStorage.d){sessionStorage.d=1;localStorage.clear();const inv=[];for(let i=0;i<9;i++)inv.push({id:'x'+i,t:['esp','cap','arm','bot'][i%4],r:['comum','rara','epica','lend','mit'][i%5],v:3+i});Object.assign(localStorage,{rk_ini:'1',rk_xpv2:'1',rk_dia:'1',tw_nome:'"T"',rk_sel:'"goku"',rk_own:'["goku"]',tw_inv:JSON.stringify(inv),rk_an:JSON.stringify([{i:'a1',c:4,g:6,s:'dano',v:22,a:0,l:30},{i:'a2',c:1,g:2,s:'crit',v:5,a:0},{i:'a3',c:3,g:5,s:'vel',v:9,a:60000,l:5}])})}});
+await p.goto('file:///home/claude/fui-do-templo-a-pk-2/www/index.html');await p.waitForFunction(()=>!document.getElementById('goSelect').disabled,null,{timeout:120000});
+await p.click('#mRank');await p.waitForTimeout(900);await p.click('#rkWrap [data-a="boss"]');await p.waitForTimeout(500);await p.click('#rkWrap [data-a="equip"]');await p.waitForTimeout(500);await p.screenshot({path:SH+'b93_mochila.png'});await p.click('#rkMX');
+await p.click('#rkWrap [data-a="back"]',{force:true});await p.waitForTimeout(500);await p.click('#rkWrap [data-a="lib"]',{force:true});await p.waitForTimeout(800);await p.click('#rkWrap .anTabB',{force:true}).catch(()=>{});await p.waitForTimeout(900);await p.screenshot({path:SH+'b93_aneis.png'});
+await p.click('#rkWrap [data-a="back"]',{force:true});await p.waitForTimeout(500);
+await p.click('#rkWrap [data-a="caca"]',{force:true});await p.waitForTimeout(1200);await p.click('#rkWrap [data-a="caGo"]',{force:true});await p.waitForFunction(()=>__dbg.G.mode==='fight'&&__dbg.G.phase==='fight',null,{timeout:120000});await p.waitForTimeout(600);
+await p.evaluate(()=>{const [a,o]=__dbg.G.p;a.hp=3600;o.hp=3;o.hpLag=3;o.x=a.x+170;o.y=486;o.grounded=true;o.vy=0;o.bs='idle';o.bcd=300;o.state='idle';o.inv=0;o.facing=-1;a.facing=1;a.state='idle';window.__mr=Math.random;Math.random=()=>0.001});
+for(let i=0;i<12;i++){await p.keyboard.press('KeyJ');await p.waitForTimeout(110);if(await p.evaluate(()=>!!document.querySelector('.bcO')))break}await p.evaluate(()=>{Math.random=window.__mr});
+await p.waitForTimeout(700);await p.click('.bcB',{force:true});await p.waitForTimeout(2200);await p.screenshot({path:SH+'b93_ouro.png'});
+console.log('erros',JSON.stringify(errs));await b.close()})();
