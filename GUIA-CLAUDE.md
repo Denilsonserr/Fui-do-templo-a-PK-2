@@ -1423,3 +1423,6 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - **Recuperar conta (senha esquecida):** código de 1 uso com `rec:'<nome da conta>'` (`TWCUP[h]={nm:'RECUPERAR CONTA',it:[],rec:'Breno'}`, hash `zmyqa8`, texto só com o dono). Ao aceitar: pede SENHA NOVA (`acRecOpen`, fica pendente em `ac_rec` se fechar), carrega o último salvamento da conta (`acList`, sem conferir assinatura) e salva de novo assinado com a senha nova — como o ENTRAR confere os 15 salvamentos mais novos, a senha nova passa a valer em qualquer aparelho. Para outra pessoa: novo código com `rec` = nome da conta (achar a conta com a ferramenta consulta.yml: campo `sv`, valor = sha256('furia|acc|'+nome em minúsculas)[:24]).
 - Conta do Breno conferida no servidor (último salvamento 10/11 às 07:04).
 - Teste: `trec_v298.js`.
+
+## v299
+- Mais 2 códigos de RECUPERAR CONTA (texto só com o dono): `170s7ti` → conta **Vini_junior10** (último salvamento 10/11 16:45), `1db5so5` → conta **xdarwinzinn** (último salvamento 10/11 12:16). Ambas conferidas no servidor com consulta.yml (campo `sv`).

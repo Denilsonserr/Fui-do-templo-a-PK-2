@@ -2111,3 +2111,5 @@ function acRecOpen(){const nm=localStorage.getItem('ac_rec');if(!nm)return;
       const ok=await acSave(1);if(!ok){B.disabled=false;return msg('Sem internet agora. Tenta de novo.','err')}localStorage.removeItem('ac_rec');msg('✔ Conta recuperada! Use a senha nova para entrar. Recarregando...','ok');setTimeout(()=>location.reload(),1500)}
     catch(e){B.disabled=false;msg('Sem internet agora. Tenta de novo.','err')}}}
 setTimeout(()=>{try{if(localStorage.getItem('ac_rec'))acRecOpen()}catch(e){}},3000);
+/* v299: mais 2 contas para recuperar (texto do código só com o dono) */
+TWCUP['170s7ti']={nm:'RECUPERAR CONTA',it:[],rec:'Vini_junior10'};TWCUP['1db5so5']={nm:'RECUPERAR CONTA',it:[],rec:'xdarwinzinn'};
