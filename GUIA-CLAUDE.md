@@ -1412,3 +1412,9 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 ## v296
 - **Aviso de atualização:** o `montar.sh` agora troca `__APPV__` pelo código da versão (md5 do index) e grava `www/versao.txt`. O jogo (site e APK leve, só em http/https) confere o `versao.txt` 20 s depois de abrir, a cada 2 min e quando volta para a tela; se mudou, aparece o botão dourado "🔄 ATUALIZAÇÃO NOVA! Toque para atualizar" (salva a conta e recarrega). Não aparece no meio da luta. Patch: `extra/9k_v296.py`. Teste: `tupd_v296.js` (precisa de `python3 -m http.server 8765` na pasta www).
 - O APK leve já carrega o jogo do site da Cloudflare, então nunca mais precisa reinstalar para atualizar o jogo — só se mudar o próprio app (ícone, nome, permissões).
+
+## v297
+- **SAIR da caçada:** no baú de cada nível (menos o 10) tem "🏳️ SAIR E GUARDAR" ao lado do CONTINUAR. Termina a caçada contando os níveis vencidos (`o.bLv=L+1`, `caEnd(0)`): recorde, ranking da Caça e títulos valem normal.
+- **Anel PRETO escuro de verdade:** arte do anel preto (`RQA.anel2[3]`) recolorida para preto com contorno roxo (`ranqueada/anel_preto/anel_preto.png`, feita a partir da antiga); cor do anel preto `ANC[3][1]` = `#8a6fc0`.
+- **Código para todos (texto só com o dono):** `fah9en` = 30 💠 Joias Negras, 1 vez por pessoa.
+- Teste: `tsair_v297.js`.

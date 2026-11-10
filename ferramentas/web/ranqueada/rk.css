@@ -1098,3 +1098,6 @@ body:not(.pcMode) #how .pcKeys{display:none}#how .pcKeys{margin:0 auto .6em;max-
 .caTi i{font-style:normal;font-size:1.6em}.caTi div{flex:1;display:flex;flex-direction:column}.caTi b{font:900 .9em var(--f-ui);color:var(--c)}.caTi span{font-size:.75em;color:#cfd6ea}.caTi small{font-size:.7em;color:#7dff9a}
 .rk_ca .caRkB{font-size:.95em}.caRkR span{text-align:left}.caTi div{text-align:left}
 .rkA .rk_ca .caRkB,.rk_ca .caRkB{background:linear-gradient(#ffd84a,#c27a10);border:2px solid #fff3c0;font-size:1em}.rk_ca .caRkB i{font-size:2em;line-height:1}.rk_ca .caRkB b{font:900 .8em var(--f-ui);color:#3a1d00}
+/* v297 */
+.bcBt{display:flex;gap:2vh;align-items:center}.bcGo.bcSair{background:linear-gradient(#5a6378,#2a3040);color:#fff;border-color:#c8d0e0;box-shadow:0 0 1.2vh rgba(200,210,230,.4);font-size:2.6vh;animation:none}
+.bcO.pan .bcGo.bcSair{animation:none}

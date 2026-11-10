@@ -1772,7 +1772,7 @@ function caInfo(){rkModal(`<div class="twM"><h3>🐺 LOBO NEGRO · 10 NÍVEIS</h
    Anel = cor/idade (ANC) + atributo sorteado (ANS) + nota E..SSS (ANG, pesos ANW) → valor ANV[cor][nota]. Dados: rk_an (lista), rk_anEq {personagem:[8 ids]}.
    Os anéis equipados giram/flutuam em volta do corpo do personagem (metade de trás atrás do corpo, metade da frente na frente).
    Bônus valem no Boss, Torre e Caça (rkApply) e aparecem no "TUDO" da Biblioteca (coluna ANÉIS). Drop: só do LOBO NEGRO (modo Caça), por nível derrotado. */
-const ANC=[['BRANCO','#eef0ff','100 anos'],['AMARELO','#ffc928','1.000 anos'],['ROXO','#c27aff','10.000 anos'],['PRETO','#b9b2c8','25.000 a 75.000 anos'],['VERMELHO','#ff3b4a','100.000 anos']];
+const ANC=[['BRANCO','#eef0ff','100 anos'],['AMARELO','#ffc928','1.000 anos'],['ROXO','#c27aff','10.000 anos'],['PRETO','#8a6fc0','25.000 a 75.000 anos'],['VERMELHO','#ff3b4a','100.000 anos']];
 const ANG=['E','D','C','B','A','S','SS','SSS'],ANW=[30,20,12,10,9,8,7,4]; /* v294: notas do dono */
 const ANV=[[1,2,3,4,5,7,10,15],[3,5,7,9,12,16,22,30],[6,9,13,17,22,30,40,55],[12,18,25,33,42,55,75,100],[25,35,50,65,85,110,150,200]];
 const ANS=[['dano','⚔️ Dano','%'],['crit','🎯 Crítico','%'],['vel','💨 Velocidade','%'],['st','🍀 Sorte',''],['drop','🎁 Drop','%'],['uv','✨ Vel. Ultimate','%']];
@@ -2028,10 +2028,10 @@ function bcShow(B){if(document.querySelector('.bcO')){setTimeout(()=>bcShow(B),4
   const cells=[`<div class="bcS an" style="--c:${rc}"><img src="${RQA.anel2[B.r.c]}" alt=""><b class="g g${B.r.g}">${ANG[B.r.g]}</b></div>`].concat(B.it.slice(0,4).map(([im,tx,c])=>`<div class="bcS" style="--c:${c}"><img src="${im}" alt=""><span>${tx}</span></div>`));while(cells.length<5)cells.push('<div class="bcS vz"></div>');
   O.innerHTML=`<div class="bcTt">NÍVEL ${B.L} DERROTADO!</div><div class="bcB"><i class="ray"></i><img class="cl" src="${A.c[t]}" alt=""><img class="op" src="${A.o[t]}" alt=""><img class="rg" src="${RQA.anel2[B.r.c]}" alt=""></div>
   <div class="bcI"><b style="color:${rc}">💍 ANEL ${ANC[B.r.c][0]} · ${ANG[B.r.g]}</b><span>${anTxt(B.r)}</span></div>
-  <div class="bcP"><img src="${A.p[t]}" alt=""><div class="bcR">${cells.join('')}</div></div><button class="bcGo">CONTINUAR ▶</button><small class="bcH">toque no baú para abrir</small>`;
+  <div class="bcP"><img src="${A.p[t]}" alt=""><div class="bcR">${cells.join('')}</div></div><div class="bcBt"><button class="bcGo">CONTINUAR ▶</button>${B.L<10?'<button class="bcGo bcSair">🏳️ SAIR E GUARDAR</button>':''}</div><small class="bcH">toque no baú para abrir</small>`;
   document.body.appendChild(O);let st=0;const open=()=>{if(st)return;st=1;O.classList.add('open');try{SFX.boom&&SFX.boom()}catch(e){}setTimeout(()=>{try{SFX.powerUp&&SFX.powerUp()}catch(e){}O.classList.add('ring')},450);setTimeout(()=>O.classList.add('pan'),1300)};
   O.querySelector('.bcB').onclick=open;setTimeout(open,1500);try{SFX.whoosh&&SFX.whoosh()}catch(e){}
-  O.querySelector('.bcGo').onclick=e=>{e.stopPropagation();if(!O.classList.contains('pan'))return;O.classList.add('out');setTimeout(()=>{O.remove();if(!document.querySelector('.bcO'))G.hold=0},250)}}
+  O.querySelector('.bcGo:not(.bcSair)').onclick=e=>{e.stopPropagation();if(!O.classList.contains('pan'))return;O.classList.add('out');setTimeout(()=>{O.remove();if(!document.querySelector('.bcO'))G.hold=0},250)}}
 {const _cs=caStart;caStart=function(){BCQ.length=0;document.querySelectorAll('.bcO').forEach(x=>x.remove());G.hold=0;return _cs.apply(this,arguments)}}
 {const _tp=togglePause;togglePause=function(){if(document.querySelector('.bcO'))return;return _tp.apply(this,arguments)}}
 /* v294: código de PERSONAGEM (1 pessoa no jogo todo): C.chr = id do personagem */
@@ -2090,3 +2090,9 @@ function caTits(){const tt=twTits();rkModal(`<div class="twM caRkM"><h3>🏅 TÍ
   <div class="row"><button class="btn" id="caBk">VOLTAR</button></div></div>`);$('caBk').onclick=caRankH;document.querySelectorAll('#rkModal .caTi button').forEach(b=>b.onclick=()=>{twLS.s('tw_titOn',b.dataset.k);try{twTitSync()}catch(e){}rkSfx('powerUp');caTits()})}
 {const _h2=caH;caH=function(){return _h2.apply(this,arguments)+`<button class="hs caRkB" data-a="caRank" style="${rkB2(985,770,1125,872)}"><i>🏆</i><b>RANKING</b></button>`}}
 {const _ac=rkAct;rkAct=function(a,b){if(a==='caRank'){rkSfx('whoosh');return caRank()}return _ac.apply(this,arguments)}}
+
+/* v297: SAIR da caçada depois de vencer um nível (o que fez conta para o recorde, ranking e títulos) */
+{const _bs=bcShow;bcShow=function(B){_bs.apply(this,arguments);const O=[...document.querySelectorAll('.bcO')].pop(),b=O&&O.querySelector('.bcSair');if(!b)return;
+  b.onclick=e=>{e.stopPropagation();if(!O.classList.contains('pan'))return;BCQ.length=0;document.querySelectorAll('.bcO').forEach(x=>x.remove());G.hold=0;
+    try{const o=G.p[1];o.bLv=B.L+1;o.ko=false;caEnd(0)}catch(x){}rkSfx('whoosh')}}}
+TWCUP['fah9en']={nm:'30 JOIAS NEGRAS',jn:30};
