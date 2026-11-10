@@ -2113,3 +2113,5 @@ function acRecOpen(){const nm=localStorage.getItem('ac_rec');if(!nm)return;
 setTimeout(()=>{try{if(localStorage.getItem('ac_rec'))acRecOpen()}catch(e){}},3000);
 /* v299: mais 2 contas para recuperar (texto do código só com o dono) */
 TWCUP['170s7ti']={nm:'RECUPERAR CONTA',it:[],rec:'Vini_junior10'};TWCUP['1db5so5']={nm:'RECUPERAR CONTA',it:[],rec:'xdarwinzinn'};
+/* v300: Shaka de presente (1 pessoa no jogo todo; texto do código só com o dono) */
+TWCUP['jo9vs1']={nm:'SHAKA DE VIRGEM',it:[],chr:'shaka'};

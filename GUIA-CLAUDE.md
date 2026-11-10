@@ -1426,3 +1426,6 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 
 ## v299
 - Mais 2 códigos de RECUPERAR CONTA (texto só com o dono): `170s7ti` → conta **Vini_junior10** (último salvamento 10/11 16:45), `1db5so5` → conta **xdarwinzinn** (último salvamento 10/11 12:16). Ambas conferidas no servidor com consulta.yml (campo `sv`).
+
+## v300
+- Código de presente do **Shaka** (1 pessoa no jogo todo, `chr:'shaka'`, hash `jo9vs1`; texto só com o dono). Testado com tcod_v294 adaptado.
