@@ -1342,3 +1342,7 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 
 ## Cloudflare (10/11/2026) — publicação alternativa ao GitHub Pages
 - O dono criou no Cloudflare (Workers & Pages → Connect to Git) o projeto `fui-do-templo-a-pk-2` ligado a este repositório, com deploy `npx wrangler deploy`. `wrangler.jsonc` na raiz publica a pasta `www` como arquivos estáticos (limite: 20.000 arquivos, 25 MB cada). Cada push na main publica sozinho no link `*.workers.dev`.
+
+## v286 — código de DEVOLUÇÃO da gacha do Shaka (jogador Vn)
+- O jogador "Vn" deu 35 giros no banner do Shaka entre 12:45 e 13:20 (a v284 abria 12:45; o dono mudou para 13:20). Ferramenta nova `.github/workflows/auditoria.yml` (lê os salvamentos de conta `sv_*` depois de um horário e mostra quem tem o Shaka/piedade/giros).
+- Código ÚNICO (`extra/9f_v286.py`, hash `1xpdic`, texto só com o dono): +2450 💎 e zera `rk_pityS`/`rk_pitySS` (flag nova `rz` no `twCupom`: zera as chaves `rk_*` listadas).
