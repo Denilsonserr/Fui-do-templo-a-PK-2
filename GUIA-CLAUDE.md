@@ -1487,3 +1487,8 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 ## v312
 - **Ranking do RANK com todo mundo que tem conta:** o `importar.yml` (05:20) agora também cria 1 documento de rank (`rkimp_<conta>`, `rk:'1'`, `rp` do `rk_rp` do salvamento mais novo) para cada conta salva nos últimos 45 dias (até 9.000 salvamentos mais novos) — quem tem conta aparece no ranking com o rank que tinha, mesmo sem abrir o jogo. Quem abrir depois manda o rank atual (mais novo → vale ele).
 - **Conta que ainda não está no servidor novo:** `acList` (ENTRAR/recuperar) busca no Firebase antigo quando o servidor novo não tem a conta; depois de entrar, o salvamento vai para o servidor novo (migração v309). Teste `tfb_v312.js`.
+
+## v313
+- **15 bots** (ideia dos amigos do dono; ele manda tirar quando quiser → `BOTON=false` no rk.js): ShadowKing, Lukinhas_77, DarkNinja, Pedrin_BR, KaioZ, Mestre_Wolf, Gabizinha, RyuDoMal, Thzin, Vitin_God, NightFox, Lipe_Zero, Davizao, Kira_Sama, BrunoX.
+- Só no aparelho (nada no servidor): entram no ranking do RANK (rp começa de Divindade até Madeira e sobe 150–900 XP por dia, teto 55.000 = Divindade Suprema), Boss (dano/tempo/1ª fase coerentes com o rank), Caça (nível, dano, críticos, tempo, anel) e somam 3–11 no "online". Sem uid → não abrem perfil. Não contam para as molduras TOP 1/2/3 (`mdTopCheck` ignora bots).
+- Teste: `tbot_v313.js`.

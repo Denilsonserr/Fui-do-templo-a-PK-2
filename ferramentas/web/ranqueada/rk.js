@@ -1120,7 +1120,7 @@ const mdOk=k=>{try{return !!MDL[k]&&MDL[k].ok()}catch(e){return false}},mdCur=()
 function mdH(k,x0,y0,x1,y1,yMax){const A=k&&RQA.mold[k],M=MDL[k];if(!A||!M)return '';const [hx0,hy0,hx1,hy1]=A.h,cy=(y0+y1)/2;let W=(x1-x0)/(hx1-hx0);let H=W/A.ar;
   if(yMax){const lim=(yMax-cy)/(1-(hy0+hy1)/2);if(H>lim){H=lim;W=H*A.ar}}const X=(x0+x1)/2-(hx0+hx1)/2*W,Y=cy-(hy0+hy1)/2*H;
   return `<div class="pfMold ${M.cls}" style="${rkB2(X,Y,X+W,Y+H)}">${M.r>=7||k==='adm'?'<i class="gr"></i><i class="gh"></i>':''}<i class="gl"></i><img src="${A.src}" alt=""><i class="sw"></i>${M.cls==='adm'||/top|ev/.test(M.cls)||M.r>=5?'<i class="sp a">✦</i><i class="sp b">✦</i><i class="sp c">✦</i><i class="sp d">✦</i>':''}</div>`}
-async function mdTopCheck(){try{const A=(await rkLoadRk('rp')).sort((a,b)=>b.rp-a.rp),i=A.findIndex(e=>e.uid===twUid());if(i<0||i>2)return;const w=twWk(Date.now()),T=rkG('topw',null);if(!T||T.w!==w||i+1<T.n)rkS('topw',{w,n:i+1})}catch(e){}}
+async function mdTopCheck(){try{const A=(await rkLoadRk('rp')).filter(e=>!e.bot).sort((a,b)=>b.rp-a.rp),i=A.findIndex(e=>e.uid===twUid());if(i<0||i>2)return;const w=twWk(Date.now()),T=rkG('topw',null);if(!T||T.w!==w||i+1<T.n)rkS('topw',{w,n:i+1})}catch(e){}}
 function mdPick(){mdTopCheck().then(()=>{if(document.querySelector('#rkModal .mdG'))mdPick0()});mdPick0()}
 function mdPick0(){const cur=rkG('mold','');
   rkModal(`<div class="twM mdM"><h3>🖼️ MOLDURA DA FOTO</h3><p class="twH">Toque numa moldura liberada para usar. As de TOP valem durante a semana em que você ficou no top do ranking de RANK.</p><div class="mdG"><button class="mdC ${cur?'':'on'}" data-k=""><span class="no">SEM<br>MOLDURA</span><b>NENHUMA</b></button>${Object.keys(MDL).map(k=>{const M=MDL[k],ok=mdOk(k),pr=M.pr?M.pr():null;return `<button class="mdC ${ok?'':'lk'} ${cur===k&&ok?'on':''}" data-k="${k}"><div class="mdPv ${M.cls}"><img src="${RQA.mold[k].src}" alt=""></div><b>${M.n}</b><small>${ok?(cur===k?'EM USO':'USAR'):'🔒 '+M.d+(pr?' ('+pr[0]+'/'+pr[1]+')':'')}</small></button>`}).join('')}</div><div class="row"><button class="btn" id="rkMX">FECHAR</button></div></div>`);
@@ -2162,3 +2162,19 @@ try{if(!localStorage.getItem('rk_carst311')){rkS('caBest',{});localStorage.setIt
   try{const body={structuredQuery:{from:[{collectionId:'torre'}],where:{fieldFilter:{field:{fieldPath:'sv'},op:'EQUAL',value:{stringValue:acc}}},orderBy:[{field:{fieldPath:'__name__'},direction:'DESCENDING'}],limit:15}};
     const r=await fetch('https://firestore.googleapis.com/v1/projects/'+TWFB.projectId+'/databases/(default)/documents:runQuery?key='+TWFB.apiKey,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});if(!r.ok)return L;
     return (await r.json()).filter(x=>x.document).map(x=>{const f=x.document.fields||{};return {ts:+((f.ts||{}).integerValue||0),d:(f.d||{}).stringValue||'',sg:(f.sg||{}).stringValue||''}}).sort((a,b)=>b.ts-a.ts)}catch(e){return L}}}
+/* ================= v313: 15 BOTS (ideia dos amigos do dono: ter com quem competir). Para tirar: BOTON=false. =================
+   Aparecem no ranking do RANK, do Boss (dano/tempo/1ª fase), da Caça e no contador de online. Sobem de rank sozinhos com o tempo
+   (até no máximo DIVINDADE SUPREMA). Não abrem perfil (sem uid). Tudo só no aparelho: nada vai para o servidor. */
+const BOTON=true,BOT0=Date.UTC(2026,10,10,23,0);
+const BOTS=[['ShadowKing',41000,900],['Lukinhas_77',33500,850],['DarkNinja',27000,800],['Pedrin_BR',22500,700],['KaioZ',18000,650],['Mestre_Wolf',14500,600],['Gabizinha',11800,500],['RyuDoMal',9500,450],
+  ['Thzin',7600,400],['Vitin_God',6100,350],['NightFox',4800,300],['Lipe_Zero',3600,260],['Davizao',2600,220],['Kira_Sama',1700,180],['BrunoX',900,150]];
+const botR=(i,s)=>{let h=2166136261^(i*7919+s*104729);h=Math.imul(h^(h>>>13),16777619);h^=h>>>15;return (h>>>0)/4294967296};
+function botList(){if(!BOTON)return [];const d=Math.max(0,(Date.now()-BOT0)/864e5),ids=Object.keys(CH||{}).filter(k=>!/adm|treino|cpu/i.test(k)),N=ids.length||1;
+  return BOTS.map(([nome,rp0,pd],i)=>{const rp=Math.min(55000,Math.round(rp0+pd*d*(.8+.4*botR(i,Math.floor(d)))));const lvl=rkRank(rp);
+    return {bot:1,nome,uid:'',tit:'',rp,char:ids[Math.floor(botR(i,1)*N)]||'goku',ct:0,
+      dmg:Math.round(6000+lvl*2600+botR(i,2)*5000),tt:Math.round(260-lvl*15-botR(i,3)*40),t1:Math.round(120-lvl*7-botR(i,4)*20),
+      clv:Math.min(10,2+Math.floor(lvl*.8+botR(i,5)*2)),cdm:Math.round(20000+lvl*30000+botR(i,6)*40000),ccr:Math.round(10+lvl*6+botR(i,7)*15),
+      ctt:0,crg:0}}).map((b,i)=>{if(b.clv>=10)b.ctt=Math.round(560-rkRank(b.rp)*25-botR(i,8)*60);const c=b.clv>=9&&botR(i,9)<.35?4:b.clv>=7&&botR(i,10)<.5?3:b.clv>=5?2:1;b.crg=c*10+Math.floor(botR(i,11)*6)+1;return b})}
+{const _lr=rkLoadRk;rkLoadRk=async function(tab){const A=await _lr.apply(this,arguments);return A.concat(botList().map(b=>Object.assign({},b,{tt:b.tt>0?b.tt:0})))}}
+{const _cr=caRank;caRank=async function(){await _cr.apply(this,arguments);if(Array.isArray(CARKL)){CARKL=CARKL.filter(e=>!e.bot).concat(botList().map(b=>({nome:b.nome,uid:'',tit:'',bot:1,clv:b.clv,cdm:b.cdm,ccr:b.ccr,ctt:b.ctt,crg:b.crg})));caRankH()}}}
+{const _on=rkOnline;rkOnline=async function(){await _on.apply(this,arguments);if(!BOTON)return;const E=$('rkOnN');if(!E)return;const n=parseInt(String(E.textContent).replace(/\D/g,''))||0;const h=new Date().getHours(),k=3+Math.floor(botR(h,Math.floor(Date.now()/9e5))*6)+(h>=18&&h<=23?3:0);E.textContent=rkFmtN(n+k)}}

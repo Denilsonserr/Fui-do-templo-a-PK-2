@@ -1,6 +1,6 @@
 # FÚRIA DO TEMPLO — GUIA DE PASSAGEM PARA A CONTA NOVA
 
-Versão do jogo neste momento: **v312** (09/11/2026).
+Versão do jogo neste momento: **v313** (09/11/2026).
 Este arquivo tem duas partes: a **Parte 1** é para o dono (Denilson) e a **Parte 2** é para o Claude da conta nova.
 
 ---
@@ -12,7 +12,7 @@ Este arquivo tem duas partes: a **Parte 1** é para o dono (Denilson) e a **Part
    - Dê acesso ao repositório **Denilsonserr/Fui-do-templo-a-PK-2**.
 3. Comece uma conversa nova escolhendo esse repositório e mande este arquivo (ou só a mensagem abaixo):
 
-   > Continua o meu jogo Fúria do Templo. Repositório: Denilsonserr/Fui-do-templo-a-PK-2. Lê primeiro os arquivos COMECE-AQUI.md e GUIA-CLAUDE.md inteiros e segue as regras deles. A versão atual é a v312.
+   > Continua o meu jogo Fúria do Templo. Repositório: Denilsonserr/Fui-do-templo-a-PK-2. Lê primeiro os arquivos COMECE-AQUI.md e GUIA-CLAUDE.md inteiros e segue as regras deles. A versão atual é a v313.
 
 4. Depois é só pedir as coisas do mesmo jeito de sempre. Cada versão nova gera sozinha:
    - o **site**: https://denilsonserr.github.io/Fui-do-templo-a-PK-2/?v=NÚMERO
