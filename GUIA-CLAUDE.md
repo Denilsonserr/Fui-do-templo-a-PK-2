@@ -1352,3 +1352,9 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - Pegou o Shaka: `rkMegaS` novo (branco dourado divino, "SUPER MEGA / SORTE SECRETA!", anéis de luz) → `rkCharWin` toca os quadros dele ABRINDO OS OLHOS (`RKUV.shaka=()=>SKV`) com fundo branco dourado (`.rkWin.skw`).
 - Anéis: a cada 10 níveis brilham mais na cor deles (`anGl` = nível/10, classes `.gl.g1..g5`), no corpo do personagem e na lista.
 - Teste: `ferramentas/testes/tgacha_sk_v287.js`.
+
+## v288 — carta DIVINA do Shaka + TÍTULO numerado (10 primeiros, +20% de dano com o Shaka)
+- Carta do Shaka no resultado da invocação (`.rkCd.skCd`): moldura dourada-branca (filtro na moldura mítica), aura branca pulsando e raios girando.
+- Título `sk1..sk10` (`TWTIT`, "SHAKA Nº N", 🪷): `skTitClaim` tenta criar `torre/sktit_1..10` (documentId fixo; 409 = já tem dono); sem internet fica pendente (`rk_sktp`) e tenta de novo ao abrir o Ranqueado. Tela "TÍTULO DIVINO" (`skTitWin`). Placa `.pfTt.skt s1..s4` (Nº1 com letra branca/dourada animada e brilho mais forte).
+- Bônus: +20% de dano SÓ lutando com o Shaka (Boss, Torre e Caça).
+- Teste: `ferramentas/testes/tgacha_sk_v288.js` (Nº1 ocupado → ganha Nº2).

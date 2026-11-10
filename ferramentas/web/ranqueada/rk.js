@@ -350,14 +350,14 @@ function rkCardInner(x){if(x.k==='chr')return `<img class="pt" src="${IMG[x.id]?
   if(x.k==='sp'){const S=RKSP[x.s];return `<img class="ic" src="${S.img}" alt=""><b>${S.nm}</b><em>${rkHi(x.r)?'✦ SECRETA ✦':'MÍTICO ESPECIAL'}</em>`}
   return `<img class="ic" src="${RQA.coin[1]}" alt=""><b>+${x.n}</b><em>MOEDA VERMELHA</em>`}
 function rkCards(L){const O=document.createElement('div');O.className='rkRes2';const one=L.length===1;
-  O.innerHTML=`<div class="rkCards ${one?'one':''}">${L.map((x,i)=>`<div class="rkCd r_${x.r}" data-i="${i}" style="--c:${(TWEQR.find(R=>R.k===x.r)||TWEQR[0]).c}"><div class="bk"></div><div class="fr"><img class="frm" src="${RQA.card[rkHi(x.r)?'lend':x.r]||RQA.card.comum}" alt=""><div class="in">${rkCardInner(x)}</div></div></div>`).join('')}</div>
+  O.innerHTML=`<div class="rkCards ${one?'one':''}">${L.map((x,i)=>`<div class="rkCd r_${x.r}${x.id==='shaka'?' skCd':''}" data-i="${i}" style="--c:${(TWEQR.find(R=>R.k===x.r)||TWEQR[0]).c}"><div class="bk"></div><div class="fr"><img class="frm" src="${RQA.card[rkHi(x.r)?'lend':x.r]||RQA.card.comum}" alt=""><div class="in">${rkCardInner(x)}</div></div></div>`).join('')}</div>
     <div class="row"><button class="btn" id="rkCdAll">REVELAR TUDO</button><button class="btn main" id="rkCdOk" hidden>OK</button></div>`;
   rkHost().appendChild(O);const C=[...O.querySelectorAll('.rkCd')];let k=0;
   const rev=async el=>{if(!el||el.classList.contains('rv')||el.dataset.b)return;el.dataset.b=1;const x=L[+el.dataset.i];
     if(x.k==='chr'&&x.r==='mit')await (x.id==='yuta'?rkMegaY():x.id==='shaka'?rkMegaS():rkMega());
     if((x.r==='lend'&&x.k==='chr')||rkHi(x.r)){O.classList.add('dim');await new Promise(r=>setTimeout(r,500));O.classList.remove('dim')}
     el.classList.add('rv');rkSfx(x.r==='lend'||x.r==='mit'?'boom':'whoosh');if(x.r==='lend'||x.r==='mit'||rkHi(x.r))setTimeout(()=>rkSfx('powerUp'),200);if(rkHi(x.r)){await new Promise(r=>setTimeout(r,400));await rkSecWin(x.s||'sec')}
-    if(x.k==='chr'&&x.r==='mit'){await new Promise(r=>setTimeout(r,500));await rkCharWin(x.id,1,x.nw);if(x.id==='yuta'&&x.nw)await ytTitClaim(1)}
+    if(x.k==='chr'&&x.r==='mit'){await new Promise(r=>setTimeout(r,500));await rkCharWin(x.id,1,x.nw);if(x.id==='yuta'&&x.nw)await ytTitClaim(1);if(x.id==='shaka'&&x.nw)await skTitClaim(1)}
     else if(x.k==='chr'&&x.nw&&x.r==='lend'){await new Promise(r=>setTimeout(r,500));await rkCharWin(x.id)}
     if(C.every(c=>c.classList.contains('rv'))){$('rkCdAll').hidden=true;$('rkCdOk').hidden=false}};
   C.forEach(el=>el.onclick=()=>rev(el));const auto=async()=>{for(const el of C){if(!O.isConnected)return;await rev(el);await new Promise(r=>setTimeout(r,one?300:260))}};setTimeout(auto,500);
@@ -1968,3 +1968,18 @@ const anGl=r=>Math.min(5,Math.floor(anLvl(r)/10));
 {const _h=anH;anH=function(){let h=_h.apply(this,arguments);const L=anL(),E=anEq(AN.ch);
   E.filter(Boolean).forEach(i=>{const r=L.find(z=>z.i===i);if(!r)return;const g=anGl(r);if(!g)return;const src=RQA.anel2[r.c];h=h.split(`<img src="${src}" alt=""></i>`).join(`<img src="${src}" alt="" class="gl g${g}" style="--c:${ANC[r.c][1]}"></i>`)});return h}}
 {const _g=anGrid;anGrid=function(){_g.apply(this,arguments);document.querySelectorAll('#anGrid .anCell').forEach(b=>{const r=anL().find(x=>x.i===b.dataset.i);if(!r)return;const g=anGl(r);if(g){const im=b.querySelector('img');im.classList.add('gl','g'+g);im.style.setProperty('--c',ANC[r.c][1])}})}}
+
+/* ================= v288: carta DIVINA do Shaka + TÍTULO numerado dos 10 primeiros que pegarem o Shaka (+20% de dano COM o Shaka) =================
+   Servidor: torre/sktit_N (documentId fixo; 409 = já tem dono). Pendente sem internet: rk_sktp. */
+for(let n=1;n<=10;n++)TWTIT['sk'+n]={n:'SHAKA Nº'+n,i:'🪷',c:n===1?'#ffffff':n<=3?'#fff3c0':'#ffd76a',d:'Um dos 10 primeiros do servidor a pegar o Shaka · +20% de dano com o Shaka',hid:1,sk:n};
+async function skTitClaim(show){if(twTits().some(k=>/^sk\d+$/.test(k))){rkS('sktp',0);return}rkS('sktp',1);const nm=String(twLS.g('tw_nome','')||'?').slice(0,16),IV=v=>({integerValue:String(v)});
+  for(let n=1;n<=10;n++){let r;try{r=await twFetchT(TWURL+'/torre?documentId=sktit_'+n+'&key='+TWFB.apiKey,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({fields:{nome:{stringValue:nm},andar:IV(0),tempo:IV(0),uid:{stringValue:twUid()},skt:{stringValue:String(n)},v:IV(288)}})})}catch(e){return}
+    if(r.ok){rkS('sktp',0);const L=twTits();L.push('sk'+n);twLS.s('tw_tit',L);twLS.s('tw_titOn','sk'+n);try{twTitSync()}catch(e){}try{acSave(1)}catch(e){}if(show)await skTitWin(n);return}
+    if(r.status!==409&&r.status!==403)return}
+  rkS('sktp',0)}
+function skTitWin(n){return new Promise(res=>{const O=document.createElement('div');O.className='rkWin end skTw';O.innerHTML=`<div class="t"><b>✦ VOCÊ É O Nº ${n} DO SERVIDOR! ✦</b><span>TÍTULO DIVINO</span></div><div class="ytTw">${pfTitH('sk'+n,'',false)}</div><i class="rays"></i><i class="skHalo"></i><div class="t2">Um dos 10 primeiros a pegar o Shaka · +20% de dano quando você luta com o Shaka</div>`;rkHost().appendChild(O);rkSfx('boom');setTimeout(()=>rkSfx('powerUp'),300);setTimeout(()=>{O.onclick=()=>{O.remove();res()}},600)})}
+{const _op=rkOpen;rkOpen=function(v){const r=_op.apply(this,arguments);if(rkG('sktp',0)&&rkG('own',[]).includes('shaka'))setTimeout(()=>skTitClaim(1),3000);return r}}
+{const _pt=pfTitH;pfTitH=function(t,n,adm){const T=TWTIT[t];if(T&&T.sk){const k=T.sk===1?1:T.sk<=3?2:T.sk<=6?3:4;return `<span class="pfTt skt s${k}"><i>🪷</i><b>SHAKA</b><em>Nº ${T.sk}</em>${k<=3?'<i class="sp a">✦</i><i class="sp b">✦</i><i class="sp c">✦</i>':''}</span>`}return _pt.apply(this,arguments)}}
+/* +20% de dano só lutando com o Shaka (Boss, Torre, Caça) */
+const skTitOn=()=>twTits().some(k=>/^sk\d+$/.test(k));
+{const _ra=rkApply;rkApply=function(){_ra.apply(this,arguments);try{const tw=typeof TW!=='undefined'&&TW.on&&G.gmode==='torre';if(!G.p||!(tw||G.gmode==='boss'||G.gmode==='caca'))return;const p=G.p[0];if(p.def.id==='shaka'&&skTitOn())p.tdm=(p.tdm||1)+.20}catch(e){}}}

@@ -995,3 +995,30 @@ body:not(.pcMode) #how .pcKeys{display:none}#how .pcKeys{margin:0 auto .6em;max-
 .rkWin.mit.skw .rays{background:repeating-conic-gradient(rgba(255,255,255,.55) 0 6deg,transparent 6deg 20deg)}
 .rkWin.mit.skw .t b{color:#fff;text-shadow:0 0 1vh #b47a00,0 0 2.5vh #ffc21f,0 2px 3px #6a4500}.rkWin.mit.skw .t span{color:#6a4500;text-shadow:0 0 1vh #fff}
 .rkMega.skm2 .tx b:first-of-type{font-size:8vh}
+
+/* v288: carta DIVINA do Shaka */
+.rkCd.skCd{--c:#fff6d0}
+.rkCd.skCd .frm{filter:sepia(1) saturate(2.2) hue-rotate(-12deg) brightness(1.55) drop-shadow(0 0 .8vh #fff) drop-shadow(0 0 2vh #ffe08a) drop-shadow(0 0 4vh #ffc21f)}
+.rkCd.skCd .in{background:radial-gradient(circle at 50% 40%,rgba(255,255,240,.95),rgba(255,226,140,.75) 45%,rgba(140,95,10,.9))}
+.rkCd.skCd .in .pt{border-color:#fff;box-shadow:0 0 1.2vh #fff,0 0 3vh #ffd76a}
+.rkCd.skCd .in b{color:#5a3a00;text-shadow:0 0 .6vh #fff}.rkCd.skCd .in em{color:#fff;font-style:normal;text-shadow:0 0 .5vh #b47a00,0 0 1.4vh #ffc21f}
+.rkCd.skCd.rv::before{content:"";position:absolute;inset:-22%;z-index:0;border-radius:50%;background:radial-gradient(ellipse,rgba(255,255,255,.95),rgba(255,236,170,.6) 35%,rgba(255,200,60,.25) 55%,transparent 70%);animation:skCdA 1.6s ease-in-out infinite;pointer-events:none}
+.rkCd.skCd.rv::after{content:"";position:absolute;inset:-40%;z-index:0;background:repeating-conic-gradient(rgba(255,255,255,.55) 0 4deg,transparent 4deg 16deg);border-radius:50%;-webkit-mask:radial-gradient(circle,#000 25%,transparent 68%);mask:radial-gradient(circle,#000 25%,transparent 68%);animation:rkEr 6s linear infinite;pointer-events:none}
+.rkCd.skCd.rv .fr{animation:skCdF 1.6s ease-in-out infinite}
+@keyframes skCdA{0%,100%{opacity:.75;transform:scale(.95)}50%{opacity:1;transform:scale(1.08)}}
+@keyframes skCdF{0%,100%{filter:brightness(1)}50%{filter:brightness(1.18)}}
+/* título do Shaka */
+.pfTt.skt{border-color:transparent;background:linear-gradient(90deg,#5a3a00,#1a1000) padding-box,conic-gradient(from var(--ua,0deg),#ffffff,#ffe08a,#ffc21f,#fff6d0,#ffffff) border-box;animation:rkUq 2.6s linear infinite;position:relative}
+.pfTt.skt b{color:#fff6d0;text-shadow:0 0 .4em #ffc21f}
+.pfTt.skt em{font:900 1.1em var(--f-display,var(--f-ui));font-style:normal;color:#fff;text-shadow:0 0 .4em #ffd76a,0 0 .9em #ffc21f;margin-left:.2em}
+.pfTt.skt .sp{position:absolute;font-style:normal;color:#fff;font-size:.9em;text-shadow:0 0 .4em #fff,0 0 .8em #ffc21f;animation:pfTw 1.6s ease-in-out infinite;opacity:0}
+.pfTt.skt .sp.a{left:1.6em;top:-.1em}.pfTt.skt .sp.b{left:5em;bottom:-.1em;animation-delay:.5s}.pfTt.skt .sp.c{right:.4em;top:.1em;animation-delay:1s}
+.pfTt.skt.s1{box-shadow:0 0 1.4em #fff,0 0 2.8em #ffc21f;animation-duration:1.3s}
+.pfTt.skt.s1 b{background:linear-gradient(90deg,#ffc21f,#ffffff,#ffe08a,#ffffff);background-size:250% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:admT 1.6s linear infinite}
+.pfTt.skt.s2{box-shadow:0 0 1.1em #ffe08a,0 0 2em #ffc21f;animation-duration:1.8s}.pfTt.skt.s3{box-shadow:0 0 .8em #ffd76a}.pfTt.skt.s4{box-shadow:0 0 .4em #ffc21f;animation:none}
+.rkWin.skTw{background:radial-gradient(circle,#fffdf0 0,#ffe9a8 35%,#b47a10 75%,#1a1000)}.rkWin.skTw .t b{color:#fff;text-shadow:0 0 1vh #b47a00,0 0 2.5vh #ffc21f}.rkWin.skTw .t span,.rkWin.skTw .t2{color:#5a3a00;text-shadow:0 0 1vh #fff}
+.rkWin.skTw .rays{background:repeating-conic-gradient(rgba(255,255,255,.6) 0 6deg,transparent 6deg 20deg)}
+.rkWin.skTw .skHalo{position:absolute;left:50%;top:50%;width:70vh;height:70vh;transform:translate(-50%,-50%);border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.8),transparent 65%);animation:skCdA 1.6s ease-in-out infinite;pointer-events:none}
+.rkCd.rv.r_mit.skCd .frm,.rkCd.r_mit.skCd .frm{animation:none;filter:grayscale(1) sepia(1) saturate(1.8) brightness(1.6) drop-shadow(0 0 .8vh #fff) drop-shadow(0 0 2.2vh #ffe08a) drop-shadow(0 0 4vh #ffc21f)}
+.rkCd.rv.r_mit.skCd::after{inset:-40%;border-radius:50%;background:repeating-conic-gradient(rgba(255,255,255,.6) 0 4deg,transparent 4deg 16deg);-webkit-mask:radial-gradient(circle,#000 25%,transparent 68%);mask:radial-gradient(circle,#000 25%,transparent 68%);animation:rkEr 6s linear infinite}
+.rkCd.skCd .in{z-index:3}
