@@ -1339,3 +1339,6 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 ## v285 — Shaka carrega energia EM PÉ + gacha do Shaka abre 13:20
 - `pw` (carregar energia/transformação) = folha 01 (em pé com o rosário na mão), quadros [0,0,1,1,2,2,1,1]. As imagens da folha 01 tinham sido apagadas na limpeza da v283 (não eram usadas): `build_sk.py` refaz o que falta (o cache em `/home/claude/sk_build/cache_ai.json` foi limpo das entradas sem arquivo). ATENÇÃO ao limpar `www/a`: só apagar o que nenhum JSON de build usa.
 - Invocação Ilimitada do Shaka: abre 10/11/2026 **13:20** (Brasília) (`SKG0`), 7 dias a partir daí.
+
+## Cloudflare (10/11/2026) — publicação alternativa ao GitHub Pages
+- O dono criou no Cloudflare (Workers & Pages → Connect to Git) o projeto `fui-do-templo-a-pk-2` ligado a este repositório, com deploy `npx wrangler deploy`. `wrangler.jsonc` na raiz publica a pasta `www` como arquivos estáticos (limite: 20.000 arquivos, 25 MB cada). Cada push na main publica sozinho no link `*.workers.dev`.

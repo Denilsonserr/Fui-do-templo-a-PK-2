@@ -1,0 +1,6 @@
+// Cloudflare (Workers com arquivos estáticos): publica a pasta www como site. Configurado no painel do dono (deploy: npx wrangler deploy).
+{
+  "name": "fui-do-templo-a-pk-2",
+  "compatibility_date": "2026-11-01",
+  "assets": { "directory": "./www", "not_found_handling": "single-page-application" }
+}
