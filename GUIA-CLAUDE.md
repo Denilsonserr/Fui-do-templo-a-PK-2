@@ -1469,3 +1469,8 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - Achado: o relatório de erro da v293 nunca enviava (o script do `<head>` não enxerga `TWFB`/`TWURL`, que ficam dentro do script principal) — corrigido no 9m_v309.
 - Para ligar falta o **Database ID** do D1 (`furia`) criado pelo dono; o wrangler.jsonc fica:
   `"main":"worker/index.js"`, `assets:{directory:"./www",binding:"ASSETS",not_found_handling:"single-page-application",run_worker_first:["/fs/*","/fs-admin/*"]}`, `d1_databases:[{binding:"DB",database_name:"furia",database_id:"<ID>"}]`.
+
+## v309 — SERVIDOR NOVO LIGADO
+- D1 `furia` criado pelo dono: id `c7962d81-d19e-41b3-bc3b-22e07a16c8ff` (conta Cloudflare 8ef044958a4e6c7f45abc693fd028f27). `wrangler.jsonc` com `main`, `assets.binding/run_worker_first` e `d1_databases`. `extra/9m_v309.py` ligado: o jogo usa `<site>/fs/v1/...` (no GitHub Pages usa o site da Cloudflare com CORS).
+- `status.yml` também testa o servidor novo (`/fs-admin/count` e uma consulta). Ferramentas antigas (consulta/busca/auditoria) ainda olham o Firebase — para o servidor novo, consultar `<site>/fs/v1/projects/furia-do-templo/databases/(default)/documents:runQuery` com o mesmo corpo.
+- Depois das 05:00 de 11/11: rodar `importar.yml` (copia do Firebase; a importação no worker fecha 11/11 15:00).

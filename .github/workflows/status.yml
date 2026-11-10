@@ -12,3 +12,5 @@ jobs:
           echo '== escrita'; curl -sS -w '\nHTTP %{http_code}\n' -X POST "$U/torre?$K" -H 'Content-Type: application/json' -d '{"fields":{"nome":{"stringValue":"status"},"andar":{"integerValue":"0"},"tempo":{"integerValue":"0"}}}' | tail -c 400
           echo '== site cloudflare'; curl -sS -o /dev/null -w 'HTTP %{http_code} em %{time_total}s\n' https://fui-do-templo-a-pk-2.denilsinend.workers.dev/; curl -sS https://fui-do-templo-a-pk-2.denilsinend.workers.dev/versao.txt?t=$RANDOM
           echo '== github pages'; curl -sS -o /dev/null -w 'HTTP %{http_code}\n' https://denilsonserr.github.io/Fui-do-templo-a-PK-2/
+          echo '== servidor novo (D1)'; S='https://fui-do-templo-a-pk-2.denilsinend.workers.dev'; curl -sS "$S/fs-admin/count"; echo
+          curl -sS -w '\nHTTP %{http_code}\n' -X POST "$S/fs/v1/projects/furia-do-templo/databases/(default)/documents:runQuery" -H 'Content-Type: application/json' -d '{"structuredQuery":{"from":[{"collectionId":"torre"}],"where":{"fieldFilter":{"field":{"fieldPath":"on"},"op":"GREATER_THAN","value":{"stringValue":""}}},"limit":2}}' | tail -c 400

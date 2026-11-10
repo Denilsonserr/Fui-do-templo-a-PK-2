@@ -83,7 +83,7 @@ button,.tile,.stc,.mode{touch-action:manipulation;-webkit-tap-highlight-color:tr
 <script>const ERRS={};function errRep(e,w){try{const m=String(e&&e.message||e).slice(0,200);if(ERRS[m]||Object.keys(ERRS).length>5)return;ERRS[m]=1;const st=String(e&&e.stack||'').slice(0,600);
   const G0=(typeof G!=='undefined'&&G)||{},F={m:{stringValue:m},st:{stringValue:st},w:{stringValue:String(w||'')},ua:{stringValue:navigator.userAgent.slice(0,160)},nome:{stringValue:String((localStorage.getItem('tw_nome')||'?')).slice(0,20)},
   modo:{stringValue:String(G0.mode||'')+'/'+String(G0.gmode||'')},t:{integerValue:String(Date.now())}};
-  fetch('https://firestore.googleapis.com/v1/projects/'+TWFB.projectId+'/databases/(default)/documents/torre?documentId=er_'+Date.now().toString(36)+Math.random().toString(36).slice(2,6)+'&key='+TWFB.apiKey,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({fields:F})}).catch(()=>{})}catch(x){}}
+  fetch(((/^https?:$/.test(location.protocol)&&!/github\.io$/.test(location.host))?location.origin:'https://fui-do-templo-a-pk-2.denilsinend.workers.dev')+'/fs/v1/projects/furia-do-templo/databases/(default)/documents/torre?documentId=er_'+Date.now().toString(36)+Math.random().toString(36).slice(2,6),{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({fields:F})}).catch(()=>{})}catch(x){}}
 window.addEventListener('error',e=>{try{errRep(e.error||e.message,'win')}catch(x){}});window.addEventListener('unhandledrejection',e=>{try{errRep(e.reason,'prom')}catch(x){}});</script>
 </head><body><title>Fúria do Templo</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -7152,7 +7152,8 @@ const TWC=['naruto','rengoku','luffy','gojo','madara','aokiji','goku','gogeta','
 const TWN=7;
 const TWFB={apiKey:'AIzaSyDXTjvRMcKtJ5vq2vl-F2B_w2M-7hd_QY0',projectId:'furia-do-templo'};
 const TWCUT=Date.parse('2026-11-07T22:50:00Z');/* recordes antes disso: tempo zerado (não conta) */
-const TWURL='https://firestore.googleapis.com/v1/projects/'+TWFB.projectId+'/databases/(default)/documents';
+const FSO=(/^https?:$/.test(location.protocol)&&!/github\.io$/.test(location.host))?location.origin:'https://fui-do-templo-a-pk-2.denilsinend.workers.dev';
+const TWURL=FSO+'/fs/v1/projects/'+TWFB.projectId+'/databases/(default)/documents';
 /* janelas pretas da torre (pixels da arte 1671x941): andar 1 embaixo → andar 7 (chefe) em cima */
 const TWSLOT=[[986,710,1346,805],[986,610,1345,697],[986,511,1344,594],[986,412,1343,495],[986,312,1343,396],[986,212,1342,296],[987,102,1341,197]];
 const TWRAR=[{k:'comum',n:'COMUM',c:'#c3c8d2',w:55,v:[8,5,4]},{k:'rara',n:'RARA',c:'#3d9bff',w:28,v:[15,10,8]},{k:'epica',n:'ÉPICA',c:'#b25bff',w:13,v:[25,18,13]},{k:'lend',n:'LENDÁRIA',c:'#ffc531',w:3,v:[40,30,20]},{k:'mit',n:'MÍTICA',c:'#ff2e63',w:1,v:[65,45,30]}];
@@ -9866,7 +9867,7 @@ window.__dbg={mus:()=>[MCUR,MEL.src.split('/').pop()],stg:()=>STAGE.key,prepMatc
 })();
 </script>
 <style>#updB{position:fixed;left:50%;top:max(8px,env(safe-area-inset-top));transform:translateX(-50%);z-index:99999;padding:10px 22px;border-radius:14px;border:2px solid #fff3c0;background:linear-gradient(#ffd84a,#e08a10);color:#3a1d00;font:900 15px system-ui,sans-serif;box-shadow:0 0 18px #ffb21f;cursor:pointer;animation:updP 1s ease-in-out infinite alternate}@keyframes updP{to{transform:translateX(-50%) scale(1.05)}}</style>
-<script>(function(){const V='73db31e3569c';if(!/^https?:/.test(location.protocol))return;let nv=null;
+<script>(function(){const V='a1f957cbc3eb';if(!/^https?:/.test(location.protocol))return;let nv=null;
 function show(){if(document.getElementById('updB'))return;try{if(typeof G!=='undefined'&&G.mode==='fight')return}catch(e){}const b=document.createElement('button');b.id='updB';b.textContent='🔄 ATUALIZAÇÃO NOVA! Toque para atualizar';
   b.onclick=()=>{b.textContent='⏳ Atualizando...';try{acSave(1)}catch(e){}setTimeout(()=>location.reload(),900)};document.body.appendChild(b)}
 async function chk(){if(document.hidden)return;if(nv){show();return}try{const r=await fetch('versao.txt?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const t=(await r.text()).trim();if(/^[0-9a-f]{8,40}$/.test(t)&&t!==V){nv=t;show()}}catch(e){}}

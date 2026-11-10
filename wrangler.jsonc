@@ -1,6 +1,16 @@
-// Cloudflare (Workers com arquivos estáticos): publica a pasta www como site. Configurado no painel do dono (deploy: npx wrangler deploy).
+// Cloudflare (Workers): publica a pasta www como site + o servidor do jogo (worker/index.js) com o banco D1 "furia".
+// Deploy automático pelo painel do dono (Workers Builds: npx wrangler deploy).
 {
   "name": "fui-do-templo-a-pk-2",
+  "main": "worker/index.js",
   "compatibility_date": "2026-11-01",
-  "assets": { "directory": "./www", "not_found_handling": "single-page-application" }
+  "assets": {
+    "directory": "./www",
+    "binding": "ASSETS",
+    "not_found_handling": "single-page-application",
+    "run_worker_first": ["/fs/*", "/fs-admin/*"]
+  },
+  "d1_databases": [
+    { "binding": "DB", "database_name": "furia", "database_id": "c7962d81-d19e-41b3-bc3b-22e07a16c8ff" }
+  ]
 }
