@@ -2146,3 +2146,11 @@ TWCUP['h5wrl3'].off=1;
 function rkNetMsg(){try{if(Date.now()<RKQ429)return '⏳ O servidor chegou no limite de hoje (rankings, chat e entrar na conta voltam às 05:00 de Brasília). O jogo funciona normal.'}catch(e){}return 'Sem internet agora.'}
 /* v309: servidor novo (Cloudflare D1): quem já está logado no aparelho tem a conta copiada sozinha (salvamento assinado com a mesma senha) */
 setTimeout(()=>{try{if(!/\/fs\/v1\//.test(TWURL))return;if(localStorage.getItem('ac_k')&&localStorage.getItem('ac_n')&&!localStorage.getItem('ac_mig309')){localStorage.removeItem('ac_h');acSave(1).then(ok=>{if(ok)localStorage.setItem('ac_mig309','1')})}}catch(e){}},8000);
+/* v310: servidor novo começou vazio → cada jogador manda o rank atual (e os recordes da Caça) 1 vez ao abrir o jogo, para o ranking encher na hora */
+setTimeout(()=>{try{if(!/\/fs\/v1\//.test(TWURL)||rkG('pub310',0))return;const n=twLS.g('tw_nome','');if(!n)return;const IV=v=>({integerValue:String(Math.max(0,Math.round(v||0)))}),rp=rkG('rp',0);
+  const f={nome:{stringValue:String(n).slice(0,16)},andar:IV(0),tempo:IV(0),uid:{stringValue:twUid()},tit:{stringValue:twTitOn()},rp:IV(rp),lv:IV(rkRank(rp)),char:{stringValue:rkG('sel','goku')},v:IV(310)};
+  twFetchT(TWURL+'/torre?key='+TWFB.apiKey,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({fields:f})}).then(r=>{if(r.ok)rkS('pub310',1)}).catch(()=>{});
+  const B=rkG('caBest',null);if(B&&(B.lv||B.dmg))caSend(B);try{pfPub(1)}catch(e){}}catch(e){}},6000);
+/* v310: servidor novo começou vazio — cada jogador que abre o jogo manda 1 vez o seu RANK atual (e os recordes da Caça) para o ranking voltar a encher na hora */
+setTimeout(()=>{try{if(!/\/fs\/v1\//.test(TWURL)||localStorage.getItem('rk_rksync310'))return;if(!twLS.g('tw_nome',''))return;
+  rkSend({rp:rkG('rp',0),dmg:0,t1:0,tt:0,won:0});const B=rkG('caBest',null);if(B&&(B.lv||B.dmg||B.ring!=null))caSend(B);localStorage.setItem('rk_rksync310','1')}catch(e){}},6000);
