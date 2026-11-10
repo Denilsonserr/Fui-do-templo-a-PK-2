@@ -7015,8 +7015,9 @@ function hudTag(side,X,yt,xa){const b=TAG.bench[side];if(!TAG.on)return;const y0
   ctx.restore()}
 /* ================= input ================= */
 const keys={},latch={};const KM={ArrowLeft:'left',KeyA:'left',ArrowRight:'right',KeyD:'right',ArrowUp:'up',KeyW:'up',ArrowDown:'down',KeyS:'down',KeyJ:'punch',KeyK:'kick',KeyL:'ki',KeyI:'sp',KeyU:'tr',KeyO:'sr',KeyF:'fly',KeyH:'bl',KeyT:'tag'};
-addEventListener('keydown',e=>{if(e.code==='KeyP'||e.code==='Escape'){if(G.mode==='fight')togglePause();return}if(KM[e.code]){if(!e.repeat)latch[KM[e.code]]=1;keys[KM[e.code]]=1;e.preventDefault()}});
-addEventListener('keyup',e=>{if(KM[e.code])keys[KM[e.code]]=0});
+const isTyping=e=>{const t=e&&e.target;return !!t&&(t.tagName==='INPUT'||t.tagName==='TEXTAREA'||t.isContentEditable)};
+addEventListener('keydown',e=>{if(isTyping(e))return;if(e.code==='KeyP'||e.code==='Escape'){if(G.mode==='fight')togglePause();return}if(KM[e.code]){if(!e.repeat)latch[KM[e.code]]=1;keys[KM[e.code]]=1;e.preventDefault()}});
+addEventListener('keyup',e=>{if(isTyping(e))return;if(KM[e.code])keys[KM[e.code]]=0});
 const touch={left:0,right:0,up:0,down:0,punch:0,kick:0,sw:0,ki:0,sp:0,tr:0,sr:0,fly:0,bl:0,tag:0};
 const joy={id:null,cx:0,cy:0,R:1},knob=$('joyKnob');
 function joyMove(e){const dx=e.clientX-joy.cx,dy=e.clientY-joy.cy,m=joy.R*.55,l=Math.hypot(dx,dy),k=l>m?m/l:1;
@@ -9776,7 +9777,7 @@ function renderSel(){$('select').classList.toggle('twsel',G.gmode==='torre');con
     L.forEach((t,i)=>{if(i===selCur)return;const[x,y]=C(t),dx=x-cx,dy=y-cy;let ok=a==='l'?dx<-1&&Math.abs(dy)<6:a==='r'?dx>1&&Math.abs(dy)<6:a==='u'?dy<-2:dy>2;if(!ok)return;const d=(a==='l'||a==='r')?Math.abs(dx)+Math.abs(dy)*4:Math.abs(dy)+Math.abs(dx)*1.5;if(d<bd){bd=d;best=i}});
     if(best>=0){selCur=best;renderSel();try{SFX.blip&&SFX.blip()}catch(e){}}};
   document.querySelectorAll('.fza button').forEach(b=>b.onpointerdown=e=>{e.preventDefault();selMove(b.dataset.a)});
-  addEventListener('keydown',e=>{if(showScreen.cur!=='select')return;const k={ArrowLeft:'l',ArrowRight:'r',ArrowUp:'u',ArrowDown:'d',Enter:'ok'}[e.code];if(k){e.preventDefault();selMove(k)}});
+  addEventListener('keydown',e=>{if(showScreen.cur!=='select'||isTyping(e))return;const k={ArrowLeft:'l',ArrowRight:'r',ArrowUp:'u',ArrowDown:'d',Enter:'ok'}[e.code];if(k){e.preventDefault();selMove(k)}});
   renderSel()})();
 const TIPS=['Toque 2x para frente para dar um dash e segure para correr.','Toque 2x para trás para esquivar com invencibilidade.','Chute na defesa = contra-ataque (20 de ki).','Segure o Ki para carregar as 3 barras e liberar o Poder Máximo.','Segure o soco para um Super Soco que joga o rival na parede.','Golpes que lançam o rival abrem o Super Dash para perseguir no ar.','A cada 10 segundos você ganha uma barra de energia para transformar.'];
 let vsTmr=null;function vsLoadEnd(){clearInterval(vsTmr);vsTmr=null;const L=$('vsLoad');if(L){L.querySelector('i').style.width='100%';L.querySelector('span').textContent='PRONTO!'}}
@@ -9848,7 +9849,7 @@ window.__dbg={mus:()=>[MCUR,MEL.src.split('/').pop()],stg:()=>STAGE.key,prepMatc
 })();
 </script>
 <style>#updB{position:fixed;left:50%;top:max(8px,env(safe-area-inset-top));transform:translateX(-50%);z-index:99999;padding:10px 22px;border-radius:14px;border:2px solid #fff3c0;background:linear-gradient(#ffd84a,#e08a10);color:#3a1d00;font:900 15px system-ui,sans-serif;box-shadow:0 0 18px #ffb21f;cursor:pointer;animation:updP 1s ease-in-out infinite alternate}@keyframes updP{to{transform:translateX(-50%) scale(1.05)}}</style>
-<script>(function(){const V='01b8dc486b0b';if(!/^https?:/.test(location.protocol))return;let nv=null;
+<script>(function(){const V='6083c5940454';if(!/^https?:/.test(location.protocol))return;let nv=null;
 function show(){if(document.getElementById('updB'))return;try{if(typeof G!=='undefined'&&G.mode==='fight')return}catch(e){}const b=document.createElement('button');b.id='updB';b.textContent='🔄 ATUALIZAÇÃO NOVA! Toque para atualizar';
   b.onclick=()=>{b.textContent='⏳ Atualizando...';try{acSave(1)}catch(e){}setTimeout(()=>location.reload(),900)};document.body.appendChild(b)}
 async function chk(){if(document.hidden)return;if(nv){show();return}try{const r=await fetch('versao.txt?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const t=(await r.text()).trim();if(/^[0-9a-f]{8,40}$/.test(t)&&t!==V){nv=t;show()}}catch(e){}}

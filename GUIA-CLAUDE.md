@@ -1441,3 +1441,6 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 
 ## v304
 - Código de 1 pessoa (hash `2rq1y4`, texto só com o dono): **PASSE FULL** (passe prêmio + nível 20, sem gemas extras; `bpx:1`).
+
+## v305
+- **Letras que não saíam ao digitar (nome, código, conta, chat):** o teclado do jogo (`KM`: WASD, J K L, I O U, F, espaço, P...) dava `preventDefault` em qualquer lugar, até dentro das caixas de texto (em teclado de PC e alguns teclados de celular). Agora `isTyping(e)` ignora as teclas quando o foco está em INPUT/TEXTAREA. Antes: "Vini junior" virava "Vnn"; depois: sai certo. Patch `extra/9l_v305.py`, teste `tnome_v305.js`.
