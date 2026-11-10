@@ -1268,3 +1268,12 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - **Cenário** `flo` (`extra/9d_v274.py`, imagens em `ferramentas/cenarios/floresta/`, `up.py` IA → `/home/claude/flo/B*.png`; `FMIN=4 FY=724 SKYD=70 SKYL=0 HZL=20,20,150,260,260 python3 prep_dn.py /home/claude/flo floresta/flo.json 260`; `prep_life.py flo floresta/life_f.json B0..B4` (modo novo `flo`)). Escondido da escolha normal (`hid:1`), `ph0:.25` (a arte já é noite; sem escurecer de novo), destruição só pelo nível do lobo (`CASC=[0,1,1,2,2,3,3,4,4,4]` → `dnBreak`), `inferno` no último, névoa `dnFog` (`fog` por nível: forte no começo, rala no fim).
 - Fim (`caEnd`): volta para a tela da caça com "derrotou o lobo NX", nível alcançado, passivas que ele ganhou, recorde.
 - Teste: `ferramentas/testes/tcaca_v274.js`.
+
+## v275 — LOBO NEGRO (nome novo), foto no VS, RAIOS no corpo, olhos e níveis 7-10 mais duros
+- Nome: `BSD.name='LOBO NEGRO'` (todo texto da caça). As bestas NÃO são personagens: não entram na escolha da Batalha Treino nem em lugar nenhum além do modo Caça (o dono pediu; já era assim — a besta é o adversário "virado" por `bsMake`).
+- VS: foto do dono em pé (`ferramentas/bestas/lobo/recebido/08_em_pe_vs.jpg`, `vs.py` tira o fundo → `RQA.lobo.vs`); `showVS` embrulhado troca `#vs2`/`#vsn2` no modo caça (por baixo o adversário ainda é o Goku).
+- A aura saiu: agora **raios no corpo** (`caBolts`/`caAura`): cor `caCol(nível)` azul (nv1) → roxo → vermelho (nv10), quantidade 1+nível×1,4, maiores a cada nível; brilho suave a partir do nv5. O uivo usa a mesma cor.
+- Olhos: a partir do nv7 brilham bem mais forte; nv8+ com risco de luz (estrela) piscando.
+- Defesa: dano recebido nos níveis 7-10 = .40/.31/.24/.17 (antes .5/.43/.37/.3).
+- Velocidade (`bsSpd`): níveis 7-10 ganham vantagem de 15/20/25/30% sobre o jogador, **dividida pela velocidade do jogador** (`o.tsp`, equipamentos de velocidade, ADM...). Quem tem muita velocidade anula a vantagem; vale em todos os níveis.
+- Teste: `ferramentas/testes/tcaca_v275.js`.

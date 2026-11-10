@@ -1514,7 +1514,7 @@ async function evAct(a,b){if(a==='back')return rkView('menu');if(a==='tab'){EV.t
     try{const r=await mnPost('avs_'+Date.now().toString(36),{avs:mnSV('1'),tit:mnSV(t||'RECADO'),txt:mnSV(x)});if(!r.ok)throw 0;rkToast('📢 Recado publicado para todos!','#7dff9a');for(const k in RKQC)if(k.includes('"avs'))delete RKQC[k];evAvLoad()}catch(e){rkToast('Não deu para publicar (sem internet?)','#ff8080')}}}
 {const _o2=rkOpen;rkOpen=function(){const r=_o2.apply(this,arguments);setTimeout(()=>{try{evAvLoad()}catch(e){}try{if(typeof twClaims==='function')twClaims()}catch(e){}},2500);return r}}
 
-/* ================= v270: MODO CAÇA (TESTE) — BESTA DE ALMA: LOBO SOMBRIO =================
+/* ================= v270: MODO CAÇA (TESTE) — BESTA DE ALMA: LOBO NEGRO =================
    A besta é o G.p[1] criado como um lutador normal e depois "virado" besta (f.beast). Ela não usa ki/energia/especiais:
    só ataque físico (garradas, patada, bote no ar, pulo alto por cima). IA, física, desenho, caixa de dano e reações são próprios (bsStep/bsDraw).
    Quadros: RQA.lobo (ferramentas/bestas/lobo/). Cada quadro: [src, âncoraX, âncoraY(pés), escala]. Os quadros olham para a ESQUERDA. */
@@ -1522,7 +1522,7 @@ const BSI={};function bsImg(src){let i=BSI[src];if(!i){i=new Image();i.src=src;B
 function bsPre(){try{for(const k in RQA.lobo)if(k!=='por')for(const q of RQA.lobo[k])bsImg(q[0])}catch(e){}}
 /* v271: lobo do tamanho de um lobo (ALT 160), bem mais rápido, AUTO COMBO do dono (16 quadros, folha 07_auto_combo) com dash veloz e rastro,
    aviso no olho antes do combo, BRECHA (ofegante, toma +30%) depois do combo ou se o começo errar, quadros novos de dano (folha 06_derrubado = 'cai'). */
-const BSD={name:'LOBO SOMBRIO',hp:5,spd:17,grav:1.1};
+const BSD={name:'LOBO NEGRO',hp:5,spd:17,grav:1.1};
 const isBs=f=>!!(f&&f.beast);
 function bsMake(f){const d=Object.assign({},f.def,{id:'lobo',name:BSD.name,cn:'BESTA DE ALMA · 1.000 ANOS',energy:'#ff2a3a',energy2:'#ffd0d0',fe:'#ff2a3a',fe2:'#ffd0d0',frame:'#ff2a3a',power:1});
   f.def=d;f.beast=1;f.mhp=BSD.hp*LAYER;f.hp=f.hpLag=f.mhp;f.ki=0;f.sb=0;f.tdm=1;f.tdf=1;f.tsp=1;f.state='idle';f.st=0;f.bs='idle';f.bt=0;f.bcd=50;f.bfx=[];f.btr=[];f.bCcd=90;f.bEye=0;f.bk=['garras',0];f.flying=false;
@@ -1639,16 +1639,16 @@ function bsDraw(f,reflect){const [k,i]=bsFrame(f);
   ctx.save();ctx.translate(f.x+(f.flash>0&&G.hitstop>0?(G.frame%2?3:-3):0),f.y);ctx.scale(-f.facing*(q[4]?-1:1)*(f.bSc||1),f.bSc||1);ctx.scale(1,br);
   if(f.flash>0&&!reflect)ctx.filter='brightness(2.6) saturate(.4)';
   ctx.drawImage(im,-q[1]*s,-q[2]*s,w,h);ctx.filter='none';
-  if(!reflect&&!f.ko&&k!=='cai'){const ex=-q[1]*s+w*(q[4]?.86:.14),ey=-h*.66,eg=.5+.5*Math.sin(G.frame*.2),R=f.bEye>0?70:30;ctx.globalCompositeOperation='lighter';ctx.globalAlpha=f.bEye>0?.9:.22+.18*eg;
+  if(!reflect&&!f.ko&&k!=='cai'){const ex=-q[1]*s+w*(q[4]?.86:.14),ey=-h*.66,eg=.5+.5*Math.sin(G.frame*.2),EL=f.bLv||1,R=f.bEye>0?70:EL>=7?34+EL*3:30;ctx.globalCompositeOperation='lighter';ctx.globalAlpha=f.bEye>0?.9:EL>=7?.6+.3*eg:.22+.18*eg;
     const g=ctx.createRadialGradient(ex,ey,0,ex,ey,R);g.addColorStop(0,'rgba(255,60,80,.95)');g.addColorStop(1,'rgba(255,40,60,0)');ctx.fillStyle=g;ctx.fillRect(ex-R,ey-R,R*2,R*2);
-    if(f.bEye>0){ctx.strokeStyle='rgba(255,230,230,.95)';ctx.lineWidth=3;const L2=20+f.bEye*2.2;ctx.beginPath();ctx.moveTo(ex-L2,ey);ctx.lineTo(ex+L2,ey);ctx.moveTo(ex,ey-L2*.45);ctx.lineTo(ex,ey+L2*.45);ctx.stroke()}}
+    if(f.bEye>0||EL>=8){ctx.strokeStyle='rgba(255,230,230,.95)';ctx.lineWidth=f.bEye>0?3:2;const L2=f.bEye>0?20+f.bEye*2.2:14+EL*2+eg*8;ctx.beginPath();ctx.moveTo(ex-L2,ey);ctx.lineTo(ex+L2,ey);ctx.moveTo(ex,ey-L2*.45);ctx.lineTo(ex,ey+L2*.45);ctx.stroke()}}
   ctx.restore();
   if(reflect)return;
   /* rastros das garras (roxo, igual aos desenhos do combo) */
   for(const c of f.bfx){const u=c.t/16;ctx.save();ctx.translate(c.x,c.y);ctx.scale(c.fw,1);if(c.up)ctx.rotate(-1.1);ctx.globalAlpha=(1-u);ctx.lineCap='round';
     for(let j=0;j<(c.big?4:3);j++){ctx.strokeStyle=j%2?'#b34dff':'#ffffff';ctx.lineWidth=(c.big?11:7)*(1-u*.6);ctx.shadowColor='#b34dff';ctx.shadowBlur=16;ctx.beginPath();const oy=(j-1.5)*24;ctx.arc(-30,oy-40,100+u*30,Math.PI*.15,Math.PI*.55);ctx.stroke()}ctx.restore()}}
 /* ---- ganchos no motor ---- */
-{const _u=updFighter;updFighter=function(f,o){if(isBs(f)){f.bAcc=(f.bAcc||0)+(f.bsp||1);let n=0;while(f.bAcc>=1&&n<3){bsStep(f,o);f.bAcc-=1;n++}return}return _u.apply(this,arguments)}}
+{const _u=updFighter;updFighter=function(f,o){if(isBs(f)){f.bAcc=(f.bAcc||0)+bsSpd(f,o);let n=0;while(f.bAcc>=1&&n<3){bsStep(f,o);f.bAcc-=1;n++}return}return _u.apply(this,arguments)}}
 {const _a=aiThink;aiThink=function(f,o){if(isBs(f)){for(const k in f.inp)f.inp[k]=0;return}return _a.apply(this,arguments)}}
 {const _r=renderFighter;renderFighter=function(f,reflect){if(isBs(f))return bsDraw(f,reflect);return _r.apply(this,arguments)}}
 {const _h=hurtbox;hurtbox=function(f){if(isBs(f)){if(f.ko)return null;if(f.bs==='rev')return null;const k=f.bSc||1;if(f.state==='down')return {x:f.x-115*k,y:f.y-80*k,w:230*k,h:80*k};return {x:f.x-105*k,y:f.y-205*k,w:210*k,h:200*k}}return _h.apply(this,arguments)}}
@@ -1669,7 +1669,7 @@ function caStart(){rkInit();if(!SPR_OK)return;const sel=rkG('sel','goku');fsTry(
 function caEnd(w){const o=G.p&&G.p[1],won=!!(o&&o.ko&&(o.bLv||1)>=10),lv=(o&&o.bLv)||1,dft=won?10:lv-1,pas=((o&&o.bPas)||[]).map(k=>CAPS[k][0]);
   const rec=rkG('caRec',0);if(dft>rec)rkS('caRec',dft);
   G.mode='ranked';$('controls').hidden=true;$('pauseBtn').hidden=true;try{$('pcHud').hidden=true}catch(e){}rainSound(0);G.paused=false;G.diff=RKB.diff0;G.gmode='pve';CA.on=0;
-  rkOpen('ca');CA.rs=1;const sh=()=>{if(!CA.rs||showScreen.cur!=='ranked'||!$('rkModal').hidden)return;rkModal(`<div class="twM ${won?'gold':''}"><h3>${won?'👑 VOCÊ CAÇOU O REI DA FLORESTA!':dft?'🐺 VOCÊ DERROTOU O LOBO '+dft+'X':'💀 O LOBO SOMBRIO VENCEU'}</h3><p class="twH">Chegou no <b>NÍVEL ${lv} de 10</b>${dft>rec?' · <b style="color:#ffd34a">NOVO RECORDE!</b>':''}</p>${pas.length?'<p class="twH">Passivas que o lobo ganhou: '+pas.join(' · ')+'</p>':''}<p class="twH">Modo em teste · os anéis ainda não caem.</p><div class="row"><button class="btn main" id="caAg">⚔️ CAÇAR DE NOVO</button><button class="btn" id="rkMX">FECHAR</button></div></div>`);$('rkMX').onclick=()=>{CA.rs=0;rkModal(null)};$('caAg').onclick=()=>{CA.rs=0;rkModal(null);caStart()}};for(const t of [300,1800,3500,6000])setTimeout(sh,t)}
+  rkOpen('ca');CA.rs=1;const sh=()=>{if(!CA.rs||showScreen.cur!=='ranked'||!$('rkModal').hidden)return;rkModal(`<div class="twM ${won?'gold':''}"><h3>${won?'👑 VOCÊ CAÇOU O REI DA FLORESTA!':dft?'🐺 VOCÊ DERROTOU O LOBO '+dft+'X':'💀 O LOBO NEGRO VENCEU'}</h3><p class="twH">Chegou no <b>NÍVEL ${lv} de 10</b>${dft>rec?' · <b style="color:#ffd34a">NOVO RECORDE!</b>':''}</p>${pas.length?'<p class="twH">Passivas que o lobo ganhou: '+pas.join(' · ')+'</p>':''}<p class="twH">Modo em teste · os anéis ainda não caem.</p><div class="row"><button class="btn main" id="caAg">⚔️ CAÇAR DE NOVO</button><button class="btn" id="rkMX">FECHAR</button></div></div>`);$('rkMX').onclick=()=>{CA.rs=0;rkModal(null)};$('caAg').onclick=()=>{CA.rs=0;rkModal(null);caStart()}};for(const t of [300,1800,3500,6000])setTimeout(sh,t)}
 
 /* ================= v273: MENU PRINCIPAL novo (arte do dono) =================
    BATALHA AVENTURA = entra no modo Ranqueado (Modos de Jogo) · Batalha Treino = luta normal (escolher lutadores) · História = em breve · Configuração.
@@ -1685,7 +1685,7 @@ function caEnd(w){const o=G.p&&G.p[1],won=!!(o&&o.ko&&(o.bLv||1)>=10),lv=(o&&o.b
 /* ================= v274: CAÇA AO MONSTRO — tela do modo + LOBO com 10 NÍVEIS =================
    Cada vez que o lobo é derrotado (até o nível 10) ele cai, junta energia, a floresta se destrói mais, e ele levanta com um UIVO:
    vida cheia de novo, mais vida/força/defesa/velocidade, maior, aura mais forte e uma PASSIVA nova (sorteada, sem repetir). Nível 10 derrotado = vitória. */
-const CALV={hp:[3,3.5,4,4.5,5,6,7,8,9,10],dm:[.6,.75,.9,1.05,1.2,1.4,1.6,1.85,2.1,2.4],df:[1,.9,.82,.74,.66,.58,.5,.43,.37,.3],sp:[1,1,1.05,1.1,1.16,1.22,1.28,1.35,1.42,1.5],cd:[1.3,1.2,1.1,1,.9,.8,.7,.6,.5,.45]};
+const CALV={hp:[3,3.5,4,4.5,5,6,7,8,9,10],dm:[.6,.75,.9,1.05,1.2,1.4,1.6,1.85,2.1,2.4],df:[1,.9,.82,.74,.66,.58,.4,.31,.24,.17],sp:[1,1,1.05,1.1,1.16,1.22,1.28,1.35,1.42,1.5],cd:[1.3,1.2,1.1,1,.9,.8,.7,.6,.5,.45]};
 const CAPS={reg:['🩸 REGENERAÇÃO','recupera vida sozinho'],def:['🛡️ COURO DE AÇO','toma 15% menos dano'],cri:['🗡️ PRESAS CRÍTICAS','+15% de crítico'],lif:['🧛 SEDE DE SANGUE','rouba 15% do dano que causa'],arm:['🌑 COURAÇA SOMBRIA','não para no dash nem no bote'],vel:['⚡ INSTINTO SELVAGEM','+10% de velocidade'],frc:['🔥 FÚRIA LUPINA','+15% de dano'],cmb:['🌀 CAÇADOR INCANSÁVEL','auto combo volta 2x mais rápido'],esq:['💨 ESQUIVA ANIMAL','12% de chance de desviar']};
 const CASC=[0,1,1,2,2,3,3,4,4,4];
 const CARING=[['#eef0ff','BRANCO','100 anos'],['#ffc928','AMARELO','1.000 anos'],['#c27aff','ROXO','10.000 anos'],['#b9b2c8','PRETO','50 a 75 mil anos'],['#ff3b4a','VERMELHO','100.000 anos']];
@@ -1703,7 +1703,7 @@ function caRevStep(f,o){const t=++f.bRt;f.st++;if(f.flash>0)f.flash--;f.inv=999;
     const sc=CASC[f.bLv-1];try{if(STAGE.dn&&sc>DN.lv)dnBreak(sc)}catch(e){}}
   if(t>45&&t<=115){f.hp=f.hpLag=f.mhp*(t-45)/70;if(t%3===0)for(let i=0;i<2;i++){const an=Math.random()*TAU,r=rand(160,320);caEmb(f,f.x+Math.cos(an)*r,f.y-70+Math.sin(an)*r*.6,(f.x-(f.x+Math.cos(an)*r))/22,(f.y-70-(f.y-70+Math.sin(an)*r*.6))/22,26,1)}if(t%20===0)G.shake=Math.max(G.shake,4)}
   if(t===115){f.bEye=40}
-  if(t===128){const A=f.bA||o,c=CACOL[f.bLv-1]||'255,40,60';G.flash=12;G.flashCol=cHex(c);G.shake=34;G.hitstop=Math.max(G.hitstop,10);
+  if(t===128){const A=f.bA||o,c=caCol(f.bLv).join(',');G.flash=12;G.flashCol=cHex(c);G.shake=34;G.hitstop=Math.max(G.hitstop,10);
     for(const r of [420,280,150])ring(f.x,f.y-80,r===150?'#ffffff':cHex(c),r,30,8);for(let i=0;i<50;i++)spark(f.x,f.y-80,i%3?cHex(c):'#ffffff',1,rand(6,18));try{flashL(f.x,f.y-80,cHex(c),700,1,30);SFX.transform();SFX.boom();dust(f.x,FLOOR,24)}catch(e){}buzz(200);
     if(A&&!A.ko){const dir=Math.sign(A.x-f.x)||1;if(Math.abs(A.x-f.x)<520){A.vx=dir*15;A.vy=-6;A.grounded=false;A.state='airhit';A.hitstun=18}A.hp=Math.min(MAXHP,A.hp+MAXHP*.1);try{txt(A.x,A.y-260,'+10% VIDA','#7dff9a')}catch(e){}}
     const P=CAPS[f.bNew]||['',''];banner('NÍVEL '+f.bLv+(f.bLv>=10?' · REI DA FLORESTA':''),cHex(c),140,'NOVA PASSIVA: '+P[0]+' — '+P[1]);G.timer=180}
@@ -1720,14 +1720,21 @@ function caEmb(f,x,y,vx,vy,l,g){(f.bEm=f.bEm||[]).push({x,y,vx,vy,l,m:l,g})}
 {const _ko=ko;ko=function(a,d){if(G.gmode==='caca'&&isBs(d)){if(d.bs==='rev')return;if(G.phase==='fight'&&(d.bLv||1)<10){caLvUp(a,d);return}}return _ko.apply(this,arguments)}}
 /* desenho: aura por nível, brasas, energia voltando */
 {const _f=bsFrame;bsFrame=function(f){if(f.bs==='rev'){const t=f.bRt;if(!f.grounded)return ['cai',f.vy<0?2:3];if(t<115)return ['cai',t<60?4:5];return ['combo',t<128?1:0]}return _f.apply(this,arguments)}}
-function caAura(f,top){if(G.gmode!=='caca')return;const lv=f.bLv||1,k=f.bSc||1,run=G.hitstop<=0&&!G.paused,c=CACOL[lv-1];
-  if(!top){if(lv>1&&!f.ko&&c){const p=.75+.25*Math.sin(G.frame*(.1+lv*.012)),R=(130+lv*16)*k,cy=f.y-70*k;ctx.save();
-      if(lv>=7){ctx.globalAlpha=.32*p;const gd=ctx.createRadialGradient(f.x,cy,0,f.x,cy,R*1.1);gd.addColorStop(0,'rgba(0,0,0,.9)');gd.addColorStop(1,'rgba(0,0,0,0)');ctx.fillStyle=gd;ctx.fillRect(f.x-R*1.1,cy-R*1.1,R*2.2,R*2.2)}
-      ctx.globalCompositeOperation='lighter';ctx.globalAlpha=(.16+.035*lv)*p;const g=ctx.createRadialGradient(f.x,cy,R*.15,f.x,cy,R);g.addColorStop(0,`rgba(${c},.9)`);g.addColorStop(.55,`rgba(${c},.35)`);g.addColorStop(1,`rgba(${c},0)`);ctx.fillStyle=g;ctx.fillRect(f.x-R,cy-R,R*2,R*2);ctx.restore();
-      if(run&&lv>=3&&Math.random()<.12+lv*.05)caEmb(f,f.x+rand(-90,90)*k,f.y-rand(10,150)*k,rand(-.6,.6),-rand(1.2,2.6+lv*.2),rand(30,55),0)}
-    return}
-  const L=f.bEm||[];if(!L.length)return;ctx.save();ctx.globalCompositeOperation='lighter';const cc=c||'190,60,255';
-  for(const e of L){if(run){e.x+=e.vx;e.y+=e.vy;e.l--}const a=Math.max(0,Math.min(1,e.l/e.m*1.6));ctx.globalAlpha=a;const r=e.g?5:3.2;const g=ctx.createRadialGradient(e.x,e.y,0,e.x,e.y,r*3);g.addColorStop(0,'rgba(255,255,255,1)');g.addColorStop(.3,`rgba(${e.g?'200,80,255':cc},.9)`);g.addColorStop(1,`rgba(${cc},0)`);ctx.fillStyle=g;ctx.fillRect(e.x-r*3,e.y-r*3,r*6,r*6)}
+function bsSpd(f,o){const lv=f.bLv||1,adv=lv>=7?[1.15,1.2,1.25,1.3][lv-7]:1,ps=G.gmode==='caca'&&o?Math.max(1,o.tsp||1):1;return Math.max(.85,(f.bsp||1)*adv/ps)}
+function caCol(lv){const u=(lv-1)/9,A=[70,170,255],M=[170,80,255],B=[255,25,40],m=(x,y,k)=>Math.round(x+(y-x)*k);return u<.5?A.map((v,i)=>m(v,M[i],u*2)):M.map((v,i)=>m(v,B[i],(u-.5)*2))}
+function caBolts(f){const lv=f.bLv||1,k=f.bSc||1,n=1+Math.floor(lv*1.4),cx=f.x,cy=f.y-75*k,B=[];
+  for(let i=0;i<n;i++){if(Math.random()<.25)continue;const an=Math.random()*TAU,rx=105*k,ry=58*k;let x=cx+Math.cos(an)*rx*rand(.3,.9),y=cy+Math.sin(an)*ry*rand(.3,.9);const dir=an+rand(-.9,.9),P=[[x,y]],seg=4+((Math.random()*3)|0),L=(10+lv*1.6)*k;
+    for(let j=0;j<seg;j++){const d=dir+rand(-1,1);x+=Math.cos(d)*L*rand(.6,1.3);y+=Math.sin(d)*L*rand(.6,1.3);P.push([x,y])}B.push({P,w:rand(.7,1.2)*(1+lv*.08)})}
+  return B}
+function caAura(f,top){if(G.gmode!=='caca')return;const lv=f.bLv||1,run=G.hitstop<=0&&!G.paused;
+  if(!top)return;
+  if(!f.ko&&f.bs!=='rev'||f.bs==='rev'&&f.bRt>115){if(run&&(G.frame%3===0||!f.bBo))f.bBo=caBolts(f);const C=caCol(lv),c=C.join(',');ctx.save();ctx.globalCompositeOperation='lighter';ctx.lineCap='round';ctx.lineJoin='round';
+    for(const b of f.bBo||[]){ctx.beginPath();ctx.moveTo(b.P[0][0],b.P[0][1]);for(let j=1;j<b.P.length;j++)ctx.lineTo(b.P[j][0],b.P[j][1]);
+      ctx.globalAlpha=.4;ctx.strokeStyle=`rgb(${c})`;ctx.lineWidth=6*b.w;ctx.stroke();ctx.globalAlpha=.95;ctx.strokeStyle=`rgb(${c})`;ctx.lineWidth=2.4*b.w;ctx.stroke();ctx.strokeStyle='#ffffff';ctx.lineWidth=1*b.w;ctx.stroke()}
+    if(lv>=5){const k=f.bSc||1,R=(80+lv*6)*k,cy=f.y-75*k,p=.5+.5*Math.sin(G.frame*.25);ctx.globalAlpha=(.05+.012*lv)*p;const g=ctx.createRadialGradient(f.x,cy,0,f.x,cy,R);g.addColorStop(0,`rgba(${c},.9)`);g.addColorStop(1,`rgba(${c},0)`);ctx.fillStyle=g;ctx.fillRect(f.x-R,cy-R,R*2,R*2)}
+    ctx.restore()}
+  const L=f.bEm||[];if(!L.length)return;ctx.save();ctx.globalCompositeOperation='lighter';
+  for(const e of L){if(run){e.x+=e.vx;e.y+=e.vy;e.l--}const a=Math.max(0,Math.min(1,e.l/e.m*1.6));ctx.globalAlpha=a;const r=4.5;const g=ctx.createRadialGradient(e.x,e.y,0,e.x,e.y,r*3);g.addColorStop(0,'rgba(255,255,255,1)');g.addColorStop(.3,'rgba(200,80,255,.9)');g.addColorStop(1,'rgba(200,80,255,0)');ctx.fillStyle=g;ctx.fillRect(e.x-r*3,e.y-r*3,r*6,r*6)}
   ctx.restore();f.bEm=L.filter(e=>e.l>0)}
 {const _d=bsDraw;bsDraw=function(f,reflect){if(!reflect)caAura(f,0);_d.apply(this,arguments);if(!reflect)caAura(f,1)}}
 /* ---- tela "Caça ao Monstro" ---- */
@@ -1736,11 +1743,14 @@ function caH(){const rec=rkG('caRec',0),P=(x,y)=>`left:${x/16.72}%;top:${y/9.41}
   for(const [x,y,c] of [[466,492,'r'],[528,490,'r'],[942,350,'v'],[1062,262,'v'],[1120,398,'v'],[226,262,'r']])fx+=`<i class="mEye ${c}" style="${P(x,y)};animation-delay:${R(0,2).toFixed(2)}s"></i>`;
   for(let i=0;i<24;i++)fx+=`<i class="mFf" style="${P(R(320,1660),R(120,930))};animation-delay:${R(0,8).toFixed(2)}s;animation-duration:${R(6,11).toFixed(2)}s"></i>`;fx+='</div>';
   return `${fx}<button class="hs" data-a="back" style="${rkB2(0,0,160,75)}"></button>
-  <button class="hs caSl" data-a="caInfo" style="${rkB2(25,205,360,345)}"><b class="caSlT">LOBO SOMBRIO</b><b class="caSlI">?</b></button>
+  <button class="hs caSl" data-a="caInfo" style="${rkB2(25,205,360,345)}"><b class="caSlT">LOBO NEGRO</b><b class="caSlI">?</b></button>
   ${[365,480,595,710].map(y=>`<button class="hs" data-a="caLk" style="${rkB2(40,y,300,y+105)}"></button>`).join('')}
   <button class="hs caStg" data-a="caStg" style="${rkB2(1145,190,1650,465)}"><b>FLORESTA SOMBRIA</b></button>
   ${CARING.map((r,i)=>{const x=[1100,1208,1318,1428,1530][i];return `<button class="hs caRg" data-a="caRing" data-i="${i}" style="${rkB2(x,535,x+110,662)}"></button><b class="caRgT" style="${rkB2(x-14,660,x+124,694)};color:${r[0]}">${r[2]}</b>`}).join('')}
   <button class="hs caGo" data-a="caGo" style="${rkB2(1140,750,1595,875)}"><span class="mSw"></span></button>
-  <div class="caBar" style="${rkB2(370,884,1070,932)}">🐺 LOBO SOMBRIO · 10 NÍVEIS · RECORDE: <b>${rec?(rec>=10?'👑 CAÇOU OS 10':'DERROTOU '+rec+'X'):'—'}</b></div>`}
-function caInfo(){rkModal(`<div class="twM"><h3>🐺 LOBO SOMBRIO · 10 NÍVEIS</h3><p class="twH">Cada vez que você derruba o lobo, ele <b>levanta de novo</b> com a vida cheia: mais forte, mais rápido, mais resistente, maior e com uma <b>passiva nova</b>. A floresta vai sendo destruída a cada nível. Você ganha +10% de vida a cada nível que vence.</p>
+  <div class="caBar" style="${rkB2(370,884,1070,932)}">🐺 LOBO NEGRO · 10 NÍVEIS · RECORDE: <b>${rec?(rec>=10?'👑 CAÇOU OS 10':'DERROTOU '+rec+'X'):'—'}</b></div>`}
+function caInfo(){rkModal(`<div class="twM"><h3>🐺 LOBO NEGRO · 10 NÍVEIS</h3><p class="twH">Cada vez que você derruba o lobo, ele <b>levanta de novo</b> com a vida cheia: mais forte, mais rápido, mais resistente, maior e com uma <b>passiva nova</b>. A floresta vai sendo destruída a cada nível. Você ganha +10% de vida a cada nível que vence.</p>
   <p class="twH">Passivas que ele pode ganhar: ${Object.values(CAPS).map(p=>p[0]).join(' · ')}</p><p class="twH">Derrote o NÍVEL 10 para caçar o Rei da Floresta. Anéis: em breve.</p><div class="row"><button class="btn main" id="rkMX">ENTENDI</button></div></div>`);$('rkMX').onclick=()=>rkModal(null)}
+
+/* v275: VS do modo caça mostra o LOBO NEGRO em pé (foto do dono) no lugar do adversário usado por baixo (Goku) */
+{const _sv=showVS;showVS=function(cb,PM){const r=_sv.apply(this,arguments);if(G.gmode==='caca'){try{$('vs2').src=RQA.lobo.vs;$('vsn2').textContent=BSD.name;$('vs').style.setProperty('--c2','#ff2a3a')}catch(e){}}return r}}

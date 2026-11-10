@@ -36,12 +36,13 @@ def frames(f,cols,rows,rgb=True,boxes=None,mg=30,lab_rm=False):
             by,bx=np.where(body);foot=int(by.max());cx=float(bx.mean())
             L.append((Image.fromarray(t[y0:y1,x0:x1]),{'ax':float(cx-x0),'ay':int(foot-y0),'bh':int(foot-by.min()),'bw':int(bx.max()-bx.min())}))
     return L
-S={'garras':frames('01_ataque_garras.png',3,2),'pulo':frames('02_pulo_bote.png',3,2),'ferido':frames('03_ferido_morte.png',3,2),'patada':frames('04_ataque_patada.png',3,2),'anda':frames('05_andando.png',6,1,False),
-   'cai':frames('06_derrubado.png',3,2,mg=60),
-   'combo':frames('07_auto_combo.png',4,4,mg=140,lab_rm=True,boxes=[(x0+4,y0+4,x1-3,y1-3) for (y0,y1) in [(0,179),(181,361),(363,542),(544,723)] for (x0,x1) in [(1,542),(544,1085),(1087,1628),(1630,2171)]])}
-info={}
-for k,L in S.items():
-    info[k]=[]
-    for i,(im,m) in enumerate(L):im.save(O+f'{k}{i}.png');info[k].append(m)
-json.dump(info,open(D+'/info.json','w'),indent=1)
-for k,v in info.items():print(k,[(m['bw'],m['bh']) for m in v])
+if __name__=='__main__':
+    S={'garras':frames('01_ataque_garras.png',3,2),'pulo':frames('02_pulo_bote.png',3,2),'ferido':frames('03_ferido_morte.png',3,2),'patada':frames('04_ataque_patada.png',3,2),'anda':frames('05_andando.png',6,1,False),
+       'cai':frames('06_derrubado.png',3,2,mg=60),
+       'combo':frames('07_auto_combo.png',4,4,mg=140,lab_rm=True,boxes=[(x0+4,y0+4,x1-3,y1-3) for (y0,y1) in [(0,179),(181,361),(363,542),(544,723)] for (x0,x1) in [(1,542),(544,1085),(1087,1628),(1630,2171)]])}
+    info={}
+    for k,L in S.items():
+        info[k]=[]
+        for i,(im,m) in enumerate(L):im.save(O+f'{k}{i}.png');info[k].append(m)
+    json.dump(info,open(D+'/info.json','w'),indent=1)
+    for k,v in info.items():print(k,[(m['bw'],m['bh']) for m in v])
