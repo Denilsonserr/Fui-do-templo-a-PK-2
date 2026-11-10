@@ -12,3 +12,6 @@
 - Na árvore de habilidade ganha **mais 2 linhas** (nível 60 e nível 70) com escolhas **diferentes** e **muito mais fortes** (ex.: crítico, ataque bem elevados).
 - Atributos dele **maiores que de qualquer outro personagem** (é secreto).
 - Com nível 70 ele abre 7 vagas de anel (1 a cada 10 níveis).
+## Vídeos (10/11/2026) — usar SEM som
+- `videos/transformacao_abre_olhos.mp4` (6,9 s, 4K): **transformação = ele ABRE OS OLHOS**. Ao abrir, o inimigo fica **PARALISADO 3 segundos**.
+- `videos/super_ataque.mp4` (8,4 s, 4K): **Ultimate**. Quando o vídeo acaba, o inimigo fica paralisado e toma **vários danos do nada** (dano invisível, sem encostar), normais e críticos conforme o dano do Shaka, e depois **cai no chão**.
