@@ -1,0 +1,25 @@
+// v295: poção na caça, ranking e títulos da caça, padrão leve+turbo, brilho fixo dos anéis
+const {chromium}=require('playwright');const SH='/home/claude/fui-do-templo-a-pk-2/ferramentas/testes/shots/';
+const doc=(f)=>({document:{name:'x',createTime:new Date().toISOString(),fields:Object.fromEntries(Object.entries(f).map(([k,v])=>[k,typeof v==='number'?{integerValue:String(v)}:{stringValue:v}]))}});
+(async()=>{const b=await chromium.launch();const p=await b.newPage({viewport:{width:915,height:412},deviceScaleFactor:2});const errs=[];p.on('pageerror',e=>errs.push(e.message));const sent=[];
+await p.route(/fonts\.g/,r=>r.abort());await p.route(/firestore/,r=>{const q=r.request();if(/runQuery/.test(q.url())&&/"ca"/.test(q.postData()||''))return r.fulfill({status:200,contentType:'application/json',body:JSON.stringify([doc({nome:'Lucas',uid:'u1',tit:'cc10',ca:'1',clv:10,cdm:250000,ccr:80,ctt:210,crg:46}),doc({nome:'Ana',uid:'u2',ca:'1',clv:6,cdm:90000,ccr:30,ctt:0,crg:23}),doc({nome:'Lucas',uid:'u1',ca:'1',clv:8,cdm:300000,ccr:20,ctt:0,crg:10})])});
+ if(q.method()==='POST'&&/documents\/torre\?/.test(q.url()))sent.push(q.postData());return r.fulfill({status:200,contentType:'application/json',body:'[]'})});
+await p.addInitScript(()=>{if(!sessionStorage.d){sessionStorage.d=1;localStorage.clear();Object.assign(localStorage,{rk_ini:'1',rk_xpv2:'1',rk_dia:'1',tw_nome:'"T"',rk_sel:'"goku"',rk_own:'["goku"]',tw_poc:JSON.stringify([{id:'p1',r:'lend',v:10},{id:'p2',pk:'cura',r:'mit',v:75}]),rk_an:JSON.stringify([{i:'a1',c:3,g:7,s:'dano',v:22,a:0,l:30}]),rk_anEq:JSON.stringify({goku:['a1',null,null,null,null,null,null,null]})})}});
+await p.goto('file:///home/claude/fui-do-templo-a-pk-2/www/index.html');await p.waitForFunction(()=>!document.getElementById('goSelect').disabled,null,{timeout:120000});
+console.log('padrão',await p.evaluate(()=>[localStorage.ft_hq,localStorage.ft_spd,__dbg.G.hq,__dbg.G.spd]));
+await p.waitForTimeout(4500);console.log('títulos',await p.evaluate(()=>localStorage.tw_tit));
+await p.click('#mRank');await p.waitForTimeout(900);await p.click('#rkWrap [data-a="caca"]',{force:true});await p.waitForTimeout(1200);await p.screenshot({path:SH+'c95_tela.png'});
+await p.click('#rkWrap [data-a="caRank"]',{force:true});await p.waitForTimeout(1200);await p.screenshot({path:SH+'c95_rank.png'});
+await p.click('#rkModal .caRkT button[data-f="crg"]');await p.waitForTimeout(300);await p.screenshot({path:SH+'c95_rank2.png'});await p.click('#caTitB');await p.waitForTimeout(300);await p.screenshot({path:SH+'c95_tit.png'});await p.evaluate(()=>document.getElementById('caBk').click());await p.evaluate(()=>document.getElementById('rkMX').click());
+await p.click('#rkWrap [data-a="lsSet"]',{force:true});await p.waitForTimeout(500);await p.evaluate(()=>document.getElementById('caPocB').click());await p.waitForTimeout(400);
+for(let k=0;k<2;k++){await p.click('#rkModal .eqI',{force:true});await p.waitForTimeout(150);await p.evaluate(()=>{const b=document.querySelector('#rkModal .eqD [data-d="beber"]');if(b)b.click()});await p.waitForTimeout(250)}
+console.log('poção',await p.evaluate(()=>[localStorage.tw_pocOn,localStorage.rk_pk_cura]));await p.evaluate(()=>document.getElementById('rkMX').click());await p.waitForTimeout(300);
+await p.click('#rkWrap [data-a="caGo"]',{force:true});await p.waitForFunction(()=>__dbg.G.mode==='fight'&&__dbg.G.phase==='fight',null,{timeout:120000});await p.waitForTimeout(800);
+console.log('luta',await p.evaluate(()=>{const a=__dbg.G.p[0];return {tdm:+a.tdm.toFixed(2),tcr:a.tcr,cura:a.rkCura,poc:localStorage.tw_pocOn}}));
+await p.evaluate(()=>{const [a,o]=__dbg.G.p;window.__h0=a.hp;a.hp=a.hp*.2});await p.waitForTimeout(500);console.log('curou',await p.evaluate(()=>{const a=__dbg.G.p[0];return [Math.round(a.hp/window.__h0*100),a.rkCura]}));
+await p.evaluate(()=>{const [a,o]=__dbg.G.p;a.hp=window.__h0;o.hp=40;o.x=a.x+170;o.y=486;o.grounded=true;o.bs='idle';o.bcd=300;o.state='idle';o.inv=0;o.facing=-1;a.facing=1;a.state='idle'});
+for(let i=0;i<14;i++){await p.keyboard.press('KeyJ');await p.waitForTimeout(110);if(await p.evaluate(()=>!!document.querySelector('.bcO')))break}await p.waitForTimeout(3300);await p.click('.bcGo',{force:true});
+for(let i=0;i<40;i++){await p.evaluate(()=>{const [a,o]=__dbg.G.p;if(a.hp>1)a.hp=1;a.inv=0;a.rkCura=0;if(o.bs==='idle'){o.x=a.x+150;o.bcd=0}});await p.waitForTimeout(500);if(await p.evaluate(()=>__dbg.G.mode!=='fight'))break}
+await p.waitForTimeout(1500);console.log('modo',await p.evaluate(()=>[__dbg.G.mode,localStorage.rk_caRec,__dbg.G.p[0].hp,__dbg.G.p[1].bLv,__dbg.G.p[1].bs,__dbg.G.hold,__dbg.G.p[1].bt,!!document.querySelector('.bcO'),__dbg.G.frame]));console.log('best',await p.evaluate(()=>localStorage.rk_caBest),'enviados',sent.filter(x=>/"ca"/.test(x)).map(x=>x.replace(/.*"clv"/,'clv').slice(0,200)));
+await p.evaluate(()=>{try{document.getElementById('rkMX').click()}catch(e){}});await p.waitForTimeout(500);
+console.log('erros',JSON.stringify(errs));await b.close()})();

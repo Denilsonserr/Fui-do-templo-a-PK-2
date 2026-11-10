@@ -221,7 +221,7 @@ const RKEVX=[[Date.UTC(2026,10,8,23,0),Date.UTC(2026,10,9,1,0),3,'3x XP'],
   /* v248: EVENTO DE ATUALIZAÇÃO — 10 horas (12:30 até 22:30 de Brasília, 09/11/2026): 2x XP de rank, 2x gemas, 2x sorte */
   [Date.UTC(2026,10,9,15,30),Date.UTC(2026,10,10,1,30),2,'2x XP · 2x GEMAS · 2x SORTE',{gem:2,luck:2}],
   /* v293: EVENTO 7 HORAS (15:30 até 22:30 de Brasília, 10/11/2026): 3x DROP, 2x SORTE, 2x XP de rank */
-  [Date.UTC(2026,10,10,18,30),Date.UTC(2026,10,11,1,30),2,'3x DROP · 2x SORTE · 2x XP',{luck:2,drop:3}]];
+  [Date.UTC(2026,10,10,18,30),Date.UTC(2026,10,11,1,30),2,'3x DROP · 2x SORTE · 2x XP · 2x GEMAS',{luck:2,drop:3,gem:2}]];
 const rkEvX=()=>{const t=Date.now();return RKEVX.find(e=>t>=e[0]&&t<e[1])||null};
 const rkEvG=()=>{const e=rkEvX();return (e&&e[4]&&e[4].gem)||1},rkEvL=()=>{const e=rkEvX();return (e&&e[4]&&e[4].luck)||1},rkEvD=()=>{const e=rkEvX();return (e&&e[4]&&e[4].drop)||1};
 const rkEvTxt=()=>'';const rkEvTxt0=()=>{const e=rkEvX();if(!e)return '';const m=Math.max(0,Math.round((e[1]-Date.now())/60000));return `<div class="rkEvX">🔥 EVENTO <b>${e[3]}</b> NA RANQUEADA! · termina em ${m>=60?Math.floor(m/60)+'h'+String(m%60).padStart(2,'0'):m+' min'}</div>`};
@@ -1672,7 +1672,7 @@ let CA={on:0};
 function caStart(){rkInit();if(!SPR_OK)return;const sel=rkG('sel','goku');fsTry();CA={on:1};G.pick=sel;G.opp='goku';G.gmode='caca';RKB.diff0=G.diff;G.diff=3;
   const sk=Object.keys(STG).filter(k=>!STG[k].hid);G.nextStg=STG.flo?'flo':sk[(Math.random()*sk.length)|0];bsPre();
   const PM=prepMatch([G.pick,G.opp],G.nextStg);showVS(()=>PM.then(()=>{vsLoadEnd();startMatch()}),PM)}
-{const _ap=rkApply;rkApply=function(){if(G.gmode==='caca'&&G.p){const [p,o]=G.p;p.tdm=(p.tdm||1)*(1+twEqB('dano')/100);p.tsp=(p.tsp||1)*(1+twEqB('vel')/100);p.tdf=(p.tdf||1)/(1+twEqB('vida')/100);{const q=twEqOn();p.tcr=0;for(const k in q)p.tcr+=q[k].crit||0}
+{const _ap=rkApply;rkApply=function(){if(G.gmode==='caca'&&G.p){const [p,o]=G.p;p.tdm=(p.tdm||1)*(1+twEqB('dano')/100);p.tsp=(p.tsp||1)*(1+twEqB('vel')/100);p.tdf=(p.tdf||1)/(1+twEqB('vida')/100);{const q=twEqOn();p.tcr=0;for(const k in q)p.tcr+=q[k].crit||0}caPoc(p);
   bsMake(o);o.bLv=1;o.bPas=[];caLvApply(o);o.hp=o.hpLag=o.mhp;CA.lv=1;CA.pas=[];G.timer=180;return}return _ap.apply(this,arguments)}}
 {const _rg=rkBossGo;rkBossGo=function(){if(G.gmode==='caca'&&G.p){if(G.tlim!==0)G.timer=180;banner('MODO CAÇA · TESTE','#ff2a3a',100,BSD.name+' · BESTA DE ALMA');return}return _rg.apply(this,arguments)}}
 {const _er=endRound;endRound=function(){if(G.gmode==='caca'){caEnd(G.koWinner);return}return _er.apply(this,arguments)}}
@@ -1865,7 +1865,7 @@ const caRnd=x=>Math.floor(x)+(Math.random()<x%1?1:0);
 anDropLobo=function(L){const k=caLuck(),C=[[4,L>=10?.005:L>=9?.004:0],[3,L>=9?.02:L>=7?.012:0],[2,L>=5?.04:0],[1,L>=3?.09:0],[0,.22]];let r=null;
   for(const [c,p] of C){if(p&&Math.random()<p*k){r=anGive(anRoll(c,L));break}}caLoot(L);return r};
 function caLoot(L){const k=caLuck(),d=caDropF(),X=CA.loot||(CA.loot={gem:0,red:0,tic:0,pd:[0,0,0,0,0,0,0],set:[],bau:[]});const msg=[];
-  const g=caRnd((5+L*4+Math.random()*6)*d);rkAdd('gem',g);X.gem+=g;msg.push('+'+g+'💎');
+  const g=caRnd((5+L*4+Math.random()*6)*d*rkEvG());rkAdd('gem',g);X.gem+=g;msg.push('+'+g+'💎');
   if(L>=4&&Math.random()<.2){const n=1+(Math.random()<.4?1:0);rkAdd('red',n);X.red+=n;msg.push('+'+n+'🔴')}
   if(Math.random()<.01*k){rkAdd('tic',1);X.tic++;msg.push('🎟️ TICKET!')}
   if(Math.random()<.4+.03*L){const W=[55,26*(1+L*.05),12*(1+L*.05),5*k*(1+L*.08),1.5*k*(1+L*.08),.35*k*(1+L*.08),.08*k*(1+L*.08)],t=caPick(W),n=Math.max(1,caRnd([3,2,1.4,1,1,1,1][t]*(.7+Math.random()*.6)*d));pdAdd(t,n);X.pd[t]+=n;msg.push('🎒 Pedra '+PDN[t]+' x'+n)}
@@ -1904,7 +1904,7 @@ function lsOpen(){const I=lsInv(),E=lsEq();
   $('rkMX').onclick=()=>rkModal(null);
   document.querySelectorAll('#rkModal .lsIt').forEach(b=>b.onclick=()=>{const E2=lsEq();E2[b.dataset.k]=+b.dataset.r;rkS('lsEq',E2);rkSfx('powerUp');lsOpen()});
   document.querySelectorAll('#rkModal .lsSl').forEach(b=>b.onclick=()=>{const E2=lsEq();if(E2[b.dataset.k]==null)return;delete E2[b.dataset.k];rkS('lsEq',E2);rkSfx('whoosh');lsOpen()})}
-{const _h=caH;caH=function(){return _h.apply(this,arguments)+`<button class="hs caSet" data-a="lsSet" style="${rkB2(1130,882,1600,934)}">🐺 SET DO LOBO · 🎒 PEDRAS</button>`}}
+{const _h=caH;caH=function(){return _h.apply(this,arguments)+`<button class="hs caSet" data-a="lsSet" style="${rkB2(1130,882,1600,934)}">🐺 SET DO LOBO · 🎒 PEDRAS · 🧪 POÇÕES</button>`}}
 /* bônus do set na luta da caça */
 {const _ra=rkApply;rkApply=function(){_ra.apply(this,arguments);try{if(G.gmode!=='caca'||!G.p)return;const p=G.p[0];p.tdm=(p.tdm||1)+lsB('dano')/100;p.tcr=(p.tcr||0)+lsB('crit');p.tsp=(p.tsp||1)+lsB('vel')/100;p.tdf=(p.tdf||1)/(1+lsB('def')/100)}catch(e){}}}
 /* pedras e set na Biblioteca (aba Itens) */
@@ -2038,3 +2038,55 @@ function bcShow(B){if(document.querySelector('.bcO')){setTimeout(()=>bcShow(B),4
 TWCUP['1g9z05']={nm:'GOJO',it:[],chr:'gojo'};
 {const _cp=twCupom;twCupom=async function(code,E){const C=TWCUP[twHash(String(code).toUpperCase())];const r=await _cp.apply(this,arguments);
   if(C&&C.chr&&E&&/\bok\b/.test(E.className)){const own=rkG('own',['goku']);if(!own.includes(C.chr)){own.push(C.chr);rkS('own',own)}try{acSave(1)}catch(x){}E.textContent='🎁 Código aceito! Você ganhou o '+C.nm+'! (já está nos seus personagens)'}return r}}
+
+/* ================= v295: POÇÃO NA CAÇA + RANKING DA CAÇA + TÍTULOS DA CAÇA ================= */
+/* poção: a normal (dano/crítico/energia), a de CURA e a de DROP valem na Caça; o drop da poção vale só nessa caçada */
+function caPoc(p){try{const pon=twPocOn();let m=[];if(pon){const E=twPoE(pon.r);p.tdm+=E[1]/100;p.tcr=(p.tcr||0)+E[2];p.tsb=(p.tsb||1)+E[0]/100;twLS.s('tw_pocOn',null);m.push('🧪 +'+E[1]+'% DANO +'+E[2]+'% CRÍT.')}
+  const c=rkG('pk_cura',null),d=rkG('pk_drop',null);p.rkCura=c?c.v:0;RKPDN=d?d.v:0;if(c){rkS('pk_cura',null);m.push('💚 CURA '+c.v+'% PRONTA')}if(d){rkS('pk_drop',null);m.push('🎁 DROP +'+d.v+'%')}
+  if(m.length)setTimeout(()=>{try{txt(p.x,p.y-320,m.join(' · '),'#7dff9a')}catch(e){}},1800)}catch(e){}}
+{const _ce=caEnd;caEnd=function(){try{return _ce.apply(this,arguments)}finally{setTimeout(()=>{RKPDN=0},100)}}}
+{const _lo=lsOpen;lsOpen=function(){const r=_lo.apply(this,arguments);try{const row=document.querySelector('#rkModal .lsM .row');if(row){row.insertAdjacentHTML('afterbegin','<button class="btn main" id="caPocB">🧪 POÇÕES</button>');$('caPocB').onclick=()=>{rkSfx('whoosh');rkEquip('poc')}}}catch(e){}return r}}
+/* estatísticas da caçada: dano no lobo, críticos, tempo (quadros, para fora do baú) */
+{const _ah=applyHit;applyHit=function(a,d,h){if(G.gmode!=='caca'||!G.p||d!==G.p[1]||a!==G.p[0])return _ah.apply(this,arguments);const h0=d.hp;const r=_ah.apply(this,arguments);try{if(d.hp<h0)CA.dmg=(CA.dmg||0)+(h0-d.hp)}catch(e){}return r}}
+{const _cf=critFx;critFx=function(a,d,h){try{if(G.gmode==='caca'&&G.p&&a===G.p[0])CA.crt=(CA.crt||0)+1}catch(e){}return _cf.apply(this,arguments)}}
+{const _ap2=rkApply;rkApply=function(){const r=_ap2.apply(this,arguments);if(G.gmode==='caca'){CA.dmg=0;CA.crt=0;CA.f0=G.frame}return r}}
+const caRingBest=()=>{let b=-1;for(const r of anL())b=Math.max(b,r.c*10+r.g);return b};
+const caRingN=v=>v<0?'—':'ANEL '+ANC[Math.floor(v/10)][0]+' '+ANG[v%10];
+/* títulos da Caça */
+const CATIT={cc1:{n:'CAÇADOR',i:'🐺',c:'#cfd6ea',d:'Derrotar o Lobo Negro 1 vez',b:{dano:3},ok:S=>S.lv>=1},
+  cc5:{n:'MATADOR DE LOBOS',i:'🩸',c:'#ff6a6a',d:'Derrotar o Lobo Negro 5 vezes na mesma caçada',b:{dano:5,crit:3},ok:S=>S.lv>=5},
+  cc10:{n:'REI DA FLORESTA',i:'👑',c:'#7dff9a',d:'Caçar os 10 níveis do Lobo Negro',b:{dano:8,crit:5,vel:3},ok:S=>S.lv>=10},
+  ccrap:{n:'CAÇADOR VELOZ',i:'⚡',c:'#7fd8ff',d:'Caçar os 10 níveis em menos de 4 minutos',b:{vel:6,dano:4},ok:S=>S.tt>0&&S.tt<240},
+  cccr:{n:'OLHO DO PREDADOR',i:'🎯',c:'#ffb347',d:'Fazer 60 críticos numa caçada',b:{crit:8},ok:S=>S.crt>=60},
+  ccpr:{n:'ALMA NEGRA',i:'🖤',c:'#b9b2c8',d:'Conseguir um anel PRETO',b:{dano:4,st:5},ok:S=>S.ring>=30},
+  ccvm:{n:'ALMA DE SANGUE',i:'❤️‍🔥',c:'#ff3b4a',d:'Conseguir um anel VERMELHO',b:{dano:6,st:10},ok:S=>S.ring>=40},
+  ccsss:{n:'NOTA SSS',i:'💠',c:'#ffd34a',d:'Conseguir um anel com nota SSS',b:{crit:6,st:8},ok:S=>S.ring>=0&&S.ring%10===7}};
+for(const k in CATIT){const T=CATIT[k];TBUF[k]=T.b;TWTIT[k]={n:T.n,i:T.i,c:T.c,d:T.d+' · ✦ Bônus em uso: '+tbTxt(k)}}
+function caTitCheck(S){for(const k in CATIT){try{if(CATIT[k].ok(S))twGiveTit(k)}catch(e){}}}
+setTimeout(()=>{try{caTitCheck({lv:rkG('caRec',0),tt:rkG('caBest',{}).tt||0,crt:rkG('caBest',{}).crt||0,ring:caRingBest()})}catch(e){}},4000);
+/* fim da caçada: guarda os recordes e manda para o ranking quando bate algum */
+{const _ce2=caEnd;caEnd=function(w){const o=G.p&&G.p[1],won=!!(o&&o.ko&&(o.bLv||1)>=10),lv=won?10:Math.max(0,((o&&o.bLv)||1)-1);
+  const S={lv,dmg:Math.round(CA.dmg||0),crt:CA.crt|0,tt:won&&CA.f0!=null?Math.round((G.frame-CA.f0)/60):0,ring:caRingBest()};
+  const r=_ce2.apply(this,arguments);try{const B=rkG('caBest',{});let up=0;
+    if(S.lv>(B.lv||0)){B.lv=S.lv;up=1}if(S.dmg>(B.dmg||0)){B.dmg=S.dmg;up=1}if(S.crt>(B.crt||0)){B.crt=S.crt;up=1}if(S.tt&&(!B.tt||S.tt<B.tt)){B.tt=S.tt;up=1}if(S.ring>(B.ring==null?-1:B.ring)){B.ring=S.ring;up=1}
+    rkS('caBest',B);caTitCheck(S);if(up)caSend(B)}catch(e){}return r}}
+function caSend(B){const n=twLS.g('tw_nome','');if(!n)return;const IV=v=>({integerValue:String(Math.max(0,Math.round(v||0)))});
+  const f={nome:{stringValue:String(n).slice(0,16)},andar:IV(0),tempo:IV(0),uid:{stringValue:twUid()},tit:{stringValue:twTitOn()},ca:{stringValue:'1'},clv:IV(B.lv),cdm:IV(B.dmg),ccr:IV(B.crt),ctt:IV(B.tt),crg:IV((B.ring==null?-1:B.ring)+1),char:{stringValue:rkG('sel','goku')},v:IV(295)};
+  twFetchT(TWURL+'/torre?key='+TWFB.apiKey,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({fields:f})}).catch(()=>{})}
+/* tela do ranking */
+const CARK=[['clv','🐺 MAIS LONGE',v=>v>=10?'👑 10 NÍVEIS':'NÍVEL '+v,1],['cdm','⚔️ MAIS DANO',v=>rkFmtN(v),1],['ccr','🎯 MAIS CRÍTICOS',v=>v+' críticos',1],['ctt','⏱️ MAIS RÁPIDO',v=>Math.floor(v/60)+':'+String(v%60).padStart(2,'0'),0],['crg','💍 ANEL MAIS RARO',v=>caRingN(v-1),1]];
+let CARKT='clv',CARKL=null;
+async function caRank(){caRankH();try{const L=await rkQ('ca','1',1000),M={};for(const e of L){const k=e.uid||e.nome;const m=M[k]||(M[k]={nome:e.nome,tit:e.tit,uid:e.uid,clv:0,cdm:0,ccr:0,ctt:0,crg:0,_ct:0});
+    if((e._ct||0)>=m._ct){m.nome=e.nome;m.tit=e.tit;m._ct=e._ct||0}for(const [f,,,hi] of CARK){const v=e[f]|0;if(!v)continue;if(hi?v>m[f]:(!m[f]||v<m[f]))m[f]=v}}CARKL=Object.values(M)}catch(e){CARKL='err'}caRankH()}
+function caRankH(){const T=CARK.find(x=>x[0]===CARKT),f=T[0],hi=T[3];let rows='<p class="twH">Carregando...</p>';
+  if(CARKL==='err')rows='<p class="twH err">Sem internet agora.</p>';else if(CARKL){const L=CARKL.filter(e=>e[f]>0).sort((a,b)=>hi?b[f]-a[f]:a[f]-b[f]);const me=L.findIndex(e=>e.uid===twUid());
+    rows=L.length?L.slice(0,30).map((e,i)=>`<div class="caRkR ${e.uid===twUid()?'me':''} p${i+1}"><b>${i<3?['🥇','🥈','🥉'][i]:i+1+'º'}</b><span>${String(e.nome||'?').replace(/[<>&]/g,'')}${e.tit&&TWTIT[e.tit]?` <small style="color:${TWTIT[e.tit].c}">${TWTIT[e.tit].i||'🏅'} ${TWTIT[e.tit].n}</small>`:''}</span><em ${f==='crg'?`style="color:${ANC[Math.floor((e[f]-1)/10)][1]}"`:''}>${T[2](e[f])}</em></div>`).join('')+(me>=30?`<div class="caRkR me"><b>${me+1}º</b><span>VOCÊ</span><em>${T[2](L[me][f])}</em></div>`:''):'<p class="twH">Ninguém ainda. Seja o primeiro!</p>'}
+  const B=rkG('caBest',{});
+  rkModal(`<div class="twM caRkM"><h3>🏆 RANKING DA CAÇA · LOBO NEGRO</h3><div class="caRkT">${CARK.map(x=>`<button data-f="${x[0]}" class="${x[0]===CARKT?'on':''}">${x[1]}</button>`).join('')}</div>
+    <div class="caRkL">${rows}</div><p class="twH caRkMe">Seus recordes: 🐺 ${B.lv?CARK[0][2](B.lv):'—'} · ⚔️ ${B.dmg?rkFmtN(B.dmg):'—'} · 🎯 ${B.crt||'—'} · ⏱️ ${B.tt?CARK[3][2](B.tt):'—'} · 💍 ${caRingN(caRingBest())}</p>
+    <p class="twH" style="font-size:.75em">O ranking atualiza quando você bate um recorde seu. Mais rápido = caçar os 10 níveis.</p><div class="row"><button class="btn" id="caTitB">🏅 TÍTULOS DA CAÇA</button><button class="btn" id="rkMX">FECHAR</button></div></div>`);
+  $('rkMX').onclick=()=>rkModal(null);$('caTitB').onclick=caTits;document.querySelectorAll('#rkModal .caRkT button').forEach(b=>b.onclick=()=>{CARKT=b.dataset.f;rkSfx('whoosh');caRankH()})}
+function caTits(){const tt=twTits();rkModal(`<div class="twM caRkM"><h3>🏅 TÍTULOS DA CAÇA</h3><div class="caTl">${Object.keys(CATIT).map(k=>{const T=CATIT[k],has=tt.includes(k);return `<div class="caTi ${has?'on':''}" style="--c:${T.c}"><i>${has?T.i:'🔒'}</i><div><b>${T.n}</b><span>${T.d}</span><small>✦ ${tbTxt(k)}</small></div>${has?`<button class="btn" data-k="${k}">${twTitOn()===k?'EM USO':'USAR'}</button>`:''}</div>`}).join('')}</div>
+  <div class="row"><button class="btn" id="caBk">VOLTAR</button></div></div>`);$('caBk').onclick=caRankH;document.querySelectorAll('#rkModal .caTi button').forEach(b=>b.onclick=()=>{twLS.s('tw_titOn',b.dataset.k);try{twTitSync()}catch(e){}rkSfx('powerUp');caTits()})}
+{const _h2=caH;caH=function(){return _h2.apply(this,arguments)+`<button class="hs caRkB" data-a="caRank" style="${rkB2(985,770,1125,872)}"><i>🏆</i><b>RANKING</b></button>`}}
+{const _ac=rkAct;rkAct=function(a,b){if(a==='caRank'){rkSfx('whoosh');return caRank()}return _ac.apply(this,arguments)}}

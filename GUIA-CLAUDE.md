@@ -1399,3 +1399,12 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - **Notas (ANW):** E 30 · D 20 · C 12 · B 10 · A 9 · S 8 · SS 7 · SSS 4 (%). O dono escreveu "A 10%, A 9%…" — entendi como B 10% e A 9%.
 - **Código de PERSONAGEM:** `TWCUP[h].chr` = id do personagem (wrapper do `twCupom` põe em `rk_own` quando o código é aceito). Código do Gojo `1g9z05`: 1 pessoa no jogo todo (texto só com o dono).
 - Teste: `ferramentas/testes/tcod_v294.js` (servidor simulado: Gojo, itens do Shaka, gemas, uso repetido e outra pessoa).
+
+## v295
+- **Começo padrão:** todo mundo começa 1 vez com gráfico LEVE e velocidade TURBO (`ft_def295`); depois cada um troca no ⚙️ e fica salvo.
+- **Poção na Caça:** `caPoc(p)` no rkApply da Caça aplica a poção normal, a de CURA e a de DROP; botão 🧪 POÇÕES no Set do Lobo abre a mochila nas poções; `rkCuraTick`/`psRegTick` também na Caça (9j_v295.py).
+- **Evento 7h agora com 2x GEMAS** também (`gem:2`), e as gemas da Caça usam `rkEvG()`.
+- **Brilho dos anéis FIXO** (sem piscar) e no perfil (`.rk_pf .pfAnR img.gl`).
+- **Ranking da Caça** (botão 🏆 RANKING na tela da Caça): doc `ca:'1'` com recordes da pessoa (clv nível, cdm dano numa caçada, ccr críticos numa caçada, ctt segundos para caçar os 10, crg = melhor anel c*10+nota+1). Só manda quando bate um recorde (`rk_caBest`). Dano = applyHit no lobo; críticos = critFx; tempo = G.frame (pausa do baú não conta).
+- **Títulos da Caça (CATIT):** CAÇADOR, MATADOR DE LOBOS, REI DA FLORESTA, CAÇADOR VELOZ (<4 min), OLHO DO PREDADOR (60 críticos), ALMA NEGRA (anel preto), ALMA DE SANGUE (anel vermelho), NOTA SSS — com bônus pequenos (TBUF). Tela 🏅 no ranking.
+- Teste: `tcaca_v295.js`.
