@@ -1358,3 +1358,7 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - Título `sk1..sk10` (`TWTIT`, "SHAKA Nº N", 🪷): `skTitClaim` tenta criar `torre/sktit_1..10` (documentId fixo; 409 = já tem dono); sem internet fica pendente (`rk_sktp`) e tenta de novo ao abrir o Ranqueado. Tela "TÍTULO DIVINO" (`skTitWin`). Placa `.pfTt.skt s1..s4` (Nº1 com letra branca/dourada animada e brilho mais forte).
 - Bônus: +20% de dano SÓ lutando com o Shaka (Boss, Torre e Caça).
 - Teste: `ferramentas/testes/tgacha_sk_v288.js` (Nº1 ocupado → ganha Nº2).
+
+## v289 — 2 códigos do lançamento do Shaka (só quem tem CONTA, 1 vez por conta)
+- `extra/9g_v289.py` (textos só com o dono): `1yu9fib` = diamantes aleatórios 1000–5000 (`rnd`), `qb52ye` = tickets aleatórios 10–30 (flag nova `rtic`).
+- Flag nova `acc:1` no `twCupom`: exige conta (ac_n + ac_k) e trava por conta no servidor (`cupom_<hash>_a<hash da conta>`). O texto do sorteio de diamantes agora mostra a faixa certa do código.
