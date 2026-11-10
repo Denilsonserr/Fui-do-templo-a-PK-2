@@ -1408,3 +1408,7 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - **Ranking da Caça** (botão 🏆 RANKING na tela da Caça): doc `ca:'1'` com recordes da pessoa (clv nível, cdm dano numa caçada, ccr críticos numa caçada, ctt segundos para caçar os 10, crg = melhor anel c*10+nota+1). Só manda quando bate um recorde (`rk_caBest`). Dano = applyHit no lobo; críticos = critFx; tempo = G.frame (pausa do baú não conta).
 - **Títulos da Caça (CATIT):** CAÇADOR, MATADOR DE LOBOS, REI DA FLORESTA, CAÇADOR VELOZ (<4 min), OLHO DO PREDADOR (60 críticos), ALMA NEGRA (anel preto), ALMA DE SANGUE (anel vermelho), NOTA SSS — com bônus pequenos (TBUF). Tela 🏅 no ranking.
 - Teste: `tcaca_v295.js`.
+
+## v296
+- **Aviso de atualização:** o `montar.sh` agora troca `__APPV__` pelo código da versão (md5 do index) e grava `www/versao.txt`. O jogo (site e APK leve, só em http/https) confere o `versao.txt` 20 s depois de abrir, a cada 2 min e quando volta para a tela; se mudou, aparece o botão dourado "🔄 ATUALIZAÇÃO NOVA! Toque para atualizar" (salva a conta e recarrega). Não aparece no meio da luta. Patch: `extra/9k_v296.py`. Teste: `tupd_v296.js` (precisa de `python3 -m http.server 8765` na pasta www).
+- O APK leve já carrega o jogo do site da Cloudflare, então nunca mais precisa reinstalar para atualizar o jogo — só se mudar o próprio app (ícone, nome, permissões).
