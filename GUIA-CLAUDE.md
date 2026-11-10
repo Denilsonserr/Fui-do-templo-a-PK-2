@@ -1393,3 +1393,9 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - **Anéis:** todo anel brilha (`anGl` mínimo 1, mais com nível, raridade preta/vermelha e nota alta), brilho branco + cor, halo e estrelinha nas células.
 - **Mochila:** quadrados do dono (`RQA.bauc.slot`) como fundo dos itens normais e dos espaços vazios.
 - Testes: `tbau_v293.js`, `tbau2_v293.js` (o `tloot_v279.js` antigo não clica no CONTINUAR do baú).
+
+## v294
+- **Chances dos anéis da Caça (pedido do dono):** VERMELHO nv7 0,3% · nv8 0,5% · nv9 1% · nv10 1,5%. PRETO nv6 1% · nv7 2% · nv8 3% · nv9 4% · nv10 5% (sorte multiplica). Roxo/amarelo iguais.
+- **Notas (ANW):** E 30 · D 20 · C 12 · B 10 · A 9 · S 8 · SS 7 · SSS 4 (%). O dono escreveu "A 10%, A 9%…" — entendi como B 10% e A 9%.
+- **Código de PERSONAGEM:** `TWCUP[h].chr` = id do personagem (wrapper do `twCupom` põe em `rk_own` quando o código é aceito). Código do Gojo `1g9z05`: 1 pessoa no jogo todo (texto só com o dono).
+- Teste: `ferramentas/testes/tcod_v294.js` (servidor simulado: Gojo, itens do Shaka, gemas, uso repetido e outra pessoa).

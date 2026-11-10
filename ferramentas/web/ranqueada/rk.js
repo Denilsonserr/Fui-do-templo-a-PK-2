@@ -1773,7 +1773,7 @@ function caInfo(){rkModal(`<div class="twM"><h3>🐺 LOBO NEGRO · 10 NÍVEIS</h
    Os anéis equipados giram/flutuam em volta do corpo do personagem (metade de trás atrás do corpo, metade da frente na frente).
    Bônus valem no Boss, Torre e Caça (rkApply) e aparecem no "TUDO" da Biblioteca (coluna ANÉIS). Drop: só do LOBO NEGRO (modo Caça), por nível derrotado. */
 const ANC=[['BRANCO','#eef0ff','100 anos'],['AMARELO','#ffc928','1.000 anos'],['ROXO','#c27aff','10.000 anos'],['PRETO','#b9b2c8','25.000 a 75.000 anos'],['VERMELHO','#ff3b4a','100.000 anos']];
-const ANG=['E','D','C','B','A','S','SS','SSS'],ANW=[40,30,17,9,3.5,.4,.08,.02];
+const ANG=['E','D','C','B','A','S','SS','SSS'],ANW=[30,20,12,10,9,8,7,4]; /* v294: notas do dono */
 const ANV=[[1,2,3,4,5,7,10,15],[3,5,7,9,12,16,22,30],[6,9,13,17,22,30,40,55],[12,18,25,33,42,55,75,100],[25,35,50,65,85,110,150,200]];
 const ANS=[['dano','⚔️ Dano','%'],['crit','🎯 Crítico','%'],['vel','💨 Velocidade','%'],['st','🍀 Sorte',''],['drop','🎁 Drop','%'],['uv','✨ Vel. Ultimate','%']];
 const ANFL=['TODOS','BRANCO','AMARELO','ROXO','PRETO','VERMELHO'];
@@ -2010,7 +2010,7 @@ TWCUP['1r1gpju']={nm:'DIAMANTES PARA TODOS',ev:1,rnd:[1000,4000]};
 /* quadrados da mochila */
 (function(){try{const st=document.createElement('style');st.textContent=`.eqI:not(.uniq):not(.ysec){border:0!important;background:url(${RQA.bauc.slot}) center/100% 100% no-repeat!important;box-shadow:inset 0 -1.4em 1.3em -.8em color-mix(in srgb,var(--c) 60%,transparent)}.eqI:not(.uniq):not(.ysec).sel{outline:3px solid #fff}.eqS:not(.on){border:0!important;background:url(${RQA.bauc.slot}) center/100% 100% no-repeat!important}`;document.head.appendChild(st)}catch(e){}})();
 /* anel 100%: tenta do mais raro ao mais comum (sorte multiplica); se nada, BRANCO */
-anDropLobo=function(L){const k=caLuck(),C=[[4,L>=10?.005:L>=9?.004:0],[3,L>=9?.02:L>=7?.012:0],[2,L>=5?.06:L>=3?.02:0],[1,L>=3?.2:.08]];let c=0;
+anDropLobo=function(L){const k=caLuck(),C=[[4,[0,0,0,0,0,0,.003,.005,.01,.015][L-1]||0],[3,[0,0,0,0,0,.01,.02,.03,.04,.05][L-1]||0],[2,L>=5?.06:L>=3?.02:0],[1,L>=3?.2:.08]];let c=0; /* v294: vermelho e preto do dono */
   for(const [q,p] of C){if(p&&Math.random()<p*k){c=q;break}}const r=anGive(anRoll(c,L));
   const X0=JSON.parse(JSON.stringify(CA.loot||{gem:0,red:0,tic:0,pd:[0,0,0,0,0,0,0],set:[],bau:[]}));caLoot(L);const X=CA.loot||X0;
   const it=[];const d=(a,b)=>(a||0)-(b||0);
@@ -2034,3 +2034,7 @@ function bcShow(B){if(document.querySelector('.bcO')){setTimeout(()=>bcShow(B),4
   O.querySelector('.bcGo').onclick=e=>{e.stopPropagation();if(!O.classList.contains('pan'))return;O.classList.add('out');setTimeout(()=>{O.remove();if(!document.querySelector('.bcO'))G.hold=0},250)}}
 {const _cs=caStart;caStart=function(){BCQ.length=0;document.querySelectorAll('.bcO').forEach(x=>x.remove());G.hold=0;return _cs.apply(this,arguments)}}
 {const _tp=togglePause;togglePause=function(){if(document.querySelector('.bcO'))return;return _tp.apply(this,arguments)}}
+/* v294: código de PERSONAGEM (1 pessoa no jogo todo): C.chr = id do personagem */
+TWCUP['1g9z05']={nm:'GOJO',it:[],chr:'gojo'};
+{const _cp=twCupom;twCupom=async function(code,E){const C=TWCUP[twHash(String(code).toUpperCase())];const r=await _cp.apply(this,arguments);
+  if(C&&C.chr&&E&&/\bok\b/.test(E.className)){const own=rkG('own',['goku']);if(!own.includes(C.chr)){own.push(C.chr);rkS('own',own)}try{acSave(1)}catch(x){}E.textContent='🎁 Código aceito! Você ganhou o '+C.nm+'! (já está nos seus personagens)'}return r}}
