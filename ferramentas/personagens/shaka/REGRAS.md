@@ -15,3 +15,7 @@
 ## Vídeos (10/11/2026) — usar SEM som
 - `videos/transformacao_abre_olhos.mp4` (6,9 s, 4K): **transformação = ele ABRE OS OLHOS**. Ao abrir, o inimigo fica **PARALISADO 3 segundos**.
 - `videos/super_ataque.mp4` (8,4 s, 4K): **Ultimate**. Quando o vídeo acaba, o inimigo fica paralisado e toma **vários danos do nada** (dano invisível, sem encostar), normais e críticos conforme o dano do Shaka, e depois **cai no chão**.
+## Gacha do Shaka (10/11/2026) — arte `gacha/invocacao_ilimitada.png`
+- Fica na 3ª aba da Invocação (a que hoje tem o Madara e está trancada) → destrancar e virar **"Invocação Ilimitada"** com essa arte. Fica no ar **7 dias**.
+- **70 💎** um giro · **700 💎** dez giros (aceita tickets? confirmar — o Yuta aceita).
+- **Garantido em 170 giros** (piedade). Chance por giro **um pouco menor que a do Yuta**.
