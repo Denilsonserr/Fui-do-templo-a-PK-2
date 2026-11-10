@@ -1365,3 +1365,7 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 
 ## v290 — trava o ZOOM da página no celular
 - Jogador reclamou que "fica dando zoom" (dois toques rápidos ou dois dedos nos botões). `extra/9h_v290.py`: viewport com `maximum-scale=1,user-scalable=no`, `touch-action:manipulation` no html/body, e bloqueio de `gesturestart/gesturechange`, pinça (`touchmove` com scale), duplo clique fora de campos de texto e Ctrl+roda no PC.
+
+## APK LEVE (10/11/2026) — o app abre o site do Cloudflare por dentro
+- `capacitor.config.json`: `server.url` = https://fui-do-templo-a-pk-2.denilsinend.workers.dev e `webDir` = `apk_www` (só uma página "precisa de internet" de reserva). O APK fica com poucos MB, atualiza sozinho (é o site) e o online funciona (mesmo endereço do site). O jogo em si continua em `www/` (publicado pelo Cloudflare e pelo GitHub Pages).
+- Quem jogava no APK antigo sem conta: o progresso ficava no app (endereço interno) e não passa para o novo — precisa entrar na CONTA.
