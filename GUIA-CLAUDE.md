@@ -1483,3 +1483,7 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - Pedido do dono: o ranking do **RANK** (ranqueada) continua — vem do rank salvo no celular de cada um (v310). Os **outros rankings começam do zero**: Boss (dano no Broly, mais rápido, 1ª fase), Caça e Torre.
 - `importar.yml` não copia mais rk/rkr/ca/pontos/char/sem/ev (só códigos usados, títulos nº, perfis, mercado e contas).
 - Caça: `caSend` agora manda `v:311` e o ranking da Caça só conta documentos v≥311; os recordes da Caça guardados no aparelho zeram 1 vez (`rk_carst311`). O envio dos recordes da Caça ao abrir o jogo (v310) foi tirado.
+
+## v312
+- **Ranking do RANK com todo mundo que tem conta:** o `importar.yml` (05:20) agora também cria 1 documento de rank (`rkimp_<conta>`, `rk:'1'`, `rp` do `rk_rp` do salvamento mais novo) para cada conta salva nos últimos 45 dias (até 9.000 salvamentos mais novos) — quem tem conta aparece no ranking com o rank que tinha, mesmo sem abrir o jogo. Quem abrir depois manda o rank atual (mais novo → vale ele).
+- **Conta que ainda não está no servidor novo:** `acList` (ENTRAR/recuperar) busca no Firebase antigo quando o servidor novo não tem a conta; depois de entrar, o salvamento vai para o servidor novo (migração v309). Teste `tfb_v312.js`.

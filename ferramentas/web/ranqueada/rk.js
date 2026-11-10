@@ -2157,3 +2157,8 @@ setTimeout(()=>{try{if(!/\/fs\/v1\//.test(TWURL)||localStorage.getItem('rk_rksyn
 /* v311: dono: o ranking do RANK continua (vem do celular de cada um); os OUTROS rankings (Boss dano/tempo, Caça, Torre) começam do zero.
    Caça: recordes guardados no aparelho zeram 1 vez e só contam documentos da v311 em diante. */
 try{if(!localStorage.getItem('rk_carst311')){rkS('caBest',{});localStorage.setItem('rk_carst311','1')}}catch(e){}
+/* v312: conta que ainda não está no servidor novo → busca no Firebase antigo (só na hora de ENTRAR/recuperar). Depois de entrar, o salvamento vai para o servidor novo. */
+{const _al=acList;acList=async function(acc){const L=await _al.apply(this,arguments);if(L.length||!/\/fs\/v1\//.test(TWURL))return L;
+  try{const body={structuredQuery:{from:[{collectionId:'torre'}],where:{fieldFilter:{field:{fieldPath:'sv'},op:'EQUAL',value:{stringValue:acc}}},orderBy:[{field:{fieldPath:'__name__'},direction:'DESCENDING'}],limit:15}};
+    const r=await fetch('https://firestore.googleapis.com/v1/projects/'+TWFB.projectId+'/databases/(default)/documents:runQuery?key='+TWFB.apiKey,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});if(!r.ok)return L;
+    return (await r.json()).filter(x=>x.document).map(x=>{const f=x.document.fields||{};return {ts:+((f.ts||{}).integerValue||0),d:(f.d||{}).stringValue||'',sg:(f.sg||{}).stringValue||''}}).sort((a,b)=>b.ts-a.ts)}catch(e){return L}}}

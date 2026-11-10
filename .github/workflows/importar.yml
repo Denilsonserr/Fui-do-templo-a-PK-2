@@ -4,7 +4,7 @@ name: Importar do Firebase para o servidor novo (ferramenta)
 on:
   workflow_dispatch:
     inputs:
-      dias: {description: 'contas salvas nos últimos N dias', default: '5'}
+      dias: {description: 'contas salvas nos últimos N dias', default: '45'}
       site: {description: 'servidor novo', default: 'https://fui-do-templo-a-pk-2.denilsinend.workers.dev'}
 jobs:
   imp:
@@ -31,7 +31,7 @@ jobs:
               except Exception as e:print('ERRO',f,e)
           ts=int(time.time()*1000)-int(os.environ['DIAS'])*864e5
           try:
-              S=q(F({'where':{'fieldFilter':{'field':{'fieldPath':'ts'},'op':'GREATER_THAN','value':{'integerValue':str(int(ts))}}},'limit':8000}))
+              S=q(F({'where':{'fieldFilter':{'field':{'fieldPath':'ts'},'op':'GREATER_THAN','value':{'integerValue':str(int(ts))}}},'orderBy':[{'field':{'fieldPath':'ts'},'direction':'DESCENDING'}],'limit':9000}))
               A={}
               for d in S:
                   f=d['fields']
@@ -41,6 +41,16 @@ jobs:
               for acc,L in A.items():
                   L.sort(key=lambda d:int(d['fields']['ts']['integerValue']),reverse=True)
                   for d in L[:3]:D[d['name'].split('/')[-1]]=d;n+=1
+                  # v312: RANK de cada conta (do salvamento mais novo) entra no ranking do rank, mesmo sem a pessoa abrir o jogo
+                  try:
+                      top=L[0];dd=json.loads(top['fields']['d']['stringValue'])
+                      def g(k,v=None):
+                          try:return json.loads(dd[k])
+                          except Exception:return dd.get(k,v)
+                      rp=int(g('rk_rp',0) or 0);nm=str(g('tw_nome','') or top['fields'].get('nome',{}).get('stringValue',''))[:16];uid=str(g('tw_uid','') or '')
+                      if rp>0 and nm:
+                          D['rkimp_'+acc]={'name':'x/rkimp_'+acc,'createTime':top.get('createTime'),'fields':{'nome':{'stringValue':nm},'andar':{'integerValue':'0'},'tempo':{'integerValue':'0'},'uid':{'stringValue':uid},'tit':{'stringValue':str(g('tw_titOn','') or '')},'rk':{'stringValue':'1'},'rp':{'integerValue':str(rp)},'char':{'stringValue':str(g('rk_sel','goku') or 'goku')},'dmg':{'integerValue':'0'},'won':{'integerValue':'0'},'v':{'integerValue':'312'}}}
+                  except Exception as e:print('rank?',acc,e)
               print('contas',len(A),'salvamentos',n)
           except Exception as e:print('ERRO contas',e)
           L=[{'id':k,'ct':d.get('createTime'),'fields':d.get('fields',{})} for k,d in D.items()]
