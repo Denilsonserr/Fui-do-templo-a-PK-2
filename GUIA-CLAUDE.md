@@ -1219,3 +1219,7 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 
 ## v269 — código de sorteio do PASSE PAGO
 - `extra/9c_v269.py`: hash `189oqcd` (`bp:1,uni:1`): libera o Passe Pago para UMA pessoa no jogo inteiro. Texto só com o dono. Teste: `ferramentas/testes/tcodigos_v269.js`.
+
+## Ferramenta: publicar RECADO DO ADM sem abrir o jogo
+- `.github/workflows/recado.yml` (inputs `titulo`, `texto`): cria o documento `avs_<ts>` no servidor; aparece em Abas de Evento → Recados do ADM. Recados não dá para apagar (servidor só cria); para corrigir, publique outro (o mais novo aparece primeiro).
+- 09/11/2026: sorteio do dono — 1º recado (20 sorteios, 4/3/7/20 → 3) foi substituído por "SORTEIO REFEITO" (100 sorteios com o 13 incluído → **7**).
