@@ -1492,3 +1492,10 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - **15 bots** (ideia dos amigos do dono; ele manda tirar quando quiser → `BOTON=false` no rk.js): ShadowKing, Lukinhas_77, DarkNinja, Pedrin_BR, KaioZ, Mestre_Wolf, Gabizinha, RyuDoMal, Thzin, Vitin_God, NightFox, Lipe_Zero, Davizao, Kira_Sama, BrunoX.
 - Só no aparelho (nada no servidor): entram no ranking do RANK (rp começa de Divindade até Madeira e sobe 150–900 XP por dia, teto 55.000 = Divindade Suprema), Boss (dano/tempo/1ª fase coerentes com o rank), Caça (nível, dano, críticos, tempo, anel) e somam 3–11 no "online". Sem uid → não abrem perfil. Não contam para as molduras TOP 1/2/3 (`mdTopCheck` ignora bots).
 - Teste: `tbot_v313.js`.
+
+## v314
+- **Bots do jeito do dono:** nomes Samuel pera, Rangel, Goku black32, Tatayra, Marcos56, Ninguém, Furiosos, Darkalfe, Andtref, Andares (+ Thzin, Vitin_God, NightFox, Lipe_Zero, Davizao = 15). Jogadores medianos (Prata→Lendário); Goku black32, Furiosos, Vitin_God, Ninguém se esforçam mais.
+- **Sobem só enquanto estão ONLINE:** cada bot fica online 1 ou 2 horas, sai 1 hora e volta (`botOn`, deslocamento por bot); o "online" soma só os que estão online agora.
+- **Nunca passam o 1º, 2º e 3º lugar de verdade:** rank limitado abaixo do 3º jogador real (`cap`), e `botCap` faz o mesmo no Boss (dano, tempo, 1ª fase) e na Caça (nível, dano, críticos, tempo, anel).
+- **Perfil dos bots:** tocar no nome no ranking abre perfil (rank atual e máximo, personagem no pedestal, itens na vitrine, nível de habilidade e histórico com partidas, vitória %, posição, Torre, Boss, personagens e recorde) calculado do rank/tempo online (`botProf`). uid dos bots começa com `bt`.
+- Para tirar: `BOTON=false`. Teste: `tbot_v314.js` (servidor local).

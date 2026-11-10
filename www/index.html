@@ -9717,22 +9717,42 @@ try{if(!localStorage.getItem('rk_carst311')){rkS('caBest',{});localStorage.setIt
   try{const body={structuredQuery:{from:[{collectionId:'torre'}],where:{fieldFilter:{field:{fieldPath:'sv'},op:'EQUAL',value:{stringValue:acc}}},orderBy:[{field:{fieldPath:'__name__'},direction:'DESCENDING'}],limit:15}};
     const r=await fetch('https://firestore.googleapis.com/v1/projects/'+TWFB.projectId+'/databases/(default)/documents:runQuery?key='+TWFB.apiKey,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});if(!r.ok)return L;
     return (await r.json()).filter(x=>x.document).map(x=>{const f=x.document.fields||{};return {ts:+((f.ts||{}).integerValue||0),d:(f.d||{}).stringValue||'',sg:(f.sg||{}).stringValue||''}}).sort((a,b)=>b.ts-a.ts)}catch(e){return L}}}
-/* ================= v313: 15 BOTS (ideia dos amigos do dono: ter com quem competir). Para tirar: BOTON=false. =================
-   Aparecem no ranking do RANK, do Boss (dano/tempo/1ª fase), da Caça e no contador de online. Sobem de rank sozinhos com o tempo
-   (até no máximo DIVINDADE SUPREMA). Não abrem perfil (sem uid). Tudo só no aparelho: nada vai para o servidor. */
+/* ================= v313/v314: BOTS (ideia dos amigos do dono: ter com quem competir). Para tirar: BOTON=false. =================
+   v314 (pedido do dono): nomes novos, jogam como gente NORMAL (medianos; alguns se esforçam mais), sobem rank só enquanto estão ONLINE
+   (cada um fica online 1 ou 2 horas, sai 1 hora e volta), e NUNCA passam o 1º, 2º e 3º lugar dos jogadores de verdade (em nenhum ranking).
+   Aparecem no ranking do RANK, do Boss (dano/tempo/1ª fase), da Caça e no contador de online. Não abrem perfil. Nada vai para o servidor. */
 const BOTON=true,BOT0=Date.UTC(2026,10,10,23,0);
-const BOTS=[['ShadowKing',41000,900],['Lukinhas_77',33500,850],['DarkNinja',27000,800],['Pedrin_BR',22500,700],['KaioZ',18000,650],['Mestre_Wolf',14500,600],['Gabizinha',11800,500],['RyuDoMal',9500,450],
-  ['Thzin',7600,400],['Vitin_God',6100,350],['NightFox',4800,300],['Lipe_Zero',3600,260],['Davizao',2600,220],['Kira_Sama',1700,180],['BrunoX',900,150]];
+/* [nome, XP inicial, XP por hora online, horas online por vez (1 ou 2), deslocamento em minutos] */
+const BOTS=[['Samuel pera',6200,70,2,0],['Rangel',4100,55,1,40],['Goku black32',15800,140,2,90],['Tatayra',8800,80,1,15],['Marcos56',3000,50,2,120],
+  ['Ninguém',11200,95,1,70],['Furiosos',17500,150,2,30],['Darkalfe',9900,85,2,150],['Andtref',5300,60,1,100],['Andares',2400,45,1,55],
+  ['Thzin',7200,65,2,170],['Vitin_God',12900,120,1,25],['NightFox',4700,55,2,140],['Lipe_Zero',3600,50,1,85],['Davizao',6800,70,2,10]];
 const botR=(i,s)=>{let h=2166136261^(i*7919+s*104729);h=Math.imul(h^(h>>>13),16777619);h^=h>>>15;return (h>>>0)/4294967296};
-function botList(){if(!BOTON)return [];const d=Math.max(0,(Date.now()-BOT0)/864e5),ids=Object.keys(CH||{}).filter(k=>!/adm|treino|cpu/i.test(k)),N=ids.length||1;
-  return BOTS.map(([nome,rp0,pd],i)=>{const rp=Math.min(55000,Math.round(rp0+pd*d*(.8+.4*botR(i,Math.floor(d)))));const lvl=rkRank(rp);
-    return {bot:1,nome,uid:'',tit:'',rp,char:ids[Math.floor(botR(i,1)*N)]||'goku',ct:0,
-      dmg:Math.round(6000+lvl*2600+botR(i,2)*5000),tt:Math.round(260-lvl*15-botR(i,3)*40),t1:Math.round(120-lvl*7-botR(i,4)*20),
-      clv:Math.min(10,2+Math.floor(lvl*.8+botR(i,5)*2)),cdm:Math.round(20000+lvl*30000+botR(i,6)*40000),ccr:Math.round(10+lvl*6+botR(i,7)*15),
-      ctt:0,crg:0}}).map((b,i)=>{if(b.clv>=10)b.ctt=Math.round(560-rkRank(b.rp)*25-botR(i,8)*60);const c=b.clv>=9&&botR(i,9)<.35?4:b.clv>=7&&botR(i,10)<.5?3:b.clv>=5?2:1;b.crg=c*10+Math.floor(botR(i,11)*6)+1;return b})}
-{const _lr=rkLoadRk;rkLoadRk=async function(tab){const A=await _lr.apply(this,arguments);return A.concat(botList().map(b=>Object.assign({},b,{tt:b.tt>0?b.tt:0})))}}
-{const _cr=caRank;caRank=async function(){await _cr.apply(this,arguments);if(Array.isArray(CARKL)){CARKL=CARKL.filter(e=>!e.bot).concat(botList().map(b=>({nome:b.nome,uid:'',tit:'',bot:1,clv:b.clv,cdm:b.cdm,ccr:b.ccr,ctt:b.ctt,crg:b.crg})));caRankH()}}}
-{const _on=rkOnline;rkOnline=async function(){await _on.apply(this,arguments);if(!BOTON)return;const E=$('rkOnN');if(!E)return;const n=parseInt(String(E.textContent).replace(/\D/g,''))||0;const h=new Date().getHours(),k=3+Math.floor(botR(h,Math.floor(Date.now()/9e5))*6)+(h>=18&&h<=23?3:0);E.textContent=rkFmtN(n+k)}}
+/* minutos online desde o começo e se está online agora (ciclo: on horas online + 1 hora fora) */
+function botOn(i){const B=BOTS[i],on=B[3]*60,cyc=on+60,t=Math.max(0,(Date.now()-BOT0)/6e4+B[4]),k=Math.floor(t/cyc),r=t-k*cyc;return {now:r<on,min:k*on+Math.min(r,on)}}
+function botList(real){if(!BOTON)return [];real=real||[];const ids=Object.keys(CH||{}).filter(k=>!/adm|treino|cpu/i.test(k)),N=ids.length||1;
+  const R=real.filter(e=>!e.bot).map(e=>e.rp||0).sort((a,b)=>b-a),cap=R.length>=3?R[2]-40:R.length?Math.max(0,R[R.length-1]-40):30000;
+  return BOTS.map(([nome,rp0,ph],i)=>{const o=botOn(i);let rp=Math.round(rp0+ph*o.min/60*(.85+.3*botR(i,Math.floor(o.min/600))));rp=Math.max(0,Math.min(rp,cap-i*9));const lvl=rkRank(rp);
+    const b={bot:1,nome,uid:'',tit:'',rp,char:ids[Math.floor(botR(i,1)*N)]||'goku',ct:0,on:o.now,
+      dmg:Math.round(4000+lvl*2000+botR(i,2)*4000),tt:Math.round(300-lvl*14-botR(i,3)*40),t1:Math.round(140-lvl*7-botR(i,4)*20),
+      clv:Math.min(9,1+Math.floor(lvl*.7+botR(i,5)*2)),cdm:Math.round(15000+lvl*22000+botR(i,6)*30000),ccr:Math.round(8+lvl*5+botR(i,7)*12),ctt:0,crg:0};
+    const c=b.clv>=7&&botR(i,10)<.35?3:b.clv>=5?2:b.clv>=3?1:0;b.crg=c*10+Math.floor(botR(i,11)*5)+1;return b})}
+/* nunca na frente do 3º lugar de verdade: ajusta cada medida ao 3º jogador real */
+function botCap(L,f,hi){const R=L.filter(e=>!e.bot&&e[f]>0).map(e=>e[f]).sort((a,b)=>hi?b-a:a-b);if(R.length<3)return L;const lim=R[2];
+  let j=0;for(const e of L)if(e.bot&&e[f]>0){j++;const q=botR(j,f.length);if(hi&&e[f]>=lim)e[f]=Math.max(1,Math.floor(lim*(.78+.17*q)));if(!hi&&e[f]<=lim)e[f]=Math.round(lim*(1.08+.2*q))}return L}
+{const _lr=rkLoadRk;rkLoadRk=async function(tab){const A=await _lr.apply(this,arguments);const L=A.concat(botList(A));botCap(L,'dmg',1);botCap(L,'tt',0);botCap(L,'t1',0);return L}}
+{const _cr=caRank;caRank=async function(){await _cr.apply(this,arguments);if(Array.isArray(CARKL)){const real=CARKL.filter(e=>!e.bot);CARKL=real.concat(botList([]).map(b=>({nome:b.nome,uid:'',tit:'',bot:1,clv:b.clv,cdm:b.cdm,ccr:b.ccr,ctt:b.ctt,crg:b.crg})));
+  botCap(CARKL,'clv',1);botCap(CARKL,'cdm',1);botCap(CARKL,'ccr',1);botCap(CARKL,'ctt',0);botCap(CARKL,'crg',1);caRankH()}}}
+{const _on=rkOnline;rkOnline=async function(){await _on.apply(this,arguments);if(!BOTON)return;const E=$('rkOnN');if(!E)return;const n=parseInt(String(E.textContent).replace(/\D/g,''))||0;E.textContent=rkFmtN(n+BOTS.filter((b,i)=>botOn(i).now).length)}}
+/* v314: bots com PERFIL (pedido do dono): tocar no nome abre perfil com rank atual e máximo, personagem no pedestal, itens na vitrine,
+   nível de habilidade e histórico — tudo calculado a partir do rank/tempo online do bot, para o jogo parecer mais vivo. */
+{const _bl=botList;botList=function(real){return _bl.apply(this,arguments).map((b,i)=>Object.assign(b,{uid:'bt'+(9301+i*37).toString(36)+'x'+i}))}}
+function botProf(uid){const L=botList([]),i=L.findIndex(b=>b.uid===uid);if(i<0)return null;const b=L[i],lvl=rkRank(b.rp),o=botOn(i),hrs=o.min/60;
+  const rar=lvl<=2?'rara':lvl<=4?'epica':lvl<=6?'lend':'mit',T=['esp','arm','cap','bot'];
+  const vit=[0,1,2].map(k=>k<1+Math.floor(botR(i,20)*3)?{t:T[(i+k)%4],r:k===0&&lvl>=5&&botR(i,21)<.5?'mit':rar,v:4+lvl+Math.floor(botR(i,22+k)*4),nm:'',img:'',uniq:0,crit:k===2?Math.floor(botR(i,25)*6):0,dmg:0,vel:0,st:0,def:0,fdmg:0,trf:0,ps:null,drop:0,yt:0,ysec:0}:null);
+  const pt=Math.round(40+hrs*9+lvl*25),vw=Math.round(pt*(.45+lvl*.03+botR(i,30)*.08)),R=[['CRÍTICO',30+lvl*6],['DANO',28+lvl*6.5],['VELOCIDADE',35+lvl*5],['RANK',12+lvl*8],['COMBO',25+lvl*6],['FARM',20+hrs*.4]].map(([n,v],k)=>({n,v:Math.max(4,Math.min(96,Math.round(v+botR(i,40+k)*12-6))),t:''}));
+  return {uid,mold:'',nome:b.nome,tit:'',rp:b.rp,mx:Math.min(RKTOP,lvl+(botR(i,31)<.3?1:0)),foto:'',vit,ped:CH[b.char]?b.char:'goku',R,
+    h:{pt,vw,tw:Math.round(hrs*1.5+lvl*4),twc:Math.round(lvl*1.2+hrs*.2),twf:Math.round(hrs*6+lvl*15),wins:Math.round(vw*.55),loss:Math.round((pt-vw)*.55),own:Math.min(25,3+lvl*2+Math.floor(botR(i,32)*4)),tt:b.tt,rl:Math.max(-1,lvl-1)}}}
+{const _po=pfOpenOther;pfOpenOther=async function(uid,nome,ret){if(BOTON&&/^bt/.test(uid||'')){const D=botProf(uid);if(D){if(ret.sc==='tower'){try{twModal(null)}catch(e){}showScreen('ranked')}else rkModal(null);rkToast('⏳ Carregando perfil...','#cfd6ea');await new Promise(r=>setTimeout(r,350+Math.random()*400));PFO=D;PFRET=ret;return rkView('pf')}}return _po.apply(this,arguments)}}
 
 function twTrofList(){const tc=twLS.g('tw_tc',{}),run={};for(const t of TW.tr)run[t.k]=(run[t.k]||0)+1;
   twModal(`<div class="twM"><h3>🎖️ TROFÉUS</h3><div class="twTL">${Object.keys(TWTR).map(k=>{const T=TWTR[k];return `<div class="${tc[k]||run[k]?'got':''}"><i>${T.i}</i><b>${T.n}</b><span>${T.d}</span><em>+${T.p} 🏆</em><small>${run[k]?'nesta subida: '+run[k]+' · ':''}total: ${(tc[k]||0)}</small></div>`}).join('')}</div>
@@ -9899,7 +9919,7 @@ window.__dbg={mus:()=>[MCUR,MEL.src.split('/').pop()],stg:()=>STAGE.key,prepMatc
 })();
 </script>
 <style>#updB{position:fixed;left:50%;top:max(8px,env(safe-area-inset-top));transform:translateX(-50%);z-index:99999;padding:10px 22px;border-radius:14px;border:2px solid #fff3c0;background:linear-gradient(#ffd84a,#e08a10);color:#3a1d00;font:900 15px system-ui,sans-serif;box-shadow:0 0 18px #ffb21f;cursor:pointer;animation:updP 1s ease-in-out infinite alternate}@keyframes updP{to{transform:translateX(-50%) scale(1.05)}}</style>
-<script>(function(){const V='73f6d3dc5942';if(!/^https?:/.test(location.protocol))return;let nv=null;
+<script>(function(){const V='241bd4ecc0f2';if(!/^https?:/.test(location.protocol))return;let nv=null;
 function show(){if(document.getElementById('updB'))return;try{if(typeof G!=='undefined'&&G.mode==='fight')return}catch(e){}const b=document.createElement('button');b.id='updB';b.textContent='🔄 ATUALIZAÇÃO NOVA! Toque para atualizar';
   b.onclick=()=>{b.textContent='⏳ Atualizando...';try{acSave(1)}catch(e){}setTimeout(()=>location.reload(),900)};document.body.appendChild(b)}
 async function chk(){if(document.hidden)return;if(nv){show();return}try{const r=await fetch('versao.txt?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const t=(await r.text()).trim();if(/^[0-9a-f]{8,40}$/.test(t)&&t!==V){nv=t;show()}}catch(e){}}
