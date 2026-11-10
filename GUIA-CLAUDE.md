@@ -1254,3 +1254,10 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - Efeitos (`rkMenuFx`, CSS `.mfx`/`.mB`): brilho correndo nos botões (vermelho Boss, dourado Torre, roxo Caçador, azul Gacha), névoa roxa passando, vaga-lumes roxos, faíscas douradas subindo no cabelo do Shaka, olhos do lobo (vermelho) e das serpentes (roxo) piscando, orbe do Yuta pulsando, lua brilhando, raio roxo de vez em quando.
 - Caixa de rank/moedas (`.rkTop`) agora pequena numa linha no canto de cima à direita (não tampa o Yuta).
 - Teste: `ferramentas/testes/tmenu_v272.js`.
+
+## v273 — MENU PRINCIPAL novo + Perfil dentro do Modos de Jogo
+- Artes do dono em `ferramentas/ranqueada_artes/v273/` (`fazer.py` gera `RQA.menu_principal` e `RQA.menu_ranqueado`; apaga de novo o "!" pintado nas Abas de Evento e remove os webp antigos).
+- Menu principal (#mm, classe `mm273`, código no fim do rk.js + CSS no fim do rk.css): **BATALHA AVENTURA** = `mRank` (abre o Modos de Jogo/ranqueada; botão grande com brilho dourado pulsando), **Batalha Treino** = `goSelect` (luta normal), **História** = `mHist` (o cadeado/EM BREVE já está pintado na arte), **Configuração** = `mCfg`. **Online e Perfil saíram do menu principal** (`mOnline`/`mPerfil`/`mTorre` escondidos): online já existe na ranqueada, perfil foi pro Modos de Jogo.
+- Efeitos do menu principal (`.mmfx2`): luz da porta do domo, aura de fogo do Naruto e do Rengoku tremendo, brasas subindo, brilho correndo na parede dourada, estrelinhas na coroa do Aventura, planeta brilhando; brilho correndo nos botões (laranja no Aventura, azul no Treino/Config).
+- Modos de Jogo: "Minha Posição" virou **Perfil** (`data-a="perfil"` → `rkView('pf')` com PFRET voltando pro menu). Posições dos olhos/orbe ajustadas para a arte nova.
+- Teste: `ferramentas/testes/tmenu_v273.js`.

@@ -836,3 +836,36 @@ body:not(.pcMode) #how .pcKeys{display:none}#how .pcKeys{margin:0 auto .6em;max-
 .rk_menu .rkTop .rkCur{flex-direction:row!important}
 .rk_menu .mLock{right:5.5%}
 .rk_menu .mLock{width:2.7em;height:2.7em;right:4.5%}.rk_menu .mLock svg{width:1.5em;height:1.5em}
+
+/* v273: menu principal novo */
+#mm.mm273 .mb{left:auto}
+#mm.mm273 .mb6{left:3.9%!important;top:19%!important;width:31.1%!important;height:21.5%!important;clip-path:polygon(4% 50%,11% 4%,92% 4%,99% 50%,92% 96%,11% 96%);z-index:3}
+#mm.mm273 .mb1{left:2.2%!important;top:46.4%!important;width:29%!important;height:9.4%!important;z-index:3}
+#mm.mm273 .mb2{left:2.2%!important;top:58.8%!important;width:28.4%!important;height:10%!important;z-index:3}
+#mm.mm273 .mb5{left:2.2%!important;top:71.1%!important;width:26%!important;height:9.7%!important;z-index:3}
+#mm.mm273 .mb2 .lock{display:none}
+#mm.mm273 .mb1,#mm.mm273 .mb5,#mm.mm273 .mb2{clip-path:polygon(0 50%,6% 3%,94% 3%,100% 50%,94% 97%,6% 97%)}
+#mm.mm273 .mb::after,#mm.mm273 .mb6::after,#mm.mm273 .mb1::after{display:none}
+#mm.mm273 .mb .shine{display:none}
+#mm.mm273 .mb{overflow:hidden;background:transparent}
+#mm.mm273 .mb .mSw{position:absolute;top:0;bottom:0;width:34%;left:0;transform:translateX(-130%) skewX(-22deg);mix-blend-mode:screen;animation:mfSw 3.4s ease-in-out infinite;pointer-events:none}
+#mm.mm273 .mb .mSw.o{background:linear-gradient(90deg,transparent,rgba(255,150,30,.55) 40%,rgba(255,250,220,.95) 50%,rgba(255,150,30,.55) 60%,transparent);animation-duration:2.6s}
+#mm.mm273 .mb .mSw.b{background:linear-gradient(90deg,transparent,rgba(40,150,255,.5) 40%,rgba(220,245,255,.85) 50%,rgba(40,150,255,.5) 60%,transparent)}
+#mm.mm273 #goSelect .mSw{animation-delay:1s}#mm.mm273 #mCfg .mSw{animation-delay:2s}
+#mm.mm273 #mRank{animation:mmAv 1.8s ease-in-out infinite}
+@keyframes mmAv{0%,100%{filter:brightness(1)}50%{filter:brightness(1.25) drop-shadow(0 0 1.2cqw rgba(255,160,40,.8))}}
+#mm.mm273 .mmSpk{position:absolute;inset:0;pointer-events:none;background:radial-gradient(circle at 52% 8%,rgba(255,240,180,.9),rgba(255,200,60,0) 12%);mix-blend-mode:screen;animation:mfPul 1.4s ease-in-out infinite}
+#mm.mm273 #goSelect .ld{position:absolute;right:16%;top:50%;transform:translateY(-50%)}
+.mmfx2{position:absolute;inset:0;pointer-events:none;z-index:2;overflow:hidden}
+.mmfx2 i{position:absolute;display:block}
+.mmfx2 .mDoor{width:9%;height:22%;transform:translate(-50%,-50%);border-radius:50%;background:radial-gradient(circle,rgba(255,250,210,.95),rgba(255,190,80,.4) 30%,transparent 68%);mix-blend-mode:screen;animation:mfOrb 2.4s ease-in-out infinite}
+.mmfx2 .mNar{width:18%;height:52%;transform:translate(-50%,-50%);border-radius:50%;background:radial-gradient(ellipse,rgba(255,170,40,.45),rgba(255,90,20,.15) 45%,transparent 70%);mix-blend-mode:screen;animation:mmFire 1.1s ease-in-out infinite alternate}
+.mmfx2 .mRen{width:16%;height:42%;transform:translate(-50%,-50%);border-radius:50%;background:radial-gradient(ellipse,rgba(255,80,30,.4),rgba(255,40,0,.12) 45%,transparent 70%);mix-blend-mode:screen;animation:mmFire .9s ease-in-out infinite alternate .3s}
+@keyframes mmFire{0%{opacity:.45;transform:translate(-50%,-50%) scale(.95)}100%{opacity:1;transform:translate(-50%,-52%) scale(1.06)}}
+.mmfx2 .mWall{right:0;top:0;width:22%;height:100%;background:linear-gradient(100deg,transparent 30%,rgba(255,240,170,.45) 45%,transparent 60%);mix-blend-mode:screen;background-size:300% 100%;animation:mmWall 5s ease-in-out infinite}
+@keyframes mmWall{0%{background-position:120% 0;opacity:0}20%{opacity:1}60%,100%{background-position:-60% 0;opacity:0}}
+.mmfx2 .mPlan{width:16%;height:20%;transform:translate(-50%,-50%);border-radius:50%;background:radial-gradient(circle,rgba(150,210,255,.5),transparent 70%);mix-blend-mode:screen;animation:mfPul 4s ease-in-out infinite}
+.mmfx2 .mEmb{width:.5%;height:1.1%;border-radius:50%;background:radial-gradient(circle,#fff 0,#ffb030 35%,rgba(255,80,0,0) 70%);mix-blend-mode:screen;opacity:0;animation:mmEmb 4s ease-in infinite}
+@keyframes mmEmb{0%{opacity:0;transform:translate(0,0)}20%{opacity:1}100%{opacity:0;transform:translate(1.5cqw,-12cqw) scale(.4)}}
+.mmfx2 .mStar{width:1.4%;height:3%;background:radial-gradient(circle,#fff 0,rgba(255,230,140,.9) 18%,transparent 60%);mix-blend-mode:screen;opacity:0;animation:mmStar 2.6s ease-in-out infinite}
+@keyframes mmStar{0%,100%{opacity:0;transform:scale(.3) rotate(0)}50%{opacity:1;transform:scale(1) rotate(45deg)}}
