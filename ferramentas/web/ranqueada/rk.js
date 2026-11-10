@@ -1726,9 +1726,11 @@ function caBolts(f){const lv=f.bLv||1,k=f.bSc||1,n=1+Math.floor(lv*1.4),cx=f.x,c
   for(let i=0;i<n;i++){if(Math.random()<.25)continue;const an=Math.random()*TAU,rx=105*k,ry=58*k;let x=cx+Math.cos(an)*rx*rand(.3,.9),y=cy+Math.sin(an)*ry*rand(.3,.9);const dir=an+rand(-.9,.9),P=[[x,y]],seg=4+((Math.random()*3)|0),L=(10+lv*1.6)*k;
     for(let j=0;j<seg;j++){const d=dir+rand(-1,1);x+=Math.cos(d)*L*rand(.6,1.3);y+=Math.sin(d)*L*rand(.6,1.3);P.push([x,y])}B.push({P,w:rand(.7,1.2)*(1+lv*.08)})}
   return B}
+const CA_RAIOS=0;
 function caAura(f,top){if(G.gmode!=='caca')return;const lv=f.bLv||1,run=G.hitstop<=0&&!G.paused;
   if(!top)return;
-  if(!f.ko&&f.bs!=='rev'||f.bs==='rev'&&f.bRt>115){if(run&&(G.frame%3===0||!f.bBo))f.bBo=caBolts(f);const C=caCol(lv),c=C.join(',');ctx.save();ctx.globalCompositeOperation='lighter';ctx.lineCap='round';ctx.lineJoin='round';
+  /* v276: o dono pediu para TIRAR os raios (CA_RAIOS=0); os olhos vermelhos continuam */
+  if(CA_RAIOS&&(!f.ko&&f.bs!=='rev'||f.bs==='rev'&&f.bRt>115)){if(run&&(G.frame%3===0||!f.bBo))f.bBo=caBolts(f);const C=caCol(lv),c=C.join(',');ctx.save();ctx.globalCompositeOperation='lighter';ctx.lineCap='round';ctx.lineJoin='round';
     for(const b of f.bBo||[]){ctx.beginPath();ctx.moveTo(b.P[0][0],b.P[0][1]);for(let j=1;j<b.P.length;j++)ctx.lineTo(b.P[j][0],b.P[j][1]);
       ctx.globalAlpha=.4;ctx.strokeStyle=`rgb(${c})`;ctx.lineWidth=6*b.w;ctx.stroke();ctx.globalAlpha=.95;ctx.strokeStyle=`rgb(${c})`;ctx.lineWidth=2.4*b.w;ctx.stroke();ctx.strokeStyle='#ffffff';ctx.lineWidth=1*b.w;ctx.stroke()}
     if(lv>=5){const k=f.bSc||1,R=(80+lv*6)*k,cy=f.y-75*k,p=.5+.5*Math.sin(G.frame*.25);ctx.globalAlpha=(.05+.012*lv)*p;const g=ctx.createRadialGradient(f.x,cy,0,f.x,cy,R);g.addColorStop(0,`rgba(${c},.9)`);g.addColorStop(1,`rgba(${c},0)`);ctx.fillStyle=g;ctx.fillRect(f.x-R,cy-R,R*2,R*2)}

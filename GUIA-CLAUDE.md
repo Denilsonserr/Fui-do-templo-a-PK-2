@@ -1277,3 +1277,7 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - Defesa: dano recebido nos níveis 7-10 = .40/.31/.24/.17 (antes .5/.43/.37/.3).
 - Velocidade (`bsSpd`): níveis 7-10 ganham vantagem de 15/20/25/30% sobre o jogador, **dividida pela velocidade do jogador** (`o.tsp`, equipamentos de velocidade, ADM...). Quem tem muita velocidade anula a vantagem; vale em todos os níveis.
 - Teste: `ferramentas/testes/tcaca_v275.js`.
+
+## v276 — Lobo Negro SEM raios
+- O dono pediu para tirar os raios do corpo: `CA_RAIOS=0` no rk.js (o código `caBolts` ficou, é só ligar se ele pedir de volta). Os olhos vermelhos fortes dos níveis finais continuam, e a energia roxa voltando quando ele levanta também.
+- Teste: `ferramentas/testes/tcaca_v276.js`.
