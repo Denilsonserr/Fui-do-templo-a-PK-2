@@ -1227,3 +1227,12 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 ## Ideia para amanhã (ainda NÃO fazer): MODO CAÇA ÀS BESTAS DE ALMA (estilo Soul Land)
 - 09/11/2026, o dono: vai ter um modo para caçar bestas de alma que dropam ANÉIS DE ALMA (cor pela idade). Vão ter VÁRIAS bestas; só as BESTAS BOSS mais fortes podem dropar os anéis de **70 mil anos** e de **100 mil anos**.
 - Ele vai mandar as REGRAS completas (e artes) amanhã. Esperar. Rascunho que o Claude sugeriu: anéis 10/100/1.000/10.000/(70.000)/100.000 anos, até 9 anéis por personagem, sorte/drop aumentam a chance, ossos de alma como drop super raro — tudo só sugestão até ele confirmar.
+
+## v270 — MODO CAÇA (TESTE) com o LOBO SOMBRIO (primeira besta)
+- 09/11/2026, o dono mandou 6 imagens do lobo preto (referência + folhas: garras, pulo/bote, ferido/morte, patada, andando) em `ferramentas/bestas/lobo/recebido/`. Ele é SÓ inimigo/boss (não jogável), só ataque físico, sem energia/especial/super, muito rápido, pulos altos, violento como animal.
+- Corte: `ferramentas/bestas/lobo/cortar.py` (tira fundo branco, buracos fechados >40px e pedaços vizinhos) → `quadros/` + `info.json`; `assets.py` gera webp em `www/a` e `RQA.lobo={garras,pulo,ferido,patada,anda,por}` no rk_assets.json (altura em pé 275 unidades).
+- Menu do Ranqueado: o botão travado "Desafio do Tempo" agora tem a etiqueta **🐺 CAÇA · TESTE** (`data-a="caca"` → `caStart()`).
+- Código no fim do rk.js: `BSD` (5 barras de vida, vel 12.5), `bsMake` (troca o def do adversário por id 'lobo'), máquina de estados própria `bsStep` em `f.bs` (idle/run/back/a_claw 2 golpes 120+150/a_swipe 170 derruba/a_pounce pulo alto 190/a_land/hurt/dead), IA `bsThink` por distância, `bsDraw` (desenha o quadro virado, olho vermelho, rastro de garra). Wrappers em updFighter/aiThink/renderFighter/hurtbox/drawCastShadow/drawContact/drawAura/spriteKey/drawIceBody só quando `f.beast`.
+- `G.gmode='caca'`: equipamento do jogador vale, tempo 180, banner "MODO CAÇA · TESTE". `endRound` → `caEnd`: volta ao menu do Ranqueado e mostra o resultado (LUTAR DE NOVO / FECHAR); o popup é reaberto até 6s se outra tela (diário/claims) fechar ele (`CA.rs`).
+- AINDA SEM PRÊMIOS. Quando o dono mandar as regras do Soul Land: anéis por idade, 70k/100k só de besta boss.
+- Teste: `ferramentas/testes/tcaca_v270.js`.
