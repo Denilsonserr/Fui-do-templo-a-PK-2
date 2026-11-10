@@ -50,6 +50,10 @@ export default {async fetch(req,env){const url=new URL(req.url),p=url.pathname;
   if(req.method==='OPTIONS')return new Response(null,{status:204,headers:CORS});
   try{const db=env.DB;await init(db);
     if(p==='/fs-admin/import'&&req.method==='POST')return await imp(db,req);
+    if(p==='/fs-admin/stats'){const b=Math.floor(Date.now()/300000);const q=async(sql,...a)=>((await db.prepare(sql).bind(...a).first())||{}).n|0;
+      return J({jogadores:await q("SELECT COUNT(DISTINCT s) n FROM kv WHERE k='uid'"),contas:await q("SELECT COUNT(DISTINCT s) n FROM kv WHERE k='sv'"),
+        online:await q("SELECT COUNT(DISTINCT u.s) n FROM kv o JOIN kv u ON u.id=o.id AND u.k='uid' WHERE o.k='on' AND o.s IN (?,?)",'p'+b,'p'+(b-1)),
+        hoje:await q("SELECT COUNT(DISTINCT u.s) n FROM kv u JOIN docs d ON d.id=u.id WHERE u.k='uid' AND d.ct>?",Date.now()-864e5),docs:await q('SELECT COUNT(*) n FROM docs')})}
     if(p==='/fs-admin/count'){const c=await db.prepare('SELECT COUNT(*) n FROM docs').first();return J(c)}
     const m=p.match(/^\/fs\/v1\/(projects\/[^/]+\/databases\/\(default\)\/documents)(.*)$/)||p.match(/^\/fs\/v1\/(projects\/[^/]+\/databases\/%28default%29\/documents)(.*)$/);if(!m)return ERR(404,'NOT_FOUND','rota');
     const base=decodeURIComponent(m[1]),rest=m[2];
