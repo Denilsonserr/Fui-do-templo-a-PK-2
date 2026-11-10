@@ -7,3 +7,8 @@
 - Folhas recebidas: `poses/01..14` (ver nomes). Imagens de VS/perfil: `recebido/01..04`.
 ## Falta (perguntado ao dono)
 - Vídeo do ultimate/abrir os olhos (sem som); transformação?; arte da gacha do Shaka (preço, chance, garantia); botões; dizer "mandei tudo".
+## Nível (10/11/2026)
+- O Shaka vai até o **NÍVEL 70** (os outros: mítico 50, lendário 40, épico 30).
+- Na árvore de habilidade ganha **mais 2 linhas** (nível 60 e nível 70) com escolhas **diferentes** e **muito mais fortes** (ex.: crítico, ataque bem elevados).
+- Atributos dele **maiores que de qualquer outro personagem** (é secreto).
+- Com nível 70 ele abre 7 vagas de anel (1 a cada 10 níveis).
