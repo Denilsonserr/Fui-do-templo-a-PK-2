@@ -1236,3 +1236,13 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - `G.gmode='caca'`: equipamento do jogador vale, tempo 180, banner "MODO CAÇA · TESTE". `endRound` → `caEnd`: volta ao menu do Ranqueado e mostra o resultado (LUTAR DE NOVO / FECHAR); o popup é reaberto até 6s se outra tela (diário/claims) fechar ele (`CA.rs`).
 - AINDA SEM PRÊMIOS. Quando o dono mandar as regras do Soul Land: anéis por idade, 70k/100k só de besta boss.
 - Teste: `ferramentas/testes/tcaca_v270.js`.
+
+## v271 — LOBO SOMBRIO: tamanho de lobo, mais rápido, AUTO COMBO com dash
+- O dono mandou mais 2 folhas: `recebido/06_derrubado.png` (6 quadros de dano/queda → 'cai') e `07_auto_combo.png` (grade 4x4 com números vermelhos → 'combo', 16 quadros). `cortar.py` corta pela grade, apaga o número do canto e guarda as garras roxas (margem maior).
+- Quadros 07–16 do combo olham para a DIREITA: no RQA.lobo o quadro tem um 5º valor `1` (o desenho vira).
+- Tamanho: ALT 160 (antes 275). REF de cada folha medido pela largura do corpo (combo 213, cai 351). Caixa de dano do lobo 210×200 (um pouco mais alta que o desenho pra soco no peito acertar).
+- Velocidade: corrida 17, gravidade 1.1, tempos dos golpes menores, levanta com raiva (às vezes pula pra trás).
+- AUTO COMBO (`f.bs='combo'`, tabela `BSC`, função `bsCombo`): olho brilha (aviso) → agacha → DASH veloz com rastro roxo (mordida) → garra baixa (defender embaixo) → garra pra cima (lança) → pulo + mordida no ar → mergulho girando → pancada no chão (onda dos dois lados) → dash cortando → patada final. 8 golpes, ~680 de dano se pegar tudo.
+- Se o dash + garra baixa não acertarem (errou/defendeu), o combo para. Depois do combo ou do erro: **BRECHA!** (ofegante, toma +30% de dano, ~0,7s). Combo tem recarga de 4–6s.
+- Quadros novos de dano: apanhou em pé (cai 0/1), voando (2/3), no chão (4→5), morte (2→5).
+- Teste: `ferramentas/testes/tcaca_v271.js` (combo inteiro, combo errado → brecha, apanha, KO).

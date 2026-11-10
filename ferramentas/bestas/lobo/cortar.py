@@ -14,15 +14,17 @@ def cut_rgb(a):
     lum=a.mean(2);al[near]=np.clip((255-lum[near])/110,0,1)
     safe=np.maximum(al,1e-3)[...,None];col=np.where(near[...,None],np.clip((a-255*(1-al[...,None]))/safe,0,255),a)
     return np.dstack([col,al*255]).astype(np.uint8)
-def frames(f,cols,rows,rgb=True):
+def frames(f,cols,rows,rgb=True,boxes=None,mg=30,lab_rm=False):
     im=Image.open(R+f);a=np.asarray(im.convert('RGBA' if not rgb else 'RGB'))
     H,W=a.shape[:2];L=[]
-    for r in range(rows):
-        for c in range(cols):
-            t=a[r*H//rows:(r+1)*H//rows,c*W//cols:(c+1)*W//cols]
+    if boxes is None:boxes=[(c*W//cols,r*H//rows,(c+1)*W//cols,(r+1)*H//rows) for r in range(rows) for c in range(cols)]
+    for (bx_0,by_0,bx_1,by_1) in boxes:
+        if 1:
+            t=a[by_0:by_1,bx_0:bx_1].copy()
+            if lab_rm:t[:46,:92]=255   # número vermelho do quadro (01..16) sai
             t=cut_rgb(t) if rgb else t.copy()
             al=t[...,3]>40;lab,n=nd.label(nd.binary_closing(al,iterations=3));sz=nd.sum(al,lab,range(1,n+1));big=1+int(np.argmax(sz))
-            body=lab==big;keep=np.zeros_like(al);by0,bx0=np.where(body);BB=(bx0.min()-30,by0.min()-30,bx0.max()+30,by0.max()+30)
+            body=lab==big;keep=np.zeros_like(al);by0,bx0=np.where(body);BB=(bx0.min()-mg,by0.min()-mg,bx0.max()+mg,by0.max()+mg)
             for i in range(1,n+1):
                 if sz[i-1]<=60:continue
                 yy,xx=np.where(lab==i)
@@ -34,7 +36,9 @@ def frames(f,cols,rows,rgb=True):
             by,bx=np.where(body);foot=int(by.max());cx=float(bx.mean())
             L.append((Image.fromarray(t[y0:y1,x0:x1]),{'ax':float(cx-x0),'ay':int(foot-y0),'bh':int(foot-by.min()),'bw':int(bx.max()-bx.min())}))
     return L
-S={'garras':frames('01_ataque_garras.png',3,2),'pulo':frames('02_pulo_bote.png',3,2),'ferido':frames('03_ferido_morte.png',3,2),'patada':frames('04_ataque_patada.png',3,2),'anda':frames('05_andando.png',6,1,False)}
+S={'garras':frames('01_ataque_garras.png',3,2),'pulo':frames('02_pulo_bote.png',3,2),'ferido':frames('03_ferido_morte.png',3,2),'patada':frames('04_ataque_patada.png',3,2),'anda':frames('05_andando.png',6,1,False),
+   'cai':frames('06_derrubado.png',3,2,mg=60),
+   'combo':frames('07_auto_combo.png',4,4,mg=140,lab_rm=True,boxes=[(x0+4,y0+4,x1-3,y1-3) for (y0,y1) in [(0,179),(181,361),(363,542),(544,723)] for (x0,x1) in [(1,542),(544,1085),(1087,1628),(1630,2171)]])}
 info={}
 for k,L in S.items():
     info[k]=[]
