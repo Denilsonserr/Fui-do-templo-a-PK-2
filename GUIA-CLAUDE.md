@@ -1321,3 +1321,8 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - Bug: no `seg_sk.py` o "miolo" do corpo era só o que tinha cor escura (`A>.62` com abertura), então pele e cabelo claros viravam "brilho" semitransparente → rosto, boca e braços apareciam vazados. Agora o miolo é o contorno preto FECHADO (`binary_closing` + preencher buracos): tudo dentro do contorno fica opaco; só o brilho de fora (energia, rastros) fica transparente.
 - Retrato da barra de vida recortado de novo com o rosto no centro (`imgs.py`). Os webp antigos foram apagados.
 - O escudo (folha 10) continua o mesmo até o dono mandar a imagem nova.
+
+## v282 — botões do Shaka + recorte sem contorno branco
+- Botões do dono (`ferramentas/personagens/shaka/botoes/normal.png` e `olhos_abertos.png`), só os botões (sem HUD): `hud_sk.py` recorta cada botão em círculo pelas posições da arte (1670×942) → `build/hud_shaka.json` → `HUDA.shaka`; `HUTH.shaka` dourado (chamas/raios nos botões). Olhos abertos: classe `#controls.skf` = botões pulsando em brilho dourado + brilho nos cantos.
+- `seg_sk.py`: tira o contorno branco do desenho encostado no fundo e os buraquinhos brancos fechados (ex.: entre o rosário e a mão).
+- `build_sk.py` agora passa a IA 2x (Real-ESRGAN, `ferramentas/ia/esr.py`) em cada quadro (~25 min) — entra na versão seguinte quando terminar.

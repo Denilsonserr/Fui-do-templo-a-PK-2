@@ -2,7 +2,7 @@ import json,sys,os
 # v280: SHAKA DE VIRGEM (sid sk / skd). Fontes em ferramentas/personagens/shaka/ (sk.js + build/*.json). As imagens já estão em www/a. Mesmo esquema do Yuta (20_yuta.py).
 P=sys.argv[1];s=open(P,encoding='utf8').read()
 D=os.path.join(os.path.dirname(os.path.abspath(__file__)),'..','..','personagens','shaka');B=os.path.join(D,'build')
-J=json.load(open(os.path.join(B,'sk.json')));V=json.load(open(os.path.join(B,'vids.json')));IM=json.load(open(os.path.join(B,'imgs.json')))
+J=json.load(open(os.path.join(B,'sk.json')));V=json.load(open(os.path.join(B,'vids.json')));IM=json.load(open(os.path.join(B,'imgs.json')));HU=json.load(open(os.path.join(B,'hud_shaka.json')))
 def rep(a,b,n=1):
     global s;c=s.count(a);assert c==n,(a[:90],c);s=s.replace(a,b)
 cj=lambda o:json.dumps(o,separators=(',',':'))
@@ -50,4 +50,6 @@ rep("  if(isYt(f)&&m.ytQ&&f.hasHit&&f.mf>m.su+m.ac-2&&!m.air){","  if(isSk(f)&&m
 rep("  if(d.hp>0)ytHitHook(a,d,h);","  if(d.hp>0)ytHitHook(a,d,h);\n  if(d.hp>0)skHitHook(a,d,h);\n  if(d.hp>0&&isSk(d)&&!h.lock&&!d.ko&&!SKK[d.state]){d.skN=(d.skN||0)+1;if(d.skN>=5){d.skN=0;d.skCtr=a}}")
 rep("else if(isGr(f)||isYt(f))k=.3;","else if(isGr(f)||isYt(f)||isSk(f))k=.3;")
 rep("function applyHit(a,d,h){\n  if(d.ko)return false;","function applyHit(a,d,h){\n  if(d.ko)return false;\n  if(skDodge(a,d,h))return false;")
+rep("const HUDA={","const HUDA={\"shaka\":%s,"%cj(HU))
+rep("const HUTH={","const HUTH={shaka:{c:'#ffc21f',c2:'#fff6c0',bc:'#ffe27a',bc2:'#ffffff'},")
 open(P,'w',encoding='utf8').write(s);print('shaka ok',len(s))

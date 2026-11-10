@@ -10,8 +10,13 @@ def alpha(p):
     bgish=(mn>=232)&(sat<=14);bg=border_lab(bgish)
     lab,k=nd.label(bgish&~bg)
     if k:
-        sz=nd.sum(np.ones_like(mn),lab,range(1,k+1));mm=nd.mean(mn,lab,range(1,k+1));bg|=np.isin(lab,[i+1 for i in range(k) if sz[i]>400 and mm[i]>=245])
+        sz=nd.sum(np.ones_like(mn),lab,range(1,k+1));mm=nd.mean(mn,lab,range(1,k+1));bg|=np.isin(lab,[i+1 for i in range(k) if (sz[i]>400 and mm[i]>=245) or (sz[i]>25 and mm[i]>=238)])   # v282: buraquinhos brancos (entre o rosário e a mão) também saem
     A=np.clip(np.max((255-a)/255.,axis=-1),0,1)
+    # v282: tira a borda branca (contorno branco do desenho) encostada no fundo
+    for _ in range(3):
+        ring=nd.binary_dilation(bg,iterations=1)&~bg&(mn>=200)&(sat<=30)
+        if not ring.any():break
+        bg|=ring
     core=nd.binary_fill_holes(nd.binary_closing((A>.55)&~bg,iterations=4))   # contorno preto fechado -> rosto/cabelo claro ficam OPACOS
     al=np.where(bg,0.,1.)
     band=nd.binary_dilation(bg,iterations=3)&~bg

@@ -971,3 +971,9 @@ body:not(.pcMode) #how .pcKeys{display:none}#how .pcKeys{margin:0 auto .6em;max-
 .lvXm .lvNd{position:relative;width:5.4em;height:5.4em;border-radius:.7em;border:2px solid var(--c);background:rgba(30,18,0,.8);color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer}
 .lvXm .lvNd.sel{box-shadow:0 0 1em var(--c);background:rgba(120,80,0,.8)}.lvXm .lvNd.lk{opacity:.5}.lvXm .lvNd small{font:900 .5em var(--f-ui)}.lvXm .lvNd i{font-style:normal;font-size:1.4em}
 .lvX{position:absolute;border-radius:1em;border:2px solid #ffd84a;background:linear-gradient(90deg,#5a3200,#c88a00);color:#fff;font:900 .8em var(--f-ui);box-shadow:0 0 1em #ffb21f;cursor:pointer;z-index:3}
+
+/* v282: botões do Shaka de olhos abertos: brilho dourado pulsando e girando */
+#controls.skf .b{animation:skBtn 1.3s ease-in-out infinite}
+#controls.skf .b:nth-child(2n){animation-delay:.35s}#controls.skf .b:nth-child(3n){animation-delay:.7s}
+@keyframes skBtn{0%,100%{filter:drop-shadow(0 0 .25em #ffc21f) brightness(1)}50%{filter:drop-shadow(0 0 .9em #ffe27a) drop-shadow(0 0 1.6em rgba(255,200,40,.8)) brightness(1.25)}}
+#controls.skf::before{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(circle at 12% 80%,rgba(255,210,60,.18),transparent 30%),radial-gradient(circle at 85% 65%,rgba(255,210,60,.2),transparent 35%);animation:mfPul 2s ease-in-out infinite}

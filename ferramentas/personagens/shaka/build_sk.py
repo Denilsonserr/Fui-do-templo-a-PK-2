@@ -1,6 +1,7 @@
 # Montagem do Shaka (v280): sid sk (normal) e skd (olhos abertos, mesmas poses). Uso: python3 build_sk.py (na pasta com cut/ do seg_sk.py)
 import json,numpy as np,os,hashlib
-from PIL import Image
+from PIL import Image,ImageFilter
+import sys;sys.path.insert(0,'/home/claude/fui-do-templo-a-pk-2/ferramentas/ia');import esr
 OUT='/home/claude/fui-do-templo-a-pk-2/www/a';TGT=292.0;RES=2.4
 U={'01':664,'02':519,'03':535,'04':450,'05':602,'06':527,'07':560,'08':473,'09':579,'10':583,'11':550,'12':623,'13':530,'14':600}
 def G(t,ix):return [(t,i) for i in ix]
@@ -35,9 +36,9 @@ def frame(t,i,air):
     y0,y1,x0,x1=np.load(f'cut/{t}_{i}.y.npy');im=Image.open(f'cut/{t}_{i}.png');a=np.asarray(im).astype(int)
     lying=(t=='11' and i>=3) or (t=='09' and i==5)
     ax=anchor(a,air,lying);ay=(y1-y0) if air else (GL[t]-y0)
-    k=TGT/U[t];gw,gh=im.width*k,im.height*k;o=im.resize((round(gw*RES),round(gh*RES)),Image.LANCZOS)
+    k=TGT/U[t];gw,gh=im.width*k,im.height*k;o=esr.sr_rgba(im,2).resize((round(gw*RES),round(gh*RES)),Image.LANCZOS).filter(ImageFilter.UnsharpMask(radius=1.0,percent=40,threshold=2))   # v282: IA 2x (mais nítido)
     al=a[...,3]>40;cols=np.where(al.any(0))[0];rx=cols.max();ry=np.where(al[:,max(0,rx-4):rx+1].any(1))[0].mean()
     fr={'w':round(gw,1),'h':round(gh,1),'ax':round(ax*k,1),'ay':round(ay*k,1),'rx':round((rx-ax)*k),'ry':round((ay-ry)*k),'src':sv(np.asarray(o).astype(float))}
-    cache[key]=fr;return fr
+    cache[key]=fr;print(t,i,flush=True);return fr
 J={'sk':{an:[frame(t,i,an in AIR) for t,i in L] for an,L in Y.items()}};J['skd']=J['sk']
 B=os.path.dirname(os.path.abspath(__file__))+'/build';json.dump(J,open(B+'/sk.json','w'),separators=(',',':'));print('ok',len(cache))

@@ -96,6 +96,7 @@ function skTick(){if(G.mode!=='fight')return;
   for(const f of G.p){if(!f)continue;
     if(f.skPar>0){if(f.ko||G.phase!=='fight'){f.skPar=0}else{f.skPar--;if(!['rushed','hit','airhit','down','getup'].includes(f.state)||f.state==='hit'){f.state='rushed';f.st=0}if(f.grounded){f.vx=0}f.move=null;f.guard=false;skParFx(f);if(f.skPar===0&&f.state==='rushed')neutral(f)}}
     if(!isSk(f))continue;skBuff(f);
+    if(!f.cpu){const C=$('controls');if(C)C.classList.toggle('skf',!!f.form)}
     if(f.skInv){const I=f.skInv,d=I.o;I.t++;if(!d||d.ko||G.phase!=='fight'){f.skInv=null}else{d.state='rushed';d.st=0;d.vx=0;d.vy=0;d.move=null;d.guard=false;d.y=FLOOR;d.grounded=true;
       if(I.t%8===0&&I.n<12){I.n++;const cr=Math.random()<.4+(f.form?.25:0),x=d.x+rand(-50,50),y=d.y-rand(60,240),h={dmg:Math.round((cr?28*1.6:28)),kb:0,hs:4,px:x,py:y,kind:'blast',lock:1};applyHit(f,d,h);
         spark(x,y,cr?'#ffffff':'#ffd84a',1,cr?12:7);ring(x,y,cr?'#ffffff':'#ffd84a',cr?70:44,8,cr?4:2);if(cr)txt(x,y-30,'CRÍTICO!','#fff3b0');G.shake=Math.max(G.shake,cr?7:4);try{SFX.hit&&SFX.hit()}catch(e){}if(d.hp<=0){ko(f,d);f.skInv=null;continue}}
