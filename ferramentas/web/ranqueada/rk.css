@@ -869,3 +869,20 @@ body:not(.pcMode) #how .pcKeys{display:none}#how .pcKeys{margin:0 auto .6em;max-
 @keyframes mmEmb{0%{opacity:0;transform:translate(0,0)}20%{opacity:1}100%{opacity:0;transform:translate(1.5cqw,-12cqw) scale(.4)}}
 .mmfx2 .mStar{width:1.4%;height:3%;background:radial-gradient(circle,#fff 0,rgba(255,230,140,.9) 18%,transparent 60%);mix-blend-mode:screen;opacity:0;animation:mmStar 2.6s ease-in-out infinite}
 @keyframes mmStar{0%,100%{opacity:0;transform:scale(.3) rotate(0)}50%{opacity:1;transform:scale(1) rotate(45deg)}}
+
+/* v274: tela Caça ao Monstro */
+.rk_ca .mfx{position:absolute;inset:0;pointer-events:none;overflow:hidden;z-index:0}
+.rk_ca .hs,.rk_ca .caBar,.rk_ca .caRgT{z-index:2}
+.rk_ca .caSl{animation:caSl 1.8s ease-in-out infinite}
+@keyframes caSl{0%,100%{filter:brightness(1)}50%{filter:brightness(1.25) drop-shadow(0 0 .8em rgba(255,170,40,.9))}}
+.rk_ca .caSlT{position:absolute;left:30%;bottom:6%;font:900 .9em var(--f-ui);letter-spacing:.06em;color:#ffd98a;text-shadow:0 1px 4px #000,0 0 .6em #ff9a20}
+.rk_ca .caSlI{position:absolute;right:6%;top:8%;width:1.5em;height:1.5em;border-radius:50%;background:rgba(20,6,40,.85);border:1px solid #ffc860;color:#ffe2a0;font:900 .85em var(--f-ui);display:flex;align-items:center;justify-content:center}
+.rk_ca .caStg b{position:absolute;left:50%;bottom:7%;transform:translateX(-50%);font:900 .95em var(--f-ui);letter-spacing:.12em;color:#dff2ff;text-shadow:0 1px 4px #000,0 0 .7em #3aa0ff;white-space:nowrap}
+.rk_ca .caRg{border-radius:50%}
+.rk_ca .caRgT{position:absolute;display:flex;align-items:center;justify-content:center;font:900 .62em var(--f-ui);text-shadow:0 1px 3px #000;white-space:nowrap;pointer-events:none}
+.rk_ca .caGo{overflow:hidden;clip-path:polygon(4% 50%,12% 6%,88% 6%,96% 50%,88% 94%,12% 94%);animation:caGo 1.6s ease-in-out infinite}
+.rk_ca .caGo .mSw{position:absolute;top:0;bottom:0;width:30%;left:0;transform:translateX(-130%) skewX(-22deg);mix-blend-mode:screen;animation:mfSw 2.8s ease-in-out infinite;background:linear-gradient(90deg,transparent,rgba(255,190,60,.55) 40%,rgba(255,250,220,.95) 50%,rgba(255,190,60,.55) 60%,transparent)}
+@keyframes caGo{0%,100%{filter:brightness(1)}50%{filter:brightness(1.3)}}
+.rk_ca .caBar{position:absolute;display:flex;align-items:center;justify-content:center;gap:.4em;border-radius:2em;background:rgba(10,4,24,.78);border:1px solid rgba(190,120,255,.6);color:#eadcff;font:900 .8em var(--f-ui);letter-spacing:.05em;box-shadow:0 0 1em rgba(150,60,255,.45)}
+.rk_ca .caBar b{color:#ffd34a}
+.rk_ca .caRgT{font-size:.78em}

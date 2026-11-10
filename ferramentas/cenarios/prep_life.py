@@ -21,6 +21,9 @@ for f in files:
     elif mode=='shib':
         tree=(g>r+25)&(g>b+20)&(g>90)&(Y<800)&(Y>330)
         water=(b>r+40)&(b>120)&(Y>800)&(Y<990)&(X>1600)
+    elif mode=='flo':   # v274 floresta da caça: folhas verde-azuladas (g ~ b)
+        tree=(g>r+28)&(g>b-12)&(g>75)&(Y<880)&(Y>30)
+        water=np.zeros_like(tree)
     elif mode=='folha':
         tree=(g>r+18)&(g>b+12)&(g>80)&(Y<700)&(Y>380)
         water=np.zeros_like(tree)
