@@ -1429,3 +1429,6 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 
 ## v300
 - Código de presente do **Shaka** (1 pessoa no jogo todo, `chr:'shaka'`, hash `jo9vs1`; texto só com o dono). Testado com tcod_v294 adaptado.
+
+## v301
+- **Nerf das gemas da Caça** (dono pegou 3.000 💎 numa caçada com evento + drop): por nível agora `(2 + 1,5×nível + 0–3) × drop (máx. 2x) × evento`, e **no máximo 500 💎 por caçada**. Médias de uma caçada completa: normal ~120, com drop ~175, com tudo + evento 2x ~470.
