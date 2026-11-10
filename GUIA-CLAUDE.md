@@ -1316,3 +1316,8 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - Nível: Shaka vai até 70 (`LVMAX`), custo 50+ = 3000🪙/200 pó, sem item de elevação no 60/70. Linhas secretas da árvore (nível 60: dano 18/crit 12/dano crít. 25/vel 10; nível 70: dano 25/crit 15/dano crít. 35/roubo de vida 8), cristal mítico ×3/×4, botão "✦ HABILIDADES SECRETAS" na tela de nível (`lvX`).
 - Botões personalizados: o dono vai mandar (por enquanto os normais).
 - Testes: `ferramentas/testes/tshaka_v280.js`, `tgacha_sk_v280.js`.
+
+## v281 — Shaka: recorte refeito (rosto/braços/boca não somem mais) e retrato centralizado
+- Bug: no `seg_sk.py` o "miolo" do corpo era só o que tinha cor escura (`A>.62` com abertura), então pele e cabelo claros viravam "brilho" semitransparente → rosto, boca e braços apareciam vazados. Agora o miolo é o contorno preto FECHADO (`binary_closing` + preencher buracos): tudo dentro do contorno fica opaco; só o brilho de fora (energia, rastros) fica transparente.
+- Retrato da barra de vida recortado de novo com o rosto no centro (`imgs.py`). Os webp antigos foram apagados.
+- O escudo (folha 10) continua o mesmo até o dono mandar a imagem nova.

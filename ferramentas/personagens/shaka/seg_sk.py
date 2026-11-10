@@ -12,7 +12,7 @@ def alpha(p):
     if k:
         sz=nd.sum(np.ones_like(mn),lab,range(1,k+1));mm=nd.mean(mn,lab,range(1,k+1));bg|=np.isin(lab,[i+1 for i in range(k) if sz[i]>400 and mm[i]>=245])
     A=np.clip(np.max((255-a)/255.,axis=-1),0,1)
-    core=nd.binary_fill_holes(nd.binary_opening((A>.62)&~bg,iterations=3))
+    core=nd.binary_fill_holes(nd.binary_closing((A>.55)&~bg,iterations=4))   # contorno preto fechado -> rosto/cabelo claro ficam OPACOS
     al=np.where(bg,0.,1.)
     band=nd.binary_dilation(bg,iterations=3)&~bg
     eff=(~bg)&~nd.binary_dilation(core,iterations=3)&(sat>30)
