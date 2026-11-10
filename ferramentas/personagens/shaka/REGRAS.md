@@ -20,3 +20,7 @@
 - **70 💎** um giro · **700 💎** dez giros (aceita tickets? confirmar — o Yuta aceita).
 - **Garantido em 170 giros** (piedade). Chance por giro **um pouco menor que a do Yuta**.
 - **Liberação:** a gacha do Shaka só abre hoje **10/11/2026 às 12:45 (Brasília)**. 7 dias a partir daí → fecha 17/11/2026 12:45 (confirmar).
+## Itens exclusivos (`itens_secretos.png`) — drop na gacha do Shaka, um pouco mais difícil que os do Yuta
+- Capacete: +60% defesa, +40% crítico · Armadura: +50% dano, +40% crítico · Luvas (espaço da arma): +40% velocidade, +10% dano
+- Botas: +40% velocidade, +30% dano · Rosário (espaço do anel): +60% sorte, +30% drop
+- Shaka usando o SET COMPLETO: +10% a mais em cada item.
