@@ -2096,3 +2096,18 @@ function caTits(){const tt=twTits();rkModal(`<div class="twM caRkM"><h3>🏅 TÍ
   b.onclick=e=>{e.stopPropagation();if(!O.classList.contains('pan'))return;BCQ.length=0;document.querySelectorAll('.bcO').forEach(x=>x.remove());G.hold=0;
     try{const o=G.p[1];o.bLv=B.L+1;o.ko=false;caEnd(0)}catch(x){}rkSfx('whoosh')}}}
 TWCUP['fah9en']={nm:'30 JOIAS NEGRAS',jn:30};
+/* v298: RECUPERAR CONTA (senha esquecida). Código de 1 uso (só o dono entrega): carrega o último salvamento da conta
+   e pede uma SENHA NOVA; o próximo salvamento é assinado com a senha nova, então "ENTRAR" passa a funcionar com ela. */
+TWCUP['zmyqa8']={nm:'RECUPERAR CONTA',it:[],rec:'Breno'};
+{const _cp2=twCupom;twCupom=async function(code,E){const C=TWCUP[twHash(String(code).toUpperCase())];const r=await _cp2.apply(this,arguments);
+  if(C&&C.rec&&E&&/\bok\b/.test(E.className)){localStorage.setItem('ac_rec',C.rec);E.textContent='🔑 Código aceito! Agora crie uma SENHA NOVA para a conta '+C.rec+'.';setTimeout(acRecOpen,700)}return r}}
+function acRecOpen(){const nm=localStorage.getItem('ac_rec');if(!nm)return;
+  acM(`<div class="twM sm"><h3>🔑 RECUPERAR CONTA</h3><p class="twH">Conta <b>${twEsc(nm)}</b>. Crie uma senha nova (e anote!). O progresso salvo da conta vai voltar para este aparelho.</p><input id="arP1" class="rkCdI" type="password" maxlength="32" placeholder="SENHA NOVA (mín. 4)"><input id="arP2" class="rkCdI" type="password" maxlength="32" placeholder="REPITA A SENHA"><p class="twH" id="arE"></p><div class="row"><button class="btn main" id="arGo">SALVAR SENHA NOVA</button></div></div>`);
+  const E=document.getElementById('arE'),msg=(t,c)=>{E.className='twH '+(c||'');E.textContent=t},B=document.getElementById('arGo');
+  B.onclick=async()=>{const p=document.getElementById('arP1').value,p2=document.getElementById('arP2').value;if(p.length<4)return msg('A senha precisa de pelo menos 4 letras/números.','err');if(p!==p2)return msg('As senhas não são iguais.','err');
+    B.disabled=true;msg('Recuperando a conta...');try{const acc=await acId(nm),L=await acList(acc);if(!L.length){B.disabled=false;return msg('Conta não encontrada.','err')}const x=L[0],D=JSON.parse(x.d);
+      for(const kk of Object.keys(localStorage))if(/^(tw_|rk_)/.test(kk))localStorage.removeItem(kk);for(const kk in D)localStorage.setItem(kk,D[kk]);
+      const n2=(()=>{try{return JSON.parse(D.tw_nome)}catch(e){return nm}})()||nm,k=await acKey(n2,p);localStorage.setItem('ac_k',k);localStorage.setItem('ac_n',n2);localStorage.removeItem('ac_h');
+      const ok=await acSave(1);if(!ok){B.disabled=false;return msg('Sem internet agora. Tenta de novo.','err')}localStorage.removeItem('ac_rec');msg('✔ Conta recuperada! Use a senha nova para entrar. Recarregando...','ok');setTimeout(()=>location.reload(),1500)}
+    catch(e){B.disabled=false;msg('Sem internet agora. Tenta de novo.','err')}}}
+setTimeout(()=>{try{if(localStorage.getItem('ac_rec'))acRecOpen()}catch(e){}},3000);

@@ -1418,3 +1418,8 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - **Anel PRETO escuro de verdade:** arte do anel preto (`RQA.anel2[3]`) recolorida para preto com contorno roxo (`ranqueada/anel_preto/anel_preto.png`, feita a partir da antiga); cor do anel preto `ANC[3][1]` = `#8a6fc0`.
 - **Código para todos (texto só com o dono):** `fah9en` = 30 💠 Joias Negras, 1 vez por pessoa.
 - Teste: `tsair_v297.js`.
+
+## v298
+- **Recuperar conta (senha esquecida):** código de 1 uso com `rec:'<nome da conta>'` (`TWCUP[h]={nm:'RECUPERAR CONTA',it:[],rec:'Breno'}`, hash `zmyqa8`, texto só com o dono). Ao aceitar: pede SENHA NOVA (`acRecOpen`, fica pendente em `ac_rec` se fechar), carrega o último salvamento da conta (`acList`, sem conferir assinatura) e salva de novo assinado com a senha nova — como o ENTRAR confere os 15 salvamentos mais novos, a senha nova passa a valer em qualquer aparelho. Para outra pessoa: novo código com `rec` = nome da conta (achar a conta com a ferramenta consulta.yml: campo `sv`, valor = sha256('furia|acc|'+nome em minúsculas)[:24]).
+- Conta do Breno conferida no servidor (último salvamento 10/11 às 07:04).
+- Teste: `trec_v298.js`.
