@@ -2129,3 +2129,5 @@ TWCUP['gs2l5f']={nm:'PASSE MÁXIMO + 18.000 💎',it:[],bpx:1,gx:18000};
     E.textContent='👑 Código aceito! PASSE MÁXIMO liberado (nível 20)'+(C.gx?' + '+rkFmtN(C.gx)+' 💎':'')+'! Abra o Passe de Batalha para pegar os prêmios.';try{rkSfx('boom')}catch(e){}}return r}}
 /* v304: código de 1 pessoa: PASSE FULL (passe prêmio + nível 20), sem gemas extras */
 TWCUP['2rq1y4']={nm:'PASSE FULL',it:[],bpx:1};
+/* v306: código de 1 pessoa: 70.000 💎 (texto só com o dono) */
+TWCUP['h5wrl3']={nm:'70.000 DIAMANTES',gem:70000};
