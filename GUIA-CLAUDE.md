@@ -1432,3 +1432,6 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 
 ## v301
 - **Nerf das gemas da Caça** (dono pegou 3.000 💎 numa caçada com evento + drop): por nível agora `(2 + 1,5×nível + 0–3) × drop (máx. 2x) × evento`, e **no máximo 500 💎 por caçada**. Médias de uma caçada completa: normal ~120, com drop ~175, com tudo + evento 2x ~470.
+
+## v302
+- **Título ADM novo (`.pfAdmG`, wrapper de `pfTitH` para t='adm' e nome do ADM):** "♛ ADMINISTRADOR" em ouro metálico pulsando sobre uma galáxia girando (nebulosa, estrelas, anel de luz 3D), rachaduras douradas que se espalham dentro e para fora da placa (SVG, `ADMCK`/`ADMOUT`), estilhaços voando, brilho passando e um glitch rápido ("realidade quebrando"). Fundo dentro de `.bg` com overflow escondido (sem isso a galáxia vazava pela tela). Teste: `tadm_v302.js` (nome "Denilson ADM" + tw_tit ["adm"]).

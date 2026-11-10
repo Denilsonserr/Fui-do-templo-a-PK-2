@@ -1101,3 +1101,44 @@ body:not(.pcMode) #how .pcKeys{display:none}#how .pcKeys{margin:0 auto .6em;max-
 /* v297 */
 .bcBt{display:flex;gap:2vh;align-items:center}.bcGo.bcSair{background:linear-gradient(#5a6378,#2a3040);color:#fff;border-color:#c8d0e0;box-shadow:0 0 1.2vh rgba(200,210,230,.4);font-size:2.6vh;animation:none}
 .bcO.pan .bcGo.bcSair{animation:none}
+/* v302: título ADM divino / galáctico */
+.pfTi:has(.pfAdmG){overflow:visible;z-index:6}
+.pfAdmG{position:relative;display:inline-flex;align-items:center;justify-content:center;gap:.35em;height:92%;min-width:88%;padding:0 1.3em;border-radius:.55em;isolation:isolate;
+  background:#05020c;border:2px solid #ffd84a;box-shadow:0 0 .5em #ffc21f,0 0 1.4em rgba(255,190,40,.55),inset 0 0 1em rgba(255,200,60,.35);animation:admGp 2.2s ease-in-out infinite}
+@keyframes admGp{0%,100%{box-shadow:0 0 .4em #ffc21f,0 0 1.1em rgba(255,190,40,.45),inset 0 0 .8em rgba(255,200,60,.3)}50%{box-shadow:0 0 .8em #fff1b0,0 0 2.4em rgba(255,200,60,.85),inset 0 0 1.4em rgba(255,220,120,.55)}}
+.pfAdmG .bg{position:absolute;inset:0;border-radius:inherit;overflow:hidden;z-index:0;contain:paint}.pfAdmG .bg>.neb,.pfAdmG .bg>.st,.pfAdmG .bg>.ck{position:absolute;inset:0}.pfAdmG .bg>.gx{position:absolute;left:50%;top:50%;width:140%;aspect-ratio:1;transform:translate(-50%,-50%)}
+.pfAdmG .gx{z-index:0;background:conic-gradient(from 0deg,#12002a,#2a0a5a,#0a1a4a,#3a0a40,#12002a);filter:blur(6px) saturate(1.4);animation:admGx 9s linear infinite;border-radius:50%}
+@keyframes admGx{to{transform:translate(-50%,-50%) rotate(360deg)}}
+.pfAdmG .neb{z-index:1;background:radial-gradient(ellipse 30% 70% at 20% 50%,rgba(255,120,220,.35),transparent 70%),radial-gradient(ellipse 35% 80% at 78% 40%,rgba(90,140,255,.4),transparent 70%),radial-gradient(ellipse 25% 60% at 50% 60%,rgba(255,210,90,.3),transparent 70%);mix-blend-mode:screen;animation:admNb 6s ease-in-out infinite alternate}
+@keyframes admNb{to{transform:translateX(6%) scale(1.1);opacity:.75}}
+.pfAdmG .st{z-index:1;background-image:radial-gradient(1px 1px at 10% 20%,#fff,transparent),radial-gradient(1px 1px at 30% 70%,#fff,transparent),radial-gradient(1.5px 1.5px at 55% 30%,#ffe9a0,transparent),radial-gradient(1px 1px at 70% 80%,#fff,transparent),radial-gradient(1px 1px at 85% 25%,#fff,transparent),radial-gradient(1.5px 1.5px at 92% 65%,#fff6c8,transparent),radial-gradient(1px 1px at 45% 50%,#fff,transparent),radial-gradient(1px 1px at 18% 85%,#fff,transparent);background-size:100% 100%;animation:admSt 3s ease-in-out infinite alternate}
+@keyframes admSt{to{opacity:.4;transform:translateX(-3%)}}
+.pfAdmG .ring{position:absolute;z-index:1;left:50%;top:50%;width:9em;height:9em;margin:-4.5em 0 0 -4.5em;border-radius:50%;border:1px solid rgba(255,220,120,.5);box-shadow:0 0 .6em rgba(255,200,60,.5),inset 0 0 .6em rgba(255,200,60,.4);transform:rotateX(72deg);animation:admRg 4s linear infinite;pointer-events:none}
+@keyframes admRg{to{transform:rotateX(72deg) rotateZ(360deg)}}
+.pfAdmG .ck{z-index:2;pointer-events:none;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.pfAdmG .ck.out{position:absolute;left:-25%;top:-66%;width:150%;height:233%;overflow:visible;z-index:6}
+.pfAdmG .ck path{stroke:#fff3c0;stroke-width:1.6;filter:drop-shadow(0 0 2px #ffd84a) drop-shadow(0 0 4px #ffb21f);stroke-dasharray:140;stroke-dashoffset:140;animation:admCk 3.2s ease-out infinite}
+.pfAdmG .ck.out path{stroke-width:1.3}
+@keyframes admCk{0%{stroke-dashoffset:140;opacity:1}35%{stroke-dashoffset:0;opacity:1}70%{opacity:.9}100%{stroke-dashoffset:0;opacity:0}}
+.pfAdmG .cr{position:relative;z-index:4;font-style:normal;font-size:2em;line-height:1;color:#ffe9a0;text-shadow:0 0 .3em #fff,0 0 .7em #ffc21f,0 0 1.2em #ff9a00;animation:admCr 2.2s ease-in-out infinite}
+@keyframes admCr{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-.08em) scale(1.12)}}
+.pfAdmG b{position:relative;z-index:4;font:900 2.05em var(--f-display,var(--f-ui));letter-spacing:.16em;white-space:nowrap;
+  background:linear-gradient(100deg,#ffc21f 0%,#fff3c0 18%,#fff 26%,#ffd84a 36%,#e0a020 50%,#fff3c0 64%,#fff 72%,#ffd24a 84%,#ffc21f 100%);background-size:250% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;
+  filter:drop-shadow(0 0 .12em #fff7d0) drop-shadow(0 0 .35em #ffc21f) drop-shadow(0 .06em 0 #4a2a00);animation:admTx 2.6s linear infinite,admTp 2.2s ease-in-out infinite}
+@keyframes admTx{to{background-position:-250% 0}}
+@keyframes admTp{0%,100%{filter:drop-shadow(0 0 .12em #fff7d0) drop-shadow(0 0 .35em #ffc21f) drop-shadow(0 .06em 0 #4a2a00)}50%{filter:drop-shadow(0 0 .2em #fff) drop-shadow(0 0 .7em #ffd84a) drop-shadow(0 0 1.2em #ff9a00) drop-shadow(0 .06em 0 #4a2a00)}}
+/* glitch: a realidade "quebra" por um instante */
+.pfAdmG b::before,.pfAdmG b::after{content:attr(data-t);position:absolute;inset:0;letter-spacing:inherit;-webkit-background-clip:text;background-clip:text;color:transparent;opacity:0;pointer-events:none}
+.pfAdmG b::before{background-image:linear-gradient(90deg,#fff,#ffe9a0);clip-path:inset(0 0 55% 0);animation:admG1 3.2s steps(1) infinite}
+.pfAdmG b::after{background-image:linear-gradient(90deg,#ffb21f,#fff);clip-path:inset(55% 0 0 0);animation:admG2 3.2s steps(1) infinite}
+@keyframes admG1{0%,88%,100%{opacity:0;transform:none}90%{opacity:1;transform:translate(.08em,-.04em)}93%{opacity:1;transform:translate(-.1em,0)}96%{opacity:0}}
+@keyframes admG2{0%,88%,100%{opacity:0;transform:none}90%{opacity:1;transform:translate(-.08em,.04em)}93%{opacity:1;transform:translate(.12em,0)}96%{opacity:0}}
+.pfAdmG .sh{position:absolute;z-index:5;width:.5em;height:.5em;background:linear-gradient(135deg,#fff,#ffd84a 50%,#b87a00);clip-path:polygon(50% 0,100% 60%,30% 100%,0 40%);filter:drop-shadow(0 0 3px #ffc21f);opacity:0;animation:admSh 3.2s ease-out infinite;pointer-events:none}
+.pfAdmG .s1{left:12%;top:20%;--x:-1.6em;--y:-1.4em}.pfAdmG .s2{left:30%;bottom:15%;--x:-1em;--y:1.5em;animation-delay:.3s}.pfAdmG .s3{left:55%;top:10%;--x:.6em;--y:-1.7em;animation-delay:.6s}
+.pfAdmG .s4{right:22%;bottom:20%;--x:1.2em;--y:1.4em;animation-delay:.9s}.pfAdmG .s5{right:8%;top:30%;--x:1.9em;--y:-.6em;animation-delay:1.2s}.pfAdmG .s6{left:4%;bottom:30%;--x:-1.9em;--y:.7em;animation-delay:1.5s}
+@keyframes admSh{0%,30%{opacity:0;transform:translate(0,0) rotate(0) scale(.6)}38%{opacity:1}100%{opacity:0;transform:translate(var(--x),var(--y)) rotate(220deg) scale(.9)}}
+.pfAdmG .sw{position:absolute;z-index:5;top:-20%;bottom:-20%;width:18%;left:-30%;background:linear-gradient(100deg,transparent,rgba(255,250,220,.75),transparent);transform:skewX(-20deg);animation:admS 2.6s ease-in-out infinite;pointer-events:none;mix-blend-mode:screen}
+.pfAdmG>.sw{overflow:hidden}
+.pfAdmG .sp{position:absolute;z-index:6;font-style:normal;color:#fff;font-size:.8em;text-shadow:0 0 .4em #ffd84a,0 0 .8em #ff9a00;animation:pfTw 1.4s ease-in-out infinite;opacity:0;pointer-events:none}
+.pfAdmG .sp.a{left:-.4em;top:-.5em}.pfAdmG .sp.b{right:-.4em;top:-.5em;animation-delay:.35s}.pfAdmG .sp.c{left:40%;bottom:-.6em;animation-delay:.7s}.pfAdmG .sp.d{right:15%;bottom:-.6em;animation-delay:1.05s}
+@keyframes admS{0%{left:-30%}60%,100%{left:120%}}

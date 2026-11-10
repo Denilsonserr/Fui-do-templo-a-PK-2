@@ -2115,3 +2115,10 @@ setTimeout(()=>{try{if(localStorage.getItem('ac_rec'))acRecOpen()}catch(e){}},30
 TWCUP['170s7ti']={nm:'RECUPERAR CONTA',it:[],rec:'Vini_junior10'};TWCUP['1db5so5']={nm:'RECUPERAR CONTA',it:[],rec:'xdarwinzinn'};
 /* v300: Shaka de presente (1 pessoa no jogo todo; texto do código só com o dono) */
 TWCUP['jo9vs1']={nm:'SHAKA DE VIRGEM',it:[],chr:'shaka'};
+/* v302: TÍTULO ADM NOVO — "ADMINISTRADOR" divino/galáctico: galáxia girando, ouro pulsando, rachaduras que se espalham (quebrando a realidade), estilhaços e glitch */
+const ADMCK=['M0,30 L38,26 L62,34 L90,22 L118,31','M400,28 L366,33 L340,24 L312,35 L290,27','M120,0 L128,14 L119,24 L131,36','M282,60 L274,46 L286,37 L276,24','M200,0 L196,10 L206,17','M210,60 L214,50 L203,44','M60,0 L66,12 L56,20','M340,60 L334,49 L345,41'];
+const ADMOUT=['M0,30 L-30,24 L-55,34 L-80,20','M400,30 L430,36 L452,25 L478,38','M90,0 L84,-14 L96,-26','M310,60 L318,74 L306,88','M30,60 L22,72 L34,84','M370,0 L378,-12 L368,-24'];
+{const _pt5=pfTitH;pfTitH=function(t,n,adm){if(t!=='adm'||!adm)return _pt5.apply(this,arguments);
+  const ck=(L,c)=>L.map((d,i)=>`<path class="${c}" d="${d}" style="animation-delay:${(i*.37).toFixed(2)}s"/>`).join('');
+  return `<span class="pfAdmG"><i class="bg"><i class="gx"></i><i class="neb"></i><i class="st"></i><i class="ring"></i><svg class="ck" viewBox="0 0 400 60" preserveAspectRatio="none">${ck(ADMCK,'c')}</svg><i class="sw"></i></i><svg class="ck out" viewBox="-100 -40 600 140" preserveAspectRatio="none">${ck(ADMOUT,'o')}</svg>
+  <i class="cr">♛</i><b data-t="ADMINISTRADOR">ADMINISTRADOR</b>${[1,2,3,4,5,6].map(i=>`<i class="sh s${i}"></i>`).join('')}<i class="sp a">✦</i><i class="sp b">✦</i><i class="sp c">✦</i><i class="sp d">✦</i></span>`}}
