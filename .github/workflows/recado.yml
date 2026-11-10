@@ -1,0 +1,20 @@
+name: Publicar recado do ADM (ferramenta)
+on:
+  workflow_dispatch:
+    inputs:
+      titulo: {description: 'título', default: 'RECADO'}
+      texto: {description: 'texto do recado'}
+jobs:
+  r:
+    runs-on: ubuntu-latest
+    steps:
+      - name: publicar
+        env: {TIT: "${{ inputs.titulo }}", TXT: "${{ inputs.texto }}"}
+        run: |
+          U='https://firestore.googleapis.com/v1/projects/furia-do-templo/databases/(default)/documents/torre'
+          K='key=AIzaSyDXTjvRMcKtJ5vq2vl-F2B_w2M-7hd_QY0'
+          ID="avs_$(python3 -c 'import time,numpy' 2>/dev/null; python3 -c 'import time;n=int(time.time()*1000);s="";d="0123456789abcdefghijklmnopqrstuvwxyz"
+          while n:s=d[n%36]+s;n//=36
+          print(s)')"
+          BODY=$(python3 -c 'import json,os;S=lambda v:{"stringValue":v};print(json.dumps({"fields":{"avs":S("1"),"tit":S(os.environ["TIT"]),"txt":S(os.environ["TXT"]),"nome":S("Denilson ADM"),"andar":{"integerValue":"0"},"tempo":{"integerValue":"0"},"uid":S("adm"),"v":{"integerValue":"269"}}}))')
+          curl -sS -w '\nHTTP %{http_code}\n' -X POST "$U?documentId=$ID&$K" -H 'Content-Type: application/json' -d "$BODY"
