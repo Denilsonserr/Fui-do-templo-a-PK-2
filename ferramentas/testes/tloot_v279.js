@@ -1,0 +1,18 @@
+// v279: caça liberada (sem ADM), loot da caçada, evoluir anel com pedras, set do lobo
+const {chromium}=require('playwright');const SH='/home/claude/fui-do-templo-a-pk-2/ferramentas/testes/shots/';
+(async()=>{const b=await chromium.launch();const p=await b.newPage({viewport:{width:1280,height:720}});const errs=[];p.on('pageerror',e=>errs.push(e.message));await p.route(/fonts\.g|firestore/,r=>r.abort());
+await p.addInitScript(()=>{if(!sessionStorage.d){sessionStorage.d=1;localStorage.clear();Object.assign(localStorage,{rk_ini:'1',rk_xpv2:'1',rk_dia:'1',tw_nome:'"T"',rk_sel:'"goku"',rk_own:'["goku"]',rk_gem:'5000',rk_lv:JSON.stringify({goku:{lv:30,t:[]}}),rk_an:JSON.stringify([{i:'a1',c:2,g:4,s:'dano',v:22,a:0}]),rk_anEq:JSON.stringify({goku:['a1',null,null,null,null,null,null,null]}),rk_pdr2:'[30,10,0,0,0,0,0]'})}});
+await p.goto('file:///home/claude/fui-do-templo-a-pk-2/www/index.html');await p.waitForFunction(()=>!document.getElementById('goSelect').disabled,null,{timeout:120000});
+await p.click('#mRank');await p.waitForTimeout(900);console.log('botão caça sem ADM:',await p.$$eval('#rkWrap [data-a="caca"]',e=>e.length));
+await p.click('#rkWrap [data-a="caca"]',{force:true});await p.waitForTimeout(1200);await p.screenshot({path:SH+'l79_tela.png'});
+// forçar drops: sorte alta
+await p.click('#rkWrap [data-a="caGo"]',{force:true});await p.waitForFunction(()=>__dbg.G.mode==='fight'&&__dbg.G.phase==='fight',null,{timeout:120000});await p.waitForTimeout(600);
+for(let k=0;k<4;k++){await p.evaluate(()=>{const [a,o]=__dbg.G.p;a.hp=3600;o.hp=3;o.hpLag=3;o.x=a.x+170;o.y=486;o.grounded=true;o.vy=0;o.bs='idle';o.bcd=300;o.state='idle';o.inv=0;o.facing=-1;a.facing=1;a.state='idle';window.__mr=Math.random;Math.random=()=>0.003});
+  for(let i=0;i<10;i++){await p.keyboard.press('KeyJ');await p.waitForTimeout(110);if(await p.evaluate(()=>__dbg.G.p[1].bs==='rev'))break}await p.evaluate(()=>{Math.random=window.__mr});if(k===0){await p.waitForTimeout(500);await p.screenshot({path:SH+'l79_drop.png'})}await p.waitForTimeout(3000)}
+for(let i=0;i<40;i++){await p.evaluate(()=>{const [a,o]=__dbg.G.p;if(a.hp>1)a.hp=1;a.inv=0;if(o.bs==='idle'){o.x=a.x+150;o.bcd=0}});await p.waitForTimeout(500);if(await p.evaluate(()=>__dbg.G.mode!=='fight'))break}
+await p.waitForTimeout(2500);await p.screenshot({path:SH+'l79_fim.png'});console.log('pedras',await p.evaluate(()=>localStorage.rk_pdr2),'set',await p.evaluate(()=>localStorage.rk_ls),'aneis',await p.evaluate(()=>JSON.parse(localStorage.rk_an).length));
+await p.click('#rkMX');await p.waitForTimeout(400);
+await p.waitForTimeout(4000);await p.waitForTimeout(3000);await p.screenshot({path:SH+'l79_bau.png'});await p.evaluate(()=>{try{rkModal(null)}catch(e){}}).catch(()=>{});
+await p.click('#rkWrap [data-a="lsSet"]',{force:true}).catch(e=>console.log('set?',e.message.slice(0,80)));await p.waitForTimeout(600);await p.click('#rkModal .lsIt',{force:true}).catch(()=>{});await p.waitForTimeout(500);await p.screenshot({path:SH+'l79_set.png'});
+await p.evaluate(()=>{try{document.getElementById('rkMX').click()}catch(e){}});await p.click('#rkWrap [data-a="back"]',{force:true});await p.waitForTimeout(600);await p.click('#rkWrap [data-a="lib"]',{force:true});await p.waitForTimeout(800);await p.click('#rkWrap .anTabB',{force:true});await p.waitForTimeout(900);await p.click('#anGrid [data-i="a1"]',{force:true});await p.waitForTimeout(400);await p.click('#anUp');await p.waitForTimeout(400);for(let i=0;i<3;i++){await p.click('#anGo');await p.waitForTimeout(350)}await p.screenshot({path:SH+'l79_up.png'});console.log('anel',await p.evaluate(()=>localStorage.rk_an));
+console.log(errs);await b.close()})();

@@ -1295,3 +1295,13 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 ## v278 — botão "Anéis" da Biblioteca no lugar certo
 - O botão desenhado por cima das artes antigas estava em cima do "Coleções" na arte `biblioteca` (abas Equip./Itens/Coleções). Agora fica logo abaixo de Coleções, do mesmo tamanho e no mesmo estilo (borda azul brilhando, cantos cortados, ícone do anel, letra itálica): `bib_pf` (aba Personagens) em `rkB(12,517,276,594)`, `biblioteca` em `rkB(8,555,279,640)`; nessa arte o botão "USAR TÍTULO" desceu para `rkB(18,652,268,716)`.
 - Teste: `ferramentas/testes/tbib_v278.js`.
+
+## v279 — CAÇA LIBERADA PARA TODOS + loot da caçada + NÍVEL DOS ANÉIS + PEDRAS DAS ALMAS + SET DO LOBO
+- O modo Caça saiu do teste: o botão Caçador do Modos de Jogo abre para todo mundo (sem cadeado/ADM).
+- **Sorte x Drop (regra do dono):** `caLuck()` = 1 + sorte/100 (máx 4x) multiplica as CHANCES (0,5% → 1% → 2%); `caDropF()` = drop multiplica as QUANTIDADES (10 💎 → 20 💎). Sorte/drop do Set do Lobo somam.
+- **Loot por nível derrotado** (`caLoot`): geminhas (5+nv×4+0..5)×drop; 🔴 1-2 (20%, nv4+, sem multiplicar — moeda de dinheiro real); ticket 1%×sorte; sacola de PEDRAS DAS ALMAS (40%+3%/nv; comum→divina, as altas bem raras e melhoram com sorte/nível); peça do SET DO LOBO (10%+1%/nv; comum→divino); baú LENDÁRIO 2% / MÍTICO 0,6% (×sorte, nv4+, abrem com a animação normal depois do resultado).
+- **Anéis** (substitui o drop da v277, `anDropLobo`): rola do mais raro: vermelho 0,4% (nv9) / 0,5% (nv10), preto 1,2% (nv7-8) / 2% (nv9-10), roxo 4% (nv5+), amarelo 9% (nv3+), branco 22% — tudo ×sorte.
+- **Nível do anel** (`r.l`): máx `ANMX` branco 10, amarelo 20, roxo 30, preto 40, vermelho 50. Valor = valor da nota × (10% no nível 1 → 100% no máximo) (`anV`). Evoluir (`anUpM`, botão ⬆️ EVOLUIR no anel): anel grande animado, barra de nível, custo `anCost(l)`: pedra comum (1-9), rara (10-19), épica (20-29), lendária (30-39), mítica (40-44), secreta (45-48), divina (49→50); quantidade 1-3; + 20×nível geminhas.
+- **Pedras das Almas** `rk_pdr2` [7] (ícones `RQA.pedra`, `ferramentas/bestas/lobo/set/pedras.png`). Aparecem na Biblioteca › Itens.
+- **Set do Lobo** (ícones `RQA.lset[peça][raridade]`, `set_lobo.png`; `fazer.py`): capacete=crítico, armadura=defesa, botas=velocidade, colar=sorte na caça, anel=drop na caça, capa=dano (`LSV`, comum→divino). **Só vale no modo Caça.** Guardado `rk_ls {peçaRaridade:qtd}`, `rk_lsEq {peça:raridade}`. Tela: botão "🐺 SET DO LOBO · 🎒 PEDRAS" na tela da Caça (`lsOpen`). Peças também listadas em Biblioteca › Itens.
+- Teste: `ferramentas/testes/tloot_v279.js`.

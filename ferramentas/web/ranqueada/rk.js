@@ -62,7 +62,7 @@ function rkView(v){RKV=v;const W=$('rkWrap');if(!W)return;clearInterval(rkView.i
   rkFit();W.querySelectorAll('[data-a]').forEach(b=>b.onclick=e=>{e.stopPropagation();rkAct(b.dataset.a,b)});({boss:rkBossOn,yb:rkBossOn,gacha:rkGachaOn,lib:rkLibOn,pf:pfOn,hs:hsOn,lvl:lvOn,ps:psOn,mn:mnOn,bp:bpOn,ev:evOn,yrb:()=>{clearInterval(rkView.iv);if(!RKSRV)rkSrvLoad()}}[v]||(()=>{}))()}
 function rkLocked(){rkSfx('clang');rkToast('🔒 Em breve!','#cfd6ea')}
 function rkAct(a,b){rkSfx('whoosh');
-  switch(a){case 'caca':return rkView('ca');case 'caGo':return caStart();case 'caInfo':return caInfo();case 'caLk':rkSfx('clang');return rkToast('🔒 Nova besta em breve!','#d9b3ff');case 'caStg':return rkToast('🌲 FLORESTA SOMBRIA · fica mais destruída a cada nível do lobo','#9fd8ff');case 'caRing':{const r=CARING[+b.dataset.i];return rkToast('💍 Anel '+r[1]+' · '+r[2]+' · '+['cai em qualquer nível','cai do nível 3','cai do nível 5','cai do nível 7 (50 mil+ no 9 e 10)','só nos níveis 9 e 10'][+b.dataset.i],'#ffffff')}case 'perfil':PFO=null;PFRET={back:()=>rkView('menu')};return rkView('pf');case 'cacaLk':rkSfx('clang');return rkToast('🔒 Modo Caçador em teste · só quem tem o título ADM','#d9b3ff');case 'evMenu':return evOpen();case 'bpMenu':return rkView('bp');case 'psMenu':PSRET='menu';return rkView('ps');case 'mnMenu':return mnOpen();case 'back':if(RKV==='ps')return rkView(PSRET||'boss');if(RKV==='mn')return rkView('menu');if(RKV==='lvl')return rkView('lib');if(RKV==='yrb')return rkView('yb');if(RKV==='yb')return rkView('menu');if(RKV==='pf'||RKV==='hs'){if(PFO||PFRET)return pfBack();return showScreen('title')}return rkView(RKV==='shop'?'gacha':RKV==='rb'?'boss':'menu');case 'pf':return rkView('pf');case 'hs':return rkView('hs');case 'pfFoto':return PFO?pfAdmFoto():pfFotoM();case 'pfTit':return PFO?0:pfTitM();case 'pfPick':return PFO?0:pfPick();case 'pfRadar':return pfRadarInfo();case 'pfVit':if(PFO){const e=(PFO.vit||[])[+b.dataset.i];if(e)rkToast(rkItNm(e)+': '+rkItEf(e),rkItC(e));return}return pfVitPick(+b.dataset.i);case 'hsInfo':return hsInfo(b.dataset.k);case 'home':return showScreen('title');case 'menuBack':return showScreen('title');
+  switch(a){case 'caca':return rkView('ca');case 'caGo':return caStart();case 'lsSet':return lsOpen();case 'caInfo':return caInfo();case 'caLk':rkSfx('clang');return rkToast('🔒 Nova besta em breve!','#d9b3ff');case 'caStg':return rkToast('🌲 FLORESTA SOMBRIA · fica mais destruída a cada nível do lobo','#9fd8ff');case 'caRing':{const r=CARING[+b.dataset.i];return rkToast('💍 Anel '+r[1]+' · '+r[2]+' · '+['cai em qualquer nível','cai do nível 3','cai do nível 5','cai do nível 7 (50 mil+ no 9 e 10)','só nos níveis 9 e 10 · 0,5%'][+b.dataset.i],'#ffffff')}case 'perfil':PFO=null;PFRET={back:()=>rkView('menu')};return rkView('pf');case 'cacaLk':rkSfx('clang');return rkToast('🔒 Modo Caçador em teste · só quem tem o título ADM','#d9b3ff');case 'evMenu':return evOpen();case 'bpMenu':return rkView('bp');case 'psMenu':PSRET='menu';return rkView('ps');case 'mnMenu':return mnOpen();case 'back':if(RKV==='ps')return rkView(PSRET||'boss');if(RKV==='mn')return rkView('menu');if(RKV==='lvl')return rkView('lib');if(RKV==='yrb')return rkView('yb');if(RKV==='yb')return rkView('menu');if(RKV==='pf'||RKV==='hs'){if(PFO||PFRET)return pfBack();return showScreen('title')}return rkView(RKV==='shop'?'gacha':RKV==='rb'?'boss':'menu');case 'pf':return rkView('pf');case 'hs':return rkView('hs');case 'pfFoto':return PFO?pfAdmFoto():pfFotoM();case 'pfTit':return PFO?0:pfTitM();case 'pfPick':return PFO?0:pfPick();case 'pfRadar':return pfRadarInfo();case 'pfVit':if(PFO){const e=(PFO.vit||[])[+b.dataset.i];if(e)rkToast(rkItNm(e)+': '+rkItEf(e),rkItC(e));return}return pfVitPick(+b.dataset.i);case 'hsInfo':return hsInfo(b.dataset.k);case 'home':return showScreen('title');case 'menuBack':return showScreen('title');
     case 'boss':return rkView(RKBID==='yuta'&&ysOn()?'yb':(RKBID='broly','boss'));case 'gacha':return rkView('gacha');case 'shop':return rkView('shop');case 'lib':return rkView('lib');case 'lock':return rkLocked();
     case 'ranking':return rkRanking();case 'rewards':return rkRewards();case 'ach':return rkAch();case 'pos':return rkPos();
     case 'start':if(!RKSRV)rkSrvLoad();return rkView(RKBID==='yuta'?'yrb':'rb');case 'bsel':if(b.dataset.b==='yuta'&&!ysOn())return rkToast('⏳ O evento do Yuta acabou','#cfd6ea');RKBID=b.dataset.b;RKYD=null;RKSRV=null;try{localStorage.setItem('rk_bsel',RKBID)}catch(e){}return rkView(RKBID==='yuta'?'yb':'boss');case 'ytab':YS.tab=b.dataset.t;return rkView('yrb');case 'ydif':YS.d=+b.dataset.i;return rkView('yrb');case 'yfight':return ysFight();case 'equip':return rkEquip();case 'music':return rkMusic();case 'code':return rkCode();case 'torre':return rkTorre();case 'conta':return acOpen();case 'fight':RKYD=null;return rkBossStart();case 'lvp':return rkRbSel(-1);case 'lvn':return rkRbSel(1);case 'lvc':return rkRbSel(0,+b.dataset.i);case 'sel':return rkView('lib');case 'hist':return rkHist();case 'taxas':return rkTaxas();case 'pool':return rkTaxas();
@@ -75,7 +75,7 @@ function rkMenuH(){const rp=rkG('rp',0),ri=rkRank(rp),adm=(()=>{try{return twIsA
   return `${rkMenuFx()}<button class="hs" data-a="menuBack" style="${rkB(5,20,110,95)}"></button>
   <button class="hs mB r" data-a="boss" style="${rkB(10,140,535,250)}"><span class="mSw"></span><span class="mGl"></span></button>
   <button class="hs mB g" data-a="torre" style="${rkB(15,262,522,368)}"><span class="mSw"></span><span class="mGl"></span></button>
-  <button class="hs mB p${adm?'':' mLk'}" data-a="${adm?'caca':'cacaLk'}" style="${rkB(15,380,525,482)}"><span class="mSw"></span><span class="mGl"></span>${adm?'<b class="mTag">ADM · TESTE</b>':'<b class="mLock"><svg viewBox="0 0 24 24"><path d="M7 10V7a5 5 0 0 1 10 0v3" fill="none" stroke="currentColor" stroke-width="2.4"/><rect x="4.5" y="10" width="15" height="11" rx="2" fill="currentColor"/></svg></b>'}</button>
+  <button class="hs mB p" data-a="caca" style="${rkB(15,380,525,482)}"><span class="mSw"></span><span class="mGl"></span></button>
   <button class="hs mB b" data-a="gacha" style="${rkB(15,498,532,602)}"><span class="mSw"></span><span class="mGl"></span></button>
   <button class="hs rd" data-a="psMenu" style="${rkB(1588,98,1708,234)}"></button><button class="hs rd evMb${evAny()?' on':''}" data-a="evMenu" style="${rkB(1678,248,1815,385)}">${evAny()?'<i class="dot"></i>':''}</button><button class="hs rd" data-a="bpMenu" style="${rkB(1678,398,1820,535)}">${bpPend()?'<i class="dot"></i>':''}</button><button class="hs rd" data-a="mnMenu" style="${rkB(1710,98,1842,244)}">${mnBadge()?'<i class="dot"></i>':''}</button>
   <button class="hs" data-a="ranking" style="${rkB(250,670,488,790)}"></button><button class="hs" data-a="rewards" style="${rkB(500,670,780,790)}">${rkRwPend()?'<i class="dot"></i>':''}</button>
@@ -1773,8 +1773,8 @@ const anL=()=>rkG('an',[]),anEqAll=()=>rkG('anEq',{}),anEq=id=>{const e=(anEqAll
 const anSlots=id=>Math.min(8,Math.floor(lvOf(id).lv/10));
 const anAge=r=>r.c===3?(r.a||25000).toLocaleString('pt-BR')+' anos':ANC[r.c][2];
 const anSt=k=>ANS.find(x=>x[0]===k)||ANS[0];
-const anTxt=r=>{const S=anSt(r.s);return S[1]+' +'+r.v+S[2]};
-function anSum(id){const o={dano:0,crit:0,vel:0,st:0,drop:0,uv:0};const L=anL(),E=anEq(id);for(const i of E){if(!i)continue;const r=L.find(x=>x.i===i);if(r)o[r.s]+=r.v}return o}
+const anTxt=r=>{const S=anSt(r.s);return S[1]+' +'+anV(r)+S[2]};
+function anSum(id){const o={dano:0,crit:0,vel:0,st:0,drop:0,uv:0};const L=anL(),E=anEq(id);for(const i of E){if(!i)continue;const r=L.find(x=>x.i===i);if(r)o[r.s]+=anV(r)}for(const k in o)o[k]=Math.round(o[k]*10)/10;return o}
 function anWho(r){const A=anEqAll();for(const id in A)if((A[id]||[]).includes(r.i))return id;return null}
 /* sorteio de um anel */
 function anRoll(c,lv){let q=Math.random()*100,g=0;for(let i=0;i<8;i++){if((q-=ANW[i])<0){g=i;break}}const s=ANS[(Math.random()*ANS.length)|0][0];
@@ -1801,14 +1801,14 @@ function anH(){const id=AN.ch&&(rkG('own',['goku']).includes(AN.ch))?AN.ch:(AN.c
   <div id="anGrid"></div><button class="hs" data-a="anUp" style="${rkB(1778,180,1822,228)}"></button><button class="hs" data-a="anDn" style="${rkB(1778,708,1822,756)}"></button>`}
 function anItems(){const q=AN.q.toLowerCase();return anL().filter(r=>(AN.f===0||r.c===AN.f-1)&&(!q||(ANC[r.c][0]+' '+anSt(r.s)[1]+' '+ANG[r.g]).toLowerCase().includes(q))).sort((a,b)=>b.c-a.c||b.g-a.g||b.v-a.v)}
 function anGrid(){const G0=$('anGrid');if(!G0)return;const L=anItems(),pages=Math.max(1,Math.ceil(L.length/16));AN.pg=Math.min(AN.pg,pages-1);const X=[1160,1318,1473,1626],Y=[180,325,472,618];
-  G0.innerHTML=L.length?L.slice(AN.pg*16,AN.pg*16+16).map((r,i)=>{const w=anWho(r);return `<button class="anCell" data-i="${r.i}" style="${rkB(X[i%4],Y[(i/4)|0],X[i%4]+142,Y[(i/4)|0]+130)};--c:${ANC[r.c][1]}"><img src="${RQA.anel2[r.c]}" alt=""><b class="g g${r.g}">${ANG[r.g]}</b><span>${anSt(r.s)[1].split(' ')[0]} +${r.v}${anSt(r.s)[2]}</span>${w?`<em>${w===AN.ch?'EM USO':'✔ '+twEsc((CH[w]||{}).name||w)}</em>`:''}</button>`}).join('')+(pages>1?`<div class="rkPg" style="${rkB(1776,450,1824,480)}">${AN.pg+1}/${pages}</div>`:'')
+  G0.innerHTML=L.length?L.slice(AN.pg*16,AN.pg*16+16).map((r,i)=>{const w=anWho(r);return `<button class="anCell" data-i="${r.i}" style="${rkB(X[i%4],Y[(i/4)|0],X[i%4]+142,Y[(i/4)|0]+130)};--c:${ANC[r.c][1]}"><img src="${RQA.anel2[r.c]}" alt=""><b class="g g${r.g}">${ANG[r.g]}</b><span>${anSt(r.s)[1].split(' ')[0]} +${anV(r)}${anSt(r.s)[2]}</span><i class="anLv">Nv ${anLvl(r)}/${ANMX[r.c]}</i>${w?`<em>${w===AN.ch?'EM USO':'✔ '+twEsc((CH[w]||{}).name||w)}</em>`:''}</button>`}).join('')+(pages>1?`<div class="rkPg" style="${rkB(1776,450,1824,480)}">${AN.pg+1}/${pages}</div>`:'')
     :`<div class="anVz" style="${rkB(1160,330,1765,470)}">Você ainda não tem anéis.<br>Eles caem do <b>LOBO NEGRO</b> no modo Caça.</div>`;
   G0.querySelectorAll('.anCell').forEach(b=>b.onclick=()=>{const r=anL().find(x=>x.i===b.dataset.i);if(r){rkSfx('whoosh');anInfo(r)}})}
 function anOn(){const S=$('anSrch');if(S)S.oninput=()=>{AN.q=S.value;AN.pg=0;anGrid()};anGrid()}
-function anCard(r){return `<div class="anCard" style="--c:${ANC[r.c][1]}"><img src="${RQA.anel2[r.c]}" alt=""><div><b>ANEL ${ANC[r.c][0]} · ${anAge(r)}</b><span>Nota <b class="g g${r.g}">${ANG[r.g]}</b> · ${anTxt(r)}</span></div></div>`}
+function anCard(r){return `<div class="anCard" style="--c:${ANC[r.c][1]}"><img src="${RQA.anel2[r.c]}" alt=""><div><b>ANEL ${ANC[r.c][0]} · ${anAge(r)}</b><span>Nota <b class="g g${r.g}">${ANG[r.g]}</b> · Nível ${anLvl(r)}/${ANMX[r.c]} · ${anTxt(r)}</span></div></div>`}
 function anInfo(r){const id=AN.ch,E=anEq(id),n=anSlots(id),w=anWho(r),free=E.slice(0,n).indexOf(null);
-  rkModal(`<div class="twM">${anCard(r)}${w?`<p class="twH">Equipado em ${twEsc((CH[w]||{}).name||w)}.</p>`:''}<div class="row">${w===id?'<button class="btn main" id="anOut">TIRAR</button>':`<button class="btn main" id="anIn">${w?'TRAZER PARA ':'EQUIPAR EM '}${twEsc((CH[id]||{}).name||id)}</button>`}<button class="btn" id="anDel">🗑️ JOGAR FORA</button><button class="btn" id="rkMX">FECHAR</button></div></div>`);
-  $('rkMX').onclick=()=>rkModal(null);
+  rkModal(`<div class="twM">${anCard(r)}${w?`<p class="twH">Equipado em ${twEsc((CH[w]||{}).name||w)}.</p>`:''}<div class="row">${w===id?'<button class="btn main" id="anOut">TIRAR</button>':`<button class="btn main" id="anIn">${w?'TRAZER PARA ':'EQUIPAR EM '}${twEsc((CH[id]||{}).name||id)}</button>`}<button class="btn main" id="anUp">⬆️ EVOLUIR</button><button class="btn" id="anDel">🗑️ JOGAR FORA</button><button class="btn" id="rkMX">FECHAR</button></div></div>`);
+  $('rkMX').onclick=()=>rkModal(null);$('anUp').onclick=()=>anUpM(r.i);
   if($('anOut'))$('anOut').onclick=()=>{anPut(id,E.indexOf(r.i),null);rkModal(null)};
   if($('anIn'))$('anIn').onclick=()=>{if(!n){rkSfx('clang');return rkToast('🔒 A 1ª vaga abre no nível 10 do personagem','#d9b3ff')}if(free<0){rkSfx('clang');return rkToast('Todas as '+n+' vagas estão ocupadas: tire um anel primeiro','#ffb0b0')}if(w)anPut(w,anEq(w).indexOf(r.i),null);anPut(id,free,r.i);rkModal(null)};
   $('anDel').onclick=()=>{rkModal(`<div class="twM sm"><h3>JOGAR FORA?</h3>${anCard(r)}<p class="twH">O anel some para sempre.</p><div class="row"><button class="btn" id="rkMX">NÃO</button><button class="btn main" id="anOk">JOGAR FORA</button></div></div>`);$('rkMX').onclick=()=>rkModal(null);
@@ -1832,3 +1832,74 @@ function anFx(r,d){try{txt(d.x,d.y-240,'💍 ANEL '+ANC[r.c][0]+' ('+ANG[r.g]+')
 {const _cs=caStart;caStart=function(){CA.an=[];const r=_cs.apply(this,arguments);CA.an=[];return r}}
 {const _ce=caEnd;caEnd=function(w){const got=(CA.an||[]).slice();_ce.apply(this,arguments);const add=()=>{const M=$('rkModal');if(!M||M.hidden||M.querySelector('.anGot'))return;const p=M.querySelector('.twM .row');if(!p)return;
     p.insertAdjacentHTML('beforebegin',`<div class="anGot">${got.length?'<p class="twH">💍 Anéis que caíram:</p>'+got.map(anCard).join(''):'<p class="twH">Nenhum anel caiu desta vez.</p>'}</div>`)};for(const t of [400,1900,3600,6100])setTimeout(add,t)}}
+
+/* ================= v279: CAÇA LIBERADA + LOOT DA CAÇA + NÍVEL DOS ANÉIS + PEDRAS DAS ALMAS + SET DO LOBO =================
+   Sorte (caLuck) multiplica CHANCES (0,5% → 1% → 2%, até 4x). Drop (caDropF) multiplica QUANTIDADES (10 💎 → 20 💎). */
+const ANMX=[10,20,30,40,50];
+const anLvl=r=>Math.max(1,Math.min(ANMX[r.c],r.l|0||1));
+const anV=r=>{const mx=ANMX[r.c],l=anLvl(r);return Math.round(r.v*(.1+.9*(l-1)/(mx-1))*10)/10};
+const PDN=['COMUM','RARA','ÉPICA','LENDÁRIA','MÍTICA','SECRETA','DIVINA'],PDC=['#d9dde8','#3aa0ff','#b45cff','#ffc928','#ff3b4a','#9a5cff','#ffe27a'];
+const pdA=()=>{const a=rkG('pdr2',[0,0,0,0,0,0,0]);while(a.length<7)a.push(0);return a},pdAdd=(t,n)=>{const a=pdA();a[t]=Math.max(0,a[t]+n);rkS('pdr2',a)};
+/* custo para ir do nível l para l+1 */
+function anCost(l){const t=l<10?0:l<20?1:l<30?2:l<40?3:l<45?4:l<49?5:6;return {t,n:1+Math.floor((l%10)/4),g:20*l}}
+/* ---- SET DO LOBO (só vale no modo Caça) ---- */
+const LST=[['cap','CAPACETE','crit','🎯 Crítico','%'],['arm','ARMADURA','def','🛡️ Defesa','%'],['bot','BOTAS','vel','💨 Velocidade','%'],['col','COLAR','st','🍀 Sorte na caça',''],['anl','ANEL','drop','🎁 Drop na caça','%'],['capa','CAPA','dano','⚔️ Dano','%']];
+const LSR=['COMUM','RARO','ÉPICO','LENDÁRIO','MÍTICO','SECRETO','DIVINO'],LSC=['#d9dde8','#3aa0ff','#b45cff','#ffc928','#ff3b4a','#9a5cff','#ffe27a'];
+const LSV={crit:[3,5,8,12,18,26,38],def:[4,7,11,16,23,32,45],vel:[3,5,8,12,17,24,34],st:[5,10,18,28,42,62,90],drop:[5,10,18,28,42,62,90],dano:[4,7,11,16,24,35,50]};
+const lsInv=()=>rkG('ls',{}),lsEq=()=>rkG('lsEq',{});
+function lsB(k){const E=lsEq();let v=0;for(const T of LST)if(T[2]===k&&E[T[0]]!=null)v+=LSV[k][E[T[0]]];return v}
+const caLuck=()=>{let st=0;try{st=lvSorte()}catch(e){}return Math.min(4,1+Math.max(0,st+lsB('st'))/100)};
+const caDropF=()=>{let d=1;try{d=rkDropF()}catch(e){}return d+lsB('drop')/100};
+const caPick=(W)=>{let t=W.reduce((a,x)=>a+x,0),q=Math.random()*t;for(let i=0;i<W.length;i++){if((q-=W[i])<0)return i}return 0};
+const caRnd=x=>Math.floor(x)+(Math.random()<x%1?1:0);
+/* drop de anel (substitui o da v277): do mais raro para o mais comum, sorte multiplica */
+anDropLobo=function(L){const k=caLuck(),C=[[4,L>=10?.005:L>=9?.004:0],[3,L>=9?.02:L>=7?.012:0],[2,L>=5?.04:0],[1,L>=3?.09:0],[0,.22]];let r=null;
+  for(const [c,p] of C){if(p&&Math.random()<p*k){r=anGive(anRoll(c,L));break}}caLoot(L);return r};
+function caLoot(L){const k=caLuck(),d=caDropF(),X=CA.loot||(CA.loot={gem:0,red:0,tic:0,pd:[0,0,0,0,0,0,0],set:[],bau:[]});const msg=[];
+  const g=caRnd((5+L*4+Math.random()*6)*d);rkAdd('gem',g);X.gem+=g;msg.push('+'+g+'💎');
+  if(L>=4&&Math.random()<.2){const n=1+(Math.random()<.4?1:0);rkAdd('red',n);X.red+=n;msg.push('+'+n+'🔴')}
+  if(Math.random()<.01*k){rkAdd('tic',1);X.tic++;msg.push('🎟️ TICKET!')}
+  if(Math.random()<.4+.03*L){const W=[55,26*(1+L*.05),12*(1+L*.05),5*k*(1+L*.08),1.5*k*(1+L*.08),.35*k*(1+L*.08),.08*k*(1+L*.08)],t=caPick(W),n=Math.max(1,caRnd([3,2,1.4,1,1,1,1][t]*(.7+Math.random()*.6)*d));pdAdd(t,n);X.pd[t]+=n;msg.push('🎒 Pedra '+PDN[t]+' x'+n)}
+  if(Math.random()<.1+.01*L){const W=[50,28,14,6*k*(1+L*.1),1.5*k*(1+L*.1),.3*k*(1+L*.1),.07*k*(1+L*.1)],r=caPick(W),T=LST[(Math.random()*LST.length)|0],I=lsInv(),key=T[0]+r;I[key]=(I[key]||0)+1;rkS('ls',I);X.set.push([T[0],r]);msg.push('🐺 '+T[1]+' '+LSR[r])}
+  if(L>=4){if(Math.random()<.006*k){X.bau.push('mit');msg.push('📦 BAÚ MÍTICO')}else if(Math.random()<.02*k){X.bau.push('lend');msg.push('📦 BAÚ LENDÁRIO')}}
+  try{const f=G.p[1];txt(f.x,f.y-200,msg.join(' · '),'#ffe27a');if(X.set.length&&X.set[X.set.length-1][1]>=4||msg.some(m=>m.includes('BAÚ M')||m.includes('DIVINA')||m.includes('SECRETA')))banner('DROP RARO!','#ffe27a',90,msg.slice(1).join(' · '))}catch(e){}}
+{const _cs=caStart;caStart=function(){const r=_cs.apply(this,arguments);CA.loot={gem:0,red:0,tic:0,pd:[0,0,0,0,0,0,0],set:[],bau:[]};return r}}
+{const _ce=caEnd;caEnd=function(w){const X=CA.loot;CA.loot=null;_ce.apply(this,arguments);if(!X)return;const bau=X.bau.slice();
+  const it=[];if(X.gem)it.push(`<span style="--c:#7fd8ff"><img src="${RQA.coin[0]}" alt="">+${X.gem}</span>`);if(X.red)it.push(`<span style="--c:#ff5a5a"><img src="${RQA.coin[1]}" alt="">+${X.red}</span>`);if(X.tic)it.push(`<span style="--c:#ffd34a"><img src="${RQA.coin[2]}" alt="">+${X.tic}</span>`);
+  X.pd.forEach((n,t)=>{if(n)it.push(`<span style="--c:${PDC[t]}"><img src="${RQA.pedra[t]}" alt="">${PDN[t]} x${n}</span>`)});
+  for(const [k,r] of X.set){const ti=LST.findIndex(T=>T[0]===k);it.push(`<span style="--c:${LSC[r]}"><img src="${RQA.lset[ti][r]}" alt="">${LST[ti][1]} ${LSR[r]}</span>`)}
+  for(const b of bau)it.push(`<span style="--c:${b==='mit'?'#ff3b4a':'#ffc928'}">📦 BAÚ ${b==='mit'?'MÍTICO':'LENDÁRIO'}</span>`);
+  const add=()=>{const M=$('rkModal');if(!M||M.hidden||M.querySelector('.caLoot'))return;const p=M.querySelector('.twM .row');if(!p)return;p.insertAdjacentHTML('beforebegin',`<div class="caLoot rkItems">${it.join('')||'<span>Nada</span>'}</div>`);
+    if(bau.length){const go=async(next)=>{CA.rs=0;rkModal(null);const B=bau.splice(0);await rkBauSeq(B.map(r=>({r,n:1})));if(next)caStart()};$('rkMX').onclick=()=>go(0);$('caAg').onclick=()=>go(1)}};
+  for(const t of [450,1950,3650,6150])setTimeout(add,t)}}
+/* ---- EVOLUIR ANEL ---- */
+function anUpM(id,fx){const r=anL().find(x=>x.i===id);if(!r)return rkModal(null);const l=anLvl(r),mx=ANMX[r.c],top=l>=mx,C=anCost(l),P=pdA(),ok=!top&&P[C.t]>=C.n&&rkG('gem',0)>=C.g,nx=Object.assign({},r,{l:l+1});
+  rkModal(`<div class="twM anUpM" style="--c:${ANC[r.c][1]}"><h3>⬆️ EVOLUIR ANEL ${ANC[r.c][0]}</h3><div class="anBig ${fx?'up':''}"><img src="${RQA.anel2[r.c]}" alt=""><b>${l}</b></div>
+    <div class="anLvB"><i style="width:${l/mx*100}%"></i><span>NÍVEL ${l} / ${mx}</span></div>
+    <p class="twH">Nota <b class="g g${r.g}">${ANG[r.g]}</b> · ${anSt(r.s)[1]} <b>+${anV(r)}${anSt(r.s)[2]}</b>${top?' · <b style="color:#ffd34a">NÍVEL MÁXIMO!</b>':` → <b style="color:#7dff9a">+${anV(nx)}${anSt(r.s)[2]}</b> · no máx: +${r.v}${anSt(r.s)[2]}`}</p>
+    ${top?'':`<div class="anCost"><span style="--c:${PDC[C.t]}" class="${P[C.t]>=C.n?'':'no'}"><img src="${RQA.pedra[C.t]}" alt="">${PDN[C.t]} ${P[C.t]}/${C.n}</span><span class="${rkG('gem',0)>=C.g?'':'no'}"><img src="${RQA.coin[0]}" alt="">${rkFmtN(rkG('gem',0))}/${C.g}</span></div>`}
+    <p class="twH" style="font-size:.8em">Pedras das Almas caem no modo Caça (Lobo Negro).</p>
+    <div class="row">${top?'':`<button class="btn main" id="anGo" ${ok?'':'disabled'}>⬆️ EVOLUIR</button>`}<button class="btn" id="rkMX">VOLTAR</button></div></div>`);
+  $('rkMX').onclick=()=>{rkModal(null);if(RKV==='lib')rkView('lib')};
+  if($('anGo'))$('anGo').onclick=()=>{const P2=pdA();if(P2[C.t]<C.n||rkG('gem',0)<C.g){rkSfx('clang');return}pdAdd(C.t,-C.n);rkAdd('gem',-C.g);const L=anL(),x=L.find(z=>z.i===id);x.l=l+1;rkS('an',L);rkSfx('powerUp');anUpM(id,1)}}
+/* ---- tela do SET DO LOBO ---- */
+function lsOpen(){const I=lsInv(),E=lsEq();
+  const slots=LST.map((T,i)=>{const r=E[T[0]];return `<button class="lsSl" data-k="${T[0]}" style="--c:${r!=null?LSC[r]:'#4a5a7a'}">${r!=null?`<img src="${RQA.lset[i][r]}" alt="">`:`<i>${T[1]}</i>`}<small>${r!=null?T[3].split(' ')[0]+' +'+LSV[T[2]][r]+T[4]:'vazio'}</small></button>`}).join('');
+  const own=[];LST.forEach((T,i)=>{for(let r=6;r>=0;r--){const n=I[T[0]+r]|0;if(n)own.push(`<button class="lsIt ${E[T[0]]===r?'on':''}" data-k="${T[0]}" data-r="${r}" style="--c:${LSC[r]}"><img src="${RQA.lset[i][r]}" alt="">${n>1?`<b>x${n}</b>`:''}</button>`)}});
+  const tot=LST.map(T=>{const v=lsB(T[2]);return v?`<span>${T[3]} +${v}${T[4]}</span>`:''}).join('');
+  rkModal(`<div class="twM lsM"><h3>🐺 SET DO LOBO</h3><p class="twH">Só vale no modo <b>Caça</b>: ótimo para matar o Lobo Negro e farmar anéis. Cai nos drops da caçada (comum → divino).</p>
+    <div class="lsSls">${slots}</div><div class="lsTot">${tot||'<span>Nenhuma peça equipada</span>'}</div>
+    <div class="lsGrid">${own.join('')||'<p class="twH">Você ainda não tem peças. Cace o Lobo Negro!</p>'}</div>
+    <div class="lsPd">${pdA().map((n,t)=>`<span style="--c:${PDC[t]}"><img src="${RQA.pedra[t]}" alt="">${n}</span>`).join('')}</div>
+    <div class="row"><button class="btn" id="rkMX">FECHAR</button></div></div>`);
+  $('rkMX').onclick=()=>rkModal(null);
+  document.querySelectorAll('#rkModal .lsIt').forEach(b=>b.onclick=()=>{const E2=lsEq();E2[b.dataset.k]=+b.dataset.r;rkS('lsEq',E2);rkSfx('powerUp');lsOpen()});
+  document.querySelectorAll('#rkModal .lsSl').forEach(b=>b.onclick=()=>{const E2=lsEq();if(E2[b.dataset.k]==null)return;delete E2[b.dataset.k];rkS('lsEq',E2);rkSfx('whoosh');lsOpen()})}
+{const _h=caH;caH=function(){return _h.apply(this,arguments)+`<button class="hs caSet" data-a="lsSet" style="${rkB2(1130,882,1600,934)}">🐺 SET DO LOBO · 🎒 PEDRAS</button>`}}
+/* bônus do set na luta da caça */
+{const _ra=rkApply;rkApply=function(){_ra.apply(this,arguments);try{if(G.gmode!=='caca'||!G.p)return;const p=G.p[0];p.tdm=(p.tdm||1)+lsB('dano')/100;p.tcr=(p.tcr||0)+lsB('crit');p.tsp=(p.tsp||1)+lsB('vel')/100;p.tdf=(p.tdf||1)/(1+lsB('def')/100)}catch(e){}}}
+/* pedras e set na Biblioteca (aba Itens) */
+{const _li=rkLibItems;rkLibItems=function(){const R=_li.apply(this,arguments);if(RKL.tab!=='it')return R;const q=RKL.q.toLowerCase(),P=pdA(),I=lsInv(),add=[];
+  PDN.forEach((n,t)=>add.push({id:'pd'+t,k:'it',r:['comum','rara','epica','lend','mit','sec','obs'][t],has:P[t]>0,img:RQA.pedra[t],big:RQA.pedra[t],nm:'PEDRA '+n,d:'Você tem '+P[t]+' · Pedra das Almas: evolui os anéis · cai no modo Caça'}));
+  LST.forEach((T,i)=>{for(let r=0;r<7;r++)add.push({id:'ls'+T[0]+r,k:'it',r:['comum','rara','epica','lend','mit','sec','obs'][r],has:(I[T[0]+r]|0)>0,img:RQA.lset[i][r],big:RQA.lset[i][r],nm:T[1]+' DO LOBO '+LSR[r],d:T[3]+' +'+LSV[T[2]][r]+T[4]+' · só no modo Caça · você tem '+(I[T[0]+r]|0)})});
+  return R.concat(add.filter(x=>(!q||x.nm.toLowerCase().includes(q))&&(RKL.f===0||(RKL.f===1?x.has:!x.has))))}}
