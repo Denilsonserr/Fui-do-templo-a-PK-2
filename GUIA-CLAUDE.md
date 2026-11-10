@@ -1362,3 +1362,6 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 ## v289 — 2 códigos do lançamento do Shaka (só quem tem CONTA, 1 vez por conta)
 - `extra/9g_v289.py` (textos só com o dono): `1yu9fib` = diamantes aleatórios 1000–5000 (`rnd`), `qb52ye` = tickets aleatórios 10–30 (flag nova `rtic`).
 - Flag nova `acc:1` no `twCupom`: exige conta (ac_n + ac_k) e trava por conta no servidor (`cupom_<hash>_a<hash da conta>`). O texto do sorteio de diamantes agora mostra a faixa certa do código.
+
+## v290 — trava o ZOOM da página no celular
+- Jogador reclamou que "fica dando zoom" (dois toques rápidos ou dois dedos nos botões). `extra/9h_v290.py`: viewport com `maximum-scale=1,user-scalable=no`, `touch-action:manipulation` no html/body, e bloqueio de `gesturestart/gesturechange`, pinça (`touchmove` com scale), duplo clique fora de campos de texto e Ctrl+roda no PC.
