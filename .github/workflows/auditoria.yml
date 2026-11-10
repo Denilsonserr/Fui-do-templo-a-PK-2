@@ -1,0 +1,32 @@
+name: Auditoria das contas (ferramenta)
+on:
+  workflow_dispatch:
+    inputs:
+      desde: {description: 'ts em ms (salvamentos depois disso)', default: '1762789200000'}
+jobs:
+  q:
+    runs-on: ubuntu-latest
+    steps:
+      - name: auditoria
+        run: |
+          U='https://firestore.googleapis.com/v1/projects/furia-do-templo/databases/(default)/documents:runQuery?key=AIzaSyDXTjvRMcKtJ5vq2vl-F2B_w2M-7hd_QY0'
+          curl -sS -X POST "$U" -H 'Content-Type: application/json' -d "{\"structuredQuery\":{\"from\":[{\"collectionId\":\"torre\"}],\"where\":{\"fieldFilter\":{\"field\":{\"fieldPath\":\"ts\"},\"op\":\"GREATER_THAN\",\"value\":{\"integerValue\":\"${{ inputs.desde }}\"}}},\"limit\":3000}}" > r.json
+          python3 - <<'PY'
+          import json,datetime
+          R=json.load(open('r.json'));A={}
+          for x in R:
+              d=x.get('document')
+              if not d or 'd' not in d['fields']:continue
+              F=d['fields'];acc=F['sv']['stringValue'];ts=int(F['ts']['integerValue'])
+              if acc not in A or ts>A[acc][0]:A[acc]=(ts,F['nome']['stringValue'],F['d']['stringValue'])
+          print('contas salvas:',len(A))
+          for acc,(ts,nm,dd) in sorted(A.items(),key=lambda z:-z[1][0]):
+              try:D=json.loads(dd)
+              except Exception:continue
+              g=lambda k,v=None:json.loads(D[k]) if k in D else v
+              own=g('rk_own',[]);H=g('rk_hist',[]) or [];ps=g('rk_pityS',0);pss=g('rk_pitySS',0);ban=g('rk_ban','')
+              hs=[h for h in H if h.get('d',0)>1762789200000]
+              shk='shaka' in own;sec=[h for h in hs if h.get('k')=='sp' and str(h.get('s','')).startswith('sk')]
+              if shk or ps or pss or ban=='sk':
+                  print('ROW',json.dumps({'nome':nm,'conta':acc,'salvo':datetime.datetime.utcfromtimestamp(ts/1000).isoformat(),'shaka':shk,'pityS':ps,'pitySS':pss,'giros_desde':len(hs),'itens_shaka':[h.get('s') for h in sec],'gem':g('rk_gem',0),'tic':g('rk_tic',0)},ensure_ascii=False))
+          PY
