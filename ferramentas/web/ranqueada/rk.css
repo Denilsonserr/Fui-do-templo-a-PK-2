@@ -1582,3 +1582,31 @@ img.anOn{position:relative;z-index:2}
 .psPkI{display:grid;grid-template-columns:3em 1fr auto;align-items:center;gap:.6em;padding:.3em .6em;border-radius:.6em;border:2px solid var(--rc);background:#120a24;color:#fff;cursor:pointer;text-align:left;box-shadow:0 0 .5em color-mix(in srgb,var(--rc) 50%,transparent)}
 .psPkI.best{box-shadow:0 0 1em var(--rc)}.psPkI .psGem{position:relative;width:3em;height:3em}.psPkI span{display:flex;flex-direction:column;gap:.1em;font:800 .9em var(--f-ui)}.psPkI span small{color:#ddd}
 .psPkI em{font:900 .85em var(--f-ui);font-style:normal;padding:.35em .7em;border-radius:.4em;background:linear-gradient(#2fa85a,#0d5a2a);border:1px solid #7dff9a}
+/* ===== v346: constelação ===== */
+.rk_cns{background:radial-gradient(1.5px 1.5px at 12% 18%,#fff,transparent),radial-gradient(1px 1px at 33% 72%,#cfe,transparent),radial-gradient(1.5px 1.5px at 58% 12%,#fff,transparent),radial-gradient(1px 1px at 77% 64%,#ddf,transparent),radial-gradient(1.2px 1.2px at 88% 30%,#fff,transparent),radial-gradient(1px 1px at 22% 48%,#fff,transparent),radial-gradient(1px 1px at 46% 90%,#eef,transparent),radial-gradient(ellipse at 35% 50%,#2a1258 0%,#120728 45%,#05020e 100%)!important;overflow:hidden}
+.rk_cns>.rkMusB,.rk_cns>.rkCodB,.rk_cns>.rkAcB{display:none!important}
+.rk_cns .hs{position:absolute;z-index:3;font:900 2em var(--f-ui);color:#ffe08a;background:rgba(20,8,40,.7);border:.08em solid #ffd84a;border-radius:.4em}
+.cnsTit{display:flex;align-items:center;font:900 1.6em "Cinzel","Saira Condensed",serif;letter-spacing:.08em;color:#ffe9a8;text-shadow:0 0 .4em #b07aff}
+.cnsSv{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.cnsSv line{stroke:rgba(180,160,255,.18);stroke-width:3}.cnsSv line.av{stroke:rgba(255,255,255,.35);stroke-dasharray:6 6}.cnsSv line.on{stroke:var(--c);stroke-width:5;filter:drop-shadow(0 0 6px var(--c))}
+.cnsCt{position:absolute;border-radius:50%;overflow:hidden;border:.2em solid #ffd84a;box-shadow:0 0 1.6em #b07aff,0 0 3em #6a2aff;animation:rkEg 2s ease-in-out infinite}.cnsCt img{width:100%;height:100%;object-fit:cover;object-position:50% 20%}
+.cnsBl{position:absolute;width:7.6%;text-align:center;font:900 1.05em var(--f-ui);color:var(--c);text-shadow:0 0 .4em var(--c),0 1px 2px #000;pointer-events:none;white-space:nowrap}
+.cnsN{position:absolute;z-index:2;border-radius:50%;padding:0;display:flex;align-items:center;justify-content:center;font:900 1em var(--f-ui);color:#fff;cursor:pointer;border:.12em solid rgba(255,255,255,.25);background:radial-gradient(circle,#2a2244,#0d0a1a);transition:transform .15s}
+.cnsN.k{font-size:1.6em;border-width:.08em}.cnsN.av{border-color:var(--c);box-shadow:0 0 .6em var(--c);animation:cnsPu 1.4s ease-in-out infinite}
+.cnsN.on{background:radial-gradient(circle,#fff 0%,var(--c) 45%,color-mix(in srgb,var(--c) 40%,#000) 100%);border-color:#fff;box-shadow:0 0 .8em var(--c),0 0 1.8em var(--c)}
+.cnsN.lk{opacity:.55}.cnsN.sel{transform:scale(1.3);outline:.15em solid #fff;outline-offset:.15em}
+@keyframes cnsPu{50%{box-shadow:0 0 1.4em var(--c)}}
+.cnsPn{position:absolute;z-index:2;display:flex;flex-direction:column;gap:.8em;padding:1.2em;border-radius:1em;background:rgba(14,6,30,.85);border:.1em solid #8a5aff;box-shadow:0 0 2em rgba(120,60,255,.4)}
+.cnsPt{display:flex;align-items:center;gap:.6em}.cnsPt b{font:900 3.6em "Cinzel",serif;color:#ffe08a;text-shadow:0 0 .4em #ffb000}.cnsPt span{font:900 1.2em var(--f-ui);color:#fff}.cnsPt small{color:#bba8ff;font-size:.8em}
+.cnsSt{display:flex;justify-content:space-around;font:800 1.4em var(--f-ui);color:#ddd}.cnsSt b{color:#fff}
+.cnsIf{display:flex;flex-direction:column;gap:.4em;padding:.8em;border-radius:.7em;border:.1em solid var(--c);background:rgba(0,0,0,.35)}
+.cnsIf small{font:900 1em var(--f-ui);color:var(--c)}.cnsIf b{font:900 1.5em var(--f-ui);color:#fff}.cnsIf p{margin:0;font:900 1.5em var(--f-ui);color:var(--c);text-shadow:0 0 .3em var(--c)}.cnsIf em{font:800 1em var(--f-ui);color:#ddd;font-style:normal}
+.cnsIf i{font:900 1.1em var(--f-ui);color:#aaa;font-style:normal}.cnsIf i.ok{color:#7dff9a}
+.cnsIf button,.cnsRs{padding:.6em;border-radius:.5em;border:.1em solid #ffd84a;background:linear-gradient(#7a3aff,#3a0a8a);color:#fff;font:900 1.3em var(--f-ui);cursor:pointer}.cnsIf button:disabled,.cnsRs:disabled{filter:grayscale(1) brightness(.6)}
+.cnsRs{margin-top:auto;font-size:1em;background:linear-gradient(#5a1a2a,#2a0810);border-color:#ff8080}
+.cnsHelp{font:700 1.1em/1.4 var(--f-ui);color:#cbb8ff}
+.cnsPv{position:absolute;z-index:2;display:flex;flex-direction:column;gap:.7em;padding:1.2em 1.4em;border-radius:1em;background:rgba(10,4,24,.9);border:.12em solid #ffd84a;box-shadow:0 0 1.6em rgba(160,100,255,.5)}
+.cnsPv>b{font:900 2.2em "Cinzel",serif;color:#ffe08a;text-shadow:0 0 .4em #ffb000}.cnsPv>span{font:800 1.2em var(--f-ui);color:#ddd}.cnsPv .nw{font-style:normal;color:#7dff9a;animation:rkEg 1.2s infinite}
+.cnsBr{display:flex;flex-direction:column;gap:.45em}.cnsBr div{display:grid;grid-template-columns:9em 1fr 3em;align-items:center;gap:.6em}.cnsBr em{font:900 1.1em var(--f-ui);font-style:normal;color:var(--c)}.cnsBr s{height:.7em;border-radius:1em;background:#2a2040;overflow:hidden;text-decoration:none}.cnsBr u{display:block;height:100%;background:var(--c);box-shadow:0 0 .5em var(--c)}.cnsBr small{color:#ccc;font:800 .95em var(--f-ui)}
+.cnsTt{font:800 1.1em var(--f-ui);color:#ffe08a}.cnsGo{margin-top:auto;padding:.7em;border-radius:.6em;border:.12em solid #ffd84a;background:linear-gradient(#8a3aff,#3a0a8a);color:#fff;font:900 1.6em var(--f-ui);cursor:pointer;animation:rkEp 1.6s infinite}
+#lvrzM{position:fixed;inset:0;z-index:60;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.6);font-size:min(2.2vh,15px)}#lvrzM .twM{max-width:min(80vw,640px)}

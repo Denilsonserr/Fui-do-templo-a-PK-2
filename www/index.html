@@ -2089,6 +2089,34 @@ img.anOn{position:relative;z-index:2}
 .psPkI{display:grid;grid-template-columns:3em 1fr auto;align-items:center;gap:.6em;padding:.3em .6em;border-radius:.6em;border:2px solid var(--rc);background:#120a24;color:#fff;cursor:pointer;text-align:left;box-shadow:0 0 .5em color-mix(in srgb,var(--rc) 50%,transparent)}
 .psPkI.best{box-shadow:0 0 1em var(--rc)}.psPkI .psGem{position:relative;width:3em;height:3em}.psPkI span{display:flex;flex-direction:column;gap:.1em;font:800 .9em var(--f-ui)}.psPkI span small{color:#ddd}
 .psPkI em{font:900 .85em var(--f-ui);font-style:normal;padding:.35em .7em;border-radius:.4em;background:linear-gradient(#2fa85a,#0d5a2a);border:1px solid #7dff9a}
+/* ===== v346: constelação ===== */
+.rk_cns{background:radial-gradient(1.5px 1.5px at 12% 18%,#fff,transparent),radial-gradient(1px 1px at 33% 72%,#cfe,transparent),radial-gradient(1.5px 1.5px at 58% 12%,#fff,transparent),radial-gradient(1px 1px at 77% 64%,#ddf,transparent),radial-gradient(1.2px 1.2px at 88% 30%,#fff,transparent),radial-gradient(1px 1px at 22% 48%,#fff,transparent),radial-gradient(1px 1px at 46% 90%,#eef,transparent),radial-gradient(ellipse at 35% 50%,#2a1258 0%,#120728 45%,#05020e 100%)!important;overflow:hidden}
+.rk_cns>.rkMusB,.rk_cns>.rkCodB,.rk_cns>.rkAcB{display:none!important}
+.rk_cns .hs{position:absolute;z-index:3;font:900 2em var(--f-ui);color:#ffe08a;background:rgba(20,8,40,.7);border:.08em solid #ffd84a;border-radius:.4em}
+.cnsTit{display:flex;align-items:center;font:900 1.6em "Cinzel","Saira Condensed",serif;letter-spacing:.08em;color:#ffe9a8;text-shadow:0 0 .4em #b07aff}
+.cnsSv{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.cnsSv line{stroke:rgba(180,160,255,.18);stroke-width:3}.cnsSv line.av{stroke:rgba(255,255,255,.35);stroke-dasharray:6 6}.cnsSv line.on{stroke:var(--c);stroke-width:5;filter:drop-shadow(0 0 6px var(--c))}
+.cnsCt{position:absolute;border-radius:50%;overflow:hidden;border:.2em solid #ffd84a;box-shadow:0 0 1.6em #b07aff,0 0 3em #6a2aff;animation:rkEg 2s ease-in-out infinite}.cnsCt img{width:100%;height:100%;object-fit:cover;object-position:50% 20%}
+.cnsBl{position:absolute;width:7.6%;text-align:center;font:900 1.05em var(--f-ui);color:var(--c);text-shadow:0 0 .4em var(--c),0 1px 2px #000;pointer-events:none;white-space:nowrap}
+.cnsN{position:absolute;z-index:2;border-radius:50%;padding:0;display:flex;align-items:center;justify-content:center;font:900 1em var(--f-ui);color:#fff;cursor:pointer;border:.12em solid rgba(255,255,255,.25);background:radial-gradient(circle,#2a2244,#0d0a1a);transition:transform .15s}
+.cnsN.k{font-size:1.6em;border-width:.08em}.cnsN.av{border-color:var(--c);box-shadow:0 0 .6em var(--c);animation:cnsPu 1.4s ease-in-out infinite}
+.cnsN.on{background:radial-gradient(circle,#fff 0%,var(--c) 45%,color-mix(in srgb,var(--c) 40%,#000) 100%);border-color:#fff;box-shadow:0 0 .8em var(--c),0 0 1.8em var(--c)}
+.cnsN.lk{opacity:.55}.cnsN.sel{transform:scale(1.3);outline:.15em solid #fff;outline-offset:.15em}
+@keyframes cnsPu{50%{box-shadow:0 0 1.4em var(--c)}}
+.cnsPn{position:absolute;z-index:2;display:flex;flex-direction:column;gap:.8em;padding:1.2em;border-radius:1em;background:rgba(14,6,30,.85);border:.1em solid #8a5aff;box-shadow:0 0 2em rgba(120,60,255,.4)}
+.cnsPt{display:flex;align-items:center;gap:.6em}.cnsPt b{font:900 3.6em "Cinzel",serif;color:#ffe08a;text-shadow:0 0 .4em #ffb000}.cnsPt span{font:900 1.2em var(--f-ui);color:#fff}.cnsPt small{color:#bba8ff;font-size:.8em}
+.cnsSt{display:flex;justify-content:space-around;font:800 1.4em var(--f-ui);color:#ddd}.cnsSt b{color:#fff}
+.cnsIf{display:flex;flex-direction:column;gap:.4em;padding:.8em;border-radius:.7em;border:.1em solid var(--c);background:rgba(0,0,0,.35)}
+.cnsIf small{font:900 1em var(--f-ui);color:var(--c)}.cnsIf b{font:900 1.5em var(--f-ui);color:#fff}.cnsIf p{margin:0;font:900 1.5em var(--f-ui);color:var(--c);text-shadow:0 0 .3em var(--c)}.cnsIf em{font:800 1em var(--f-ui);color:#ddd;font-style:normal}
+.cnsIf i{font:900 1.1em var(--f-ui);color:#aaa;font-style:normal}.cnsIf i.ok{color:#7dff9a}
+.cnsIf button,.cnsRs{padding:.6em;border-radius:.5em;border:.1em solid #ffd84a;background:linear-gradient(#7a3aff,#3a0a8a);color:#fff;font:900 1.3em var(--f-ui);cursor:pointer}.cnsIf button:disabled,.cnsRs:disabled{filter:grayscale(1) brightness(.6)}
+.cnsRs{margin-top:auto;font-size:1em;background:linear-gradient(#5a1a2a,#2a0810);border-color:#ff8080}
+.cnsHelp{font:700 1.1em/1.4 var(--f-ui);color:#cbb8ff}
+.cnsPv{position:absolute;z-index:2;display:flex;flex-direction:column;gap:.7em;padding:1.2em 1.4em;border-radius:1em;background:rgba(10,4,24,.9);border:.12em solid #ffd84a;box-shadow:0 0 1.6em rgba(160,100,255,.5)}
+.cnsPv>b{font:900 2.2em "Cinzel",serif;color:#ffe08a;text-shadow:0 0 .4em #ffb000}.cnsPv>span{font:800 1.2em var(--f-ui);color:#ddd}.cnsPv .nw{font-style:normal;color:#7dff9a;animation:rkEg 1.2s infinite}
+.cnsBr{display:flex;flex-direction:column;gap:.45em}.cnsBr div{display:grid;grid-template-columns:9em 1fr 3em;align-items:center;gap:.6em}.cnsBr em{font:900 1.1em var(--f-ui);font-style:normal;color:var(--c)}.cnsBr s{height:.7em;border-radius:1em;background:#2a2040;overflow:hidden;text-decoration:none}.cnsBr u{display:block;height:100%;background:var(--c);box-shadow:0 0 .5em var(--c)}.cnsBr small{color:#ccc;font:800 .95em var(--f-ui)}
+.cnsTt{font:800 1.1em var(--f-ui);color:#ffe08a}.cnsGo{margin-top:auto;padding:.7em;border-radius:.6em;border:.12em solid #ffd84a;background:linear-gradient(#8a3aff,#3a0a8a);color:#fff;font:900 1.6em var(--f-ui);cursor:pointer;animation:rkEp 1.6s infinite}
+#lvrzM{position:fixed;inset:0;z-index:60;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.6);font-size:min(2.2vh,15px)}#lvrzM .twM{max-width:min(80vw,640px)}
 
 .twBag .bgw{display:flex;gap:1em;justify-content:center;align-items:flex-start;margin:.4em 0}
 .twBag .bgc{flex:1;max-width:16em;display:flex;flex-direction:column;gap:.4em;max-height:52vh;overflow:auto;padding:.2em}
@@ -8843,7 +8871,7 @@ const LVTREE=[[['dano',3],['crit',2],['vel',2],['st',5]],[['dano',8],['cd',10],[
   /* v280: linhas SECRETAS (só o Shaka, nível 60 e 70) */
   [['dano',18],['crit',12],['cd',25],['vel',10]],[['dano',25],['crit',15],['cd',35],['ls',8]]];
 const LVCRN=[[0,1],[1,1],[2,1],[3,1],[4,1],[4,2],[4,3],[4,4]];  /* cristal [raridade, quantidade] para escolher em cada linha */
-const lvAll=()=>rkG('lv',{}),lvOf=id=>{const L=lvAll()[id]||{};return {lv:Math.max(1,L.lv|0),t:Array.isArray(L.t)?L.t:[]}},lvSave=(id,o)=>{const A=lvAll();A[id]=o;rkS('lv',A)};
+const lvAll=()=>rkG('lv',{}),lvOf=id=>{const L=lvAll()[id]||{};return {lv:Math.max(1,L.lv|0),t:Array.isArray(L.t)?L.t:[],c:Array.isArray(L.c)?L.c:[]}},lvSave=(id,o)=>{const A=lvAll();A[id]=o;rkS('lv',A)};
 const lvArr=k=>{const a=rkG(k,[0,0,0,0,0]);while(a.length<5)a.push(0);return a};
 const lvPo=()=>rkG('po',0)|0;
 function lvBonus(id){const L=lvOf(id),B={dano:(L.lv-1)*.4,crit:(L.lv-1)*.15,vel:0,st:0,cd:0,ls:0,uv:0};
@@ -10856,7 +10884,6 @@ function psPick(){const o=psG(),L=o.pendL||[];if(!o.pend||L.length<2)return;cons
 /* v342: código só para o ADM (campo adm:1) */
 {const _cp8=twCupom;twCupom=async function(code,E){const C=TWCUP[twHash(String(code).toUpperCase())];if(C&&C.adm&&!twIsAdm()){E.className='twH err';E.textContent='❌ Esse código é só para quem tem o título de ADMINISTRADOR.';try{twSfx('clang')}catch(e){}return true}return _cp8.apply(this,arguments)}}
 TWCUP['115nx35']={nm:'700 GIROS DE PASSIVA',jn:700,uni:1,adm:1};
-try{window.__pvT={G:()=>G,ko:(a,d)=>ko(a,d),ev:()=>rkEvX(),m:()=>[rkEvG(),rkEvL(),rkEvD(),rkEvA()],lk:()=>{const c={};for(let i=0;i<4000;i++){const r=twEqRoll().k;c[r]=(c[r]||0)+1}const a=[0,0,0,0,0];for(let i=0;i<4000;i++)a[lvCrRoll()]++;return {luck:+lvLuck().toFixed(2),drop:+rkDropF().toFixed(2),extra:lkK(),equip:c,cristal:a}},dl:id=>pvDelta(id)}}catch(e){} /* só para os testes */
 
 /* v343: SORTE e DROP também melhoram a RARIDADE (antes só aumentavam quantidade/chance, que já ficava em 100%).
    lkK = giros extras "pega o melhor": sorte x2 = +1, x4 = +2, x8 = +3 ... (máx. +5). Vale para equipamento, poção, cristal e Anel da Alma. */
@@ -10864,6 +10891,98 @@ const lkK=()=>{let L=1;try{L=lvLuck()}catch(e){}return Math.max(0,Math.min(5,Mat
 {const _er=twEqRoll;twEqRoll=function(){let R=_er.apply(this,arguments);const k=lkK();for(let i=0;i<k;i++){const B=twEqRoll0();if(TWEQR.indexOf(B)>TWEQR.indexOf(R))R=B}return R}}
 {const _cr=lvCrRoll;lvCrRoll=function(){let r=_cr.apply(this,arguments);const k=lkK();for(let i=0;i<k;i++)r=Math.max(r,_cr.apply(this,arguments));return r}}
 {const _pr=twPoRoll;twPoRoll=function(){let R=_pr.apply(this,arguments);const k=lkK(),ix=x=>TWPOR.indexOf(x);for(let i=0;i<k;i++){const B=_pr.apply(this,arguments);if(ix(B)>ix(R))R=B}return R}}
+
+/* ================= v346: SISTEMA RPG — atributos em PONTOS (ataque, defesa, velocidade) + CONSTELAÇÃO =================
+   Cada personagem tem ATK/DEF/VEL base (épico fraco … Shaka o mais forte). Nível: +3% do base por nível (vel +2%).
+   Equipamento agora dá PONTOS (valor do item x raridade: comum 10, rara 15, épica 20, lendária 40, mítica 100 por ponto).
+   Porcentagens (anéis, passivas, título, ADM, poções, evento, constelação %) continuam somadas por cima.
+   Na luta: dano = (ATK/150)^0,55 x (1 + %); defesa: 1/tdf = 1 + DEF/900 + %; velocidade = (VEL/80)^0,2 + % (máx. 2,2).
+   Inimigos de Boss/Torre/Caça: +30% de vida efetiva e +15% de dano para equilibrar. */
+const CST={aylla:[55,15,70],zedry:[50,10,55],zaykon:[60,12,50],qingqing:[45,10,90],
+  goku:[150,50,80],vegeta:[155,55,75],gogeta:[175,60,80],broly:[185,70,55],zoro:[165,50,70],luffy:[150,55,80],gojo:[180,60,85],rengoku:[160,55,75],aokiji:[170,65,60],
+  naruto:[270,90,95],madara:[290,100,80],garou:[360,120,90],yuta:[300,100,100],shaka:[470,150,110]};
+const cstBase=id=>{const b=CST[id];if(b)return {atk:b[0],def:b[1],spd:b[2]};const r=rkRar(id);return r==='mit'?{atk:280,def:95,spd:90}:r==='lend'?{atk:150,def:50,spd:75}:{atk:100,def:30,spd:70}};
+const EQRF={comum:10,rara:15,epica:20,lend:40,mit:100,sec:120,obs:150};
+function eqFlat(){const o=twEqOn(),R={atk:0,def:0,spd:0};for(const k in o){const it=o[k],n=eqNf(it),f=EQRF[it.r]||10,m=EQMAIN[k];
+  if(m==='dano')R.atk+=(it.v||0)*n*f;if(m==='vida')R.def+=(it.v||0)*n*f;if(m==='vel')R.spd+=(it.v||0)*n*f;R.atk+=(it.dmg||0)*n*f;R.def+=(it.def||0)*n*f;R.spd+=(it.vel||0)*n*f}
+  for(const k in R)R[k]=Math.round(R[k]);return R}
+/* ---------- CONSTELAÇÃO: 5 ramos x 12 estrelas (tronco de 6 + 2 caminhos de 3 com estrela-mestra no fim) ---------- */
+const CNB=[{k:'atk',n:'ATAQUE',i:'⚔️',c:'#ff4a5a',s:{atk:20},m:{atk:45},A:['DESTRUIÇÃO',{atk:20},{atk:45},{dano:20}],B:['LÂMINA SANGRENTA',{cd:6},{cd:12},{cd:30,ls:2}]},
+  {k:'def',n:'DEFESA',i:'🛡️',c:'#4aa8ff',s:{def:15},m:{def:35},A:['MURALHA',{def:15},{def:35},{defp:20}],B:['SANGUE ETERNO',{ls:1},{ls:2},{ls:4,defp:5}]},
+  {k:'spd',n:'VELOCIDADE',i:'💨',c:'#4aff9a',s:{spd:10},m:{spd:25},A:['RELÂMPAGO',{spd:10},{spd:25},{vel:15}],B:['DESPERTAR',{uv:5},{uv:10},{uv:25}]},
+  {k:'crit',n:'CRÍTICO',i:'🎯',c:'#ffd84a',s:{crit:1.5},m:{crit:3},A:['OLHO DE ÁGUIA',{crit:1.5},{crit:3},{crit:8}],B:['EXECUÇÃO',{cd:6},{cd:12},{cd:35}]},
+  {k:'esp',n:'ESPÍRITO',i:'✨',c:'#c77dff',s:{st:4},m:{st:8},A:['FORTUNA',{st:4},{st:8},{st:25}],B:['ALMA DE FOGO',{uv:4},{uv:8},{uv:20,dano:5}]}];
+const CNF={atk:['ATAQUE',''],def:['DEFESA',''],spd:['VELOCIDADE',''],dano:['DANO','%'],defp:['DEFESA','%'],vel:['VELOCIDADE','%'],crit:['CRÍTICO','%'],cd:['DANO CRÍTICO','%'],ls:['ROUBO DE VIDA','%'],uv:['VEL. ULTIMATE','%'],st:['SORTE','']};
+const CNC={x:620,y:452};
+const CNN=(()=>{const N={};CNB.forEach((B,b)=>{const ang=(-90+b*72)*Math.PI/180,pos=(r,da)=>({x:CNC.x+Math.cos(ang+da)*r,y:CNC.y+Math.sin(ang+da)*r});
+  for(let i=0;i<6;i++){const m=i===2||i===5;N[b+'-'+i]={b,i,p:i?b+'-'+(i-1):null,cost:m?2:1,t:m?'m':'s',e:m?B.m:B.s,...pos(64+i*38,0)}}
+  [['A',6,-.23],['B',9,.23]].forEach(([f,o,da])=>{const F=B[f];for(let j=0;j<3;j++){const id=b+'-'+(o+j),K=j===2;N[id]={b,i:o+j,p:j?b+'-'+(o+j-1):b+'-5',cost:K?4:j===1?2:1,t:K?'k':j===1?'m':'s',e:F[j+1],f:F[0],...pos(64+(6+j)*38,da*(1+j*.15))}}});});return N})();
+const cnsEff=e=>Object.entries(e).map(([k,v])=>'+'+String(v).replace('.',',')+(CNF[k][1]?CNF[k][1]+' ':' ')+CNF[k][0]).join(' · ');
+const cnsUsed=id=>lvOf(id).c.reduce((a,n)=>a+((CNN[n]||{}).cost||0),0),cnsPts=id=>lvOf(id).lv,cnsFree=id=>cnsPts(id)-cnsUsed(id);
+function cnsSum(id){const T={atk:0,def:0,spd:0,dano:0,defp:0,vel:0,crit:0,cd:0,ls:0,uv:0,st:0};for(const n of lvOf(id).c){const N=CNN[n];if(N)for(const k in N.e)T[k]+=N.e[k]}return T}
+/* bônus de nível agora = constelação (% e pontos) + crítico do nível */
+lvBonus=function(id){const L=lvOf(id),C=cnsSum(id);return {dano:C.dano,crit:(L.lv-1)*.1+C.crit,vel:C.vel,st:C.st,cd:C.cd,ls:C.ls,uv:C.uv,def:C.defp}};
+function cstStats(id){const B=cstBase(id),L=lvOf(id),C=cnsSum(id),E=eqFlat(),lv=L.lv-1;return {atk:Math.round(B.atk*(1+.03*lv)+C.atk+E.atk),def:Math.round(B.def*(1+.03*lv)+C.def+E.def),spd:Math.round(B.spd*(1+.02*lv)+C.spd+E.spd),base:B,eq:E,cn:C}}
+/* ---------- conversão final na luta (por último na cadeia do rkApply) ---------- */
+{const _ra=rkApply;rkApply=function(){const r=_ra.apply(this,arguments);try{
+  const tw=typeof TW!=='undefined'&&TW.on&&G.gmode==='torre',ok=G.p&&(tw||G.gmode==='boss'||G.gmode==='caca');if(!ok)return r;const [p,o]=G.p;
+  if(p&&!p.cpu&&!p._cst){p._cst=1;const id=p.def.id,S=cstStats(id),E={d:twEqB('dano'),v:twEqB('vida'),s:twEqB('vel')};
+    let pd=(p.tdm||1)*100-100-E.d,pf=(1/(p.tdf||1)-1)*100-E.v,pv=(p.tsp||1)*100-100-E.s;
+    if(G.gmode==='caca'){const B=lvBonus(id);pd+=B.dano;pv+=B.vel;p.tcr=(p.tcr||0)+B.crit;p.tcd=(p.tcd||0)+B.cd;p.tls=(p.tls||0)+B.ls;p.tki=(p.tki||1)+B.uv/100}
+    pf+=lvBonus(id).def||0;pd=Math.max(-50,pd);pf=Math.max(-50,pf);pv=Math.max(-50,pv);
+    p.tdm=Math.pow(Math.max(10,S.atk)/150,.55)*(1+pd/100);p.tdf=1/Math.max(.3,1+S.def/900+pf/100);p.tsp=Math.min(2.2,Math.max(.6,Math.pow(Math.max(20,S.spd)/80,.2)+pv/100));p.cst=S}
+  if(o&&o.cpu&&!o._cst&&!(typeof PV!=='undefined'&&PV.fight)){o._cst=1;o.tdf=(o.tdf||1)/1.3;o.tdm=(o.tdm||1)*1.15}}catch(e){}return r}}
+/* ---------- RESET de todo mundo (1 vez): volta ao nível 1 e devolve moedas, pó, itens de elevação e cristais ---------- */
+const LVRZ=1;
+function lvResetAll(){if((rkG('lvrz',0)|0)>=LVRZ)return;const A=lvAll();let coins=0,po=0;const el=[0,0,0,0,0],cr=[0,0,0,0,0];let n=0;
+  for(const id in A){const L=A[id]||{},lv=Math.max(1,L.lv|0);if(lv>1)n++;for(let l=1;l<lv;l++){const [c,pp]=LVCOST(l);coins+=c;po+=pp}[10,20,30,40,50].forEach((t,i)=>{if(lv>=t)el[i]++});
+    (Array.isArray(L.t)?L.t:[]).forEach((c,r)=>{if(c!=null&&c>=0&&LVCRN[r]){cr[LVCRN[r][0]]+=LVCRN[r][1]}});A[id]={lv:1,t:[],c:[]}}
+  rkS('lv',A);if(coins)twLS.s('tw_moedas',(twLS.g('tw_moedas',0)|0)+coins);if(po)rkS('po',lvPo()+po);{const a=lvArr('el');el.forEach((v,i)=>a[i]+=v);rkS('el',a)}{const a=lvArr('cr');cr.forEach((v,i)=>a[i]+=v);rkS('cr',a)}
+  rkS('lvrz',LVRZ);try{acSave(1)}catch(e){}
+  if(n)setTimeout(()=>{try{const M=document.createElement('div');M.id='lvrzM';M.innerHTML=(`<div class="twM"><h3>✦ NOVO SISTEMA RPG!</h3><p class="twH">Os personagens agora têm <b>ATAQUE, DEFESA e VELOCIDADE</b> em pontos e uma <b>CONSTELAÇÃO</b> nova. Todos voltaram ao nível 1 e você recebeu de volta tudo o que gastou:</p><p class="twH" style="font-size:1.1em">🪙 ${rkFmtN(coins)} moedas · 🟣 ${rkFmtN(po)} ${LVPON}${el.some(x=>x)?' · ✦ '+el.map((v,i)=>v?v+'x '+LVELN[i]:'').filter(Boolean).join(', '):''}${cr.some(x=>x)?' · 💎 '+cr.map((v,i)=>v?v+' '+RKRNM[i]:'').filter(Boolean).join(', ')+' (cristais)':''}</p><div class="row"><button class="btn main" id="rkMX">VAMOS LÁ!</button></div></div>`).replace('id="rkMX"','id="lvrzOk"');document.body.appendChild(M);$('lvrzOk').onclick=()=>M.remove()}catch(e){}},2500)}
+{const _o=rkOpen;rkOpen=function(){const r=_o.apply(this,arguments);try{lvResetAll()}catch(e){}return r}}
+/* ---------- telas ---------- */
+Object.assign(LVSTAT,{atk:{n:'ATAQUE',i:'⚔️'},def:{n:'DEFESA',i:'🛡️'},spd:{n:'VELOCIDADE',i:'💨'},pts:{n:'PONTOS',i:'✦'}});
+lvStatRows=function(id){const S=cstStats(id),B=lvBonus(id);return [['atk',rkFmtN(S.atk)+(B.dano?' +'+B.dano+'%':'')],['def',rkFmtN(S.def)+(B.def?' +'+B.def+'%':'')],['spd',rkFmtN(S.spd)+(B.vel?' +'+B.vel+'%':'')],['crit',(5+B.crit).toFixed(1)+'%'+(B.cd?' 💥+'+B.cd+'%':'')],['pts',cnsFree(id)+' livres / '+cnsPts(id)]]};
+{const _lh=lvH;lvH=function(){let h=_lh.apply(this,arguments);const id=LVC.id,i=h.indexOf('<div class="lvRl'),j=h.indexOf('<div class="lvCr"');if(i>0&&j>i){const T=cnsSum(id),fr=cnsFree(id);
+    h=h.slice(0,i)+`<div class="cnsPv" style="${rkB(1030,118,1790,712)}"><b>✦ CONSTELAÇÃO</b><span>${fr>0?`<i class="nw">${fr} ponto${fr>1?'s':''} livre${fr>1?'s':''}!</i>`:'Cada nível = 1 ponto'}</span>
+      <div class="cnsBr">${CNB.map((B,b)=>{const n=lvOf(id).c.filter(x=>x.startsWith(b+'-')).length;return `<div style="--c:${B.c}"><em>${B.i} ${B.n}</em><s><u style="width:${n/12*100}%"></u></s><small>${n}/12</small></div>`}).join('')}</div>
+      <small class="cnsTt">${['atk','def','spd'].filter(k=>T[k]).map(k=>'+'+T[k]+' '+CNF[k][0]).join(' · ')||'Nenhuma estrela ainda'}</small><button class="cnsGo" data-a="cnsOpen">✦ ABRIR CONSTELAÇÃO</button></div>`+h.slice(j)}
+  return h.replace(/<button class="lvX"[^>]*>[^<]*<\/button>/,'')}}
+lvInfo=function(){rkModal(`<div class="twM"><h3>⬆ PERSONAGEM (SISTEMA RPG)</h3><p class="twH">Cada personagem tem <b>ATAQUE, DEFESA e VELOCIDADE</b> próprios (épico mais fraco, Shaka o mais forte). Cada nível aumenta 3% do ataque e da defesa base (velocidade 2%), dá +0,1% de crítico e <b>1 ponto de CONSTELAÇÃO</b>.</p>
+  <p class="twH">Equipamento agora dá PONTOS: espada = ataque, armadura = defesa, botas = velocidade (comum ~10, rara ~60, épica ~100, lendária ~280, mítica ~1000). Anéis, passivas, título e evento dão % por cima (somados: +100% = dobra).</p>
+  <table class="rkTx"><tr><th>Níveis</th><th>Custo por nível</th></tr><tr><td>1 → 10</td><td>🪙 150 · 🟣 10</td></tr><tr><td>10 → 20</td><td>🪙 300 · 🟣 20</td></tr><tr><td>20 → 30</td><td>🪙 500 · 🟣 35</td></tr><tr><td>30 → 40</td><td>🪙 900 · 🟣 60</td></tr><tr><td>40 → 50</td><td>🪙 1.800 · 🟣 120</td></tr><tr><td>50 → 70 (Shaka)</td><td>🪙 3.000 · 🟣 200</td></tr></table>
+  <p class="twH">✦ ELEVAÇÃO nos níveis 10, 20, 30, 40 e 50 (Pergaminho, Cubo, Máscara, Chama, Orbe). Estrela-mestra da constelação: 1 cristal ÉPICO.</p><div class="row"><button class="btn" id="rkMX">OK</button></div></div>`);$('rkMX').onclick=()=>rkModal(null)};
+cbRows=function(id){const T=cbAll(id).T,S=cstStats(id);return ['⚔️ '+rkFmtN(S.atk)+' · 🛡️ '+rkFmtN(S.def)+(T.dano?' · +'+cbN(T.dano)+'%':''),cbN(5+T.crit)+'%'+(T.cd?' 💥+'+cbN(T.cd)+'%':''),'💨 '+rkFmtN(S.spd)+(T.vel?' · +'+cbN(T.vel)+'%':''),'+'+cbN(T.st)+(T.drop?' 🎁+'+cbN(T.drop)+'%':''),'+'+cbN(T.uv)+'%'+(T.ls?' ❤️'+cbN(T.ls)+'%':'')]};
+/* tela da CONSTELAÇÃO */
+const CNV={sel:null};
+function cnsState(id,n){const L=lvOf(id),N=CNN[n];if(L.c.includes(n))return 'on';if(!N.p||L.c.includes(N.p))return 'av';return 'lk'}
+function cnsH(){const id=LVC.id,L=lvOf(id),fr=cnsFree(id),S=cstStats(id),sel=CNV.sel&&CNN[CNV.sel]?CNV.sel:null,B=(x0,y0,x1,y1)=>`left:${x0/1846*100}%;top:${y0/852*100}%;width:${(x1-x0)/1846*100}%;height:${(y1-y0)/852*100}%`;
+  const lines=Object.entries(CNN).map(([n,N])=>{const P=N.p?CNN[N.p]:CNC,on=L.c.includes(n);return `<line x1="${P.x}" y1="${P.y}" x2="${N.x}" y2="${N.y}" class="${on?'on':cnsState(id,n)==='av'?'av':''}" style="--c:${CNB[N.b].c}"/>`}).join('');
+  const nodes=Object.entries(CNN).map(([n,N])=>{const st=cnsState(id,n),sz=N.t==='k'?54:N.t==='m'?40:30;return `<button class="cnsN ${N.t} ${st}${sel===n?' sel':''}" data-a="cnsSel" data-n="${n}" style="left:${(N.x-sz/2)/1846*100}%;top:${(N.y-sz/2)/852*100}%;width:${sz/1846*100}%;height:${sz/852*100}%;--c:${CNB[N.b].c}">${N.t==='k'?'★':N.t==='m'?CNB[N.b].i:''}</button>`}).join('');
+  const lbl=CNB.map((Bb,b)=>{const P=CNN[b+'-5'],a=(-90+b*72)*Math.PI/180,x=CNC.x+Math.cos(a)*120,y=CNC.y+Math.sin(a)*120;return `<div class="cnsBl" style="left:${(x+Math.cos(a+Math.PI/2)*60-70)/1846*100}%;top:${(y+Math.sin(a+Math.PI/2)*60-14)/852*100}%;--c:${Bb.c}">${Bb.i} ${Bb.n}</div>`}).join('');
+  let info='<p class="cnsHelp">Toque numa estrela para ver o bônus.<br>Cada nível do personagem = 1 ponto. A estrela ligada ao centro (ou a uma estrela acesa) pode ser ativada.</p>';
+  if(sel){const N=CNN[sel],st=cnsState(id,sel),Bb=CNB[N.b],crok=N.t!=='k'||lvArr('cr')[2]>=1;info=`<div class="cnsIf" style="--c:${Bb.c}"><small>${Bb.i} ${Bb.n}${N.f?' · '+N.f:''}</small><b>${N.t==='k'?'★ ESTRELA-MESTRA':N.t==='m'?'ESTRELA MAIOR':'ESTRELA'}</b><p>${cnsEff(N.e)}</p><em>Custo: ${N.cost} ponto${N.cost>1?'s':''}${N.t==='k'?' + 1 cristal ÉPICO ('+lvArr('cr')[2]+')':''}</em>
+    ${st==='on'?'<i class="ok">✔ ATIVADA</i>':st==='lk'?'<i>🔒 Ative a estrela anterior primeiro</i>':`<button data-a="cnsAct" ${fr<N.cost||!crok?'disabled':''}>${fr<N.cost?'FALTAM PONTOS':!crok?'FALTA CRISTAL':'✦ ATIVAR'}</button>`}</div>`}
+  return `<button class="hs" data-a="cnsBack" style="${B(16,14,150,86)}">⬅</button>
+  <svg class="cnsSv" viewBox="0 0 1846 852" preserveAspectRatio="none">${lines}</svg>
+  <div class="cnsCt" style="${B(CNC.x-52,CNC.y-52,CNC.x+52,CNC.y+52)}"><img src="${(IMG[id]&&IMG[id].src)||fullSrc(id)}" alt=""></div>${lbl}${nodes}
+  <div class="cnsPn" style="${B(1180,24,1816,830)}"><div class="cnsTit">✦ CONSTELAÇÃO · ${twEsc(CH[id].name)}</div><div class="cnsPt"><b>${fr}</b><span>PONTOS LIVRES<br><small>${cnsUsed(id)} usados de ${cnsPts(id)} · nível ${L.lv}</small></span></div>
+    <div class="cnsSt"><span>⚔️ <b>${rkFmtN(S.atk)}</b></span><span>🛡️ <b>${rkFmtN(S.def)}</b></span><span>💨 <b>${rkFmtN(S.spd)}</b></span></div>${info}
+    <button class="cnsRs" data-a="cnsReset" ${L.c.length?'':'disabled'}>↺ RESETAR ESTRELAS · 200 💎</button></div>`}
+{const _v=rkView;rkView=function(v){if(v!=='cns')return _v.apply(this,arguments);RKV='cns';const W=$('rkWrap');if(!W)return;clearInterval(rkView.iv);rkModal(null);
+  W.innerHTML=`<div class="rkA rk_cns" data-w="1846" data-h="852">${cnsH()}<div id="rkToast"></div></div>`;rkFit();W.querySelectorAll('[data-a]').forEach(b=>b.onclick=e=>{e.stopPropagation();rkAct(b.dataset.a,b)})}}
+{const _a=rkAct;rkAct=function(a,b){
+  if(a==='cnsOpen'){rkSfx('whoosh');CNV.sel=null;return rkView('cns')}
+  if(RKV==='cns'){const id=LVC.id;
+    if(a==='cnsBack'||a==='back'){rkSfx('whoosh');return rkView('lvl')}
+    if(a==='cnsSel'){CNV.sel=b.dataset.n;rkSfx('whoosh');return rkView('cns')}
+    if(a==='cnsAct'){const n=CNV.sel,N=CNN[n];if(!N||cnsState(id,n)!=='av'||cnsFree(id)<N.cost)return;if(N.t==='k'){const c=lvArr('cr');if(c[2]<1)return;c[2]--;rkS('cr',c)}
+      const L=lvOf(id);L.c.push(n);lvSave(id,L);try{acSave()}catch(e){}rkSfx(N.t==='k'?'boom':'powerUp');rkView('cns');rkToast('✦ '+cnsEff(N.e),CNB[N.b].c);return}
+    if(a==='cnsReset'){rkModal(`<div class="twM sm"><h3>↺ RESETAR ESTRELAS</h3><p class="twH">Apaga todas as estrelas de <b>${twEsc(CH[id].name)}</b> e devolve os pontos (os cristais das estrelas-mestras voltam). Custa 200 💎.</p><div class="row"><button class="btn main" id="cnR" ${rkG('gem',0)<200?'disabled':''}>${rkG('gem',0)<200?'FALTA 💎':'RESETAR'}</button><button class="btn" id="rkMX">CANCELAR</button></div></div>`);
+      $('rkMX').onclick=()=>rkModal(null);$('cnR').onclick=()=>{if(rkG('gem',0)<200)return;rkAdd('gem',-200);const L=lvOf(id),k=L.c.filter(n=>CNN[n]&&CNN[n].t==='k').length;if(k){const c=lvArr('cr');c[2]+=k;rkS('cr',c)}L.c=[];lvSave(id,L);try{acSave(1)}catch(e){}rkModal(null);CNV.sel=null;rkSfx('whoosh');rkView('cns')};return}}
+  return _a.apply(this,arguments)}}
+try{window.__pvT={G:()=>G,ko:(a,d)=>ko(a,d),ev:()=>rkEvX(),m:()=>[rkEvG(),rkEvL(),rkEvD(),rkEvA()],lk:()=>{const c={};for(let i=0;i<4000;i++){const r=twEqRoll().k;c[r]=(c[r]||0)+1}const a=[0,0,0,0,0];for(let i=0;i<4000;i++)a[lvCrRoll()]++;return {luck:+lvLuck().toFixed(2),drop:+rkDropF().toFixed(2),extra:lkK(),equip:c,cristal:a}},dl:id=>pvDelta(id),cs:id=>cstStats(id),lvo:id=>lvOpen(id)}}catch(e){} /* só para os testes */
 
 function twTrofList(){const tc=twLS.g('tw_tc',{}),run={};for(const t of TW.tr)run[t.k]=(run[t.k]||0)+1;
   twModal(`<div class="twM"><h3>🎖️ TROFÉUS</h3><div class="twTL">${Object.keys(TWTR).map(k=>{const T=TWTR[k];return `<div class="${tc[k]||run[k]?'got':''}"><i>${T.i}</i><b>${T.n}</b><span>${T.d}</span><em>+${T.p} 🏆</em><small>${run[k]?'nesta subida: '+run[k]+' · ':''}total: ${(tc[k]||0)}</small></div>`}).join('')}</div>
@@ -11052,7 +11171,7 @@ window.__dbg={mus:()=>[MCUR,MEL.src.split('/').pop()],stg:()=>STAGE.key,prepMatc
 })();
 </script>
 <style>#updB{position:fixed;left:50%;top:max(8px,env(safe-area-inset-top));transform:translateX(-50%);z-index:99999;padding:10px 22px;border-radius:14px;border:2px solid #fff3c0;background:linear-gradient(#ffd84a,#e08a10);color:#3a1d00;font:900 15px system-ui,sans-serif;box-shadow:0 0 18px #ffb21f;cursor:pointer;animation:updP 1s ease-in-out infinite alternate}@keyframes updP{to{transform:translateX(-50%) scale(1.05)}}</style>
-<script>(function(){const V='be6a06846150';if(!/^https?:/.test(location.protocol))return;let nv=null;
+<script>(function(){const V='0987b4b26c99';if(!/^https?:/.test(location.protocol))return;let nv=null;
 function show(){if(document.getElementById('updB'))return;try{if(typeof G!=='undefined'&&G.mode==='fight')return}catch(e){}const b=document.createElement('button');b.id='updB';b.textContent='🔄 ATUALIZAÇÃO NOVA! Toque para atualizar';
   b.onclick=()=>{b.textContent='⏳ Atualizando...';try{acSave(1)}catch(e){}setTimeout(()=>location.reload(),900)};document.body.appendChild(b)}
 async function chk(){if(document.hidden)return;if(nv){show();return}try{const r=await fetch('versao.txt?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const t=(await r.text()).trim();if(/^[0-9a-f]{8,40}$/.test(t)&&t!==V){nv=t;show()}}catch(e){}}

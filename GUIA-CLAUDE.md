@@ -1656,3 +1656,11 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - Defesa: somada como porcentagem de defesa: `1/tdf = 1 + soma` (código: `p.tdf=1/(1/(p.tdf||1)+X/100)`), +100% de defesa = toma metade do dano.
 - Crítico, dano crítico, sorte e drop já eram somados (sorte/drop: v344). Bônus da sombra no PVP (+10%) também somado. `rkExtra` não sobrescreve mais a energia (`tki`).
 - Regra para código novo: bônus de % sempre SOMA no total do atributo.
+
+## v346 — SISTEMA RPG (atributos em pontos) + CONSTELAÇÃO + reset dos níveis
+- `CST[id]=[ATK,DEF,VEL]` base por personagem (épicos ~50/10, lendários ~150-185, Naruto 270, Madara 290, Yuta 300, Garou 360, Shaka 470). Nível: +3% do base em ATK/DEF por nível (VEL +2%), +0,1% crítico e 1 ponto de constelação.
+- Equipamento dá PONTOS: `eqFlat()` = valor do item x `EQRF` (comum 10, rara 15, épica 20, lendária 40, mítica 100; espada→ATK, armadura→DEF, botas→VEL, inclusive atributos extras dmg/def/vel). Anéis da Alma, passivas, título, ADM, poção, evento e estrelas de % continuam % somadas.
+- Conversão no fim da cadeia do `rkApply` (Boss/Torre/Caça; PVP usa o `pvDelta`, que passa por ela): `tdm=(ATK/150)^0,55 x (1+%)`, `1/tdf=1+DEF/900+%`, `tsp=(VEL/80)^0,2+%` (0,6–2,2). A % antiga do equipamento (`twEqB`) é tirada antes (agora vem em pontos). Inimigos (Boss/Torre/Caça): `tdf/1,3` e `tdm x1,15`.
+- CONSTELAÇÃO (`CNB`, `CNN`, tela `rkView('cns')`, botão no lugar da árvore antiga na tela de nível): 5 ramos (Ataque, Defesa, Velocidade, Crítico, Espírito) x 12 estrelas: tronco de 6 + 2 caminhos de 3 terminando em ESTRELA-MESTRA (4 pontos + 1 cristal ÉPICO). Estrela pequena 1 ponto, maior 2. Precisa da anterior acesa. Guardado em `rk_lv[id].c`. Resetar estrelas: 200 💎 (devolve cristais). Árvore antiga (`t`, linhas secretas do Shaka) não é mais usada.
+- `lvResetAll` (`LVRZ=1`, `rk_lvrz`): na 1ª vez que abre o ranqueado, todos os personagens voltam ao nível 1 e recebe de volta moedas + pó (`LVCOST`), itens de elevação dos níveis 10/20/30/40/50 e os cristais das escolhas da árvore antiga; aviso `#lvrzM`.
+- Teste `trpg_v346.js` (reset/devolução, atributos, ativar estrelas, telas).
