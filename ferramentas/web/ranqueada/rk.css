@@ -1624,3 +1624,9 @@ img.anOn{position:relative;z-index:2}
 .dsfV{display:flex;align-items:center;justify-content:center;gap:1.2em}.dsfV div{display:flex;flex-direction:column;align-items:center;gap:.2em}.dsfV img{width:5.5em;height:5.5em;border-radius:.6em;object-fit:cover;object-position:50% 20%;border:.15em solid #4aa8ff}.dsfV .r img{border-color:#ff5a5a}
 .dsfV b{font:900 1em var(--f-ui);color:#fff}.dsfV small{font:800 .8em var(--f-ui);color:#cbb8ff}.dsfV em{font:900 2.2em "Cinzel",serif;color:#ffd84a;font-style:normal;text-shadow:0 0 .4em #ff8000}
 .dsfMod{margin:.5em 0;padding:.5em;border-radius:.5em;background:rgba(255,120,30,.15);border:1px solid #ff9a3a;font:800 1em var(--f-ui);color:#fff;text-align:center}.dsfMod b{color:#ffb03a}
+/* v354: Caça · Hidra */
+#hyFade{position:fixed;inset:0;z-index:45;background:#000;opacity:0;pointer-events:none;transition:opacity .6s}#hyFade.on{opacity:1}
+#hyBox{position:fixed;right:2vw;top:16vh;z-index:44;display:flex;flex-direction:column;gap:.3vh;padding:1.2vh 1.6vh;border-radius:1.2vh;background:linear-gradient(#3a0a5a,#140628);border:.25vh solid #ffd84a;box-shadow:0 0 2vh rgba(200,80,255,.7);transform:translateX(130%);transition:transform .45s cubic-bezier(.2,1.3,.4,1);pointer-events:none}
+#hyBox.on{transform:none}#hyBox b{font:900 2.4vh var(--f-ui);color:#ffe08a;text-shadow:0 0 .8vh #ff9a00}#hyBox span{font:800 1.9vh var(--f-ui);color:#fff;text-shadow:0 1px 2px #000}
+.rk_ca .hySl b.caSlT{font-size:1.1em}.rk_ca .hySl:not(.on){background:rgba(20,0,30,.55);border-radius:.6em}
+.hyAn{display:flex;flex-wrap:wrap;gap:.35em;justify-content:center;max-height:30vh;overflow:auto}.hyAn span{display:flex;flex-direction:column;padding:.3em .6em;border-radius:.4em;border:1px solid var(--c);color:var(--c);font:900 .85em var(--f-ui);background:#120a20}.hyAn small{color:#ddd;font-weight:700}
