@@ -1,0 +1,12 @@
+// v331: 3 códigos só com CONTA, 1 vez por conta (servidor local). Textos em C1 C2 C3.
+// precisa: node ferramentas/servidor/local.mjs 8790
+const {chromium}=require('playwright');const U='http://localhost:8790/index.html';const CS=[process.env.C1,process.env.C2,process.env.C3];
+(async()=>{const b=await chromium.launch();const errs=[];const out=[];
+const ctx=async(init)=>{const c=await b.newContext({viewport:{width:915,height:412}});const p=await c.newPage();p.on('pageerror',e=>errs.push(e.message));await p.route(/fonts\.g|googleapis/,r=>r.abort());
+  await p.addInitScript(i=>{if(!sessionStorage.d){sessionStorage.d=1;localStorage.clear();Object.assign(localStorage,i)}},init);await p.goto(U);await p.waitForFunction(()=>!document.getElementById('goSelect').disabled,null,{timeout:120000});await p.click('#mRank');await p.waitForTimeout(6000);await p.evaluate(()=>{try{rkModal(null)}catch(e){}});return p};
+const cod=async(p,c)=>{await p.evaluate(()=>{document.querySelector('#rkWrap [data-a="mn2Cfg"]').click()});await p.waitForTimeout(300);await p.evaluate(()=>document.getElementById('mnC1').click());await p.waitForTimeout(300);await p.fill('#rkCdI',c);await p.evaluate(()=>document.getElementById('rkCdOk').click());await p.waitForTimeout(1500);const t=await p.evaluate(()=>{const e=document.getElementById('rkCdE');return e?e.textContent:'? '+((document.querySelector('#rkModal')||{}).innerText||'').slice(0,200)});await p.evaluate(()=>{const x=document.getElementById('rkMX');if(x)x.click();try{rkModal(null)}catch(e){}});return t};
+const conta=async(p,n)=>{await p.click('#rkWrap [data-a="conta"]',{force:true});await p.waitForTimeout(400);await p.fill('#acP1','senha1');await p.fill('#acP2','senha1');await p.click('#acNew');await p.waitForTimeout(2500);await p.evaluate(()=>{try{rkModal(null)}catch(e){}})};
+const est=p=>p.evaluate(()=>({gem:localStorage.rk_gem,tic:localStorage.rk_tic,jn:JSON.parse(localStorage.rk_ps||'{}').jn}));
+let p=await ctx({rk_ini:'1',rk_xpv2:'1',rk_dia:'1',tw_nome:'"Zé"',rk_gem:'0',rk_tic:'0'});out.push(['sem conta',await cod(p,CS[0])]);
+for(const n of ['Bia','Caio']){p=await ctx({rk_ini:'1',rk_xpv2:'1',rk_dia:'1',tw_nome:JSON.stringify(n),rk_gem:'0',rk_tic:'0'});await conta(p,n);for(const c of CS)out.push([n,await cod(p,c)]);await p.evaluate(()=>localStorage.removeItem('tw_cup'));out.push([n+' de novo',await cod(p,CS[0])]);out.push([n,JSON.stringify(await est(p))])}
+console.log(out.map(x=>x.join(' → ')).join('\n'),'\nERROS',errs);await b.close()})();

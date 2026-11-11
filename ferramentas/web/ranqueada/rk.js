@@ -2558,3 +2558,7 @@ rkCards=function(L){const O=document.createElement('div');O.className='rkRes2 cr
   C.forEach(el=>el.onclick=()=>rev(el));
   const auto=async()=>{await ready;for(const el of C){if(!O.isConnected)return;await rev(el);await crtW(one?300:230)}};setTimeout(auto,one?700:L.length*60+650);
   $('rkCdAll').onclick=async()=>{for(const el of C)await rev(el)};$('rkCdOk').onclick=()=>{O.remove();rkView('gacha')}};
+/* v331: 3 códigos para todos, só com CONTA e 1 vez por conta (texto só com o dono) */
+TWCUP['cf2w82']={nm:'50 GIROS DE PASSIVA',acc:1,jn:50};
+TWCUP['1gvgw6x']={nm:'DIAMANTES DA SORTE',acc:1,rnd:[1000,4000]};
+TWCUP['1laos4r']={nm:'TICKETS DA SORTE',acc:1,rtic:[10,40]};

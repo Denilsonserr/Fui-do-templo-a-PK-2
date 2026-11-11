@@ -1577,3 +1577,7 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - Itens (moeda, equipamento, especiais): carta prata `N`, ícone pequeno no quadrado e nome na faixa de baixo. Personagem novo sem carta usa a carta prata com o retrato.
 - Para personagem novo: pôr a carta em `v330/<id>.png`, rodar `fazer.py` e adicionar em `CRT.chr`.
 - Testes: `tcartas_v330.js`, `tcartas1_v330.js`, `tcartasfps_v330.js` (CPU 4x: 56–60 quadros/s).
+
+## v331 — 3 códigos para TODOS, só com CONTA, 1 vez por conta (texto só com o dono)
+- No fim do rk.js: `cf2w82` = 50 giros de passiva (`jn:50`, Joia Negra), `1gvgw6x` = 1000 a 4000 💎 aleatório (`rnd`), `1laos4r` = 10 a 40 tickets aleatórios (`rtic`). Todos com `acc:1` (sem conta: "Esse código é só para quem tem CONTA").
+- Teste `tcod_v331.js` com o servidor local (C1/C2/C3 = textos): 2 contas usam os 3, repetir na mesma conta é recusado pelo servidor. Obs.: logo depois de abrir o ranqueado a tela redesenha e fecha a janela do código; o teste espera 6 s.
