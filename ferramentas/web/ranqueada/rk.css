@@ -1164,3 +1164,16 @@ img.anOn{position:relative;z-index:2}
 .anFt .au img{filter:drop-shadow(0 0 .2em #fff) drop-shadow(0 0 .7em var(--c))}
 @keyframes anFu{0%,8%{opacity:0;transform:translateY(0) scale(.9)}14%{opacity:.85}38%{opacity:.6;transform:translateY(calc(var(--ch)*-.85)) scale(.8)}46%,100%{opacity:0;transform:translateY(calc(var(--ch)*-1)) scale(.75)}}
 .rk_pf .pfAnB{z-index:4;display:flex;align-items:center;justify-content:center;border-radius:1em;background:linear-gradient(90deg,#3a0f6a,#7a22d6);border:2px solid #ffd84a;color:#fff;font:900 .8em var(--f-ui);box-shadow:0 0 1em rgba(255,200,60,.6)}
+
+/* v317: anéis empilhados girando devagar no lugar (3D) */
+.anFt .au{display:none}
+.anFt .ar{animation:none;perspective:900px;clip-path:none}
+.anFt.b .ar{clip-path:inset(0 0 50% 0)}.anFt.f .ar{clip-path:inset(50% 0 0 0)}
+.anFt .ar .sp{position:absolute;inset:0;display:block;transform-style:preserve-3d;transform:rotateX(74deg) rotateZ(0);animation:anSpin 14s linear infinite}
+.anFt .ar .sp img{width:100%;height:100%;object-fit:fill;display:block}
+@keyframes anSpin{to{transform:rotateX(74deg) rotateZ(360deg)}}
+.anFt .ar img,.anFt .ar .sp img{filter:none!important}
+.anFt .ar .sp{transform-style:flat;backface-visibility:visible}
+.anFt .ar{filter:drop-shadow(0 0 calc(.06em + .05em*var(--k)) #fff) drop-shadow(0 0 calc(.3em*var(--k)) var(--c))}
+.anFt .ar{filter:none;perspective:none}
+.anFt .ar .sp img{filter:drop-shadow(0 0 2px #fff) drop-shadow(0 0 6px var(--c))!important}

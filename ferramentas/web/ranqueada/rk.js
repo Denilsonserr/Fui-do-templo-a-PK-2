@@ -2237,10 +2237,11 @@ function anOfChar(id){try{const L=anL();return anEq(id).map(i=>i&&L.find(z=>z.i=
 /* perfil público leva os anéis do personagem do pedestal */
 {const _pm=pfMine;pfMine=function(){const D=_pm.apply(this,arguments);try{D.an=anOfChar(CH[D.ped]?D.ped:'goku').slice(0,8)}catch(e){}return D}}
 {const _pc=pfClean;pfClean=function(o,uid,nome){const D=_pc.apply(this,arguments);try{D.an=(Array.isArray(o.an)?o.an:[]).slice(0,8).map(r=>({c:Math.max(0,Math.min(4,r.c|0)),g:Math.max(0,Math.min(7,r.g|0)),l:Math.max(1,Math.min(50,r.l|0)),k:Math.max(0,Math.min(5,r.k|0))}))}catch(e){D.an=[]}return D}}
-function anFtHTML(R,cw){const n=R.length;let b='',f='',up='';R.forEach((r,k)=>{const w=Math.round(cw*(1.25+.5*k)),h=Math.round(w*.3),col=ANC[r.c][1],sty=`width:${w}px;height:${h}px;margin:${-h/2}px 0 0 ${-w/2}px;--c:${col};--k:${Math.max(1,r.k||1)};animation-delay:${(k*.45).toFixed(2)}s`;
-  const im=`<img src="${RQA.anel2[r.c]}" alt="">`;b+=`<i class="ar" style="${sty}">${im}</i>`;f+=`<i class="ar" style="${sty}">${im}</i>`;
-  up+=`<i class="au" style="${sty};animation-delay:${(1.2+k*1.6).toFixed(2)}s;animation-duration:${(3.2+n*1.6).toFixed(2)}s">${im}</i>`});
-  const wv=`<i class="aw" style="width:${Math.round(cw*(1.4+.5*n))}px;height:${Math.round(cw*(1.4+.5*n)*.3)}px;--c:${ANC[R[n-1].c][1]}"></i>`;return [wv+b,f+up]}
+/* v317: anéis EMPILHADOS (do chão subindo, com espaço entre eles), cada um GIRANDO devagar no lugar (3D: anel deitado girando no próprio eixo) */
+function anFtHTML(R,cw,ch){const n=R.length,gap=n>1?ch*.88/(n-1):0;let b='',f='';R.forEach((r,k)=>{const w=Math.round(cw*(2.05-.12*Math.abs(k/(Math.max(1,n-1))-.45))),col=ANC[r.c][1],y=Math.round(-k*gap);
+  const sty=`width:${w}px;height:${w}px;left:${-w/2}px;top:${y-w/2}px;--c:${col};--k:${Math.max(1,r.k||1)}`,dl=`animation-delay:${(-k*1.7).toFixed(2)}s;animation-duration:${(13+k*1.3).toFixed(1)}s${k%2?';animation-direction:reverse':''}`;
+  const ring=`<i class="sp" style="${dl}"><img src="${RQA.anel2[r.c]}" alt=""></i>`;b+=`<i class="ar" style="${sty}">${ring}</i>`;f+=`<i class="ar" style="${sty}">${ring}</i>`});
+  const wv=`<i class="aw" style="width:${Math.round(cw*1.6)}px;height:${Math.round(cw*1.6*.3)}px;--c:${ANC[R[0].c][1]}"></i>`;return [wv+b,f]}
 function anDecor(){try{const M=SRC2ID(),H=innerHeight;document.querySelectorAll('#rkWrap img,#rkModal img').forEach(img=>{const id=M[img.getAttribute('src')];if(!id)return;
   const P=img.parentElement;if(!P||img.closest('.pfMold,.rkCard,.eqI,.anCell,button.lk'))return;
   if(!img.complete||!img.naturalWidth){img.addEventListener('load',()=>setTimeout(anDecor,30),{once:true});return}
@@ -2248,7 +2249,7 @@ function anDecor(){try{const M=SRC2ID(),H=innerHeight;document.querySelectorAll(
   const inPf=!!img.closest('.pfPed'),R=inPf&&PFO?(PFO.an||[]):anOfChar(id);P.querySelectorAll(':scope>.anFt').forEach(x=>x.remove());if(!R.length)return;
   const ch=Math.min(bh,bw*img.naturalHeight/img.naturalWidth),cw=Math.min(bw,ch*img.naturalWidth/img.naturalHeight)*.62;
   const cs=getComputedStyle(P);if(cs.position==='static')P.style.position='relative';
-  const x=img.offsetLeft+bw/2,y=img.offsetTop+bh-ch*.035,[hb,hf]=anFtHTML(R,cw);
+  const x=img.offsetLeft+bw/2,y=img.offsetTop+bh-ch*.05,[hb,hf]=anFtHTML(R,cw,ch);
   const B=document.createElement('div'),F=document.createElement('div');B.className='anFt b';F.className='anFt f';for(const E of [B,F]){E.style.left=x+'px';E.style.top=y+'px';E.style.setProperty('--ch',Math.round(ch)+'px')}
   B.innerHTML=hb;F.innerHTML=hf;P.insertBefore(B,img);img.after(F);img.classList.add('anOn')})}catch(e){}}
 {const _v=rkView;rkView=function(){const r=_v.apply(this,arguments);setTimeout(anDecor,80);setTimeout(anDecor,700);return r}}

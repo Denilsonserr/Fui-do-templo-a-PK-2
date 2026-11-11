@@ -1508,3 +1508,7 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - **Perfil público leva os anéis** (`pfMine` → `D.an` com cor/nota/nível/brilho do personagem do pedestal; `pfClean` lê) → no perfil dos outros aparecem os anéis DELES.
 - **Botão "💍 ANÉIS DA ALMA" no seu perfil** abre a Biblioteca na aba Anéis do personagem do pedestal (equipar/trocar).
 - Teste: `tanpe_v316.js`.
+
+## v317
+- Pedido do dono: anéis de volta EMPILHADOS (como antes, mais bonitos): começam no chão e vão subindo com espaço igual entre eles até cobrir o personagem todo (do pé à cabeça: `gap = altura*0.88/(n-1)`), largos para não encostar no corpo (~2x a largura do personagem), cada um GIRANDO devagar no lugar (3D: `rotateX(74deg)` + `rotateZ` 13–20 s, um sim outro não ao contrário). Metade de trás atrás do corpo e metade da frente na frente. O anel que subia (v316) saiu; ficou a onda de energia no chão.
+- Obs.: filtro (drop-shadow) direto na imagem girando em 3D deixava uma faixa clara retangular no Chromium → brilho vai num drop-shadow simples na imagem dentro do `.sp`.
