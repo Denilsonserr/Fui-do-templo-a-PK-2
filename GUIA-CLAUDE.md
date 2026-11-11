@@ -1671,3 +1671,7 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - Caça (wrapper `caLvApply`): lobo 1-4 +15% dano/+30% vida efetiva; 5-8 dano x2 e defesa x2; 9-10 dano x3, defesa x3, crítico x3 e velocidade x1,5. A escala genérica do v346 ficou só para a Torre.
 - RECOMPENSA DIÁRIA (`rk_dl`, `DLR`): abre sozinha ao entrar no ranqueado (3 s); 7 dias seguidos (pular = volta ao dia 1): 300💎, 2🎫, 3💠, 500💎+50🔴, 3🎫, 5💠+cristal épico, 1500💎+5🎫+5💠. 1ª VITÓRIA DO DIA no Boss: gemas e moedas vermelhas em dobro (`rk_fwd`).
 - Medido (`tboss_v347.js`): Shaka nível 70 com espada e armadura míticas = dano x4,64; Boss nível 11 = dano x21 e toma só 13% do dano.
+
+## v348 — menos diamante por luta
+- Boss: base `5 + nível x 5,5 + 0–10` (nível 1 ≈ 5–15, nível 11 ≈ 60–70); farm = metade. Evento de gemas conta no máximo x3. Sorte dá até +100% (`(min(3,sorte)-1) x 0,5`). Teto `GEMCAP=150` por luta (antes chegava a ~600 com sorte x evento x ADM).
+- Yuta do evento: mesma regra (sorte até +100%, evento até x3, máx. 150). 1ª vitória do dia: no máximo +70.

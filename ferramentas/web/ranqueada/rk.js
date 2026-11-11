@@ -231,7 +231,7 @@ function rkAfter(w){G.mode='ranked';$('controls').hidden=true;$('pauseBtn').hidd
   const F=RKB.fs||{t:0,t1:0,cmb:0,hp0:1},o=G.p[1],p=G.p[0],won=w===0,secs=Math.round(F.t/60);
   const PB=o.rkPhB||[7,14],dmg=Math.round(o.rkPh===2?PB[0]*LAYER+(PB[1]*LAYER-Math.max(0,o.hp)):(PB[0]*LAYER-Math.max(0,o.hp))),frac=Math.min(1,dmg/((PB[0]+PB[1])*LAYER)),lost=Math.max(0,1-Math.max(0,p.hp)/(p.mhp||MAXHP));
   let red,gem=0,tic=0,eq=null,chest=null,drp,poc=null,sp=null,pk2=null,ring=null;
-  if(won){const q=Math.min(1,Math.max(0,(300-secs)/220))*.6+(1-lost)*.4;red=Math.round(5+5*q);gem=5+((Math.random()*11)|0);chest=secs<150&&lost<.4?'lend':secs<220?'epica':'rara';const FM=RKFL!=null&&RKYD==null;if(FM)chest=chest==='lend'?'epica':'rara';
+  if(won){const q=Math.min(1,Math.max(0,(300-secs)/220))*.6+(1-lost)*.4;red=Math.round(5+5*q);gem=Math.round(5+rkBL()*5.5+Math.random()*10)*(RKFL!=null&&RKYD==null?.5:1);chest=secs<150&&lost<.4?'lend':secs<220?'epica':'rara';const FM=RKFL!=null&&RKYD==null;if(FM)chest=chest==='lend'?'epica':'rara';
     if(Math.random()<(chest==='lend'?.4:chest==='epica'?.2:.12)*(FM?.5:1)*rkDropF())tic=1;if(Math.random()<(chest==='lend'?.2:.08)*(FM?.5:1)*rkDropF()){const E=TWEQ[(Math.random()*TWEQ.length)|0];eq={E,R:twEqRoll()}}drp=RKXW[rkLvl()];
     if(Math.random()<.3&&!['rara','lend','mit'].includes(chest))poc=twPoRoll();
     /* v250: poção de CURA/DROP e ANEL DE DROP (drop do Boss, fora do baú; o drop aumenta a chance) */
@@ -246,7 +246,7 @@ function rkAfter(w){G.mode='ranked';$('controls').hidden=true;$('pauseBtn').hidd
   else{const db=Math.round(RKXL[lvB]*RKXB.dmg*frac);xb.push(['Derrota',drp]);if(db>0){xb.push(['💥 Dano '+Math.round(frac*100)+'%','+'+db]);drp+=db}}
   {const ev=rkEvX();if(ev&&won){const ex=drp*(ev[2]-1);xb.push(['🔥 EVENTO '+ev[3],'+'+ex]);drp+=ex}if(won&&rkAdm2()>1)drp*=2}
   if(RKFL!=null){xb.length=0;xb.push([RKYD!=null?'🌸 FARM DO EVENTO · '+YSDIF[RKYD].n+' · sem XP de rank':'🌾 MODO FARM · nível '+(RKFL+1)+' · sem XP de rank','0']);drp=0;R_SRV=0}
-  gem=Math.round(gem*rkEvG());rkAdd('red',red);rkAdd('gem',gem);rkAdd('tic',tic);if(eq)twAddItem(eq.E,eq.R);if(poc)twAddPoc(poc);if(pk2)twAddPoc(pk2);if(ring)rkAddRing(ring);if(sp){if(sp==='senzu')rkAddSenzu(1);else rkGiveSp(sp)}
+  gem=Math.min(GEMCAP,Math.round(gem*Math.min(3,rkEvG())));rkAdd('red',red);rkAdd('gem',gem);rkAdd('tic',tic);if(eq)twAddItem(eq.E,eq.R);if(poc)twAddPoc(poc);if(pk2)twAddPoc(pk2);if(ring)rkAddRing(ring);if(sp){if(sp==='senzu')rkAddSenzu(1);else rkGiveSp(sp)}
   const rp0=rkG('rp',0),r0=rkRank(rp0);let rp1=Math.max(0,rp0+drp);rkS('rp',rp1);const r1=rkRank(rp1);for(let i=0;i<=r1;i++)twGiveTit('rk'+i);
   rkStAdd(won?'wins':'loss',1);pfFight({cmb:F.cmb||0,frac,won});rkStAdd('dmgTot',dmg);rkStAdd('dmgMax',dmg,1);if(F.t1){const S=rkSt();if(!S.t1||F.t1/60<S.t1){S.t1=Math.round(F.t1/60);rkS('st',S)}}if(won){const S=rkSt();if(!S.tt||secs<S.tt){S.tt=secs;rkS('st',S)}if(lost<.25)rkStAdd('clean',1)}
   if(RKFL==null)rkSend({rp:rp1,dmg,t1:F.t1?Math.round(F.t1/60):0,tt:won?secs:0,won:won?1:0});
@@ -822,6 +822,8 @@ twEqB=st=>{const o=twEqOn();let v=0;for(const k in o){const it=o[k],n=eqNf(it);i
 const eqCrit=()=>{const o=twEqOn();let c=0;for(const k in o)c+=(o[k].crit||0)*eqNf(o[k]);return c};
 const eqDrop=()=>{const o=twEqOn();let c=0;for(const k in o)c+=(o[k].drop||0)*eqNf(o[k]);return c},rkDropF=()=>1+(eqDrop()+RKPDN+psSum().drop)/100+(rkEvD()-1);let RKPDN=0;
 const eqFdmg=()=>{const o=twEqOn();let c=0;for(const k in o)c+=(o[k].fdmg||0)*eqNf(o[k]);return c};
+/* v348: no máximo 150 gemas por luta (Boss/evento), com sorte e evento somados */
+const GEMCAP=150;
 /* ---------- NÍVEL dos personagens ---------- */
 const LVMAX=id=>id==='shaka'?70:({mit:50,lend:40,epica:30}[rkRar(id)]||30);
 const LVCOST=lv=>lv<10?[150,10]:lv<20?[300,20]:lv<30?[500,35]:lv<40?[900,60]:lv<50?[1800,120]:[3000,200];
@@ -861,7 +863,7 @@ const LVPON='PÓ AMALDIÇOADO';
 /* Boss: depois da luta (vitória = mais), a sorte aumenta pó, cristais, itens, geminhas e moeda vermelha */
 {const _rr=rkResult;rkResult=function(R){const L=lvLuck(),D={};
   const FK=R.farm?.5:1;D.po=Math.round((R.won?8+Math.random()*8:2+Math.random()*3)*L*FK);if(Math.random()<(R.won?.3:.06)*L*FK)D.cr=[lvCrRoll(),1];if(R.won){const e=lvElRoll(FK,!!R.farm);if(e!=null)D.el=e}
-  if(R.won&&L>1){D.gem=Math.round((R.gem||0)*(L-1));D.red=Math.round((R.red||0)*(L-1));if(D.gem)rkAdd('gem',D.gem);if(D.red)rkAdd('red',D.red)}
+  if(R.won&&L>1){D.gem=Math.max(0,Math.min(GEMCAP-(R.gem||0),Math.round((R.gem||0)*(Math.min(3,L)-1)*.5)));D.red=Math.round((R.red||0)*(L-1));if(D.gem)rkAdd('gem',D.gem);if(D.red)rkAdd('red',D.red)}
   lvGive(D);const r=_rr.apply(this,arguments);try{const C=document.querySelector(RKMS()+'.rkItems');if(C)C.insertAdjacentHTML('beforeend',lvDropsHTML(D))}catch(e){}return r}}
 /* Torre: cada andar vencido dá pó (e às vezes cristal); completar a torre = chance dobrada de item de elevação; sorte aumenta as moedas */
 {const _ta2=twAfter;twAfter=function(w){const m0=twLS.g('tw_moedas',0)|0;const r=_ta2.apply(this,arguments);try{if(w===0){const L=lvLuck(),D={po:Math.round((3+Math.random()*4)*L)};if(Math.random()<.1*L)D.cr=[lvCrRoll(),1];lvGive(D);
@@ -1087,7 +1089,7 @@ function ysFight(){if(!ysOn()){rkToast('⏳ O evento do Yuta acabou','#cfd6ea');
     if(t%2===0)rkSfx('whoosh');if(t>10+(L.length-1)*5+1){clearInterval(iv);rkSfx('powerUp');setTimeout(()=>{rkModal(null);rkBossStart()},1300)}},90)}
 /* ---------- drops do evento (farm) e o Yuta / itens secretos ---------- */
 {const _rr2=rkResult;rkResult=function(R){if(R.yd==null||R.bn!=='YUTA')return _rr2.apply(this,arguments);const D=YSDIF[R.yd],L=lvLuck(),it=[],after=[];
-  if(R.won){const g=Math.round(ysRnd(D.gem)*L*rkEvG());rkAdd('gem',g);it.push(`<span style="--c:#5ab8ff"><img src="${RQA.coin[0]}" alt="">🌸 +${g}</span>`);
+  if(R.won){const g=Math.min(GEMCAP,Math.round(ysRnd(D.gem)*(1+(Math.min(3,L)-1)*.5)*Math.min(3,rkEvG())));rkAdd('gem',g);it.push(`<span style="--c:#5ab8ff"><img src="${RQA.coin[0]}" alt="">🌸 +${g}</span>`);
     const po=Math.round(ysRnd(D.po)*L);rkS('po',lvPo()+po);it.push(`<span style="--c:#b57bff"><img src="${poIco(po)}" alt="">🌸 +${po} PÓ</span>`);
     if(Math.random()<.35*L){const c=Math.min(4,lvCrRoll()+(D.er>1?1:0));lvGive({cr:[c,1]});it.push(`<span style="--c:${RKRC[c]}"><img src="${RQA.lvi.cr[c]}" alt="">CRISTAL ${RKRNM[c]}</span>`)}
     if(Math.random()<D.eq*L){const E=TWEQ[(Math.random()*TWEQ.length)|0];let Rr=twEqRoll();for(let i=0;i<D.er;i++){const R2=twEqRoll();if(TWEQR.indexOf(R2)>TWEQR.indexOf(Rr))Rr=R2}twAddItem(E,Rr);it.push(`<span style="--c:${Rr.c}"><img src="${twIco(E.k,Rr.k)}" alt="">${E.n} ${Rr.n}</span>`)}
@@ -2971,5 +2973,5 @@ function dlCheck(force){const o=rkG('dl',{d:'',s:-1});const today=dlDay();if(o.d
     rkS('dl',{d:dlDay(),s:nx});try{acSave(1)}catch(e){}rkSfx('powerUp');setTimeout(()=>rkSfx('boom'),250);rkModal(null);rkToast('🎁 DIA '+(nx+1)+': '+DLR[nx].map(dlTx).join(' · '),'#ffd84a');try{if(RKV==='menu')rkView('menu')}catch(e){}}}
 {const _o=rkOpen;rkOpen=function(){const r=_o.apply(this,arguments);setTimeout(()=>{try{if(showScreen.cur==='ranked'&&!document.getElementById('lvrzM')&&(!$('rkModal')||!$('rkModal').innerHTML.trim()))dlCheck()}catch(e){}},3200);return r}}
 /* 1ª vitória do dia no Boss: gemas e moedas vermelhas em dobro */
-{const _rr=rkResult;rkResult=function(R){try{if(R&&R.won&&!R.farm&&R.yd==null&&rkG('fwd','')!==dlDay()){rkS('fwd',dlDay());const g=R.gem||0,rd=R.red||0;if(g)rkAdd('gem',g);if(rd)rkAdd('red',rd);setTimeout(()=>rkToast('⭐ 1ª VITÓRIA DO DIA: +'+g+' 💎 +'+rd+' 🔴 em dobro!','#ffd84a'),1800)}}catch(e){}return _rr.apply(this,arguments)}}
+{const _rr=rkResult;rkResult=function(R){try{if(R&&R.won&&!R.farm&&R.yd==null&&rkG('fwd','')!==dlDay()){rkS('fwd',dlDay());const g=Math.min(R.gem||0,70),rd=R.red||0;if(g)rkAdd('gem',g);if(rd)rkAdd('red',rd);setTimeout(()=>rkToast('⭐ 1ª VITÓRIA DO DIA: +'+g+' 💎 +'+rd+' 🔴 em dobro!','#ffd84a'),1800)}}catch(e){}return _rr.apply(this,arguments)}}
 try{window.__pvT={G:()=>G,ko:(a,d)=>ko(a,d),ev:()=>rkEvX(),m:()=>[rkEvG(),rkEvL(),rkEvD(),rkEvA()],lk:()=>{const c={};for(let i=0;i<4000;i++){const r=twEqRoll().k;c[r]=(c[r]||0)+1}const a=[0,0,0,0,0];for(let i=0;i<4000;i++)a[lvCrRoll()]++;return {luck:+lvLuck().toFixed(2),drop:+rkDropF().toFixed(2),extra:lkK(),equip:c,cristal:a}},dl:id=>pvDelta(id),cs:id=>cstStats(id),lvo:id=>lvOpen(id),bs:lv=>bsSt(lv),dl:f=>dlCheck(f)}}catch(e){} /* só para os testes */
