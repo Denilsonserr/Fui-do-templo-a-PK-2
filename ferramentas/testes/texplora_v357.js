@@ -9,7 +9,7 @@ await p.evaluate(()=>{const G=__pvT.G(),it=__pvT.hy().items.find(i=>i.k==='bau')
 console.log('botao visivel',await p.evaluate(()=>!document.getElementById('hyOpen').hidden));await p.click('#hyOpen',{force:true});await p.waitForTimeout(1500);await p.screenshot({path:SH+'aberto.png'});
 console.log('itens',await p.evaluate(()=>__pvT.hy().items.map(i=>i.k+(i.open?'(aberto)':'')).join(',')));
 await p.evaluate(()=>{__pvT.G().p[0].x=2350});await p.waitForTimeout(2500);console.log('explorando',await p.evaluate(()=>[__pvT.hy().ex,__pvT.stg()[1],__pvT.hy().items.map(i=>i.k+i.bt).join(',')]));
-await p.evaluate(()=>{const G=__pvT.G(),it=__pvT.hy().items[1];G.p[0].x=it.x-110});await p.waitForTimeout(1200);await p.screenshot({path:SH+'exploracao.png'});
+await p.evaluate(()=>{const G=__pvT.G(),it=__pvT.hy().items[0];G.p[0].x=it.x-110});await p.waitForTimeout(1200);await p.screenshot({path:SH+'exploracao.png'});
 await p.click('#hyOpen',{force:true});await p.waitForTimeout(1800);await p.screenshot({path:SH+'exploracao2.png'});
 await p.evaluate(()=>{__pvT.G().p[0].x=2350});await p.waitForTimeout(2500);console.log('parte',await p.evaluate(()=>[__pvT.hy().st,__pvT.hy().ex,__pvT.G().p[1].def.name]));
 console.log('ERROS',errs);await b.close()})();

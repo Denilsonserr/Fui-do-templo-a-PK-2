@@ -1732,3 +1732,9 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 ## v358 — menos baús e mini-bosses, sem andar de costas
 - Partes: 8 / 12 / 16 abates (até 3 / 4 / 5 extras, nascendo a cada 70/60/50 quadros). Exploração: 1 baú em cada mapa (tipo 2 e 4). Hidra: baú só nos níveis 2, 4 e 6 + o da vitória (9 baús numa caçada completa). Gemas por baú `[15,18,20,0,20,0,24,0,25,28]` = 150 no total.
 - "Correndo ao contrário": no caminho sem inimigos o inimigo invisível ficava em cima do jogador e ele virava de costas. Agora fica 320px à frente na direção que o jogador anda (`HY.dir`), então o personagem olha para onde corre.
+
+## v359 — recorte dos baús refeito
+- O dono reclamou de baús "bugados" (pedaços do brilho e buracos). Causa: a folha não tem colunas iguais (1536/7 cortava os baús no meio) e o corte por cor pegava o brilho.
+- `ferramentas/bestas/hidra/baus2.py`: limites de coluna medidos à mão (`XB`, `YB`, só a linha de baixo = a do jogo), GrabCut por célula e depois corte do brilho por textura (desvio local > `TX=14`; o brilho é liso, o baú tem detalhe), fecha buracos e fica com o maior pedaço. Depois roda `assets_baus.py`.
+- O baú divino fechado ficou sem a auréola (cortada de propósito: ela grudava no brilho).
+- Teste: `texplora_v357.js` (agora usa `items[0]`, só 1 baú na exploração).
