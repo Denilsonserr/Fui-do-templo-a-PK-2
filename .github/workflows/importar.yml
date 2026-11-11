@@ -57,10 +57,14 @@ jobs:
           print('total para importar',len(L),flush=True)
           ok=0
           for i in range(0,len(L),40):
-              r=urllib.request.Request(os.environ['SITE']+'/fs-admin/import',data=json.dumps(L[i:i+40]).encode(),headers={'Content-Type':'application/json'})
+              r=urllib.request.Request(os.environ['SITE']+'/fs-admin/import',data=json.dumps(L[i:i+40]).encode(),headers={'Content-Type':'application/json','User-Agent':'Mozilla/5.0 (furia-importar)'})
               for t in range(3):
                   try:urllib.request.urlopen(r).read();ok+=len(L[i:i+40]);break
-                  except Exception as e:print('tentando de novo',i,e);time.sleep(2)
+                  except Exception as e:
+                      b=''
+                      try:b=e.read().decode()[:300]
+                      except Exception:pass
+                      print('tentando de novo',i,e,b);time.sleep(2)
           print('importados',ok,'de',len(L))
-          print(urllib.request.urlopen(os.environ['SITE']+'/fs-admin/count').read().decode())
+          print(urllib.request.urlopen(urllib.request.Request(os.environ['SITE']+'/fs-admin/count',headers={'User-Agent':'Mozilla/5.0 (furia-importar)'})).read().decode())
           P
