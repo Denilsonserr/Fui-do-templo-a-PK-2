@@ -2625,11 +2625,12 @@ function pvProfOut(id){const A=pvProfAll(),P=A[id]||{c:{},ch:{},th:{},rd:[0,0],n
     for(const c in Q.ch)M.ch[c]=(M.ch[c]||0)+Q.ch[c]*wq;for(const t in Q.th)M.th[t]=(M.th[t]||0)+Q.th[t]*wq;M.rd[0]+=Q.rd[0];M.rd[1]+=Q.rd[1];M.n+=Q.n}return M}
 
 /* ---------- 2) BÔNUS REAIS do personagem (os mesmos do Modo Boss: nível, equipamentos, anéis, passivas, títulos) ---------- */
-function pvDelta(id){const keep={p:G.p,gm:G.gmode,poc:localStorage.getItem('tw_pocOn'),fs:RKB.fs};const out={};
-  try{localStorage.removeItem('tw_pocOn');const p=mkFighter(id,WW/2-210,1,false),o=mkFighter(id==='goku'?'vegeta':'goku',WW/2+210,-1,true),b={};
+function pvDelta(id){const keep={p:G.p,gm:G.gmode,pk:G.pick,poc:localStorage.getItem('tw_pocOn'),c:localStorage.getItem('rk_pk_cura'),dr:localStorage.getItem('rk_pk_drop'),fs:RKB.fs,pdn:typeof RKPDN!=='undefined'?RKPDN:0};const out={};
+  try{localStorage.removeItem('tw_pocOn');localStorage.removeItem('rk_pk_cura');localStorage.removeItem('rk_pk_drop');G.pick=id;const p=mkFighter(id,WW/2-210,1,false),o=mkFighter(id==='goku'?'vegeta':'goku',WW/2+210,-1,true),b={};
     for(const k in p){const v=p[k];if(typeof v==='number'||typeof v==='boolean')b[k]=v}G.p=[p,o];G.gmode='boss';rkApply();
-    for(const k in p){const v=p[k];if((typeof v==='number'&&isFinite(v)||typeof v==='boolean')&&v!==b[k]&&!/^(x|y|vx|vy|st|mf|facing)$/.test(k))out[k]=typeof v==='number'?Math.round(v*1e4)/1e4:v}}catch(e){}
-  finally{G.p=keep.p;G.gmode=keep.gm;if(keep.poc!=null)localStorage.setItem('tw_pocOn',keep.poc);RKB.fs=keep.fs}return out}
+    for(const k in p){const v=p[k];if((typeof v==='number'&&isFinite(v)||typeof v==='boolean')&&v!==b[k]&&!/^(x|y|vx|vy|st|mf|facing|pregT|pregTot|rkCura|hpLag|_.*)$/.test(k))out[k]=typeof v==='number'?Math.round(v*1e4)/1e4:v}
+    if(p.def!==CH[id]){const D={};for(const k of ['energy','energy2','fe','fe2','frame'])if(p.def[k]!==CH[id][k])D[k]=p.def[k];if(Object.keys(D).length)out._def=D}}catch(e){}
+  finally{G.p=keep.p;G.gmode=keep.gm;G.pick=keep.pk;if(keep.poc!=null)localStorage.setItem('tw_pocOn',keep.poc);if(keep.c!=null)localStorage.setItem('rk_pk_cura',keep.c);if(keep.dr!=null)localStorage.setItem('rk_pk_drop',keep.dr);try{RKPDN=keep.pdn}catch(e){}RKB.fs=keep.fs}return out}
 const pvPow=d=>Math.round(100*((d.tdm||1)*(d.tsp||1)/(d.tdf||1))*(1+(d.tcr||0)/100));
 
 /* ---------- 3) SERVIDOR (liga/desliga, enviar sombra, buscar, avisos, ranking) ---------- */
@@ -2683,7 +2684,7 @@ function pvThink(f,o){const P=pvPrep(f.pvP),A=f.ai,I=f.inp,dx=o.x-f.x,dist=Math.
   else if(a==='BL'||a==='BK')A.walk=aw;else if(a==='FW')A.walk=tw;else if(a==='DN'){A.hold={down:1};A.holdT=PVW}}
 {const _a=aiThink;aiThink=function(f,o){if(G.gmode==='pvp'&&f.pvP&&f.pvP.n>=120)return pvThink(f,o);return _a.apply(this,arguments)}}
 /* bônus dos dois lados na luta */
-{const _ra=rkApply;rkApply=function(){const r=_ra.apply(this,arguments);if(G.gmode==='pvp'&&G.p&&PV.fight){const [p,o]=G.p,F=PV.fight;Object.assign(p,F.my||{});Object.assign(o,F.opp.s||{});o.pvP=F.opp.p;o.pvN=F.opp.nome}return r}}
+{const _ra=rkApply;rkApply=function(){const r=_ra.apply(this,arguments);if(G.gmode==='pvp'&&G.p&&PV.fight){const [p,o]=G.p,F=PV.fight,ap=(f,D)=>{D=D||{};for(const k in D)if(k!=='_def')f[k]=D[k];if(D._def)f.def=Object.assign({},f.def,D._def);if(f.preg){f.pregT=G.frame;f.pregTot=0;f._lhp=f.hp}};ap(p,F.my);ap(o,F.opp.s);o.pvP=F.opp.p;o.pvN=F.opp.nome}return r}}
 
 /* ---------- 5) LUTA: começar e terminar ---------- */
 function pvStart(opp,friendly){rkInit();if(!SPR_OK)return;const sel=pvChar();try{fsTry()}catch(e){}
@@ -2766,3 +2767,6 @@ function pvCfgM(){if(!twIsAdm())return mn2Cfg();const on=PV.on!==false;rkModal(`
   if(RKV==='pvp'){if(a==='back'){PV.opp=null;PV.srch=0;return rkView('menu')}
     const M={pvGo:pvSearch,pvRoom:pvRoom,pvForm:pvForm,pvRules:pvRules,pvRw:pvRewards,pvHist:pvHist,pvRank:pvRanking,pvCfg:pvCfgM};if(M[a]){if(a!=='pvGo')rkSfx('whoosh');if(PV.on===false&&['pvGo','pvRoom'].includes(a)&&!twIsAdm())return rkToast('⛔ O PVP está desligado pelo ADM','#ff8080');return M[a]()}}
   return _a.apply(this,arguments)}}
+
+/* v334: no PVP a regeneração das passivas vale para os dois lutadores (você e a sombra) */
+{const _rt=psRegTick;psRegTick=function(){if(G.gmode!=='pvp'||!G.p)return _rt.apply(this,arguments);const P0=G.p[0];for(const f of G.p){G.p[0]=f;try{_rt.apply(this,arguments)}catch(e){}}G.p[0]=P0}}

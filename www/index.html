@@ -7509,7 +7509,7 @@ function annWatch(){if(G.mode!=='fight')return;const ws=G.ws,k=ws?(ws.gg||ws.vg|
   if(G.sc&&G._aSc!==G.sc){G._aSc=G.sc;nv('vSuperPower',.05,1)}
   if(G.cine&&G._aCi!==G.cine){G._aCi=G.cine;nv('vSuperPower',.05,1)}
   for(const f of G.p){if(!f)continue;const st=f.state;if(st!==f._aSt){if(st==='mdc'||st==='mdc2')nv('vSuperPower',.05,1);f._aSt=st}}}
-function update(){updLife();tagUpdate();mdTick();gjTick();lfAirTick();rgTick();nrTick();grTick();ytTick();skTick();try{if(G.gmode==='boss'||G.gmode==='torre'||G.gmode==='caca'){rkCuraTick();psRegTick()}}catch(e){}dnTick();annWatch();
+function update(){updLife();tagUpdate();mdTick();gjTick();lfAirTick();rgTick();nrTick();grTick();ytTick();skTick();try{if(G.gmode==='boss'||G.gmode==='torre'||G.gmode==='caca'){rkCuraTick();psRegTick()}else if(G.gmode==='pvp')psRegTick()}catch(e){}dnTick();annWatch();
   G.frame++;if(G.lava.length)updLava();updAmbient();updEnv();updFX17();updFxs();updDeb();updAfx();updMcut();
   if(G.flash>0)G.flash--;G.shake*=.86;if(G.shake<.3)G.shake=0;
   if(G.banner){G.banner.t++;if(G.banner.t>=G.banner.dur)G.banner=null}
@@ -10600,11 +10600,12 @@ function pvProfOut(id){const A=pvProfAll(),P=A[id]||{c:{},ch:{},th:{},rd:[0,0],n
     for(const c in Q.ch)M.ch[c]=(M.ch[c]||0)+Q.ch[c]*wq;for(const t in Q.th)M.th[t]=(M.th[t]||0)+Q.th[t]*wq;M.rd[0]+=Q.rd[0];M.rd[1]+=Q.rd[1];M.n+=Q.n}return M}
 
 /* ---------- 2) BÔNUS REAIS do personagem (os mesmos do Modo Boss: nível, equipamentos, anéis, passivas, títulos) ---------- */
-function pvDelta(id){const keep={p:G.p,gm:G.gmode,poc:localStorage.getItem('tw_pocOn'),fs:RKB.fs};const out={};
-  try{localStorage.removeItem('tw_pocOn');const p=mkFighter(id,WW/2-210,1,false),o=mkFighter(id==='goku'?'vegeta':'goku',WW/2+210,-1,true),b={};
+function pvDelta(id){const keep={p:G.p,gm:G.gmode,pk:G.pick,poc:localStorage.getItem('tw_pocOn'),c:localStorage.getItem('rk_pk_cura'),dr:localStorage.getItem('rk_pk_drop'),fs:RKB.fs,pdn:typeof RKPDN!=='undefined'?RKPDN:0};const out={};
+  try{localStorage.removeItem('tw_pocOn');localStorage.removeItem('rk_pk_cura');localStorage.removeItem('rk_pk_drop');G.pick=id;const p=mkFighter(id,WW/2-210,1,false),o=mkFighter(id==='goku'?'vegeta':'goku',WW/2+210,-1,true),b={};
     for(const k in p){const v=p[k];if(typeof v==='number'||typeof v==='boolean')b[k]=v}G.p=[p,o];G.gmode='boss';rkApply();
-    for(const k in p){const v=p[k];if((typeof v==='number'&&isFinite(v)||typeof v==='boolean')&&v!==b[k]&&!/^(x|y|vx|vy|st|mf|facing)$/.test(k))out[k]=typeof v==='number'?Math.round(v*1e4)/1e4:v}}catch(e){}
-  finally{G.p=keep.p;G.gmode=keep.gm;if(keep.poc!=null)localStorage.setItem('tw_pocOn',keep.poc);RKB.fs=keep.fs}return out}
+    for(const k in p){const v=p[k];if((typeof v==='number'&&isFinite(v)||typeof v==='boolean')&&v!==b[k]&&!/^(x|y|vx|vy|st|mf|facing|pregT|pregTot|rkCura|hpLag|_.*)$/.test(k))out[k]=typeof v==='number'?Math.round(v*1e4)/1e4:v}
+    if(p.def!==CH[id]){const D={};for(const k of ['energy','energy2','fe','fe2','frame'])if(p.def[k]!==CH[id][k])D[k]=p.def[k];if(Object.keys(D).length)out._def=D}}catch(e){}
+  finally{G.p=keep.p;G.gmode=keep.gm;G.pick=keep.pk;if(keep.poc!=null)localStorage.setItem('tw_pocOn',keep.poc);if(keep.c!=null)localStorage.setItem('rk_pk_cura',keep.c);if(keep.dr!=null)localStorage.setItem('rk_pk_drop',keep.dr);try{RKPDN=keep.pdn}catch(e){}RKB.fs=keep.fs}return out}
 const pvPow=d=>Math.round(100*((d.tdm||1)*(d.tsp||1)/(d.tdf||1))*(1+(d.tcr||0)/100));
 
 /* ---------- 3) SERVIDOR (liga/desliga, enviar sombra, buscar, avisos, ranking) ---------- */
@@ -10658,7 +10659,7 @@ function pvThink(f,o){const P=pvPrep(f.pvP),A=f.ai,I=f.inp,dx=o.x-f.x,dist=Math.
   else if(a==='BL'||a==='BK')A.walk=aw;else if(a==='FW')A.walk=tw;else if(a==='DN'){A.hold={down:1};A.holdT=PVW}}
 {const _a=aiThink;aiThink=function(f,o){if(G.gmode==='pvp'&&f.pvP&&f.pvP.n>=120)return pvThink(f,o);return _a.apply(this,arguments)}}
 /* bônus dos dois lados na luta */
-{const _ra=rkApply;rkApply=function(){const r=_ra.apply(this,arguments);if(G.gmode==='pvp'&&G.p&&PV.fight){const [p,o]=G.p,F=PV.fight;Object.assign(p,F.my||{});Object.assign(o,F.opp.s||{});o.pvP=F.opp.p;o.pvN=F.opp.nome}return r}}
+{const _ra=rkApply;rkApply=function(){const r=_ra.apply(this,arguments);if(G.gmode==='pvp'&&G.p&&PV.fight){const [p,o]=G.p,F=PV.fight,ap=(f,D)=>{D=D||{};for(const k in D)if(k!=='_def')f[k]=D[k];if(D._def)f.def=Object.assign({},f.def,D._def);if(f.preg){f.pregT=G.frame;f.pregTot=0;f._lhp=f.hp}};ap(p,F.my);ap(o,F.opp.s);o.pvP=F.opp.p;o.pvN=F.opp.nome}return r}}
 
 /* ---------- 5) LUTA: começar e terminar ---------- */
 function pvStart(opp,friendly){rkInit();if(!SPR_OK)return;const sel=pvChar();try{fsTry()}catch(e){}
@@ -10741,6 +10742,9 @@ function pvCfgM(){if(!twIsAdm())return mn2Cfg();const on=PV.on!==false;rkModal(`
   if(RKV==='pvp'){if(a==='back'){PV.opp=null;PV.srch=0;return rkView('menu')}
     const M={pvGo:pvSearch,pvRoom:pvRoom,pvForm:pvForm,pvRules:pvRules,pvRw:pvRewards,pvHist:pvHist,pvRank:pvRanking,pvCfg:pvCfgM};if(M[a]){if(a!=='pvGo')rkSfx('whoosh');if(PV.on===false&&['pvGo','pvRoom'].includes(a)&&!twIsAdm())return rkToast('⛔ O PVP está desligado pelo ADM','#ff8080');return M[a]()}}
   return _a.apply(this,arguments)}}
+
+/* v334: no PVP a regeneração das passivas vale para os dois lutadores (você e a sombra) */
+{const _rt=psRegTick;psRegTick=function(){if(G.gmode!=='pvp'||!G.p)return _rt.apply(this,arguments);const P0=G.p[0];for(const f of G.p){G.p[0]=f;try{_rt.apply(this,arguments)}catch(e){}}G.p[0]=P0}}
 
 function twTrofList(){const tc=twLS.g('tw_tc',{}),run={};for(const t of TW.tr)run[t.k]=(run[t.k]||0)+1;
   twModal(`<div class="twM"><h3>🎖️ TROFÉUS</h3><div class="twTL">${Object.keys(TWTR).map(k=>{const T=TWTR[k];return `<div class="${tc[k]||run[k]?'got':''}"><i>${T.i}</i><b>${T.n}</b><span>${T.d}</span><em>+${T.p} 🏆</em><small>${run[k]?'nesta subida: '+run[k]+' · ':''}total: ${(tc[k]||0)}</small></div>`}).join('')}</div>
@@ -10929,7 +10933,7 @@ window.__dbg={mus:()=>[MCUR,MEL.src.split('/').pop()],stg:()=>STAGE.key,prepMatc
 })();
 </script>
 <style>#updB{position:fixed;left:50%;top:max(8px,env(safe-area-inset-top));transform:translateX(-50%);z-index:99999;padding:10px 22px;border-radius:14px;border:2px solid #fff3c0;background:linear-gradient(#ffd84a,#e08a10);color:#3a1d00;font:900 15px system-ui,sans-serif;box-shadow:0 0 18px #ffb21f;cursor:pointer;animation:updP 1s ease-in-out infinite alternate}@keyframes updP{to{transform:translateX(-50%) scale(1.05)}}</style>
-<script>(function(){const V='65904faf5917';if(!/^https?:/.test(location.protocol))return;let nv=null;
+<script>(function(){const V='b99ee30b060a';if(!/^https?:/.test(location.protocol))return;let nv=null;
 function show(){if(document.getElementById('updB'))return;try{if(typeof G!=='undefined'&&G.mode==='fight')return}catch(e){}const b=document.createElement('button');b.id='updB';b.textContent='🔄 ATUALIZAÇÃO NOVA! Toque para atualizar';
   b.onclick=()=>{b.textContent='⏳ Atualizando...';try{acSave(1)}catch(e){}setTimeout(()=>location.reload(),900)};document.body.appendChild(b)}
 async function chk(){if(document.hidden)return;if(nv){show();return}try{const r=await fetch('versao.txt?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const t=(await r.text()).trim();if(/^[0-9a-f]{8,40}$/.test(t)&&t!==V){nv=t;show()}}catch(e){}}

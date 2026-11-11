@@ -1598,3 +1598,8 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - Sala Personalizada: luta contra a sombra de alguém pelo nome, não vale estrela. Formação: escolhe o personagem do PVP (`rk_pvch`) e mostra quanto do estilo já foi gravado.
 - Na barra de vida o rival aparece como SOMBRA (`extra/9q_v333.py`).
 - Teste `tpvp_v333.js` (servidor local): Bia com sombra de socos, Caio busca, luta apertando teclas, perde sem perder estrela na Madeira, ranking com os dois, Bia vê "DEFENDEU" no histórico, ADM desliga (tela mostra PVP DESLIGADO) e liga. Menus continuam a 60 quadros/s (`tdesempenho_v328.js`).
+
+## v334 — PVP: todos os bônus valem (menos poção)
+- `pvDelta` agora roda o `rkApply` com `G.pick` = personagem do PVP (os equipamentos/anéis/nível/passivas/título certos), tira poção de buff, poção de cura e de drop durante o cálculo (e devolve depois, sem gastar) e também leva a cor da aura da passiva secreta (`_def`).
+- Na luta os dois lados recebem os números (dano, velocidade, defesa, crítico, dano crítico, roubo de vida, ki, transformação, soco rápido, regeneração). A regeneração das passivas roda no PVP para você e para a sombra (`extra/9r_v334.py` + wrapper do `psRegTick`). Semente dos Deuses (reviver) não vale no PVP (é de uso único, como poção).
+- Teste `tpvpbonus_v334.js`: conta sem itens = tudo 1/0; conta com espada mítica, bota, 2 anéis e nível 45 = tdm 1,316, tsp 1,08, crítico 12,2; poções continuam guardadas.
