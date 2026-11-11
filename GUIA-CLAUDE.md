@@ -1615,3 +1615,8 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - Time de 3 (`rk_pvt`, `pvTeam()`; quem tem menos repete): Formação escolhe na ordem. A sombra envia `team:[{ch,p,s,lv}x3]` (sombras antigas viram 3 do mesmo). Luta igual Torre: quem cai sai, entra o próximo, o vencedor continua com a vida que sobrou; vence quem derrubar os 3 (`endRound` do PVP + `extra/9s_v336.py`: `G.teams` = `PV.fight.teams` e sem tag). Bônus e estilo de cada personagem aplicados a cada entrada.
 - Teste `tpvp3_v336.js`: sombra ADM tdm 1,6/tdf 0,625; jogador parado tomou 3500 de dano em 15 s; 3 nocautes → vitória. Gancho de teste `window.__pvT`.
 - Pendente (o dono vai explicar): bônus de estrela por sequência e animação de estrela estilo Mobile Legends.
+
+## v337 — reset do PVP + desculpas
+- **Reset do PVP**: `PVRZ=1`. `pvMon()` agora termina com `r<PVRZ>` (sombras antigas do servidor não aparecem mais) e `pvG()` zera rank/estrelas/V-D/histórico de quem tem `rz` diferente (os prêmios de primeira vez `rw` continuam marcados, para ninguém pegar duas vezes). Novo reset = aumentar `PVRZ`.
+- **Evento de desculpas** 11/11/2026 13:00–20:00 (Brasília) em `RKEVX`: 3x XP, 3x gemas, 3x sorte, 3x drop e `anel:3` = 3 tentativas de drop de Anel da Alma por nível vencido na Caça (`anDropLobo`).
+- **Código de desculpas** (texto só com o dono): `973bb8` = 5000 💎 + 40 Joias Negras (giros de passiva) + 20 🎫, 1 vez por CONTA (`acc:1`, campo novo `pk:{gem,tic}` entregue depois que o servidor aceita, wrapper `_cp7`). Teste `tdesc_v337.js` (C1 = texto).

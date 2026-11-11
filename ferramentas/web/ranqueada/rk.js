@@ -2579,12 +2579,13 @@ const PVA={tela:'a/bbc5a551ec39e7.webp',e:{madeira:'a/0bd6de170a631d.webp',bronz
 const PVT=[['MADEIRA','#c48a52',2,'madeira',0,0],['BRONZE','#e09a5c',3,'bronze',300,0],['PRATA','#dfe6ef',4,'prata',600,2],['OURO','#ffd34a',5,'ouro',1000,3],['PLATINA','#7fd0ff',7,'platina',1500,5],['DIAMANTE','#c79bff',10,'diamante',2500,8],['MESTRE','#ff9cf2',15,'mestre',4000,10],['LENDÁRIO','#ff5a5a',25,'lendario',6000,15],['DIVINO','#fff0b0',0,'divino',10000,25]];
 const PVDIV=8,pvB=arBx(PVA.W,PVA.H),PVW=8,PVFREE=['idle','walk','crouch','cblock','jump','charge'];
 const PV={on:null,onT:0,opp:null,srch:0,fight:null,last:''};
-const pvG=()=>Object.assign({t:0,d:0,s:0,w:0,l:0,sq:0,bt:0,bd:0,rw:[],h:[]},rkG('pvp',{})),pvSv=o=>{rkS('pvp',o);try{acSave()}catch(e){}};
+const pvG=()=>{const o=Object.assign({t:0,d:0,s:0,w:0,l:0,sq:0,bt:0,bd:0,rw:[],h:[]},rkG('pvp',{}));if(o.rz!==PVRZ){Object.assign(o,{t:0,d:0,s:0,w:0,l:0,sq:0,bt:0,bd:0,h:[],rz:PVRZ});rkS('pvp',o);rkS('pvup',0)}return o},pvSv=o=>{rkS('pvp',o);try{acSave()}catch(e){}};
 const pvNeed=t=>PVT[t][2];
 const pvRkName=(t,d)=>PVT[t][0]+(t<PVDIV?' '+(d+1):'');
 /* pontuação contínua para o ranking: estrelas somadas de todas as divisões abaixo + as atuais */
 const pvScore=o=>{let n=0;for(let t=0;t<o.t;t++)n+=pvNeed(t)*3;return n+o.d*pvNeed(o.t)+o.s};
-const pvMon=()=>{const d=new Date(Date.now()-3*3600e3);return 'm'+d.getUTCFullYear()+String(d.getUTCMonth()+1).padStart(2,'0')};
+/* v337: PVRZ = número do reset do PVP (zera o rank de todo mundo e separa as sombras no servidor) */
+const PVRZ=1;const pvMon=()=>{const d=new Date(Date.now()-3*3600e3);return 'm'+d.getUTCFullYear()+String(d.getUTCMonth()+1).padStart(2,'0')+'r'+PVRZ};
 const pvAcc=()=>{const n=String(localStorage.getItem('ac_n')||'').toLowerCase().trim();return n&&localStorage.getItem('ac_k')?twHash(n):''};
 const pvEsc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const pvChar=()=>{const own=rkG('own',['goku']),c=rkG('pvch','')||rkG('sel','goku');return own.includes(c)&&CH[c]?c:(own.find(i=>CH[i])||'goku')};
@@ -2768,7 +2769,7 @@ async function pvHist(){const o=pvG(),row=h=>`<div class="${h.w?'w':'l'}"><b>${h
   draw(null);const acc=pvAcc();if(!acc)return draw([]);try{draw(await pvQ('pvo',acc,15))}catch(e){draw(0)}}
 async function pvLoadAll(force){if(!force&&PV.all&&Date.now()-PV.allT<60e3)return PV.all;const R=await pvQ('pvk',pvMon(),300,'pvs','DESCENDING'),M={};for(const e of R){if(!e.pva||M[e.pva]&&M[e.pva]._id>e._id)continue;let d={};try{d=JSON.parse(e.d)}catch(x){}M[e.pva]=Object.assign(e,{t:Math.min(PVDIV,d.t|0),dv:d.dv|0,st:d.st|0,ch:d.ch||e.ch,w:d.w|0,l:d.l|0})}
   PV.all=Object.values(M).sort((a,b)=>b.pvs-a.pvs);PV.allT=Date.now();return PV.all}
-async function pvRanking(){const draw=L=>{if(RKV!=='pvp')return;const me=pvAcc();rkModal(`<div class="twM pvRk"><h3>🏆 RANKING PVP · TEMPORADA ${pvMon().slice(5)}/${pvMon().slice(1,5)}</h3><div class="pvRkL">${L==null?'<p class="twH">Carregando...</p>':L===0?'<p class="twH">'+rkNetMsg()+'</p>':L.length?L.map((e,i)=>{const T=PVT[Math.min(PVDIV,e.t|0)];return `<div class="${e.pva===me?'me':''}"><b class="ps">${i<3?['🥇','🥈','🥉'][i]:'#'+(i+1)}</b><img src="${PVA.e[T[3]]}" alt=""><span><b>${pvEsc(e.nome)}</b>${rgTit(e.tit,e.nome)}</span><em style="color:${T[1]}">${pvRkName(e.t|0,e.dv|0)}${e.t>=PVDIV?' · ⭐'+e.st:''}</em></div>`}).join(''):'<p class="twH">Ninguém no ranking ainda. Seja o primeiro!</p>'}</div><div class="row"><button class="btn" id="rkMX">FECHAR</button></div></div>`);$('rkMX').onclick=()=>rkModal(null)};
+async function pvRanking(){const draw=L=>{if(RKV!=='pvp')return;const me=pvAcc();rkModal(`<div class="twM pvRk"><h3>🏆 RANKING PVP · TEMPORADA ${pvMon().slice(5,7)}/${pvMon().slice(1,5)}</h3><div class="pvRkL">${L==null?'<p class="twH">Carregando...</p>':L===0?'<p class="twH">'+rkNetMsg()+'</p>':L.length?L.map((e,i)=>{const T=PVT[Math.min(PVDIV,e.t|0)];return `<div class="${e.pva===me?'me':''}"><b class="ps">${i<3?['🥇','🥈','🥉'][i]:'#'+(i+1)}</b><img src="${PVA.e[T[3]]}" alt=""><span><b>${pvEsc(e.nome)}</b>${rgTit(e.tit,e.nome)}</span><em style="color:${T[1]}">${pvRkName(e.t|0,e.dv|0)}${e.t>=PVDIV?' · ⭐'+e.st:''}</em></div>`}).join(''):'<p class="twH">Ninguém no ranking ainda. Seja o primeiro!</p>'}</div><div class="row"><button class="btn" id="rkMX">FECHAR</button></div></div>`);$('rkMX').onclick=()=>rkModal(null)};
   draw(null);try{draw((await pvLoadAll()).slice(0,50))}catch(e){draw(0)}}
 /* v335: quem está em cada rank (toque no rank da direita; no título "Ranks" = todos, com a Madeira) */
 async function pvTier(t){const me=pvAcc(),row=e=>{const T=PVT[e.t];return `<div class="${e.pva===me?'me':''}"><img class="pt" src="${pvPortrait(CH[e.ch]?e.ch:'goku')}" alt=""><span><b>${pvEsc(e.nome)}</b>${rgTit(e.tit,e.nome)}</span><em style="color:${T[1]}">${pvRkName(e.t,e.dv)} · ⭐${e.st}</em><small>${e.w}V ${e.l}D</small></div>`};
@@ -2785,3 +2786,12 @@ function pvCfgM(){if(!twIsAdm())return mn2Cfg();const on=PV.on!==false;rkModal(`
 /* v334: no PVP a regeneração das passivas vale para os dois lutadores (você e a sombra) */
 {const _rt=psRegTick;psRegTick=function(){if(G.gmode!=='pvp'||!G.p)return _rt.apply(this,arguments);const P0=G.p[0];for(const f of G.p){G.p[0]=f;try{_rt.apply(this,arguments)}catch(e){}}G.p[0]=P0}}
 try{window.__pvT={G:()=>G,ko:(a,d)=>ko(a,d)}}catch(e){} /* só para os testes */
+
+/* ================= v337: EVENTO DE DESCULPAS (11/11/2026, 13:00 até 20:00 de Brasília): 3x XP, GEMAS, SORTE, DROP e 3x ANEL DA ALMA na Caça ================= */
+RKEVX.push([Date.UTC(2026,10,11,16,0),Date.UTC(2026,10,11,23,0),3,'DESCULPAS · 3x XP · 3x GEMAS · 3x SORTE · 3x DROP · 3x ANEL NA CAÇA',{gem:3,luck:3,drop:3,anel:3}]);
+const rkEvA=()=>{const e=rkEvX();return (e&&e[4]&&e[4].anel)||1};
+{const _dl=anDropLobo;anDropLobo=function(L){const m=rkEvA();if(m<=1)return _dl.apply(this,arguments);for(let i=0;i<m;i++){const r=_dl.apply(this,arguments);if(r)return r}return null}}
+/* código com vários prêmios: jn pelo código normal + pk:{gem,tic} entregue depois que o servidor aceitou */
+{const _cp7=twCupom;twCupom=async function(code,E){const C=TWCUP[twHash(String(code).toUpperCase())];const r=await _cp7.apply(this,arguments);
+  if(C&&C.pk&&r&&E&&/ok/.test(E.className||'')){if(C.pk.gem)rkAdd('gem',C.pk.gem);if(C.pk.tic)rkAdd('tic',C.pk.tic);try{acSave(1)}catch(e){}E.textContent='🎁 '+C.nm+'! +'+rkFmtN(C.pk.gem||0)+' 💎 · +'+(C.jn||0)+' 💠 giros de passiva · +'+(C.pk.tic||0)+' 🎫 tickets'}return r}}
+TWCUP['973bb8']={nm:'PEDIDO DE DESCULPAS',acc:1,jn:40,pk:{gem:5000,tic:20}};
