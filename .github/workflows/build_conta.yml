@@ -1,0 +1,30 @@
+name: Ver itens e bônus de contas (ferramenta)
+on:
+  workflow_dispatch:
+    inputs:
+      nomes: {description: 'nomes separados por vírgula', default: 'denilson adm,vini_junior10'}
+jobs:
+  q:
+    runs-on: ubuntu-latest
+    steps:
+      - name: contas
+        env: {NOMES: '${{ inputs.nomes }}'}
+        run: |
+          python3 - <<'P'
+          import json,urllib.request,os,hashlib
+          S='https://fui-do-templo-a-pk-2.denilsinend.workers.dev/fs/v1/projects/furia-do-templo/databases/(default)/documents:runQuery'
+          H={'Content-Type':'application/json','User-Agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/120 Safari/537.36'}
+          for n in [x.strip().lower() for x in os.environ['NOMES'].split(',') if x.strip()]:
+              acc=hashlib.sha256(('furia|acc|'+n).encode()).hexdigest()[:24]
+              q={'structuredQuery':{'from':[{'collectionId':'torre'}],'where':{'fieldFilter':{'field':{'fieldPath':'sv'},'op':'EQUAL','value':{'stringValue':acc}}},'orderBy':[{'field':{'fieldPath':'__name__'},'direction':'DESCENDING'}],'limit':3}}
+              R=[x['document'] for x in json.load(urllib.request.urlopen(urllib.request.Request(S,data=json.dumps(q).encode(),headers=H))) if x.get('document')]
+              if not R:print('=====',n,'sem salvamento');continue
+              R.sort(key=lambda d:int(d['fields']['ts']['integerValue']));o=json.loads(R[-1]['fields']['d']['stringValue'])
+              g=lambda k,d='null':json.loads(o.get(k,d))
+              inv=g('tw_inv','[]');eqp=g('tw_eqp','{}')
+              print('=====',n,'| titulo',o.get('tw_titOn'),'| lv',o.get('rk_lv'),'| rp',o.get('rk_rp'),'| lvrz',o.get('rk_lvrz'))
+              print('  EQUIPADO',[ {k:v for k,v in it.items() if k in('t','r','v','dmg','def','vel','crit','trf','st','drop','fdmg','yt','sk','nm','ps')} for it in inv if it.get('id') in eqp.values()])
+              an=g('rk_an','[]');ae=g('rk_anEq','{}');print('  ANEIS EQUIPADOS',{c:[ {k:r.get(k) for k in ('c','g','s','v')} for r in an if r.get('i') in (ae.get(c) or [])] for c in ae})
+              ps=g('rk_ps','{}');print('  PASSIVAS PERSONAGEM',ps.get('ch'))
+              print('  PVP time',o.get('rk_pvt'),'sel',o.get('rk_sel'),'pvch',o.get('rk_pvch'))
+          P
