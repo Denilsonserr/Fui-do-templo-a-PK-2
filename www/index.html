@@ -8201,7 +8201,7 @@ let RKFL=null;const rkBL=()=>RKFL!=null?RKFL:rkLvl();
 function rkBossStart(){rkInit();const sel=rkG('sel','goku');if(!SPR_OK)return;fsTry();RKFL=RKYD!=null?YSDIF[RKYD].lv:RKBID==='broly'&&RKSEL!=null&&RKSEL<rkLvl()?RKSEL:null;G.pick=sel;G.opp=RKBID;G.gmode='boss';RKB.diff0=G.diff;{const lv=rkBL();G.diff=lv<2?1:lv<4?2:3}
   const sk=Object.keys(STG).filter(k=>!STG[k].hid);G.nextStg=sk[(Math.random()*sk.length)|0];try{nv('vMChallenge',.05,1)}catch(e){}
   const PM=prepMatch([G.pick,G.opp],G.nextStg);showVS(()=>PM.then(()=>{vsLoadEnd();startMatch()}),PM)}
-function rkApply(){if(G.gmode!=='boss'||!G.p)return;const [p,o]=G.p;p.tdm=(p.tdm||1)*(1+twEqB('dano')/100);p.tsp=(p.tsp||1)*(1+twEqB('vel')/100);p.tdf=(p.tdf||1)/(1+twEqB('vida')/100);{const q=twEqOn();p.tcr=0;for(const k in q)p.tcr+=q[k].crit||0}{const t=twEqB('trf');if(t)p.tsb=1+t/100}{const pon=twPocOn();if(pon){const E=twPoE(pon.r);p.tdm+=E[1]/100;p.tcr=(p.tcr||0)+E[2];p.tsb=(p.tsb||1)+E[0]/100;twLS.s('tw_pocOn',null);setTimeout(()=>{try{txt(p.x,p.y-300,'🧪 POÇÃO: +'+E[1]+'% DANO +'+E[2]+'% CRÍT.','#7dff9a')}catch(e){}},1500)}}const lv=rkBL(),L=RKLVS[lv],B=rkBoss();o.rkL=lv;o.rkB={dm:B.b1.dm*L.d/100,df:B.b1.df*100/L.v,sp:B.b1.sp*L.s/100};o.rkPhB=rkPhB(lv);ysApply(o);o.mhp=o.rkPhB[0]*LAYER;o.hp=o.hpLag=o.mhp;o.tdm=o.rkB.dm;o.tdf=o.rkB.df;o.tsp=o.rkB.sp;o.sb=0;o.rkPh=1;o.rkP={};o.rkSh=0;o.rkHp=o.hp;
+function rkApply(){if(G.gmode!=='boss'||!G.p)return;const [p,o]=G.p;p.tdm=(p.tdm||1)+twEqB('dano')/100;p.tsp=(p.tsp||1)+twEqB('vel')/100;p.tdf=1/(1/(p.tdf||1)+twEqB('vida')/100);{const q=twEqOn();p.tcr=0;for(const k in q)p.tcr+=q[k].crit||0}{const t=twEqB('trf');if(t)p.tsb=1+t/100}{const pon=twPocOn();if(pon){const E=twPoE(pon.r);p.tdm+=E[1]/100;p.tcr=(p.tcr||0)+E[2];p.tsb=(p.tsb||1)+E[0]/100;twLS.s('tw_pocOn',null);setTimeout(()=>{try{txt(p.x,p.y-300,'🧪 POÇÃO: +'+E[1]+'% DANO +'+E[2]+'% CRÍT.','#7dff9a')}catch(e){}},1500)}}const lv=rkBL(),L=RKLVS[lv],B=rkBoss();o.rkL=lv;o.rkB={dm:B.b1.dm*L.d/100,df:B.b1.df*100/L.v,sp:B.b1.sp*L.s/100};o.rkPhB=rkPhB(lv);ysApply(o);o.mhp=o.rkPhB[0]*LAYER;o.hp=o.hpLag=o.mhp;o.tdm=o.rkB.dm;o.tdf=o.rkB.df;o.tsp=o.rkB.sp;o.sb=0;o.rkPh=1;o.rkP={};o.rkSh=0;o.rkHp=o.hp;
   RKB.fs={t:0,t1:0,cmb:0,hp0:p.hp/(p.mhp||MAXHP)}}
 function rkBossGo(){if(G.gmode!=='boss'||!G.p)return;if(G.tlim!==0)G.timer=300;const o=G.p[1],P=o.rkPhB||[7,14];banner(RKYD!=null?'EVENTO · FARM':'MODO BOSS',RKBID==='yuta'?'#c58bff':'#ff3030',100,RKYD!=null?'YUTA '+YSDIF[RKYD].n+' · '+P[0]+' BARRAS':rkBoss().n+' NÍVEL '+((o.rkL||0)+1)+' · '+P[0]+' BARRAS')}
 function rkTick(){const F=RKB.fs;if(!F||!G.p)return;const o=G.p[1];if(!(G.paused||G.trans||G.ws||G.cine||G.comic))F.t++;const c=G.p[0].combo||0;if(c>F.cmb)F.cmb=c;
@@ -8567,7 +8567,7 @@ function rkTorre(){const s=rkG('sel','goku'),own=rkG('own',['goku']);G.pick=CH[s
 const RKTD={dm:[1,1.05,1.1,1.15,1.22,1.4,1.55,1.65,1.75,1.85,2],hp:[1,1,1.1,1.15,1.25,1.4,1.55,1.65,1.75,1.85,2],sp:[1,1,1.02,1.04,1.06,1.1,1.14,1.16,1.18,1.2,1.22],ai:[0,0,0,0,0,1,1,1,1,1,1]};
 function rkTwDiff(o){const i=rkTwLv();o.mhp=Math.max(1,Math.round(o.mhp/LAYER*RKTD.hp[i]))*LAYER;o.hp=o.hpLag=o.mhp;o.tdm*=RKTD.dm[i];o.tsp*=RKTD.sp[i];G.diff=Math.min(3,(G.diff||1)+RKTD.ai[i]);o.rkTd=i}
 const rkTdTxt=i=>i?`Inimigos: dano +${Math.round((RKTD.dm[i]-1)*100)}% · vida +${Math.round((RKTD.hp[i]-1)*100)}% · vel. +${Math.round((RKTD.sp[i]-1)*100)}%${RKTD.ai[i]?' · IA mais esperta':''}`:'Inimigos normais';
-function rkTwBuff(p){const B=RKTB(rkTwLv());p.tdm+=B.dano/100;p.tsp+=B.vel/100;p.tdf=p.tdf/(1+B.def/100);p.tcr=(p.tcr||0)+B.crit}
+function rkTwBuff(p){const B=RKTB(rkTwLv());p.tdm+=B.dano/100;p.tsp+=B.vel/100;p.tdf=1/(1/(p.tdf||1)+B.def/100);p.tcr=(p.tcr||0)+B.crit}
 function rkTwXP(won,quit,andar){const lv=rkLvl(),parts=[];let d=0;
   if(andar>0){const a=Math.round(RKXW[lv]*RKTWX.fl)*andar;parts.push(['🏯 '+andar+' andar'+(andar>1?'es':''),a]);d+=a}
   if(won){const t=Math.round(RKXW[lv]*RKTWX.top);parts.push(['👑 TORRE COMPLETA',t]);d+=t}
@@ -8857,7 +8857,7 @@ function rkExtra(){if(!G.p)return;const torre=typeof TW!=='undefined'&&TW.on&&G.
   // crítico de todos os equipamentos (a Torre antiga só contava o capacete) com o corte de 50% dos itens do Yuta
   const o=twEqOn();const already=torre?((o.cap&&o.cap.crit)||0):Object.values(o).reduce((a,x)=>a+(x.crit||0),0);p.tcr=(p.tcr||0)-already+eqCrit();
   p.tfd=eqFdmg();
-  const B=lvBonus(id);p.tdm=(p.tdm||1)+B.dano/100;p.tcr=(p.tcr||0)+B.crit;p.tsp=(p.tsp||1)+B.vel/100;p.tcd=B.cd;p.tls=B.ls;p.tki=1+B.uv/100;
+  const B=lvBonus(id);p.tdm=(p.tdm||1)+B.dano/100;p.tcr=(p.tcr||0)+B.crit;p.tsp=(p.tsp||1)+B.vel/100;p.tcd=B.cd;p.tls=B.ls;p.tki=(p.tki||1)+B.uv/100;
   if(twTits().some(k=>/^yt\d+$/.test(k)))p.tdm+=.10}
 /* ---------- drops do sistema de nível ---------- */
 const LVELC=[15,12,10,5,3],LVELP=[8,20,40,80,150];
@@ -9115,8 +9115,8 @@ const tbOf=k=>TBUF[k]||(TWTIT[k]&&TWTIT[k].yt?{crit:5}:{});
 const tbTxt=k=>{const B=tbOf(k),o=[];if(B.dano)o.push('+'+B.dano+'% dano');if(B.def)o.push('+'+B.def+'% defesa');if(B.vel)o.push('+'+B.vel+'% velocidade');if(B.crit)o.push('+'+B.crit+'% crítico');if(B.st)o.push('+'+B.st+' sorte');return o.join(' · ')};
 for(const k in TWTIT){const t=tbTxt(k);if(k==='adm')TWTIT[k].d='Administrador do jogo · ✦ +70% em TUDO (dano, defesa, velocidade, crítico, energia, sorte e drops) · 🔥 2x XP, gemas, sorte, drop e anel, sempre';else if(t)TWTIT[k].d=(TWTIT[k].d||'')+' · ✦ Bônus em uso: '+t}
 function tbApply(p){if(!p||p.cpu||p.tbOn)return;p.tbOn=1;const B=tbOf(twTitOn());
-  if(B.dano)p.tdm=(p.tdm||1)*(1+B.dano/100);if(B.vel)p.tsp=(p.tsp||1)*(1+B.vel/100);if(B.def)p.tdf=(p.tdf||1)/(1+B.def/100);if(B.crit)p.tcr=(p.tcr||0)+B.crit;
-  if(twIsAdm()){p.tdm=(p.tdm||1)*1.7;p.tsp=(p.tsp||1)*1.7;p.tdf=(p.tdf||1)/1.7;p.tcr=(p.tcr||0)+70;p.tki=(p.tki||1)*1.7;p.tsb=(p.tsb||1)*1.7}}
+  if(B.dano)p.tdm=(p.tdm||1)+B.dano/100;if(B.vel)p.tsp=(p.tsp||1)+B.vel/100;if(B.def)p.tdf=1/(1/(p.tdf||1)+B.def/100);if(B.crit)p.tcr=(p.tcr||0)+B.crit;
+  if(twIsAdm()){p.tdm=(p.tdm||1)+.7;p.tsp=(p.tsp||1)+.7;p.tdf=1/(1/(p.tdf||1)+.7);p.tcr=(p.tcr||0)+70;p.tki=(p.tki||1)+.7;p.tsb=(p.tsb||1)+.7}}
 twAdmBuff=function(){try{if(!G.p||G.gmode==='boss')return;tbApply(G.p[0])}catch(e){}};
 /* placa nova do título ADM (arte do dono) */
 {const _pt3=pfTitH;pfTitH=function(t,n,adm){if(t==='adm'&&adm)return `<span class="pfAdmI"><i class="gl"></i><img src="${RQA.tit_adm}" alt="ADM"><i class="sw"></i><i class="sp a">✦</i><i class="sp b">✦</i><i class="sp c">✦</i><i class="sp d">✦</i></span>`;return _pt3.apply(this,arguments)}}
@@ -9245,7 +9245,7 @@ function psAct(a,b){const o=psG();
 function psAnim(r,cb){const W=$('psWheel'),T=$('psWT');if(!W){cb();return}let n=0;const tot=26;const step=()=>{const k=n<tot-1?RKPR[n%6]:r;W.style.setProperty('--rc',PSRC[k]);T.textContent=psRN(k);T.style.color=PSRC[k];try{if(n%2===0)rkSfx('whoosh')}catch(e){}n++;if(n<tot)setTimeout(step,40+n*n*.35);else{W.classList.add('done','psr_'+r);setTimeout(cb,900)}};step()}
 /* começo da luta: crítico, defesa, velocidade de ataque, regeneração, aura da passiva secreta */
 {const _ex2=rkExtra;rkExtra=function(){const r=_ex2.apply(this,arguments);try{if(!G.p)return r;const torre=typeof TW!=='undefined'&&TW.on&&G.gmode==='torre',boss=G.gmode==='boss';if(!torre&&!boss)return r;const p=G.p[0],id=p.def.id,S=psSum(id);
-  p.tcd=(p.tcd||0)+S.cd;if(S.def)p.tdf=(p.tdf||1)/(1+S.def/100);p.pspd=S.spd;p.preg=S.reg;p.pregT=G.frame;p.pregTot=0;p._lhp=p.hp;
+  p.tcd=(p.tcd||0)+S.cd;if(S.def)p.tdf=1/(1/(p.tdf||1)+S.def/100);p.pspd=S.spd;p.preg=S.reg;p.pregT=G.frame;p.pregTot=0;p._lhp=p.hp;
   const cp=psG().ch[id],d=psDef(cp);if(d&&d.r==='sec'&&psG().aura[id]!==0){const c=PSTC[d.k];p.def=Object.assign({},p.def,{energy:c,energy2:'#ffffff',fe:c,fe2:'#ffffff',frame:c})}}catch(e){}return r}}
 function psRegTick(){const p=G.p&&G.p[0];if(!p||!p.preg||p.hp<=0||p.ko)return;const m=p.mhp||MAXHP;if(p._lhp!=null&&p.hp<p._lhp-.5)p.pregT=G.frame;p._lhp=p.hp;const dt=G.frame-(p.pregT||0);
   if(dt>=300&&dt%300===0&&p.hp<m&&(p.pregTot||0)<m*.15){const h=Math.min(m*p.preg/100,m*.15-(p.pregTot||0),m-p.hp);p.hp+=h;p.pregTot=(p.pregTot||0)+h;p._lhp=p.hp;try{txt(p.x,p.y-300,'💚 +'+String(p.preg).replace('.',',')+'%','#5dff8a')}catch(e){}}}
@@ -9686,7 +9686,7 @@ let CA={on:0};
 function caStart(){rkInit();if(!SPR_OK)return;const sel=rkG('sel','goku');fsTry();CA={on:1};G.pick=sel;G.opp='goku';G.gmode='caca';RKB.diff0=G.diff;G.diff=3;
   const sk=Object.keys(STG).filter(k=>!STG[k].hid);G.nextStg=STG.flo?'flo':sk[(Math.random()*sk.length)|0];bsPre();
   const PM=prepMatch([G.pick,G.opp],G.nextStg);showVS(()=>PM.then(()=>{vsLoadEnd();startMatch()}),PM)}
-{const _ap=rkApply;rkApply=function(){if(G.gmode==='caca'&&G.p){const [p,o]=G.p;p.tdm=(p.tdm||1)*(1+twEqB('dano')/100);p.tsp=(p.tsp||1)*(1+twEqB('vel')/100);p.tdf=(p.tdf||1)/(1+twEqB('vida')/100);{const q=twEqOn();p.tcr=0;for(const k in q)p.tcr+=q[k].crit||0}caPoc(p);
+{const _ap=rkApply;rkApply=function(){if(G.gmode==='caca'&&G.p){const [p,o]=G.p;p.tdm=(p.tdm||1)+twEqB('dano')/100;p.tsp=(p.tsp||1)+twEqB('vel')/100;p.tdf=1/(1/(p.tdf||1)+twEqB('vida')/100);{const q=twEqOn();p.tcr=0;for(const k in q)p.tcr+=q[k].crit||0}caPoc(p);
   bsMake(o);o.bLv=1;o.bPas=[];caLvApply(o);o.hp=o.hpLag=o.mhp;CA.lv=1;CA.pas=[];G.timer=180;return}return _ap.apply(this,arguments)}}
 {const _rg=rkBossGo;rkBossGo=function(){if(G.gmode==='caca'&&G.p){if(G.tlim!==0)G.timer=180;banner('MODO CAÇA · TESTE','#ff2a3a',100,BSD.name+' · BESTA DE ALMA');return}return _rg.apply(this,arguments)}}
 {const _er=endRound;endRound=function(){if(G.gmode==='caca'){caEnd(G.koWinner);return}return _er.apply(this,arguments)}}
@@ -10728,7 +10728,7 @@ function pvCombo(f,o,_a){const A=f.ai,I=f.inp,dx=o.x-f.x,dist=Math.abs(dx),dy=o.
 /* v336: na PVP a máquina usa o nível mais difícil da Torre (reação, defesa e combos máximos) */
 {const _lv=twLV;twLV=function(){if(G.gmode==='pvp')return TWLV[TWLV.length-1];return _lv.apply(this,arguments)}}
 /* bônus dos dois lados na luta */
-{const _ra=rkApply;rkApply=function(){const r=_ra.apply(this,arguments);if(G.gmode==='pvp'&&G.p&&PV.fight){const [p,o]=G.p,F=PV.fight,ap=(f,D)=>{D=D||{};for(const k in D)if(k!=='_def')f[k]=D[k];if(D._def)f.def=Object.assign({},f.def,D._def);if(f.preg){f.pregT=G.frame;f.pregTot=0;f._lhp=f.hp}};ap(p,F.my[p.def.id]);const ot=F.opp.team.find(x=>x.ch===o.def.id)||F.opp.team[0];ap(o,ot.s);o.tdm=(o.tdm||1)*1.1;o.tdf=(o.tdf||1)/1.1;o.pvP=ot.p;o.pvN=F.opp.nome}return r}}
+{const _ra=rkApply;rkApply=function(){const r=_ra.apply(this,arguments);if(G.gmode==='pvp'&&G.p&&PV.fight){const [p,o]=G.p,F=PV.fight,ap=(f,D)=>{D=D||{};for(const k in D)if(k!=='_def')f[k]=D[k];if(D._def)f.def=Object.assign({},f.def,D._def);if(f.preg){f.pregT=G.frame;f.pregTot=0;f._lhp=f.hp}};ap(p,F.my[p.def.id]);const ot=F.opp.team.find(x=>x.ch===o.def.id)||F.opp.team[0];ap(o,ot.s);o.tdm=(o.tdm||1)+.1;o.tdf=1/(1/(o.tdf||1)+.1);o.pvP=ot.p;o.pvN=F.opp.nome}return r}}
 
 /* ---------- 5) LUTA: começar e terminar ---------- */
 function pvStart(opp,friendly){rkInit();if(!SPR_OK)return;const TM=pvTeam(),sel=TM[0];try{fsTry()}catch(e){}
@@ -11052,7 +11052,7 @@ window.__dbg={mus:()=>[MCUR,MEL.src.split('/').pop()],stg:()=>STAGE.key,prepMatc
 })();
 </script>
 <style>#updB{position:fixed;left:50%;top:max(8px,env(safe-area-inset-top));transform:translateX(-50%);z-index:99999;padding:10px 22px;border-radius:14px;border:2px solid #fff3c0;background:linear-gradient(#ffd84a,#e08a10);color:#3a1d00;font:900 15px system-ui,sans-serif;box-shadow:0 0 18px #ffb21f;cursor:pointer;animation:updP 1s ease-in-out infinite alternate}@keyframes updP{to{transform:translateX(-50%) scale(1.05)}}</style>
-<script>(function(){const V='6684dcc1d027';if(!/^https?:/.test(location.protocol))return;let nv=null;
+<script>(function(){const V='be6a06846150';if(!/^https?:/.test(location.protocol))return;let nv=null;
 function show(){if(document.getElementById('updB'))return;try{if(typeof G!=='undefined'&&G.mode==='fight')return}catch(e){}const b=document.createElement('button');b.id='updB';b.textContent='🔄 ATUALIZAÇÃO NOVA! Toque para atualizar';
   b.onclick=()=>{b.textContent='⏳ Atualizando...';try{acSave(1)}catch(e){}setTimeout(()=>location.reload(),900)};document.body.appendChild(b)}
 async function chk(){if(document.hidden)return;if(nv){show();return}try{const r=await fetch('versao.txt?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const t=(await r.text()).trim();if(/^[0-9a-f]{8,40}$/.test(t)&&t!==V){nv=t;show()}}catch(e){}}

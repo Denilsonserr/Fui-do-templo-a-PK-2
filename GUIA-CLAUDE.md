@@ -1650,3 +1650,9 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 ## v344 — sorte e drop SOMADOS (regra do dono: +100% = dobra a chance)
 - `lvLuck = 1 + sorte%/100 + (evento-1) + (ADM 2x: +1)` e `rkDropF = 1 + drop%/100 + (evento-1) + (ADM: +1)` — tudo somado, nada multiplicado (antes multiplicava tudo e a sorte do ADM chegava a 79x). Ex.: chance 10% com +100% = 20%, +200% = 30%, +300% = 40%. A sorte dos itens/passivas agora conta inteira (antes era a metade, /200). ADM: +70 de sorte do título + 100% do 2x.
 - Medido: comum sem evento 1x; comum no evento 3x = sorte 3x/drop 3x; ADM sem evento = sorte 2,7x/drop 2x; ADM no evento = sorte 4,7x/drop 4x. Raridade continua melhorando pelos giros extras (`lkK`).
+
+## v345 — TODAS as porcentagens somadas (+100% = dobra)
+- Dano (`tdm`), velocidade (`tsp`), energia (`tki`) e transformação (`tsb`): cada fonte soma (`+X/100`), nada multiplica (antes título, ADM e equipamento multiplicavam entre si). Ex.: +100% = 2x, +300% = 4x.
+- Defesa: somada como porcentagem de defesa: `1/tdf = 1 + soma` (código: `p.tdf=1/(1/(p.tdf||1)+X/100)`), +100% de defesa = toma metade do dano.
+- Crítico, dano crítico, sorte e drop já eram somados (sorte/drop: v344). Bônus da sombra no PVP (+10%) também somado. `rkExtra` não sobrescreve mais a energia (`tki`).
+- Regra para código novo: bônus de % sempre SOMA no total do atributo.
