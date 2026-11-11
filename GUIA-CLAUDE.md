@@ -1696,3 +1696,8 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - As sombras no servidor eram de versões antigas (antes do sistema RPG), por isso o dono aparecia com dano x6. Calculado com os itens reais de cada conta (`build_conta.yml` mostra itens/anéis/passivas/estrelas; `tforca_v352.js` refaz o cálculo no jogo): **Denilson ADM: dano x33,6, toma 10% do dano, crítico 192%, dano crítico +101%** (o mais forte); Vini: x21,8 / 11% / 132%; ZEUS: x17,7 / 11% / 104%. O conjunto secreto do Shaka (raridade "sec", fator 120) dá ~19.000 de ataque e ~12.000 de defesa sozinho.
 - `BSST` níveis 9–11: DEF 3.000 / 4.500 / 6.300. Nível 11 (Broly): ADM ~2 min, Vini ~3 min, ZEUS ~7 min. Yuta ~35% mais. Caça inteira: ADM ~3 min, Vini ~4 min.
 - Gancho de teste: `__pvT.dl` = pvDelta (o da recompensa diária virou `__pvT.dc`).
+
+## v353 — sombra do ADM
+- Sombra de quem usa o título ADM no PVP: +50% de dano, +50% de defesa e +30 de crítico em cima de todos os bônus dele, sem o limite de 22 golpes por combo.
+- Todas as sombras são reenviadas 1 vez nesta versão (`rk_pvupv=352`): ao entrar no ranqueado (6 s) ou ao abrir o PVP — as do servidor eram de antes do sistema RPG.
+- Equilíbrio: os jogadores NÃO foram enfraquecidos; só os inimigos ficaram mais fortes. Quem tem mais itens continua o mais forte.

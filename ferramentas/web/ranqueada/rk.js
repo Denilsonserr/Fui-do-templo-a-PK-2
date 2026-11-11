@@ -2719,7 +2719,7 @@ function pvCombo(f,o,_a){const A=f.ai,I=f.inp,dx=o.x-f.x,dist=Math.abs(dx),dy=o.
 /* v336: na PVP a máquina usa o nível mais difícil da Torre (reação, defesa e combos máximos) */
 {const _lv=twLV;twLV=function(){if(G.gmode==='pvp'||G.gmode==='dsf')return TWLV[TWLV.length-1];return _lv.apply(this,arguments)}}
 /* bônus dos dois lados na luta */
-{const _ra=rkApply;rkApply=function(){const r=_ra.apply(this,arguments);if(G.gmode==='pvp'&&G.p&&PV.fight){const [p,o]=G.p,F=PV.fight,ap=(f,D)=>{D=D||{};for(const k in D)if(k!=='_def')f[k]=D[k];if(D._def)f.def=Object.assign({},f.def,D._def);if(f.preg){f.pregT=G.frame;f.pregTot=0;f._lhp=f.hp}};ap(p,F.my[p.def.id]);const ot=F.opp.team.find(x=>x.ch===o.def.id)||F.opp.team[0];ap(o,ot.s);o.tdm=(o.tdm||1)+.1;o.tdf=1/(1/(o.tdf||1)+.1);o.pvP=ot.p;o.pvN=F.opp.nome}return r}}
+{const _ra=rkApply;rkApply=function(){const r=_ra.apply(this,arguments);if(G.gmode==='pvp'&&G.p&&PV.fight){const [p,o]=G.p,F=PV.fight,ap=(f,D)=>{D=D||{};for(const k in D)if(k!=='_def')f[k]=D[k];if(D._def)f.def=Object.assign({},f.def,D._def);if(f.preg){f.pregT=G.frame;f.pregTot=0;f._lhp=f.hp}};ap(p,F.my[p.def.id]);const ot=F.opp.team.find(x=>x.ch===o.def.id)||F.opp.team[0];ap(o,ot.s);o.tdm=(o.tdm||1)+.1;o.tdf=1/(1/(o.tdf||1)+.1);if(F.opp.tit==='adm'){o.tdm*=1.5;o.tdf/=1.5;o.tcr=(o.tcr||0)+30;o.admS=1}o.pvP=ot.p;o.pvN=F.opp.nome}return r}}
 
 /* ---------- 5) LUTA: começar e terminar ---------- */
 function pvStart(opp,friendly){rkInit();if(!SPR_OK)return;const TM=pvTeam(),sel=TM[0];try{fsTry()}catch(e){}
@@ -2762,7 +2762,7 @@ function pvH(){const o=pvG(),T=PVT[o.t],me=pvTeam()[0],off=PV.on===false,acc=pvA
   W.innerHTML=`<div class="rkA rk_pvp" data-w="${PVA.W}" data-h="${PVA.H}" style="background-image:url(${PVA.tela})">${pvH()}<div id="rkToast"></div></div>`;rkFit();
   W.querySelectorAll('[data-a]').forEach(b=>b.onclick=e=>{e.stopPropagation();rkAct(b.dataset.a,b)})}}
 const pvRe=()=>{if(RKV==='pvp'&&showScreen.cur==='ranked'&&!PV.fight)rkView('pvp')};
-async function pvOpen(){PV.opp=null;PV.srch=0;rkView('pvp');const was=PV.on;await pvCfgLoad();if(PV.on!==was)pvRe();if(PV.on){if(pvAcc())pvUp(0);pvLoadAll().then(()=>{const M=$('rkModal');if(!M||!M.innerHTML)pvRe()}).catch(()=>{})}}
+async function pvOpen(){PV.opp=null;PV.srch=0;rkView('pvp');const was=PV.on;await pvCfgLoad();if(PV.on!==was)pvRe();if(PV.on){if(pvAcc())pvUp((rkG('pvupv',0)|0)<352?(rkS('pvupv',352),1):0);pvLoadAll().then(()=>{const M=$('rkModal');if(!M||!M.innerHTML)pvRe()}).catch(()=>{})}}
 async function pvSearch(){if(PV.srch||PV.opp)return;if(!pvAcc())return rkToast('👤 Entre na sua CONTA para jogar o PVP','#ffb060');
   await pvCfgLoad();if(!PV.on){pvRe();return rkToast('⛔ O PVP está desligado pelo ADM','#ff8080')}
   PV.srch=1;pvRe();rkSfx('whoosh');const t0=Date.now();let opp=null,err=0;try{await pvUp(1);opp=await pvFind()}catch(e){err=1}
@@ -3012,4 +3012,9 @@ function dsfEnd(w){G.mode='ranked';$('controls').hidden=true;$('pauseBtn').hidde
 
 /* só para testes de equilíbrio: window.__autoP = jogador controlado pela IA combista */
 {const _hi2=humanInput;humanInput=function(f){_hi2.apply(this,arguments);try{if(window.__autoP&&G.p&&f===G.p[0]){const o=G.p[1];if(!pvCombo(f,o,null)){const c=f.cpu;f.cpu=true;try{aiThink(f,o)}finally{f.cpu=c}}}}catch(e){}}}
+
+/* v353: sombra do ADM sem limite de combo e reação mais rápida */
+{const _pc=pvCombo;pvCombo=function(f,o,_a){if(f.admS&&(f.combo||0)>=22)f.combo=21;return _pc.apply(this,arguments)}}
+/* sombra também atualiza sozinha ao entrar no jogo (1 vez por versão), sem precisar abrir o PVP */
+{const _o=rkOpen;rkOpen=function(){const r=_o.apply(this,arguments);setTimeout(()=>{try{if(pvAcc()&&(rkG('pvupv',0)|0)<352){pvCfgLoad().then(on=>{if(on){rkS('pvupv',352);pvUp(1)}})}}catch(e){}},6000);return r}}
 try{window.__pvT={G:()=>G,ko:(a,d)=>ko(a,d),ev:()=>rkEvX(),m:()=>[rkEvG(),rkEvL(),rkEvD(),rkEvA()],lk:()=>{const c={};for(let i=0;i<4000;i++){const r=twEqRoll().k;c[r]=(c[r]||0)+1}const a=[0,0,0,0,0];for(let i=0;i<4000;i++)a[lvCrRoll()]++;return {luck:+lvLuck().toFixed(2),drop:+rkDropF().toFixed(2),extra:lkK(),equip:c,cristal:a}},dl:id=>pvDelta(id),cs:id=>cstStats(id),lvo:id=>lvOpen(id),bs:lv=>bsSt(lv),dc:f=>dlCheck(f),ds:()=>dsfOpen()}}catch(e){} /* só para os testes */
