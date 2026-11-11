@@ -1630,3 +1630,6 @@ img.anOn{position:relative;z-index:2}
 #hyBox.on{transform:none}#hyBox b{font:900 2.4vh var(--f-ui);color:#ffe08a;text-shadow:0 0 .8vh #ff9a00}#hyBox span{font:800 1.9vh var(--f-ui);color:#fff;text-shadow:0 1px 2px #000}
 .rk_ca .hySl b.caSlT{font-size:1.1em}.rk_ca .hySl:not(.on){background:rgba(20,0,30,.55);border-radius:.6em}
 .hyAn{display:flex;flex-wrap:wrap;gap:.35em;justify-content:center;max-height:30vh;overflow:auto}.hyAn span{display:flex;flex-direction:column;padding:.3em .6em;border-radius:.4em;border:1px solid var(--c);color:var(--c);font:900 .85em var(--f-ui);background:#120a20}.hyAn small{color:#ddd;font-weight:700}
+/* v357: botão abrir baú */
+#hyOpen{position:fixed;left:50%;bottom:calc(env(safe-area-inset-bottom,0px) + 30vh);transform:translateX(-50%);z-index:46;padding:1.4vh 3.4vh;border-radius:1.4vh;border:.3vh solid #ffd84a;background:linear-gradient(#c87a10,#6a3200);color:#fff;font:900 2.8vh var(--f-ui);letter-spacing:.06em;text-shadow:0 .2vh 0 #3a1a00;box-shadow:0 0 2vh rgba(255,190,60,.8);animation:rkEp 1.2s ease-in-out infinite;cursor:pointer;touch-action:manipulation}
+#hyOpen[hidden]{display:none}

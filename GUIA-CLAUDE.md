@@ -1722,3 +1722,9 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 ## v356 — Hidra: sem "vento" empurrando
 - O inimigo invisível do "SIGA EM FRENTE" (`hyIdle`) ficava 40px na frente do jogador e o motor separa os dois lutadores (80px) a cada quadro → o jogador era empurrado para trás sem parar. Agora ele fica no mesmo x em `state='down'` (o motor não separa quem está caído). Testado: parado não anda sozinho; andando para a direita troca de parte.
 - Pendente (o dono vai mandar artes): modo EXPLORAÇÃO na Caça — depois dos mini-bosses, andar pelo mapa sem inimigos procurando baús; mais partes de mapa. NÃO começar antes de ele mandar tudo.
+
+## v357 — baús de RPG + exploração
+- Artes do dono: `ferramentas/bestas/hidra/recebido/baus_fechados.png`, `baus_abertos.png` (fundo escuro com brilho), `mapa_ex1.png`, `mapa_ex2.png`. `baus.py` recorta por célula da grade (fundo = mediana das bordas de cada linha) → `baus/f2_0..6` (7 fechados: madeira, prata, azul, roxo, vermelho, celestial, divino) e `a2_0..6` (abertos); a linha 1 (animação do baú vermelho caindo) ficou recortada mas sem uso. `assets_baus.py` → `RQA.hidra.bc/bo/ex`.
+- Baú no chão: cai, quica com poeira, brilha na cor do tipo; perto dele aparece o botão **🎁 ABRIR BAÚ** (`#hyOpen`, tecla E/Enter) e uma setinha ▼; ao apertar ele treme e abre (troca para a arte aberta) e espalha os prêmios. Tipo do baú pela fase (`hyBT`).
+- EXPLORAÇÃO (`HYEX`): depois da Parte 1 → "Trilha da Floresta" (mapa_ex1, 3 baús tipo 1–3) e depois da Parte 2 → "Árvore Ancestral" (mapa_ex2, 4 baús tipo 2–5). Sem inimigos, baús espalhados pelo mapa; sair pela direita continua. Baús da exploração não dão gemas (`ng`) para manter o limite de 150; o que ficar fechado é entregue ao sair do mapa.
+- Correção: `hyNext` podia rodar 2 vezes durante a troca de mapa (pulava a exploração). Teste `texplora_v357.js`.
