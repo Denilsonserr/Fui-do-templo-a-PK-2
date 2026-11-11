@@ -1780,3 +1780,7 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 
 ## v366 — corte novo do Laços de Flor no lobby
 - O dono disse que o Laços de Flor "não funcionava bem" no lobby. O corte antigo (2:20–3:42) começava no meio de uma frase e tinha uma PAUSA quase muda de ~1 s em 3:05 (parte da música) → parecia que travava. Corte novo `a/1e36ad6d822ca1.mp3`: começa logo depois da pausa (3:05,8) no clímax final e vai até o fim natural da música (58 s). Arquivo antigo `b335bfbd785ba6` apagado.
+
+## v367 — vídeo da invocação do Shaka SEM áudio
+- Pedido do dono: o vídeo do giro do Shaka (`SKINV`, wrapper do `rkPlayVid` na v287) agora toca mudo (`muted`/`defaultMuted`), para a música do evento continuar bonita no gacha. A música do lobby não abaixa nem para durante o vídeo.
+- Gancho `__pvT.skVid()`; o gancho da música do evento virou `__pvT.evm()` (o nome `ev` já era usado). Teste `tskmudo_v367.js`.
