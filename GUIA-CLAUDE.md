@@ -1537,3 +1537,7 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 
 ## 11/11 — importação do Firebase FEITA
 - `importar.yml` rodado às 05:20 (Brasília): 1340 de 1340 documentos importados (131 códigos usados, 347 prêmios resgatados, 432 perfis, 532 nomes, 307 do mercado, 3 recados, 69 salvamentos de 23 contas + rank de cada conta). Servidor ficou com 2162 documentos. O primeiro envio deu 403 porque a Cloudflare bloqueia o User-Agent padrão do Python — o workflow agora manda User-Agent de navegador.
+
+## 11/11 — D1 bateu o limite de LEITURAS do dia
+- status.yml às 05:53: o D1 grátis respondeu "exceeded D1 free tier daily row read limit" (5 milhões de linhas lidas/dia; zera à meia-noite UTC = 21:00 de Brasília). Site e APK abrem normal; contas, ranking, chat, mercado e códigos ficam sem servidor até zerar.
+- worker: (1) a mensagem de erro 429 agora mostra o motivo real; (2) índice novo `kv_idk(id,k)`; (3) CACHE de 20 s das consultas (chat 8 s) no próprio worker, igual para todos os jogadores — contas/nome/uid/cupom nunca usam cache; criar documento de chat/mercado/recado/título limpa o cache daquele campo; (4) contador de linhas lidas por tipo de consulta em `/fs-admin/reads` (status.yml mostra). Depois que zerar, rodar status.yml para ver o que mais gasta. Se não bastar: plano pago do Workers (US$5/mês) dá 25 bilhões de leituras — decisão do dono.

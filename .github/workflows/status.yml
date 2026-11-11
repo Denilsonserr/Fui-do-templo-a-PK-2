@@ -15,3 +15,4 @@ jobs:
           echo '== servidor novo (D1)'; S='https://fui-do-templo-a-pk-2.denilsinend.workers.dev'; curl -sS "$S/fs-admin/count"; echo
           curl -sS -w '\nHTTP %{http_code}\n' -X POST "$S/fs/v1/projects/furia-do-templo/databases/(default)/documents:runQuery" -H 'Content-Type: application/json' -d '{"structuredQuery":{"from":[{"collectionId":"torre"}],"where":{"fieldFilter":{"field":{"fieldPath":"on"},"op":"GREATER_THAN","value":{"stringValue":""}}},"limit":2}}' | tail -c 400
           echo '== jogadores (servidor novo)'; curl -sS "$S/fs-admin/stats"; echo
+          echo '== linhas lidas desde que o servidor ligou (por tipo de consulta)'; curl -sS "$S/fs-admin/reads"; echo

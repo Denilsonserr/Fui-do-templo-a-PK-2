@@ -14,7 +14,13 @@ async function init(db){if(READY)return;await db.batch([
   db.prepare('CREATE TABLE IF NOT EXISTS kv(id TEXT NOT NULL, k TEXT NOT NULL, s TEXT, n REAL)'),
   db.prepare('CREATE INDEX IF NOT EXISTS kv_s ON kv(k,s,id)'),
   db.prepare('CREATE INDEX IF NOT EXISTS kv_n ON kv(k,n)'),
-  db.prepare('CREATE INDEX IF NOT EXISTS kv_id ON kv(id)')]);READY=true}
+  db.prepare('CREATE INDEX IF NOT EXISTS kv_id ON kv(id)'),
+  db.prepare('CREATE INDEX IF NOT EXISTS kv_idk ON kv(id,k)')]);READY=true}
+/* 11/11: o D1 grátis tem 5 milhões de LINHAS LIDAS por dia e acabou. Cache curto das consultas (igual para todos os jogadores)
+   + contador de linhas lidas por tipo de consulta (/fs-admin/reads) para achar o que gasta mais. */
+const QC=new Map(),RD={t0:Date.now(),tot:0,by:{}};
+const qKey=q=>{const ff=q&&q.where&&q.where.fieldFilter;return ff?ff.field.fieldPath:'ob:'+(((q&&q.orderBy)||[])[0]||{field:{}}).field.fieldPath}
+const qTTL=k=>/^(sv|nome|nomeL|uid|cupom|rec)$/.test(k)?0:k==='ch'?8000:20000;
 const scal=v=>{if(!v||typeof v!=='object')return null;if('stringValue' in v){const s=String(v.stringValue);return s.length<=200?{s}:null}
   if('integerValue' in v)return {n:Number(v.integerValue)};if('doubleValue' in v)return {n:Number(v.doubleValue)};if('booleanValue' in v)return {n:v.booleanValue?1:0};return null};
 const rid=()=>{const a='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789',b=crypto.getRandomValues(new Uint8Array(20));let s='';for(const x of b)s+=a[x%62];return s};
@@ -32,11 +38,14 @@ async function runQuery(db,base,q){q=q||{};const lim=Math.max(1,Math.min(3000,(q
   else if(obf&&obf!=='__name__'){sql=`SELECT d.id,d.ct,d.f FROM kv o JOIN docs d ON d.id=o.id WHERE o.k=? AND o.n IS NOT NULL ORDER BY o.n ${dir}`;args.push(obf)}
   else sql=`SELECT id,ct,f FROM docs ORDER BY id ${dir}`;
   sql+=' LIMIT ?';args.push(lim);
-  const R=(await db.prepare(sql).bind(...args).all()).results||[];
-  return J(R.length?R.map(r=>docOut(base,r)):[{readTime:new Date().toISOString()}])}
+  const kk=qKey(q),ttl=qTTL(kk),ck=JSON.stringify(q);if(ttl){const c=QC.get(ck);if(c&&Date.now()-c.t<ttl)return J(c.v)}
+  const res=await db.prepare(sql).bind(...args).all(),R=res.results||[];const rr=(res.meta&&res.meta.rows_read)|0;RD.tot+=rr;const b=RD.by[kk]||(RD.by[kk]={n:0,rows:0});b.n++;b.rows+=rr;
+  const out=R.length?R.map(r=>docOut(base,r)):[{readTime:new Date().toISOString()}];if(ttl){if(QC.size>300)QC.clear();QC.set(ck,{t:Date.now(),v:out})}
+  return J(out)}
 async function create(db,base,url,body){const fields=body&&body.fields;if(!fields||typeof fields!=='object')return ERR(400,'INVALID_ARGUMENT','fields');
   if(Object.keys(fields).length>80)return ERR(400,'INVALID_ARGUMENT','muitos campos');
   let id=url.searchParams.get('documentId');if(id!=null&&!/^[\w.\-]{1,200}$/.test(id))return ERR(400,'INVALID_ARGUMENT','id');if(!id)id=rid();
+  for(const k in fields){if(/^(ch|mk|mkp|mks|mkv|mkx|avs|claim|gh|cev)$/.test(k))for(const c of QC.keys())if(c.includes('"fieldPath":"'+k+'"'))QC.delete(c)}
   const ct=Date.now();try{await db.batch(insStmts(db,id,ct,fields,false))}catch(e){if(/UNIQUE|constraint/i.test(String(e&&e.message)))return ERR(409,'ALREADY_EXISTS','Document already exists: '+id);throw e}
   return J({name:base+'/torre/'+id,fields,createTime:new Date(ct).toISOString(),updateTime:new Date(ct).toISOString()})}
 async function sha(s){return [...new Uint8Array(await crypto.subtle.digest('SHA-256',new TextEncoder().encode(s)))].map(x=>x.toString(16).padStart(2,'0')).join('')}
@@ -54,6 +63,7 @@ export default {async fetch(req,env){const url=new URL(req.url),p=url.pathname;
       return J({jogadores:await q("SELECT COUNT(DISTINCT s) n FROM kv WHERE k='uid'"),contas:await q("SELECT COUNT(DISTINCT s) n FROM kv WHERE k='sv'"),
         online:await q("SELECT COUNT(DISTINCT u.s) n FROM kv o JOIN kv u ON u.id=o.id AND u.k='uid' WHERE o.k='on' AND o.s IN (?,?)",'p'+b,'p'+(b-1)),
         hoje:await q("SELECT COUNT(DISTINCT u.s) n FROM kv u JOIN docs d ON d.id=u.id WHERE u.k='uid' AND d.ct>?",Date.now()-864e5),docs:await q('SELECT COUNT(*) n FROM docs')})}
+    if(p==='/fs-admin/reads')return J(RD);
     if(p==='/fs-admin/count'){const c=await db.prepare('SELECT COUNT(*) n FROM docs').first();return J(c)}
     const m=p.match(/^\/fs\/v1\/(projects\/[^/]+\/databases\/\(default\)\/documents)(.*)$/)||p.match(/^\/fs\/v1\/(projects\/[^/]+\/databases\/%28default%29\/documents)(.*)$/);if(!m)return ERR(404,'NOT_FOUND','rota');
     const base=decodeURIComponent(m[1]),rest=m[2];
