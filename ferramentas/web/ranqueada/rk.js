@@ -2321,7 +2321,7 @@ TWCUP['yuirz0']={nm:'ZORO E SHAKA',it:[],chrs:['zoro','shaka']};
 /* ================= v326: MENU NOVO "MODOS DE JOGO" (vídeo do dono no fundo: cabelo mexendo, dragão) =================
    Arte 1408x640 com os botões desenhados; aqui só ficam as áreas de toque, os textos (nome, rank, moedas) e os brilhos.
    Foto (em cima, moldura dourada) = PERFIL · barra roxa = nome + rank · 🎵 música · moedas: ticket, diamante, moeda da torre, vermelha · ⚙️ = código/configuração/menu principal */
-const MN2={wm:'a/a3fc8111f7ccad.webm',v:'a/62690f694178ea.mp4',p:'a/f2bd77b255d5ce.webp',W:1408,H:640};RKD.menu=[MN2.W,MN2.H];
+const MN2={wm:'a/94ef9d958f9ca1.webm',v:'a/5949fec92d3bbf.mp4',p:'a/58584baf8fe032.webp',W:1408,H:640} /* v333: vídeo novo com o botão PVP Ranqueada */;RKD.menu=[MN2.W,MN2.H];
 const mnB=(x0,y0,x1,y1)=>`left:${x0/MN2.W*100}%;top:${y0/MN2.H*100}%;width:${(x1-x0)/MN2.W*100}%;height:${(y1-y0)/MN2.H*100}%`;
 let MN2V=null;
 function mn2Vid(){if(!MN2V){const v=document.createElement('video');v.className='mn2v';v.src=(v.canPlayType&&v.canPlayType('video/webm; codecs="vp9"'))?MN2.wm:MN2.v;v.onerror=()=>{if(v.src.indexOf(MN2.v)<0){v.src=MN2.v;v.play().catch(()=>{})}};v.poster=MN2.p;v.muted=true;v.defaultMuted=true;v.loop=true;v.autoplay=true;v.playsInline=true;v.setAttribute('playsinline','');v.setAttribute('webkit-playsinline','');v.setAttribute('muted','');v.preload='auto';MN2V=v}return MN2V}
@@ -2331,15 +2331,15 @@ rkMenuH=function(){const rp=rkG('rp',0),ri=rkRank(rp),R=RKR[ri],nm=(twLS.g('tw_n
   const Q=(a,b,d,dot)=>`<button class="hs mn2Q" data-a="${a}" style="${mnB(...b)}"><span class="sw" style="animation-delay:${d}s"></span>${dot?'<i class="dot"></i>':''}</button>`;
   const Rr=(a,b,d,dot)=>`<button class="hs mn2R" data-a="${a}" style="${mnB(...b)}"><span class="gl" style="animation-delay:${d}s"></span>${dot?'<i class="dot"></i>':''}</button>`;
   const C=(b,v)=>`<div class="mn2C" style="${mnB(...b)}">${rkFmtN(v)}</div>`;
-  return `<button class="hs mn2Av" data-a="perfil" style="${mnB(37,2,101,66)}">${ft?`<img src="${esc(ft)}" alt="">`:''}</button>
-  <button class="hs mn2Nm" data-a="perfil" style="${mnB(118,8,340,58)}"><b>${esc(nm)}</b><small>${rkEmb(ri,'sm')}<span style="color:${R.c}">${R.n}</span> · ${rkFmtN(rp)} XP</small></button>
-  <button class="hs" data-a="menuBack" style="${mnB(22,84,325,136)}"></button>
-  ${L('boss','r',[12,158,330,233],0)}${L('torre','g',[12,240,330,314],.35)}${L('caca','p',[12,322,330,396],.7)}${L('gacha','b',[12,404,330,478],1.05)}
-  <button class="hs mn2Mu" data-a="music" style="${mnB(708,0,762,46)}"></button>
-  ${C([815,4,880,40],rkG('tic',0))}${C([940,4,1036,40],rkG('gem',0))}${C([1098,4,1208,40],twLS.g('tw_moedas',0))}${C([1268,4,1345,40],rkG('red',0))}
-  <button class="hs" data-a="shop" style="${mnB(897,4,1043,40)}"></button><button class="hs" data-a="mn2Cfg" style="${mnB(1356,0,1408,46)}"></button>
-  ${Rr('psMenu',[1262,56,1392,176],0)}${Rr('mnMenu',[1262,180,1392,282],.6,mnBadge())}${Rr('evMenu',[1262,285,1392,385],1.2,evAny())}${Rr('bpMenu',[1262,388,1392,500],1.8,bpPend())}
-  ${Q('ranking',[298,490,443,588],0)}${Q('rewards',[470,490,615,588],.3,rkRwPend())}${Q('ach',[642,490,786,588],.6,rkAchPend())}${Q('lib',[811,490,956,588],.9)}${Q('conta',[980,490,1124,588],1.2)}`};
+  return `<button class="hs mn2Av" data-a="perfil" style="${mnB(47,8,109,70)}">${ft?`<img src="${esc(ft)}" alt="">`:''}</button>
+  <button class="hs mn2Nm" data-a="perfil" style="${mnB(140,12,340,62)}"><b>${esc(nm)}</b><small>${rkEmb(ri,'sm')}<span style="color:${R.c}">${R.n}</span> · ${rkFmtN(rp)} XP</small></button>
+  <button class="hs" data-a="menuBack" style="${mnB(30,86,330,138)}"></button>
+  ${L('boss','r',[20,160,328,224],0)}${L('torre','g',[20,228,328,292],.35)}${L('caca','p',[20,295,328,359],.7)}${L('gacha','b',[20,362,328,426],1.05)}${L('pvp','p',[20,430,328,494],1.4)}
+  <button class="hs mn2Mu" data-a="music" style="${mnB(738,0,792,48)}"></button>
+  ${C([845,6,925,42],rkG('tic',0))}${C([988,6,1070,42],rkG('gem',0))}${C([1132,6,1212,42],twLS.g('tw_moedas',0))}${C([1270,6,1342,42],rkG('red',0))}
+  <button class="hs" data-a="shop" style="${mnB(940,4,1075,44)}"></button><button class="hs" data-a="mn2Cfg" style="${mnB(1354,0,1408,48)}"></button>
+  ${Rr('psMenu',[1242,68,1394,172],0)}${Rr('mnMenu',[1246,176,1390,274],.6,mnBadge())}${Rr('evMenu',[1248,278,1390,372],1.2,evAny())}${Rr('bpMenu',[1248,376,1390,482],1.8,bpPend())}
+  ${Q('ranking',[358,474,500,572],0)}${Q('rewards',[516,474,658,572],.3,rkRwPend())}${Q('ach',[677,474,818,572],.6,rkAchPend())}${Q('lib',[836,474,976,572],.9)}${Q('conta',[994,474,1132,572],1.2)}`};
 function mn2Cfg(){rkModal(`<div class="twM mn2CM"><h3>⚙️ OPÇÕES</h3><div class="mn2CB"><button class="btn main" id="mnC1">🎟️ CÓDIGO</button><button class="btn" id="mnC2">⚙️ CONFIGURAÇÃO</button><button class="btn" id="mnC3">🏠 MENU PRINCIPAL</button></div><div class="row"><button class="btn" id="rkMX">VOLTAR</button></div></div>`);
   $('rkMX').onclick=()=>rkModal(null);$('mnC1').onclick=()=>rkCode();$('mnC2').onclick=()=>{rkModal(null);audioInit();showScreen('config')};$('mnC3').onclick=()=>{rkModal(null);showScreen('title')}}
 {const _a=rkAct;rkAct=function(a,b){if(a==='mn2Cfg'){rkSfx('whoosh');return mn2Cfg()}return _a.apply(this,arguments)}}
@@ -2567,3 +2567,202 @@ TWCUP['1laos4r']={nm:'TICKETS DA SORTE',acc:1,rtic:[10,40]};
   if(C&&C.so){const an=String(localStorage.getItem('ac_n')||'').toLowerCase().trim();if(!an||!localStorage.getItem('ac_k')||twHash(an)!==C.so){E.className='twH err';E.textContent='❌ Esse código é de outro jogador.';try{twSfx('clang')}catch(e){}return true}}
   return _cp6.apply(this,arguments)}}
 TWCUP['1n4nhbj']={nm:'GAROU',it:[],chr:'garou',acc:1,so:'ymstjo'};
+
+/* ================= v333: PVP RANQUEADA "SOMBRA" =================
+   Cada jogador tem uma SOMBRA: o jogo grava o jeito que ele luta (em todas as lutas: golpes por situação, combos, defesa, tempo de reação)
+   e os bônus reais do personagem (nível, equipamentos, anéis, passivas). No PVP você luta contra a sombra de outro jogador (IA que copia o estilo dele).
+   Ranks por ESTRELA: Madeira 1-3 … Lendário 1-3 → Divino. Ganhou = +1 estrela (3 vitórias seguidas = +1 extra), perdeu = -1 (Madeira não perde).
+   ADM liga/desliga o PVP (documento pvc_<ts> no servidor; desligado = ninguém busca nem envia nada).
+   Servidor: sombra = documento pvs_<conta>_<ts> (no máx. 1 a cada 4 min) · aviso para o dono da sombra = pvr_<ts> · tudo da temporada do mês. */
+const PVA={tela:'a/bbc5a551ec39e7.webp',e:{madeira:'a/0bd6de170a631d.webp',bronze:'a/22b6302ff619a9.webp',prata:'a/30f6b827ac50a2.webp',ouro:'a/045b38798470bc.webp',platina:'a/8995ae8c27d64f.webp',diamante:'a/5e424ef5f21f9f.webp',mestre:'a/5b3c28746a56f1.webp',lendario:'a/f8f1de7b753d92.webp',divino:'a/0e7f89a842c6cb.webp'},W:1849,H:851};
+/* [nome, cor, estrelas para subir cada divisão, emblema, prêmio ao chegar a 1ª vez (💎, 🎫)] */
+const PVT=[['MADEIRA','#c48a52',2,'madeira',0,0],['BRONZE','#e09a5c',3,'bronze',300,0],['PRATA','#dfe6ef',4,'prata',600,2],['OURO','#ffd34a',5,'ouro',1000,3],['PLATINA','#7fd0ff',7,'platina',1500,5],['DIAMANTE','#c79bff',10,'diamante',2500,8],['MESTRE','#ff9cf2',15,'mestre',4000,10],['LENDÁRIO','#ff5a5a',25,'lendario',6000,15],['DIVINO','#fff0b0',0,'divino',10000,25]];
+const PVDIV=8,pvB=arBx(PVA.W,PVA.H),PVW=8,PVFREE=['idle','walk','crouch','cblock','jump','charge'];
+const PV={on:null,onT:0,opp:null,srch:0,fight:null,last:''};
+const pvG=()=>Object.assign({t:0,d:0,s:0,w:0,l:0,sq:0,bt:0,bd:0,rw:[],h:[]},rkG('pvp',{})),pvSv=o=>{rkS('pvp',o);try{acSave()}catch(e){}};
+const pvNeed=t=>PVT[t][2];
+const pvRkName=(t,d)=>PVT[t][0]+(t<PVDIV?' '+(d+1):'');
+/* pontuação contínua para o ranking: estrelas somadas de todas as divisões abaixo + as atuais */
+const pvScore=o=>{let n=0;for(let t=0;t<o.t;t++)n+=pvNeed(t)*3;return n+o.d*pvNeed(o.t)+o.s};
+const pvMon=()=>{const d=new Date(Date.now()-3*3600e3);return 'm'+d.getUTCFullYear()+String(d.getUTCMonth()+1).padStart(2,'0')};
+const pvAcc=()=>{const n=String(localStorage.getItem('ac_n')||'').toLowerCase().trim();return n&&localStorage.getItem('ac_k')?twHash(n):''};
+const pvEsc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const pvChar=()=>{const own=rkG('own',['goku']),c=rkG('pvch','')||rkG('sel','goku');return own.includes(c)&&CH[c]?c:(own.find(i=>CH[i])||'goku')};
+const pvPortrait=id=>(IMG[id]&&IMG[id].src)||fullSrc(id);
+
+/* ---------- 1) GRAVAR O ESTILO (todas as lutas do jogador, menos treino) ---------- */
+function pvCtx(f,o){const dist=Math.abs(o.x-f.x),d=dist<130?0:dist<220?1:dist<360?2:3;
+  const os=o.ko||!['idle','walk','crouch','cblock','jump','attack','fly','charge','super','block'].includes(o.state)?'v':(o.state==='attack'||o.state==='super')?'a':!o.grounded?'j':'n';
+  let r='-';try{r=srReady(f)?'S':(f.ki>=100&&(f.sb||0)>=1)?'P':'-'}catch(e){}return d+os+(f.grounded?0:1)+r}
+const pvThr=(f,o)=>{const dist=Math.abs(o.x-f.x);return (o.state==='attack'&&dist<230&&o.mf<4)||(o.state==='super'&&o.st>30&&o.st<56)||(G.projs||[]).some(p=>p.o===o&&Math.sign(p.vx)===Math.sign(f.x-p.x)&&Math.abs(p.x-f.x)<320)};
+let PVR=null,PVF=null;
+const pvProfAll=()=>{if(!PVF)PVF=rkG('pvf',{});return PVF};
+const pvProf=id=>{const A=pvProfAll();return A[id]||(A[id]={c:{},ch:{},th:{},rd:[0,0],n:0})};
+function pvRec(f){if(!G.p||f!==G.p[0]||G.phase!=='fight'||G.gmode==='treino'||G.gmode==='pvp'&&!PV.fight||G.paused||G.sr||G.ws||G.trans)return;const o=G.p[1];if(!o||f.cpu)return;
+  let R=PVR;if(!R||R.g!==G.p){if(R)pvRecEnd();R=PVR={g:G.p,id:f.def.id,P:pvProf(f.def.id),pv:{},w:null,wf:0,ch:'',chL:-99,th:0,thT:0,thR:null}}
+  const I=f.inp,Pv=R.pv,dx=o.x-f.x,tw=dx>0?'right':'left',aw=dx>0?'left':'right',pr=k=>I[k]&&!Pv[k],P=R.P;
+  if(!R.w)R.w={c:pvCtx(f,o),free:PVFREE.includes(f.state),a:null,pri:0,ki:0,tw:0,aw:0,dn:0};const w=R.w,set=(p,a)=>{if(p>=w.pri){w.pri=p;w.a=a}};
+  if(pr('sr'))set(9,'SR');if(pr('sp'))set(8,'SP');if(pr('tr'))set(7,'TR');
+  const pp=pr('punch'),pk=pr('kick');if(pp||pk){set(6,pp?'P':'K');const k=pp?'P':'K';if(G.frame-R.chL<45&&R.ch.length<8)R.ch+=k;else{pvChainSave(R);R.ch=k}R.chL=G.frame}
+  if(pr('up'))set(5,'J');if(I.ki)w.ki++;if(I[tw])w.tw++;if(I[aw]||I.bl)w.aw++;if(I.down)w.dn++;
+  if(R.ch&&G.frame-R.chL>=45){pvChainSave(R);R.ch=''}
+  /* reação quando o rival ataca: defendeu (B), pulou (J), contra-atacou (C), avançou (F) ou nada (N) + tempo */
+  const thr=pvThr(f,o);if(thr&&!R.th){R.th=1;R.thT=G.frame;R.thR=null}
+  if(R.th&&!R.thR){const dt=G.frame-R.thT;let r=null;if(I[aw]||I.bl)r='B';else if(pr('up'))r='J';else if(pp||pk)r='C';else if(I[tw]&&dt>2)r='F';
+    if(r||dt>=30){R.thR=r||'N';P.th[R.thR]=(P.th[R.thR]||0)+1;if(r){P.rd[0]+=dt;P.rd[1]++}}}
+  if(R.th&&!thr&&R.thR)R.th=0;
+  for(const k in I)Pv[k]=I[k];
+  if(++R.wf>=PVW){R.wf=0;R.w=null;if(!w.free)return;
+    let a=w.a||(w.ki>=PVW*.75?'KC':w.ki>0?'KI':w.aw>=4?(R.th?'BL':'BK'):w.tw>=4?'FW':w.dn>=4?'DN':'ID');
+    const T=P.c[w.c]||(P.c[w.c]={});T[a]=(T[a]||0)+1;P.n++;let s=0;for(const k in T)s+=T[k];if(s>240)for(const k in T)T[k]=Math.round(T[k]/2)}}
+function pvChainSave(R){if(!R.ch)return;const C=R.P.ch;C[R.ch]=(C[R.ch]||0)+1;const ks=Object.keys(C);if(ks.length>24){ks.sort((a,b)=>C[a]-C[b]);delete C[ks[0]]}let s=0;for(const k in C)s+=C[k];if(s>300)for(const k in C){C[k]=Math.floor(C[k]/2);if(!C[k])delete C[k]}}
+function pvRecEnd(){const R=PVR;if(!R)return;pvChainSave(R);R.ch='';if(R.P.n>4000)R.P.n=4000;rkS('pvf',pvProfAll());PVR=null}
+{const _hi=humanInput;humanInput=function(f){_hi.apply(this,arguments);try{pvRec(f)}catch(e){}}}
+{const _er=endRound;endRound=function(){try{pvRecEnd()}catch(e){}if(G.gmode==='pvp'){pvEnd(G.koWinner);return}return _er.apply(this,arguments)}}
+/* perfil enviado: o do personagem (se ainda tem pouco, junta com o estilo dos outros personagens) */
+function pvProfOut(id){const A=pvProfAll(),P=A[id]||{c:{},ch:{},th:{},rd:[0,0],n:0};if(P.n>=300)return P;
+  const M={c:{},ch:{},th:{},rd:[0,0],n:0};for(const k in A){const Q=A[k],wq=k===id?3:1;for(const c in Q.c){const T=M.c[c]||(M.c[c]={});for(const a in Q.c[c])T[a]=(T[a]||0)+Q.c[c][a]*wq}
+    for(const c in Q.ch)M.ch[c]=(M.ch[c]||0)+Q.ch[c]*wq;for(const t in Q.th)M.th[t]=(M.th[t]||0)+Q.th[t]*wq;M.rd[0]+=Q.rd[0];M.rd[1]+=Q.rd[1];M.n+=Q.n}return M}
+
+/* ---------- 2) BÔNUS REAIS do personagem (os mesmos do Modo Boss: nível, equipamentos, anéis, passivas, títulos) ---------- */
+function pvDelta(id){const keep={p:G.p,gm:G.gmode,poc:localStorage.getItem('tw_pocOn'),fs:RKB.fs};const out={};
+  try{localStorage.removeItem('tw_pocOn');const p=mkFighter(id,WW/2-210,1,false),o=mkFighter(id==='goku'?'vegeta':'goku',WW/2+210,-1,true),b={};
+    for(const k in p){const v=p[k];if(typeof v==='number'||typeof v==='boolean')b[k]=v}G.p=[p,o];G.gmode='boss';rkApply();
+    for(const k in p){const v=p[k];if((typeof v==='number'&&isFinite(v)||typeof v==='boolean')&&v!==b[k]&&!/^(x|y|vx|vy|st|mf|facing)$/.test(k))out[k]=typeof v==='number'?Math.round(v*1e4)/1e4:v}}catch(e){}
+  finally{G.p=keep.p;G.gmode=keep.gm;if(keep.poc!=null)localStorage.setItem('tw_pocOn',keep.poc);RKB.fs=keep.fs}return out}
+const pvPow=d=>Math.round(100*((d.tdm||1)*(d.tsp||1)/(d.tdf||1))*(1+(d.tcr||0)/100));
+
+/* ---------- 3) SERVIDOR (liga/desliga, enviar sombra, buscar, avisos, ranking) ---------- */
+const pvIV=v=>({integerValue:String(Math.max(0,Math.round(v||0)))});
+const pvPost=(id,f)=>twFetchT(TWURL+'/torre?documentId='+id+'&key='+TWFB.apiKey,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({fields:f})});
+async function pvQ(field,val,lim,ob,dir){const body={structuredQuery:{from:[{collectionId:'torre'}],where:{fieldFilter:{field:{fieldPath:field},op:'EQUAL',value:{stringValue:val}}},orderBy:[{field:{fieldPath:ob||'__name__'},direction:dir||'DESCENDING'}],limit:lim||40}};
+  const r=await twFetchT(TWURL+':runQuery?key='+TWFB.apiKey,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});if(!r.ok)throw new Error('http '+r.status);const j=await r.json(),o=[];
+  for(const x of (Array.isArray(j)?j:[])){const F=x&&x.document&&x.document.fields;if(!F)continue;const e={_id:x.document.name.split('/').pop()};for(const k in F){const v=F[k];e[k]=v.stringValue!=null?v.stringValue:v.integerValue!=null?+v.integerValue:v.doubleValue}o.push(e)}return o}
+async function pvCfgLoad(force){if(!force&&PV.on!=null&&Date.now()-PV.onT<120e3)return PV.on;try{const L=await pvQ('pvc','1',1);PV.on=L.length?!!L[0].on:true;PV.onT=Date.now()}catch(e){if(PV.on==null)PV.on=true}return PV.on}
+async function pvCfgSet(on){const ts=Date.now();const r=await pvPost('pvc_'+ts.toString(36).padStart(9,'0'),{nome:{stringValue:twLS.g('tw_nome','')||'ADM'},andar:pvIV(0),tempo:pvIV(0),pvc:{stringValue:'1'},on:pvIV(on?1:0),ts:pvIV(ts)});if(!r.ok)throw new Error('net');PV.on=on;PV.onT=Date.now()}
+async function pvUp(force){const acc=pvAcc();if(!acc||PV.on===false)return false;const o=pvG(),id=pvChar(),nm=twLS.g('tw_nome','')||'Jogador';
+  const last=rkG('pvup',0);if(!force&&Date.now()-last<240e3)return true;
+  const d={p:pvProfOut(id),s:pvDelta(id),ch:id,t:o.t,dv:o.d,st:o.s,w:o.w,l:o.l,lv:(()=>{try{return lvOf(id).lv}catch(e){return 1}})()};
+  const ts=Date.now(),f={nome:{stringValue:nm.slice(0,16)},andar:pvIV(0),tempo:pvIV(0),pvk:{stringValue:pvMon()},pvg:{stringValue:'g'+o.t+'_'+pvMon()},pvs:pvIV(pvScore(o)),pvn:{stringValue:String(nm).toLowerCase().trim()},pva:{stringValue:acc},ch:{stringValue:id},tit:{stringValue:(()=>{try{return twTitOn()}catch(e){return ''}})()},d:{stringValue:JSON.stringify(d)},v:pvIV(333)};
+  try{const r=await pvPost('pvs_'+acc+'_'+ts.toString(36).padStart(9,'0'),f);if(r.ok){rkS('pvup',ts);return true}}catch(e){}return false}
+const pvParse=e=>{try{const d=JSON.parse(e.d||'{}');if(!d.p||!d.ch||!CH[d.ch])return null;return {nome:e.nome,acc:e.pva,ch:d.ch,t:d.t|0,dv:d.dv|0,st:d.st|0,w:d.w|0,l:d.l|0,lv:d.lv|0,tit:e.tit||'',p:d.p,s:d.s||{}}}catch(x){return null}};
+/* busca: mesmo rank → ranks vizinhos → qualquer um da temporada; nunca você mesmo; evita repetir o último */
+async function pvFind(){const o=pvG(),me=pvAcc(),seen=new Set(),pool=[];const add=L=>{for(const e of L){if(!e.pva||e.pva===me||seen.has(e.pva))continue;seen.add(e.pva);const x=pvParse(e);if(x)pool.push(x)}};
+  for(const t of [o.t,o.t-1,o.t+1,o.t-2,o.t+2]){if(t<0||t>PVDIV)continue;add(await pvQ('pvg','g'+t+'_'+pvMon(),40));if(pool.length>=4)break}
+  if(pool.length<2)add(await pvQ('pvk',pvMon(),60));if(!pool.length)return null;
+  const S=pvScore(o);pool.sort((a,b)=>Math.abs(pvScore({t:a.t,d:a.dv,s:a.st})-S)-Math.abs(pvScore({t:b.t,d:b.dv,s:b.st})-S));
+  const top=pool.slice(0,Math.min(5,pool.length)).filter(x=>x.acc!==PV.last);const L=top.length?top:pool;return L[(Math.random()*L.length)|0]}
+async function pvFindName(n){const L=await pvQ('pvn',String(n).toLowerCase().trim(),5);for(const e of L){const x=pvParse(e);if(x)return x}return null}
+function pvNotify(opp,won){if(!opp||!opp.acc)return;const ts=Date.now(),nm=twLS.g('tw_nome','')||'Jogador';pvPost('pvr_'+ts.toString(36).padStart(9,'0')+'_'+Math.random().toString(36).slice(2,6),{nome:{stringValue:nm.slice(0,16)},andar:pvIV(0),tempo:pvIV(0),pvo:{stringValue:opp.acc},ch:{stringValue:G.pick||''},won:pvIV(won?1:0),ts:pvIV(ts)}).catch(()=>{})}
+
+/* ---------- 4) A SOMBRA LUTANDO (IA que copia o estilo gravado) ---------- */
+const pvPick=T=>{let s=0;for(const k in T)s+=T[k];if(s<=0)return null;let r=Math.random()*s;for(const k in T){if((r-=T[k])<0)return k}return null};
+function pvPrep(P){if(P._ok)return P;const c2={},c1={};for(const c in P.c){const k2=c.slice(0,2),k1=c[0]+'.'+c.slice(2);for(const [K,M] of [[k2,c2],[k1,c1]]){const T=M[K]||(M[K]={});for(const a in P.c[c])T[a]=(T[a]||0)+P.c[c][a]}}
+  P.c2=c2;P.c1=c1;let s=0;for(const k in P.th)s+=P.th[k];P.thS=s;P.rdA=P.rd&&P.rd[1]?P.rd[0]/P.rd[1]:9;P._ok=1;return P}
+function pvThink(f,o){const P=pvPrep(f.pvP),A=f.ai,I=f.inp,dx=o.x-f.x,dist=Math.abs(dx),tw=dx>0?'right':'left',aw=dx>0?'left':'right';
+  I.punch=I.kick=I.sp=I.sw=I.tr=I.sr=I.fly=0;I.left=I.right=I.up=I.down=0;I.ki=0;
+  if(A.kc>0){A.kc--;I.ki=1;if(f.ki>=100||dist<170)A.kc=0}else if(A.kt>0){A.kt--;I.ki=1}
+  /* reação ao ataque do rival: igual ao jogador (defesa/pulo/contra-ataque), com o tempo de reação dele (mínimo de um humano rápido) */
+  const thr=pvThr(f,o);if(thr&&!A.pr){A.pr=1;const r=P.thS>3?pvPick(P.th):(Math.random()<.5?'B':'N');A.prT=G.frame+Math.max(6,Math.round(P.rdA*(.8+Math.random()*.4)));A.prR=r;A.prL=!!(o.move&&o.move.low)}
+  if(!thr&&A.pr&&!A.prR)A.pr=0;
+  if(A.prR&&G.frame>=A.prT){const r=A.prR;A.prR=null;if(r==='B'){A.hold={[aw]:1,down:A.prL?1:0};A.holdT=14+(Math.random()*10|0)}else if(r==='J'){A.hold={up:1,[aw]:1};A.holdT=4}else if(r==='C'&&PVFREE.includes(f.state)){A.press=pvPick(Object.fromEntries(Object.entries(P.ch).map(([k,v])=>[k[0],v])))==='K'?'kick':'punch'}else if(r==='F'){A.hold={[tw]:1};A.holdT=8}}
+  if(A.press){I[A.press]=1;A.press=null;return}
+  if(A.holdT>0){A.holdT--;Object.assign(I,A.hold);return}
+  /* combo: segue a sequência que o jogador costuma fazer (um botão por golpe, no tempo certo) */
+  if(f.state==='attack'){if(A.chn&&A.chi<A.chn.length&&f.move&&f.move!==A.chM&&f.mf>=f.move.su+1){I[A.chn[A.chi]==='P'?'punch':'kick']=1;A.chi++;A.chM=f.move}return}
+  if(!PVFREE.includes(f.state))return;
+  if(A.wt>0){A.wt--;if(A.walk)I[A.walk]=1;return}
+  A.walk=null;A.wt=PVW-1;const c=pvCtx(f,o);let T=P.c[c];let tot=0;for(const k in T||{})tot+=T[k];
+  if(tot<4){T=P.c2[c.slice(0,2)];tot=0;for(const k in T||{})tot+=T[k];if(tot<4)T=P.c1[c[0]+'.'+c.slice(2)]}
+  let a=T&&pvPick(T)||(dist>220?'FW':'P');
+  if(a==='SR'&&!srReady(f))a='FW';if(a==='SP'&&!(f.ki>=100&&(f.sb||0)>=1))a='P';
+  if(a==='P'||a==='K'){const C={};for(const k in P.ch)if(k[0]===a)C[k]=P.ch[k];A.chn=pvPick(C)||a;A.chi=1;A.chM=null;I[a==='P'?'punch':'kick']=1;if(dist>200){A.hold={[tw]:1};A.holdT=4}}
+  else if(a==='SR')I.sr=1;else if(a==='SP')I.sp=1;else if(a==='TR')I.tr=1;
+  else if(a==='J'){A.hold={up:1,[tw]:Math.random()<.6?1:0};A.holdT=4}
+  else if(a==='KI'){A.kt=2}else if(a==='KC'){A.kc=40+(Math.random()*40|0);A.wt=Math.min(A.kc,30)}
+  else if(a==='BL'||a==='BK')A.walk=aw;else if(a==='FW')A.walk=tw;else if(a==='DN'){A.hold={down:1};A.holdT=PVW}}
+{const _a=aiThink;aiThink=function(f,o){if(G.gmode==='pvp'&&f.pvP&&f.pvP.n>=120)return pvThink(f,o);return _a.apply(this,arguments)}}
+/* bônus dos dois lados na luta */
+{const _ra=rkApply;rkApply=function(){const r=_ra.apply(this,arguments);if(G.gmode==='pvp'&&G.p&&PV.fight){const [p,o]=G.p,F=PV.fight;Object.assign(p,F.my||{});Object.assign(o,F.opp.s||{});o.pvP=F.opp.p;o.pvN=F.opp.nome}return r}}
+
+/* ---------- 5) LUTA: começar e terminar ---------- */
+function pvStart(opp,friendly){rkInit();if(!SPR_OK)return;const sel=pvChar();try{fsTry()}catch(e){}
+  PV.fight={opp,friendly:!!friendly,my:pvDelta(sel)};PV.last=opp.acc;G.pick=sel;G.opp=opp.ch;G.gmode='pvp';PV.diff0=G.diff;G.diff=3;PV.lives0=G.lives;G.lives=2;
+  const sk=Object.keys(STG).filter(k=>!STG[k].hid);G.nextStg=sk[(Math.random()*sk.length)|0];
+  const PM=prepMatch([G.pick,G.opp],G.nextStg);showVS(()=>PM.then(()=>{vsLoadEnd();startMatch();setTimeout(()=>{try{banner(friendly?'SALA PERSONALIZADA':'PVP RANQUEADA','#c58bff',100,'SOMBRA DE '+String(opp.nome).toUpperCase())}catch(e){}},300)}),PM)}
+function pvStep(o,won){const b={t:o.t,d:o.d,s:o.s},need=pvNeed(o.t);let gain=0;
+  if(won){o.w++;o.sq=Math.max(0,o.sq)+1;gain=1+(o.sq>=3&&o.t<PVDIV?1:0);for(let i=0;i<gain;i++){if(o.t>=PVDIV){o.s++;continue}o.s++;if(o.s>=pvNeed(o.t)){o.s=0;if(o.d<2)o.d++;else{o.t++;o.d=0}}}}
+  else{o.l++;o.sq=0;if(o.t===0){}else if(o.s>0)o.s--;else if(o.t>=PVDIV){o.t=PVDIV-1;o.d=2;o.s=pvNeed(o.t)-1}else if(o.d>0){o.d--;o.s=pvNeed(o.t)-1}else if(o.t>1){o.t--;o.d=2;o.s=pvNeed(o.t)-1}}
+  if(o.t>o.bt||o.t===o.bt&&o.d>o.bd){o.bt=o.t;o.bd=o.d}return {b,gain,up:o.t>b.t||o.t===b.t&&o.d>b.d,down:o.t<b.t||o.t===b.t&&o.d<b.d}}
+function pvEnd(w){const F=PV.fight;G.mode='ranked';$('controls').hidden=true;$('pauseBtn').hidden=true;try{rainSound(0)}catch(e){}G.paused=false;G.diff=PV.diff0;G.lives=PV.lives0;G.gmode='pve';PV.fight=null;if(!F)return rkOpen('pvp');
+  const won=w===0,o=pvG();let st=null,rw=[];
+  if(!F.friendly){st=pvStep(o,won);for(let t=1;t<=o.t;t++)if(!o.rw.includes(t)){o.rw.push(t);rw.push(t);const T=PVT[t];if(T[4])rkAdd('gem',T[4]);if(T[5])rkAdd('tic',T[5])}if(won)rkAdd('gem',15)}
+  o.h.unshift({n:F.opp.nome,c:F.opp.ch,my:G.pick,w:won?1:0,f:F.friendly?1:0,r:pvRkName(o.t,o.d),d:Date.now()});o.h=o.h.slice(0,30);pvSv(o);
+  if(!F.friendly){pvNotify(F.opp,won);pvUp(1)}
+  rkOpen('pvp');setTimeout(()=>pvResult(F,won,st,rw,o),350)}
+function pvResult(F,won,st,rw,o){const T=PVT[o.t],stars=st?(won?'+'+st.gain+' ⭐'+(st.gain>1?' (SEQUÊNCIA DE 3!)':''):(st.b.t===0?'sem perder estrela (Madeira)':'-1 ⭐')):'';
+  rkModal(`<div class="twM pvRes ${won?'win':'lose'}"><h3>${won?'🏆 VITÓRIA!':'💀 DERROTA'}</h3><p class="twH">${F.friendly?'Sala personalizada (não vale estrela)':'Você '+(won?'venceu':'perdeu para')+' a sombra de <b>'+pvEsc(F.opp.nome)+'</b>'}</p>
+    ${st?`<div class="pvResR"><img src="${PVA.e[T[3]]}" alt=""><div><b style="color:${T[1]}">${pvRkName(o.t,o.d)}</b><span>${stars}${won?' · +15 💎':''}</span>${st.up?'<em class="up">⬆ SUBIU DE RANK!</em>':st.down?'<em class="dn">⬇ caiu de rank</em>':''}</div></div>`:''}
+    ${rw.map(t=>`<p class="twH pvRw">🎁 Primeira vez em <b style="color:${PVT[t][1]}">${PVT[t][0]}</b>: +${rkFmtN(PVT[t][4])} 💎${PVT[t][5]?' +'+PVT[t][5]+' 🎫':''}</p>`).join('')}
+    <div class="row"><button class="btn main" id="pvAg">⚔️ BUSCAR OUTRA</button><button class="btn" id="rkMX">FECHAR</button></div></div>`);
+  rkSfx(won?'powerUp':'clang');$('rkMX').onclick=()=>{rkModal(null);rkView('pvp')};$('pvAg').onclick=()=>{rkModal(null);rkView('pvp');pvSearch()}}
+
+/* ---------- 6) TELA DO PVP (arte do dono) ---------- */
+const PVRY=[188,250,308,368,427,487,550,612];
+function pvStars(o){const n=pvNeed(o.t);if(o.t>=PVDIV)return `<div class="pvSt big">⭐ ${o.s}</div>`;if(n>7)return `<div class="pvSt big">⭐ ${o.s} / ${n}</div>`;return `<div class="pvSt">${Array.from({length:n},(_,i)=>`<i class="${i<o.s?'on':''}">★</i>`).join('')}</div>`}
+function pvH(){const o=pvG(),T=PVT[o.t],me=pvChar(),off=PV.on===false,acc=pvAcc(),opp=PV.opp;
+  return `<button class="hs" data-a="back" style="${pvB(8,4,135,88)}"></button><button class="hs" data-a="pvRules" style="${pvB(1672,10,1744,78)}"></button><button class="hs" data-a="pvCfg" style="${pvB(1760,10,1834,78)}"></button>
+  <div class="pvMe" style="${pvB(26,160,298,428)}"><img src="${PVA.e[T[3]]}" alt=""><b style="color:${T[1]}">${pvRkName(o.t,o.d)}</b>${pvStars(o)}<small>${o.w} V · ${o.l} D${o.sq>=2?' · 🔥 '+o.sq+' seguidas':''}</small></div>
+  <button class="hs pvL" data-a="pvRw" style="${pvB(32,452,288,514)}"></button><button class="hs pvL" data-a="pvRank" style="${pvB(32,518,288,580)}"></button><button class="hs pvL" data-a="pvHist" style="${pvB(32,584,288,646)}"></button><button class="hs pvL" data-a="pvRules" style="${pvB(32,650,288,712)}"></button>
+  <button class="hs pvP p1" data-a="pvForm" style="${pvB(478,408,688,584)}"><img src="${pvPortrait(me)}" alt=""><span>${pvEsc(CH[me].name)}</span></button>
+  <div class="pvNm" style="${pvB(440,590,730,640)}">${pvEsc(twLS.g('tw_nome','')||'Você')}</div>
+  <div class="hs pvP p2 ${opp?'on':''} ${PV.srch?'srch':''}" style="${pvB(1182,408,1392,584)}">${opp?`<img src="${pvPortrait(opp.ch)}" alt=""><span>${pvEsc(CH[opp.ch].name)}</span>`:PV.srch?'<i class="pvSpin"></i>':''}</div>
+  <div class="pvNm" style="${pvB(1140,590,1430,640)}">${opp?`<img src="${PVA.e[PVT[opp.t][3]]}" alt="">${pvEsc(opp.nome)} <small style="color:${PVT[opp.t][1]}">${pvRkName(opp.t,opp.dv)}</small>`:PV.srch?'PROCURANDO...':''}</div>
+  ${PVRY.map((y,i)=>i+1===o.t?`<div class="pvRkOn" style="${pvB(1574,y-30,1826,y+30)}"></div>`:'').join('')}
+  <button class="hs pvL" data-a="pvForm" style="${pvB(404,734,700,798)}"></button><button class="hs pvGo ${PV.srch||opp?'busy':''}" data-a="pvGo" style="${pvB(728,706,1140,822)}"><span class="sw"></span></button><button class="hs pvL" data-a="pvRoom" style="${pvB(1164,734,1486,798)}"></button>
+  ${off?`<div class="pvOff" style="${pvB(470,150,1400,330)}"><b>⛔ PVP DESLIGADO</b><span>O ADM desligou o PVP por enquanto. Volte mais tarde!</span></div>`:!acc?`<div class="pvOff soft" style="${pvB(520,180,1350,320)}"><b>👤 PRECISA DE CONTA</b><span>Crie ou entre na sua conta (botão Conta) para jogar o PVP.</span></div>`:''}`}
+{const _v=rkView;rkView=function(v){if(v!=='pvp')return _v.apply(this,arguments);
+  RKV='pvp';const W=$('rkWrap');if(!W)return;clearInterval(rkView.iv);rkModal(null);try{if(MN2V)MN2V.pause()}catch(e){}
+  W.innerHTML=`<div class="rkA rk_pvp" data-w="${PVA.W}" data-h="${PVA.H}" style="background-image:url(${PVA.tela})">${pvH()}<div id="rkToast"></div></div>`;rkFit();
+  W.querySelectorAll('[data-a]').forEach(b=>b.onclick=e=>{e.stopPropagation();rkAct(b.dataset.a,b)})}}
+const pvRe=()=>{if(RKV==='pvp'&&showScreen.cur==='ranked'&&!PV.fight)rkView('pvp')};
+async function pvOpen(){PV.opp=null;PV.srch=0;rkView('pvp');const was=PV.on;await pvCfgLoad();if(PV.on!==was)pvRe();if(PV.on&&pvAcc())pvUp(0)}
+async function pvSearch(){if(PV.srch||PV.opp)return;if(!pvAcc())return rkToast('👤 Entre na sua CONTA para jogar o PVP','#ffb060');
+  await pvCfgLoad();if(!PV.on){pvRe();return rkToast('⛔ O PVP está desligado pelo ADM','#ff8080')}
+  PV.srch=1;pvRe();rkSfx('whoosh');const t0=Date.now();let opp=null,err=0;try{await pvUp(1);opp=await pvFind()}catch(e){err=1}
+  await new Promise(r=>setTimeout(r,Math.max(0,1600-(Date.now()-t0))));PV.srch=0;
+  if(!opp){pvRe();return rkToast(err?rkNetMsg():'Nenhuma sombra encontrada ainda. Chame os amigos para jogar o PVP!','#ffb060')}
+  PV.opp=opp;pvRe();rkSfx('boom');let n=3;const tick=()=>{if(RKV!=='pvp'||PV.opp!==opp)return;const b=document.querySelector('.rk_pvp .pvGo');if(b)b.dataset.n=n;if(n<=0){PV.opp=null;pvStart(opp,0);return}n--;rkSfx('whoosh');setTimeout(tick,900)};setTimeout(tick,600)}
+async function pvRoom(){if(!pvAcc())return rkToast('👤 Entre na sua CONTA para jogar o PVP','#ffb060');
+  rkModal(`<div class="twM sm"><h3>🛡️ SALA PERSONALIZADA</h3><p class="twH">Lute contra a sombra de um amigo pelo nome dele. Não vale estrela.</p><input id="pvRn" class="rkCdI" maxlength="16" autocomplete="off" placeholder="NOME DO JOGADOR"><p class="twH" id="pvRe"></p><div class="row"><button class="btn main" id="pvRok">LUTAR</button><button class="btn" id="rkMX">FECHAR</button></div></div>`);
+  $('rkMX').onclick=()=>rkModal(null);const go=async()=>{const n=$('pvRn').value.trim(),E=$('pvRe');if(!n)return;if(n.toLowerCase()===String(twLS.g('tw_nome','')).toLowerCase()){E.textContent='Esse é você 😅';return}
+    await pvCfgLoad();if(!PV.on){E.textContent='⛔ O PVP está desligado pelo ADM';return}E.textContent='Procurando...';$('pvRok').disabled=true;
+    try{const x=await pvFindName(n);if(!x){E.textContent='❌ Esse jogador ainda não tem sombra no PVP.';$('pvRok').disabled=false;return}rkModal(null);pvStart(x,1)}catch(e){E.textContent=rkNetMsg();$('pvRok').disabled=false}};
+  $('pvRok').onclick=go;$('pvRn').onkeydown=e=>{if(e.key==='Enter')go()}}
+function pvForm(){const own=rkG('own',['goku']).filter(id=>CH[id]),cur=pvChar(),A=pvProfAll();
+  rkModal(`<div class="twM pvFm"><h3>👥 FORMAÇÃO</h3><p class="twH">Escolha o personagem do PVP. Ele luta por você e a sua SOMBRA usa ele, com o estilo que o jogo gravou.</p><div class="pvFg">${own.map(id=>{const n=(A[id]&&A[id].n)||0,p=Math.min(100,Math.round(n/3));return `<button class="pvFc ${id===cur?'on':''}" data-id="${id}"><img src="${pvPortrait(id)}" alt=""><b>${pvEsc(CH[id].name)}</b><small>${p>=100?'✔ estilo gravado':'estilo '+p+'%'}</small><i style="width:${p}%"></i></button>`}).join('')}</div>
+    <p class="twH">O estilo é gravado sozinho em todas as suas lutas (Boss, Torre, Caça, PVP). Quanto mais você joga com o personagem, mais a sombra fica parecida com você.</p><div class="row"><button class="btn" id="rkMX">FECHAR</button></div></div>`);
+  $('rkMX').onclick=()=>{rkModal(null);rkView('pvp')};document.querySelectorAll('#rkModal .pvFc').forEach(b=>b.onclick=()=>{rkS('pvch',b.dataset.id);rkS('pvup',0);rkSfx('whoosh');pvForm()})}
+function pvRules(){rkModal(`<div class="twM pvRu"><h3>📖 REGRAS DO PVP SOMBRA</h3><div class="pvRuB">
+  <p>⚔️ Cada jogador tem uma <b>SOMBRA</b>. O jogo grava o seu jeito de lutar (golpes, combos, defesa, quando solta o super e o tempo de reação) e os bônus reais do personagem (nível, equipamentos, anéis, passivas).</p>
+  <p>🔎 <b>Buscar Partida</b>: você enfrenta a sombra de alguém do seu rank. Ela luta igual ao dono dela.</p>
+  <p>⭐ Ganhou = <b>+1 estrela</b> (3 vitórias seguidas = +1 estrela extra). Perdeu = <b>-1 estrela</b>. Na Madeira você não perde estrela.</p>
+  <p>🏅 Cada rank tem 3 divisões (1, 2, 3). Estrelas para subir: ${PVT.slice(0,PVDIV).map(T=>`<b style="color:${T[1]}">${T[0]} ${T[2]}</b>`).join(' · ')} → <b style="color:${PVT[PVDIV][1]}">DIVINO</b> (estrelas sem limite).</p>
+  <p>🎁 Primeira vez em cada rank = prêmio (veja em Recompensas). Cada vitória = +15 💎.</p>
+  <p>🛡️ <b>Sala Personalizada</b>: lute contra a sombra de um amigo pelo nome. Não vale estrela.</p>
+  <p>👥 <b>Formação</b>: escolha o personagem do PVP. A barra mostra quanto do seu estilo já foi gravado com ele.</p>
+  <p>📜 O dono da sombra vê no Histórico quem lutou contra ela.</p></div><div class="row"><button class="btn" id="rkMX">FECHAR</button></div></div>`);$('rkMX').onclick=()=>rkModal(null)}
+function pvRewards(){const o=pvG();rkModal(`<div class="twM pvRwM"><h3>🎁 RECOMPENSAS DO PVP</h3><p class="twH">Prêmio na primeira vez que chegar em cada rank (entra sozinho).</p><div class="pvRwL">${PVT.slice(1).map((T,i)=>{const t=i+1,ok=o.rw.includes(t);return `<div class="${ok?'ok':''}"><img src="${PVA.e[T[3]]}" alt=""><b style="color:${T[1]}">${T[0]}</b><span>+${rkFmtN(T[4])} 💎${T[5]?' · +'+T[5]+' 🎫':''}</span><em>${ok?'✔ PEGO':'🔒'}</em></div>`}).join('')}</div><div class="row"><button class="btn" id="rkMX">FECHAR</button></div></div>`);$('rkMX').onclick=()=>rkModal(null)}
+async function pvHist(){const o=pvG(),row=h=>`<div class="${h.w?'w':'l'}"><b>${h.w?'VITÓRIA':'DERROTA'}</b><span>${pvEsc(CH[h.my]?CH[h.my].name:'')} x sombra de <b>${pvEsc(h.n)}</b> (${pvEsc(CH[h.c]?CH[h.c].name:h.c)})${h.f?' · sala':''}</span><small>${new Date(h.d).toLocaleString('pt-BR').slice(0,17)}</small></div>`;
+  const draw=D=>{if(RKV!=='pvp')return;rkModal(`<div class="twM pvHi"><h3>📜 HISTÓRICO</h3><h4>⚔️ SUAS LUTAS</h4><div class="pvHl">${o.h.length?o.h.map(row).join(''):'<p class="twH">Nenhuma luta ainda.</p>'}</div><h4>🛡️ QUEM ENFRENTOU A SUA SOMBRA</h4><div class="pvHl">${D==null?'<p class="twH">Carregando...</p>':D===0?'<p class="twH">'+rkNetMsg()+'</p>':D.length?D.map(e=>`<div class="${e.won?'l':'w'}"><b>${e.won?'PERDEU':'DEFENDEU'}</b><span><b>${pvEsc(e.nome)}</b> (${pvEsc(CH[e.ch]?CH[e.ch].name:e.ch)}) ${e.won?'venceu':'perdeu para'} a sua sombra</span><small>${new Date(e.ts).toLocaleString('pt-BR').slice(0,17)}</small></div>`).join(''):'<p class="twH">Ninguém enfrentou a sua sombra ainda.</p>'}</div><div class="row"><button class="btn" id="rkMX">FECHAR</button></div></div>`);$('rkMX').onclick=()=>rkModal(null)};
+  draw(null);const acc=pvAcc();if(!acc)return draw([]);try{draw(await pvQ('pvo',acc,15))}catch(e){draw(0)}}
+async function pvRanking(){const draw=L=>{if(RKV!=='pvp')return;const me=pvAcc();rkModal(`<div class="twM pvRk"><h3>🏆 RANKING PVP · TEMPORADA ${pvMon().slice(5)}/${pvMon().slice(1,5)}</h3><div class="pvRkL">${L==null?'<p class="twH">Carregando...</p>':L===0?'<p class="twH">'+rkNetMsg()+'</p>':L.length?L.map((e,i)=>{const T=PVT[Math.min(PVDIV,e.t|0)];return `<div class="${e.pva===me?'me':''}"><b class="ps">${i<3?['🥇','🥈','🥉'][i]:'#'+(i+1)}</b><img src="${PVA.e[T[3]]}" alt=""><span><b>${pvEsc(e.nome)}</b>${rgTit(e.tit,e.nome)}</span><em style="color:${T[1]}">${pvRkName(e.t|0,e.dv|0)}${e.t>=PVDIV?' · ⭐'+e.st:''}</em></div>`}).join(''):'<p class="twH">Ninguém no ranking ainda. Seja o primeiro!</p>'}</div><div class="row"><button class="btn" id="rkMX">FECHAR</button></div></div>`);$('rkMX').onclick=()=>rkModal(null)};
+  draw(null);try{const R=await pvQ('pvk',pvMon(),300,'pvs','DESCENDING'),M={};for(const e of R){if(!e.pva||M[e.pva]&&M[e.pva]._id>e._id)continue;let d={};try{d=JSON.parse(e.d)}catch(x){}M[e.pva]=Object.assign(e,{t:d.t|0,dv:d.dv|0,st:d.st|0})}
+    draw(Object.values(M).sort((a,b)=>b.pvs-a.pvs).slice(0,50))}catch(e){draw(0)}}
+function pvCfgM(){if(!twIsAdm())return mn2Cfg();const on=PV.on!==false;rkModal(`<div class="twM sm"><h3>⚙️ PVP · ADM</h3><p class="twH">Agora o PVP está <b style="color:${on?'#7dff9a':'#ff6060'}">${on?'LIGADO':'DESLIGADO'}</b>. Desligado: ninguém busca partida nem envia sombra (não gasta servidor).</p><p class="twH" id="pvCe"></p><div class="row"><button class="btn main" id="pvCt">${on?'⛔ DESLIGAR PVP':'✅ LIGAR PVP'}</button><button class="btn" id="pvCo">⚙️ OPÇÕES</button><button class="btn" id="rkMX">FECHAR</button></div></div>`);
+  $('rkMX').onclick=()=>rkModal(null);$('pvCo').onclick=()=>mn2Cfg();$('pvCt').onclick=async()=>{$('pvCt').disabled=true;$('pvCe').textContent='Salvando...';try{await pvCfgSet(!on);rkModal(null);pvRe();rkToast(on?'⛔ PVP DESLIGADO para todos':'✅ PVP LIGADO para todos',on?'#ff8080':'#7dff9a')}catch(e){$('pvCe').textContent=rkNetMsg();$('pvCt').disabled=false}}}
+{const _a=rkAct;rkAct=function(a,b){
+  if(a==='pvp'){rkSfx('whoosh');return pvOpen()}
+  if(RKV==='pvp'){if(a==='back'){PV.opp=null;PV.srch=0;return rkView('menu')}
+    const M={pvGo:pvSearch,pvRoom:pvRoom,pvForm:pvForm,pvRules:pvRules,pvRw:pvRewards,pvHist:pvHist,pvRank:pvRanking,pvCfg:pvCfgM};if(M[a]){if(a!=='pvGo')rkSfx('whoosh');if(PV.on===false&&['pvGo','pvRoom'].includes(a)&&!twIsAdm())return rkToast('⛔ O PVP está desligado pelo ADM','#ff8080');return M[a]()}}
+  return _a.apply(this,arguments)}}
