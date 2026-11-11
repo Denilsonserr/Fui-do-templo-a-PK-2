@@ -2292,7 +2292,7 @@ anDecor=function(){try{const M=SRC2ID(),H=innerHeight;document.querySelectorAll(
    Vermelho vivo e grosso com espinhos grandes (estilo arame farpado), preto BEM preto, roxo BEM roxo,
    brilho maior e o anel inteiro girando devagar no lugar (cada um num sentido). */
 const ANRP=[{m:'#ffffff',h:'#ffffff',g:'#bfe2ff'},{m:'#ffc400',h:'#fff3a8',g:'#ffae00'},{m:'#8f00ff',h:'#e3b0ff',g:'#9a10ff'},{m:'#030104',h:'#3d2950',g:'#2a0a3a'},{m:'#ff0a1e',h:'#ffb0b0',g:'#ff0018'}];
-anRingSvg=function(r,k){const P=ANRP[r.c]||ANRP[0],red=r.c===4,blk=r.c===3,N=10+r.c*2+(r.g>=5?2:0),dur=(70+k*9).toFixed(0),dir=k%2?-1:1;let sp='';
+anRingSvg=function(r,k){const P=ANRP[r.c]||ANRP[0],red=r.c===4,blk=r.c===3,N=10+r.c*2+(r.g>=5?2:0),dur=(40+k*6).toFixed(0),dir=k%2?-1:1;let sp='';
   const L=red?10:blk?8:r.c===2?8:6;
   for(let i=0;i<N;i++){const a=i/N*360,big=i%2===0,len=big?L:L*.5;
     sp+=`<path d="M-3,0 L0,-${len} L3,0 L0,${big?5:3}Z" transform="rotate(${a}) translate(0,-48.5)" fill="${P.m}" stroke="${P.h}" stroke-width="${blk?.5:.6}"/>`;
@@ -2305,7 +2305,7 @@ anRingSvg=function(r,k){const P=ANRP[r.c]||ANRP[0],red=r.c===4,blk=r.c===3,N=10+
    `<circle r="50" fill="none" stroke="${P.m}" stroke-width=".9" opacity=".8"/>`+
    `<circle r="43.6" fill="none" stroke="${P.m}" stroke-width="1.3" stroke-dasharray="3 3.5"/>`+
    
-   sp+`<animateTransform attributeName="transform" type="rotate" from="0" to="${360*dir}" dur="${dur}s" repeatCount="indefinite"/></g></svg>`};
+   sp+((red||blk)?`<circle r="47" fill="none" stroke="${red?'#fff2f2':'#d9b8ff'}" stroke-width="2" stroke-linecap="round" stroke-dasharray="9 138.6" opacity="0"><animate attributeName="opacity" values="0;${red?.9:.75};0" dur="3.4s" begin="${(k*.7).toFixed(1)}s" repeatCount="indefinite"/></circle>`+`<g opacity="0" transform="translate(0,-47)"><path d="M0,-6 L1.2,-1.2 L6,0 L1.2,1.2 L0,6 L-1.2,1.2 L-6,0 L-1.2,-1.2Z" fill="#fff"/><animate attributeName="opacity" values="0;0;1;0;0" dur="4.2s" begin="${(k*.9).toFixed(1)}s" repeatCount="indefinite"/></g>`:'')+`<animateTransform attributeName="transform" type="rotate" from="0" to="${360*dir}" dur="${dur}s" repeatCount="indefinite"/></g></svg>`};
 
 /* v321: anéis do chão um pouco maiores (+15%) e girando bem devagar (70 s + 9 s por anel) */
 {const _g=anGround;anGround=function(R,cx,cy,cw){return _g(R,cx,cy,cw*1.15)}}

@@ -9905,7 +9905,7 @@ anDecor=function(){try{const M=SRC2ID(),H=innerHeight;document.querySelectorAll(
    Vermelho vivo e grosso com espinhos grandes (estilo arame farpado), preto BEM preto, roxo BEM roxo,
    brilho maior e o anel inteiro girando devagar no lugar (cada um num sentido). */
 const ANRP=[{m:'#ffffff',h:'#ffffff',g:'#bfe2ff'},{m:'#ffc400',h:'#fff3a8',g:'#ffae00'},{m:'#8f00ff',h:'#e3b0ff',g:'#9a10ff'},{m:'#030104',h:'#3d2950',g:'#2a0a3a'},{m:'#ff0a1e',h:'#ffb0b0',g:'#ff0018'}];
-anRingSvg=function(r,k){const P=ANRP[r.c]||ANRP[0],red=r.c===4,blk=r.c===3,N=10+r.c*2+(r.g>=5?2:0),dur=(70+k*9).toFixed(0),dir=k%2?-1:1;let sp='';
+anRingSvg=function(r,k){const P=ANRP[r.c]||ANRP[0],red=r.c===4,blk=r.c===3,N=10+r.c*2+(r.g>=5?2:0),dur=(40+k*6).toFixed(0),dir=k%2?-1:1;let sp='';
   const L=red?10:blk?8:r.c===2?8:6;
   for(let i=0;i<N;i++){const a=i/N*360,big=i%2===0,len=big?L:L*.5;
     sp+=`<path d="M-3,0 L0,-${len} L3,0 L0,${big?5:3}Z" transform="rotate(${a}) translate(0,-48.5)" fill="${P.m}" stroke="${P.h}" stroke-width="${blk?.5:.6}"/>`;
@@ -9918,7 +9918,7 @@ anRingSvg=function(r,k){const P=ANRP[r.c]||ANRP[0],red=r.c===4,blk=r.c===3,N=10+
    `<circle r="50" fill="none" stroke="${P.m}" stroke-width=".9" opacity=".8"/>`+
    `<circle r="43.6" fill="none" stroke="${P.m}" stroke-width="1.3" stroke-dasharray="3 3.5"/>`+
    
-   sp+`<animateTransform attributeName="transform" type="rotate" from="0" to="${360*dir}" dur="${dur}s" repeatCount="indefinite"/></g></svg>`};
+   sp+((red||blk)?`<circle r="47" fill="none" stroke="${red?'#fff2f2':'#d9b8ff'}" stroke-width="2" stroke-linecap="round" stroke-dasharray="9 138.6" opacity="0"><animate attributeName="opacity" values="0;${red?.9:.75};0" dur="3.4s" begin="${(k*.7).toFixed(1)}s" repeatCount="indefinite"/></circle>`+`<g opacity="0" transform="translate(0,-47)"><path d="M0,-6 L1.2,-1.2 L6,0 L1.2,1.2 L0,6 L-1.2,1.2 L-6,0 L-1.2,-1.2Z" fill="#fff"/><animate attributeName="opacity" values="0;0;1;0;0" dur="4.2s" begin="${(k*.9).toFixed(1)}s" repeatCount="indefinite"/></g>`:'')+`<animateTransform attributeName="transform" type="rotate" from="0" to="${360*dir}" dur="${dur}s" repeatCount="indefinite"/></g></svg>`};
 
 /* v321: anéis do chão um pouco maiores (+15%) e girando bem devagar (70 s + 9 s por anel) */
 {const _g=anGround;anGround=function(R,cx,cy,cw){return _g(R,cx,cy,cw*1.15)}}
@@ -10088,7 +10088,7 @@ window.__dbg={mus:()=>[MCUR,MEL.src.split('/').pop()],stg:()=>STAGE.key,prepMatc
 })();
 </script>
 <style>#updB{position:fixed;left:50%;top:max(8px,env(safe-area-inset-top));transform:translateX(-50%);z-index:99999;padding:10px 22px;border-radius:14px;border:2px solid #fff3c0;background:linear-gradient(#ffd84a,#e08a10);color:#3a1d00;font:900 15px system-ui,sans-serif;box-shadow:0 0 18px #ffb21f;cursor:pointer;animation:updP 1s ease-in-out infinite alternate}@keyframes updP{to{transform:translateX(-50%) scale(1.05)}}</style>
-<script>(function(){const V='a990c30ac81c';if(!/^https?:/.test(location.protocol))return;let nv=null;
+<script>(function(){const V='11881887a984';if(!/^https?:/.test(location.protocol))return;let nv=null;
 function show(){if(document.getElementById('updB'))return;try{if(typeof G!=='undefined'&&G.mode==='fight')return}catch(e){}const b=document.createElement('button');b.id='updB';b.textContent='🔄 ATUALIZAÇÃO NOVA! Toque para atualizar';
   b.onclick=()=>{b.textContent='⏳ Atualizando...';try{acSave(1)}catch(e){}setTimeout(()=>location.reload(),900)};document.body.appendChild(b)}
 async function chk(){if(document.hidden)return;if(nv){show();return}try{const r=await fetch('versao.txt?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const t=(await r.text()).trim();if(/^[0-9a-f]{8,40}$/.test(t)&&t!==V){nv=t;show()}}catch(e){}}

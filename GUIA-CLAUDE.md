@@ -1525,3 +1525,6 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 
 ## v321
 - Anéis do chão 15% maiores (`anGround` embrulhado com `cw*1.15`) e girando BEM devagar (70 s + 9 s por anel); pulso de brilho mais lento (4,5 s).
+
+## v322
+- Anéis girando um pouco mais rápido (40 s + 6 s por anel) para dar para ver o giro. Vermelho e preto ganharam um brilho pequeno: um risco claro que acende e apaga em volta do anel e uma estrelinha que pisca (gira junto com o anel).
