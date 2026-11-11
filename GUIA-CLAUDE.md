@@ -1534,3 +1534,6 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 
 ## v324
 - Evoluir anel NÃO gasta mais diamante (pedido do dono: foi erro). `anCost` devolve `g:0`; a tela de evoluir só mostra a Pedra das Almas (o quadrinho de 💎 some quando o custo é 0). Testado: com 0 💎 o anel sobe de nível gastando só a pedra.
+
+## 11/11 — importação do Firebase FEITA
+- `importar.yml` rodado às 05:20 (Brasília): 1340 de 1340 documentos importados (131 códigos usados, 347 prêmios resgatados, 432 perfis, 532 nomes, 307 do mercado, 3 recados, 69 salvamentos de 23 contas + rank de cada conta). Servidor ficou com 2162 documentos. O primeiro envio deu 403 porque a Cloudflare bloqueia o User-Agent padrão do Python — o workflow agora manda User-Agent de navegador.
