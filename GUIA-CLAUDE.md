@@ -1630,3 +1630,6 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - Título ADM (`tbApply`): +70% dano, velocidade, defesa, energia e transformação, +70 de crítico; sorte do ADM x1,7 (`lvLuck`). Texto do título atualizado.
 - Entrada fixa no começo do `RKEVX` (getters) que só vale para o ADM: sem evento = 2x XP/gemas/sorte/drop/anel; com evento = dobra o evento (ex.: desculpas 3x → 6x). Outros jogadores não mudam.
 - Teste `tadm_v339.js` (gancho `__pvT.ev/dl`).
+
+## v340 — faixa de EVENTO ATIVO
+- `evBarTick` (a cada 1 s) mostra `#evBar` no topo (um pouco abaixo das barras de moedas) na tela inicial, em todas as telas do ranqueado (menu, Boss, Torre, Caça, Gacha, PVP, loja...) e na Torre, só quando há evento de verdade em `RKEVX` (a entrada fixa do ADM não conta; o ADM vê "👑 VOCÊ: 6x"). Some durante as lutas. Nome do evento, contagem regressiva com segundos e os bônus passando (letreiro). Teste `tevbar_v340.js`.

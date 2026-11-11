@@ -2826,3 +2826,13 @@ TWCUP['973bb8']={nm:'PEDIDO DE DESCULPAS',acc:1,jn:40,pk:{gem:5000,tic:20}};
   Object.defineProperty(E,4,{get:()=>{const r=real(),o=(r&&r[4])||{};return {gem:2*(o.gem||1),luck:2*(o.luck||1),drop:2*(o.drop||1),anel:2*(o.anel||1)}}});
   RKEVX.unshift(E)}
 try{window.__pvT={G:()=>G,ko:(a,d)=>ko(a,d),ev:()=>rkEvX(),dl:id=>pvDelta(id)}}catch(e){} /* só para os testes */
+/* v340: FAIXA DE EVENTO ATIVO em todas as telas de modo (menu, Boss, Torre, Caça, Gacha, PVP, Loja...) com o tempo que falta */
+function evBarTick(){let B=document.getElementById('evBar');const t=Date.now();let e=null;for(let i=1;i<RKEVX.length;i++){const x=RKEVX[i];if(t>=x[0]&&t<x[1]){e=x;break}}
+  let cur='';try{cur=showScreen.cur}catch(x){}const show=!!e&&(cur==='ranked'||cur==='tower'||cur==='title')&&!(typeof PV!=='undefined'&&PV.fight);
+  if(!show){if(B)B.hidden=true;return}
+  if(!B){B=document.createElement('div');B.id='evBar';B.innerHTML='<i class="f">🔥</i><div><b></b><u></u><span><em></em></span></div><i class="f">🔥</i>';document.body.appendChild(B)}
+  const ms=e[1]-t,h=Math.floor(ms/36e5),m=Math.floor(ms%36e5/6e4),s=Math.floor(ms%6e4/1e3),tm=(h?h+'h ':'')+String(m).padStart(2,'0')+'min '+String(s).padStart(2,'0')+'s';
+  let adm='';try{if(twIsAdm())adm=' · 👑 VOCÊ: '+(2*e[2])+'x'}catch(x){}
+  const nm=String(e[3]).split('·').map(x=>x.trim()),ttl=nm[0],rest=nm.slice(1).join(' · ');
+  B.querySelector('b').textContent='🎉 EVENTO ATIVO: '+ttl+adm;B.querySelector('u').textContent='⏳ TERMINA EM '+tm;const em=B.querySelector('em'),rt=rest||'APROVEITE!';if(em.textContent!==rt)em.textContent=rt;B.hidden=false}
+setInterval(evBarTick,1000);setTimeout(evBarTick,500);

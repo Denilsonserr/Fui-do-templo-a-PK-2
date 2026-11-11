@@ -2070,6 +2070,19 @@ img.anOn{position:relative;z-index:2}
 .rk_pvp .pvSm img{width:100%;aspect-ratio:1;object-fit:cover;object-position:50% 20%;border-radius:.4em;border:.1em solid #6fb4ff;box-shadow:0 0 .4em rgba(80,160,255,.6)}
 .rk_pvp .pvSm.r img{border-color:#ff6a6a;box-shadow:0 0 .4em rgba(255,70,70,.6)}
 .pvFc .pvFn{position:absolute;left:.2em;top:.2em;z-index:2;width:1.5em;height:1.5em;border-radius:50%;background:#ffd84a;color:#2a1600;font:900 .9em/1.5em var(--f-ui);font-style:normal;text-align:center}
+/* v340: faixa de evento ativo */
+#evBar{position:fixed;left:50%;top:calc(env(safe-area-inset-top,0px) + 9vh);transform:translateX(-50%);z-index:40;display:flex;align-items:center;gap:6px;width:min(38vw,520px);padding:3px 10px;border-radius:14px;pointer-events:none;
+  background:linear-gradient(90deg,rgba(110,8,28,.94),rgba(205,45,20,.94) 50%,rgba(110,8,28,.94));border:2px solid #ffd84a;box-shadow:0 0 10px rgba(255,120,30,.75),inset 0 0 8px rgba(255,220,120,.35);animation:evBarP 1.6s ease-in-out infinite}
+#evBar>div{flex:1;display:flex;flex-direction:column;align-items:center;min-width:0;text-align:center}
+#evBar b{font:900 clamp(11px,2.9vh,17px)/1.1 var(--f-ui);letter-spacing:.04em;color:#fff3b0;text-shadow:0 0 6px #ffb000,0 1px 0 #5a1000;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+#evBar u{text-decoration:none;font:900 clamp(10px,2.5vh,15px)/1.15 var(--f-ui);color:#7dffb0;text-shadow:0 0 5px #00a050,0 1px 1px #000;white-space:nowrap}
+#evBar span{display:block;width:100%;overflow:hidden;white-space:nowrap}
+#evBar em{display:inline-block;padding-left:100%;font:800 clamp(9px,2.2vh,13px)/1.2 var(--f-ui);font-style:normal;color:#fff;text-shadow:0 1px 1px #000;animation:evBarM 11s linear infinite}
+#evBar .f{font-style:normal;font-size:clamp(14px,3.6vh,22px);animation:evBarF .8s ease-in-out infinite alternate}
+@keyframes evBarM{to{transform:translateX(-100%)}}
+@keyframes evBarP{0%,100%{box-shadow:0 0 6px rgba(255,120,30,.6),inset 0 0 8px rgba(255,220,120,.3)}50%{box-shadow:0 0 18px rgba(255,160,40,1),inset 0 0 10px rgba(255,220,120,.5)}}
+@keyframes evBarF{to{transform:scale(1.2) rotate(-8deg)}}
+#evBar[hidden]{display:none}
 
 .twBag .bgw{display:flex;gap:1em;justify-content:center;align-items:flex-start;margin:.4em 0}
 .twBag .bgc{flex:1;max-width:16em;display:flex;flex-direction:column;gap:.4em;max-height:52vh;overflow:auto;padding:.2em}
@@ -10818,6 +10831,16 @@ TWCUP['973bb8']={nm:'PEDIDO DE DESCULPAS',acc:1,jn:40,pk:{gem:5000,tic:20}};
   Object.defineProperty(E,4,{get:()=>{const r=real(),o=(r&&r[4])||{};return {gem:2*(o.gem||1),luck:2*(o.luck||1),drop:2*(o.drop||1),anel:2*(o.anel||1)}}});
   RKEVX.unshift(E)}
 try{window.__pvT={G:()=>G,ko:(a,d)=>ko(a,d),ev:()=>rkEvX(),dl:id=>pvDelta(id)}}catch(e){} /* só para os testes */
+/* v340: FAIXA DE EVENTO ATIVO em todas as telas de modo (menu, Boss, Torre, Caça, Gacha, PVP, Loja...) com o tempo que falta */
+function evBarTick(){let B=document.getElementById('evBar');const t=Date.now();let e=null;for(let i=1;i<RKEVX.length;i++){const x=RKEVX[i];if(t>=x[0]&&t<x[1]){e=x;break}}
+  let cur='';try{cur=showScreen.cur}catch(x){}const show=!!e&&(cur==='ranked'||cur==='tower'||cur==='title')&&!(typeof PV!=='undefined'&&PV.fight);
+  if(!show){if(B)B.hidden=true;return}
+  if(!B){B=document.createElement('div');B.id='evBar';B.innerHTML='<i class="f">🔥</i><div><b></b><u></u><span><em></em></span></div><i class="f">🔥</i>';document.body.appendChild(B)}
+  const ms=e[1]-t,h=Math.floor(ms/36e5),m=Math.floor(ms%36e5/6e4),s=Math.floor(ms%6e4/1e3),tm=(h?h+'h ':'')+String(m).padStart(2,'0')+'min '+String(s).padStart(2,'0')+'s';
+  let adm='';try{if(twIsAdm())adm=' · 👑 VOCÊ: '+(2*e[2])+'x'}catch(x){}
+  const nm=String(e[3]).split('·').map(x=>x.trim()),ttl=nm[0],rest=nm.slice(1).join(' · ');
+  B.querySelector('b').textContent='🎉 EVENTO ATIVO: '+ttl+adm;B.querySelector('u').textContent='⏳ TERMINA EM '+tm;const em=B.querySelector('em'),rt=rest||'APROVEITE!';if(em.textContent!==rt)em.textContent=rt;B.hidden=false}
+setInterval(evBarTick,1000);setTimeout(evBarTick,500);
 
 function twTrofList(){const tc=twLS.g('tw_tc',{}),run={};for(const t of TW.tr)run[t.k]=(run[t.k]||0)+1;
   twModal(`<div class="twM"><h3>🎖️ TROFÉUS</h3><div class="twTL">${Object.keys(TWTR).map(k=>{const T=TWTR[k];return `<div class="${tc[k]||run[k]?'got':''}"><i>${T.i}</i><b>${T.n}</b><span>${T.d}</span><em>+${T.p} 🏆</em><small>${run[k]?'nesta subida: '+run[k]+' · ':''}total: ${(tc[k]||0)}</small></div>`}).join('')}</div>
@@ -11006,7 +11029,7 @@ window.__dbg={mus:()=>[MCUR,MEL.src.split('/').pop()],stg:()=>STAGE.key,prepMatc
 })();
 </script>
 <style>#updB{position:fixed;left:50%;top:max(8px,env(safe-area-inset-top));transform:translateX(-50%);z-index:99999;padding:10px 22px;border-radius:14px;border:2px solid #fff3c0;background:linear-gradient(#ffd84a,#e08a10);color:#3a1d00;font:900 15px system-ui,sans-serif;box-shadow:0 0 18px #ffb21f;cursor:pointer;animation:updP 1s ease-in-out infinite alternate}@keyframes updP{to{transform:translateX(-50%) scale(1.05)}}</style>
-<script>(function(){const V='ef2f39eb68ad';if(!/^https?:/.test(location.protocol))return;let nv=null;
+<script>(function(){const V='02020f816f11';if(!/^https?:/.test(location.protocol))return;let nv=null;
 function show(){if(document.getElementById('updB'))return;try{if(typeof G!=='undefined'&&G.mode==='fight')return}catch(e){}const b=document.createElement('button');b.id='updB';b.textContent='🔄 ATUALIZAÇÃO NOVA! Toque para atualizar';
   b.onclick=()=>{b.textContent='⏳ Atualizando...';try{acSave(1)}catch(e){}setTimeout(()=>location.reload(),900)};document.body.appendChild(b)}
 async function chk(){if(document.hidden)return;if(nv){show();return}try{const r=await fetch('versao.txt?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const t=(await r.text()).trim();if(/^[0-9a-f]{8,40}$/.test(t)&&t!==V){nv=t;show()}}catch(e){}}
