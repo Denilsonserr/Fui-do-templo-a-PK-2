@@ -1177,3 +1177,8 @@ img.anOn{position:relative;z-index:2}
 .anFt .ar{filter:drop-shadow(0 0 calc(.06em + .05em*var(--k)) #fff) drop-shadow(0 0 calc(.3em*var(--k)) var(--c))}
 .anFt .ar{filter:none;perspective:none}
 .anFt .ar .sp img{filter:drop-shadow(0 0 2px #fff) drop-shadow(0 0 6px var(--c))!important}
+/* v318 */
+.anFt .aw{margin:0}
+
+.anFt .ar .sp{transform:rotateX(78deg) rotateZ(0);animation-name:anSpin2}
+@keyframes anSpin2{to{transform:rotateX(78deg) rotateZ(360deg)}}

@@ -2237,21 +2237,30 @@ function anOfChar(id){try{const L=anL();return anEq(id).map(i=>i&&L.find(z=>z.i=
 /* perfil público leva os anéis do personagem do pedestal */
 {const _pm=pfMine;pfMine=function(){const D=_pm.apply(this,arguments);try{D.an=anOfChar(CH[D.ped]?D.ped:'goku').slice(0,8)}catch(e){}return D}}
 {const _pc=pfClean;pfClean=function(o,uid,nome){const D=_pc.apply(this,arguments);try{D.an=(Array.isArray(o.an)?o.an:[]).slice(0,8).map(r=>({c:Math.max(0,Math.min(4,r.c|0)),g:Math.max(0,Math.min(7,r.g|0)),l:Math.max(1,Math.min(50,r.l|0)),k:Math.max(0,Math.min(5,r.k|0))}))}catch(e){D.an=[]}return D}}
-/* v317: anéis EMPILHADOS (do chão subindo, com espaço entre eles), cada um GIRANDO devagar no lugar (3D: anel deitado girando no próprio eixo) */
-function anFtHTML(R,cw,ch){const n=R.length,gap=n>1?ch*.88/(n-1):0;let b='',f='';R.forEach((r,k)=>{const w=Math.round(cw*(2.05-.12*Math.abs(k/(Math.max(1,n-1))-.45))),col=ANC[r.c][1],y=Math.round(-k*gap);
-  const sty=`width:${w}px;height:${w}px;left:${-w/2}px;top:${y-w/2}px;--c:${col};--k:${Math.max(1,r.k||1)}`,dl=`animation-delay:${(-k*1.7).toFixed(2)}s;animation-duration:${(13+k*1.3).toFixed(1)}s${k%2?';animation-direction:reverse':''}`;
+/* v317/v318: anéis EMPILHADOS (do chão até a cabeça, espaço igual), cada um GIRANDO devagar no lugar (3D).
+   v318: cada anel CENTRALIZADO no corpo na altura dele e com a largura do corpo naquela altura (+ folga, sem encostar) — mede a silhueta do personagem. */
+const ANSIL={};
+function anSil(img){const k=img.getAttribute('src');if(ANSIL[k])return ANSIL[k];try{const H=120,W=Math.max(8,Math.round(H*img.naturalWidth/img.naturalHeight)),c=document.createElement('canvas');c.width=W;c.height=H;const x=c.getContext('2d');x.drawImage(img,0,0,W,H);
+  const d=x.getImageData(0,0,W,H).data,R=[];for(let y=0;y<H;y++){let mn=-1,mx=-1,sx=0,n=0;for(let i=0;i<W;i++){if(d[(y*W+i)*4+3]>60){if(mn<0)mn=i;mx=i;sx+=i;n++}}R.push(n?{c:sx/n/W,l:mn/W,r:(mx+1)/W}:null)}
+  let top=0;while(top<H&&!R[top])top++;let bot=H-1;while(bot>0&&!R[bot])bot--;return ANSIL[k]={R,top:top/H,bot:(bot+1)/H}}catch(e){return null}}
+function anFtHTML(R,P){let b='',f='';R.forEach((r,k)=>{const {x,y,w}=P[k],col=ANC[r.c][1];
+  const sty=`width:${w}px;height:${w}px;left:${Math.round(x-w/2)}px;top:${Math.round(y-w/2)}px;--c:${col};--k:${Math.max(1,r.k||1)}`,dl=`animation-delay:${(-k*1.7).toFixed(2)}s;animation-duration:${(13+k*1.3).toFixed(1)}s${k%2?';animation-direction:reverse':''}`;
   const ring=`<i class="sp" style="${dl}"><img src="${RQA.anel2[r.c]}" alt=""></i>`;b+=`<i class="ar" style="${sty}">${ring}</i>`;f+=`<i class="ar" style="${sty}">${ring}</i>`});
-  const wv=`<i class="aw" style="width:${Math.round(cw*1.6)}px;height:${Math.round(cw*1.6*.3)}px;--c:${ANC[R[0].c][1]}"></i>`;return [wv+b,f]}
+  const p0=P[0],ww=Math.round(p0.w*1.25);return [`<i class="aw" style="left:${Math.round(p0.x)}px;top:${Math.round(p0.y)}px;width:${ww}px;height:${Math.round(ww*.3)}px;--c:${ANC[R[0].c][1]}"></i>`+b,f]}
 function anDecor(){try{const M=SRC2ID(),H=innerHeight;document.querySelectorAll('#rkWrap img,#rkModal img').forEach(img=>{const id=M[img.getAttribute('src')];if(!id)return;
-  const P=img.parentElement;if(!P||img.closest('.pfMold,.rkCard,.eqI,.anCell,button.lk'))return;
+  const Pa=img.parentElement;if(!Pa||img.closest('.pfMold,.rkCard,.eqI,.anCell,button.lk'))return;
   if(!img.complete||!img.naturalWidth){img.addEventListener('load',()=>setTimeout(anDecor,30),{once:true});return}
   const bw=img.offsetWidth,bh=img.offsetHeight;if(bh<H*.28)return;
-  const inPf=!!img.closest('.pfPed'),R=inPf&&PFO?(PFO.an||[]):anOfChar(id);P.querySelectorAll(':scope>.anFt').forEach(x=>x.remove());if(!R.length)return;
-  const ch=Math.min(bh,bw*img.naturalHeight/img.naturalWidth),cw=Math.min(bw,ch*img.naturalWidth/img.naturalHeight)*.62;
-  const cs=getComputedStyle(P);if(cs.position==='static')P.style.position='relative';
-  const x=img.offsetLeft+bw/2,y=img.offsetTop+bh-ch*.05,[hb,hf]=anFtHTML(R,cw,ch);
-  const B=document.createElement('div'),F=document.createElement('div');B.className='anFt b';F.className='anFt f';for(const E of [B,F]){E.style.left=x+'px';E.style.top=y+'px';E.style.setProperty('--ch',Math.round(ch)+'px')}
-  B.innerHTML=hb;F.innerHTML=hf;P.insertBefore(B,img);img.after(F);img.classList.add('anOn')})}catch(e){}}
+  const inPf=!!img.closest('.pfPed'),R=inPf&&PFO?(PFO.an||[]):anOfChar(id);Pa.querySelectorAll(':scope>.anFt').forEach(x=>x.remove());if(!R.length)return;
+  const ar=img.naturalWidth/img.naturalHeight,ch=Math.min(bh,bw/ar),cw=ch*ar,ox=img.offsetLeft+(bw-cw)/2,oy=img.offsetTop+bh-ch,S=anSil(img);
+  const top=S?S.top:0,bot=S?S.bot:1,n=R.length,P=[];
+  for(let k=0;k<n;k++){const t=n>1?k/(n-1):0,fy=bot-.02-(bot-top)*.9*t;let c=.5,l=.3,rr=.7;
+    if(S){const r0=Math.round(fy*S.R.length);let sc=0,sl=1,sr=0,m=0;for(let q=r0-6;q<=r0+6;q++){const e=S.R[q];if(!e)continue;sc+=e.c;sl=Math.min(sl,e.l);sr=Math.max(sr,e.r);m++}if(m){c=sc/m;l=sl;rr=sr}}
+    const half=Math.max(c-l,rr-c)*cw,w=Math.round(Math.max(cw*.55,Math.min(cw*1.6,half*2*1.3+ch*.06)));P.push({x:ox+c*cw,y:oy+fy*ch,w})}
+  {const md=P.map(p=>p.w).sort((a,b)=>a-b)[Math.floor(n/2)];for(const p of P)p.w=Math.round(Math.min(p.w,md*1.18,cw*1.25))}
+  const cs=getComputedStyle(Pa);if(cs.position==='static')Pa.style.position='relative';const [hb,hf]=anFtHTML(R,P);
+  const B=document.createElement('div'),F=document.createElement('div');B.className='anFt b';F.className='anFt f';for(const E of [B,F]){E.style.left='0px';E.style.top='0px';E.style.setProperty('--ch',Math.round(ch)+'px')}
+  B.innerHTML=hb;F.innerHTML=hf;Pa.insertBefore(B,img);img.after(F);img.classList.add('anOn')})}catch(e){}}
 {const _v=rkView;rkView=function(){const r=_v.apply(this,arguments);setTimeout(anDecor,80);setTimeout(anDecor,700);return r}}
 {const _m=rkModal;rkModal=function(h){const r=_m.apply(this,arguments);if(h)setTimeout(anDecor,80);return r}}
 addEventListener('resize',()=>setTimeout(anDecor,200));

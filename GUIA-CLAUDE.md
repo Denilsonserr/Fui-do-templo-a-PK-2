@@ -1512,3 +1512,6 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 ## v317
 - Pedido do dono: anéis de volta EMPILHADOS (como antes, mais bonitos): começam no chão e vão subindo com espaço igual entre eles até cobrir o personagem todo (do pé à cabeça: `gap = altura*0.88/(n-1)`), largos para não encostar no corpo (~2x a largura do personagem), cada um GIRANDO devagar no lugar (3D: `rotateX(74deg)` + `rotateZ` 13–20 s, um sim outro não ao contrário). Metade de trás atrás do corpo e metade da frente na frente. O anel que subia (v316) saiu; ficou a onda de energia no chão.
 - Obs.: filtro (drop-shadow) direto na imagem girando em 3D deixava uma faixa clara retangular no Chromium → brilho vai num drop-shadow simples na imagem dentro do `.sp`.
+
+## v318
+- Anéis CENTRALIZADOS: `anSil(img)` mede a silhueta do personagem (canvas 120 linhas, alpha>60, guardado por src); cada anel fica no centro do corpo NA ALTURA DELE e com a largura do corpo ali ×1,3 + folga (sem encostar), limitado a 1,18× a mediana e 1,25× a largura da imagem (cabelo grande não deixa um anel gigante). Mais deitados (`rotateX(78deg)`) para não se encavalarem com 8 anéis. Distribuídos de 2% acima do pé até 90% da altura do corpo. Teste: `tanel_v318.js` (Shaka com 8 anéis).
