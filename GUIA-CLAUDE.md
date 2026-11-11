@@ -1519,3 +1519,6 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 ## v319
 - Anéis do jeito da imagem do dono: TODOS NO CHÃO, um dentro do outro, em volta dos pés (atrás do personagem; ele fica em pé em cima). Ordem pela RARIDADE (cor, depois nota): o mais raro é o maior/de fora; os 3 mais fracos bem pequenos perto dos pés (`anGround`). Centro = meio dos pés (silhueta `anSil`).
 - A arte dos anéis (grossa, com espinhos grandes) virava uma mancha quando achatada e sobreposta → anel desenhado em SVG (`anRingSvg`): linha fina na cor do anel + linha clara + linha pontilhada de dentro + espinhos para fora (mais espinhos quanto mais raro / nota S+), os espinhos giram devagar (cada anel num sentido) = anel girando no lugar. Brilho fraco (drop-shadow 2/5 px) pulsando devagar.
+
+## v320
+- Anéis no chão mais fortes (pedido do dono com imagem): `ANRP` = cores próprias do anel no chão (vermelho vivo #ff0a1e com espinhos maiores tipo arame farpado, preto BEM preto #030104 com borda roxa escura, roxo BEM roxo #8f00ff). Brilho maior (drop-shadow no próprio SVG), pulso de brilho `anGlw2` e o anel INTEIRO girando devagar (34 s + 5 s por anel, um sim outro não ao contrário). Faixa de cada anel mais fina para os anéis não virarem uma mancha. Teste: `tanel_v318.js`.

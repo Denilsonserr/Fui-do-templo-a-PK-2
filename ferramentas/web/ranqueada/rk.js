@@ -2287,3 +2287,22 @@ anDecor=function(){try{const M=SRC2ID(),H=innerHeight;document.querySelectorAll(
   let cx=ox+cw/2,fy=1;if(S){fy=S.bot;const r0=Math.round(S.bot*S.R.length)-1;let sc=0,m=0;for(let q=r0-8;q<=r0;q++){const e=S.R[q];if(e){sc+=(e.l+e.r)/2;m++}}if(m)cx=ox+sc/m*cw}
   const cy=oy+fy*ch-ch*.01,cs=getComputedStyle(Pa);if(cs.position==='static')Pa.style.position='relative';
   const B=document.createElement('div');B.className='anFt b g';B.style.left='0px';B.style.top='0px';B.innerHTML=anGround(R,cx,cy,Math.min(cw,ch*.55));Pa.insertBefore(B,img);img.classList.add('anOn')})}catch(e){}};
+
+/* ================= v320: ANÉIS MAIS FORTES (pedido do dono, imagem de referência) =================
+   Vermelho vivo e grosso com espinhos grandes (estilo arame farpado), preto BEM preto, roxo BEM roxo,
+   brilho maior e o anel inteiro girando devagar no lugar (cada um num sentido). */
+const ANRP=[{m:'#ffffff',h:'#ffffff',g:'#bfe2ff'},{m:'#ffc400',h:'#fff3a8',g:'#ffae00'},{m:'#8f00ff',h:'#e3b0ff',g:'#9a10ff'},{m:'#030104',h:'#3d2950',g:'#2a0a3a'},{m:'#ff0a1e',h:'#ffb0b0',g:'#ff0018'}];
+anRingSvg=function(r,k){const P=ANRP[r.c]||ANRP[0],red=r.c===4,blk=r.c===3,N=10+r.c*2+(r.g>=5?2:0),dur=(34+k*5).toFixed(0),dir=k%2?-1:1;let sp='';
+  const L=red?10:blk?8:r.c===2?8:6;
+  for(let i=0;i<N;i++){const a=i/N*360,big=i%2===0,len=big?L:L*.5;
+    sp+=`<path d="M-3,0 L0,-${len} L3,0 L0,${big?5:3}Z" transform="rotate(${a}) translate(0,-48.5)" fill="${P.m}" stroke="${P.h}" stroke-width="${blk?.5:.6}"/>`;
+    if(false)sp+=`<path d="M-1.6,0 L0,6 L1.6,0Z" transform="rotate(${a+180/N}) translate(0,-43)" fill="${P.m}"/>`}
+  const glow=blk?`drop-shadow(0 0 1.5px ${P.h}) drop-shadow(0 0 4px rgba(0,0,0,.95)) drop-shadow(0 0 7px ${P.g})`:`drop-shadow(0 0 1.5px ${P.h}) drop-shadow(0 0 5px ${P.g})`;
+  return `<svg viewBox="-66 -66 132 132" preserveAspectRatio="none" style="filter:${glow}"><g>`+
+   `<circle r="47" fill="none" stroke="${P.g}" stroke-width="${blk?4:5}" opacity="${blk?.45:.2}"/>`+
+   `<circle r="47" fill="none" stroke="${P.m}" stroke-width="${red?3.6:3.2}"/>`+
+   `<circle r="47" fill="none" stroke="${P.h}" stroke-width="${blk?.8:1.2}" opacity="${blk?.8:1}"/>`+
+   `<circle r="50" fill="none" stroke="${P.m}" stroke-width=".9" opacity=".8"/>`+
+   `<circle r="43.6" fill="none" stroke="${P.m}" stroke-width="1.3" stroke-dasharray="3 3.5"/>`+
+   
+   sp+`<animateTransform attributeName="transform" type="rotate" from="0" to="${360*dir}" dur="${dur}s" repeatCount="indefinite"/></g></svg>`};

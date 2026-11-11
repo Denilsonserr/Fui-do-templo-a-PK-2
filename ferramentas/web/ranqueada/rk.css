@@ -1197,3 +1197,6 @@ img.anOn{position:relative;z-index:2}
 
 .anFt .ag svg{width:100%;height:100%;display:block;overflow:visible;filter:drop-shadow(0 0 2px var(--c)) drop-shadow(0 0 5px var(--c))}
 .anFt .ag .sp{opacity:.95}
+/* v320: anéis mais fortes — o brilho vem do próprio SVG; pulso mais visível */
+.anFt .ag .sp{opacity:1;animation:anGlw2 3.2s ease-in-out infinite}
+@keyframes anGlw2{0%,100%{filter:brightness(1)}50%{filter:brightness(1.35)}}
