@@ -60,4 +60,4 @@ export default {async fetch(req,env){const url=new URL(req.url),p=url.pathname;
     if(req.method==='POST'&&rest===':runQuery'){const b=await req.json();return await runQuery(db,base,b.structuredQuery)}
     if(req.method==='POST'&&rest==='/torre'){const t=await req.text();if(t.length>1000000)return ERR(400,'INVALID_ARGUMENT','grande demais');return await create(db,base,url,JSON.parse(t))}
     return ERR(404,'NOT_FOUND','rota')}
-  catch(e){const m=String(e&&e.message||e);if(/limit|exceeded|too many/i.test(m))return ERR(429,'RESOURCE_EXHAUSTED','Quota exceeded.');return ERR(500,'INTERNAL',m.slice(0,200))}}};
+  catch(e){const m=String(e&&e.message||e);if(/limit|exceeded|too many/i.test(m))return ERR(429,'RESOURCE_EXHAUSTED','Quota exceeded. '+m.slice(0,160));return ERR(500,'INTERNAL',m.slice(0,200))}}};
