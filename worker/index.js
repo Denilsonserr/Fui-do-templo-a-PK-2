@@ -15,7 +15,20 @@ async function init(db){if(READY)return;await db.batch([
   db.prepare('CREATE INDEX IF NOT EXISTS kv_s ON kv(k,s,id)'),
   db.prepare('CREATE INDEX IF NOT EXISTS kv_n ON kv(k,n)'),
   db.prepare('CREATE INDEX IF NOT EXISTS kv_id ON kv(id)'),
-  db.prepare('CREATE INDEX IF NOT EXISTS kv_idk ON kv(id,k)')]);READY=true}
+  db.prepare('CREATE INDEX IF NOT EXISTS kv_idk ON kv(id,k)'),
+  db.prepare('CREATE TABLE IF NOT EXISTS uso(dia TEXT PRIMARY KEY, req INTEGER NOT NULL DEFAULT 0, rows INTEGER NOT NULL DEFAULT 0)')]);READY=true}
+/* 11/11: TRAVA DE GASTO (plano pago US$5/mês inclui 10 milhões de pedidos e 25 bilhões de linhas lidas por mês).
+   O servidor conta pedidos e linhas lidas por dia (tabela uso) e, se chegar perto do incluído, PARA de responder (429)
+   até o dia/mês virar — assim a conta nunca passa dos US$5. Limites com folga: */
+const TRAVA={reqDia:300000,rowsDia:700e6,reqMes:9e6,rowsMes:22e9};
+const US={req:0,rows:0,t:Date.now(),chk:0,bloq:false,dia:'',mes:{req:0,rows:0}};
+const hoje=()=>new Date().toISOString().slice(0,10);
+async function usoFlush(db,force){if(!force&&US.req<200&&Date.now()-US.t<60000)return;const d=hoje(),r=US.req,w=US.rows;US.req=0;US.rows=0;US.t=Date.now();
+  try{await db.prepare('INSERT INTO uso(dia,req,rows) VALUES(?,?,?) ON CONFLICT(dia) DO UPDATE SET req=req+excluded.req,rows=rows+excluded.rows').bind(d,r,w).run();
+    const day=await db.prepare('SELECT req,rows FROM uso WHERE dia=?').bind(d).first()||{req:0,rows:0};
+    const mes=await db.prepare('SELECT SUM(req) req,SUM(rows) rows FROM uso WHERE dia>=?').bind(d.slice(0,8)+'01').first()||{req:0,rows:0};
+    US.dia=d;US.mes={req:mes.req|0,rows:Number(mes.rows)||0,dReq:day.req|0,dRows:Number(day.rows)||0};
+    US.bloq=US.mes.dReq>TRAVA.reqDia||US.mes.dRows>TRAVA.rowsDia||US.mes.req>TRAVA.reqMes||US.mes.rows>TRAVA.rowsMes}catch(e){}}
 /* 11/11: o D1 grátis tem 5 milhões de LINHAS LIDAS por dia e acabou. Cache curto das consultas (igual para todos os jogadores)
    + contador de linhas lidas por tipo de consulta (/fs-admin/reads) para achar o que gasta mais. */
 const QC=new Map(),RD={t0:Date.now(),tot:0,by:{}};
@@ -39,7 +52,7 @@ async function runQuery(db,base,q){q=q||{};const lim=Math.max(1,Math.min(3000,(q
   else sql=`SELECT id,ct,f FROM docs ORDER BY id ${dir}`;
   sql+=' LIMIT ?';args.push(lim);
   const kk=qKey(q),ttl=qTTL(kk),ck=JSON.stringify(q);if(ttl){const c=QC.get(ck);if(c&&Date.now()-c.t<ttl)return J(c.v)}
-  const res=await db.prepare(sql).bind(...args).all(),R=res.results||[];const rr=(res.meta&&res.meta.rows_read)|0;RD.tot+=rr;const b=RD.by[kk]||(RD.by[kk]={n:0,rows:0});b.n++;b.rows+=rr;
+  const res=await db.prepare(sql).bind(...args).all(),R=res.results||[];const rr=(res.meta&&res.meta.rows_read)|0;RD.tot+=rr;US.rows+=rr;const b=RD.by[kk]||(RD.by[kk]={n:0,rows:0});b.n++;b.rows+=rr;
   const out=R.length?R.map(r=>docOut(base,r)):[{readTime:new Date().toISOString()}];if(ttl){if(QC.size>300)QC.clear();QC.set(ck,{t:Date.now(),v:out})}
   return J(out)}
 async function create(db,base,url,body){const fields=body&&body.fields;if(!fields||typeof fields!=='object')return ERR(400,'INVALID_ARGUMENT','fields');
@@ -57,7 +70,9 @@ async function imp(db,req){if(Date.now()>IMPATE)return ERR(403,'PERMISSION_DENIE
 export default {async fetch(req,env){const url=new URL(req.url),p=url.pathname;
   if(!p.startsWith('/fs'))return env.ASSETS.fetch(req);
   if(req.method==='OPTIONS')return new Response(null,{status:204,headers:CORS});
-  try{const db=env.DB;await init(db);
+  try{const db=env.DB;await init(db);US.req++;if(US.dia&&US.dia!==hoje())US.bloq=false;
+    if(p==='/fs-admin/uso'){await usoFlush(db,true);return J({hoje:US.dia,dia:{pedidos:US.mes.dReq,linhas:US.mes.dRows},mes:{pedidos:US.mes.req,linhas:US.mes.rows},trava:TRAVA,travado:US.bloq})}
+    await usoFlush(db,false);if(US.bloq)return ERR(429,'RESOURCE_EXHAUSTED','Quota exceeded. trava de gasto: limite do plano quase no fim');
     if(p==='/fs-admin/import'&&req.method==='POST')return await imp(db,req);
     if(p==='/fs-admin/stats'){const b=Math.floor(Date.now()/300000);const q=async(sql,...a)=>((await db.prepare(sql).bind(...a).first())||{}).n|0;
       return J({jogadores:await q("SELECT COUNT(DISTINCT s) n FROM kv WHERE k='uid'"),contas:await q("SELECT COUNT(DISTINCT s) n FROM kv WHERE k='sv'"),
