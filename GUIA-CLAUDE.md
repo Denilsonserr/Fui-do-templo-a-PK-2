@@ -1764,3 +1764,9 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - Aura no personagem vale para Secreta+ (`psRI>=5`). Revelação especial em tela cheia (`.psRev`) quando sai Divina/Primordial (wrapper do `psAnim`).
 - Teste `tps_v363.js` (2 milhões de giros, soma, tela, revelação, giro x5). Gancho `__pvT.ps`.
 - `tps5_v342.js` está velho (as janelas de presente diário/devolução atrapalham), não é defeito.
+
+## v364 — Mercado Negro: Joias Negras em quantidade + anéis da alma
+- Joia Negra (giro de passiva) agora sai em lote: anúncio `{k:'jn',n}` (antigo sem `n` = 1). Na aba VENDER aparece a barra QTD (-10, −, +, +10, MÁX) e o preço é o TOTAL do lote.
+- Anéis da alma (`rk_an`, inclusive o VERMELHO da Hidra) podem ser vendidos: `{k:'an',r:{c,g,s,v,l,a}}`; `mnClean` refaz o `v` pela tabela `ANV` (não confia no vendedor) e limita nível/idade. Se o anel estava equipado, sai do personagem ao anunciar (aviso no detalhe). Comprador recebe com id novo (`anGive`).
+- Wrappers em `mnView`/`mnClean`/`mnGive`/`mnMine`/`mnH`/`mnAct` no bloco v364. O APK abre o site (capacitor `server.url`), então todo mundo pega a versão nova.
+- Teste `tmercado_v364.js` (Firestore falso: vende 21 joias + anel vermelho equipado, outro compra, vendedor recebe).

@@ -3252,4 +3252,38 @@ function gfDev(){if(rkG('gf362',0))return;rkS('gf362',1);rkAdd('gem',5000);twAdd
 /* v363: revelação especial quando sai DIVINA ou PRIMORDIAL */
 {const _pa=psAnim;psAnim=function(r,cb){return _pa.call(this,r,function(){const x=cb.apply(this,arguments);try{if(psRI(r)>=6){const O=document.createElement('div');O.className='psRev psr_'+r;
   O.innerHTML=`<i></i><b>${r==='pri'?'✴ PASSIVA PRIMORDIAL ✴':'☀ PASSIVA DIVINA ☀'}</b><small>${r==='pri'?'ACIMA DOS DEUSES':'ACIMA DA SECRETA'}</small>`;document.body.appendChild(O);try{SFX.boom();setTimeout(()=>SFX.boom(),350)}catch(e){}setTimeout(()=>O.remove(),2600)}}catch(e){}return x})}}
-try{window.__pvT={G:()=>G,ko:(a,d)=>ko(a,d),ev:()=>rkEvX(),m:()=>[rkEvG(),rkEvL(),rkEvD(),rkEvA()],lk:()=>{const c={};for(let i=0;i<4000;i++){const r=twEqRoll().k;c[r]=(c[r]||0)+1}const a=[0,0,0,0,0];for(let i=0;i<4000;i++)a[lvCrRoll()]++;return {luck:+lvLuck().toFixed(2),drop:+rkDropF().toFixed(2),extra:lkK(),equip:c,cristal:a}},dl:id=>pvDelta(id),cs:id=>cstStats(id),hy:()=>HY,hyS:()=>hyStart(),fil:()=>HY.fil,rv:v=>rkView(v),ps:{roll:o=>psRoll(o),def:psDef,sum:psSum,G:psG,S:psS,anim:(r,cb)=>psAnim(r,cb||(()=>{}))},hyBoss:()=>{HY.st=3;HY.lv=1;HY.mobs=[];G.p[1]=hyMk('hidra',900,1)},hyI:()=>(HY.items||[]).map(i=>[i.k,Math.round(i.x),Math.round(i.y),i.land,(()=>{const m=bsImg(HYIC[i.k](i));return m.complete+':'+m.naturalWidth})()]),stg:()=>[STAGE.name,STAGE.src0,STAGE.img&&STAGE.img.naturalWidth,!!STAGE.far],lvo:id=>lvOpen(id),bs:lv=>bsSt(lv),dc:f=>dlCheck(f),ds:()=>dsfOpen()}}catch(e){} /* só para os testes */
+/* ================= v364: MERCADO NEGRO vende JOIAS NEGRAS (giros de passiva) em QUANTIDADE e ANÉIS DA ALMA (inclusive o vermelho) =================
+   jn: {k:'jn',n} (anúncio antigo sem n = 1). anel: {k:'an',r:{c,g,s,v,l,a}} — sai da lista do vendedor (e do personagem, se estava equipado). */
+MN.q=1;
+const mnRK=r=>[r.c,r.g,r.s,anLvl(r),r.a||0].join('|');
+{const _v=mnView;mnView=function(o){if(!o)return null;
+  if(o.k==='jn'){const n=Math.max(1,o.n|0);return {img:RQA.jn,nm:'JOIA NEGRA'+(n>1?' x'+rkFmtN(n):''),c:'#c46bff',r:'sec',ef:n>1?rkFmtN(n)+' giros de PASSIVA (1 joia = 1 giro)':'Usada para girar PASSIVAS (1 joia = 1 giro)',x:null,n}}
+  if(o.k==='an'){const r=o.r;if(!r||!ANC[r.c])return null;return {img:RQA.anel2[r.c],nm:'ANEL '+ANC[r.c][0],c:ANC[r.c][1],r:null,ef:anAge(r)+' · Nota '+ANG[r.g]+' · Nível '+anLvl(r)+'/'+ANMX[r.c]+' · '+anTxt(r),x:null,an:1}}
+  if(o.k!=='poc'&&!o.it)return null;return _v.apply(this,arguments)}}
+{const _c=mnClean;mnClean=function(o){if(!o||typeof o!=='object')return null;const N=(v,a,b)=>Math.max(a,Math.min(b,Math.round(+v||0)));
+  if(o.k==='jn')return {k:'jn',n:N(o.n||1,1,99999)};
+  if(o.k==='an'){const r=o.r;if(!r||!(r.c>=0&&r.c<ANC.length)||!(r.g>=0&&r.g<ANG.length)||!ANS.some(x=>x[0]===r.s))return null;
+    return {k:'an',r:{c:r.c|0,g:r.g|0,s:r.s,v:ANV[r.c|0][r.g|0],l:N(r.l||1,1,ANMX[r.c|0]),a:N(r.a||0,0,500000)}}}
+  return _c.apply(this,arguments)}}
+{const _g=mnGive;mnGive=function(o){const c=mnClean(o);if(c&&c.k==='jn'){psAddJn(c.n);return true}
+  if(c&&c.k==='an'){anGive(Object.assign({i:Date.now().toString(36)+Math.random().toString(36).slice(2,6)},c.r));return true}return _g.apply(this,arguments)}}
+{const _m=mnMine;mnMine=function(){const L=_m.apply(this,arguments),seen=new Map();
+  for(const r of anL().slice().sort((a,b)=>b.c-a.c||b.g-a.g||anLvl(b)-anLvl(a))){const k='a|'+mnRK(r);if(seen.has(k)){const e=seen.get(k);e.n++;e.ids.push(r.i);continue}
+    const e={key:k,k:'an',ids:[r.i],n:1,v:mnView({k:'an',r})};seen.set(k,e);L.push(e)}return L}}
+{const _h=mnH;mnH=function(){let h=_h.apply(this,arguments);try{if(MN.tab!=='sell')return h;const X=mnRows().find(r=>r.key===MN.sel);if(!X)return h;
+  if(X.e.k==='jn'){MN.q=Math.max(1,Math.min(X.n,MN.q|0||1));
+    h=h.replace('<button data-m="list">ANUNCIAR 1</button>','<button data-m="list">ANUNCIAR</button>').replace('placeholder="preço"','placeholder="preço total"');
+    h=h.replace('<div class="mnBtn"','<div class="mnQ" style="'+rkB2(1318,668,1634,716)+'"><span>QTD</span><button data-m="q" data-d="-10">-10</button><button data-m="q" data-d="-1">−</button><input id="mnQ" type="number" min="1" max="'+X.n+'" value="'+MN.q+'" inputmode="numeric"><button data-m="q" data-d="1">+</button><button data-m="q" data-d="10">+10</button><button data-m="q" data-d="max">MÁX</button></div><div class="mnBtn"')}
+  else if(X.e.k==='an'){const w=X.e.ids.map(i=>anL().find(r=>r.i===i)).find(r=>r&&!anWho(r));if(!w)h=h.replace('<em>Você tem','<em class="st st_cx">Equipado: ao anunciar, sai do personagem</em><em>Você tem')}}catch(e){}return h}}
+{const _a=mnAct;mnAct=async function(a,b){
+  if(a==='q'){const X=mnRows().find(r=>r.key===MN.sel);if(!X)return;const I=$('mnQ');let q=Math.round(+(I&&I.value)||MN.q||1);const d=b.dataset.d;q=d==='max'?X.n:q+(+d);MN.q=Math.max(1,Math.min(X.n,q));if(I)I.value=MN.q;rkSfx('whoosh');return}
+  if(a==='sel')MN.q=1;
+  if(a!=='list'||MN.tab!=='sell')return _a.apply(this,arguments);const X=mnRows().find(r=>r.key===MN.sel);if(!X||(X.e.k!=='jn'&&X.e.k!=='an'))return _a.apply(this,arguments);
+  if(MN.busy)return;const pr=Math.round(+(($('mnPr')||{}).value||0));if(!(pr>=1&&pr<=999999)){rkSfx('clang');rkToast('Coloque um preço de 1 a 999.999 💎','#ff8080');return}
+  MN.busy=1;let o;try{
+    if(X.e.k==='jn'){const g=psG(),q=Math.max(1,Math.min(g.jn|0,Math.round(+(($('mnQ')||{}).value)||MN.q||1)));if((g.jn|0)<1)return;g.jn-=q;psS(g);o={k:'jn',n:q}}
+    else{const L=anL(),r=X.e.ids.map(i=>L.find(z=>z.i===i)).filter(Boolean).sort((x,y)=>(anWho(x)?1:0)-(anWho(y)?1:0))[0];if(!r)return;const A=anEqAll();for(const id in A)A[id]=(A[id]||[]).map(i=>i===r.i?null:i);rkS('anEq',A);rkS('an',L.filter(z=>z.i!==r.i));o={k:'an',r:{c:r.c,g:r.g,s:r.s,v:r.v,l:anLvl(r),a:r.a||0}}}
+    const lid=mnKey()+'_'+Date.now().toString(36);let ok=false;try{const r=await mnPost('mk_'+lid,{mk:mnSV('1'),mkv:mnSV(mnKey()),lid:mnSV(lid),it:mnSV(JSON.stringify(o)),preco:mnIV(pr)});ok=r.ok}catch(x){}
+    if(!ok){mnGive(o);rkSfx('clang');rkToast('Não deu para anunciar (sem internet?). Voltou para você.','#ff8080');return rkView('mn')}
+    try{acSave(1)}catch(x){}rkSfx('powerUp');rkToast('🏷️ '+mnView(o).nm+' anunciado por '+rkFmtN(pr)+' 💎!','#7dff9a');MN.sel=null;MN.q=1}finally{MN.busy=0}return mnLoad()}}
+try{window.__pvT={G:()=>G,ko:(a,d)=>ko(a,d),ev:()=>rkEvX(),m:()=>[rkEvG(),rkEvL(),rkEvD(),rkEvA()],lk:()=>{const c={};for(let i=0;i<4000;i++){const r=twEqRoll().k;c[r]=(c[r]||0)+1}const a=[0,0,0,0,0];for(let i=0;i<4000;i++)a[lvCrRoll()]++;return {luck:+lvLuck().toFixed(2),drop:+rkDropF().toFixed(2),extra:lkK(),equip:c,cristal:a}},dl:id=>pvDelta(id),cs:id=>cstStats(id),hy:()=>HY,hyS:()=>hyStart(),fil:()=>HY.fil,rv:v=>rkView(v),mn:{open:()=>mnOpen(),mine:()=>mnMine(),clean:o=>mnClean(o),give:o=>mnGive(o),view:o=>mnView(o),M:()=>MN},ps:{roll:o=>psRoll(o),def:psDef,sum:psSum,G:psG,S:psS,anim:(r,cb)=>psAnim(r,cb||(()=>{}))},hyBoss:()=>{HY.st=3;HY.lv=1;HY.mobs=[];G.p[1]=hyMk('hidra',900,1)},hyI:()=>(HY.items||[]).map(i=>[i.k,Math.round(i.x),Math.round(i.y),i.land,(()=>{const m=bsImg(HYIC[i.k](i));return m.complete+':'+m.naturalWidth})()]),stg:()=>[STAGE.name,STAGE.src0,STAGE.img&&STAGE.img.naturalWidth,!!STAGE.far],lvo:id=>lvOpen(id),bs:lv=>bsSt(lv),dc:f=>dlCheck(f),ds:()=>dsfOpen()}}catch(e){} /* só para os testes */
