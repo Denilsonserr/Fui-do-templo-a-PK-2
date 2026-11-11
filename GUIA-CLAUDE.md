@@ -1728,3 +1728,7 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - Baú no chão: cai, quica com poeira, brilha na cor do tipo; perto dele aparece o botão **🎁 ABRIR BAÚ** (`#hyOpen`, tecla E/Enter) e uma setinha ▼; ao apertar ele treme e abre (troca para a arte aberta) e espalha os prêmios. Tipo do baú pela fase (`hyBT`).
 - EXPLORAÇÃO (`HYEX`): depois da Parte 1 → "Trilha da Floresta" (mapa_ex1, 3 baús tipo 1–3) e depois da Parte 2 → "Árvore Ancestral" (mapa_ex2, 4 baús tipo 2–5). Sem inimigos, baús espalhados pelo mapa; sair pela direita continua. Baús da exploração não dão gemas (`ng`) para manter o limite de 150; o que ficar fechado é entregue ao sair do mapa.
 - Correção: `hyNext` podia rodar 2 vezes durante a troca de mapa (pulava a exploração). Teste `texplora_v357.js`.
+
+## v358 — menos baús e mini-bosses, sem andar de costas
+- Partes: 8 / 12 / 16 abates (até 3 / 4 / 5 extras, nascendo a cada 70/60/50 quadros). Exploração: 1 baú em cada mapa (tipo 2 e 4). Hidra: baú só nos níveis 2, 4 e 6 + o da vitória (9 baús numa caçada completa). Gemas por baú `[15,18,20,0,20,0,24,0,25,28]` = 150 no total.
+- "Correndo ao contrário": no caminho sem inimigos o inimigo invisível ficava em cima do jogador e ele virava de costas. Agora fica 320px à frente na direção que o jogador anda (`HY.dir`), então o personagem olha para onde corre.

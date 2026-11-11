@@ -11090,7 +11090,7 @@ try{HYK.forEach((k,i)=>{if(!HYR.mapas)return;STG[k]=Object.assign({},STG.flo,{na
 const HYW={vermelho:'brightness(1.9) sepia(1) saturate(7) hue-rotate(-35deg)',verde:'brightness(1.9) sepia(1) saturate(6) hue-rotate(55deg)',azul:'brightness(1.9) sepia(1) saturate(6) hue-rotate(170deg)',preto:'brightness(.75) contrast(1.2)'};
 /* atributos (mesmas contas do Boss: dano=(ATK/150)^0,3, defesa=1/(1+DEF/900)) */
 const HYS={lobo:{atk:9000,def:400,hp:1.6,sp:1.22,sc:.72},clone:{atk:24000,def:900,hp:3,sp:1.15,sc:.85},hidra:[{atk:45000,def:1300,hp:8},{atk:65000,def:1600,hp:10},{atk:90000,def:2000,hp:12},{atk:120000,def:2500,hp:15},{atk:160000,def:3100,hp:18},{atk:210000,def:3800,hp:21},{atk:280000,def:4600,hp:25}]};
-const HYP=[{n:'PARTE 1',d:'MATE OS LOBOS',need:14,cap:4,sp:55,k:['lobo']},{n:'PARTE 2',d:'CLONES DA HIDRA',need:20,cap:5,sp:45,k:['clone','lobo','lobo','clone']},{n:'PARTE 3',d:'A HORDA DA CACHOEIRA',need:30,cap:6,sp:35,k:['clone','lobo','clone','lobo','clone']}],HYMAX=7;
+const HYP=[{n:'PARTE 1',d:'MATE OS LOBOS',need:8,cap:3,sp:70,k:['lobo']},{n:'PARTE 2',d:'CLONES DA HIDRA',need:12,cap:4,sp:60,k:['clone','lobo','lobo','clone']},{n:'PARTE 3',d:'A HORDA DA CACHOEIRA',need:16,cap:5,sp:50,k:['clone','lobo','clone','lobo','clone']}],HYMAX=7;
 let HY={on:0};
 const hyAdm=()=>{try{return twIsAdm()}catch(e){return false}};
 function hySetup(f,kind,lv){f.hyK=kind;f.bPas=[];f.bLv=1;f.bCdm=1;
@@ -11103,7 +11103,7 @@ try{if(HYR.por){IMG.hidra=new Image();IMG.hidra.src=HYR.por}}catch(e){}
 /* desenho/movimento com os quadros certos (Hidra usa RQA.hidra; lobinhos coloridos com filtro) */
 {const _bd=bsDraw;bsDraw=function(f,reflect){const L=RQA.lobo;if(f.bR)RQA.lobo=f.bR;ctx.save();if(f.bFil&&!reflect)ctx.filter=f.bFil;try{return _bd.apply(this,arguments)}finally{ctx.restore();RQA.lobo=L}}}
 {const _bf=bsFrame;bsFrame=function(f){const r=_bf.apply(this,arguments);if(f.hyB&&r&&r[0]==='garras'&&r[1]===0&&(f.bs==='idle'||f.bs==='win'))return ['parado',Math.floor(G.frame/6)%6];if(f.hyB&&f.bs==='a_slam')return ['furia',f.bSlF|0];return r}}
-{const _bs=bsStep;bsStep=function(f,o){if(f.hyIdle){f.x=o.x;f.y=FLOOR;f.state='down';f.vx=0;return}if(f.bs==='a_slam')return hySlam(f,o);const L=RQA.lobo;if(f.bR)RQA.lobo=f.bR;try{return _bs.apply(this,arguments)}finally{RQA.lobo=L}}}
+{const _bs=bsStep;bsStep=function(f,o){if(f.hyIdle){const d=HY.dir||1;f.x=clamp(o.x+d*320,40,WW-40);if(Math.abs(f.x-o.x)<2)f.x=o.x+d*2;f.y=FLOOR;f.state='down';f.vx=0;f.facing=f.x>o.x?-1:1;return}if(f.bs==='a_slam')return hySlam(f,o);const L=RQA.lobo;if(f.bR)RQA.lobo=f.bR;try{return _bs.apply(this,arguments)}finally{RQA.lobo=L}}}
 /* Hidra: GOLPE DA FÚRIA (bate no chão, onda roxa): atordoa; do nível 3 em diante CONGELA */
 {const _bt=bsThink;bsThink=function(f,o,dist){if(f.hyB&&dist<330&&Math.random()<(f.hyK==='hidra'?.2+(f.hyLv||1)*.03:.1)){bsSet(f,'a_slam');return}return _bt.apply(this,arguments)}}
 function hySlam(f,o){f.bt++;f.st++;if(f.flash>0)f.flash--;if(f.inv>0)f.inv--;f.tdf=f.bDf||1;
@@ -11132,7 +11132,7 @@ function hySpawn(){const P=HYP[HY.st];if(!P)return;const p=G.p[0],side=Math.rand
 function hyHitMobs(p){const mv=p.move;if(p.state!=='attack'||!mv||!mv.hb||!(p.mf>mv.su&&p.mf<=mv.su+mv.ac))return;const key=G.frame-p.mf;
   for(const m of HY.mobs){if(m.ko||(m.hyLM===mv&&m.hyLK===key))continue;const hu=hurtbox(m);if(!hu)continue;const hb=hitbox(p,mv);if(!overlap(hb,hu))continue;m.hyLM=mv;m.hyLK=key;
     const px=p.x+p.facing*(mv.hb[0]+mv.hb[2]*.6),py=clamp(p.y+mv.hb[1]+mv.hb[3]/2,hu.y+20,hu.y+hu.h-20);applyHit(p,m,{smash:mv.smash,launcher:mv.launcher,dmg:mv.dmg,kb:mv.kb,hs:Math.min(8,mv.hs||8),launch:mv.launch,heavy:mv.heavy,low:mv.low,px,py,kind:mv.sword?'sword':'melee',ang:0})}}
-function hyTick(){if(!HY.on||!G.p||G.mode!=='fight')return;const p=G.p[0];if(G.timer<60)G.timer=99;try{hyItemsTick(p)}catch(e){}if(HY.gate&&p.x>WW-170&&G.phase==='fight')hyNext();
+function hyTick(){if(!HY.on||!G.p||G.mode!=='fight')return;const p=G.p[0];if(G.timer<60)G.timer=99;try{hyItemsTick(p)}catch(e){}if(HY.gate&&p.x>WW-170&&G.phase==='fight')hyNext();if(HY.gate){const I=p.inp||{};if(I.right&&!I.left)HY.dir=1;else if(I.left&&!I.right)HY.dir=-1}
   for(const d of HY.dead){d.hyDT=(d.hyDT||0)+1;try{bsStep(d,p)}catch(e){}}HY.dead=HY.dead.filter(d=>d.hyDT<70);
   if(G.phase!=='fight'||G.paused||HY.busy)return;
   for(const m of HY.mobs){if(m.ko)continue;try{updFighter(m,p)}catch(e){}}
@@ -11158,7 +11158,7 @@ function hyRedAge(){return Math.round(100*Math.pow(5000,Math.pow(Math.random(),1
 function hyRing(lv){const W=lv<=1?[25,30,25,15,5]:lv===2?[15,28,28,20,9]:lv===3?[8,22,30,26,14]:lv===4?[3,15,28,32,22]:lv===5?[0,8,22,35,35]:lv===6?[0,4,18,36,42]:[0,0,14,36,50];let q=Math.random()*W.reduce((a,b)=>a+b,0),c=0;for(let i=0;i<5;i++){if((q-=W[i])<0){c=i;break}}
   const r=anRoll(c,Math.min(10,4+lv*1.2|0));if(c===4){r.a=hyRedAge();const k=.5+1.5*Math.log10(r.a/100)/Math.log10(5000);r.v=Math.round(r.v*k*10)/10;r.hy=1}return r}
 function hyChest(tier,x){if(x!=null&&HY.on){hyDrop('bau',x,{tier});return []}return hyChestOpen(tier,null)}
-function hyChestOpen(tier,at,ng){const L=HY.loot,R=[],it=[];const give=(k,o,tx)=>{if(ng&&k==='gem')return;R.push(tx);if(at!=null)it.push(Object.assign({k},o));else hyGrant(Object.assign({k},o))};const g=[8,10,12,12,14,15,17,18,20,24][tier]||12;give('gem',{n:g},'💎 +'+g);
+function hyChestOpen(tier,at,ng){const L=HY.loot,R=[],it=[];const give=(k,o,tx)=>{if(ng&&k==='gem')return;R.push(tx);if(at!=null)it.push(Object.assign({k},o));else hyGrant(Object.assign({k},o))};const g=[15,18,20,0,20,0,24,0,25,28][tier]||0;if(g)give('gem',{n:g},'💎 +'+g);
   const j=tier>=3?2:1;give('jn',{n:j},'💠 +'+j);const po=150+tier*60;give('po',{n:po},'🟣 +'+po);
   const cr=Math.min(4,Math.floor(tier/2));give('cr',{n:cr},'💎 cristal '+RKRNM[cr]);
   const n=tier>=9?4:tier>=6?3:tier>=3?2:1;for(let i=0;i<n;i++){const r=hyRing(Math.max(1,tier-2));give('an',{r},'💍 '+ANC[r.c][0]+(r.c===4?' ('+anAge(r)+')':''))}give('cura',{},'');R.pop();
@@ -11172,7 +11172,7 @@ function hyClear(){if(HY.gate||HY.busy)return;const st=HY.st,p=G.p[0];banner(HYP
 function hyNext(){const p=G.p[0];hyCollectAll();HY.gate=0;HY.busy=1;HY.kills=0;hyFade(()=>{HY.busy=0;HY.st++;HY.kills=0;HY.spawnT=40;HY.items=[];const k=HYK[Math.min(2,HY.st)];hyStg(k);p.x=180;p.y=FLOOR;p.vx=0;p.facing=1;
     if(HY.st<3){G.p[1]=hyMk(HYP[HY.st].k[0],720);banner('CAÇA · HIDRA','#c050ff',100,HYP[HY.st].n+' · '+HYP[HY.st].d)}
     else{HY.lv=1;G.p[1]=hyMk('hidra',900,1);G.p[1].bEye=60;banner('A HIDRA APARECEU!','#ff4dff',130,'NÍVEL 1 DE '+HYMAX);G.shake=24;try{SFX.boom()}catch(e){}}},300)}
-function hyBossUp(a,d){HY.busy=1;const lv=HY.lv;banner('HIDRA NÍVEL '+lv+' DERROTADA!','#ffd84a',80,'🎁 BAÚ NO CHÃO');hyChest(2+lv,clamp(d.x+(d.x<G.p[0].x?-120:120),160,WW-160));
+function hyBossUp(a,d){HY.busy=1;const lv=HY.lv;banner('HIDRA NÍVEL '+lv+' DERROTADA!','#ffd84a',80,lv%2===0?'🎁 BAÚ NO CHÃO':'ELA VAI LEVANTAR...');if(lv%2===0)hyChest(2+lv,clamp(d.x+(d.x<G.p[0].x?-120:120),160,WW-160));
   d.hp=1;d.inv=999;bsSet(d,'hurt');d.state='down';d.downT=0;G.slow=40;G.flash=10;G.flashCol='#c050ff';G.shake=26;
   setTimeout(()=>{if(!HY.on)return;HY.lv=lv+1;try{hyStg(HYK[Math.min(6,2+HY.lv-1)])}catch(e){}hyDrop('cura',d.x+(Math.random()<.5?-160:160));const x=d.x;hySetup(d,'hidra',HY.lv);d.hyRev=0;d.x=x;d.inv=40;d.state='idle';d.bEye=70;d.ko=false;
     G.flash=14;G.flashCol='#ffffff';G.shake=30;try{SFX.boom();for(const r of [420,280,150])ring(d.x,d.y-150,r===150?'#ffffff':'#c050ff',r,26,8)}catch(e){}banner('A HIDRA LEVANTOU!','#ff4dff',120,'NÍVEL '+HY.lv+' DE '+HYMAX+' · MAIS FORTE');HY.busy=0},1700)}
@@ -11250,7 +11250,7 @@ hyItemsDraw=function(){const I=HY.items||[];for(const it of I){const src=HYIC[it
     if(big&&it===HY.near&&!it.open&&!it.opening){ctx.fillStyle='#fff3b0';ctx.font='900 26px sans-serif';ctx.textAlign='center';ctx.fillText('▼',it.x,y-14+Math.sin(G.frame*.2)*5)}ctx.restore()}
   if(HY.gate&&G.p){const x=WW-120,y=FLOOR-170,a=.6+.4*Math.sin(G.frame*.15);ctx.save();ctx.globalAlpha=a;ctx.fillStyle='#ffd84a';ctx.font='900 64px sans-serif';ctx.textAlign='center';ctx.fillText('➡',x,y);ctx.font='900 26px sans-serif';ctx.fillText('SIGA',x,y+36);ctx.restore()}};
 /* exploração: depois da Parte 1 e da Parte 2, um mapa sem inimigos com baús escondidos pelo caminho */
-const HYEX=[{k:'hx1',n:'TRILHA DA FLORESTA',b:[[700,1],[1350,2],[2000,3]]},{k:'hx2',n:'ÁRVORE ANCESTRAL',b:[[600,2],[1150,3],[1650,4],[2150,5]]}];
+const HYEX=[{k:'hx1',n:'TRILHA DA FLORESTA',b:[[1500,2]]},{k:'hx2',n:'ÁRVORE ANCESTRAL',b:[[1300,4]]}];
 {const _nx=hyNext;hyNext=function(){if(HY.busy)return;if(HY.ex||HY.st>1||!HYR.ex||!STG.hx1)return (HY.ex=0,_nx.apply(this,arguments));
   const p=G.p[0],E=HYEX[HY.st];hyCollectAll();HY.busy=1;HY.ex=1;HY.gate=0;HY.kills=0;hyFade(()=>{HY.busy=0;HY.items=[];hyStg(E.k);p.x=180;p.y=FLOOR;p.vx=0;p.facing=1;HY.gate=1;
     E.b.forEach(([x,bt],i)=>{const it=hyDrop('bau',x,{tier:bt+1,bt,ng:1},0,-2);it.y-=i*120});
@@ -11447,7 +11447,7 @@ window.__dbg={mus:()=>[MCUR,MEL.src.split('/').pop()],stg:()=>STAGE.key,prepMatc
 })();
 </script>
 <style>#updB{position:fixed;left:50%;top:max(8px,env(safe-area-inset-top));transform:translateX(-50%);z-index:99999;padding:10px 22px;border-radius:14px;border:2px solid #fff3c0;background:linear-gradient(#ffd84a,#e08a10);color:#3a1d00;font:900 15px system-ui,sans-serif;box-shadow:0 0 18px #ffb21f;cursor:pointer;animation:updP 1s ease-in-out infinite alternate}@keyframes updP{to{transform:translateX(-50%) scale(1.05)}}</style>
-<script>(function(){const V='d138f6d825fe';if(!/^https?:/.test(location.protocol))return;let nv=null;
+<script>(function(){const V='a42ea446bb77';if(!/^https?:/.test(location.protocol))return;let nv=null;
 function show(){if(document.getElementById('updB'))return;try{if(typeof G!=='undefined'&&G.mode==='fight')return}catch(e){}const b=document.createElement('button');b.id='updB';b.textContent='🔄 ATUALIZAÇÃO NOVA! Toque para atualizar';
   b.onclick=()=>{b.textContent='⏳ Atualizando...';try{acSave(1)}catch(e){}setTimeout(()=>location.reload(),900)};document.body.appendChild(b)}
 async function chk(){if(document.hidden)return;if(nv){show();return}try{const r=await fetch('versao.txt?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const t=(await r.text()).trim();if(/^[0-9a-f]{8,40}$/.test(t)&&t!==V){nv=t;show()}}catch(e){}}
