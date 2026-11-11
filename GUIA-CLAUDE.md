@@ -1641,3 +1641,8 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - Passivas: botão "GIRAR x5" (usa até 5 Joias, mínimo 2). Sorteia todas (cada uma conta proteção e passe), guarda `o.pendL` e abre a escolha (`psPick`): escolher uma = aplica; "MANTER ANTIGA" = descarta todas. Se sair do jogo no meio, a escolha volta ao abrir as Passivas. Teste `tps5_v342.js`.
 - Campo novo `adm:1` no `TWCUP` (wrapper `_cp8`): só quem tem o título ADM. `115nx35` = 700 Joias Negras, 1 pessoa no jogo inteiro (`uni:1`). Texto só com o dono.
 - Faixa de evento (`evBar`) agora só no menu Modos de Jogo (`RKV==='menu'`) e some quando abre uma janela.
+
+## v343 — sorte e drop também na RARIDADE
+- Conferido: sorte/drop já valiam na QUANTIDADE e na CHANCE (pó, cristais, gemas e moedas extras no Boss/Torre, Joia Negra, itens de elevação, baús, poções, tickets, anéis na Caça). Mas as chances já ficavam em 100% e a raridade quase não mudava, por isso o dono não sentia diferença.
+- Agora `lkK()` = giros extras "pega o melhor" pela sorte (`log2(lvLuck)`, máx. 5) em `twEqRoll` (equipamento), `twPoRoll` (poção), `lvCrRoll` (cristal) e na raridade do Anel da Alma (`anDropLobo`, que também passou o limite da sorte de 1,6 para 4).
+- Medido (4000 sorteios, `tsorte_v343.js`): jogador comum sem evento = 0,2% mítico; com evento 3x = 0,7%; ADM com evento (sorte 79x, drop 6x) = 1,2% mítico, 7,9% lendário, comum cai de 70% para 11%.

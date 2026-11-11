@@ -1793,8 +1793,8 @@ function anRoll(c,lv){let q=Math.random()*100,g=0;for(let i=0;i<8;i++){if((q-=AN
   const a=c===3?(lv>=9?50000+((Math.random()*25001)|0):25000+((Math.random()*25000)|0)):0;return {i:Date.now().toString(36)+Math.random().toString(36).slice(2,6),c,g,s,v:ANV[c][g],a}}
 function anGive(r){const L=anL();L.push(r);rkS('an',L);return r}
 /* drop do Lobo Negro: L = nível que acabou de ser derrotado */
-function anDropLobo(L){const ch=[.25,.3,.35,.4,.45,.5,.55,.6,.7,.8][L-1]*Math.min(1.6,lvLuck());if(Math.random()>=Math.min(.95,ch))return null;
-  const W=[[0,70],[1,L>=3?25:0],[2,L>=5?6:0],[3,L>=7?(L>=9?1.6:.8):0],[4,L>=9?(L>=10?.35:.15):0]];let t=W.reduce((a,x)=>a+x[1],0),q=Math.random()*t,c=0;for(const [k,w] of W){if((q-=w)<0){c=k;break}}
+function anDropLobo(L){const ch=[.25,.3,.35,.4,.45,.5,.55,.6,.7,.8][L-1]*Math.min(4,lvLuck());if(Math.random()>=Math.min(.95,ch))return null;
+  const W=[[0,70],[1,L>=3?25:0],[2,L>=5?6:0],[3,L>=7?(L>=9?1.6:.8):0],[4,L>=9?(L>=10?.35:.15):0]];let t=W.reduce((a,x)=>a+x[1],0),c=0;for(let n=0;n<=lkK();n++){let q=Math.random()*t,cc=0;for(const [k,w] of W){if((q-=w)<0){cc=k;break}}if(cc>c)c=cc}
   return anGive(anRoll(c,L))}
 /* tela */
 function anH(){const id=AN.ch&&(rkG('own',['goku']).includes(AN.ch))?AN.ch:(AN.ch=rkG('sel','goku'));const E=anEq(id),n=anSlots(id),L=anL(),lv=lvOf(id).lv,T=anSum(id),SP=[[583,163],[720,232],[775,352],[720,477],[583,532],[445,477],[390,352],[445,232]];
@@ -2845,4 +2845,11 @@ function psPick(){const o=psG(),L=o.pendL||[];if(!o.pend||L.length<2)return;cons
 /* v342: código só para o ADM (campo adm:1) */
 {const _cp8=twCupom;twCupom=async function(code,E){const C=TWCUP[twHash(String(code).toUpperCase())];if(C&&C.adm&&!twIsAdm()){E.className='twH err';E.textContent='❌ Esse código é só para quem tem o título de ADMINISTRADOR.';try{twSfx('clang')}catch(e){}return true}return _cp8.apply(this,arguments)}}
 TWCUP['115nx35']={nm:'700 GIROS DE PASSIVA',jn:700,uni:1,adm:1};
-try{window.__pvT={G:()=>G,ko:(a,d)=>ko(a,d),ev:()=>rkEvX(),m:()=>[rkEvG(),rkEvL(),rkEvD(),rkEvA()],dl:id=>pvDelta(id)}}catch(e){} /* só para os testes */
+try{window.__pvT={G:()=>G,ko:(a,d)=>ko(a,d),ev:()=>rkEvX(),m:()=>[rkEvG(),rkEvL(),rkEvD(),rkEvA()],lk:()=>{const c={};for(let i=0;i<4000;i++){const r=twEqRoll().k;c[r]=(c[r]||0)+1}const a=[0,0,0,0,0];for(let i=0;i<4000;i++)a[lvCrRoll()]++;return {luck:+lvLuck().toFixed(2),drop:+rkDropF().toFixed(2),extra:lkK(),equip:c,cristal:a}},dl:id=>pvDelta(id)}}catch(e){} /* só para os testes */
+
+/* v343: SORTE e DROP também melhoram a RARIDADE (antes só aumentavam quantidade/chance, que já ficava em 100%).
+   lkK = giros extras "pega o melhor": sorte x2 = +1, x4 = +2, x8 = +3 ... (máx. +5). Vale para equipamento, poção, cristal e Anel da Alma. */
+const lkK=()=>{let L=1;try{L=lvLuck()}catch(e){}return Math.max(0,Math.min(5,Math.floor(Math.log2(Math.max(1,L)))))};
+{const _er=twEqRoll;twEqRoll=function(){let R=_er.apply(this,arguments);const k=lkK();for(let i=0;i<k;i++){const B=twEqRoll0();if(TWEQR.indexOf(B)>TWEQR.indexOf(R))R=B}return R}}
+{const _cr=lvCrRoll;lvCrRoll=function(){let r=_cr.apply(this,arguments);const k=lkK();for(let i=0;i<k;i++)r=Math.max(r,_cr.apply(this,arguments));return r}}
+{const _pr=twPoRoll;twPoRoll=function(){let R=_pr.apply(this,arguments);const k=lkK(),ix=x=>TWPOR.indexOf(x);for(let i=0;i<k;i++){const B=_pr.apply(this,arguments);if(ix(B)>ix(R))R=B}return R}}
