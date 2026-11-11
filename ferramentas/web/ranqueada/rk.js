@@ -3041,7 +3041,7 @@ try{if(HYR.por){IMG.hidra=new Image();IMG.hidra.src=HYR.por}}catch(e){}
 /* desenho/movimento com os quadros certos (Hidra usa RQA.hidra; lobinhos coloridos com filtro) */
 {const _bd=bsDraw;bsDraw=function(f,reflect){const L=RQA.lobo;if(f.bR)RQA.lobo=f.bR;ctx.save();if(f.bFil&&!reflect)ctx.filter=f.bFil;try{return _bd.apply(this,arguments)}finally{ctx.restore();RQA.lobo=L}}}
 {const _bf=bsFrame;bsFrame=function(f){const r=_bf.apply(this,arguments);if(f.hyB&&r&&r[0]==='garras'&&r[1]===0&&(f.bs==='idle'||f.bs==='win'))return ['parado',Math.floor(G.frame/6)%6];if(f.hyB&&f.bs==='a_slam')return ['furia',f.bSlF|0];return r}}
-{const _bs=bsStep;bsStep=function(f,o){if(f.hyIdle){f.x=o.x+(o.facing||1)*40;f.y=FLOOR;f.state='idle';return}if(f.bs==='a_slam')return hySlam(f,o);const L=RQA.lobo;if(f.bR)RQA.lobo=f.bR;try{return _bs.apply(this,arguments)}finally{RQA.lobo=L}}}
+{const _bs=bsStep;bsStep=function(f,o){if(f.hyIdle){f.x=o.x;f.y=FLOOR;f.state='down';f.vx=0;return}if(f.bs==='a_slam')return hySlam(f,o);const L=RQA.lobo;if(f.bR)RQA.lobo=f.bR;try{return _bs.apply(this,arguments)}finally{RQA.lobo=L}}}
 /* Hidra: GOLPE DA FÚRIA (bate no chão, onda roxa): atordoa; do nível 3 em diante CONGELA */
 {const _bt=bsThink;bsThink=function(f,o,dist){if(f.hyB&&dist<330&&Math.random()<(f.hyK==='hidra'?.2+(f.hyLv||1)*.03:.1)){bsSet(f,'a_slam');return}return _bt.apply(this,arguments)}}
 function hySlam(f,o){f.bt++;f.st++;if(f.flash>0)f.flash--;if(f.inv>0)f.inv--;f.tdf=f.bDf||1;

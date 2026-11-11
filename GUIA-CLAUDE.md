@@ -1718,3 +1718,7 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - Itens no chão (`HY.items`, `hyDrop`/`hyItemsTick`/`hyItemsDraw`): baú abre ao chegar perto e espalha os prêmios flutuando (gema, joia, pó, cristal, anéis, cura); passar por cima pega (`hyGrant`). Poção de CURA (+10% da vida) cai de 14% dos monstros, de cada baú e a cada nível da Hidra. O que ficar para trás é entregue ao trocar de mapa/terminar (`hyCollectAll`, menos a cura). Gemas somam 150 numa caçada completa (10 baús).
 - Lobinhos coloridos/clones: quadros pintados uma vez num canvas (`hyTinted`) em vez de `ctx.filter` a cada quadro (celular).
 - Correções: a Hidra não "morre" de novo enquanto levanta (`hyRev`; golpes com `lock` ignoravam a invencibilidade e davam vários baús); qualquer besta da caçada fora da lista não cai mais no `caLvUp` do lobo (aparecia a tela "NÍVEL 1 DERROTADO" no meio).
+
+## v356 — Hidra: sem "vento" empurrando
+- O inimigo invisível do "SIGA EM FRENTE" (`hyIdle`) ficava 40px na frente do jogador e o motor separa os dois lutadores (80px) a cada quadro → o jogador era empurrado para trás sem parar. Agora ele fica no mesmo x em `state='down'` (o motor não separa quem está caído). Testado: parado não anda sozinho; andando para a direita troca de parte.
+- Pendente (o dono vai mandar artes): modo EXPLORAÇÃO na Caça — depois dos mini-bosses, andar pelo mapa sem inimigos procurando baús; mais partes de mapa. NÃO começar antes de ele mandar tudo.
