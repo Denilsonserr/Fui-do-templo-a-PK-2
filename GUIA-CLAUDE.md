@@ -1569,3 +1569,11 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 
 ## v329
 - Anéis: personagem menor e no centro do círculo (`lbPed(id,0,[497,225,653,505])`). Ranking: só o nome (o emblema já mostra o rank) e o título só como escrita com brilho (`rgTit`, sem caixa; ADM só aparece para o nome do ADM). Equipamentos: tirados os nomes embaixo dos quadradinhos (fica só "EM BREVE" nos fechados).
+
+## v330 — GACHA COM CARTAS (artes do dono)
+- O sistema do gacha não mudou; só a revelação. `rkCards` foi trocado no fim do `rk.js` (CSS `.crO/.crG/.crC` no fim do `rk.css`).
+- Artes em `ferramentas/ranqueada_artes/v330/` (costas, item, uma carta por personagem; `modelo_10.png` é só a referência do dono). `fazer.py` deixa todas em 700x1020 webp → `CRT` (`bk` costas, `it` carta prata de item, `chr[id]` personagem). Raposa = Qingqing.
+- Giro de 10: 10 cartas de costas (5x2) entram voando e viram uma por uma. Giro de 1: uma carta grande. Antes de virar, lendário/mítico "carregam" com a cor e tremem; depois brilho por nível (`crtLv`: 3 = mítico e Shaka limitado com raios, holográfico e faíscas; 2 = lendário; 1 = épico; 0 = comum). Mega sorte e vídeo do personagem continuam iguais.
+- Itens (moeda, equipamento, especiais): carta prata `N`, ícone pequeno no quadrado e nome na faixa de baixo. Personagem novo sem carta usa a carta prata com o retrato.
+- Para personagem novo: pôr a carta em `v330/<id>.png`, rodar `fazer.py` e adicionar em `CRT.chr`.
+- Testes: `tcartas_v330.js`, `tcartas1_v330.js`, `tcartasfps_v330.js` (CPU 4x: 56–60 quadros/s).

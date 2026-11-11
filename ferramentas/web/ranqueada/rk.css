@@ -1425,3 +1425,80 @@ img.anOn{position:relative;z-index:2}
 .lb2 .lbPd.an{filter:none}
 .rk_rkg .rgT{background:none!important;border:0!important;box-shadow:none!important;padding:0!important;outline:0!important}
 .lb2 .lbNm2.an small{font-size:.8em}
+/* ===== v330: gacha com cartas ===== */
+.crO{background:radial-gradient(ellipse at 50% 45%,#2b0f55 0%,#12062a 45%,#04020a 85%);overflow:hidden;gap:1.6vh}
+.crO .crFog{position:absolute;left:50%;top:50%;width:160vmax;height:160vmax;margin:-80vmax 0 0 -80vmax;pointer-events:none;background:conic-gradient(from 0deg,transparent 0 8%,rgba(170,80,255,.22) 14%,transparent 22% 40%,rgba(120,40,220,.2) 48%,transparent 56% 72%,rgba(200,110,255,.18) 80%,transparent 88%);border-radius:50%;-webkit-mask:radial-gradient(circle,transparent 12%,#000 30%,transparent 62%);mask:radial-gradient(circle,transparent 12%,#000 30%,transparent 62%);animation:crRot 40s linear infinite}
+.crO .crFog.f2{animation-duration:62s;animation-direction:reverse;opacity:.7;transform:scale(.8)}
+@keyframes crRot{to{transform:rotate(360deg)}}
+.crO .row{position:relative;z-index:3}
+.crG{position:relative;z-index:2;display:grid;grid-template-columns:repeat(5,auto);gap:4.6vh 2.4vh;justify-content:center;align-content:center}
+.crG.one{grid-template-columns:auto}
+.crC{--c:#fff;position:relative;height:34vh;aspect-ratio:700/1020;cursor:pointer;perspective:1400px;animation:crIn .55s cubic-bezier(.2,1.3,.4,1) backwards;animation-delay:calc(var(--i)*60ms + 80ms)}
+.crG.one .crC{height:66vh}.crO .crG.one{margin-bottom:3.4vh}
+@keyframes crIn{0%{opacity:0;transform:translateY(40vh) scale(.3) rotate(-14deg)}100%{opacity:1;transform:none}}
+.crC .bk,.crC .fr{position:absolute;inset:0;border-radius:4%/2.8%;overflow:hidden;backface-visibility:hidden;-webkit-backface-visibility:hidden;transition:transform .7s cubic-bezier(.25,.9,.25,1.05);z-index:2}
+.crC .bk{transform:rotateY(0);box-shadow:0 0 1.4vh rgba(170,90,255,.55),0 0 .3vh #000}
+.crC .fr{transform:rotateY(180deg);box-shadow:0 0 .3vh #000}
+.crC.rv .bk{transform:rotateY(-180deg)}.crC.rv .fr{transform:rotateY(0)}
+.crC .bk img,.crC .fr .cf{position:absolute;inset:0;width:100%;height:100%;display:block;user-select:none;-webkit-user-drag:none}
+/* costas: luz passando devagar */
+.crC .sh{position:absolute;top:-10%;bottom:-10%;left:0;width:60%;pointer-events:none;background:linear-gradient(105deg,transparent 30%,rgba(255,255,255,.08) 42%,rgba(255,240,255,.55) 50%,rgba(255,255,255,.08) 58%,transparent 70%);transform:translateX(-140%);z-index:3}
+.crC .bk .sh{animation:crSh 3.6s ease-in-out infinite;animation-delay:calc(var(--i)*.18s)}
+@keyframes crSh{0%,55%{transform:translateX(-140%)}100%{transform:translateX(240%)}}
+/* item: ícone pequeno no quadrado da caixinha, nome na faixa de baixo */
+.crC .ci{position:absolute;left:35%;top:36.5%;width:30%;aspect-ratio:1;display:flex;align-items:center;justify-content:center;background:radial-gradient(circle,#1c1c22 40%,#0b0b0e 75%);border-radius:8%}
+.crC .ci img{width:84%;height:84%;object-fit:contain;filter:drop-shadow(0 0 .7vh var(--c))}
+.crC .cn{position:absolute;left:14%;right:14%;top:83.4%;height:8%;display:flex;align-items:center;justify-content:center;text-align:center;font:900 1.35vh/1 var(--f-ui);color:#fff;letter-spacing:.04em;text-shadow:0 0 .5vh var(--c),0 1px 2px #000;overflow:hidden}
+.crG.one .crC .cn{font-size:2.8vh}
+.crC .tg{position:absolute;left:-10%;right:-10%;top:calc(100% + .6vh);text-align:center;font:900 1.5vh/1 var(--f-ui);font-style:normal;color:#ddd;text-shadow:0 1px 2px #000;opacity:0;transition:opacity .3s .5s;z-index:4}
+.crC .tg.nw{color:#ffe55a;text-shadow:0 0 .8vh #ffb000,0 1px 2px #000}
+.crG.one .crC .tg{font-size:2.6vh}
+.crC.rv .tg{opacity:1}
+/* virada: carta sobe um pouco e um clarão na hora */
+.crC.rv{animation:crPop .7s ease-out}
+@keyframes crPop{0%{transform:scale(1)}40%{transform:scale(1.13)}100%{transform:scale(1)}}
+.crC .fl{position:absolute;inset:-20%;z-index:5;pointer-events:none;background:radial-gradient(closest-side,#fff,color-mix(in srgb,var(--c) 70%,transparent) 45%,transparent);opacity:0;border-radius:50%}
+.crC.rv .fl{animation:crFl .7s ease-out}
+.crC.lv0.rv .fl{animation-duration:.4s;inset:0}
+@keyframes crFl{0%{opacity:0;transform:scale(.4)}30%{opacity:.95;transform:scale(1)}100%{opacity:0;transform:scale(1.3)}}
+/* brilho atrás da carta (só depois de virar) */
+.crC .gl{position:absolute;inset:-14% -22%;z-index:1;pointer-events:none;border-radius:50%;background:radial-gradient(closest-side,color-mix(in srgb,var(--c) 75%,transparent),color-mix(in srgb,var(--c) 25%,transparent) 55%,transparent);opacity:0;transition:opacity .4s}
+.crC.lv1.rv .gl{opacity:.45}
+.crC.lv2.rv .gl{opacity:.8;animation:crGl 1.6s ease-in-out infinite alternate}
+.crC.lv3.rv .gl{opacity:1;inset:-24% -34%;animation:crGl 1.1s ease-in-out infinite alternate}
+@keyframes crGl{0%{transform:scale(.92);opacity:.65}100%{transform:scale(1.06);opacity:1}}
+.crC.lv2.rv .fr,.crC.lv3.rv .fr{box-shadow:0 0 .4vh #fff,0 0 1.6vh var(--c),0 0 3.4vh var(--c)}
+/* luz passando na frente: lendário de vez em quando, mítico/limitado sempre */
+.crC.lv1.rv .fr .sh{animation:crSh2 1.1s .5s ease-out 1 both}
+.crC.lv2.rv .fr .sh{animation:crSh2 2.8s .5s ease-in-out infinite}
+.crC.lv3.rv .fr .sh{animation:crSh2 1.9s .4s ease-in-out infinite;width:70%}
+@keyframes crSh2{0%{transform:translateX(-140%)}60%,100%{transform:translateX(240%)}}
+/* holográfico (só mítico e limitado) */
+.crC .ho{position:absolute;inset:0;pointer-events:none;z-index:2;opacity:0;overflow:hidden}
+.crC.lv3.rv .ho{opacity:.55}
+.crC.lv3 .ho::before{content:'';position:absolute;top:0;bottom:0;left:-100%;width:300%;background:linear-gradient(115deg,transparent 18%,rgba(255,60,110,.28) 30%,rgba(255,215,110,.32) 40%,rgba(120,220,255,.28) 50%,rgba(200,120,255,.3) 60%,transparent 72%);animation:crHo 3.2s linear infinite}
+@keyframes crHo{0%{transform:translateX(-33%)}100%{transform:translateX(33%)}}
+/* raios girando atrás (só mítico e limitado) */
+.crC .ry{position:absolute;left:50%;top:50%;width:190%;aspect-ratio:1;margin-left:-95%;transform:translateY(-50%);z-index:0;pointer-events:none;opacity:0;border-radius:50%;transition:opacity .5s}
+.crC.lv3 .ry::before{content:'';position:absolute;inset:0;border-radius:50%;background:repeating-conic-gradient(color-mix(in srgb,var(--c) 70%,transparent) 0 5deg,transparent 5deg 17deg);-webkit-mask:radial-gradient(circle,#000 14%,transparent 64%);mask:radial-gradient(circle,#000 14%,transparent 64%);animation:crRot 9s linear infinite}
+.crC.lv3.rv .ry{opacity:.85}
+.crG:not(.one) .crC.lv3 .ry{width:160%;margin-left:-80%}
+/* faíscas subindo (mítico e limitado) */
+.crC .spk{position:absolute;inset:-6% -4%;z-index:4;pointer-events:none;opacity:0;transition:opacity .4s .3s}
+.crC.rv .spk{opacity:1}
+.crC .spk s{position:absolute;left:var(--x);bottom:0;width:.7vh;height:.7vh;border-radius:50%;background:#fff;box-shadow:0 0 .6vh #fff,0 0 1.4vh var(--c);opacity:0;animation:crSp var(--t) var(--d) linear infinite}
+@keyframes crSp{0%{transform:translateY(0) scale(.6);opacity:0}15%{opacity:1}100%{transform:translateY(-34vh) scale(.2);opacity:0}}
+.crG:not(.one) .crC .spk s{width:.45vh;height:.45vh}
+/* antes de virar: a carta carrega com a cor da raridade (lendário treme leve, mítico treme forte) */
+.crC.chg .bk{box-shadow:0 0 .6vh #fff,0 0 2vh var(--c),0 0 4.5vh var(--c)}
+.crC.chg .gl{opacity:.9;transition:opacity .2s}
+.crC.lv2.chg{animation:crSk .11s linear infinite}
+.crC.lv3.chg{animation:crSk2 .07s linear infinite}
+.crC.lv3.chg .ry{opacity:.6}
+@keyframes crSk{0%,100%{transform:translate(0)}25%{transform:translate(-.25vh,.15vh)}75%{transform:translate(.25vh,-.15vh)}}
+@keyframes crSk2{0%,100%{transform:translate(0) scale(1.04)}25%{transform:translate(-.5vh,.3vh) scale(1.04)}75%{transform:translate(.5vh,-.3vh) scale(1.04)}}
+/* Shaka (limitado): branco dourado */
+.crC.sk.rv .fr{box-shadow:0 0 .6vh #fff,0 0 2vh #ffe9a0,0 0 4.5vh #ffc21f}
+/* aparelho fraco: menos enfeites */
+.crO.lo .crFog.f2,.crO.lo .crC .spk,.crO.lo .crC .ho{display:none}
+.crO.lo .crC .bk .sh{animation:none}

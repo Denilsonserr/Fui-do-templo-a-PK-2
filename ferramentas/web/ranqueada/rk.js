@@ -2527,3 +2527,34 @@ function rgDraw(){const B=$('rgBody');if(!B)return;const L=RG2.L,t=RG2.tab,me=tw
   W.querySelectorAll('[data-a]').forEach(b=>b.onclick=e=>{e.stopPropagation();rkAct(b.dataset.a,b)});rgDraw()}}
 {const _a=rkAct;rkAct=function(a,b){if(a==='rgTab'){rkSfx('whoosh');return rkRanking(b.dataset.t)}if(a==='rgPrev'||a==='rgNext'){rkSfx('whoosh');RG2.pg=Math.max(0,RG2.pg+(a==='rgNext'?1:-1));return rgDraw()}
   if(RKV==='rkg'&&a==='back')return rkView('menu');return _a.apply(this,arguments)}}
+
+/* ================= v330: GACHA COM CARTAS (artes do dono) — carta de costas, vira e mostra o personagem; itens na carta prata ================= */
+const CRT={bk:'a/a026770f8f7f6a.webp',it:'a/edd27632976e32.webp',chr:{aokiji:'a/0a098fa695642e.webp',aylla:'a/6ccef38861c12b.webp',broly:'a/b50ec01de304e7.webp',garou:'a/1153f60fd2534a.webp',gogeta:'a/3b6e662b4656af.webp',gojo:'a/54f2e8cb75d85a.webp',goku:'a/dc7ffa3d455519.webp',luffy:'a/58a4c5ee6a535f.webp',madara:'a/415275a74f441a.webp',naruto:'a/1aac141047dc70.webp',qingqing:'a/218e313507e907.webp',rengoku:'a/ffb9cd6d0075e2.webp',shaka:'a/01406711aaca1e.webp',vegeta:'a/fdbf12bb9602dd.webp',yuta:'a/d4b37c9906976a.webp',zaykon:'a/105d9294df3dc4.webp',zedry:'a/2a60d060ca8d21.webp',zoro:'a/241a16a1f4a5bf.webp'}};
+let CRTP=null;{const _go=rkGachaOn;rkGachaOn=function(){_go.apply(this,arguments);if(!CRTP)CRTP=rkPre([CRT.bk,CRT.it])}}
+const crtCor=x=>x.id==='shaka'?'#fff0b0':x.r==='sec'||x.r==='obs'?'#bfe8ff':x.k==='sp'?'#ff2e63':(TWEQR.find(R=>R.k===x.r)||TWEQR[0]).c;
+/* nível do brilho: 3 = mítico/limitado (o mais forte), 2 = lendário, 1 = épico, 0 = comum */
+const crtLv=x=>x.id==='shaka'||(x.k==='chr'&&x.r==='mit')||rkHi(x.r)?3:x.r==='mit'||x.k==='sp'||x.r==='lend'?2:x.r==='epica'?1:0;
+function crtFront(x){const a=x.k==='chr'&&CRT.chr[x.id];if(a)return `<img class="cf" src="${a}" alt="" draggable="false">`;
+  let ic='',nm='';if(x.k==='chr'){ic=IMG[x.id]?IMG[x.id].src:'';nm=CH[x.id]?CH[x.id].name:x.id}else if(x.k==='eq'){ic=twIco(x.E.k,x.r);nm=x.E.n}else if(x.k==='sp'){const S=RKSP[x.s]||RKSP.sec;ic=S.img;nm=S.nm}else{ic=RQA.coin[1];nm='+'+x.n+' MOEDA VERMELHA'}
+  return `<img class="cf" src="${CRT.it}" alt="" draggable="false"><div class="ci"><img src="${ic}" alt="" draggable="false"></div><b class="cn">${nm}</b>`}
+function crtTag(x){if(x.k==='chr')return x.nw?'<i class="tg nw">NOVO!</i>':`<i class="tg">REPETIDO +${x.dup}💎</i>`;
+  if(x.k==='eq')return `<i class="tg" style="color:${crtCor(x)}">${(TWEQR.find(R=>R.k===x.r)||TWEQR[0]).n}</i>`;if(x.k==='sp')return `<i class="tg" style="color:${crtCor(x)}">${rkHi(x.r)?'✦ SECRETO ✦':'MÍTICO ESPECIAL'}</i>`;return ''}
+const crtW=ms=>new Promise(r=>setTimeout(r,ms));
+rkCards=function(L){const O=document.createElement('div');O.className='rkRes2 crO'+(document.body.classList.contains('lowfx')?' lo':'');const one=L.length===1;
+  const sp=()=>Array.from({length:9},(_,j)=>`<s style="--x:${8+j*10.5}%;--d:${(j*.37)%1.6}s;--t:${1.6+(j%3)*.5}s"></s>`).join('');
+  O.innerHTML=`<i class="crFog"></i><i class="crFog f2"></i><div class="crG ${one?'one':''}">${L.map((x,i)=>{const lv=crtLv(x);return `<div class="crC lv${lv}${x.id==='shaka'?' sk':''}${x.k==='chr'?' ch':' it'}" data-i="${i}" style="--c:${crtCor(x)};--i:${i}">
+    <i class="ry"></i><i class="gl"></i><div class="bk"><img src="${CRT.bk}" alt="" draggable="false"><i class="sh"></i></div><div class="fr">${crtFront(x)}<i class="ho"></i><i class="sh"></i></div><i class="fl"></i>${lv>=3?`<span class="spk">${sp()}</span>`:''}${crtTag(x)}</div>`}).join('')}</div>
+    <div class="row"><button class="btn" id="rkCdAll"${one?' hidden':''}>REVELAR TUDO</button><button class="btn main" id="rkCdOk" hidden>OK</button></div>`;
+  rkHost().appendChild(O);const C=[...O.querySelectorAll('.crC')];
+  const fr=rkPre(L.map(x=>x.k==='chr'&&CRT.chr[x.id]).filter(Boolean).concat([CRT.bk,CRT.it]));const ready=Promise.race([fr.p,crtW(2500)]);
+  const rev=async el=>{if(!el||el.classList.contains('rv')||el.dataset.b)return;el.dataset.b=1;const x=L[+el.dataset.i],lv=crtLv(x);await ready;
+    if(x.k==='chr'&&x.r==='mit')await (x.id==='yuta'?rkMegaY():x.id==='shaka'?rkMegaS():rkMega());
+    if(lv>=2){el.classList.add('chg');rkSfx(lv>=3?'powerUp':'whoosh');await crtW(lv>=3?900:550);el.classList.remove('chg')}
+    el.classList.add('rv');rkSfx(lv>=2?'boom':'whoosh');if(lv>=2)setTimeout(()=>rkSfx('powerUp'),220);
+    if(rkHi(x.r)){await crtW(500);await rkSecWin(x.s||'sec')}
+    if(x.k==='chr'&&x.r==='mit'){await crtW(one?1700:1200);await rkCharWin(x.id,1,x.nw);if(x.id==='yuta'&&x.nw)await ytTitClaim(1);if(x.id==='shaka'&&x.nw)await skTitClaim(1)}
+    else if(x.k==='chr'&&x.nw&&x.r==='lend'){await crtW(one?1500:1000);await rkCharWin(x.id)}
+    if(C.every(c=>c.classList.contains('rv'))){$('rkCdAll').hidden=true;$('rkCdOk').hidden=false}};
+  C.forEach(el=>el.onclick=()=>rev(el));
+  const auto=async()=>{await ready;for(const el of C){if(!O.isConnected)return;await rev(el);await crtW(one?300:230)}};setTimeout(auto,one?700:L.length*60+650);
+  $('rkCdAll').onclick=async()=>{for(const el of C)await rev(el)};$('rkCdOk').onclick=()=>{O.remove();rkView('gacha')}};

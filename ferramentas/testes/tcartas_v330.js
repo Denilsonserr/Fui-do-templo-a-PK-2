@@ -1,0 +1,11 @@
+// v330: gacha com cartas — giro de 10 forçado (mítico, lendário, épico, itens), giro de 1, giro real, fps
+const {chromium}=require('playwright');const SH='/home/claude/fui-do-templo-a-pk-2/ferramentas/testes/shots/cr_';
+(async()=>{const b=await chromium.launch();const p=await b.newPage({viewport:{width:915,height:412},deviceScaleFactor:1,isMobile:true,hasTouch:true});const errs=[];p.on('pageerror',e=>errs.push(e.message));await p.route(/fonts\.g|firestore/,r=>r.abort());
+await p.addInitScript(()=>{if(!sessionStorage.d){sessionStorage.d=1;localStorage.clear();Object.assign(localStorage,{rk_ini:'1',rk_xpv2:'1',rk_dia:'1',tw_nome:'"T"',rk_sel:'"goku"',rk_own:'["goku"]',rk_gem:'50000',rk_tic:'0',rk_ban:'"esp"',rk_pity:'29',rk_pity3:'109'})}});
+await p.goto('file:///home/claude/fui-do-templo-a-pk-2/www/index.html');await p.waitForFunction(()=>!document.getElementById('goSelect').disabled,null,{timeout:120000});
+await p.click('#mRank');await p.waitForTimeout(800);await p.click('#rkWrap [data-a="gacha"]',{force:true});await p.waitForTimeout(1200);
+// giro real de 10
+await p.click('#rkWrap [data-a="sum10"]',{force:true});await p.waitForTimeout(1000);await p.mouse.click(450,200);await p.waitForTimeout(600);await p.screenshot({path:SH+'10a.png'});await p.waitForTimeout(900);await p.screenshot({path:SH+'10b.png'});
+const fps=await p.evaluate(()=>new Promise(r=>{let n=0;const t0=performance.now();const f=()=>{n++;if(performance.now()-t0<2000)requestAnimationFrame(f);else r(n/2)};requestAnimationFrame(f)}));console.log('fps',fps);
+for(let i=0;i<60;i++){await p.waitForTimeout(250);const st=await p.evaluate(()=>({win:!!document.querySelector('.rkWin,.rkMega'),ok:document.getElementById('rkCdOk')&&!document.getElementById('rkCdOk').hidden}));const c=await p.evaluate(()=>!!document.querySelector('.crC.chg'));if(c&&!globalThis.q){globalThis.q=1;await p.screenshot({path:SH+'chg.png'})}if(st.win){await p.screenshot({path:SH+'win'+i+'.png'});await p.mouse.click(450,200);await p.waitForTimeout(400);await p.mouse.click(450,200)}if(st.ok)break}
+await p.screenshot({path:SH+'real.png'});console.log('gem',await p.evaluate(()=>localStorage.rk_gem));console.log('erros',errs);await b.close()})();
