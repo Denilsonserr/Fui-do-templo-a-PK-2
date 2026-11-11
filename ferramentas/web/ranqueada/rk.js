@@ -2949,10 +2949,10 @@ function cnsH(){const id=LVC.id,L=lvOf(id),fr=cnsFree(id),S=cstStats(id),sel=CNV
 
 /* ================= v347: BOSSES COM ATRIBUTOS (mesmo sistema do jogador) + passivas contra itens + Caça mais forte + recompensa diária ================= */
 /* Broly por nível do Boss: começa fraco (igual épico) e termina com 38.000 de ataque. Yuta = +20% de ataque. */
-const BSST=[[90,0,60],[350,50,70],[900,160,80],[2800,390,95],[7800,740,110],[19200,1240,130],[48900,2100,155],[120500,3190,185],[181300,4720,220],[270900,6600,265],[518200,8100,320]]; /* v350: calibrado pela força REAL dos jogadores (sombras do PVP: os mais fortes têm dano x20–30 e tomam só 7–11% do dano) */
-const bsSt=lv=>{const r=BSST[Math.max(0,Math.min(BSST.length-1,lv|0))],k=RKBID==='yuta'?1.2:1;return {atk:Math.round(r[0]*k),def:r[1],spd:r[2]}};
+const BSST=[[50,0,60],[70,0,70],[100,0,80],[150,0,95],[390,0,110],[1190,160,130],[3150,620,155],[10600,1250,185],[17700,2210,220],[29000,3170,265],[46000,4400,320]]; /* v351: pelo TEMPO de luta (dano medido: 51/s com dano x1); os mais fortes (dano x25) levam ~3 min no nível 11 */
+const bsSt=lv=>{const r=BSST[Math.max(0,Math.min(BSST.length-1,lv|0))],y=RKBID==='yuta';return {atk:Math.round(r[0]*(y?1.2:1)),def:Math.round(r[1]*(y?1.35:1)),spd:r[2]}};
 function bsStApply(o,ph){const S=bsSt(o.rkL||0),B=rkBoss(),f=ph===2?B.b2:B.b1,b1=B.b1;o.bst=S;
-  o.rkB={dm:Math.pow(S.atk/150,.55)*(f.dm/b1.dm)*(o.ysK||1),df:1/(1+S.def/900)*(f.df/b1.df),sp:Math.pow(S.spd/80,.2)*(f.sp/b1.sp)};o.tdm=o.rkB.dm;o.tdf=o.rkB.df;o.tsp=o.rkB.sp}
+  o.rkB={dm:Math.pow(S.atk/150,.3)*(f.dm/b1.dm)*(o.ysK||1),df:1/(1+S.def/900)*(f.df/b1.df),sp:Math.pow(S.spd/80,.2)*(f.sp/b1.sp)};o.tdm=o.rkB.dm;o.tdf=o.rkB.df;o.tsp=o.rkB.sp}
 /* passivas do Boss contra os itens do jogador (por nível) */
 const BSANTI=[null,null,null,null,{cr:5},{cr:8},{cr:10,ls:.5},{cr:12,ls:.5},{cr:15,ls:.5,pd:.2},{cr:20,ls:.4,pd:.3},{cr:25,ls:.25,pd:.4}];
 function bsAntiItens(p,o){if(!o||p._bsa)return;p._bsa=1;const A=BSANTI[o.rkL||0];if(!A)return;if(A.cr)p.tcr=Math.max(-5,(p.tcr||0)-A.cr);if(A.ls)p.tls=(p.tls||0)*A.ls;if(A.pd){const d=1/(p.tdf||1)-1;p.tdf=1/(1+d*(1-A.pd))}}
@@ -3009,4 +3009,7 @@ function dsfEnd(w){G.mode='ranked';$('controls').hidden=true;$('pauseBtn').hidde
 /* botão no menu Modos de Jogo */
 {const _mh=rkMenuH;rkMenuH=function(){const o=dsfG();return _mh.apply(this,arguments)+`<button class="hs dsfB ${o.won?'ok':''}" data-a="dsf" style="${mnB(28,506,318,566)}"><b>⚔️ DESAFIO DO DIA</b><small>${o.won?'✔ vencido hoje':o.left>0?o.left+' tentativa'+(o.left>1?'s':'')+' · '+dsfToday().m.n:'volte amanhã'}</small></button>`}}
 {const _a=rkAct;rkAct=function(a,b){if(a==='dsf'){rkSfx('whoosh');return dsfOpen()}return _a.apply(this,arguments)}}
+
+/* só para testes de equilíbrio: window.__autoP = jogador controlado pela IA combista */
+{const _hi2=humanInput;humanInput=function(f){_hi2.apply(this,arguments);try{if(window.__autoP&&G.p&&f===G.p[0]){const o=G.p[1];if(!pvCombo(f,o,null)){const c=f.cpu;f.cpu=true;try{aiThink(f,o)}finally{f.cpu=c}}}}catch(e){}}}
 try{window.__pvT={G:()=>G,ko:(a,d)=>ko(a,d),ev:()=>rkEvX(),m:()=>[rkEvG(),rkEvL(),rkEvD(),rkEvA()],lk:()=>{const c={};for(let i=0;i<4000;i++){const r=twEqRoll().k;c[r]=(c[r]||0)+1}const a=[0,0,0,0,0];for(let i=0;i<4000;i++)a[lvCrRoll()]++;return {luck:+lvLuck().toFixed(2),drop:+rkDropF().toFixed(2),extra:lkK(),equip:c,cristal:a}},dl:id=>pvDelta(id),cs:id=>cstStats(id),lvo:id=>lvOpen(id),bs:lv=>bsSt(lv),dl:f=>dlCheck(f),ds:()=>dsfOpen()}}catch(e){} /* só para os testes */

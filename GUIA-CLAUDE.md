@@ -1685,3 +1685,9 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 ## v350 — Bosses calibrados pela força REAL dos jogadores
 - `forca.yml` (ferramenta): lista os bônus reais de cada jogador pelas sombras do PVP. Em 11/11: os mais fortes (Vini_junior10, ZEUS_DARKBR, Breno) têm dano x20–30, tomam 7–11% do dano e crítico acima de 100%; o meio fica em dano x4–12; iniciantes x2.
 - `BSST` refeito para isso: ATK 90 → 518.200 e DEF 0 → 8.100 (níveis 1→11). Meta "Boss X vezes mais forte que um jogador típico daquele rank": 0,7x no nível 1 até 5x no 11 (contra um jogador de dano x25 e 9% de dano recebido).
+
+## v351 — Bosses pelo TEMPO de luta
+- Medido (`tdps_v351.js`, gancho de teste `window.__autoP` = jogador controlado pela IA combista): jogador com dano x1 tira ~51 de vida por segundo do Boss (que defende). Vida do Broly nível 11 = 30 barras x 1800 (+~30% de passivas/barreiras) ≈ 70 mil.
+- `BSST` refeito para o tempo: ATK 50 → 46.000, DEF 0 nos níveis 1–5 → 4.400 no 11. Ataque do Boss agora converte com expoente 0,3 (`(ATK/150)^0,3`; o do jogador continua 0,55), para os números grandes não matarem em 2 golpes. Yuta: ATK +20% e DEF +35% (luta ~35% mais longa).
+- Tempo estimado no Broly nível 11: jogador de dano x25 (os mais fortes hoje) ≈ 3 min; dano x6 ≈ 12–16 min (na prática não vence); Yuta nível 11 ≈ 4 min para os mais fortes.
+- Caça (sem mudança): lobo inteiro (10 níveis) ≈ 5–6 min para os mais fortes, bem mais para o resto.
