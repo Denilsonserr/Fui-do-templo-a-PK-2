@@ -1,0 +1,28 @@
+name: Força real dos jogadores (sombras do PVP)
+on: workflow_dispatch
+jobs:
+  q:
+    runs-on: ubuntu-latest
+    steps:
+      - name: forca
+        run: |
+          python3 - <<'P'
+          import json,urllib.request
+          S='https://fui-do-templo-a-pk-2.denilsinend.workers.dev/fs/v1/projects/furia-do-templo/databases/(default)/documents:runQuery'
+          H={'Content-Type':'application/json','User-Agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/120 Safari/537.36'}
+          q={'structuredQuery':{'from':[{'collectionId':'torre'}],'where':{'fieldFilter':{'field':{'fieldPath':'pvk'},'op':'EQUAL','value':{'stringValue':'m202611r1'}}},'limit':500}}
+          R=json.load(urllib.request.urlopen(urllib.request.Request(S,data=json.dumps(q).encode(),headers=H)))
+          M={}
+          for x in R:
+              d=x.get('document')
+              if not d:continue
+              F=d['fields'];a=F.get('pva',{}).get('stringValue');n=d['name']
+              if a in M and M[a][0]>n:continue
+              M[a]=(n,F)
+          for a,(n,F) in M.items():
+              try:D=json.loads(F['d']['stringValue'])
+              except:continue
+              T=D.get('team') or [{'ch':D.get('ch'),'s':D.get('s',{})}]
+              for t in T:
+                  s=t.get('s',{});print('ROW',F['nome']['stringValue'],t.get('ch'),'lv',t.get('lv'),'tdm',s.get('tdm'),'tdf',s.get('tdf'),'tsp',s.get('tsp'),'tcr',s.get('tcr'),'tcd',s.get('tcd'),'tls',s.get('tls'))
+          P
