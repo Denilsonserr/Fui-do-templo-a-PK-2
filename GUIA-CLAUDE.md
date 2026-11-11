@@ -1770,3 +1770,10 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - Anéis da alma (`rk_an`, inclusive o VERMELHO da Hidra) podem ser vendidos: `{k:'an',r:{c,g,s,v,l,a}}`; `mnClean` refaz o `v` pela tabela `ANV` (não confia no vendedor) e limita nível/idade. Se o anel estava equipado, sai do personagem ao anunciar (aviso no detalhe). Comprador recebe com id novo (`anGive`).
 - Wrappers em `mnView`/`mnClean`/`mnGive`/`mnMine`/`mnH`/`mnAct` no bloco v364. O APK abre o site (capacitor `server.url`), então todo mundo pega a versão nova.
 - Teste `tmercado_v364.js` (Firestore falso: vende 21 joias + anel vermelho equipado, outro compra, vendedor recebe).
+
+## v365 — EVENTO SAINT SEIYA: 3 músicas do dono no lobby
+- Músicas (vieram em .m4a, convertidas para mp3 112k, loudnorm -15,5): Lost Canvas – Abertura `a/52222ed0e49460.mp3`, Pelo Mundo `a/e8d2c34b51584e.mp3`, Laços de Flor `a/35458a69982711.mp3`. Entram no `MUS` (índices 18, 19, 20) e nos botões `#msel` (`extra/9t_v365.py`) → rádio do Ranqueado (🎵) e música das lutas.
+- Lobby (tela do Ranqueado fora da luta, inclusive o giro do Shaka): `evMusPlay` toca SÓ as 3, em CORTES das partes mais fortes (achadas pela energia do áudio, com fade): Lost Canvas inteira `a/636a17e61ad5f8.mp3`, Pelo Mundo 0:28–2:16 `a/bdf54fec7a8981.mp3`, Laços de Flor 2:20–3:42 `a/b335bfbd785ba6.mp3`. `MEL.loop=false` e no `ended` entra a próxima. Aviso "🎶 EVENTO SAINT SEIYA · nome" a cada troca. Ignora a escolha da rádio (até "sem música"); o som geral desligado continua valendo.
+- Rádio: aviso do evento no topo; escolher faixa não mexe no lobby, vale para as lutas. `musPick` (wrapper): volta `loop=true`; se a rádio tem faixa escolhida (≠ aleatória), qualquer luta fora da Torre usa ela (`rkMusPlay`).
+- Desligar o evento: `EVMUS=0` no bloco v365.
+- Teste `tmusica_v365.js`.

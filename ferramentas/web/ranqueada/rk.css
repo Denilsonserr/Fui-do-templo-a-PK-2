@@ -1661,3 +1661,5 @@ img.anOn{position:relative;z-index:2}
 .mnQ span{margin-right:.2em;letter-spacing:.05em}
 .mnQ button{min-width:2.1em;height:1.9em;padding:0 .3em;font:900 1em var(--f-ui);color:#fff;background:linear-gradient(#5b2a8a,#2a0f45);border:1px solid #c46bff;border-radius:.35em;cursor:pointer}
 .mnQ input{width:4.2em;height:1.9em;font:900 1.05em var(--f-ui);text-align:center;border:2px solid #c46bff;border-radius:.35em;background:#14061f;color:#fff}
+
+.evMuN{color:#ffe9a8;text-align:center;margin:.2em 0 .5em}.evMuN b{color:#ffd84a}
