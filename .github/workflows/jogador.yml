@@ -41,4 +41,7 @@ jobs:
               o=json.loads(L[-1]['fields']['d']['stringValue'])
               print('===== ULTIMO SALVAMENTO: banner',o.get('rk_ban'),'chaves',sorted(o.keys()))
               for x in json.loads(o.get('rk_hist','[]'))[:30]:x['d']=br(x.get('d',0));print('  H',json.dumps(x,ensure_ascii=False))
+          print('===== SOMBRAS PVP')
+          for d in q('pvn',n,5,1)[:3]:
+              F=d['fields'];x=json.loads(F['d']['stringValue']);print('  ',d['name'].split('/')[-1],'ch',x.get('ch'),'t',x.get('t'),'n perfil',x.get('p',{}).get('n'),'bonus',json.dumps(x.get('s')))
           P
