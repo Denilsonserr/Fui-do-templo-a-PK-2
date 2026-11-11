@@ -3234,4 +3234,10 @@ function hyFilTick(){if(!HY.on||!HY.fil||HY.busy||!G.p||G.mode!=='fight'||G.phas
   if(C&&C.gm&&r&&E&&/ok/.test(E.className||'')){rkAdd('gem',C.gm);try{acSave(1)}catch(e){}E.textContent='💎 '+C.nm+'! Você ganhou +'+rkFmtN(C.gm)+' 💎';try{setTimeout(()=>twSfx('boom'),300)}catch(e){}}return r}}
 TWCUP['l0xbdi']={nm:'TESOURO DE 80.000 DIAMANTES',it:[],gm:80000};
 TWCUP['c4riff']={nm:'DIAMANTES DA SORTE',acc:1,rnd:[3000,6000]};
+/* v361: código único 30.000 💎 + 20.000 moedas de ouro + 1 equipamento aleatório do Shaka de Virgem (campos mo e rsk) */
+{const _cp10=twCupom;twCupom=async function(code,E){const C=TWCUP[twHash(String(code).toUpperCase())];const r=await _cp10.apply(this,arguments);
+  if(C&&(C.mo||C.rsk)&&r&&E&&/ok/.test(E.className||'')){let nm='';if(C.mo)twAddCoins(C.mo);
+    if(C.rsk){const K=Object.keys(RKSP).filter(k=>RKSP[k].sk),k=K[(Math.random()*K.length)|0];rkGiveSp(k);nm=RKSP[k].nm}try{acSave(1)}catch(e){}
+    E.textContent='🎁 '+C.nm+'! +'+rkFmtN(C.gm||0)+' 💎 · +'+rkFmtN(C.mo||0)+' 🪙 moedas de ouro'+(nm?' · ✦ '+nm+' (na 🎒 MOCHILA)':'');try{twSfx('boom')}catch(e){}}return r}}
+TWCUP['mc90e4']={nm:'PRESENTE DO SHAKA',it:[],gm:30000,mo:20000,rsk:1};
 try{window.__pvT={G:()=>G,ko:(a,d)=>ko(a,d),ev:()=>rkEvX(),m:()=>[rkEvG(),rkEvL(),rkEvD(),rkEvA()],lk:()=>{const c={};for(let i=0;i<4000;i++){const r=twEqRoll().k;c[r]=(c[r]||0)+1}const a=[0,0,0,0,0];for(let i=0;i<4000;i++)a[lvCrRoll()]++;return {luck:+lvLuck().toFixed(2),drop:+rkDropF().toFixed(2),extra:lkK(),equip:c,cristal:a}},dl:id=>pvDelta(id),cs:id=>cstStats(id),hy:()=>HY,hyS:()=>hyStart(),fil:()=>HY.fil,rv:v=>rkView(v),hyBoss:()=>{HY.st=3;HY.lv=1;HY.mobs=[];G.p[1]=hyMk('hidra',900,1)},hyI:()=>(HY.items||[]).map(i=>[i.k,Math.round(i.x),Math.round(i.y),i.land,(()=>{const m=bsImg(HYIC[i.k](i));return m.complete+':'+m.naturalWidth})()]),stg:()=>[STAGE.name,STAGE.src0,STAGE.img&&STAGE.img.naturalWidth,!!STAGE.far],lvo:id=>lvOpen(id),bs:lv=>bsSt(lv),dc:f=>dlCheck(f),ds:()=>dsfOpen()}}catch(e){} /* só para os testes */

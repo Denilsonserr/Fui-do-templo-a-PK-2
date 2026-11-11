@@ -1747,3 +1747,7 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - Gancho de teste: `__pvT.hyBoss()` (pula direto para a Hidra nível 1), `__pvT.fil()`, `__pvT.rv(view)`.
 - Testes: `thidra_v360.js` (jogador sem título, 7 ninhadas até o fim), `tcod_v360.js` (C1/C2; reinicie o servidor local antes, ele guarda os códigos usados).
 - Cuidado nos testes: NÃO coloque `mhp` gigante no jogador — o HUD desenha uma bolinha por camada de vida e trava.
+
+## v361 — código PRESENTE DO SHAKA
+- `mc90e4` (texto só com o dono) = 30.000 💎 + 20.000 moedas de ouro (`twAddCoins`) + 1 equipamento ALEATÓRIO do Shaka de Virgem (`rkGiveSp` de uma chave de `RKSP` com `sk`). Código ÚNICO: 1 pessoa no jogo inteiro, não precisa de conta.
+- Campos novos no `TWCUP`: `mo` (moedas de ouro) e `rsk` (item aleatório do Shaka), wrapper `_cp10` (usa também o `gm` do v360). Teste `tcod_v361.js` (C1).
