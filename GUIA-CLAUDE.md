@@ -1522,3 +1522,6 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 
 ## v320
 - Anéis no chão mais fortes (pedido do dono com imagem): `ANRP` = cores próprias do anel no chão (vermelho vivo #ff0a1e com espinhos maiores tipo arame farpado, preto BEM preto #030104 com borda roxa escura, roxo BEM roxo #8f00ff). Brilho maior (drop-shadow no próprio SVG), pulso de brilho `anGlw2` e o anel INTEIRO girando devagar (34 s + 5 s por anel, um sim outro não ao contrário). Faixa de cada anel mais fina para os anéis não virarem uma mancha. Teste: `tanel_v318.js`.
+
+## v321
+- Anéis do chão 15% maiores (`anGround` embrulhado com `cw*1.15`) e girando BEM devagar (70 s + 9 s por anel); pulso de brilho mais lento (4,5 s).
