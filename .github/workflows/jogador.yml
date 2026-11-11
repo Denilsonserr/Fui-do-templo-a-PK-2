@@ -1,0 +1,40 @@
+name: Ver salvamentos de uma conta (ferramenta)
+on:
+  workflow_dispatch:
+    inputs:
+      nome: {description: 'nome da conta', default: 'sapopreto'}
+jobs:
+  q:
+    runs-on: ubuntu-latest
+    steps:
+      - name: salvamentos
+        env: {NOME: '${{ inputs.nome }}'}
+        run: |
+          python3 - <<'P'
+          import json,urllib.request,os,hashlib,datetime
+          n=os.environ['NOME'].lower().strip();acc=hashlib.sha256(('furia|acc|'+n).encode()).hexdigest()[:24]
+          S='https://fui-do-templo-a-pk-2.denilsinend.workers.dev/fs/v1/projects/furia-do-templo/databases/(default)/documents:runQuery'
+          H={'Content-Type':'application/json','User-Agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/120 Safari/537.36'}
+          def q(f,v,lim=40,ob=None):
+              s={'from':[{'collectionId':'torre'}],'where':{'fieldFilter':{'field':{'fieldPath':f},'op':'EQUAL','value':{'stringValue':v}}},'limit':lim}
+              if ob:s['orderBy']=[{'field':{'fieldPath':'__name__'},'direction':'DESCENDING'}]
+              r=urllib.request.urlopen(urllib.request.Request(S,data=json.dumps({'structuredQuery':s}).encode(),headers=H))
+              return [x['document'] for x in json.load(r) if x.get('document')]
+          print('conta',n,'acc',acc)
+          L=q('sv',acc,40,1)
+          br=lambda ms:(datetime.datetime.utcfromtimestamp(ms/1000)-datetime.timedelta(hours=3)).strftime('%d/%m %H:%M:%S')
+          L.sort(key=lambda d:int(d['fields']['ts']['integerValue']))
+          prev=None
+          for d in L:
+              F=d['fields'];ts=int(F['ts']['integerValue'])
+              try:o=json.loads(F['d']['stringValue'])
+              except Exception as e:print(br(ts),'erro',e);continue
+              own=json.loads(o.get('rk_own','[]'));hist=json.loads(o.get('rk_hist','[]'))
+              ch=[(x.get('id'),x.get('r'),br(x.get('d',0)),x.get('dup',0)) for x in hist if x.get('k')=='chr']
+              print('=====',br(ts),'nome',o.get('tw_nome'),'gem',o.get('rk_gem'),'tic',o.get('rk_tic'),'pity',o.get('rk_pity'),o.get('rk_pity3'),'spins',json.loads(o.get('rk_st','{}')).get('spins') if o.get('rk_st') else '')
+              print('  own',own)
+              if prev is not None:
+                  print('  GANHOU',[x for x in own if x not in prev],'PERDEU',[x for x in prev if x not in own])
+              prev=own
+              print('  personagens no historico do gacha',ch[:12])
+          P
