@@ -2053,6 +2053,18 @@ img.anOn{position:relative;z-index:2}
 .pvHi h4{margin:.5em 0 .3em;font:900 1em var(--f-ui);color:#cbb8ff}.pvHl{max-height:24vh}
 .pvHl div{display:grid;grid-template-columns:5.5em 1fr auto;align-items:center;gap:.5em;padding:.3em .6em;border-radius:.4em;background:#140c28;font:700 .85em var(--f-ui);color:#eee}
 .pvHl div.w b:first-child{color:#7dff9a}.pvHl div.l b:first-child{color:#ff8080}.pvHl small{color:#999}
+/* v335: quantos jogadores em cada rank + lista */
+.rk_pvp .pvTr{border-radius:1.2em}.rk_pvp .pvTr:active{background:rgba(255,220,120,.15)}
+.rk_pvp .pvTr b{position:absolute;right:-3%;top:-12%;min-width:1.5em;padding:.05em .3em;border-radius:1em;background:#c0182e;border:.08em solid #ffd84a;font:900 .8em var(--f-ui);color:#fff;text-align:center;box-shadow:0 0 .4em rgba(0,0,0,.6)}
+.rk_pvp .pvTr.tt b{right:4%;top:0}
+.pvTl span{align-items:flex-start}
+.pvTi h3 img,.pvTl h4 img{height:1.6em;vertical-align:middle}
+.pvTl{display:flex;flex-direction:column;gap:.35em;max-height:52vh;overflow:auto}
+.pvTl h4{margin:.4em 0 .1em;font:900 1em var(--f-ui)}
+.pvTl div{display:grid;grid-template-columns:2.4em 1fr auto auto;align-items:center;gap:.6em;padding:.25em .6em;border-radius:.5em;background:#140c28;border:1px solid #3a2a6a}
+.pvTl div.me{border-color:#ffd84a;box-shadow:0 0 .6em rgba(255,200,60,.4)}
+.pvTl .pt{width:2.4em;height:2.4em;border-radius:50%;object-fit:cover;object-position:50% 20%}
+.pvTl span{display:flex;flex-direction:column;font:900 .95em var(--f-ui);color:#fff}.pvTl em{font:900 .85em var(--f-ui);font-style:normal}.pvTl small{font:800 .75em var(--f-ui);color:#aaa}
 
 .twBag .bgw{display:flex;gap:1em;justify-content:center;align-items:flex-start;margin:.4em 0}
 .twBag .bgc{flex:1;max-width:16em;display:flex;flex-direction:column;gap:.4em;max-height:52vh;overflow:auto;padding:.2em}
@@ -10694,7 +10706,7 @@ function pvH(){const o=pvG(),T=PVT[o.t],me=pvChar(),off=PV.on===false,acc=pvAcc(
   <div class="pvNm" style="${pvB(440,590,730,640)}">${pvEsc(twLS.g('tw_nome','')||'Você')}</div>
   <div class="hs pvP p2 ${opp?'on':''} ${PV.srch?'srch':''}" style="${pvB(1182,408,1392,584)}">${opp?`<img src="${pvPortrait(opp.ch)}" alt=""><span>${pvEsc(CH[opp.ch].name)}</span>`:PV.srch?'<i class="pvSpin"></i>':''}</div>
   <div class="pvNm" style="${pvB(1140,590,1430,640)}">${opp?`<img src="${PVA.e[PVT[opp.t][3]]}" alt="">${pvEsc(opp.nome)} <small style="color:${PVT[opp.t][1]}">${pvRkName(opp.t,opp.dv)}</small>`:PV.srch?'PROCURANDO...':''}</div>
-  ${PVRY.map((y,i)=>i+1===o.t?`<div class="pvRkOn" style="${pvB(1574,y-30,1826,y+30)}"></div>`:'').join('')}
+  ${PVRY.map((y,i)=>(i+1===o.t?`<div class="pvRkOn" style="${pvB(1574,y-30,1826,y+30)}"></div>`:'')+`<button class="hs pvTr" data-a="pvTier" data-t="${i+1}" style="${pvB(1576,y-28,1824,y+28)}">${(()=>{const n=PV.all?PV.all.filter(e=>e.t===i+1).length:0;return n?`<b>${n}</b>`:''})()}</button>`).join('')}<button class="hs pvTr tt" data-a="pvTier" data-t="all" style="${pvB(1600,104,1800,152)}">${PV.all?`<b>${PV.all.length}</b>`:''}</button>
   <button class="hs pvL" data-a="pvForm" style="${pvB(404,734,700,798)}"></button><button class="hs pvGo ${PV.srch||opp?'busy':''}" data-a="pvGo" style="${pvB(728,706,1140,822)}"><span class="sw"></span></button><button class="hs pvL" data-a="pvRoom" style="${pvB(1164,734,1486,798)}"></button>
   ${off?`<div class="pvOff" style="${pvB(470,150,1400,330)}"><b>⛔ PVP DESLIGADO</b><span>O ADM desligou o PVP por enquanto. Volte mais tarde!</span></div>`:!acc?`<div class="pvOff soft" style="${pvB(520,180,1350,320)}"><b>👤 PRECISA DE CONTA</b><span>Crie ou entre na sua conta (botão Conta) para jogar o PVP.</span></div>`:''}`}
 {const _v=rkView;rkView=function(v){if(v!=='pvp')return _v.apply(this,arguments);
@@ -10702,7 +10714,7 @@ function pvH(){const o=pvG(),T=PVT[o.t],me=pvChar(),off=PV.on===false,acc=pvAcc(
   W.innerHTML=`<div class="rkA rk_pvp" data-w="${PVA.W}" data-h="${PVA.H}" style="background-image:url(${PVA.tela})">${pvH()}<div id="rkToast"></div></div>`;rkFit();
   W.querySelectorAll('[data-a]').forEach(b=>b.onclick=e=>{e.stopPropagation();rkAct(b.dataset.a,b)})}}
 const pvRe=()=>{if(RKV==='pvp'&&showScreen.cur==='ranked'&&!PV.fight)rkView('pvp')};
-async function pvOpen(){PV.opp=null;PV.srch=0;rkView('pvp');const was=PV.on;await pvCfgLoad();if(PV.on!==was)pvRe();if(PV.on&&pvAcc())pvUp(0)}
+async function pvOpen(){PV.opp=null;PV.srch=0;rkView('pvp');const was=PV.on;await pvCfgLoad();if(PV.on!==was)pvRe();if(PV.on){if(pvAcc())pvUp(0);pvLoadAll().then(()=>{const M=$('rkModal');if(!M||!M.innerHTML)pvRe()}).catch(()=>{})}}
 async function pvSearch(){if(PV.srch||PV.opp)return;if(!pvAcc())return rkToast('👤 Entre na sua CONTA para jogar o PVP','#ffb060');
   await pvCfgLoad();if(!PV.on){pvRe();return rkToast('⛔ O PVP está desligado pelo ADM','#ff8080')}
   PV.srch=1;pvRe();rkSfx('whoosh');const t0=Date.now();let opp=null,err=0;try{await pvUp(1);opp=await pvFind()}catch(e){err=1}
@@ -10732,15 +10744,20 @@ function pvRewards(){const o=pvG();rkModal(`<div class="twM pvRwM"><h3>🎁 RECO
 async function pvHist(){const o=pvG(),row=h=>`<div class="${h.w?'w':'l'}"><b>${h.w?'VITÓRIA':'DERROTA'}</b><span>${pvEsc(CH[h.my]?CH[h.my].name:'')} x sombra de <b>${pvEsc(h.n)}</b> (${pvEsc(CH[h.c]?CH[h.c].name:h.c)})${h.f?' · sala':''}</span><small>${new Date(h.d).toLocaleString('pt-BR').slice(0,17)}</small></div>`;
   const draw=D=>{if(RKV!=='pvp')return;rkModal(`<div class="twM pvHi"><h3>📜 HISTÓRICO</h3><h4>⚔️ SUAS LUTAS</h4><div class="pvHl">${o.h.length?o.h.map(row).join(''):'<p class="twH">Nenhuma luta ainda.</p>'}</div><h4>🛡️ QUEM ENFRENTOU A SUA SOMBRA</h4><div class="pvHl">${D==null?'<p class="twH">Carregando...</p>':D===0?'<p class="twH">'+rkNetMsg()+'</p>':D.length?D.map(e=>`<div class="${e.won?'l':'w'}"><b>${e.won?'PERDEU':'DEFENDEU'}</b><span><b>${pvEsc(e.nome)}</b> (${pvEsc(CH[e.ch]?CH[e.ch].name:e.ch)}) ${e.won?'venceu':'perdeu para'} a sua sombra</span><small>${new Date(e.ts).toLocaleString('pt-BR').slice(0,17)}</small></div>`).join(''):'<p class="twH">Ninguém enfrentou a sua sombra ainda.</p>'}</div><div class="row"><button class="btn" id="rkMX">FECHAR</button></div></div>`);$('rkMX').onclick=()=>rkModal(null)};
   draw(null);const acc=pvAcc();if(!acc)return draw([]);try{draw(await pvQ('pvo',acc,15))}catch(e){draw(0)}}
+async function pvLoadAll(force){if(!force&&PV.all&&Date.now()-PV.allT<60e3)return PV.all;const R=await pvQ('pvk',pvMon(),300,'pvs','DESCENDING'),M={};for(const e of R){if(!e.pva||M[e.pva]&&M[e.pva]._id>e._id)continue;let d={};try{d=JSON.parse(e.d)}catch(x){}M[e.pva]=Object.assign(e,{t:Math.min(PVDIV,d.t|0),dv:d.dv|0,st:d.st|0,ch:d.ch||e.ch,w:d.w|0,l:d.l|0})}
+  PV.all=Object.values(M).sort((a,b)=>b.pvs-a.pvs);PV.allT=Date.now();return PV.all}
 async function pvRanking(){const draw=L=>{if(RKV!=='pvp')return;const me=pvAcc();rkModal(`<div class="twM pvRk"><h3>🏆 RANKING PVP · TEMPORADA ${pvMon().slice(5)}/${pvMon().slice(1,5)}</h3><div class="pvRkL">${L==null?'<p class="twH">Carregando...</p>':L===0?'<p class="twH">'+rkNetMsg()+'</p>':L.length?L.map((e,i)=>{const T=PVT[Math.min(PVDIV,e.t|0)];return `<div class="${e.pva===me?'me':''}"><b class="ps">${i<3?['🥇','🥈','🥉'][i]:'#'+(i+1)}</b><img src="${PVA.e[T[3]]}" alt=""><span><b>${pvEsc(e.nome)}</b>${rgTit(e.tit,e.nome)}</span><em style="color:${T[1]}">${pvRkName(e.t|0,e.dv|0)}${e.t>=PVDIV?' · ⭐'+e.st:''}</em></div>`}).join(''):'<p class="twH">Ninguém no ranking ainda. Seja o primeiro!</p>'}</div><div class="row"><button class="btn" id="rkMX">FECHAR</button></div></div>`);$('rkMX').onclick=()=>rkModal(null)};
-  draw(null);try{const R=await pvQ('pvk',pvMon(),300,'pvs','DESCENDING'),M={};for(const e of R){if(!e.pva||M[e.pva]&&M[e.pva]._id>e._id)continue;let d={};try{d=JSON.parse(e.d)}catch(x){}M[e.pva]=Object.assign(e,{t:d.t|0,dv:d.dv|0,st:d.st|0})}
-    draw(Object.values(M).sort((a,b)=>b.pvs-a.pvs).slice(0,50))}catch(e){draw(0)}}
+  draw(null);try{draw((await pvLoadAll()).slice(0,50))}catch(e){draw(0)}}
+/* v335: quem está em cada rank (toque no rank da direita; no título "Ranks" = todos, com a Madeira) */
+async function pvTier(t){const me=pvAcc(),row=e=>{const T=PVT[e.t];return `<div class="${e.pva===me?'me':''}"><img class="pt" src="${pvPortrait(CH[e.ch]?e.ch:'goku')}" alt=""><span><b>${pvEsc(e.nome)}</b>${rgTit(e.tit,e.nome)}</span><em style="color:${T[1]}">${pvRkName(e.t,e.dv)} · ⭐${e.st}</em><small>${e.w}V ${e.l}D</small></div>`};
+  const draw=L=>{if(RKV!=='pvp')return;const T=t==='all'?null:PVT[t];rkModal(`<div class="twM pvTi"><h3>${T?`<img src="${PVA.e[T[3]]}" alt=""> <span style="color:${T[1]}">${T[0]}</span>`:'🏅 TODOS OS RANKS'}</h3><p class="twH">Quem está jogando a Ranqueada PVP nesta temporada${T?' neste rank':''}.</p><div class="pvTl">${L==null?'<p class="twH">Carregando...</p>':L===0?'<p class="twH">'+rkNetMsg()+'</p>':!L.length?'<p class="twH">Ninguém neste rank ainda.</p>':t==='all'?PVT.map((T,i)=>({T,i,G:L.filter(e=>e.t===i)})).filter(x=>x.G.length).reverse().map(x=>`<h4 style="color:${x.T[1]}"><img src="${PVA.e[x.T[3]]}" alt=""> ${x.T[0]} · ${x.G.length}</h4>`+x.G.map(row).join('')).join(''):L.map(row).join('')}</div><div class="row"><button class="btn" id="rkMX">FECHAR</button></div></div>`);$('rkMX').onclick=()=>rkModal(null)};
+  draw(null);try{const A=await pvLoadAll();draw(t==='all'?A:A.filter(e=>e.t===t))}catch(e){draw(0)}}
 function pvCfgM(){if(!twIsAdm())return mn2Cfg();const on=PV.on!==false;rkModal(`<div class="twM sm"><h3>⚙️ PVP · ADM</h3><p class="twH">Agora o PVP está <b style="color:${on?'#7dff9a':'#ff6060'}">${on?'LIGADO':'DESLIGADO'}</b>. Desligado: ninguém busca partida nem envia sombra (não gasta servidor).</p><p class="twH" id="pvCe"></p><div class="row"><button class="btn main" id="pvCt">${on?'⛔ DESLIGAR PVP':'✅ LIGAR PVP'}</button><button class="btn" id="pvCo">⚙️ OPÇÕES</button><button class="btn" id="rkMX">FECHAR</button></div></div>`);
   $('rkMX').onclick=()=>rkModal(null);$('pvCo').onclick=()=>mn2Cfg();$('pvCt').onclick=async()=>{$('pvCt').disabled=true;$('pvCe').textContent='Salvando...';try{await pvCfgSet(!on);rkModal(null);pvRe();rkToast(on?'⛔ PVP DESLIGADO para todos':'✅ PVP LIGADO para todos',on?'#ff8080':'#7dff9a')}catch(e){$('pvCe').textContent=rkNetMsg();$('pvCt').disabled=false}}}
 {const _a=rkAct;rkAct=function(a,b){
   if(a==='pvp'){rkSfx('whoosh');return pvOpen()}
   if(RKV==='pvp'){if(a==='back'){PV.opp=null;PV.srch=0;return rkView('menu')}
-    const M={pvGo:pvSearch,pvRoom:pvRoom,pvForm:pvForm,pvRules:pvRules,pvRw:pvRewards,pvHist:pvHist,pvRank:pvRanking,pvCfg:pvCfgM};if(M[a]){if(a!=='pvGo')rkSfx('whoosh');if(PV.on===false&&['pvGo','pvRoom'].includes(a)&&!twIsAdm())return rkToast('⛔ O PVP está desligado pelo ADM','#ff8080');return M[a]()}}
+    const M={pvTier:()=>pvTier(b.dataset.t==='all'?'all':+b.dataset.t),pvGo:pvSearch,pvRoom:pvRoom,pvForm:pvForm,pvRules:pvRules,pvRw:pvRewards,pvHist:pvHist,pvRank:pvRanking,pvCfg:pvCfgM};if(M[a]){if(a!=='pvGo')rkSfx('whoosh');if(PV.on===false&&['pvGo','pvRoom'].includes(a)&&!twIsAdm())return rkToast('⛔ O PVP está desligado pelo ADM','#ff8080');return M[a]()}}
   return _a.apply(this,arguments)}}
 
 /* v334: no PVP a regeneração das passivas vale para os dois lutadores (você e a sombra) */
@@ -10933,7 +10950,7 @@ window.__dbg={mus:()=>[MCUR,MEL.src.split('/').pop()],stg:()=>STAGE.key,prepMatc
 })();
 </script>
 <style>#updB{position:fixed;left:50%;top:max(8px,env(safe-area-inset-top));transform:translateX(-50%);z-index:99999;padding:10px 22px;border-radius:14px;border:2px solid #fff3c0;background:linear-gradient(#ffd84a,#e08a10);color:#3a1d00;font:900 15px system-ui,sans-serif;box-shadow:0 0 18px #ffb21f;cursor:pointer;animation:updP 1s ease-in-out infinite alternate}@keyframes updP{to{transform:translateX(-50%) scale(1.05)}}</style>
-<script>(function(){const V='b99ee30b060a';if(!/^https?:/.test(location.protocol))return;let nv=null;
+<script>(function(){const V='39285b18a452';if(!/^https?:/.test(location.protocol))return;let nv=null;
 function show(){if(document.getElementById('updB'))return;try{if(typeof G!=='undefined'&&G.mode==='fight')return}catch(e){}const b=document.createElement('button');b.id='updB';b.textContent='🔄 ATUALIZAÇÃO NOVA! Toque para atualizar';
   b.onclick=()=>{b.textContent='⏳ Atualizando...';try{acSave(1)}catch(e){}setTimeout(()=>location.reload(),900)};document.body.appendChild(b)}
 async function chk(){if(document.hidden)return;if(nv){show();return}try{const r=await fetch('versao.txt?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const t=(await r.text()).trim();if(/^[0-9a-f]{8,40}$/.test(t)&&t!==V){nv=t;show()}}catch(e){}}

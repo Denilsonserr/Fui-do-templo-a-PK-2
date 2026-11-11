@@ -1546,3 +1546,15 @@ img.anOn{position:relative;z-index:2}
 .pvHi h4{margin:.5em 0 .3em;font:900 1em var(--f-ui);color:#cbb8ff}.pvHl{max-height:24vh}
 .pvHl div{display:grid;grid-template-columns:5.5em 1fr auto;align-items:center;gap:.5em;padding:.3em .6em;border-radius:.4em;background:#140c28;font:700 .85em var(--f-ui);color:#eee}
 .pvHl div.w b:first-child{color:#7dff9a}.pvHl div.l b:first-child{color:#ff8080}.pvHl small{color:#999}
+/* v335: quantos jogadores em cada rank + lista */
+.rk_pvp .pvTr{border-radius:1.2em}.rk_pvp .pvTr:active{background:rgba(255,220,120,.15)}
+.rk_pvp .pvTr b{position:absolute;right:-3%;top:-12%;min-width:1.5em;padding:.05em .3em;border-radius:1em;background:#c0182e;border:.08em solid #ffd84a;font:900 .8em var(--f-ui);color:#fff;text-align:center;box-shadow:0 0 .4em rgba(0,0,0,.6)}
+.rk_pvp .pvTr.tt b{right:4%;top:0}
+.pvTl span{align-items:flex-start}
+.pvTi h3 img,.pvTl h4 img{height:1.6em;vertical-align:middle}
+.pvTl{display:flex;flex-direction:column;gap:.35em;max-height:52vh;overflow:auto}
+.pvTl h4{margin:.4em 0 .1em;font:900 1em var(--f-ui)}
+.pvTl div{display:grid;grid-template-columns:2.4em 1fr auto auto;align-items:center;gap:.6em;padding:.25em .6em;border-radius:.5em;background:#140c28;border:1px solid #3a2a6a}
+.pvTl div.me{border-color:#ffd84a;box-shadow:0 0 .6em rgba(255,200,60,.4)}
+.pvTl .pt{width:2.4em;height:2.4em;border-radius:50%;object-fit:cover;object-position:50% 20%}
+.pvTl span{display:flex;flex-direction:column;font:900 .95em var(--f-ui);color:#fff}.pvTl em{font:900 .85em var(--f-ui);font-style:normal}.pvTl small{font:800 .75em var(--f-ui);color:#aaa}

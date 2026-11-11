@@ -1603,3 +1603,8 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - `pvDelta` agora roda o `rkApply` com `G.pick` = personagem do PVP (os equipamentos/anéis/nível/passivas/título certos), tira poção de buff, poção de cura e de drop durante o cálculo (e devolve depois, sem gastar) e também leva a cor da aura da passiva secreta (`_def`).
 - Na luta os dois lados recebem os números (dano, velocidade, defesa, crítico, dano crítico, roubo de vida, ki, transformação, soco rápido, regeneração). A regeneração das passivas roda no PVP para você e para a sombra (`extra/9r_v334.py` + wrapper do `psRegTick`). Semente dos Deuses (reviver) não vale no PVP (é de uso único, como poção).
 - Teste `tpvpbonus_v334.js`: conta sem itens = tudo 1/0; conta com espada mítica, bota, 2 anéis e nível 45 = tdm 1,316, tsp 1,08, crítico 12,2; poções continuam guardadas.
+
+## v335 — PVP: quem está em cada rank
+- Na lista "Ranks" da direita da tela PVP, cada rank virou botão (`pvTier`): abre a lista dos jogadores daquele rank (foto do personagem, nome, título, divisão, estrelas, V/D). Tocar em "Ranks" (título) = todos, separados por rank (inclui a Madeira). Bolinha vermelha = quantos jogadores no rank.
+- `pvLoadAll()` faz UMA consulta (`pvk` do mês, 300 linhas, 1 por conta, guardada 1 min) e serve para a lista, as bolinhas e o Ranking.
+- Teste `tpvprank_v335.js` (4 contas: 2 Prata, 1 Diamante, 1 Madeira).
