@@ -838,7 +838,7 @@ function lvBonus(id){const L=lvOf(id),B={dano:(L.lv-1)*.4,crit:(L.lv-1)*.15,vel:
   L.t.forEach((c,r)=>{if(c==null||c<0||!LVTREE[r]||!LVTREE[r][c]||L.lv<LVROW[r])return;const [k,v]=LVTREE[r][c];B[k]+=v});return B}
 /* sorte total (rank + ADM + equipamento + nível do personagem em uso) e o multiplicador de drops */
 const lvSorte=()=>{try{return rkSorte()+lvBonus(eqChar()).st}catch(e){return 0}};
-const lvLuck=()=>(1+Math.max(0,lvSorte())/200)*(twIsAdm()?1.6:1)*rkEvL()*rkDropF();
+const lvLuck=()=>(1+Math.max(0,lvSorte())/200)*(twIsAdm()?1.7:1)*rkEvL()*rkDropF();
 /* ---------- bônus aplicados na luta (Boss e Torre ranqueada) ---------- */
 {const _ra=rkApply;rkApply=function(){_ra.apply(this,arguments);try{rkExtra()}catch(e){}try{if(G.gmode==='boss'&&G.p)tbApply(G.p[0])}catch(e){}}}
 function rkExtra(){if(!G.p)return;const torre=typeof TW!=='undefined'&&TW.on&&G.gmode==='torre',boss=G.gmode==='boss';if(!torre&&!boss)return;const p=G.p[0],id=p.def.id;
@@ -1101,10 +1101,10 @@ const TBUF={ini:{dano:2},gue:{dano:3,vel:2},con:{dano:5,def:3},sem:{dano:6,crit:
   rk0:{def:1},rk1:{def:2},rk2:{dano:3},rk3:{dano:4,crit:2},rk4:{dano:5,crit:3},rk5:{dano:6,crit:4,vel:3},rk6:{dano:8,crit:5,def:5},rk7:{dano:10,crit:6,def:6,st:5},rk8:{dano:12,crit:7,def:7,st:6},rk9:{dano:14,crit:8,def:8,st:8},rk10:{dano:16,crit:10,def:10,st:10}};
 const tbOf=k=>TBUF[k]||(TWTIT[k]&&TWTIT[k].yt?{crit:5}:{});
 const tbTxt=k=>{const B=tbOf(k),o=[];if(B.dano)o.push('+'+B.dano+'% dano');if(B.def)o.push('+'+B.def+'% defesa');if(B.vel)o.push('+'+B.vel+'% velocidade');if(B.crit)o.push('+'+B.crit+'% crítico');if(B.st)o.push('+'+B.st+' sorte');return o.join(' · ')};
-for(const k in TWTIT){const t=tbTxt(k);if(k==='adm')TWTIT[k].d='Administrador do jogo · ✦ +60% em TUDO (dano, defesa, velocidade, crítico, energia, sorte e drops)';else if(t)TWTIT[k].d=(TWTIT[k].d||'')+' · ✦ Bônus em uso: '+t}
+for(const k in TWTIT){const t=tbTxt(k);if(k==='adm')TWTIT[k].d='Administrador do jogo · ✦ +70% em TUDO (dano, defesa, velocidade, crítico, energia, sorte e drops) · 🔥 2x de evento em tudo, sempre';else if(t)TWTIT[k].d=(TWTIT[k].d||'')+' · ✦ Bônus em uso: '+t}
 function tbApply(p){if(!p||p.cpu||p.tbOn)return;p.tbOn=1;const B=tbOf(twTitOn());
   if(B.dano)p.tdm=(p.tdm||1)*(1+B.dano/100);if(B.vel)p.tsp=(p.tsp||1)*(1+B.vel/100);if(B.def)p.tdf=(p.tdf||1)/(1+B.def/100);if(B.crit)p.tcr=(p.tcr||0)+B.crit;
-  if(twIsAdm()){p.tdm=(p.tdm||1)*1.6;p.tsp=(p.tsp||1)*1.6;p.tdf=(p.tdf||1)/1.6;p.tcr=(p.tcr||0)+60;p.tki=(p.tki||1)*1.6;p.tsb=(p.tsb||1)*1.6}}
+  if(twIsAdm()){p.tdm=(p.tdm||1)*1.7;p.tsp=(p.tsp||1)*1.7;p.tdf=(p.tdf||1)/1.7;p.tcr=(p.tcr||0)+70;p.tki=(p.tki||1)*1.7;p.tsb=(p.tsb||1)*1.7}}
 twAdmBuff=function(){try{if(!G.p||G.gmode==='boss')return;tbApply(G.p[0])}catch(e){}};
 /* placa nova do título ADM (arte do dono) */
 {const _pt3=pfTitH;pfTitH=function(t,n,adm){if(t==='adm'&&adm)return `<span class="pfAdmI"><i class="gl"></i><img src="${RQA.tit_adm}" alt="ADM"><i class="sw"></i><i class="sp a">✦</i><i class="sp b">✦</i><i class="sp c">✦</i><i class="sp d">✦</i></span>`;return _pt3.apply(this,arguments)}}
@@ -2807,7 +2807,6 @@ function pvCfgM(){if(!twIsAdm())return mn2Cfg();const on=PV.on!==false;rkModal(`
 
 /* v334: no PVP a regeneração das passivas vale para os dois lutadores (você e a sombra) */
 {const _rt=psRegTick;psRegTick=function(){if(G.gmode!=='pvp'||!G.p)return _rt.apply(this,arguments);const P0=G.p[0];for(const f of G.p){G.p[0]=f;try{_rt.apply(this,arguments)}catch(e){}}G.p[0]=P0}}
-try{window.__pvT={G:()=>G,ko:(a,d)=>ko(a,d)}}catch(e){} /* só para os testes */
 
 /* ================= v337: EVENTO DE DESCULPAS (11/11/2026, 13:00 até 20:00 de Brasília): 3x XP, GEMAS, SORTE, DROP e 3x ANEL DA ALMA na Caça ================= */
 RKEVX.push([Date.UTC(2026,10,11,16,0),Date.UTC(2026,10,11,23,0),3,'DESCULPAS · 3x XP · 3x GEMAS · 3x SORTE · 3x DROP · 3x ANEL NA CAÇA',{gem:3,luck:3,drop:3,anel:3}]);
@@ -2817,3 +2816,13 @@ const rkEvA=()=>{const e=rkEvX();return (e&&e[4]&&e[4].anel)||1};
 {const _cp7=twCupom;twCupom=async function(code,E){const C=TWCUP[twHash(String(code).toUpperCase())];const r=await _cp7.apply(this,arguments);
   if(C&&C.pk&&r&&E&&/ok/.test(E.className||'')){if(C.pk.gem)rkAdd('gem',C.pk.gem);if(C.pk.tic)rkAdd('tic',C.pk.tic);try{acSave(1)}catch(e){}E.textContent='🎁 '+C.nm+'! +'+rkFmtN(C.pk.gem||0)+' 💎 · +'+(C.jn||0)+' 💠 giros de passiva · +'+(C.pk.tic||0)+' 🎫 tickets'}return r}}
 TWCUP['973bb8']={nm:'PEDIDO DE DESCULPAS',acc:1,jn:40,pk:{gem:5000,tic:20}};
+
+/* v339: ADM tem SEMPRE 2x de evento em tudo (XP, gemas, sorte, drop, anel); se tiver evento ativo, dobra o evento. Entrada fixa no começo do RKEVX que só vale para o ADM. */
+{const E=[],real=()=>{const t=Date.now();for(let i=1;i<RKEVX.length;i++){const e=RKEVX[i];if(t>=e[0]&&t<e[1])return e}return null};
+  Object.defineProperty(E,0,{get:()=>{try{return twIsAdm()?0:Infinity}catch(e){return Infinity}}});
+  Object.defineProperty(E,1,{get:()=>{const r=real();return r?r[1]:Date.now()+864e5}});
+  Object.defineProperty(E,2,{get:()=>{const r=real();return 2*(r?r[2]:1)}});
+  Object.defineProperty(E,3,{get:()=>{const r=real();return 'ADM 2x'+(r?' · '+r[3]:' · XP · GEMAS · SORTE · DROP · ANEL')}});
+  Object.defineProperty(E,4,{get:()=>{const r=real(),o=(r&&r[4])||{};return {gem:2*(o.gem||1),luck:2*(o.luck||1),drop:2*(o.drop||1),anel:2*(o.anel||1)}}});
+  RKEVX.unshift(E)}
+try{window.__pvT={G:()=>G,ko:(a,d)=>ko(a,d),ev:()=>rkEvX(),dl:id=>pvDelta(id)}}catch(e){} /* só para os testes */

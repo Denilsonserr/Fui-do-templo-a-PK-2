@@ -1625,3 +1625,8 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - `pvCombo` (antes do `aiThink` no PVP): emenda cada golpe na janela certa (`mf>=su+1` e acertou), aperta 1 quadro e solta (borda do botão), sequência de 7 golpes (a mais usada pelo dono com ≥3 golpes ou soco x4 + chute que lança) e fecha com super/especial; persegue o rival tonto ou no ar e recomeça; abre combo de perto quando o rival não está atacando. Limite: com 22+ golpes seguidos solta o rival por 40 quadros (sem combo infinito). Defesa/aproximação = máquina no máximo; estilo gravado em ~25% das jogadas.
 - Toda sombra tem +10% de dano e +10% de defesa (igual para todas).
 - Teste `tpvp4_v338.js`: combo máximo 24 golpes, jogador parado perde ~3500 em 15 s.
+
+## v339 — ADM +70% e 2x de evento sempre
+- Título ADM (`tbApply`): +70% dano, velocidade, defesa, energia e transformação, +70 de crítico; sorte do ADM x1,7 (`lvLuck`). Texto do título atualizado.
+- Entrada fixa no começo do `RKEVX` (getters) que só vale para o ADM: sem evento = 2x XP/gemas/sorte/drop/anel; com evento = dobra o evento (ex.: desculpas 3x → 6x). Outros jogadores não mudam.
+- Teste `tadm_v339.js` (gancho `__pvT.ev/dl`).
