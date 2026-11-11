@@ -2689,12 +2689,34 @@ function pvThink(f,o){const P=pvPrep(f.pvP),A=f.ai,I=f.inp,dx=o.x-f.x,dist=Math.
   else if(a==='J'){A.hold={up:1,[tw]:Math.random()<.6?1:0};A.holdT=4}
   else if(a==='KI'){A.kt=2}else if(a==='KC'){A.kc=40+(Math.random()*40|0);A.wt=Math.min(A.kc,30)}
   else if(a==='BL'||a==='BK')A.walk=aw;else if(a==='FW')A.walk=tw;else if(a==='DN'){A.hold={down:1};A.holdT=PVW}}
-{const _a=aiThink;aiThink=function(f,o){if(G.gmode==='pvp'&&f.pvP&&f.pvP.n>=60){const A=f.ai;if(G.frame>=(A.pvSw||0)){A.pvSw=G.frame+PVW*2;A.pvM=Math.random()<.35}
-    if(A.pvM&&!pvThr(f,o)&&!(A.holdT>0))return pvThink(f,o)}return _a.apply(this,arguments)}}
+/* v338: SOMBRA COMBISTA — emenda todos os golpes no tempo certo (soco→soco→…→chute que lança), persegue no ar, fecha com especial/super.
+   Defesa e aproximação = máquina no nível máximo. O estilo gravado escolhe a sequência do combo e às vezes a jogada. */
+function pvCmbSeq(f){const P=f.pvP,C=P&&P.ch||{};let best=null,bn=0;for(const k in C)if(k.length>=3&&C[k]>bn){bn=C[k];best=k}
+  const base=best&&Math.random()<.5?best:'PPPPK';return (base+'PPKK').slice(0,7).split('').map(c=>c==='K'?'kick':'punch')}
+function pvCombo(f,o,_a){const A=f.ai,I=f.inp,dx=o.x-f.x,dist=Math.abs(dx),dy=o.y-f.y,tw=dx>0?'right':'left';
+  const tap=k=>{if(A.tf===G.frame-1&&A.tk===k)return false;I[k]=1;A.tf=G.frame;A.tk=k;return true};
+  const stun=o.hitstun>0||['hit','fall','down','launch','air'].includes(o.state)&&!o.ko;
+  for(const k of ['punch','kick','sp','sr','up','left','right','down','ki'])I[k]=0;
+  /* no meio do golpe: emenda o próximo assim que dá */
+  if(f.state==='attack'&&f.move){if(f.mf>=f.move.su+1&&f.hasHit&&A.cm!==f.move){A.cm=f.move;const sq=A.sq||(A.sq=pvCmbSeq(f));if(A.si<sq.length){tap(sq[A.si]);A.si++}
+      else{if(srReady(f)&&Math.abs(dy)<200)I.sr=1;else if(f.ki>=100&&(f.sb||0)>=1&&dist<200)I.sp=1;A.sq=null;A.si=0}}return true}
+  if(!PVFREE.includes(f.state))return false;
+  /* limite: depois de ~22 golpes seguidos solta o rival (igual jogador de verdade, sem combo infinito) */
+  if((f.combo||0)>=22){A.rest2=G.frame+40}if(G.frame<(A.rest2||0))return false;
+  /* rival tonto/caído no ar: persegue e recomeça */
+  if(stun&&dist<230){A.sq=null;A.si=1;if(!o.grounded&&o.y<FLOOR-80&&f.grounded&&dy<-60){I.up=1;I[tw]=1;return true}if(dist>110)I[tw]=1;tap('punch');A.cm=null;A.sq=pvCmbSeq(f);return true}
+  /* perto e o rival não está atacando: abre o combo */
+  if(dist<120&&Math.abs(dy)<90&&!pvThr(f,o)&&Math.random()<.55){A.sq=pvCmbSeq(f);A.si=1;A.cm=null;tap(A.sq[0]);return true}
+  /* super pronto e perto: solta */
+  if(srReady(f)&&dist<260&&Math.abs(dy)<150&&!pvThr(f,o)&&Math.random()<.04){I.sr=1;return true}
+  return false}
+{const _a=aiThink;aiThink=function(f,o){if(G.gmode==='pvp'&&f.pvN){if(pvCombo(f,o,_a))return;
+    if(f.pvP&&f.pvP.n>=60){const A=f.ai;if(G.frame>=(A.pvSw||0)){A.pvSw=G.frame+PVW*2;A.pvM=Math.random()<.25}if(A.pvM&&!pvThr(f,o)&&!(A.holdT>0))return pvThink(f,o)}}
+  return _a.apply(this,arguments)}}
 /* v336: na PVP a máquina usa o nível mais difícil da Torre (reação, defesa e combos máximos) */
 {const _lv=twLV;twLV=function(){if(G.gmode==='pvp')return TWLV[TWLV.length-1];return _lv.apply(this,arguments)}}
 /* bônus dos dois lados na luta */
-{const _ra=rkApply;rkApply=function(){const r=_ra.apply(this,arguments);if(G.gmode==='pvp'&&G.p&&PV.fight){const [p,o]=G.p,F=PV.fight,ap=(f,D)=>{D=D||{};for(const k in D)if(k!=='_def')f[k]=D[k];if(D._def)f.def=Object.assign({},f.def,D._def);if(f.preg){f.pregT=G.frame;f.pregTot=0;f._lhp=f.hp}};ap(p,F.my[p.def.id]);const ot=F.opp.team.find(x=>x.ch===o.def.id)||F.opp.team[0];ap(o,ot.s);o.pvP=ot.p;o.pvN=F.opp.nome}return r}}
+{const _ra=rkApply;rkApply=function(){const r=_ra.apply(this,arguments);if(G.gmode==='pvp'&&G.p&&PV.fight){const [p,o]=G.p,F=PV.fight,ap=(f,D)=>{D=D||{};for(const k in D)if(k!=='_def')f[k]=D[k];if(D._def)f.def=Object.assign({},f.def,D._def);if(f.preg){f.pregT=G.frame;f.pregTot=0;f._lhp=f.hp}};ap(p,F.my[p.def.id]);const ot=F.opp.team.find(x=>x.ch===o.def.id)||F.opp.team[0];ap(o,ot.s);o.tdm=(o.tdm||1)*1.1;o.tdf=(o.tdf||1)/1.1;o.pvP=ot.p;o.pvN=F.opp.nome}return r}}
 
 /* ---------- 5) LUTA: começar e terminar ---------- */
 function pvStart(opp,friendly){rkInit();if(!SPR_OK)return;const TM=pvTeam(),sel=TM[0];try{fsTry()}catch(e){}
