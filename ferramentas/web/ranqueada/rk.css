@@ -1617,3 +1617,10 @@ img.anOn{position:relative;z-index:2}
 .dlC.big{border-color:#ffd84a;background:linear-gradient(#3a2208,#140c28)}
 .dlC.hoje{border-color:#7dff9a;box-shadow:0 0 1em #2fd96b;animation:rkEp 1.2s infinite}
 .dlC.ok{opacity:.55}.dlC i{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font:900 2em var(--f-ui);color:#7dff9a;font-style:normal;text-shadow:0 0 .4em #000}
+/* v349: desafio do dia */
+.rk_menu .dsfB{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.1em;border-radius:.7em;border:.12em solid #ffb03a;background:linear-gradient(90deg,rgba(120,30,0,.92),rgba(200,80,10,.92));box-shadow:0 0 .8em rgba(255,140,40,.7);animation:rkEp 1.6s infinite;z-index:3}
+.rk_menu .dsfB b{font:900 1.35em var(--f-ui);color:#fff3c0;text-shadow:0 0 .4em #ff8000}.rk_menu .dsfB small{font:800 .85em var(--f-ui);color:#fff}
+.rk_menu .dsfB.ok{animation:none;filter:saturate(.5) brightness(.8)}
+.dsfV{display:flex;align-items:center;justify-content:center;gap:1.2em}.dsfV div{display:flex;flex-direction:column;align-items:center;gap:.2em}.dsfV img{width:5.5em;height:5.5em;border-radius:.6em;object-fit:cover;object-position:50% 20%;border:.15em solid #4aa8ff}.dsfV .r img{border-color:#ff5a5a}
+.dsfV b{font:900 1em var(--f-ui);color:#fff}.dsfV small{font:800 .8em var(--f-ui);color:#cbb8ff}.dsfV em{font:900 2.2em "Cinzel",serif;color:#ffd84a;font-style:normal;text-shadow:0 0 .4em #ff8000}
+.dsfMod{margin:.5em 0;padding:.5em;border-radius:.5em;background:rgba(255,120,30,.15);border:1px solid #ff9a3a;font:800 1em var(--f-ui);color:#fff;text-align:center}.dsfMod b{color:#ffb03a}

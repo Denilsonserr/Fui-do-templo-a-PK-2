@@ -1675,3 +1675,9 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 ## v348 — menos diamante por luta
 - Boss: base `5 + nível x 5,5 + 0–10` (nível 1 ≈ 5–15, nível 11 ≈ 60–70); farm = metade. Evento de gemas conta no máximo x3. Sorte dá até +100% (`(min(3,sorte)-1) x 0,5`). Teto `GEMCAP=150` por luta (antes chegava a ~600 com sorte x evento x ADM).
 - Yuta do evento: mesma regra (sorte até +100%, evento até x3, máx. 150). 1ª vitória do dia: no máximo +70.
+
+## v349 — equilíbrio geral + DESAFIO DO DIA
+- Curva do Boss refeita (`BSST`) pela força esperada do jogador em cada rank (iniciante épico → Shaka 70 mítico), mirando "o Boss é X vezes mais forte que você": nível 1 ≈ 0,7x, 3 ≈ 1,1x, 5 ≈ 1,6x, 7 ≈ 2,5x, 9 ≈ 3,5x, 11 ≈ 5x (era ~17x no v347). ATK: 40 → 38.000; DEF: 0 → 1.000 (nível 11 tem DEF 700, ataque absurdo).
+- Torre: inimigo ganha +25% de vida efetiva e +15% de dano por andar (jogadores ficaram bem mais fortes com o sistema RPG).
+- DESAFIO DO DIA (botão laranja no menu, `dsfOpen`/`dsfStart`/`dsfEnd`, `rk_dsf`, modo `G.gmode='dsf'`): rival e modificador do dia (`DSFC`, `DSFM`, sorteados pela data de Brasília). O rival tem a força do jogador +10% (não depende de item), IA combista no máximo. 3 tentativas/dia. Vitória: 2 Joias, 120 pó, 1 cristal (raridade sobe com a sequência), 1 ticket, 40 gemas; 7 dias seguidos = baú lendário + 10 Joias + 5 tickets. Derrota: 20 pó. Lutador = 1º do time do PVP. Resultado em `#lvrzM` (o menu fecha o rkModal sozinho logo depois de abrir).
+- Teste `tdesafio_v349.js`.

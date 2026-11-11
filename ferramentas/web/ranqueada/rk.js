@@ -2713,11 +2713,11 @@ function pvCombo(f,o,_a){const A=f.ai,I=f.inp,dx=o.x-f.x,dist=Math.abs(dx),dy=o.
   /* super pronto e perto: solta */
   if(srReady(f)&&dist<260&&Math.abs(dy)<150&&!pvThr(f,o)&&Math.random()<.04){I.sr=1;return true}
   return false}
-{const _a=aiThink;aiThink=function(f,o){if(G.gmode==='pvp'&&f.pvN){if(pvCombo(f,o,_a))return;
+{const _a=aiThink;aiThink=function(f,o){if((G.gmode==='pvp'||G.gmode==='dsf')&&f.pvN){if(pvCombo(f,o,_a))return;
     if(f.pvP&&f.pvP.n>=60){const A=f.ai;if(G.frame>=(A.pvSw||0)){A.pvSw=G.frame+PVW*2;A.pvM=Math.random()<.25}if(A.pvM&&!pvThr(f,o)&&!(A.holdT>0))return pvThink(f,o)}}
   return _a.apply(this,arguments)}}
 /* v336: na PVP a máquina usa o nível mais difícil da Torre (reação, defesa e combos máximos) */
-{const _lv=twLV;twLV=function(){if(G.gmode==='pvp')return TWLV[TWLV.length-1];return _lv.apply(this,arguments)}}
+{const _lv=twLV;twLV=function(){if(G.gmode==='pvp'||G.gmode==='dsf')return TWLV[TWLV.length-1];return _lv.apply(this,arguments)}}
 /* bônus dos dois lados na luta */
 {const _ra=rkApply;rkApply=function(){const r=_ra.apply(this,arguments);if(G.gmode==='pvp'&&G.p&&PV.fight){const [p,o]=G.p,F=PV.fight,ap=(f,D)=>{D=D||{};for(const k in D)if(k!=='_def')f[k]=D[k];if(D._def)f.def=Object.assign({},f.def,D._def);if(f.preg){f.pregT=G.frame;f.pregTot=0;f._lhp=f.hp}};ap(p,F.my[p.def.id]);const ot=F.opp.team.find(x=>x.ch===o.def.id)||F.opp.team[0];ap(o,ot.s);o.tdm=(o.tdm||1)+.1;o.tdf=1/(1/(o.tdf||1)+.1);o.pvP=ot.p;o.pvN=F.opp.nome}return r}}
 
@@ -2894,7 +2894,7 @@ function cstStats(id){const B=cstBase(id),L=lvOf(id),C=cnsSum(id),E=eqFlat(),lv=
     if(G.gmode==='caca'){const B=lvBonus(id);pd+=B.dano;pv+=B.vel;p.tcr=(p.tcr||0)+B.crit;p.tcd=(p.tcd||0)+B.cd;p.tls=(p.tls||0)+B.ls;p.tki=(p.tki||1)+B.uv/100}
     pf+=lvBonus(id).def||0;pd=Math.max(-50,pd);pf=Math.max(-50,pf);pv=Math.max(-50,pv);
     p.tdm=Math.pow(Math.max(10,S.atk)/150,.55)*(1+pd/100);p.tdf=1/Math.max(.3,1+S.def/900+pf/100);p.tsp=Math.min(2.2,Math.max(.6,Math.pow(Math.max(20,S.spd)/80,.2)+pv/100));p.cst=S}
-  if(o&&o.cpu&&!o._cst&&tw){o._cst=1;o.tdf=(o.tdf||1)/1.3;o.tdm=(o.tdm||1)*1.15}
+  if(o&&o.cpu&&!o._cst&&tw){o._cst=1;const fl=(TW.fl|0);o.tdf=(o.tdf||1)/(1.3*(1+fl*.25));o.tdm=(o.tdm||1)*1.15*(1+fl*.15)}
   if(o&&o.cpu&&!o._cst&&G.gmode==='boss'){o._cst=1;bsStApply(o,1)}if(p&&!p.cpu&&G.gmode==='boss')bsAntiItens(p,G.p[1])}catch(e){}return r}}
 /* ---------- RESET de todo mundo (1 vez): volta ao nível 1 e devolve moedas, pó, itens de elevação e cristais ---------- */
 const LVRZ=1;
@@ -2949,7 +2949,7 @@ function cnsH(){const id=LVC.id,L=lvOf(id),fr=cnsFree(id),S=cstStats(id),sel=CNV
 
 /* ================= v347: BOSSES COM ATRIBUTOS (mesmo sistema do jogador) + passivas contra itens + Caça mais forte + recompensa diária ================= */
 /* Broly por nível do Boss: começa fraco (igual épico) e termina com 38.000 de ataque. Yuta = +20% de ataque. */
-const BSST=[[50,10,60],[90,25,70],[160,50,80],[280,90,95],[480,160,110],[800,280,130],[1400,480,155],[2600,800,185],[5000,1400,220],[11000,2600,265],[38000,6000,320]];
+const BSST=[[40,0,60],[80,30,70],[450,80,80],[850,150,95],[1600,250,110],[2900,380,130],[5400,550,155],[8600,750,185],[10500,950,220],[16000,1000,265],[38000,700,320]]; /* v349: equilibrado pela força esperada do jogador em cada rank */
 const bsSt=lv=>{const r=BSST[Math.max(0,Math.min(BSST.length-1,lv|0))],k=RKBID==='yuta'?1.2:1;return {atk:Math.round(r[0]*k),def:r[1],spd:r[2]}};
 function bsStApply(o,ph){const S=bsSt(o.rkL||0),B=rkBoss(),f=ph===2?B.b2:B.b1,b1=B.b1;o.bst=S;
   o.rkB={dm:Math.pow(S.atk/150,.55)*(f.dm/b1.dm)*(o.ysK||1),df:1/(1+S.def/900)*(f.df/b1.df),sp:Math.pow(S.spd/80,.2)*(f.sp/b1.sp)};o.tdm=o.rkB.dm;o.tdf=o.rkB.df;o.tsp=o.rkB.sp}
@@ -2974,4 +2974,39 @@ function dlCheck(force){const o=rkG('dl',{d:'',s:-1});const today=dlDay();if(o.d
 {const _o=rkOpen;rkOpen=function(){const r=_o.apply(this,arguments);setTimeout(()=>{try{if(showScreen.cur==='ranked'&&!document.getElementById('lvrzM')&&(!$('rkModal')||!$('rkModal').innerHTML.trim()))dlCheck()}catch(e){}},3200);return r}}
 /* 1ª vitória do dia no Boss: gemas e moedas vermelhas em dobro */
 {const _rr=rkResult;rkResult=function(R){try{if(R&&R.won&&!R.farm&&R.yd==null&&rkG('fwd','')!==dlDay()){rkS('fwd',dlDay());const g=Math.min(R.gem||0,70),rd=R.red||0;if(g)rkAdd('gem',g);if(rd)rkAdd('red',rd);setTimeout(()=>rkToast('⭐ 1ª VITÓRIA DO DIA: +'+g+' 💎 +'+rd+' 🔴 em dobro!','#ffd84a'),1800)}}catch(e){}return _rr.apply(this,arguments)}}
-try{window.__pvT={G:()=>G,ko:(a,d)=>ko(a,d),ev:()=>rkEvX(),m:()=>[rkEvG(),rkEvL(),rkEvD(),rkEvA()],lk:()=>{const c={};for(let i=0;i<4000;i++){const r=twEqRoll().k;c[r]=(c[r]||0)+1}const a=[0,0,0,0,0];for(let i=0;i<4000;i++)a[lvCrRoll()]++;return {luck:+lvLuck().toFixed(2),drop:+rkDropF().toFixed(2),extra:lkK(),equip:c,cristal:a}},dl:id=>pvDelta(id),cs:id=>cstStats(id),lvo:id=>lvOpen(id),bs:lv=>bsSt(lv),dl:f=>dlCheck(f)}}catch(e){} /* só para os testes */
+
+/* ================= v349: DESAFIO DO DIA =================
+   Todo dia (Brasília) um rival diferente com um MODIFICADOR do dia. O rival tem a SUA força (+10%), então quem decide é a habilidade (não é pay to win).
+   3 tentativas por dia. Vitória: joias, pó, cristal, ticket e gemas; 7 dias seguidos vencendo = baú grande. IA combista no máximo. */
+const DSFM=[{k:'furia',n:'🔥 FÚRIA',d:'Rival +40% de dano · você +20% de crítico',o:{dm:1.4},p:{cr:20}},{k:'tanque',n:'🛡️ TANQUE',d:'Rival com o dobro de defesa',o:{df:2}},
+  {k:'veloz',n:'⚡ VELOCIDADE',d:'Os dois 40% mais rápidos',o:{sp:1.4},p:{sp:1.4}},{k:'vampiro',n:'🩸 VAMPIRO',d:'Rival rouba 15% do dano como vida',o:{ls:15}},
+  {k:'vidro',n:'💎 CANHÃO DE VIDRO',d:'Os dois com +60% de dano e -30% de defesa',o:{dm:1.6,df:.7},p:{dm:1.6,df:.7}},{k:'mestre',n:'👑 MESTRE',d:'Rival +20% em tudo',o:{dm:1.2,df:1.2,sp:1.1}},
+  {k:'critico',n:'🎯 CRÍTICO',d:'Os dois +30% de chance de crítico',o:{cr:30},p:{cr:30}}];
+const DSFC=['shaka','yuta','garou','madara','naruto','gojo','gogeta','broly','vegeta','zoro','luffy','rengoku','aokiji','goku'];
+const dsfSeed=()=>{const d=dlDay();let h=0;for(const c of d)h=(h*31+c.charCodeAt(0))>>>0;return h};
+const dsfToday=()=>{const h=dsfSeed();return {d:dlDay(),ch:DSFC[h%DSFC.length],m:DSFM[(h>>>4)%DSFM.length]}};
+const dsfG=()=>{const T=dsfToday(),o=Object.assign({d:'',left:3,won:0,str:0,last:''},rkG('dsf',{}));if(o.d!==T.d){o.d=T.d;o.left=3;o.won=0}return o};
+let DSF=null;
+function dsfOpen(){const T=dsfToday(),o=dsfG(),id=pvTeam()[0],S=cstStats(id);
+  rkModal(`<div class="twM dsfM"><h3>⚔️ DESAFIO DO DIA</h3><div class="dsfV"><div><img src="${pvPortrait(id)}" alt=""><b>${twEsc(CH[id].name)}</b><small>⚔️ ${rkFmtN(S.atk)} · 🛡️ ${rkFmtN(S.def)}</small></div><em>VS</em><div class="r"><img src="${pvPortrait(T.ch)}" alt=""><b>${twEsc(CH[T.ch].name)}</b><small>SUA FORÇA +10%</small></div></div>
+    <p class="dsfMod"><b>${T.m.n}</b> ${T.m.d}</p><p class="twH">Vitória: 💠 2 · 🟣 120 pó · 💎 1 cristal (raridade sobe com a sequência) · 🎫 1 · 💎 40 gemas. Derrota: 🟣 20 pó.<br>🔥 Sequência de vitórias: <b>${o.str}</b> dia${o.str===1?'':'s'} · 7 seguidos = 🎁 BAÚ LENDÁRIO + 💠 10 + 🎫 5</p>
+    <p class="twH">Lutador: o 1º do seu time do PVP (Formação). Tentativas hoje: <b>${o.won?'✔ VENCIDO':o.left}</b></p>
+    <div class="row"><button class="btn main" id="dsfGo" ${o.won||o.left<1?'disabled':''}>${o.won?'✔ JÁ VENCEU HOJE':o.left<1?'VOLTE AMANHÃ':'⚔️ LUTAR'}</button><button class="btn" id="rkMX">FECHAR</button></div></div>`);
+  $('rkMX').onclick=()=>rkModal(null);$('dsfGo').onclick=()=>{rkModal(null);dsfStart()}}
+function dsfStart(){rkInit();if(!SPR_OK)return;const o=dsfG();if(o.won||o.left<1)return;o.left--;rkS('dsf',o);try{acSave()}catch(e){}
+  const T=dsfToday(),id=pvTeam()[0],me=pvDelta(id);DSF={T,me,diff0:G.diff,lives0:G.lives};try{fsTry()}catch(e){}
+  G.pick=id;G.opp=T.ch===id?(id==='goku'?'vegeta':'goku'):T.ch;G.gmode='dsf';G.diff=2;G.lives=2;const sk=Object.keys(STG).filter(k=>!STG[k].hid);G.nextStg=sk[(Math.random()*sk.length)|0];
+  const PM=prepMatch([G.pick,G.opp],G.nextStg);showVS(()=>PM.then(()=>{vsLoadEnd();startMatch();setTimeout(()=>{try{banner('DESAFIO DO DIA','#ff9a3a',100,T.m.n)}catch(e){}},300)}),PM)}
+{const _ra=rkApply;rkApply=function(){const r=_ra.apply(this,arguments);if(G.gmode==='dsf'&&G.p&&DSF){const [p,o]=G.p,M=DSF.T.m;for(const k in DSF.me)if(k!=='_def'&&typeof DSF.me[k]==='number')p[k]=DSF.me[k];
+    o.tdm=(p.tdm||1)*1.1*((M.o||{}).dm||1);o.tdf=(p.tdf||1)/1.1/((M.o||{}).df||1);o.tsp=(p.tsp||1)*((M.o||{}).sp||1);o.tcr=(p.tcr||0)+((M.o||{}).cr||0);o.tcd=p.tcd||0;o.tls=((M.o||{}).ls||0);o.pvN='DESAFIO';
+    const P=M.p||{};if(P.dm)p.tdm*=P.dm;if(P.df)p.tdf/=P.df;if(P.sp)p.tsp*=P.sp;if(P.cr)p.tcr=(p.tcr||0)+P.cr;if(p.preg){p.pregT=G.frame;p.pregTot=0;p._lhp=p.hp}}return r}}
+{const _er=endRound;endRound=function(){if(G.gmode==='dsf')return dsfEnd(G.koWinner);return _er.apply(this,arguments)}}
+function dsfEnd(w){G.mode='ranked';$('controls').hidden=true;$('pauseBtn').hidden=true;try{rainSound(0)}catch(e){}G.paused=false;const D=DSF||{};G.diff=D.diff0!=null?D.diff0:G.diff;G.lives=D.lives0||G.lives;G.gmode='pve';DSF=null;
+  const won=w===0,o=dsfG(),R=[];if(won){o.won=1;o.str=o.last===dlDay(-1)?o.str+1:1;o.last=dlDay();psAddJn(2);rkS('po',lvPo()+120);const cr=Math.min(4,Math.floor((o.str-1)/2));{const a=lvArr('cr');a[cr]++;rkS('cr',a)}rkAdd('tic',1);rkAdd('gem',40);
+    R.push('💠 +2','🟣 +120 pó','💎 cristal '+RKRNM[cr],'🎫 +1','💎 +40');if(o.str>0&&o.str%7===0){psAddJn(10);rkAdd('tic',5);setTimeout(()=>{try{rkOverTw(()=>twBauOpen({r:'lend',n:1}))}catch(x){try{twBauOpen({r:'lend',n:1})}catch(y){}}},2500);R.push('🎁 7 DIAS SEGUIDOS: BAÚ LENDÁRIO · 💠 +10 · 🎫 +5')}}
+  else{rkS('po',lvPo()+20);R.push('🟣 +20 pó')}
+  rkS('dsf',o);try{acSave(1)}catch(e){}rkOpen('menu');setTimeout(()=>{const M=document.createElement('div');M.id='lvrzM';document.body.appendChild(M);const rkModal=h=>{M.innerHTML=h};rkModal(`<div class="twM ${won?'gold':''}"><h3>${won?'🏆 DESAFIO VENCIDO!':'💀 O RIVAL VENCEU'}</h3><p class="twH">${R.join(' · ')}</p><p class="twH">${won?'🔥 Sequência: '+o.str+' dia'+(o.str>1?'s':''):'Tentativas que sobraram hoje: '+o.left}</p><div class="row">${!won&&o.left>0?'<button class="btn main" id="dsfAg">⚔️ TENTAR DE NOVO</button>':''}<button class="btn" id="rkMX">FECHAR</button></div></div>`);rkSfx(won?'powerUp':'clang');M.querySelector('#rkMX').onclick=()=>M.remove();const a=M.querySelector('#dsfAg');if(a)a.onclick=()=>{M.remove();dsfStart()}},900)}
+/* botão no menu Modos de Jogo */
+{const _mh=rkMenuH;rkMenuH=function(){const o=dsfG();return _mh.apply(this,arguments)+`<button class="hs dsfB ${o.won?'ok':''}" data-a="dsf" style="${mnB(28,506,318,566)}"><b>⚔️ DESAFIO DO DIA</b><small>${o.won?'✔ vencido hoje':o.left>0?o.left+' tentativa'+(o.left>1?'s':'')+' · '+dsfToday().m.n:'volte amanhã'}</small></button>`}}
+{const _a=rkAct;rkAct=function(a,b){if(a==='dsf'){rkSfx('whoosh');return dsfOpen()}return _a.apply(this,arguments)}}
+try{window.__pvT={G:()=>G,ko:(a,d)=>ko(a,d),ev:()=>rkEvX(),m:()=>[rkEvG(),rkEvL(),rkEvD(),rkEvA()],lk:()=>{const c={};for(let i=0;i<4000;i++){const r=twEqRoll().k;c[r]=(c[r]||0)+1}const a=[0,0,0,0,0];for(let i=0;i<4000;i++)a[lvCrRoll()]++;return {luck:+lvLuck().toFixed(2),drop:+rkDropF().toFixed(2),extra:lkK(),equip:c,cristal:a}},dl:id=>pvDelta(id),cs:id=>cstStats(id),lvo:id=>lvOpen(id),bs:lv=>bsSt(lv),dl:f=>dlCheck(f),ds:()=>dsfOpen()}}catch(e){} /* só para os testes */
