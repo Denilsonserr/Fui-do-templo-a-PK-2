@@ -1610,3 +1610,10 @@ img.anOn{position:relative;z-index:2}
 .cnsBr{display:flex;flex-direction:column;gap:.45em}.cnsBr div{display:grid;grid-template-columns:9em 1fr 3em;align-items:center;gap:.6em}.cnsBr em{font:900 1.1em var(--f-ui);font-style:normal;color:var(--c)}.cnsBr s{height:.7em;border-radius:1em;background:#2a2040;overflow:hidden;text-decoration:none}.cnsBr u{display:block;height:100%;background:var(--c);box-shadow:0 0 .5em var(--c)}.cnsBr small{color:#ccc;font:800 .95em var(--f-ui)}
 .cnsTt{font:800 1.1em var(--f-ui);color:#ffe08a}.cnsGo{margin-top:auto;padding:.7em;border-radius:.6em;border:.12em solid #ffd84a;background:linear-gradient(#8a3aff,#3a0a8a);color:#fff;font:900 1.6em var(--f-ui);cursor:pointer;animation:rkEp 1.6s infinite}
 #lvrzM{position:fixed;inset:0;z-index:60;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.6);font-size:min(2.2vh,15px)}#lvrzM .twM{max-width:min(80vw,640px)}
+/* v347: recompensa diária */
+.dlG{display:grid;grid-template-columns:repeat(7,1fr);gap:.4em;margin:.5em 0}
+.dlC{position:relative;display:flex;flex-direction:column;align-items:center;gap:.2em;padding:.5em .2em;border-radius:.6em;border:2px solid #3a2a6a;background:#140c28;text-align:center}
+.dlC small{font:900 .75em var(--f-ui);color:#bba8ff}.dlC b{font:900 .85em var(--f-ui);color:#fff}
+.dlC.big{border-color:#ffd84a;background:linear-gradient(#3a2208,#140c28)}
+.dlC.hoje{border-color:#7dff9a;box-shadow:0 0 1em #2fd96b;animation:rkEp 1.2s infinite}
+.dlC.ok{opacity:.55}.dlC i{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font:900 2em var(--f-ui);color:#7dff9a;font-style:normal;text-shadow:0 0 .4em #000}

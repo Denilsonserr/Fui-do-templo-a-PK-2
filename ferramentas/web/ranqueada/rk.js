@@ -121,10 +121,10 @@ function rkRbH(){const xp=rkG('rp',0),ri=rkRank(xp),lv=RKSEL==null?ri:RKSEL,B=RK
   <div class="rbCov rbXp" style="${rkB2(1190,215,1395,248)}">${rkFmtN(xp)} / ${ri>=RKTOP?'∞':rkFmtN(RKXP[ri+1])} XP</div>
   <div class="rbBar" style="${rkB2(1114,252,1455,267)}"><s style="width:${prog}%;background:${RKR[ri].c}"></s></div>
   <div class="rbCov rbW" style="${rkB2(1528,140,1632,178)}">+${RKXW[ri]*(rkEvX()?rkEvX()[2]:1)}</div><div class="rbCov rbL" style="${rkB2(1540,226,1632,264)}">-${RKXL[ri]}</div>
-  <div class="rbPas" style="${rkB2(1122,330,1645,452)}"><h5>PASSIVAS DO BOSS · NÍVEL ${lv+1}</h5>${pas.length?pas.map(p=>`<span>✦ ${p}</span>`).join(''):'<span>Nenhuma passiva especial</span>'}</div>
+  <div class="rbPas" style="${rkB2(1122,330,1645,452)}"><h5>PASSIVAS DO BOSS · NÍVEL ${lv+1}</h5>${bsAntiTx(lv)?`<span style="color:#ff8a8a">✦ ANTI-ITENS: ${bsAntiTx(lv)}</span>`:''}${pas.length?pas.map(p=>`<span>✦ ${p}</span>`).join(''):'<span>Nenhuma passiva especial</span>'}</div>
   ${cells.map((c,j)=>{const s0=Math.max(0,lv-7),i=j+s0;return `<button class="rbCell ${i===lv?'sel':''} ${i===ri?'cur':''} ${i>ri?'lock':''}${s0?' ov':''}" data-a="lvc" data-i="${i}" style="${rkB2(...c)}">${s0?`<span class="rbO">${rkEmb(i,'xs')}<em>Nível ${i+1}</em></span>`:''}${i>ri?'<i>🔒</i>':i<ri?'<i class="ok farm">🌾<small>FARM</small></i>':'<i class="now">ATUAL</i>'}</button>`}).join('')}${lv<ri?`<div class="rbFarm" style="${rkB2(1122,458,1645,498)}">🌾 MODO FARM · NÍVEL ${lv+1}</div>`:''}
   <div class="rbCov rbLvT" style="${rkB2(62,727,232,762)}">Nível ${lv+1}</div>
-  <div class="rbDesc" style="${rkB2(62,768,550,895)}"><span>❤️ ${rkPhB(lv)[0]} barras → transformado ${rkPhB(lv)[1]} · resistência ${L.v}% · ⚔️ Dano ${L.d}% · 💨 Velocidade ${L.s}%</span><span>🧠 ${RKPAS[lv][1]}</span>${lv<ri?'':`<span>⭐ Rank ${RKR[lv].n} · vitória +${RKXW[lv]} XP · derrota −${RKXL[lv]} XP</span>`}${lv<ri?'':`<span class="rec">🏆 Recorde do servidor: ${RKSRV?(RKSRV[lv]?twFmt(RKSRV[lv].tt)+' ('+twEsc(RKSRV[lv].nome)+')':'ninguém ainda!'):'carregando...'} · 🏅 Seu: ${rkMyRec(lv)?twFmt(rkMyRec(lv)):'—'}</span><span class="rec2">Bater recorde: servidor +${RKXB.srv} XP · seu +${RKXB.me} XP · dano diminui a derrota</span>`}${lv>ri?`<em>🔒 Suba de rank para chegar neste nível (seu nível é ${ri+1})</em>`:lv<ri?`<em class="farm">🌾 FARM: sem XP de rank · 💎🔴 normais · resto menor</em>`:''}</div>
+  <div class="rbDesc" style="${rkB2(62,768,550,895)}"><span>❤️ ${rkPhB(lv)[0]} barras → transformado ${rkPhB(lv)[1]} · ⚔️ ATK ${rkFmtN(bsSt(lv).atk)} · 🛡️ DEF ${rkFmtN(bsSt(lv).def)} · 💨 VEL ${bsSt(lv).spd}</span><span>🧠 ${RKPAS[lv][1]}</span>${lv<ri?'':`<span>⭐ Rank ${RKR[lv].n} · vitória +${RKXW[lv]} XP · derrota −${RKXL[lv]} XP</span>`}${lv<ri?'':`<span class="rec">🏆 Recorde do servidor: ${RKSRV?(RKSRV[lv]?twFmt(RKSRV[lv].tt)+' ('+twEsc(RKSRV[lv].nome)+')':'ninguém ainda!'):'carregando...'} · 🏅 Seu: ${rkMyRec(lv)?twFmt(rkMyRec(lv)):'—'}</span><span class="rec2">Bater recorde: servidor +${RKXB.srv} XP · seu +${RKXB.me} XP · dano diminui a derrota</span>`}${lv>ri?`<em>🔒 Suba de rank para chegar neste nível (seu nível é ${ri+1})</em>`:lv<ri?`<em class="farm">🌾 FARM: sem XP de rank · 💎🔴 normais · resto menor</em>`:''}</div>
   <div class="rbNx" style="${rkB2(632,785,716,868)}">${ri<RKTOP?rkEmb(nx,'ban'):''}</div><div class="rbCov rbNxT" style="${rkB2(728,790,880,860)}">${ri<RKTOP?`<b style="color:${RKR[nx].c}">${RKR[nx].n}</b><small>(Nível ${nx+1} · ${rkFmtN(RKXP[nx])} XP)</small>`:'<b style="color:#fff4c0">RANK MÁXIMO</b>'}</div>
   <button class="rkEqB wide" data-a="equip" style="${rkB2(1235,694,1600,750)}"><i>🎒</i><b>EQUIPAMENTOS</b></button>
   <button class="hs" data-a="fight" style="${rkB2(1185,758,1645,872)}"><span class="shine"></span></button>`}
@@ -213,7 +213,7 @@ function rkPassHit(a,d,h){if(!d.rkB||d.ko||!d.grounded||G.trans||h.kind==='beam'
   if(PS.blk&&fr>(P.blCd||0)&&Math.random()<.1){P.blCd=fr+60;d.state='blockstun';d.st=0;d.hitstun=8;d.vx=a.facing*2;txt(d.x,d.y-280,'BLOQUEOU!','#9fd8ff');ring(h.px||d.x,h.py||d.y-150,'#9fd8ff',110,12,4);try{SFX.block()}catch(e){}return true}}
 /* desistir durante o combate conta como derrota */
 function rkQuit(){if(G.gmode!=='boss'||!G.p)return;G.diff=RKB.diff0;if(RKFL!=null){rkStAdd('loss',1);G.gmode='pve';return}const ri=rkLvl(),rp0=rkG('rp',0),rp1=Math.max(0,rp0-RKXL[ri]);rkS('rp',rp1);rkStAdd('loss',1);rkSend({rp:rp1,dmg:0,t1:0,tt:0,won:0});G.gmode='pve'}
-function rkPhase2(a,d){d.rkPh=2;if(RKB.fs)RKB.fs.t1=RKB.fs.t;d.ko=false;{const L=RKLVS[d.rkL||0],B=rkBoss();d.rkB={dm:B.b2.dm*(d.ysK||1)*L.d/100,df:B.b2.df*100/L.v,sp:B.b2.sp*L.s/100};d.mhp=(d.rkPhB||rkPhB(d.rkL||0))[1]*LAYER;d.hp=d.hpLag=d.mhp;d.rkHp=d.hp;d.tdm=d.rkB.dm;d.tdf=d.rkB.df;d.tsp=d.rkB.sp}d.state='idle';d.st=0;d.vx=0;d.vy=0;d.y=FLOOR;d.grounded=true;d.flying=false;d.move=null;d.hitstun=0;d.inv=60;
+function rkPhase2(a,d){d.rkPh=2;if(RKB.fs)RKB.fs.t1=RKB.fs.t;d.ko=false;{const L=RKLVS[d.rkL||0],B=rkBoss();d.rkB={dm:B.b2.dm*(d.ysK||1)*L.d/100,df:B.b2.df*100/L.v,sp:B.b2.sp*L.s/100};try{bsStApply(d,2)}catch(e){}d.mhp=(d.rkPhB||rkPhB(d.rkL||0))[1]*LAYER;d.hp=d.hpLag=d.mhp;d.rkHp=d.hp;d.tdm=d.rkB.dm;d.tdf=d.rkB.df;d.tsp=d.rkB.sp}d.state='idle';d.st=0;d.vx=0;d.vy=0;d.y=FLOOR;d.grounded=true;d.flying=false;d.move=null;d.hitstun=0;d.inv=60;
   a.vx=-a.facing*10;G.hitstop=Math.max(G.hitstop,20);G.shake=30;G.flash=12;G.flashCol='#d8ffc8';for(const r of [380,250,130])ring(d.x,d.y-150,r===130?'#ffffff':rkBoss().c,r,28,8);
   banner(RKBID==='yuta'?'O YUTA DESPERTOU!':'O BROLY DESPERTOU!',rkBoss().c,120,'2ª FASE · '+(d.rkPhB||[0,14])[1]+' BARRAS');d.sb=SB_COST;try{startTransform(d)}catch(e){d.form=1;d.formT=FORM_T}buzz(200)}
 /* EVENTOS de XP (hora de Brasília, UTC-3): [início, fim, multiplicador, nome] */
@@ -2892,7 +2892,8 @@ function cstStats(id){const B=cstBase(id),L=lvOf(id),C=cnsSum(id),E=eqFlat(),lv=
     if(G.gmode==='caca'){const B=lvBonus(id);pd+=B.dano;pv+=B.vel;p.tcr=(p.tcr||0)+B.crit;p.tcd=(p.tcd||0)+B.cd;p.tls=(p.tls||0)+B.ls;p.tki=(p.tki||1)+B.uv/100}
     pf+=lvBonus(id).def||0;pd=Math.max(-50,pd);pf=Math.max(-50,pf);pv=Math.max(-50,pv);
     p.tdm=Math.pow(Math.max(10,S.atk)/150,.55)*(1+pd/100);p.tdf=1/Math.max(.3,1+S.def/900+pf/100);p.tsp=Math.min(2.2,Math.max(.6,Math.pow(Math.max(20,S.spd)/80,.2)+pv/100));p.cst=S}
-  if(o&&o.cpu&&!o._cst&&!(typeof PV!=='undefined'&&PV.fight)){o._cst=1;o.tdf=(o.tdf||1)/1.3;o.tdm=(o.tdm||1)*1.15}}catch(e){}return r}}
+  if(o&&o.cpu&&!o._cst&&tw){o._cst=1;o.tdf=(o.tdf||1)/1.3;o.tdm=(o.tdm||1)*1.15}
+  if(o&&o.cpu&&!o._cst&&G.gmode==='boss'){o._cst=1;bsStApply(o,1)}if(p&&!p.cpu&&G.gmode==='boss')bsAntiItens(p,G.p[1])}catch(e){}return r}}
 /* ---------- RESET de todo mundo (1 vez): volta ao nível 1 e devolve moedas, pó, itens de elevação e cristais ---------- */
 const LVRZ=1;
 function lvResetAll(){if((rkG('lvrz',0)|0)>=LVRZ)return;const A=lvAll();let coins=0,po=0;const el=[0,0,0,0,0],cr=[0,0,0,0,0];let n=0;
@@ -2943,4 +2944,32 @@ function cnsH(){const id=LVC.id,L=lvOf(id),fr=cnsFree(id),S=cstStats(id),sel=CNV
     if(a==='cnsReset'){rkModal(`<div class="twM sm"><h3>↺ RESETAR ESTRELAS</h3><p class="twH">Apaga todas as estrelas de <b>${twEsc(CH[id].name)}</b> e devolve os pontos (os cristais das estrelas-mestras voltam). Custa 200 💎.</p><div class="row"><button class="btn main" id="cnR" ${rkG('gem',0)<200?'disabled':''}>${rkG('gem',0)<200?'FALTA 💎':'RESETAR'}</button><button class="btn" id="rkMX">CANCELAR</button></div></div>`);
       $('rkMX').onclick=()=>rkModal(null);$('cnR').onclick=()=>{if(rkG('gem',0)<200)return;rkAdd('gem',-200);const L=lvOf(id),k=L.c.filter(n=>CNN[n]&&CNN[n].t==='k').length;if(k){const c=lvArr('cr');c[2]+=k;rkS('cr',c)}L.c=[];lvSave(id,L);try{acSave(1)}catch(e){}rkModal(null);CNV.sel=null;rkSfx('whoosh');rkView('cns')};return}}
   return _a.apply(this,arguments)}}
-try{window.__pvT={G:()=>G,ko:(a,d)=>ko(a,d),ev:()=>rkEvX(),m:()=>[rkEvG(),rkEvL(),rkEvD(),rkEvA()],lk:()=>{const c={};for(let i=0;i<4000;i++){const r=twEqRoll().k;c[r]=(c[r]||0)+1}const a=[0,0,0,0,0];for(let i=0;i<4000;i++)a[lvCrRoll()]++;return {luck:+lvLuck().toFixed(2),drop:+rkDropF().toFixed(2),extra:lkK(),equip:c,cristal:a}},dl:id=>pvDelta(id),cs:id=>cstStats(id),lvo:id=>lvOpen(id)}}catch(e){} /* só para os testes */
+
+/* ================= v347: BOSSES COM ATRIBUTOS (mesmo sistema do jogador) + passivas contra itens + Caça mais forte + recompensa diária ================= */
+/* Broly por nível do Boss: começa fraco (igual épico) e termina com 38.000 de ataque. Yuta = +20% de ataque. */
+const BSST=[[50,10,60],[90,25,70],[160,50,80],[280,90,95],[480,160,110],[800,280,130],[1400,480,155],[2600,800,185],[5000,1400,220],[11000,2600,265],[38000,6000,320]];
+const bsSt=lv=>{const r=BSST[Math.max(0,Math.min(BSST.length-1,lv|0))],k=RKBID==='yuta'?1.2:1;return {atk:Math.round(r[0]*k),def:r[1],spd:r[2]}};
+function bsStApply(o,ph){const S=bsSt(o.rkL||0),B=rkBoss(),f=ph===2?B.b2:B.b1,b1=B.b1;o.bst=S;
+  o.rkB={dm:Math.pow(S.atk/150,.55)*(f.dm/b1.dm)*(o.ysK||1),df:1/(1+S.def/900)*(f.df/b1.df),sp:Math.pow(S.spd/80,.2)*(f.sp/b1.sp)};o.tdm=o.rkB.dm;o.tdf=o.rkB.df;o.tsp=o.rkB.sp}
+/* passivas do Boss contra os itens do jogador (por nível) */
+const BSANTI=[null,null,null,null,{cr:5},{cr:8},{cr:10,ls:.5},{cr:12,ls:.5},{cr:15,ls:.5,pd:.2},{cr:20,ls:.4,pd:.3},{cr:25,ls:.25,pd:.4}];
+function bsAntiItens(p,o){if(!o||p._bsa)return;p._bsa=1;const A=BSANTI[o.rkL||0];if(!A)return;if(A.cr)p.tcr=Math.max(-5,(p.tcr||0)-A.cr);if(A.ls)p.tls=(p.tls||0)*A.ls;if(A.pd){const d=1/(p.tdf||1)-1;p.tdf=1/(1+d*(1-A.pd))}}
+function bsAntiTx(lv){const A=BSANTI[lv],t=[];if(A){if(A.cr)t.push('-'+A.cr+'% do seu crítico');if(A.ls)t.push('seu roubo de vida x'+String(A.ls).replace('.',','));if(A.pd)t.push('ignora '+Math.round(A.pd*100)+'% da sua defesa')}return t.join(' · ')}
+/* CAÇA: lobo nível 1-4 normal (+15% dano, +30% vida efetiva), 5-8 dobro de ataque e defesa, 9-10 triplo de ataque, defesa e crítico, velocidade x1,5 */
+{const _cl=caLvApply;caLvApply=function(f){_cl.apply(this,arguments);const L=f.bLv||1,k=L>=9?3:L>=5?2:1;
+  f.tdm=(f.tdm||1)*(k===1?1.15:k);f.bDf=(f.bDf||1)/(k===1?1.3:k);f.tdf=f.bDf;if(k===3){f.tcr=((f.tcr||0)+5)*3-5;f.bsp=(f.bsp||1)*1.5}}}
+/* ---------- RECOMPENSA DIÁRIA (7 dias seguidos; se pular um dia, volta ao dia 1) + 1ª VITÓRIA DO DIA em dobro ---------- */
+const DLR=[[{g:300}],[{t:2}],[{j:3}],[{g:500},{r:50}],[{t:3}],[{j:5},{c:2}],[{g:1500},{t:5},{j:5}]];
+const dlDay=(o)=>{const d=new Date(Date.now()-3*3600e3+(o||0)*864e5);return d.toISOString().slice(0,10)};
+const dlTx=x=>x.g?'💎 '+rkFmtN(x.g):x.t?'🎫 '+x.t:x.j?'💠 '+x.j:x.r?'🔴 '+x.r:x.c!=null?'💎 cristal ÉPICO':'';
+function dlCheck(force){const o=rkG('dl',{d:'',s:-1});const today=dlDay();if(o.d===today&&!force)return;const nx=o.d===dlDay(-1)?(o.s+1)%7:0,got=o.d===today;
+  rkModal(`<div class="twM dlM"><h3>🎁 RECOMPENSA DIÁRIA</h3><p class="twH">Entre todo dia para ganhar mais! ${o.d===dlDay(-1)?'🔥 Sequência de '+(nx+1)+' dia'+(nx?'s':''):nx===0&&o.d?'Você perdeu a sequência, começou do dia 1.':''}</p>
+    <div class="dlG">${DLR.map((R,i)=>`<div class="dlC ${i<nx||got&&i<=o.s?'ok':''} ${i===nx&&!got?'hoje':''} ${i===6?'big':''}"><small>DIA ${i+1}</small>${R.map(x=>`<b>${dlTx(x)}</b>`).join('')}${i<nx||got&&i<=o.s?'<i>✔</i>':''}</div>`).join('')}</div>
+    <div class="row">${got?'<button class="btn" id="rkMX">FECHAR</button>':'<button class="btn main" id="dlOk">PEGAR DIA '+(nx+1)+'</button>'}</div></div>`);
+  if(got){$('rkMX').onclick=()=>rkModal(null);return}
+  $('dlOk').onclick=()=>{const o2=rkG('dl',{d:'',s:-1});if(o2.d===dlDay())return rkModal(null);for(const x of DLR[nx]){if(x.g)rkAdd('gem',x.g);if(x.t)rkAdd('tic',x.t);if(x.j)psAddJn(x.j);if(x.r)rkAdd('red',x.r);if(x.c!=null){const a=lvArr('cr');a[2]++;rkS('cr',a)}}
+    rkS('dl',{d:dlDay(),s:nx});try{acSave(1)}catch(e){}rkSfx('powerUp');setTimeout(()=>rkSfx('boom'),250);rkModal(null);rkToast('🎁 DIA '+(nx+1)+': '+DLR[nx].map(dlTx).join(' · '),'#ffd84a');try{if(RKV==='menu')rkView('menu')}catch(e){}}}
+{const _o=rkOpen;rkOpen=function(){const r=_o.apply(this,arguments);setTimeout(()=>{try{if(showScreen.cur==='ranked'&&!document.getElementById('lvrzM')&&(!$('rkModal')||!$('rkModal').innerHTML.trim()))dlCheck()}catch(e){}},3200);return r}}
+/* 1ª vitória do dia no Boss: gemas e moedas vermelhas em dobro */
+{const _rr=rkResult;rkResult=function(R){try{if(R&&R.won&&!R.farm&&R.yd==null&&rkG('fwd','')!==dlDay()){rkS('fwd',dlDay());const g=R.gem||0,rd=R.red||0;if(g)rkAdd('gem',g);if(rd)rkAdd('red',rd);setTimeout(()=>rkToast('⭐ 1ª VITÓRIA DO DIA: +'+g+' 💎 +'+rd+' 🔴 em dobro!','#ffd84a'),1800)}}catch(e){}return _rr.apply(this,arguments)}}
+try{window.__pvT={G:()=>G,ko:(a,d)=>ko(a,d),ev:()=>rkEvX(),m:()=>[rkEvG(),rkEvL(),rkEvD(),rkEvA()],lk:()=>{const c={};for(let i=0;i<4000;i++){const r=twEqRoll().k;c[r]=(c[r]||0)+1}const a=[0,0,0,0,0];for(let i=0;i<4000;i++)a[lvCrRoll()]++;return {luck:+lvLuck().toFixed(2),drop:+rkDropF().toFixed(2),extra:lkK(),equip:c,cristal:a}},dl:id=>pvDelta(id),cs:id=>cstStats(id),lvo:id=>lvOpen(id),bs:lv=>bsSt(lv),dl:f=>dlCheck(f)}}catch(e){} /* só para os testes */

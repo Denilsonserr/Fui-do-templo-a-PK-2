@@ -1664,3 +1664,10 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - CONSTELAÇÃO (`CNB`, `CNN`, tela `rkView('cns')`, botão no lugar da árvore antiga na tela de nível): 5 ramos (Ataque, Defesa, Velocidade, Crítico, Espírito) x 12 estrelas: tronco de 6 + 2 caminhos de 3 terminando em ESTRELA-MESTRA (4 pontos + 1 cristal ÉPICO). Estrela pequena 1 ponto, maior 2. Precisa da anterior acesa. Guardado em `rk_lv[id].c`. Resetar estrelas: 200 💎 (devolve cristais). Árvore antiga (`t`, linhas secretas do Shaka) não é mais usada.
 - `lvResetAll` (`LVRZ=1`, `rk_lvrz`): na 1ª vez que abre o ranqueado, todos os personagens voltam ao nível 1 e recebe de volta moedas + pó (`LVCOST`), itens de elevação dos níveis 10/20/30/40/50 e os cristais das escolhas da árvore antiga; aviso `#lvrzM`.
 - Teste `trpg_v346.js` (reset/devolução, atributos, ativar estrelas, telas).
+
+## v347 — Bosses com atributos, anti-itens, Caça mais forte, recompensa diária
+- Boss (Broly) por nível `BSST` [ATK,DEF,VEL]: 50/10/60 no nível 1 até 38.000/6.000/320 no 11; Yuta +20% ATK. `bsStApply(o,fase)` usa as mesmas fórmulas do jogador (fase 2 mantém a proporção b2/b1 e o `ysK` do evento). O painel do Boss mostra ATK/DEF/VEL.
+- Passivas ANTI-ITENS (`BSANTI`, nível 5+): tiram crítico do jogador (5 até 25), cortam o roubo de vida (x0,5 até x0,25) e ignoram defesa (20% até 40%); aparecem em vermelho nas passivas do Boss.
+- Caça (wrapper `caLvApply`): lobo 1-4 +15% dano/+30% vida efetiva; 5-8 dano x2 e defesa x2; 9-10 dano x3, defesa x3, crítico x3 e velocidade x1,5. A escala genérica do v346 ficou só para a Torre.
+- RECOMPENSA DIÁRIA (`rk_dl`, `DLR`): abre sozinha ao entrar no ranqueado (3 s); 7 dias seguidos (pular = volta ao dia 1): 300💎, 2🎫, 3💠, 500💎+50🔴, 3🎫, 5💠+cristal épico, 1500💎+5🎫+5💠. 1ª VITÓRIA DO DIA no Boss: gemas e moedas vermelhas em dobro (`rk_fwd`).
+- Medido (`tboss_v347.js`): Shaka nível 70 com espada e armadura míticas = dano x4,64; Boss nível 11 = dano x21 e toma só 13% do dano.

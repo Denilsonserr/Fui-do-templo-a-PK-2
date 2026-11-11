@@ -1,0 +1,12 @@
+// v347: atributos do Boss por nível, anti-itens, recompensa diária
+const {chromium}=require('playwright');const SH='/home/claude/fui-do-templo-a-pk-2/ferramentas/testes/shots/b47_';
+(async()=>{const b=await chromium.launch();const errs=[];
+for(const rp of [0,9000,100000]){const p=await b.newPage({viewport:{width:915,height:412}});p.on('pageerror',e=>errs.push(e.message));await p.route(/fonts\.g|firestore|googleapis|workers\.dev\/fs/,r=>r.abort());
+  await p.addInitScript(rp=>{if(!sessionStorage.d){sessionStorage.d=1;localStorage.clear();Object.assign(localStorage,{rk_ini:'1',rk_xpv2:'1',rk_dia:'1',tw_nome:'"Ze"',rk_own:'["shaka"]',rk_sel:'"shaka"',rk_rp:String(rp),...(rp?{rk_dl:JSON.stringify({d:new Date(Date.now()-3*3600e3).toISOString().slice(0,10),s:0})}:{}),rk_lvrz:'1',rk_lv:JSON.stringify({shaka:{lv:70,c:[]}}),
+    tw_inv:JSON.stringify([{id:'e1',t:'esp',r:'mit',v:10,crit:5,n:'ESPADA'},{id:'e2',t:'arm',r:'mit',v:10,n:'ARM'}]),tw_eqp:JSON.stringify({esp:'e1',arm:'e2'})})}},rp);
+  await p.goto('file:///home/claude/fui-do-templo-a-pk-2/www/index.html');await p.waitForFunction(()=>!document.getElementById('goSelect').disabled,null,{timeout:120000});await p.click('#mRank');await p.waitForTimeout(4500);
+  if(rp===0){await p.screenshot({path:SH+'diaria.png'});console.log('diaria',await p.evaluate(()=>document.querySelector('.dlM')?.innerText.replace(/\n+/g,' ')));await p.click('#dlOk');await p.waitForTimeout(500);console.log('gem',await p.evaluate(()=>localStorage.rk_gem))}
+  await p.evaluate(()=>{try{rkModal(null)}catch(e){}});await p.click('#rkWrap [data-a="boss"]',{force:true});await p.waitForTimeout(1500);await p.click('#rkWrap [data-a="start"]',{force:true});await p.waitForTimeout(1500);await p.screenshot({path:SH+'info'+rp+'.png'});await p.click('#rkWrap [data-a="fight"]',{force:true}).catch(e=>console.log('clk',e.message.slice(0,80)));await p.waitForTimeout(3000);await p.screenshot({path:SH+'apos'+rp+'.png'});
+  await p.waitForFunction(()=>{const G=__pvT.G();return G.mode==='fight'&&G.p&&G.p[1].rkB},null,{timeout:60000}).catch(()=>{});
+  console.log('rp',rp,await p.evaluate(()=>{const G=__pvT.G();if(!G.p)return 'sem luta';const [a,o]=G.p;return JSON.stringify({boss:o.bst,btdm:+o.tdm.toFixed(2),btdf:+o.tdf.toFixed(3),btsp:+o.tsp.toFixed(2),eu:{tdm:+a.tdm.toFixed(2),tdf:+a.tdf.toFixed(3),tcr:a.tcr}})}));await p.close()}
+console.log('ERROS',errs);await b.close()})();
