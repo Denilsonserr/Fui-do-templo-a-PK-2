@@ -1755,3 +1755,12 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 ## v362 — devolução automática para todos
 - `gfDev()` (no `rkOpen`): +5.000 💎 e +100.000 moedas de ouro (`twAddCoins`) UMA vez por jogador, sem código e sem precisar de conta. Marca `rk_gf362` vai junto no salvamento da conta (acData salva `rk_`/`tw_`), então não repete em outro aparelho. Janela "DEVOLUÇÃO PARA TODOS!" em `#lvrzM` (espera outra janela fechar). Motivo: upar anel gastou gemas demais.
 - Jogador novo também recebe. Teste `tgf_v362.js`.
+
+## v363 — passivas DIVINA e PRIMORDIAL
+- Raridades novas acima da SECRETA: `div` (DIVINA, dourada ☀) e `pri` (PRIMORDIAL, arco-íris ✴). Lista própria `PSRK` (não mexi no `RKPR`, que é usado pelas poções). `psRI` usa `PSRK`.
+- 5 passivas cada (`PSV.div`/`PSV.pri`); a 5ª é a apelona do tipo `mx` (dá todos os atributos juntos): Bênção de Buda {cd25,def15,spd12,reg1,drop40,st30}; ORIGEM DE TUDO {cd50,def30,spd25,reg2,5,drop100,st80}. `psSum` e `psFx` entendem `mx`.
+- Chances `PSW`: div 0,1% · pri 0,02%. Dentro delas a 5ª sai 10% (as outras 4 dividem 90%). Proteção nova `o.pd`: 1000 giros sem Divina+ → Divina+ garantida. Mostrador da proteção tem 3 linhas.
+- Limites `PSCAP` subiram: crit 90, def 50, vel 35, regen 3, drop 150, sorte 110.
+- Aura no personagem vale para Secreta+ (`psRI>=5`). Revelação especial em tela cheia (`.psRev`) quando sai Divina/Primordial (wrapper do `psAnim`).
+- Teste `tps_v363.js` (2 milhões de giros, soma, tela, revelação, giro x5). Gancho `__pvT.ps`.
+- `tps5_v342.js` está velho (as janelas de presente diário/devolução atrapalham), não é defeito.

@@ -1633,3 +1633,25 @@ img.anOn{position:relative;z-index:2}
 /* v357: botão abrir baú */
 #hyOpen{position:fixed;left:50%;bottom:calc(env(safe-area-inset-bottom,0px) + 30vh);transform:translateX(-50%);z-index:46;padding:1.4vh 3.4vh;border-radius:1.4vh;border:.3vh solid #ffd84a;background:linear-gradient(#c87a10,#6a3200);color:#fff;font:900 2.8vh var(--f-ui);letter-spacing:.06em;text-shadow:0 .2vh 0 #3a1a00;box-shadow:0 0 2vh rgba(255,190,60,.8);animation:rkEp 1.2s ease-in-out infinite;cursor:pointer;touch-action:manipulation}
 #hyOpen[hidden]{display:none}
+
+/* v363: passivas DIVINA (dourada, raios) e PRIMORDIAL (arco-íris cósmico) */
+.psGem.psr_div img{filter:sepia(1) saturate(3) hue-rotate(5deg) brightness(1.35) drop-shadow(0 0 .5em #fff) drop-shadow(0 0 1.2em #ffd23a) drop-shadow(0 0 2.2em #ffe680);animation:psDv 1.1s ease-in-out infinite alternate}
+@keyframes psDv{to{filter:sepia(1) saturate(3) hue-rotate(5deg) brightness(1.6) drop-shadow(0 0 .8em #fff) drop-shadow(0 0 1.8em #ffd23a) drop-shadow(0 0 3em #fff3b0)}}
+.psGem.psr_pri img{filter:brightness(1.2) saturate(2) drop-shadow(0 0 .5em #fff) drop-shadow(0 0 1.4em #ff5ef2) drop-shadow(0 0 2.4em #3cf0ff);animation:psPr 2s linear infinite}
+@keyframes psPr{0%{filter:hue-rotate(0) brightness(1.2) saturate(2) drop-shadow(0 0 .6em #fff) drop-shadow(0 0 1.6em #ff5ef2) drop-shadow(0 0 2.6em #3cf0ff)}100%{filter:hue-rotate(360deg) brightness(1.2) saturate(2) drop-shadow(0 0 .6em #fff) drop-shadow(0 0 1.6em #ff5ef2) drop-shadow(0 0 2.6em #3cf0ff)}}
+.psr_div.psg{animation:psG3 .6s ease-in-out infinite alternate;outline:2px solid #ffe680}
+.psr_div.psg::after{content:'☀';position:absolute;right:.2em;top:.1em;color:#fff3b0;text-shadow:0 0 .4em #ffd23a,0 0 .9em #fff}
+.psr_pri.psg{animation:psPrB 1.6s linear infinite;outline:2px solid #fff}
+@keyframes psPrB{0%{box-shadow:0 0 1em #ff5ef2,0 0 2.4em #3cf0ff;filter:hue-rotate(0)}100%{box-shadow:0 0 1em #ff5ef2,0 0 2.4em #3cf0ff;filter:hue-rotate(360deg)}}
+.psr_pri.psg::after{content:'✴';position:absolute;right:.2em;top:.1em;color:#fff;text-shadow:0 0 .4em #ff5ef2,0 0 .9em #3cf0ff}
+.psWheel.done.psr_div{box-shadow:0 0 2em #ffe680,0 0 5em #ffd23a}
+.psWheel.done.psr_pri{animation:psPrB 1.2s linear infinite}
+
+.psRev{position:fixed;inset:0;z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;pointer-events:none;background:radial-gradient(circle,rgba(255,240,180,.55),rgba(0,0,0,.75) 70%);animation:psRv 2.6s ease-out forwards}
+.psRev.psr_pri{background:radial-gradient(circle,rgba(255,94,242,.55),rgba(60,240,255,.25) 40%,rgba(0,0,0,.8) 75%)}
+.psRev b{font:900 2.6em var(--f-ui);color:#fff;letter-spacing:.06em;text-shadow:0 0 .3em #ffd23a,0 0 .8em #ffe680,0 0 1.6em #fff;animation:psRvT .5s cubic-bezier(.2,1.6,.4,1)}
+.psRev.psr_pri b{text-shadow:0 0 .3em #ff5ef2,0 0 .8em #3cf0ff,0 0 1.6em #fff;animation:psRvT .5s cubic-bezier(.2,1.6,.4,1),psPrH 1.2s linear infinite}@keyframes psPrH{to{filter:hue-rotate(360deg)}}
+.psRev small{font:800 1em var(--f-ui);color:#fff3b0;letter-spacing:.3em;margin-top:.3em}
+@keyframes psRv{0%{opacity:0}8%{opacity:1}80%{opacity:1}100%{opacity:0}}@keyframes psRvT{from{transform:scale(3);opacity:0}to{transform:scale(1);opacity:1}}
+
+.psRev b,.psRev small{background:none!important;box-shadow:none!important;border:0!important;outline:0!important}
