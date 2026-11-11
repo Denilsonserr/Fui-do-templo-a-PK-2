@@ -1200,3 +1200,34 @@ img.anOn{position:relative;z-index:2}
 /* v320: anéis mais fortes — o brilho vem do próprio SVG; pulso mais visível */
 .anFt .ag .sp{opacity:1;animation:anGlw2 4.5s ease-in-out infinite}
 @keyframes anGlw2{0%,100%{filter:brightness(1)}50%{filter:brightness(1.35)}}
+/* ================= v326: menu novo (vídeo) ================= */
+.rk_menu{background-size:100% 100%!important}
+.rk_menu .mn2v{position:absolute;inset:0;width:100%;height:100%;object-fit:fill;z-index:0;pointer-events:none}
+.rk_menu .mfx,.rk_menu>.rkMusB,.rk_menu>.rkCodB,.rk_menu>.rkAcB,.rk_menu .rkTop{display:none!important}
+.rk_menu .hs{z-index:2}
+.rk_menu .mn2Av{border-radius:50%;overflow:hidden;padding:0}
+.rk_menu .mn2Av img{width:100%;height:100%;object-fit:cover;border-radius:50%}
+.rk_menu .mn2Nm{display:flex;flex-direction:column;justify-content:center;align-items:flex-start;padding:0 0 0 .7em;text-align:left;overflow:hidden}
+.rk_menu .mn2Nm b{font:italic 900 1.15em var(--f-ui,"Saira Condensed",sans-serif);color:#fff;letter-spacing:.02em;text-shadow:0 0 .4em #b45cff,0 .08em 0 #2a0a4a;white-space:nowrap;max-width:100%;overflow:hidden;text-overflow:ellipsis;line-height:1.05}
+.rk_menu .mn2Nm small{display:flex;align-items:center;gap:.3em;font:800 .68em var(--f-ui,"Saira Condensed",sans-serif);color:#e8dcff;white-space:nowrap;line-height:1.1}
+.rk_menu .mn2Nm small .rkEmb{width:1.5em;height:1.5em}
+.rk_menu .mn2Nm small span{font-weight:900;text-shadow:0 0 .3em currentColor}
+.rk_menu .mn2C{position:absolute;z-index:2;display:flex;align-items:center;justify-content:flex-end;padding-right:.3em;font:900 .95em var(--f-ui,"Saira Condensed",sans-serif);color:#fff;text-shadow:0 0 .35em rgba(0,0,0,.9),0 .06em 0 #000;pointer-events:none;white-space:nowrap}
+.rk_menu .mn2Mu{border-radius:50%}
+/* brilho dourado passando nos botões da esquerda */
+.rk_menu .mn2L{overflow:hidden;clip-path:polygon(1% 50%,6% 4%,93% 4%,99% 50%,93% 96%,6% 96%)}
+.rk_menu .mn2L .sw,.rk_menu .mn2Q .sw{position:absolute;top:-10%;bottom:-10%;width:34%;left:0;transform:translateX(-140%) skewX(-22deg);mix-blend-mode:screen;background:linear-gradient(90deg,transparent,rgba(255,196,60,.45) 35%,rgba(255,248,215,.95) 50%,rgba(255,196,60,.45) 65%,transparent);animation:mn2Sw 3.6s ease-in-out infinite}
+.rk_menu .mn2L .ed{position:absolute;inset:0;mix-blend-mode:screen;background:radial-gradient(ellipse at 50% 50%,rgba(255,200,70,.28),transparent 72%);opacity:0;animation:mn2Ed 3.6s ease-in-out infinite}
+@keyframes mn2Sw{0%,52%{transform:translateX(-140%) skewX(-22deg)}88%,100%{transform:translateX(330%) skewX(-22deg)}}
+@keyframes mn2Ed{0%,55%,100%{opacity:0}72%{opacity:1}}
+/* quadrados de baixo: brilho dourado passando + pulso suave */
+.rk_menu .mn2Q{overflow:hidden;clip-path:polygon(8% 0,92% 0,100% 8%,100% 92%,92% 100%,8% 100%,0 92%,0 8%);animation:mn2Qp 3.8s ease-in-out infinite}
+.rk_menu .mn2Q .sw{animation-duration:4.2s}
+@keyframes mn2Qp{0%,100%{box-shadow:inset 0 0 0 0 rgba(255,210,90,0)}50%{box-shadow:inset 0 0 1.2em .1em rgba(255,210,90,.28)}}
+/* botões da direita: aura dourada pulsando */
+.rk_menu .mn2R .gl{position:absolute;inset:6% 8%;border-radius:22%;mix-blend-mode:screen;background:radial-gradient(ellipse at 50% 45%,rgba(255,215,110,.32),rgba(190,110,255,.12) 55%,transparent 75%);opacity:.2;animation:mn2Rg 3s ease-in-out infinite}
+@keyframes mn2Rg{0%,100%{opacity:.15;transform:scale(.96)}50%{opacity:.9;transform:scale(1.02)}}
+.rk_menu .hs:active{filter:brightness(1.25)}
+.rk_menu .dot{position:absolute;top:6%;right:8%;width:.8em;height:.8em;border-radius:50%;background:#ff2a3a;box-shadow:0 0 .5em #ff2a3a,0 0 0 .12em #fff;z-index:3}
+.mn2CB{display:flex;flex-direction:column;gap:.6em;margin:.8em 0}
+@media (prefers-reduced-motion:reduce){.rk_menu .sw,.rk_menu .ed,.rk_menu .gl,.rk_menu .mn2Q{animation:none}}

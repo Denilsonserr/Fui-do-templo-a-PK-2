@@ -1548,3 +1548,8 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 
 ## v325 — atualização a cada 1 minuto (plano pago)
 - `RKQT` (cache das consultas no aparelho): ranking, online, perfis, eventos e o resto = 60 s (antes 5 a 15 min); chat da hora atual 30 s; mercado/recados 20 s; títulos e horas velhas do chat 6 h; conta/nome/uid sem cache. Junto com o cache de 20 s do worker, cada consulta lê o banco no máximo ~3 vezes por minuto para todo mundo — cabe com folga nos US$5/mês.
+
+## v326 — MENU NOVO "Modos de Jogo" (vídeo do dono)
+- Fundo = vídeo do dono (Shaka, Gojo, Yuta, dragão) em loop sem emenda (fim cruzado com o começo): `a/a3fc8111f7ccad.webm` (VP9) ou `a/62690f694178ea.mp4` se o aparelho não tocar webm; imagem parada `a/f2bd77b255d5ce.webp` enquanto carrega. Arte 1408x640 (`MN2`, `RKD.menu`), áreas de toque com `mnB(x0,y0,x1,y1)` em pixels da arte. Um único `<video>` (`MN2V`) é reaproveitado (não reinicia quando a tela redesenha) e pausa fora do menu/app em segundo plano.
+- Foto com moldura dourada e barra roxa (nome + rank + XP) = PERFIL. Em cima: 🎵 música, moedas (ticket de giro, diamante [toque = loja], moeda da torre, vermelha), ⚙️ = janela OPÇÕES (Código, Configuração, Menu principal). "Modos de Jogo" = volta ao menu principal. Esquerda: Boss, Torre, Caçador, Gacha (brilho dourado passando). Direita: Passivas, Mercado Negro, Abas de Evento, Passe (aura dourada pulsando, bolinha vermelha quando tem novidade). Embaixo: Ranking, Recompensas, Conquistas, Personagem (biblioteca), Conta (brilho dourado + pulso).
+- Os botões soltos antigos (🎵, CÓDIGO, 👤) e o rkTop ficam escondidos só nesse menu. Música = a mesma de antes.

@@ -2317,3 +2317,31 @@ TWCUP['e8a07j']={nm:'10.000 DIAMANTES',gem:10000};
 TWCUP['yuirz0']={nm:'ZORO E SHAKA',it:[],chrs:['zoro','shaka']};
 {const _cp5=twCupom;twCupom=async function(code,E){const C=TWCUP[twHash(String(code).toUpperCase())];const r=await _cp5.apply(this,arguments);
   if(C&&C.chrs&&E&&/\bok\b/.test(E.className)){const own=rkG('own',['goku']);for(const c of C.chrs)if(!own.includes(c))own.push(c);rkS('own',own);try{acSave(1)}catch(x){}E.textContent='🎁 Código aceito! Você ganhou o ZORO e o SHAKA! (já estão nos seus personagens)'}return r}}
+
+/* ================= v326: MENU NOVO "MODOS DE JOGO" (vídeo do dono no fundo: cabelo mexendo, dragão) =================
+   Arte 1408x640 com os botões desenhados; aqui só ficam as áreas de toque, os textos (nome, rank, moedas) e os brilhos.
+   Foto (em cima, moldura dourada) = PERFIL · barra roxa = nome + rank · 🎵 música · moedas: ticket, diamante, moeda da torre, vermelha · ⚙️ = código/configuração/menu principal */
+const MN2={wm:'a/a3fc8111f7ccad.webm',v:'a/62690f694178ea.mp4',p:'a/f2bd77b255d5ce.webp',W:1408,H:640};RKD.menu=[MN2.W,MN2.H];
+const mnB=(x0,y0,x1,y1)=>`left:${x0/MN2.W*100}%;top:${y0/MN2.H*100}%;width:${(x1-x0)/MN2.W*100}%;height:${(y1-y0)/MN2.H*100}%`;
+let MN2V=null;
+function mn2Vid(){if(!MN2V){const v=document.createElement('video');v.className='mn2v';v.src=(v.canPlayType&&v.canPlayType('video/webm; codecs="vp9"'))?MN2.wm:MN2.v;v.onerror=()=>{if(v.src.indexOf(MN2.v)<0){v.src=MN2.v;v.play().catch(()=>{})}};v.poster=MN2.p;v.muted=true;v.defaultMuted=true;v.loop=true;v.autoplay=true;v.playsInline=true;v.setAttribute('playsinline','');v.setAttribute('webkit-playsinline','');v.setAttribute('muted','');v.preload='auto';MN2V=v}return MN2V}
+rkMenuH=function(){const rp=rkG('rp',0),ri=rkRank(rp),R=RKR[ri],nm=(twLS.g('tw_nome','')||'Jogador'),ft=rkG('foto','');
+  const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+  const L=(a,cls,b,d)=>`<button class="hs mn2L ${cls}" data-a="${a}" style="${mnB(...b)}"><span class="sw" style="animation-delay:${d}s"></span><span class="ed" style="animation-delay:${d}s"></span></button>`;
+  const Q=(a,b,d,dot)=>`<button class="hs mn2Q" data-a="${a}" style="${mnB(...b)}"><span class="sw" style="animation-delay:${d}s"></span>${dot?'<i class="dot"></i>':''}</button>`;
+  const Rr=(a,b,d,dot)=>`<button class="hs mn2R" data-a="${a}" style="${mnB(...b)}"><span class="gl" style="animation-delay:${d}s"></span>${dot?'<i class="dot"></i>':''}</button>`;
+  const C=(b,v)=>`<div class="mn2C" style="${mnB(...b)}">${rkFmtN(v)}</div>`;
+  return `<button class="hs mn2Av" data-a="perfil" style="${mnB(37,2,101,66)}">${ft?`<img src="${esc(ft)}" alt="">`:''}</button>
+  <button class="hs mn2Nm" data-a="perfil" style="${mnB(118,8,340,58)}"><b>${esc(nm)}</b><small>${rkEmb(ri,'sm')}<span style="color:${R.c}">${R.n}</span> · ${rkFmtN(rp)} XP</small></button>
+  <button class="hs" data-a="menuBack" style="${mnB(22,84,325,136)}"></button>
+  ${L('boss','r',[12,158,330,233],0)}${L('torre','g',[12,240,330,314],.35)}${L('caca','p',[12,322,330,396],.7)}${L('gacha','b',[12,404,330,478],1.05)}
+  <button class="hs mn2Mu" data-a="music" style="${mnB(708,0,762,46)}"></button>
+  ${C([815,4,880,40],rkG('tic',0))}${C([940,4,1036,40],rkG('gem',0))}${C([1098,4,1208,40],twLS.g('tw_moedas',0))}${C([1268,4,1345,40],rkG('red',0))}
+  <button class="hs" data-a="shop" style="${mnB(897,4,1043,40)}"></button><button class="hs" data-a="mn2Cfg" style="${mnB(1356,0,1408,46)}"></button>
+  ${Rr('psMenu',[1262,56,1392,176],0)}${Rr('mnMenu',[1262,180,1392,282],.6,mnBadge())}${Rr('evMenu',[1262,285,1392,385],1.2,evAny())}${Rr('bpMenu',[1262,388,1392,500],1.8,bpPend())}
+  ${Q('ranking',[298,490,443,588],0)}${Q('rewards',[470,490,615,588],.3,rkRwPend())}${Q('ach',[642,490,786,588],.6,rkAchPend())}${Q('lib',[811,490,956,588],.9)}${Q('conta',[980,490,1124,588],1.2)}`};
+function mn2Cfg(){rkModal(`<div class="twM mn2CM"><h3>⚙️ OPÇÕES</h3><div class="mn2CB"><button class="btn main" id="mnC1">🎟️ CÓDIGO</button><button class="btn" id="mnC2">⚙️ CONFIGURAÇÃO</button><button class="btn" id="mnC3">🏠 MENU PRINCIPAL</button></div><div class="row"><button class="btn" id="rkMX">VOLTAR</button></div></div>`);
+  $('rkMX').onclick=()=>rkModal(null);$('mnC1').onclick=()=>rkCode();$('mnC2').onclick=()=>{rkModal(null);audioInit();showScreen('config')};$('mnC3').onclick=()=>{rkModal(null);showScreen('title')}}
+{const _a=rkAct;rkAct=function(a,b){if(a==='mn2Cfg'){rkSfx('whoosh');return mn2Cfg()}return _a.apply(this,arguments)}}
+{const _v=rkView;rkView=function(v){const r=_v.apply(this,arguments);if(v==='menu'){const A=document.querySelector('#rkWrap .rk_menu');if(A){A.style.backgroundImage=`url(${MN2.p})`;const vid=mn2Vid();A.insertBefore(vid,A.firstChild);const pl=vid.play();if(pl&&pl.catch)pl.catch(()=>{})}}else if(MN2V)try{MN2V.pause()}catch(e){}return r}}
+document.addEventListener('visibilitychange',()=>{if(!MN2V)return;if(document.hidden)MN2V.pause();else if(RKV==='menu'&&MN2V.isConnected)MN2V.play().catch(()=>{})});

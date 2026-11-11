@@ -1691,6 +1691,37 @@ img.anOn{position:relative;z-index:2}
 /* v320: anéis mais fortes — o brilho vem do próprio SVG; pulso mais visível */
 .anFt .ag .sp{opacity:1;animation:anGlw2 4.5s ease-in-out infinite}
 @keyframes anGlw2{0%,100%{filter:brightness(1)}50%{filter:brightness(1.35)}}
+/* ================= v326: menu novo (vídeo) ================= */
+.rk_menu{background-size:100% 100%!important}
+.rk_menu .mn2v{position:absolute;inset:0;width:100%;height:100%;object-fit:fill;z-index:0;pointer-events:none}
+.rk_menu .mfx,.rk_menu>.rkMusB,.rk_menu>.rkCodB,.rk_menu>.rkAcB,.rk_menu .rkTop{display:none!important}
+.rk_menu .hs{z-index:2}
+.rk_menu .mn2Av{border-radius:50%;overflow:hidden;padding:0}
+.rk_menu .mn2Av img{width:100%;height:100%;object-fit:cover;border-radius:50%}
+.rk_menu .mn2Nm{display:flex;flex-direction:column;justify-content:center;align-items:flex-start;padding:0 0 0 .7em;text-align:left;overflow:hidden}
+.rk_menu .mn2Nm b{font:italic 900 1.15em var(--f-ui,"Saira Condensed",sans-serif);color:#fff;letter-spacing:.02em;text-shadow:0 0 .4em #b45cff,0 .08em 0 #2a0a4a;white-space:nowrap;max-width:100%;overflow:hidden;text-overflow:ellipsis;line-height:1.05}
+.rk_menu .mn2Nm small{display:flex;align-items:center;gap:.3em;font:800 .68em var(--f-ui,"Saira Condensed",sans-serif);color:#e8dcff;white-space:nowrap;line-height:1.1}
+.rk_menu .mn2Nm small .rkEmb{width:1.5em;height:1.5em}
+.rk_menu .mn2Nm small span{font-weight:900;text-shadow:0 0 .3em currentColor}
+.rk_menu .mn2C{position:absolute;z-index:2;display:flex;align-items:center;justify-content:flex-end;padding-right:.3em;font:900 .95em var(--f-ui,"Saira Condensed",sans-serif);color:#fff;text-shadow:0 0 .35em rgba(0,0,0,.9),0 .06em 0 #000;pointer-events:none;white-space:nowrap}
+.rk_menu .mn2Mu{border-radius:50%}
+/* brilho dourado passando nos botões da esquerda */
+.rk_menu .mn2L{overflow:hidden;clip-path:polygon(1% 50%,6% 4%,93% 4%,99% 50%,93% 96%,6% 96%)}
+.rk_menu .mn2L .sw,.rk_menu .mn2Q .sw{position:absolute;top:-10%;bottom:-10%;width:34%;left:0;transform:translateX(-140%) skewX(-22deg);mix-blend-mode:screen;background:linear-gradient(90deg,transparent,rgba(255,196,60,.45) 35%,rgba(255,248,215,.95) 50%,rgba(255,196,60,.45) 65%,transparent);animation:mn2Sw 3.6s ease-in-out infinite}
+.rk_menu .mn2L .ed{position:absolute;inset:0;mix-blend-mode:screen;background:radial-gradient(ellipse at 50% 50%,rgba(255,200,70,.28),transparent 72%);opacity:0;animation:mn2Ed 3.6s ease-in-out infinite}
+@keyframes mn2Sw{0%,52%{transform:translateX(-140%) skewX(-22deg)}88%,100%{transform:translateX(330%) skewX(-22deg)}}
+@keyframes mn2Ed{0%,55%,100%{opacity:0}72%{opacity:1}}
+/* quadrados de baixo: brilho dourado passando + pulso suave */
+.rk_menu .mn2Q{overflow:hidden;clip-path:polygon(8% 0,92% 0,100% 8%,100% 92%,92% 100%,8% 100%,0 92%,0 8%);animation:mn2Qp 3.8s ease-in-out infinite}
+.rk_menu .mn2Q .sw{animation-duration:4.2s}
+@keyframes mn2Qp{0%,100%{box-shadow:inset 0 0 0 0 rgba(255,210,90,0)}50%{box-shadow:inset 0 0 1.2em .1em rgba(255,210,90,.28)}}
+/* botões da direita: aura dourada pulsando */
+.rk_menu .mn2R .gl{position:absolute;inset:6% 8%;border-radius:22%;mix-blend-mode:screen;background:radial-gradient(ellipse at 50% 45%,rgba(255,215,110,.32),rgba(190,110,255,.12) 55%,transparent 75%);opacity:.2;animation:mn2Rg 3s ease-in-out infinite}
+@keyframes mn2Rg{0%,100%{opacity:.15;transform:scale(.96)}50%{opacity:.9;transform:scale(1.02)}}
+.rk_menu .hs:active{filter:brightness(1.25)}
+.rk_menu .dot{position:absolute;top:6%;right:8%;width:.8em;height:.8em;border-radius:50%;background:#ff2a3a;box-shadow:0 0 .5em #ff2a3a,0 0 0 .12em #fff;z-index:3}
+.mn2CB{display:flex;flex-direction:column;gap:.6em;margin:.8em 0}
+@media (prefers-reduced-motion:reduce){.rk_menu .sw,.rk_menu .ed,.rk_menu .gl,.rk_menu .mn2Q{animation:none}}
 
 .twBag .bgw{display:flex;gap:1em;justify-content:center;align-items:flex-start;margin:.4em 0}
 .twBag .bgc{flex:1;max-width:16em;display:flex;flex-direction:column;gap:.4em;max-height:52vh;overflow:auto;padding:.2em}
@@ -9931,6 +9962,34 @@ TWCUP['yuirz0']={nm:'ZORO E SHAKA',it:[],chrs:['zoro','shaka']};
 {const _cp5=twCupom;twCupom=async function(code,E){const C=TWCUP[twHash(String(code).toUpperCase())];const r=await _cp5.apply(this,arguments);
   if(C&&C.chrs&&E&&/\bok\b/.test(E.className)){const own=rkG('own',['goku']);for(const c of C.chrs)if(!own.includes(c))own.push(c);rkS('own',own);try{acSave(1)}catch(x){}E.textContent='🎁 Código aceito! Você ganhou o ZORO e o SHAKA! (já estão nos seus personagens)'}return r}}
 
+/* ================= v326: MENU NOVO "MODOS DE JOGO" (vídeo do dono no fundo: cabelo mexendo, dragão) =================
+   Arte 1408x640 com os botões desenhados; aqui só ficam as áreas de toque, os textos (nome, rank, moedas) e os brilhos.
+   Foto (em cima, moldura dourada) = PERFIL · barra roxa = nome + rank · 🎵 música · moedas: ticket, diamante, moeda da torre, vermelha · ⚙️ = código/configuração/menu principal */
+const MN2={wm:'a/a3fc8111f7ccad.webm',v:'a/62690f694178ea.mp4',p:'a/f2bd77b255d5ce.webp',W:1408,H:640};RKD.menu=[MN2.W,MN2.H];
+const mnB=(x0,y0,x1,y1)=>`left:${x0/MN2.W*100}%;top:${y0/MN2.H*100}%;width:${(x1-x0)/MN2.W*100}%;height:${(y1-y0)/MN2.H*100}%`;
+let MN2V=null;
+function mn2Vid(){if(!MN2V){const v=document.createElement('video');v.className='mn2v';v.src=(v.canPlayType&&v.canPlayType('video/webm; codecs="vp9"'))?MN2.wm:MN2.v;v.onerror=()=>{if(v.src.indexOf(MN2.v)<0){v.src=MN2.v;v.play().catch(()=>{})}};v.poster=MN2.p;v.muted=true;v.defaultMuted=true;v.loop=true;v.autoplay=true;v.playsInline=true;v.setAttribute('playsinline','');v.setAttribute('webkit-playsinline','');v.setAttribute('muted','');v.preload='auto';MN2V=v}return MN2V}
+rkMenuH=function(){const rp=rkG('rp',0),ri=rkRank(rp),R=RKR[ri],nm=(twLS.g('tw_nome','')||'Jogador'),ft=rkG('foto','');
+  const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+  const L=(a,cls,b,d)=>`<button class="hs mn2L ${cls}" data-a="${a}" style="${mnB(...b)}"><span class="sw" style="animation-delay:${d}s"></span><span class="ed" style="animation-delay:${d}s"></span></button>`;
+  const Q=(a,b,d,dot)=>`<button class="hs mn2Q" data-a="${a}" style="${mnB(...b)}"><span class="sw" style="animation-delay:${d}s"></span>${dot?'<i class="dot"></i>':''}</button>`;
+  const Rr=(a,b,d,dot)=>`<button class="hs mn2R" data-a="${a}" style="${mnB(...b)}"><span class="gl" style="animation-delay:${d}s"></span>${dot?'<i class="dot"></i>':''}</button>`;
+  const C=(b,v)=>`<div class="mn2C" style="${mnB(...b)}">${rkFmtN(v)}</div>`;
+  return `<button class="hs mn2Av" data-a="perfil" style="${mnB(37,2,101,66)}">${ft?`<img src="${esc(ft)}" alt="">`:''}</button>
+  <button class="hs mn2Nm" data-a="perfil" style="${mnB(118,8,340,58)}"><b>${esc(nm)}</b><small>${rkEmb(ri,'sm')}<span style="color:${R.c}">${R.n}</span> · ${rkFmtN(rp)} XP</small></button>
+  <button class="hs" data-a="menuBack" style="${mnB(22,84,325,136)}"></button>
+  ${L('boss','r',[12,158,330,233],0)}${L('torre','g',[12,240,330,314],.35)}${L('caca','p',[12,322,330,396],.7)}${L('gacha','b',[12,404,330,478],1.05)}
+  <button class="hs mn2Mu" data-a="music" style="${mnB(708,0,762,46)}"></button>
+  ${C([815,4,880,40],rkG('tic',0))}${C([940,4,1036,40],rkG('gem',0))}${C([1098,4,1208,40],twLS.g('tw_moedas',0))}${C([1268,4,1345,40],rkG('red',0))}
+  <button class="hs" data-a="shop" style="${mnB(897,4,1043,40)}"></button><button class="hs" data-a="mn2Cfg" style="${mnB(1356,0,1408,46)}"></button>
+  ${Rr('psMenu',[1262,56,1392,176],0)}${Rr('mnMenu',[1262,180,1392,282],.6,mnBadge())}${Rr('evMenu',[1262,285,1392,385],1.2,evAny())}${Rr('bpMenu',[1262,388,1392,500],1.8,bpPend())}
+  ${Q('ranking',[298,490,443,588],0)}${Q('rewards',[470,490,615,588],.3,rkRwPend())}${Q('ach',[642,490,786,588],.6,rkAchPend())}${Q('lib',[811,490,956,588],.9)}${Q('conta',[980,490,1124,588],1.2)}`};
+function mn2Cfg(){rkModal(`<div class="twM mn2CM"><h3>⚙️ OPÇÕES</h3><div class="mn2CB"><button class="btn main" id="mnC1">🎟️ CÓDIGO</button><button class="btn" id="mnC2">⚙️ CONFIGURAÇÃO</button><button class="btn" id="mnC3">🏠 MENU PRINCIPAL</button></div><div class="row"><button class="btn" id="rkMX">VOLTAR</button></div></div>`);
+  $('rkMX').onclick=()=>rkModal(null);$('mnC1').onclick=()=>rkCode();$('mnC2').onclick=()=>{rkModal(null);audioInit();showScreen('config')};$('mnC3').onclick=()=>{rkModal(null);showScreen('title')}}
+{const _a=rkAct;rkAct=function(a,b){if(a==='mn2Cfg'){rkSfx('whoosh');return mn2Cfg()}return _a.apply(this,arguments)}}
+{const _v=rkView;rkView=function(v){const r=_v.apply(this,arguments);if(v==='menu'){const A=document.querySelector('#rkWrap .rk_menu');if(A){A.style.backgroundImage=`url(${MN2.p})`;const vid=mn2Vid();A.insertBefore(vid,A.firstChild);const pl=vid.play();if(pl&&pl.catch)pl.catch(()=>{})}}else if(MN2V)try{MN2V.pause()}catch(e){}return r}}
+document.addEventListener('visibilitychange',()=>{if(!MN2V)return;if(document.hidden)MN2V.pause();else if(RKV==='menu'&&MN2V.isConnected)MN2V.play().catch(()=>{})});
+
 function twTrofList(){const tc=twLS.g('tw_tc',{}),run={};for(const t of TW.tr)run[t.k]=(run[t.k]||0)+1;
   twModal(`<div class="twM"><h3>🎖️ TROFÉUS</h3><div class="twTL">${Object.keys(TWTR).map(k=>{const T=TWTR[k];return `<div class="${tc[k]||run[k]?'got':''}"><i>${T.i}</i><b>${T.n}</b><span>${T.d}</span><em>+${T.p} 🏆</em><small>${run[k]?'nesta subida: '+run[k]+' · ':''}total: ${(tc[k]||0)}</small></div>`}).join('')}</div>
     <p class="twH">Cada troféu soma pontos 🏆 no ranking. Quem sobe mais andares fica na frente; empate = mais troféus, depois menos tempo.</p><div class="row"><button class="btn" id="twTx">FECHAR</button></div></div>`);
@@ -10096,7 +10155,7 @@ window.__dbg={mus:()=>[MCUR,MEL.src.split('/').pop()],stg:()=>STAGE.key,prepMatc
 })();
 </script>
 <style>#updB{position:fixed;left:50%;top:max(8px,env(safe-area-inset-top));transform:translateX(-50%);z-index:99999;padding:10px 22px;border-radius:14px;border:2px solid #fff3c0;background:linear-gradient(#ffd84a,#e08a10);color:#3a1d00;font:900 15px system-ui,sans-serif;box-shadow:0 0 18px #ffb21f;cursor:pointer;animation:updP 1s ease-in-out infinite alternate}@keyframes updP{to{transform:translateX(-50%) scale(1.05)}}</style>
-<script>(function(){const V='c38d67bfa715';if(!/^https?:/.test(location.protocol))return;let nv=null;
+<script>(function(){const V='0980e0db6a95';if(!/^https?:/.test(location.protocol))return;let nv=null;
 function show(){if(document.getElementById('updB'))return;try{if(typeof G!=='undefined'&&G.mode==='fight')return}catch(e){}const b=document.createElement('button');b.id='updB';b.textContent='🔄 ATUALIZAÇÃO NOVA! Toque para atualizar';
   b.onclick=()=>{b.textContent='⏳ Atualizando...';try{acSave(1)}catch(e){}setTimeout(()=>location.reload(),900)};document.body.appendChild(b)}
 async function chk(){if(document.hidden)return;if(nv){show();return}try{const r=await fetch('versao.txt?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const t=(await r.text()).trim();if(/^[0-9a-f]{8,40}$/.test(t)&&t!==V){nv=t;show()}}catch(e){}}
