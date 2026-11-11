@@ -1499,3 +1499,6 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - **Nunca passam o 1º, 2º e 3º lugar de verdade:** rank limitado abaixo do 3º jogador real (`cap`), e `botCap` faz o mesmo no Boss (dano, tempo, 1ª fase) e na Caça (nível, dano, críticos, tempo, anel).
 - **Perfil dos bots:** tocar no nome no ranking abre perfil (rank atual e máximo, personagem no pedestal, itens na vitrine, nível de habilidade e histórico com partidas, vitória %, posição, Torre, Boss, personagens e recorde) calculado do rank/tempo online (`botProf`). uid dos bots começa com `bt`.
 - Para tirar: `BOTON=false`. Teste: `tbot_v314.js` (servidor local).
+
+## v315
+- **Evento da Caça ao vivo (10/11 21:15–21:30 de Brasília, `CEV`):** anéis da Caça com chance de cor rara 3x (`anDropLobo` usa `caLuck()*(cevOn()?3:1)`); quem termina uma caçada no horário (até 21:33) manda doc `cev:'cev1115'` (nível e dano) e ganha **ANEL AMARELO SS de Dano**; ranking do evento = mais longe, desempate mais dano; **1º: ANEL PRETO 75.000 anos nota S (Dano)**, **2º e 3º: PRETO 75.000 nota A (Dano)**. Prêmios automáticos (`cevClaim`) ao abrir o jogo depois de 21:31 (1 vez: `cev1115_cl`). Faixa na tela da Caça + tela `cevInfo` com o ranking ao vivo. Bots não entram.

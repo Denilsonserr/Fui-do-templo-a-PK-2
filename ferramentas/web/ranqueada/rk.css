@@ -1142,3 +1142,8 @@ body:not(.pcMode) #how .pcKeys{display:none}#how .pcKeys{margin:0 auto .6em;max-
 .pfAdmG .sp{position:absolute;z-index:6;font-style:normal;color:#fff;font-size:.8em;text-shadow:0 0 .4em #ffd84a,0 0 .8em #ff9a00;animation:pfTw 1.4s ease-in-out infinite;opacity:0;pointer-events:none}
 .pfAdmG .sp.a{left:-.4em;top:-.5em}.pfAdmG .sp.b{right:-.4em;top:-.5em;animation-delay:.35s}.pfAdmG .sp.c{left:40%;bottom:-.6em;animation-delay:.7s}.pfAdmG .sp.d{right:15%;bottom:-.6em;animation-delay:1.05s}
 @keyframes admS{0%{left:-30%}60%,100%{left:120%}}
+
+/* v315: faixa do evento da Caça */
+.rk_ca .cevB{z-index:5;display:flex;flex-direction:column;align-items:center;justify-content:center;border-radius:1em;background:linear-gradient(90deg,#5a1200,#c2410c,#5a1200);border:2px solid #ffd08a;box-shadow:0 0 1em rgba(255,120,40,.7);color:#fff;text-align:center}
+.rk_ca .cevB b{font:900 .95em var(--f-ui);letter-spacing:.04em;text-shadow:0 0 .4em #ff8a3a}.rk_ca .cevB small{font:800 .62em var(--f-ui);color:#ffe2b0}
+.rk_ca .cevB.on{animation:cevP 1s ease-in-out infinite alternate}@keyframes cevP{to{box-shadow:0 0 2em #ff6a1a,0 0 .4em #fff}}

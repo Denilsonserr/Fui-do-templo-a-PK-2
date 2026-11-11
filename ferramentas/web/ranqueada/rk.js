@@ -2011,7 +2011,7 @@ TWCUP['1r1gpju']={nm:'DIAMANTES PARA TODOS',ev:1,rnd:[1000,4000]};
 /* quadrados da mochila */
 (function(){try{const st=document.createElement('style');st.textContent=`.eqI:not(.uniq):not(.ysec){border:0!important;background:url(${RQA.bauc.slot}) center/100% 100% no-repeat!important;box-shadow:inset 0 -1.4em 1.3em -.8em color-mix(in srgb,var(--c) 60%,transparent)}.eqI:not(.uniq):not(.ysec).sel{outline:3px solid #fff}.eqS:not(.on){border:0!important;background:url(${RQA.bauc.slot}) center/100% 100% no-repeat!important}`;document.head.appendChild(st)}catch(e){}})();
 /* anel 100%: tenta do mais raro ao mais comum (sorte multiplica); se nada, BRANCO */
-anDropLobo=function(L){const k=caLuck(),C=[[4,[0,0,0,0,0,0,.003,.005,.01,.015][L-1]||0],[3,[0,0,0,0,0,.01,.02,.03,.04,.05][L-1]||0],[2,L>=5?.06:L>=3?.02:0],[1,L>=3?.2:.08]];let c=0; /* v294: vermelho e preto do dono */
+anDropLobo=function(L){const k=caLuck()*(cevOn()?3:1),C=[[4,[0,0,0,0,0,0,.003,.005,.01,.015][L-1]||0],[3,[0,0,0,0,0,.01,.02,.03,.04,.05][L-1]||0],[2,L>=5?.06:L>=3?.02:0],[1,L>=3?.2:.08]];let c=0; /* v294: vermelho e preto do dono */
   for(const [q,p] of C){if(p&&Math.random()<p*k){c=q;break}}const r=anGive(anRoll(c,L));
   const X0=JSON.parse(JSON.stringify(CA.loot||{gem:0,red:0,tic:0,pd:[0,0,0,0,0,0,0],set:[],bau:[]}));caLoot(L);const X=CA.loot||X0;
   const it=[];const d=(a,b)=>(a||0)-(b||0);
@@ -2198,3 +2198,33 @@ function botProf(uid){const L=botList([]),i=L.findIndex(b=>b.uid===uid);if(i<0)r
   return {uid,mold:'',nome:b.nome,tit:'',rp:b.rp,mx:Math.min(RKTOP,lvl+(botR(i,31)<.3?1:0)),foto:'',vit,ped:CH[b.char]?b.char:'goku',R,
     h:{pt,vw,tw:Math.round(hrs*1.5+lvl*4),twc:Math.round(lvl*1.2+hrs*.2),twf:Math.round(hrs*6+lvl*15),wins:Math.round(vw*.55),loss:Math.round((pt-vw)*.55),own:Math.min(25,3+lvl*2+Math.floor(botR(i,32)*4)),tt:b.tt,rl:Math.max(-1,lvl-1)}}}
 {const _po=pfOpenOther;pfOpenOther=async function(uid,nome,ret){if(BOTON&&/^bt/.test(uid||'')){const D=botProf(uid);if(D){if(ret.sc==='tower'){try{twModal(null)}catch(e){}showScreen('ranked')}else rkModal(null);rkToast('⏳ Carregando perfil...','#cfd6ea');await new Promise(r=>setTimeout(r,350+Math.random()*400));PFO=D;PFRET=ret;return rkView('pf')}}return _po.apply(this,arguments)}}
+
+/* ================= v315: EVENTO DA CAÇA AO VIVO — 10/11/2026 21:15 até 21:30 (Brasília) =================
+   Durante o evento: anéis da Caça com chance de cor rara 3x. Quem participar (terminar uma caçada no horário) ganha ANEL AMARELO SS de Dano.
+   Ranking do evento = quem foi mais longe (desempate: mais dano). 1º: ANEL PRETO 75.000 anos nota S de Dano · 2º e 3º: ANEL PRETO 75.000 anos nota A de Dano.
+   Prêmios automáticos ao abrir o jogo depois do fim (1 vez por aparelho/conta). Bots não participam. */
+const CEV={id:'cev1115',ini:Date.UTC(2026,10,11,0,15),fim:Date.UTC(2026,10,11,0,30)};
+function cevOn(){const t=Date.now();return t>=CEV.ini&&t<CEV.fim}
+const cevMin=ms=>{const m=Math.max(0,Math.ceil(ms/6e4));return m+' min'};
+function cevSend(lv,dmg){const n=twLS.g('tw_nome','');if(!n)return;const IV=v=>({integerValue:String(Math.max(0,Math.round(v||0)))});
+  twFetchT(TWURL+'/torre?key='+TWFB.apiKey,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({fields:{nome:{stringValue:String(n).slice(0,16)},andar:IV(0),tempo:IV(0),uid:{stringValue:twUid()},cev:{stringValue:CEV.id},clv:IV(lv),cdm:IV(dmg),v:IV(315)}})}).catch(()=>{})}
+{const _ce3=caEnd;caEnd=function(w){const t=Date.now(),o=G.p&&G.p[1],won=!!(o&&o.ko&&(o.bLv||1)>=10),lv=won?10:Math.max(0,((o&&o.bLv)||1)-1),dmg=Math.round(CA.dmg||0);
+  const r=_ce3.apply(this,arguments);try{if(t>=CEV.ini&&t<CEV.fim+3*6e4){localStorage.setItem(CEV.id+'_part','1');cevSend(lv,dmg);setTimeout(()=>{try{rkToast('🔥 Caçada do EVENTO registrada! Prêmios no fim (21:30)','#ffb347')}catch(e){}},2500)}}catch(e){}return r}}
+async function cevRank(){const L=await rkQ('cev',CEV.id,2000),M={};for(const e of L){if(!e.uid)continue;const m=M[e.uid]||(M[e.uid]={uid:e.uid,nome:e.nome,lv:0,dmg:0});if((e.clv|0)>m.lv||((e.clv|0)===m.lv&&(e.cdm|0)>m.dmg)){m.lv=e.clv|0;m.dmg=e.cdm|0}m.nome=e.nome}
+  return Object.values(M).sort((a,b)=>b.lv-a.lv||b.dmg-a.dmg)}
+function cevRing(c,g,a){return anGive({i:Date.now().toString(36)+Math.random().toString(36).slice(2,6),c,g,s:'dano',v:ANV[c][g],a:a||0})}
+async function cevClaim(){if(Date.now()<CEV.fim+60e3)return;const K=CEV.id+'_cl';if(localStorage.getItem(K))return;localStorage.setItem(K,'1');let msg=[];
+  try{if(localStorage.getItem(CEV.id+'_part')){cevRing(1,6);msg.push('💍 ANEL AMARELO SS (Dano) por participar')}
+    const R=await cevRank(),i=R.findIndex(e=>e.uid===twUid());if(i===0){cevRing(3,5,75000);msg.push('🥇 1º LUGAR: ANEL PRETO 75.000 anos nota S (Dano)')}else if(i===1||i===2){cevRing(3,4,75000);msg.push((i===1?'🥈 2º':'🥉 3º')+' LUGAR: ANEL PRETO 75.000 anos nota A (Dano)')}
+  }catch(e){localStorage.removeItem(K);return}
+  if(msg.length){try{acSave(1)}catch(e){}rkModal(`<div class="twM gold"><h3>🔥 PRÊMIOS DO EVENTO DA CAÇA</h3>${msg.map(m=>`<p class="twH" style="font-size:1.05em">${m}</p>`).join('')}<p class="twH">Os anéis já estão na aba Anéis (Biblioteca).</p><div class="row"><button class="btn main" id="rkMX">PEGAR!</button></div></div>`);try{rkSfx('boom');setTimeout(()=>rkSfx('powerUp'),300)}catch(e){}$('rkMX').onclick=()=>rkModal(null)}}
+setTimeout(()=>{try{cevClaim()}catch(e){}},7000);setInterval(()=>{try{if(Date.now()>CEV.fim+60e3&&Date.now()<CEV.fim+7*864e5&&showScreen.cur==='ranked'&&!$('rkModal').innerHTML)cevClaim()}catch(e){}},30000);
+/* faixa do evento na tela da Caça */
+{const _h3=caH;caH=function(){const t=Date.now();let b='';if(t<CEV.fim+3600e3&&t>CEV.ini-6*3600e3){const on=cevOn(),fut=t<CEV.ini;
+  b=`<button class="hs cevB ${on?'on':''}" data-a="cevInfo" style="${rkB2(400,92,1120,170)}"><b>🔥 EVENTO DA CAÇA ${fut?'· COMEÇA ÀS 21:15':on?'· AO VIVO · ACABA EM '+cevMin(CEV.fim-t):'· ACABOU'}</b><small>anel raro 3x · participe = Anel SS · Top 3 = Anel Preto 75 mil anos</small></button>`}
+  return _h3.apply(this,arguments)+b}}
+function cevInfo(){const t=Date.now();rkModal(`<div class="twM gold"><h3>🔥 EVENTO DA CAÇA AO VIVO</h3><p class="twH">📅 Hoje das <b>21:15</b> às <b>21:30</b> (Brasília) · ${t<CEV.ini?'começa em '+cevMin(CEV.ini-t):cevOn()?'<b style="color:#ff6a3a">AO VIVO</b> · acaba em '+cevMin(CEV.fim-t):'acabou'}</p>
+  <p class="twH">🍀 Anéis da Caça com chance de cor rara <b>3x</b>.<br>💍 Participou (terminou uma caçada no horário) = <b>ANEL AMARELO nota SS de Dano</b>.<br>🥇 1º lugar: <b>ANEL PRETO 75.000 anos nota S de Dano</b><br>🥈🥉 2º e 3º: <b>ANEL PRETO 75.000 anos nota A de Dano</b></p>
+  <p class="twH">Ranking: quem foi mais longe (desempate: mais dano). Os prêmios caem sozinhos quando você abrir o jogo depois das 21:30.</p><div class="caRkL" id="cevL"><p class="twH">Carregando...</p></div><div class="row"><button class="btn" id="rkMX">FECHAR</button></div></div>`);$('rkMX').onclick=()=>rkModal(null);
+  cevRank().then(R=>{const E=$('cevL');if(!E)return;E.innerHTML=R.length?R.slice(0,20).map((e,i)=>`<div class="caRkR ${e.uid===twUid()?'me':''} p${i+1}"><b>${i<3?['🥇','🥈','🥉'][i]:i+1+'º'}</b><span>${twEsc(e.nome||'?')}</span><em>${e.lv>=10?'👑 10 NÍVEIS':'NÍVEL '+e.lv} · ${rkFmtN(e.dmg)}</em></div>`).join(''):'<p class="twH">Ninguém ainda. Seja o primeiro!</p>'}).catch(()=>{const E=$('cevL');if(E)E.innerHTML='<p class="twH err">'+rkNetMsg()+'</p>'})}
+{const _ac2=rkAct;rkAct=function(a,b){if(a==='cevInfo'){rkSfx('whoosh');return cevInfo()}return _ac2.apply(this,arguments)}}
