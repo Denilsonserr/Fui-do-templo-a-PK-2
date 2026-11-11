@@ -1636,3 +1636,8 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 
 ## v341 — 2x do ADM é do título (não é evento)
 - Saiu a entrada fixa do ADM no `RKEVX` (não aparece em Eventos, na faixa nem nas telas). `rkAdm2()` (2 se ADM) multiplica direto `rkEvG/rkEvL/rkEvD/rkEvA` e o XP de rank de vitória no Boss (`drp*=2`). Com evento ativo junta (3x → 6x), sem evento fica 2x. Texto do título: "+70% em TUDO · 2x XP, gemas, sorte, drop e anel, sempre".
+
+## v342 — girar até 5 passivas + código ADM 700 + faixa só no menu
+- Passivas: botão "GIRAR x5" (usa até 5 Joias, mínimo 2). Sorteia todas (cada uma conta proteção e passe), guarda `o.pendL` e abre a escolha (`psPick`): escolher uma = aplica; "MANTER ANTIGA" = descarta todas. Se sair do jogo no meio, a escolha volta ao abrir as Passivas. Teste `tps5_v342.js`.
+- Campo novo `adm:1` no `TWCUP` (wrapper `_cp8`): só quem tem o título ADM. `115nx35` = 700 Joias Negras, 1 pessoa no jogo inteiro (`uni:1`). Texto só com o dono.
+- Faixa de evento (`evBar`) agora só no menu Modos de Jogo (`RKV==='menu'`) e some quando abre uma janela.

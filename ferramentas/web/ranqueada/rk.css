@@ -1576,3 +1576,9 @@ img.anOn{position:relative;z-index:2}
 @keyframes evBarP{0%,100%{box-shadow:0 0 6px rgba(255,120,30,.6),inset 0 0 8px rgba(255,220,120,.3)}50%{box-shadow:0 0 18px rgba(255,160,40,1),inset 0 0 10px rgba(255,220,120,.5)}}
 @keyframes evBarF{to{transform:scale(1.2) rotate(-8deg)}}
 #evBar[hidden]{display:none}
+/* v342: girar até 5 */
+.psAct button.x5{background:linear-gradient(#b8327a,#4a0a3a);box-shadow:0 0 1em #ff4dc4}
+.psPkL{display:flex;flex-direction:column;gap:.4em;max-height:56vh;overflow:auto}
+.psPkI{display:grid;grid-template-columns:3em 1fr auto;align-items:center;gap:.6em;padding:.3em .6em;border-radius:.6em;border:2px solid var(--rc);background:#120a24;color:#fff;cursor:pointer;text-align:left;box-shadow:0 0 .5em color-mix(in srgb,var(--rc) 50%,transparent)}
+.psPkI.best{box-shadow:0 0 1em var(--rc)}.psPkI .psGem{position:relative;width:3em;height:3em}.psPkI span{display:flex;flex-direction:column;gap:.1em;font:800 .9em var(--f-ui)}.psPkI span small{color:#ddd}
+.psPkI em{font:900 .85em var(--f-ui);font-style:normal;padding:.35em .7em;border-radius:.4em;background:linear-gradient(#2fa85a,#0d5a2a);border:1px solid #7dff9a}

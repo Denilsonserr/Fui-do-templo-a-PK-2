@@ -1215,7 +1215,7 @@ function psH(){const o=psG(),L=psList(),np=Math.max(1,Math.ceil(L.length/9));PS.
   <div class="psSlot nw" style="${rkB2(1059,346,1190,481)}">${pend&&!PS.anim?psGemH(pend):'<span>nova<br>passiva</span>'}</div>
   <div class="psLbl" style="${rkB2(995,492,1250,572)}">${pend&&!PS.anim?`<b class="nm">NOVA</b>${psTxtH(pend)}`:'<small>A passiva sorteada aparece aqui</small>'}</div>
   <div class="psJn" style="${rkB2(512,778,610,848)}"><img src="${RQA.jn}" alt=""><b>${o.jn|0}</b></div>
-  <div class="psAct" style="${rkB2(640,770,1040,856)}">${pend&&!PS.anim?`<button data-p="apply" class="ok">✔ APLICAR NOVA</button><button data-p="keep">✖ MANTER ANTIGA</button>`:`<button data-p="spin" class="go" ${!t||(o.jn|0)<1||PS.anim?'disabled':''}>💠 GIRAR · 1 JOIA</button>`}</div>
+  <div class="psAct" style="${rkB2(640,770,1040,856)}">${pend&&!PS.anim?(o.pendL&&o.pendL.length>1?`<button data-p="pick" class="ok">📋 ESCOLHER (${o.pendL.length})</button><button data-p="keep">✖ MANTER ANTIGA</button>`:`<button data-p="apply" class="ok">✔ APLICAR NOVA</button><button data-p="keep">✖ MANTER ANTIGA</button>`):`<button data-p="spin" class="go" ${!t||(o.jn|0)<1||PS.anim?'disabled':''}>💠 GIRAR x1</button><button data-p="spin5" class="go x5" ${!t||(o.jn|0)<2||PS.anim?'disabled':''}>💠 GIRAR x${Math.min(5,Math.max(2,o.jn|0))}</button>`}</div>
   <div class="psPity" style="${rkB2(1060,774,1186,852)}"><span>Lendária+ em <b>${Math.max(1,50-(o.pl|0))}</b></span><span>Mítica+ em <b>${Math.max(1,200-(o.pm|0))}</b></span></div>
   <button class="psInfo" data-p="info" style="${rkB2(1590,600,1640,642)}">?</button>
   <div class="psSum" style="${rkB2(30,880,1660,930)}">Total ${t&&t.k==='ch'?'de '+twEsc(t.nm):'do personagem em uso'}: 💥 +${S.cd}% crítico · 🛡️ +${S.def}% defesa · ⚡ +${S.spd}% vel. de ataque · 💚 ${String(S.reg).replace('.',',')}%/5s · 🎁 +${S.drop}% drop · 🍀 +${S.st}% sorte</div>`}
@@ -1230,7 +1230,7 @@ function psAct(a,b){const o=psG();
     const R=psRoll(o);o.jn=(o.jn|0)-1;o.pend={tg:{k:t.k,id:t.id},r:R.r,i:R.i};psS(o);  /* gasta a joia e guarda o resultado juntos (uma gravação só) */
     PS.anim=1;rkView('ps');psAnim(R.r,()=>{PS.anim=0;PS.busy=0;rkView('ps');const d=psDef(R);rkSfx(psRI(R.r)>=3?'boom':'powerUp');if(psRI(R.r)>=4)try{SFX.boom()}catch(e){}rkToast((psRI(R.r)>=3?'✨ ':'')+psRN(R.r)+': '+d.n,PSRC[R.r])});return}
   if(a==='apply'||a==='keep'){const P=o.pend;if(!P)return;PS.busy=1;try{if(a==='apply'){if(P.tg.k==='ch'){o.ch[P.tg.id]={r:P.r,i:P.i}}else{const I=twInv(),it=I.find(x=>x.id===P.tg.id);if(it){it.ps={r:P.r,i:P.i};twLS.s('tw_inv',I)}}}
-    o.pend=null;psS(o)}finally{PS.busy=0}rkSfx(a==='apply'?'powerUp':'whoosh');rkToast(a==='apply'?'✔ Passiva aplicada!':'Passiva antiga mantida','#7dff9a');return rkView('ps')}}
+    o.pend=null;o.pendL=null;psS(o)}finally{PS.busy=0}rkSfx(a==='apply'?'powerUp':'whoosh');rkToast(a==='apply'?'✔ Passiva aplicada!':'Passiva antiga mantida','#7dff9a');return rkView('ps')}}
 function psAnim(r,cb){const W=$('psWheel'),T=$('psWT');if(!W){cb();return}let n=0;const tot=26;const step=()=>{const k=n<tot-1?RKPR[n%6]:r;W.style.setProperty('--rc',PSRC[k]);T.textContent=psRN(k);T.style.color=PSRC[k];try{if(n%2===0)rkSfx('whoosh')}catch(e){}n++;if(n<tot)setTimeout(step,40+n*n*.35);else{W.classList.add('done','psr_'+r);setTimeout(cb,900)}};step()}
 /* começo da luta: crítico, defesa, velocidade de ataque, regeneração, aura da passiva secreta */
 {const _ex2=rkExtra;rkExtra=function(){const r=_ex2.apply(this,arguments);try{if(!G.p)return r;const torre=typeof TW!=='undefined'&&TW.on&&G.gmode==='torre',boss=G.gmode==='boss';if(!torre&&!boss)return r;const p=G.p[0],id=p.def.id,S=psSum(id);
@@ -2819,10 +2819,9 @@ const rkEvA=()=>{const e=rkEvX();return ((e&&e[4]&&e[4].anel)||1)*rkAdm2()};
 TWCUP['973bb8']={nm:'PEDIDO DE DESCULPAS',acc:1,jn:40,pk:{gem:5000,tic:20}};
 
 /* v341: o 2x do ADM é do TÍTULO (não é evento e não aparece em lugar nenhum): rkAdm2() multiplica gemas, sorte, drop, anel e XP de rank */
-try{window.__pvT={G:()=>G,ko:(a,d)=>ko(a,d),ev:()=>rkEvX(),m:()=>[rkEvG(),rkEvL(),rkEvD(),rkEvA()],dl:id=>pvDelta(id)}}catch(e){} /* só para os testes */
 /* v340: FAIXA DE EVENTO ATIVO em todas as telas de modo (menu, Boss, Torre, Caça, Gacha, PVP, Loja...) com o tempo que falta */
 function evBarTick(){let B=document.getElementById('evBar');const t=Date.now();let e=null;e=rkEvX();
-  let cur='';try{cur=showScreen.cur}catch(x){}const show=!!e&&(cur==='ranked'||cur==='tower'||cur==='title')&&!(typeof PV!=='undefined'&&PV.fight);
+  let cur='';try{cur=showScreen.cur}catch(x){}const show=!!e&&cur==='ranked'&&RKV==='menu'&&!(typeof PV!=='undefined'&&PV.fight)&&![...document.querySelectorAll('#rkModal,#twModal,#acM')].some(m=>!m.hidden&&m.innerHTML.trim()&&m.offsetParent!==null);
   if(!show){if(B)B.hidden=true;return}
   if(!B){B=document.createElement('div');B.id='evBar';B.innerHTML='<i class="f">🔥</i><div><b></b><u></u><span><em></em></span></div><i class="f">🔥</i>';document.body.appendChild(B)}
   const ms=e[1]-t,h=Math.floor(ms/36e5),m=Math.floor(ms%36e5/6e4),s=Math.floor(ms%6e4/1e3),tm=(h?h+'h ':'')+String(m).padStart(2,'0')+'min '+String(s).padStart(2,'0')+'s';
@@ -2830,3 +2829,20 @@ function evBarTick(){let B=document.getElementById('evBar');const t=Date.now();l
   const nm=String(e[3]).split('·').map(x=>x.trim()),ttl=nm[0],rest=nm.slice(1).join(' · ');
   B.querySelector('b').textContent='🎉 EVENTO ATIVO: '+ttl+adm;B.querySelector('u').textContent='⏳ TERMINA EM '+tm;const em=B.querySelector('em'),rt=rest||'APROVEITE!';if(em.textContent!==rt)em.textContent=rt;B.hidden=false}
 setInterval(evBarTick,1000);setTimeout(evBarTick,500);
+
+/* v342: GIRAR ATÉ 5 PASSIVAS DE UMA VEZ — gasta até 5 joias, mostra todas e você escolhe qual aplicar (ou mantém a antiga) */
+function psPick(){const o=psG(),L=o.pendL||[];if(!o.pend||L.length<2)return;const best=L.reduce((m,x,i)=>psRI(x.r)>psRI(L[m].r)?i:m,0);
+  rkModal(`<div class="twM psPk"><h3>💠 ESCOLHA A PASSIVA (${L.length} GIROS)</h3><div class="psPkL">${L.map((x,i)=>`<button class="psPkI${i===best?' best':''}" data-i="${i}" style="--rc:${PSRC[x.r]}">${psGemH(x)}<span>${psTxtH(x)}</span><em>ESCOLHER</em></button>`).join('')}</div><div class="row"><button class="btn" id="psPkK">✖ MANTER ANTIGA</button><button class="btn" id="rkMX">DEPOIS</button></div></div>`);
+  $('rkMX').onclick=()=>rkModal(null);$('psPkK').onclick=()=>{rkModal(null);psAct('keep')};
+  document.querySelectorAll('#rkModal .psPkI').forEach(b=>b.onclick=()=>{const o2=psG(),x=(o2.pendL||[])[+b.dataset.i];if(!x||!o2.pend)return rkModal(null);o2.pend={tg:o2.pend.tg,r:x.r,i:x.i};psS(o2);rkModal(null);psAct('apply')})}
+{const _pa=psAct;psAct=function(a,b){
+  if(a==='pick'){if(PS.anim||PS.busy)return;return psPick()}
+  if(a==='spin5'){if(PS.anim||PS.busy)return;const o=psG(),t=psTarget();if(!t||o.pend)return;const n=Math.min(5,o.jn|0);if(n<2){rkSfx('clang');return rkToast('Precisa de pelo menos 2 Joias Negras','#ff8080')}PS.busy=1;
+    const L=[];for(let k=0;k<n;k++)L.push(psRoll(o));const best=L.reduce((m,x)=>psRI(x.r)>psRI(m.r)?x:m,L[0]);o.jn=(o.jn|0)-n;o.pend={tg:{k:t.k,id:t.id},r:best.r,i:best.i};o.pendL=L.map(x=>({r:x.r,i:x.i}));psS(o);
+    PS.anim=1;rkView('ps');psAnim(best.r,()=>{PS.anim=0;PS.busy=0;rkView('ps');rkSfx(psRI(best.r)>=3?'boom':'powerUp');psPick()});return}
+  return _pa.apply(this,arguments)}}
+{const _po=psOpen;psOpen=function(){const r=_po.apply(this,arguments);try{const o=psG();if(o.pend&&o.pendL&&o.pendL.length>1)setTimeout(psPick,400)}catch(e){}return r}}
+/* v342: código só para o ADM (campo adm:1) */
+{const _cp8=twCupom;twCupom=async function(code,E){const C=TWCUP[twHash(String(code).toUpperCase())];if(C&&C.adm&&!twIsAdm()){E.className='twH err';E.textContent='❌ Esse código é só para quem tem o título de ADMINISTRADOR.';try{twSfx('clang')}catch(e){}return true}return _cp8.apply(this,arguments)}}
+TWCUP['115nx35']={nm:'700 GIROS DE PASSIVA',jn:700,uni:1,adm:1};
+try{window.__pvT={G:()=>G,ko:(a,d)=>ko(a,d),ev:()=>rkEvX(),m:()=>[rkEvG(),rkEvL(),rkEvD(),rkEvA()],dl:id=>pvDelta(id)}}catch(e){} /* só para os testes */
