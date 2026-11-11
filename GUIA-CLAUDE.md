@@ -1531,3 +1531,6 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 
 ## v323 — 3 códigos de USO ÚNICO (texto só com o dono)
 - No fim do rk.js: `kdc5bt` = 40.000 💎, `e8a07j` = 10.000 💎, `yuirz0` = ZORO e SHAKA (campo novo `chrs:[...]`, wrapper `_cp5` põe todos em `rk_own`). Cada um: 1 pessoa no jogo inteiro (servidor recusa o segundo: "já foi usado por outro jogador"). Testado com o servidor local (`local.mjs 8790`).
+
+## v324
+- Evoluir anel NÃO gasta mais diamante (pedido do dono: foi erro). `anCost` devolve `g:0`; a tela de evoluir só mostra a Pedra das Almas (o quadrinho de 💎 some quando o custo é 0). Testado: com 0 💎 o anel sobe de nível gastando só a pedra.

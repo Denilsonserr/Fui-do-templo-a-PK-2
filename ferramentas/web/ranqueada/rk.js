@@ -1851,7 +1851,7 @@ const anV=r=>{const mx=ANMX[r.c],l=anLvl(r);return Math.round(r.v*(.1+.9*(l-1)/(
 const PDN=['COMUM','RARA','ÉPICA','LENDÁRIA','MÍTICA','SECRETA','DIVINA'],PDC=['#d9dde8','#3aa0ff','#b45cff','#ffc928','#ff3b4a','#9a5cff','#ffe27a'];
 const pdA=()=>{const a=rkG('pdr2',[0,0,0,0,0,0,0]);while(a.length<7)a.push(0);return a},pdAdd=(t,n)=>{const a=pdA();a[t]=Math.max(0,a[t]+n);rkS('pdr2',a)};
 /* custo para ir do nível l para l+1 */
-function anCost(l){const t=l<10?0:l<20?1:l<30?2:l<40?3:l<45?4:l<49?5:6;return {t,n:1+Math.floor((l%10)/4),g:20*l}}
+function anCost(l){const t=l<10?0:l<20?1:l<30?2:l<40?3:l<45?4:l<49?5:6;return {t,n:1+Math.floor((l%10)/4),g:0}} /* v324: evoluir anel não gasta diamante (só Pedra das Almas) */
 /* ---- SET DO LOBO (só vale no modo Caça) ---- */
 const LST=[['cap','CAPACETE','crit','🎯 Crítico','%'],['arm','ARMADURA','def','🛡️ Defesa','%'],['bot','BOTAS','vel','💨 Velocidade','%'],['col','COLAR','st','🍀 Sorte na caça',''],['anl','ANEL','drop','🎁 Drop na caça','%'],['capa','CAPA','dano','⚔️ Dano','%']];
 const LSR=['COMUM','RARO','ÉPICO','LENDÁRIO','MÍTICO','SECRETO','DIVINO'],LSC=['#d9dde8','#3aa0ff','#b45cff','#ffc928','#ff3b4a','#9a5cff','#ffe27a'];
@@ -1887,7 +1887,7 @@ function anUpM(id,fx){const r=anL().find(x=>x.i===id);if(!r)return rkModal(null)
   rkModal(`<div class="twM anUpM" style="--c:${ANC[r.c][1]}"><h3>⬆️ EVOLUIR ANEL ${ANC[r.c][0]}</h3><div class="anBig ${fx?'up':''}"><img src="${RQA.anel2[r.c]}" alt=""><b>${l}</b></div>
     <div class="anLvB"><i style="width:${l/mx*100}%"></i><span>NÍVEL ${l} / ${mx}</span></div>
     <p class="twH">Nota <b class="g g${r.g}">${ANG[r.g]}</b> · ${anSt(r.s)[1]} <b>+${anV(r)}${anSt(r.s)[2]}</b>${top?' · <b style="color:#ffd34a">NÍVEL MÁXIMO!</b>':` → <b style="color:#7dff9a">+${anV(nx)}${anSt(r.s)[2]}</b> · no máx: +${r.v}${anSt(r.s)[2]}`}</p>
-    ${top?'':`<div class="anCost"><span style="--c:${PDC[C.t]}" class="${P[C.t]>=C.n?'':'no'}"><img src="${RQA.pedra[C.t]}" alt="">${PDN[C.t]} ${P[C.t]}/${C.n}</span><span class="${rkG('gem',0)>=C.g?'':'no'}"><img src="${RQA.coin[0]}" alt="">${rkFmtN(rkG('gem',0))}/${C.g}</span></div>`}
+    ${top?'':`<div class="anCost"><span style="--c:${PDC[C.t]}" class="${P[C.t]>=C.n?'':'no'}"><img src="${RQA.pedra[C.t]}" alt="">${PDN[C.t]} ${P[C.t]}/${C.n}</span>${C.g?`<span class="${rkG('gem',0)>=C.g?'':'no'}"><img src="${RQA.coin[0]}" alt="">${rkFmtN(rkG('gem',0))}/${C.g}</span>`:''}</div>`}
     <p class="twH" style="font-size:.8em">Pedras das Almas caem no modo Caça (Lobo Negro).</p>
     <div class="row">${top?'':`<button class="btn main" id="anGo" ${ok?'':'disabled'}>⬆️ EVOLUIR</button>`}<button class="btn" id="rkMX">VOLTAR</button></div></div>`);
   $('rkMX').onclick=()=>{rkModal(null);if(RKV==='lib')rkView('lib')};
