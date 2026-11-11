@@ -1608,3 +1608,10 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - Na lista "Ranks" da direita da tela PVP, cada rank virou botão (`pvTier`): abre a lista dos jogadores daquele rank (foto do personagem, nome, título, divisão, estrelas, V/D). Tocar em "Ranks" (título) = todos, separados por rank (inclui a Madeira). Bolinha vermelha = quantos jogadores no rank.
 - `pvLoadAll()` faz UMA consulta (`pvk` do mês, 300 linhas, 1 por conta, guardada 1 min) e serve para a lista, as bolinhas e o Ranking.
 - Teste `tpvprank_v335.js` (4 contas: 2 Prata, 1 Diamante, 1 Madeira).
+
+## v336 — PVP: sombra forte + TIME DE 3
+- Motivo da sombra fraca: no PVP o `aiThink` usava `LV[G.diff]` com `G.diff=3` (não existe) → a máquina travava quando o estilo tinha pouca gravação (a do dono tinha 113 < 120). Os bônus já iam (sombra do dono: dano x5,9, vel x3,7, crítico 185%).
+- Agora: `twLV` no PVP = nível mais difícil da Torre (`TWLV` último). A sombra é a máquina no máximo e, em ~35% das decisões (janelas de 16 quadros, perfil ≥60), usa o estilo gravado (`pvThink`); defesa sempre da máquina.
+- Time de 3 (`rk_pvt`, `pvTeam()`; quem tem menos repete): Formação escolhe na ordem. A sombra envia `team:[{ch,p,s,lv}x3]` (sombras antigas viram 3 do mesmo). Luta igual Torre: quem cai sai, entra o próximo, o vencedor continua com a vida que sobrou; vence quem derrubar os 3 (`endRound` do PVP + `extra/9s_v336.py`: `G.teams` = `PV.fight.teams` e sem tag). Bônus e estilo de cada personagem aplicados a cada entrada.
+- Teste `tpvp3_v336.js`: sombra ADM tdm 1,6/tdf 0,625; jogador parado tomou 3500 de dano em 15 s; 3 nocautes → vitória. Gancho de teste `window.__pvT`.
+- Pendente (o dono vai explicar): bônus de estrela por sequência e animação de estrela estilo Mobile Legends.
