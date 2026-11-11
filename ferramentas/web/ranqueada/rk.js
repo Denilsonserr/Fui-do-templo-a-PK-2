@@ -3288,9 +3288,9 @@ const mnRK=r=>[r.c,r.g,r.s,anLvl(r),r.a||0].join('|');
     try{acSave(1)}catch(x){}rkSfx('powerUp');rkToast('🏷️ '+mnView(o).nm+' anunciado por '+rkFmtN(pr)+' 💎!','#7dff9a');MN.sel=null;MN.q=1}finally{MN.busy=0}return mnLoad()}}
 /* ================= v365: EVENTO SAINT SEIYA — músicas do lobby =================
    No lobby (tela do Ranqueado, fora da luta, inclusive no giro do Shaka) tocam SÓ as 3 músicas do evento, nas partes mais fortes
-   (cortes com fade: Lost Canvas inteira, Pelo Mundo 0:28–2:16, Laços de Flor 2:20–3:42). Quando uma acaba entra a próxima. Não dá para trocar.
+   (cortes com fade: Lost Canvas inteira, Pelo Mundo 0:28–2:16, Laços de Flor 3:06–4:04 até o fim, v366). Quando uma acaba entra a próxima. Não dá para trocar.
    As músicas completas estão no MUS (18, 19, 20): rádio do Ranqueado e música da luta. EVMUS=0 desliga o evento. */
-const EVMUS=1,EVMS=[[18,'a/636a17e61ad5f8.mp3','LOST CANVAS – ABERTURA'],[19,'a/bdf54fec7a8981.mp3','PELO MUNDO'],[20,'a/b335bfbd785ba6.mp3','LAÇOS DE FLOR']];let EVMI=-1;
+const EVMUS=1,EVMS=[[18,'a/636a17e61ad5f8.mp3','LOST CANVAS – ABERTURA'],[19,'a/bdf54fec7a8981.mp3','PELO MUNDO'],[20,'a/1e36ad6d822ca1.mp3','LAÇOS DE FLOR']];let EVMI=-1;
 function evMusOn(){return EVMUS&&showScreen.cur==='ranked'&&G.mode!=='fight'}
 function evMusPlay(next){if(!EVMUS||!MUS[EVMS[0][0]])return;const i=next&&EVMI>=0?(EVMI+1)%EVMS.length:EVMI>=0?EVMI:(Math.random()*EVMS.length)|0;const nw=i!==EVMI||!MEL.src.endsWith(EVMS[i][1]);EVMI=i;
   const [mi,src,nm]=EVMS[i];MCUR=mi;MEL.loop=false;if(nw){MEL.src=src;try{MEL.currentTime=0}catch(e){}try{rkToast('🎶 EVENTO SAINT SEIYA · '+nm,'#ffd84a')}catch(e){}}

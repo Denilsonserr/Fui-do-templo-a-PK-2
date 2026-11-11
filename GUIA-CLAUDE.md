@@ -1777,3 +1777,6 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - Rádio: aviso do evento no topo; escolher faixa não mexe no lobby, vale para as lutas. `musPick` (wrapper): volta `loop=true`; se a rádio tem faixa escolhida (≠ aleatória), qualquer luta fora da Torre usa ela (`rkMusPlay`).
 - Desligar o evento: `EVMUS=0` no bloco v365.
 - Teste `tmusica_v365.js`.
+
+## v366 — corte novo do Laços de Flor no lobby
+- O dono disse que o Laços de Flor "não funcionava bem" no lobby. O corte antigo (2:20–3:42) começava no meio de uma frase e tinha uma PAUSA quase muda de ~1 s em 3:05 (parte da música) → parecia que travava. Corte novo `a/1e36ad6d822ca1.mp3`: começa logo depois da pausa (3:05,8) no clímax final e vai até o fim natural da música (58 s). Arquivo antigo `b335bfbd785ba6` apagado.

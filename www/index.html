@@ -11380,9 +11380,9 @@ const mnRK=r=>[r.c,r.g,r.s,anLvl(r),r.a||0].join('|');
     try{acSave(1)}catch(x){}rkSfx('powerUp');rkToast('🏷️ '+mnView(o).nm+' anunciado por '+rkFmtN(pr)+' 💎!','#7dff9a');MN.sel=null;MN.q=1}finally{MN.busy=0}return mnLoad()}}
 /* ================= v365: EVENTO SAINT SEIYA — músicas do lobby =================
    No lobby (tela do Ranqueado, fora da luta, inclusive no giro do Shaka) tocam SÓ as 3 músicas do evento, nas partes mais fortes
-   (cortes com fade: Lost Canvas inteira, Pelo Mundo 0:28–2:16, Laços de Flor 2:20–3:42). Quando uma acaba entra a próxima. Não dá para trocar.
+   (cortes com fade: Lost Canvas inteira, Pelo Mundo 0:28–2:16, Laços de Flor 3:06–4:04 até o fim, v366). Quando uma acaba entra a próxima. Não dá para trocar.
    As músicas completas estão no MUS (18, 19, 20): rádio do Ranqueado e música da luta. EVMUS=0 desliga o evento. */
-const EVMUS=1,EVMS=[[18,'a/636a17e61ad5f8.mp3','LOST CANVAS – ABERTURA'],[19,'a/bdf54fec7a8981.mp3','PELO MUNDO'],[20,'a/b335bfbd785ba6.mp3','LAÇOS DE FLOR']];let EVMI=-1;
+const EVMUS=1,EVMS=[[18,'a/636a17e61ad5f8.mp3','LOST CANVAS – ABERTURA'],[19,'a/bdf54fec7a8981.mp3','PELO MUNDO'],[20,'a/1e36ad6d822ca1.mp3','LAÇOS DE FLOR']];let EVMI=-1;
 function evMusOn(){return EVMUS&&showScreen.cur==='ranked'&&G.mode!=='fight'}
 function evMusPlay(next){if(!EVMUS||!MUS[EVMS[0][0]])return;const i=next&&EVMI>=0?(EVMI+1)%EVMS.length:EVMI>=0?EVMI:(Math.random()*EVMS.length)|0;const nw=i!==EVMI||!MEL.src.endsWith(EVMS[i][1]);EVMI=i;
   const [mi,src,nm]=EVMS[i];MCUR=mi;MEL.loop=false;if(nw){MEL.src=src;try{MEL.currentTime=0}catch(e){}try{rkToast('🎶 EVENTO SAINT SEIYA · '+nm,'#ffd84a')}catch(e){}}
@@ -11583,7 +11583,7 @@ window.__dbg={mus:()=>[MCUR,MEL.src.split('/').pop()],stg:()=>STAGE.key,prepMatc
 })();
 </script>
 <style>#updB{position:fixed;left:50%;top:max(8px,env(safe-area-inset-top));transform:translateX(-50%);z-index:99999;padding:10px 22px;border-radius:14px;border:2px solid #fff3c0;background:linear-gradient(#ffd84a,#e08a10);color:#3a1d00;font:900 15px system-ui,sans-serif;box-shadow:0 0 18px #ffb21f;cursor:pointer;animation:updP 1s ease-in-out infinite alternate}@keyframes updP{to{transform:translateX(-50%) scale(1.05)}}</style>
-<script>(function(){const V='cab79d80d54c';if(!/^https?:/.test(location.protocol))return;let nv=null;
+<script>(function(){const V='cd61f31d2ec3';if(!/^https?:/.test(location.protocol))return;let nv=null;
 function show(){if(document.getElementById('updB'))return;try{if(typeof G!=='undefined'&&G.mode==='fight')return}catch(e){}const b=document.createElement('button');b.id='updB';b.textContent='🔄 ATUALIZAÇÃO NOVA! Toque para atualizar';
   b.onclick=()=>{b.textContent='⏳ Atualizando...';try{acSave(1)}catch(e){}setTimeout(()=>location.reload(),900)};document.body.appendChild(b)}
 async function chk(){if(document.hidden)return;if(nv){show();return}try{const r=await fetch('versao.txt?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const t=(await r.text()).trim();if(/^[0-9a-f]{8,40}$/.test(t)&&t!==V){nv=t;show()}}catch(e){}}
