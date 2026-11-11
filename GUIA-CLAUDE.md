@@ -1751,3 +1751,7 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 ## v361 — código PRESENTE DO SHAKA
 - `mc90e4` (texto só com o dono) = 30.000 💎 + 20.000 moedas de ouro (`twAddCoins`) + 1 equipamento ALEATÓRIO do Shaka de Virgem (`rkGiveSp` de uma chave de `RKSP` com `sk`). Código ÚNICO: 1 pessoa no jogo inteiro, não precisa de conta.
 - Campos novos no `TWCUP`: `mo` (moedas de ouro) e `rsk` (item aleatório do Shaka), wrapper `_cp10` (usa também o `gm` do v360). Teste `tcod_v361.js` (C1).
+
+## v362 — devolução automática para todos
+- `gfDev()` (no `rkOpen`): +5.000 💎 e +100.000 moedas de ouro (`twAddCoins`) UMA vez por jogador, sem código e sem precisar de conta. Marca `rk_gf362` vai junto no salvamento da conta (acData salva `rk_`/`tw_`), então não repete em outro aparelho. Janela "DEVOLUÇÃO PARA TODOS!" em `#lvrzM` (espera outra janela fechar). Motivo: upar anel gastou gemas demais.
+- Jogador novo também recebe. Teste `tgf_v362.js`.

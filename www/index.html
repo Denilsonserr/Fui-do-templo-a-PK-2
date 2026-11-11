@@ -11302,6 +11302,12 @@ TWCUP['c4riff']={nm:'DIAMANTES DA SORTE',acc:1,rnd:[3000,6000]};
     if(C.rsk){const K=Object.keys(RKSP).filter(k=>RKSP[k].sk),k=K[(Math.random()*K.length)|0];rkGiveSp(k);nm=RKSP[k].nm}try{acSave(1)}catch(e){}
     E.textContent='🎁 '+C.nm+'! +'+rkFmtN(C.gm||0)+' 💎 · +'+rkFmtN(C.mo||0)+' 🪙 moedas de ouro'+(nm?' · ✦ '+nm+' (na 🎒 MOCHILA)':'');try{twSfx('boom')}catch(e){}}return r}}
 TWCUP['mc90e4']={nm:'PRESENTE DO SHAKA',it:[],gm:30000,mo:20000,rsk:1};
+/* v362: DEVOLUÇÃO para TODOS (gasto de gemas nos anéis): +5.000 💎 e +100.000 moedas de ouro, automático, 1 vez (marca rk_gf362 vai junto na conta) */
+function gfDev(){if(rkG('gf362',0))return;rkS('gf362',1);rkAdd('gem',5000);twAddCoins(100000);try{acSave(1)}catch(e){}
+  const show=()=>{if(document.getElementById('lvrzM'))return setTimeout(show,1500);const M=document.createElement('div');M.id='lvrzM';
+    M.innerHTML=`<div class="twM gold"><h3>🎁 DEVOLUÇÃO PARA TODOS!</h3><p class="twH">Os anéis gastaram gemas demais para upar. Como pedido de desculpas, todo mundo recebeu:</p><p class="twH" style="font-size:1.25em"><b>💎 +5.000 gemas</b> · <b>🪙 +100.000 moedas de ouro</b></p><p class="twH">Já está na sua conta. Bom jogo! — Denilson ADM</p><div class="row"><button class="btn main" id="gfOk">PEGAR</button></div></div>`;
+    document.body.appendChild(M);try{rkSfx('powerUp')}catch(e){}M.querySelector('#gfOk').onclick=()=>{M.remove();try{rkView(RKV)}catch(e){}}};setTimeout(show,1200)}
+{const _o=rkOpen;rkOpen=function(){const r=_o.apply(this,arguments);try{gfDev()}catch(e){}return r}}
 try{window.__pvT={G:()=>G,ko:(a,d)=>ko(a,d),ev:()=>rkEvX(),m:()=>[rkEvG(),rkEvL(),rkEvD(),rkEvA()],lk:()=>{const c={};for(let i=0;i<4000;i++){const r=twEqRoll().k;c[r]=(c[r]||0)+1}const a=[0,0,0,0,0];for(let i=0;i<4000;i++)a[lvCrRoll()]++;return {luck:+lvLuck().toFixed(2),drop:+rkDropF().toFixed(2),extra:lkK(),equip:c,cristal:a}},dl:id=>pvDelta(id),cs:id=>cstStats(id),hy:()=>HY,hyS:()=>hyStart(),fil:()=>HY.fil,rv:v=>rkView(v),hyBoss:()=>{HY.st=3;HY.lv=1;HY.mobs=[];G.p[1]=hyMk('hidra',900,1)},hyI:()=>(HY.items||[]).map(i=>[i.k,Math.round(i.x),Math.round(i.y),i.land,(()=>{const m=bsImg(HYIC[i.k](i));return m.complete+':'+m.naturalWidth})()]),stg:()=>[STAGE.name,STAGE.src0,STAGE.img&&STAGE.img.naturalWidth,!!STAGE.far],lvo:id=>lvOpen(id),bs:lv=>bsSt(lv),dc:f=>dlCheck(f),ds:()=>dsfOpen()}}catch(e){} /* só para os testes */
 
 function twTrofList(){const tc=twLS.g('tw_tc',{}),run={};for(const t of TW.tr)run[t.k]=(run[t.k]||0)+1;
@@ -11491,7 +11497,7 @@ window.__dbg={mus:()=>[MCUR,MEL.src.split('/').pop()],stg:()=>STAGE.key,prepMatc
 })();
 </script>
 <style>#updB{position:fixed;left:50%;top:max(8px,env(safe-area-inset-top));transform:translateX(-50%);z-index:99999;padding:10px 22px;border-radius:14px;border:2px solid #fff3c0;background:linear-gradient(#ffd84a,#e08a10);color:#3a1d00;font:900 15px system-ui,sans-serif;box-shadow:0 0 18px #ffb21f;cursor:pointer;animation:updP 1s ease-in-out infinite alternate}@keyframes updP{to{transform:translateX(-50%) scale(1.05)}}</style>
-<script>(function(){const V='4d267afc0cea';if(!/^https?:/.test(location.protocol))return;let nv=null;
+<script>(function(){const V='cdc5aac8e16c';if(!/^https?:/.test(location.protocol))return;let nv=null;
 function show(){if(document.getElementById('updB'))return;try{if(typeof G!=='undefined'&&G.mode==='fight')return}catch(e){}const b=document.createElement('button');b.id='updB';b.textContent='🔄 ATUALIZAÇÃO NOVA! Toque para atualizar';
   b.onclick=()=>{b.textContent='⏳ Atualizando...';try{acSave(1)}catch(e){}setTimeout(()=>location.reload(),900)};document.body.appendChild(b)}
 async function chk(){if(document.hidden)return;if(nv){show();return}try{const r=await fetch('versao.txt?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const t=(await r.text()).trim();if(/^[0-9a-f]{8,40}$/.test(t)&&t!==V){nv=t;show()}}catch(e){}}
