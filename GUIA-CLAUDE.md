@@ -1502,3 +1502,9 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 
 ## v315
 - **Evento da Caça ao vivo (10/11 21:15–21:30 de Brasília, `CEV`):** anéis da Caça com chance de cor rara 3x (`anDropLobo` usa `caLuck()*(cevOn()?3:1)`); quem termina uma caçada no horário (até 21:33) manda doc `cev:'cev1115'` (nível e dano) e ganha **ANEL AMARELO SS de Dano**; ranking do evento = mais longe, desempate mais dano; **1º: ANEL PRETO 75.000 anos nota S (Dano)**, **2º e 3º: PRETO 75.000 nota A (Dano)**. Prêmios automáticos (`cevClaim`) ao abrir o jogo depois de 21:31 (1 vez: `cev1115_cl`). Faixa na tela da Caça + tela `cevInfo` com o ranking ao vivo. Bots não entram.
+
+## v316
+- **Anéis da alma no CHÃO em volta do personagem** (vídeo de referência do dono — só a ideia; a arte é a dos anéis do jogo): `anDecor()` roda depois de cada `rkView`/`rkModal` e acha toda imagem de personagem EM PÉ (src = `fullSrc(id)` e altura > 28% da tela; ignora cartas/miniaturas). Põe os anéis equipados nele (`anEq`) em volta dos pés: um dentro do outro (1º anel = o de dentro), metade de trás atrás do corpo e metade da frente na frente (`.anFt.b`/`.anFt.f`), pulsando com cor/brilho do anel, onda de energia saindo pelo chão e um anel subindo pelo corpo de vez em quando. Os anéis antigos flutuando (perfil `.pfAnR`, biblioteca `.anR`) foram escondidos.
+- **Perfil público leva os anéis** (`pfMine` → `D.an` com cor/nota/nível/brilho do personagem do pedestal; `pfClean` lê) → no perfil dos outros aparecem os anéis DELES.
+- **Botão "💍 ANÉIS DA ALMA" no seu perfil** abre a Biblioteca na aba Anéis do personagem do pedestal (equipar/trocar).
+- Teste: `tanpe_v316.js`.

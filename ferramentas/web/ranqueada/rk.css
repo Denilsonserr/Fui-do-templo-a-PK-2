@@ -1147,3 +1147,20 @@ body:not(.pcMode) #how .pcKeys{display:none}#how .pcKeys{margin:0 auto .6em;max-
 .rk_ca .cevB{z-index:5;display:flex;flex-direction:column;align-items:center;justify-content:center;border-radius:1em;background:linear-gradient(90deg,#5a1200,#c2410c,#5a1200);border:2px solid #ffd08a;box-shadow:0 0 1em rgba(255,120,40,.7);color:#fff;text-align:center}
 .rk_ca .cevB b{font:900 .95em var(--f-ui);letter-spacing:.04em;text-shadow:0 0 .4em #ff8a3a}.rk_ca .cevB small{font:800 .62em var(--f-ui);color:#ffe2b0}
 .rk_ca .cevB.on{animation:cevP 1s ease-in-out infinite alternate}@keyframes cevP{to{box-shadow:0 0 2em #ff6a1a,0 0 .4em #fff}}
+/* v316: anéis da alma no chão em volta do personagem */
+.rk_pf .pfAnR,.rk_lib .anR{display:none!important}
+img.anOn{position:relative;z-index:2}
+.anFt{position:absolute;width:0;height:0;pointer-events:none}
+.anFt.b{z-index:1}.anFt.f{z-index:3}
+.anFt .ar,.anFt .au,.anFt .aw{position:absolute;left:0;top:0;display:block}
+.anFt .ar img,.anFt .au img{width:100%;height:100%;object-fit:fill;display:block}
+.anFt.b .ar{clip-path:inset(0 0 52% 0)}.anFt.f .ar{clip-path:inset(48% 0 0 0)}
+.anFt .ar img{filter:drop-shadow(0 0 calc(.08em + .06em*var(--k)) #fff) drop-shadow(0 0 calc(.3em*var(--k)) var(--c)) drop-shadow(0 0 calc(.7em*var(--k)) var(--c)) brightness(1.1) saturate(1.35)}
+.anFt .ar{animation:anFp 3.4s ease-in-out infinite}
+@keyframes anFp{0%,100%{transform:scale(1);opacity:.92}50%{transform:scale(1.035);opacity:1}}
+.anFt .aw{margin:0;transform:translate(-50%,-50%);border-radius:50%;border:2px solid var(--c);box-shadow:0 0 .8em var(--c),inset 0 0 .8em var(--c);opacity:0;animation:anFw 3.6s ease-out infinite}
+@keyframes anFw{0%{transform:translate(-50%,-50%) scale(.25);opacity:.8}100%{transform:translate(-50%,-50%) scale(1.15);opacity:0}}
+.anFt .au{opacity:0;animation:anFu 8s ease-in-out infinite}
+.anFt .au img{filter:drop-shadow(0 0 .2em #fff) drop-shadow(0 0 .7em var(--c))}
+@keyframes anFu{0%,8%{opacity:0;transform:translateY(0) scale(.9)}14%{opacity:.85}38%{opacity:.6;transform:translateY(calc(var(--ch)*-.85)) scale(.8)}46%,100%{opacity:0;transform:translateY(calc(var(--ch)*-1)) scale(.75)}}
+.rk_pf .pfAnB{z-index:4;display:flex;align-items:center;justify-content:center;border-radius:1em;background:linear-gradient(90deg,#3a0f6a,#7a22d6);border:2px solid #ffd84a;color:#fff;font:900 .8em var(--f-ui);box-shadow:0 0 1em rgba(255,200,60,.6)}

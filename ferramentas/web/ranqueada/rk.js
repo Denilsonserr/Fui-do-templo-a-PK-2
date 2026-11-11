@@ -2228,3 +2228,32 @@ function cevInfo(){const t=Date.now();rkModal(`<div class="twM gold"><h3>🔥 EV
   <p class="twH">Ranking: quem foi mais longe (desempate: mais dano). Os prêmios caem sozinhos quando você abrir o jogo depois das 21:30.</p><div class="caRkL" id="cevL"><p class="twH">Carregando...</p></div><div class="row"><button class="btn" id="rkMX">FECHAR</button></div></div>`);$('rkMX').onclick=()=>rkModal(null);
   cevRank().then(R=>{const E=$('cevL');if(!E)return;E.innerHTML=R.length?R.slice(0,20).map((e,i)=>`<div class="caRkR ${e.uid===twUid()?'me':''} p${i+1}"><b>${i<3?['🥇','🥈','🥉'][i]:i+1+'º'}</b><span>${twEsc(e.nome||'?')}</span><em>${e.lv>=10?'👑 10 NÍVEIS':'NÍVEL '+e.lv} · ${rkFmtN(e.dmg)}</em></div>`).join(''):'<p class="twH">Ninguém ainda. Seja o primeiro!</p>'}).catch(()=>{const E=$('cevL');if(E)E.innerHTML='<p class="twH err">'+rkNetMsg()+'</p>'})}
 {const _ac2=rkAct;rkAct=function(a,b){if(a==='cevInfo'){rkSfx('whoosh');return cevInfo()}return _ac2.apply(this,arguments)}}
+/* ================= v316: ANÉIS DA ALMA NO CHÃO, EM VOLTA DO PERSONAGEM (estilo pedido pelo dono) =================
+   Em qualquer tela onde o personagem aparece EM PÉ (perfil, equipamentos, nível, biblioteca...): os anéis equipados nele ficam em volta dos pés,
+   um dentro do outro (o primeiro anel é o de dentro), metade atrás e metade na frente do corpo, pulsando com a cor/brilho do anel,
+   com ondas de energia saindo pelo chão e de vez em quando um anel subindo pelo corpo. No perfil dos outros aparecem os anéis DELES (vão no perfil público). */
+const SRC2ID=()=>{const M={};try{for(const id in CH){const s=fullSrc(id);if(s)M[s]=id}}catch(e){}return M};
+function anOfChar(id){try{const L=anL();return anEq(id).map(i=>i&&L.find(z=>z.i===i)).filter(Boolean).map(r=>({c:r.c,g:r.g,l:anLvl(r),k:anGl(r)}))}catch(e){return []}}
+/* perfil público leva os anéis do personagem do pedestal */
+{const _pm=pfMine;pfMine=function(){const D=_pm.apply(this,arguments);try{D.an=anOfChar(CH[D.ped]?D.ped:'goku').slice(0,8)}catch(e){}return D}}
+{const _pc=pfClean;pfClean=function(o,uid,nome){const D=_pc.apply(this,arguments);try{D.an=(Array.isArray(o.an)?o.an:[]).slice(0,8).map(r=>({c:Math.max(0,Math.min(4,r.c|0)),g:Math.max(0,Math.min(7,r.g|0)),l:Math.max(1,Math.min(50,r.l|0)),k:Math.max(0,Math.min(5,r.k|0))}))}catch(e){D.an=[]}return D}}
+function anFtHTML(R,cw){const n=R.length;let b='',f='',up='';R.forEach((r,k)=>{const w=Math.round(cw*(1.25+.5*k)),h=Math.round(w*.3),col=ANC[r.c][1],sty=`width:${w}px;height:${h}px;margin:${-h/2}px 0 0 ${-w/2}px;--c:${col};--k:${Math.max(1,r.k||1)};animation-delay:${(k*.45).toFixed(2)}s`;
+  const im=`<img src="${RQA.anel2[r.c]}" alt="">`;b+=`<i class="ar" style="${sty}">${im}</i>`;f+=`<i class="ar" style="${sty}">${im}</i>`;
+  up+=`<i class="au" style="${sty};animation-delay:${(1.2+k*1.6).toFixed(2)}s;animation-duration:${(3.2+n*1.6).toFixed(2)}s">${im}</i>`});
+  const wv=`<i class="aw" style="width:${Math.round(cw*(1.4+.5*n))}px;height:${Math.round(cw*(1.4+.5*n)*.3)}px;--c:${ANC[R[n-1].c][1]}"></i>`;return [wv+b,f+up]}
+function anDecor(){try{const M=SRC2ID(),H=innerHeight;document.querySelectorAll('#rkWrap img,#rkModal img').forEach(img=>{const id=M[img.getAttribute('src')];if(!id)return;
+  const P=img.parentElement;if(!P||img.closest('.pfMold,.rkCard,.eqI,.anCell,button.lk'))return;
+  if(!img.complete||!img.naturalWidth){img.addEventListener('load',()=>setTimeout(anDecor,30),{once:true});return}
+  const bw=img.offsetWidth,bh=img.offsetHeight;if(bh<H*.28)return;
+  const inPf=!!img.closest('.pfPed'),R=inPf&&PFO?(PFO.an||[]):anOfChar(id);P.querySelectorAll(':scope>.anFt').forEach(x=>x.remove());if(!R.length)return;
+  const ch=Math.min(bh,bw*img.naturalHeight/img.naturalWidth),cw=Math.min(bw,ch*img.naturalWidth/img.naturalHeight)*.62;
+  const cs=getComputedStyle(P);if(cs.position==='static')P.style.position='relative';
+  const x=img.offsetLeft+bw/2,y=img.offsetTop+bh-ch*.035,[hb,hf]=anFtHTML(R,cw);
+  const B=document.createElement('div'),F=document.createElement('div');B.className='anFt b';F.className='anFt f';for(const E of [B,F]){E.style.left=x+'px';E.style.top=y+'px';E.style.setProperty('--ch',Math.round(ch)+'px')}
+  B.innerHTML=hb;F.innerHTML=hf;P.insertBefore(B,img);img.after(F);img.classList.add('anOn')})}catch(e){}}
+{const _v=rkView;rkView=function(){const r=_v.apply(this,arguments);setTimeout(anDecor,80);setTimeout(anDecor,700);return r}}
+{const _m=rkModal;rkModal=function(h){const r=_m.apply(this,arguments);if(h)setTimeout(anDecor,80);return r}}
+addEventListener('resize',()=>setTimeout(anDecor,200));
+/* equipar os anéis pelo PERFIL: botão no seu perfil abre os anéis do personagem do pedestal */
+{const _h=pfH;pfH=function(){let h=_h.apply(this,arguments);if(PFO)return h;try{const ped=CH[pfCur().ped]?pfCur().ped:'goku';h+=`<button class="hs pfAnB" data-a="pfAnEq" data-c="${ped}" style="${rkB2(1390,22,1640,74)}">💍 ANÉIS DA ALMA</button>`}catch(e){}return h}}
+{const _ac3=rkAct;rkAct=function(a,b){if(a==='pfAnEq'){AN.ch=b.dataset.c;rkView('lib');try{rkLibTab('an')}catch(e){}return}return _ac3.apply(this,arguments)}}
