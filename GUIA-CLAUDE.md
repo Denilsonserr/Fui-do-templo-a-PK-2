@@ -1633,3 +1633,6 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 
 ## v340 — faixa de EVENTO ATIVO
 - `evBarTick` (a cada 1 s) mostra `#evBar` no topo (um pouco abaixo das barras de moedas) na tela inicial, em todas as telas do ranqueado (menu, Boss, Torre, Caça, Gacha, PVP, loja...) e na Torre, só quando há evento de verdade em `RKEVX` (a entrada fixa do ADM não conta; o ADM vê "👑 VOCÊ: 6x"). Some durante as lutas. Nome do evento, contagem regressiva com segundos e os bônus passando (letreiro). Teste `tevbar_v340.js`.
+
+## v341 — 2x do ADM é do título (não é evento)
+- Saiu a entrada fixa do ADM no `RKEVX` (não aparece em Eventos, na faixa nem nas telas). `rkAdm2()` (2 se ADM) multiplica direto `rkEvG/rkEvL/rkEvD/rkEvA` e o XP de rank de vitória no Boss (`drp*=2`). Com evento ativo junta (3x → 6x), sem evento fica 2x. Texto do título: "+70% em TUDO · 2x XP, gemas, sorte, drop e anel, sempre".

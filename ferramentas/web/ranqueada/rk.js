@@ -223,7 +223,8 @@ const RKEVX=[[Date.UTC(2026,10,8,23,0),Date.UTC(2026,10,9,1,0),3,'3x XP'],
   /* v293: EVENTO 7 HORAS (15:30 até 22:30 de Brasília, 10/11/2026): 3x DROP, 2x SORTE, 2x XP de rank */
   [Date.UTC(2026,10,10,18,30),Date.UTC(2026,10,11,1,30),2,'3x DROP · 2x SORTE · 2x XP · 2x GEMAS',{luck:2,drop:3,gem:2}]];
 const rkEvX=()=>{const t=Date.now();return RKEVX.find(e=>t>=e[0]&&t<e[1])||null};
-const rkEvG=()=>{const e=rkEvX();return (e&&e[4]&&e[4].gem)||1},rkEvL=()=>{const e=rkEvX();return (e&&e[4]&&e[4].luck)||1},rkEvD=()=>{const e=rkEvX();return (e&&e[4]&&e[4].drop)||1};
+const rkAdm2=()=>{try{return twIsAdm()?2:1}catch(e){return 1}};
+const rkEvG=()=>((e=>(e&&e[4]&&e[4].gem)||1)(rkEvX()))*rkAdm2(),rkEvL=()=>((e=>(e&&e[4]&&e[4].luck)||1)(rkEvX()))*rkAdm2(),rkEvD=()=>((e=>(e&&e[4]&&e[4].drop)||1)(rkEvX()))*rkAdm2();
 const rkEvTxt=()=>'';const rkEvTxt0=()=>{const e=rkEvX();if(!e)return '';const m=Math.max(0,Math.round((e[1]-Date.now())/60000));return `<div class="rkEvX">🔥 EVENTO <b>${e[3]}</b> NA RANQUEADA! · termina em ${m>=60?Math.floor(m/60)+'h'+String(m%60).padStart(2,'0'):m+' min'}</div>`};
 let R_SRV=0;
 function rkAfter(w){G.mode='ranked';$('controls').hidden=true;$('pauseBtn').hidden=true;rainSound(0);G.paused=false;G.diff=RKB.diff0;
@@ -243,7 +244,7 @@ function rkAfter(w){G.mode='ranked';$('controls').hidden=true;$('pauseBtn').hidd
     const me=rkMyRec(lvB),sx=Math.max(1,secs);if(!me||sx<me){xb.push([me?'🏅 SEU RECORDE ('+twFmt(me)+' → '+twFmt(sx)+')':'🏅 1ª vitória neste nível',RKXB.me]);drp+=RKXB.me;const S=rkSt();S[RKBID==='yuta'?'recY':'rec']=Object.assign({},S[RKBID==='yuta'?'recY':'rec'],{[lvB]:sx});rkS('st',S)}
     if(RKSRV){const sv=RKSRV[lvB];if(!sv||sx<sv.tt){xb.push(['🏆 RECORDE DO SERVIDOR!',RKXB.srv]);drp+=RKXB.srv;RKSRV[lvB]={tt:sx,nome:twLS.g('tw_nome','')||'Você'};R_SRV=1}}}
   else{const db=Math.round(RKXL[lvB]*RKXB.dmg*frac);xb.push(['Derrota',drp]);if(db>0){xb.push(['💥 Dano '+Math.round(frac*100)+'%','+'+db]);drp+=db}}
-  {const ev=rkEvX();if(ev&&won){const ex=drp*(ev[2]-1);xb.push(['🔥 EVENTO '+ev[3],'+'+ex]);drp+=ex}}
+  {const ev=rkEvX();if(ev&&won){const ex=drp*(ev[2]-1);xb.push(['🔥 EVENTO '+ev[3],'+'+ex]);drp+=ex}if(won&&rkAdm2()>1)drp*=2}
   if(RKFL!=null){xb.length=0;xb.push([RKYD!=null?'🌸 FARM DO EVENTO · '+YSDIF[RKYD].n+' · sem XP de rank':'🌾 MODO FARM · nível '+(RKFL+1)+' · sem XP de rank','0']);drp=0;R_SRV=0}
   gem=Math.round(gem*rkEvG());rkAdd('red',red);rkAdd('gem',gem);rkAdd('tic',tic);if(eq)twAddItem(eq.E,eq.R);if(poc)twAddPoc(poc);if(pk2)twAddPoc(pk2);if(ring)rkAddRing(ring);if(sp){if(sp==='senzu')rkAddSenzu(1);else rkGiveSp(sp)}
   const rp0=rkG('rp',0),r0=rkRank(rp0);let rp1=Math.max(0,rp0+drp);rkS('rp',rp1);const r1=rkRank(rp1);for(let i=0;i<=r1;i++)twGiveTit('rk'+i);
@@ -1101,7 +1102,7 @@ const TBUF={ini:{dano:2},gue:{dano:3,vel:2},con:{dano:5,def:3},sem:{dano:6,crit:
   rk0:{def:1},rk1:{def:2},rk2:{dano:3},rk3:{dano:4,crit:2},rk4:{dano:5,crit:3},rk5:{dano:6,crit:4,vel:3},rk6:{dano:8,crit:5,def:5},rk7:{dano:10,crit:6,def:6,st:5},rk8:{dano:12,crit:7,def:7,st:6},rk9:{dano:14,crit:8,def:8,st:8},rk10:{dano:16,crit:10,def:10,st:10}};
 const tbOf=k=>TBUF[k]||(TWTIT[k]&&TWTIT[k].yt?{crit:5}:{});
 const tbTxt=k=>{const B=tbOf(k),o=[];if(B.dano)o.push('+'+B.dano+'% dano');if(B.def)o.push('+'+B.def+'% defesa');if(B.vel)o.push('+'+B.vel+'% velocidade');if(B.crit)o.push('+'+B.crit+'% crítico');if(B.st)o.push('+'+B.st+' sorte');return o.join(' · ')};
-for(const k in TWTIT){const t=tbTxt(k);if(k==='adm')TWTIT[k].d='Administrador do jogo · ✦ +70% em TUDO (dano, defesa, velocidade, crítico, energia, sorte e drops) · 🔥 2x de evento em tudo, sempre';else if(t)TWTIT[k].d=(TWTIT[k].d||'')+' · ✦ Bônus em uso: '+t}
+for(const k in TWTIT){const t=tbTxt(k);if(k==='adm')TWTIT[k].d='Administrador do jogo · ✦ +70% em TUDO (dano, defesa, velocidade, crítico, energia, sorte e drops) · 🔥 2x XP, gemas, sorte, drop e anel, sempre';else if(t)TWTIT[k].d=(TWTIT[k].d||'')+' · ✦ Bônus em uso: '+t}
 function tbApply(p){if(!p||p.cpu||p.tbOn)return;p.tbOn=1;const B=tbOf(twTitOn());
   if(B.dano)p.tdm=(p.tdm||1)*(1+B.dano/100);if(B.vel)p.tsp=(p.tsp||1)*(1+B.vel/100);if(B.def)p.tdf=(p.tdf||1)/(1+B.def/100);if(B.crit)p.tcr=(p.tcr||0)+B.crit;
   if(twIsAdm()){p.tdm=(p.tdm||1)*1.7;p.tsp=(p.tsp||1)*1.7;p.tdf=(p.tdf||1)/1.7;p.tcr=(p.tcr||0)+70;p.tki=(p.tki||1)*1.7;p.tsb=(p.tsb||1)*1.7}}
@@ -2810,29 +2811,22 @@ function pvCfgM(){if(!twIsAdm())return mn2Cfg();const on=PV.on!==false;rkModal(`
 
 /* ================= v337: EVENTO DE DESCULPAS (11/11/2026, 13:00 até 20:00 de Brasília): 3x XP, GEMAS, SORTE, DROP e 3x ANEL DA ALMA na Caça ================= */
 RKEVX.push([Date.UTC(2026,10,11,16,0),Date.UTC(2026,10,11,23,0),3,'DESCULPAS · 3x XP · 3x GEMAS · 3x SORTE · 3x DROP · 3x ANEL NA CAÇA',{gem:3,luck:3,drop:3,anel:3}]);
-const rkEvA=()=>{const e=rkEvX();return (e&&e[4]&&e[4].anel)||1};
+const rkEvA=()=>{const e=rkEvX();return ((e&&e[4]&&e[4].anel)||1)*rkAdm2()};
 {const _dl=anDropLobo;anDropLobo=function(L){const m=rkEvA();if(m<=1)return _dl.apply(this,arguments);for(let i=0;i<m;i++){const r=_dl.apply(this,arguments);if(r)return r}return null}}
 /* código com vários prêmios: jn pelo código normal + pk:{gem,tic} entregue depois que o servidor aceitou */
 {const _cp7=twCupom;twCupom=async function(code,E){const C=TWCUP[twHash(String(code).toUpperCase())];const r=await _cp7.apply(this,arguments);
   if(C&&C.pk&&r&&E&&/ok/.test(E.className||'')){if(C.pk.gem)rkAdd('gem',C.pk.gem);if(C.pk.tic)rkAdd('tic',C.pk.tic);try{acSave(1)}catch(e){}E.textContent='🎁 '+C.nm+'! +'+rkFmtN(C.pk.gem||0)+' 💎 · +'+(C.jn||0)+' 💠 giros de passiva · +'+(C.pk.tic||0)+' 🎫 tickets'}return r}}
 TWCUP['973bb8']={nm:'PEDIDO DE DESCULPAS',acc:1,jn:40,pk:{gem:5000,tic:20}};
 
-/* v339: ADM tem SEMPRE 2x de evento em tudo (XP, gemas, sorte, drop, anel); se tiver evento ativo, dobra o evento. Entrada fixa no começo do RKEVX que só vale para o ADM. */
-{const E=[],real=()=>{const t=Date.now();for(let i=1;i<RKEVX.length;i++){const e=RKEVX[i];if(t>=e[0]&&t<e[1])return e}return null};
-  Object.defineProperty(E,0,{get:()=>{try{return twIsAdm()?0:Infinity}catch(e){return Infinity}}});
-  Object.defineProperty(E,1,{get:()=>{const r=real();return r?r[1]:Date.now()+864e5}});
-  Object.defineProperty(E,2,{get:()=>{const r=real();return 2*(r?r[2]:1)}});
-  Object.defineProperty(E,3,{get:()=>{const r=real();return 'ADM 2x'+(r?' · '+r[3]:' · XP · GEMAS · SORTE · DROP · ANEL')}});
-  Object.defineProperty(E,4,{get:()=>{const r=real(),o=(r&&r[4])||{};return {gem:2*(o.gem||1),luck:2*(o.luck||1),drop:2*(o.drop||1),anel:2*(o.anel||1)}}});
-  RKEVX.unshift(E)}
-try{window.__pvT={G:()=>G,ko:(a,d)=>ko(a,d),ev:()=>rkEvX(),dl:id=>pvDelta(id)}}catch(e){} /* só para os testes */
+/* v341: o 2x do ADM é do TÍTULO (não é evento e não aparece em lugar nenhum): rkAdm2() multiplica gemas, sorte, drop, anel e XP de rank */
+try{window.__pvT={G:()=>G,ko:(a,d)=>ko(a,d),ev:()=>rkEvX(),m:()=>[rkEvG(),rkEvL(),rkEvD(),rkEvA()],dl:id=>pvDelta(id)}}catch(e){} /* só para os testes */
 /* v340: FAIXA DE EVENTO ATIVO em todas as telas de modo (menu, Boss, Torre, Caça, Gacha, PVP, Loja...) com o tempo que falta */
-function evBarTick(){let B=document.getElementById('evBar');const t=Date.now();let e=null;for(let i=1;i<RKEVX.length;i++){const x=RKEVX[i];if(t>=x[0]&&t<x[1]){e=x;break}}
+function evBarTick(){let B=document.getElementById('evBar');const t=Date.now();let e=null;e=rkEvX();
   let cur='';try{cur=showScreen.cur}catch(x){}const show=!!e&&(cur==='ranked'||cur==='tower'||cur==='title')&&!(typeof PV!=='undefined'&&PV.fight);
   if(!show){if(B)B.hidden=true;return}
   if(!B){B=document.createElement('div');B.id='evBar';B.innerHTML='<i class="f">🔥</i><div><b></b><u></u><span><em></em></span></div><i class="f">🔥</i>';document.body.appendChild(B)}
   const ms=e[1]-t,h=Math.floor(ms/36e5),m=Math.floor(ms%36e5/6e4),s=Math.floor(ms%6e4/1e3),tm=(h?h+'h ':'')+String(m).padStart(2,'0')+'min '+String(s).padStart(2,'0')+'s';
-  let adm='';try{if(twIsAdm())adm=' · 👑 VOCÊ: '+(2*e[2])+'x'}catch(x){}
+  const adm='';
   const nm=String(e[3]).split('·').map(x=>x.trim()),ttl=nm[0],rest=nm.slice(1).join(' · ');
   B.querySelector('b').textContent='🎉 EVENTO ATIVO: '+ttl+adm;B.querySelector('u').textContent='⏳ TERMINA EM '+tm;const em=B.querySelector('em'),rt=rest||'APROVEITE!';if(em.textContent!==rt)em.textContent=rt;B.hidden=false}
 setInterval(evBarTick,1000);setTimeout(evBarTick,500);
