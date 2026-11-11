@@ -1231,3 +1231,187 @@ img.anOn{position:relative;z-index:2}
 .rk_menu .dot{position:absolute;top:6%;right:8%;width:.8em;height:.8em;border-radius:50%;background:#ff2a3a;box-shadow:0 0 .5em #ff2a3a,0 0 0 .12em #fff;z-index:3}
 .mn2CB{display:flex;flex-direction:column;gap:.6em;margin:.8em 0}
 @media (prefers-reduced-motion:reduce){.rk_menu .sw,.rk_menu .ed,.rk_menu .gl,.rk_menu .mn2Q{animation:none}}
+/* ================= v328: BIBLIOTECA NOVA ================= */
+.rk_lib.lb2{background-size:100% 100%!important}
+.rk_lib.lb2>.rkMusB,.rk_lib.lb2>.rkCodB,.rk_lib.lb2>.rkAcB{display:none!important}
+.lb2 .lbCtr{position:absolute;inset:0;pointer-events:none;z-index:1}
+.lb2 .lbCtr>*{pointer-events:auto}
+.lb2 .lbCtr>.lbPd,.lb2 .lbCtr>.lbBig,.lb2 .lbCtr>.lbCatN,.lb2 .lbCtr>.lbHint,.lb2 .lbCtr>.lbV{pointer-events:none}
+.lb2 .hs{z-index:2}
+/* abas e botões: brilho dourado passando */
+.lb2 .lbTab,.lb2 .lbBt{overflow:hidden;clip-path:polygon(4% 50%,10% 6%,92% 6%,98% 50%,92% 94%,10% 94%)}
+.lb2 .lbTab .sw,.lb2 .lbBt .sw{position:absolute;top:0;bottom:0;width:30%;left:0;transform:translateX(-140%) skewX(-22deg);background:linear-gradient(90deg,transparent,rgba(255,226,140,.35) 45%,rgba(255,250,225,.6) 50%,rgba(255,226,140,.35) 55%,transparent);animation:lbSw 4.2s ease-in-out infinite;will-change:transform}
+.lb2 .lbTab:not(.on) .sw{display:none}
+@keyframes lbSw{0%,55%{transform:translateX(-140%) skewX(-22deg)}90%,100%{transform:translateX(380%) skewX(-22deg)}}
+.lb2 .lbTab.on{box-shadow:inset 0 0 1.4em rgba(255,200,80,.35)}
+.lb2 .hs:active{filter:brightness(1.3)}
+/* personagem flutuando */
+.lb2 .lbPd{position:absolute;display:flex;align-items:flex-end;justify-content:center}
+.lb2 .lbPd>img{max-width:100%;max-height:100%;object-fit:contain;filter:drop-shadow(0 0 .9em rgba(160,110,255,.55));animation:lbFl 3.6s ease-in-out infinite;will-change:transform}
+.lb2 .lbPd.no>img{filter:brightness(.25) saturate(0) drop-shadow(0 0 .6em rgba(160,110,255,.4))}
+@keyframes lbFl{0%,100%{transform:translateY(0)}50%{transform:translateY(-3%)}}
+.lb2 .lbNm2{position:absolute;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;line-height:1.05;background:linear-gradient(90deg,transparent,rgba(12,4,26,.78) 18%,rgba(12,4,26,.78) 82%,transparent);border-radius:.6em}
+.lb2 .lbNm2 b{font:900 1.7em "Cinzel","Saira Condensed",serif;color:#fff;text-shadow:0 0 .35em var(--c,#c9a0ff),0 .06em 0 #000;letter-spacing:.03em;white-space:nowrap}
+.lb2 .lbNm2 small{font:800 .95em "Saira Condensed",sans-serif;color:#ffe08a;letter-spacing:.06em;white-space:nowrap;max-width:100%;overflow:hidden;text-overflow:ellipsis}
+.lb2 .lbNm2.an{border:0;cursor:pointer}
+/* quadradinhos de equipamento */
+.lb2 .lbSl{display:flex;align-items:center;justify-content:center;border-radius:22%}
+.lb2 .lbSl img{width:74%;height:74%;object-fit:contain;filter:drop-shadow(0 0 .35em var(--c))}
+.lb2 .lbSl.on{background:radial-gradient(circle,color-mix(in srgb,var(--c) 35%,#100620) 0,#0d0518 70%);box-shadow:0 0 .9em var(--c),inset 0 0 .6em var(--c)}
+.lb2 .lbSl b{position:absolute;right:6%;top:4%;font:900 .9em "Saira Condensed",sans-serif;color:#fff;text-shadow:0 0 .3em #000,0 0 .3em #000}
+.lb2 .lbSn{position:absolute;left:0;right:0;bottom:-1.25em;text-align:center;font:800 .78em "Saira Condensed",sans-serif;color:#e9d8ff;text-shadow:0 0 .3em #000,0 0 .3em #000;white-space:nowrap;letter-spacing:.04em}
+.lb2 .lbSl.lk{background:rgba(5,2,12,.62);border-radius:22%}
+.lb2 .lbSl.lk .lbSn{bottom:auto;top:50%;transform:translateY(-50%);color:#b9a6d8}
+/* atributos */
+.lb2 .lbV{position:absolute;display:flex;align-items:center;justify-content:flex-end;font:900 1.35em "Saira Condensed",sans-serif;color:#7dff9a;text-shadow:0 0 .35em rgba(60,255,120,.55),0 .06em 0 #000;white-space:nowrap}
+/* grade */
+.lb2 .lbCl{position:absolute;border:0;background:transparent;padding:0;display:flex;align-items:center;justify-content:center;border-radius:12%;cursor:pointer}
+.lb2 .lbCl img{width:72%;height:62%;object-fit:contain;margin-bottom:14%;filter:drop-shadow(0 0 .35em var(--c))}
+.lb2 .lbCl>i{font-style:normal;font-size:2.6em;margin-bottom:14%}
+.lb2 .lbCl>b{position:absolute;left:4%;right:4%;bottom:5%;font:800 .72em "Saira Condensed",sans-serif;color:#fff;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-shadow:0 0 .3em #000}
+.lb2 .lbCl>em,.lb2 .lbCl .anLv{position:absolute;left:8%;top:5%;font:900 .72em "Saira Condensed",sans-serif;font-style:normal;color:#ffe08a;text-shadow:0 0 .3em #000}
+.lb2 .lbCl .lbN{position:absolute;right:8%;top:5%;font:900 .8em "Saira Condensed",sans-serif;font-style:normal;color:#fff;text-shadow:0 0 .3em #000}
+.lb2 .lbCl.on{box-shadow:0 0 0 .18em #fff,0 0 1.1em var(--c),inset 0 0 1em var(--c)}
+.lb2 .lbCl.no img{filter:grayscale(1) brightness(.45)}
+.lb2 .lbCl .lk{position:absolute;right:8%;top:4%;font-size:.95em}
+.lb2 .anCell.lbCl>span{position:absolute;left:3%;right:3%;bottom:20%;font:800 .66em "Saira Condensed",sans-serif;color:#d8ffe0;text-align:center;white-space:nowrap;overflow:hidden;text-shadow:0 0 .3em #000}
+.lb2 .anCell.lbCl>b.g{left:auto;right:8%;top:4%;bottom:auto;width:auto;font-size:.95em}
+.lb2 .anCell.lbCl>em{left:0;right:0;top:auto;bottom:4%;text-align:center;color:#9fffb4;font-size:.62em}
+.lb2 .lbPg{position:absolute;display:flex;align-items:center;justify-content:center;font:900 .8em "Saira Condensed",sans-serif;color:#ffe08a}
+.lb2 .lbPgB{font:900 1.3em sans-serif;color:#ffe08a;background:rgba(20,6,40,.7);border-radius:.4em;box-shadow:0 0 .6em rgba(255,200,80,.45)}
+.lb2 .lbVz{position:absolute;display:flex;align-items:center;justify-content:center;text-align:center;font:800 1.15em "Saira Condensed",sans-serif;color:#e9d8ff;line-height:1.3}
+.lb2 .lbSr{background:transparent!important;border:0!important;box-shadow:none!important;color:#fff;font:700 1.25em "Saira Condensed",sans-serif;padding-left:3.2em}
+/* informações */
+.lb2 .lbInf{position:absolute;display:flex;flex-direction:column;justify-content:center;gap:.15em;padding:.3em .8em;background:linear-gradient(180deg,rgba(18,6,36,.92),rgba(8,3,18,.92));border:.12em solid color-mix(in srgb,var(--c) 70%,#fff 0%);border-radius:.6em;box-shadow:0 0 .8em color-mix(in srgb,var(--c) 55%,transparent);text-align:center;overflow:hidden}
+.lb2 .lbInf b{font:900 1.05em "Cinzel","Saira Condensed",serif;color:#fff;text-shadow:0 0 .35em var(--c);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.lb2 .lbInf span{font:700 .78em "Saira Condensed",sans-serif;color:#dccff5;line-height:1.15;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.lb2 .lbInf.cl{flex-direction:column;text-align:left;align-items:flex-start}
+.lb2 .lbHint{position:absolute;display:flex;align-items:center;justify-content:center;text-align:center;font:800 .9em "Saira Condensed",sans-serif;color:#d9c6ff;text-shadow:0 0 .3em #000}
+.lb2 .lbBig{position:absolute;display:flex;align-items:center;justify-content:center}
+.lb2 .lbBig img{max-width:90%;max-height:90%;object-fit:contain;filter:drop-shadow(0 0 1em var(--c));animation:lbFl 3.2s ease-in-out infinite}
+.lb2 .lbBig em{font-style:normal;font-size:9em;animation:lbFl 3.2s ease-in-out infinite}
+.lb2 .lbBig .glw{position:absolute;inset:8%;border-radius:50%;background:radial-gradient(circle,color-mix(in srgb,var(--c) 45%,transparent),transparent 68%);animation:lbPu 3s ease-in-out infinite}
+.lb2 .lbBig.no img{filter:grayscale(1) brightness(.4)}
+@keyframes lbPu{0%,100%{opacity:.5;transform:scale(.92)}50%{opacity:1;transform:scale(1.04)}}
+.lb2 .lbCatN{position:absolute;display:flex;align-items:center;justify-content:center;font:900 1.05em "Cinzel","Saira Condensed",serif;color:#ffe08a;text-shadow:0 0 .4em rgba(255,190,60,.6),0 .06em 0 #000;letter-spacing:.05em;white-space:nowrap}
+.lb2 .lbCatN.cl{font-size:.82em}
+.lb2 .lbCt{border-radius:22%}
+.lb2 .lbCt.on{box-shadow:0 0 0 .16em #fff,0 0 1.2em rgba(255,210,90,.9),inset 0 0 1em rgba(255,210,90,.55)}
+/* anéis */
+.lb2 .lbAs{display:flex;align-items:center;justify-content:center;flex-direction:column;border-radius:26%}
+.lb2 .lbAs img{width:78%;height:60%;object-fit:contain;filter:drop-shadow(0 0 .4em var(--c));animation:lbRs 6s linear infinite}
+@keyframes lbRs{0%{transform:rotate(0)}100%{transform:rotate(360deg)}}
+.lb2 .lbAs.on{background:radial-gradient(circle,color-mix(in srgb,var(--c) 28%,#0c0418) 0,#0c0418 72%);box-shadow:0 0 .8em var(--c)}
+.lb2 .lbAs.sel{box-shadow:0 0 0 .18em #fff,0 0 1.2em var(--c)}
+.lb2 .lbAs b{position:absolute;right:10%;top:6%;font:900 .9em "Saira Condensed",sans-serif;color:#ffe08a;text-shadow:0 0 .3em #000}
+.lb2 .lbAs.lk{background:rgba(5,2,12,.72)}
+.lb2 .lbAs.lk i{font-style:normal;font-size:1.3em}
+.lb2 .lbAs.lk small{font:900 .7em "Saira Condensed",sans-serif;color:#cdb8ff}
+.lb2 .lbInf.an{flex-direction:row;align-items:center;justify-content:center;gap:.8em}
+@media (prefers-reduced-motion:reduce){.lb2 *{animation:none!important}}
+.lb2 .lbCtr .hs,.lb2 #rkGrid .hs{position:absolute}
+.lb2 .lbPd{z-index:0}.lb2 .lbNm2{z-index:4}.lb2 .lbInf{z-index:4}
+.lb2 .ag{transform:scale(.6)}
+.lb2 .lbSl{overflow:visible!important}
+.lb2 .lbSl.lk .lbSn{font-size:.7em;white-space:normal;line-height:1.1}
+.lb2 .lbAs img{animation:lbAsG 3.2s ease-in-out infinite}
+@keyframes lbAsG{0%,100%{filter:drop-shadow(0 0 .3em var(--c)) brightness(1)}50%{filter:drop-shadow(0 0 .7em var(--c)) brightness(1.25)}}
+.lb2 .lbNm2.an b{font-size:1.3em}
+.lb2 .lbNm2.top{background:linear-gradient(90deg,transparent,rgba(12,4,26,.7) 18%,rgba(12,4,26,.7) 82%,transparent)}
+.lb2 .lbCl>b{white-space:normal;font-size:.62em;line-height:1.05;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;bottom:3%}
+.lb2 .lbCl>em,.lb2 .lbCl .anLv{font-size:.6em}
+/* ================= v328: telas com arte (conquistas, recompensas, conta) ================= */
+.arP{position:relative;width:min(96vw,calc(92vh*1.7768));aspect-ratio:1672/941;background:center/100% 100% no-repeat;font-size:calc(min(96vw,calc(92vh*1.7768))/100);color:#fff;animation:twIn .3s both;flex:none}
+.arP>*{position:absolute}
+.arX{border:0;border-radius:50%;background:radial-gradient(circle,#3a1466,#12051f);color:#ffe08a;font:900 3em sans-serif;box-shadow:0 0 0 .08em #d9a93a,0 0 1em rgba(255,200,80,.6);cursor:pointer;line-height:1}
+.arCnt{display:flex;align-items:center;justify-content:center;font:900 1.9em "Cinzel","Saira Condensed",serif;color:#ffe08a;text-shadow:0 0 .4em rgba(255,190,60,.7),0 .06em 0 #000;white-space:nowrap}
+.arCnt b{font-family:inherit}
+.arBtn{border:0;cursor:pointer;border-radius:.5em;font:900 1.7em "Saira Condensed",sans-serif;letter-spacing:.06em;padding:.25em 1em;color:#2a1600;background:linear-gradient(#ffe38a,#e8a628 55%,#b8700e);box-shadow:0 0 .8em rgba(255,190,60,.65),inset 0 .1em 0 rgba(255,255,255,.6);text-shadow:0 .05em 0 rgba(255,255,255,.4)}
+.arBtn:active{filter:brightness(1.2)}
+.arBtn.big{font-size:2.6em;padding:.3em 2.2em}
+.arList{overflow-y:auto;overscroll-behavior:contain;display:flex;flex-direction:column;gap:.8em;padding:.6em 1.2em;-webkit-overflow-scrolling:touch;scrollbar-width:thin;scrollbar-color:#d9a93a transparent}
+.arRow{position:relative!important;flex:none;display:flex;align-items:center;gap:1.4em;min-height:8.4em;padding:.6em 1.6em;border-radius:1em;background:linear-gradient(90deg,rgba(14,26,70,.88),rgba(8,14,40,.82));border:.14em solid rgba(110,160,255,.45);box-shadow:inset 0 0 1.4em rgba(60,120,255,.18)}
+.arRow.ok{border-color:#ffd25a;box-shadow:0 0 1.2em rgba(255,200,80,.45),inset 0 0 1.4em rgba(255,200,80,.18)}
+.arRow.got{opacity:.62}
+.arRow.lk{filter:saturate(.6)}
+.arIc{font-style:normal;font-size:3.8em;flex:none;width:1.3em;text-align:center}
+.arTx{display:flex;flex-direction:column;gap:.15em;flex:1;min-width:0}
+.arTx b{font:900 2.5em "Cinzel","Saira Condensed",serif;color:#ffe08a;text-shadow:0 0 .35em rgba(255,190,60,.55),0 .06em 0 #000;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;letter-spacing:.02em}
+.arTx span{font:700 1.75em "Saira Condensed",sans-serif;color:#cfe0ff}
+.arRw{flex:none;font:900 2em "Saira Condensed",sans-serif;font-style:normal;color:#fff;display:flex;align-items:center;gap:.25em}
+.arRw img{width:1.3em;height:1.3em;object-fit:contain}
+.arSt{flex:none;font:900 1.6em "Saira Condensed",sans-serif;color:#9fb4e8;letter-spacing:.05em;min-width:7em;text-align:center}
+.arRow.got .arSt{color:#7dff9a}
+.arRow.rw .rkEmb{flex:none;width:7em;height:7em}
+.arRow.rw .arTx{flex:0 0 16em}
+.arRwT{flex:1;font:700 1.65em "Saira Condensed",sans-serif;color:#e7ecff;line-height:1.25}
+.arRwT small{font-size:.8em;color:#9fb4e8}
+/* conta */
+#acM .arAcc{font-size:1em}
+.arAc .acTb{border:0;background:transparent;border-radius:.8em;cursor:pointer;padding:0}
+.arAc .acTb.off{background:rgba(5,2,12,.42)}
+.arAc .acTb.r.on{box-shadow:0 0 1.4em rgba(255,200,80,.85),inset 0 0 1.2em rgba(255,200,80,.5)}
+.arAc .acTb span{display:flex;align-items:center;justify-content:center;width:100%;height:100%;border-radius:.8em;font:900 2.3em "Cinzel","Saira Condensed",serif;color:#ffe9b0;background:linear-gradient(#3a1a08,#1d0b03);box-shadow:inset 0 0 0 .08em #e8a628,0 0 1em rgba(255,190,60,.6);text-shadow:0 0 .3em rgba(255,190,60,.8)}
+.arAc .acTabs{position:absolute;inset:0;pointer-events:none}
+.arAc .acTabs>button{position:absolute;pointer-events:auto}
+.arAc .acMid{display:flex;flex-direction:column;justify-content:center;gap:.4em;text-align:left}
+.arAc .acMid b{font:900 2.7em "Cinzel","Saira Condensed",serif;color:#fff;text-shadow:0 0 .35em #b45cff}
+.arAc .acMid b i,.arAc .acMid span i{font-style:normal;color:#ffe08a}
+.arAc .acMid span{font:700 1.8em "Saira Condensed",sans-serif;color:#dccff5}
+.arAc .acMid span.err{color:#ff9a9a}
+.arAc .acMid.cv{background:linear-gradient(180deg,#140726,#0c0418);border-radius:1.2em;padding:0 2em;text-align:center;align-items:center}
+.arAc .acIn2{display:flex;gap:1.2em;width:100%}
+.arAc .acIn2 input{flex:1;font:800 2.2em "Saira Condensed",sans-serif!important;padding:.35em .6em!important;margin:0!important;border-radius:.5em!important;background:#090312!important;border:.08em solid #b45cff!important;color:#fff!important;text-align:center}
+.arAc .acSt{display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1.05}
+.arAc .acSt b{font:900 2.2em "Saira Condensed",sans-serif;color:#fff;text-shadow:0 0 .3em #000;white-space:nowrap}
+.arAc .acSt small{font:800 1.4em "Saira Condensed",sans-serif;color:#e7d6ff}
+.arAc .acHb{border:0;background:transparent;border-radius:1em;cursor:pointer}
+.arAc .acHb:active{background:rgba(255,220,120,.18)}
+.arAc .acHb:disabled{opacity:.5}
+.arAc .acCov{display:flex;align-items:center;justify-content:center;background:radial-gradient(ellipse at 50% 50%,#1a0a2c 30%,#0c0418 75%);border-radius:1.4em}
+.arAc .acMsg{display:flex;align-items:center;justify-content:center;font:800 1.8em "Saira Condensed",sans-serif;margin:0}
+/* ranking */
+.rk_rkg{background-size:100% 100%!important}
+.rk_rkg>.rkMusB,.rk_rkg>.rkCodB,.rk_rkg>.rkAcB{display:none!important}
+.rk_rkg .hs{position:absolute;z-index:2}
+.rk_rkg .rgTit{position:absolute;display:flex;align-items:center;justify-content:center;font:900 3.4em "Cinzel","Saira Condensed",serif;letter-spacing:.12em;color:#ffe08a;text-shadow:0 0 .35em rgba(255,190,60,.8),0 .05em 0 #3a1800}
+.rk_rkg .rgTb{display:flex;align-items:center;justify-content:flex-end;padding-right:9%;clip-path:polygon(7% 50%,13% 2%,87% 2%,93% 50%,87% 98%,13% 98%)}
+.rk_rkg .rgTb span{font:900 1.15em "Saira Condensed",sans-serif;letter-spacing:.05em;color:#d9c6ff;text-shadow:0 0 .3em #000;width:46%;text-align:left;line-height:1}
+.rk_rkg .rgTb.on{background:linear-gradient(180deg,rgba(255,200,80,.28),rgba(255,200,80,.08));box-shadow:inset 0 0 1.3em rgba(255,210,90,.6)}
+.rk_rkg .rgTb.on span{color:#ffe08a}
+.rk_rkg .rgHd{position:absolute;display:flex;align-items:center;justify-content:space-between;padding:0 1.4em;font:800 1.15em "Saira Condensed",sans-serif;color:#d9c6ff;letter-spacing:.05em}
+.rk_rkg .rgHd b{color:#ffe08a}
+.rk_rkg .rgRw{position:absolute;display:flex;align-items:center;gap:1.4%;padding:0 2.2% 0 1.6%;cursor:pointer;border-radius:1em}
+.rk_rkg .rgRw:active{filter:brightness(1.25)}
+.rk_rkg .rgRw.pg.p0,.rk_rkg .rgRw.pg.p1,.rk_rkg .rgRw.pg.p2{background:linear-gradient(90deg,rgba(28,10,60,.92),rgba(38,14,80,.86));box-shadow:inset 0 0 0 .14em #9a5cff,0 0 .8em rgba(150,90,255,.5)}
+.rk_rkg .rgRw.me{box-shadow:inset 0 0 0 .16em #7dff9a,0 0 1em rgba(120,255,150,.55)}
+.rk_rkg .rgRw .ps{flex:0 0 5.2%;font:900 2.3em "Cinzel","Saira Condensed",serif;color:#fff;text-align:center;text-shadow:0 0 .3em #000}
+.rk_rkg .rgRw img{flex:none;width:4.2em;height:4.2em;object-fit:contain}
+.rk_rkg .rgRw .nm{flex:1;display:flex;flex-direction:column;justify-content:center;gap:.1em;min-width:0}
+.rk_rkg .rgRw .nm>b{font:900 1.8em "Cinzel","Saira Condensed",serif;color:#fff;text-shadow:0 0 .3em #000,0 0 .5em rgba(255,255,255,.25);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:38%}
+.rk_rkg .rgRw .nm small{font:900 1em "Saira Condensed",sans-serif;letter-spacing:.06em;text-shadow:0 0 .3em #000}
+.rk_rkg .rgRw .nm .twTt,.rk_rkg .rgRw .nm>span{font-size:.8em;max-width:38%}
+.rk_rkg .rgRw .vl{flex:none;font:900 1.9em "Saira Condensed",sans-serif;color:#ffe08a;text-shadow:0 0 .4em rgba(255,190,60,.6),0 .06em 0 #000;white-space:nowrap}
+.rk_rkg .rgMsg{position:absolute;display:flex;align-items:center;justify-content:center;font:800 1.6em "Saira Condensed",sans-serif;color:#d9c6ff;text-align:center}
+.rk_rkg .rgPg{font:900 1.8em sans-serif;color:#ffe08a;border-radius:.6em}
+.rk_rkg .rgPg:disabled{opacity:.3}
+.rk_rkg .rgPn{position:absolute;display:flex;align-items:center;justify-content:center;font:900 1.7em "Cinzel","Saira Condensed",serif;color:#ffe08a}
+.rk_rkg #rgBody{position:absolute;inset:0;pointer-events:none}
+.rk_rkg #rgBody>*{pointer-events:auto}
+.rk_rkg .rgTb{justify-content:flex-start;padding:0 0 0 43%}
+.rk_rkg .rgTb span{width:auto;white-space:nowrap;font-size:1em}
+.arCnt{display:block;text-align:center;white-space:nowrap}
+.arBtn{white-space:nowrap}
+.arAch .arBtn{font-size:1.45em}
+.arRow{min-height:7.4em}
+.arAc .acSt.gm{align-items:flex-start}.arAc .acSt.gm b{font-size:1.7em}
+.rk_rkg .rgTb{background:none!important;box-shadow:none!important;clip-path:none;overflow:visible;padding:0}
+.rk_rkg .rgTb span{position:absolute;left:44%;right:6%;top:50%;transform:translateY(-50%);font:900 1.05em "Saira Condensed",sans-serif;color:#cdb8ff;white-space:normal;line-height:1;text-align:left}
+.rk_rkg .rgTb.on span{color:#ffe08a;text-shadow:0 0 .5em rgba(255,200,80,.9),0 .06em 0 #000}
+.rk_rkg .rgTb.on::after{content:'';position:absolute;left:14%;right:14%;bottom:-.25em;height:.22em;border-radius:1em;background:linear-gradient(90deg,transparent,#ffd25a,transparent);box-shadow:0 0 .6em #ffd25a}
+.rk_rkg .rgRw{padding-right:4%}
+.rk_rkg .rgTb[data-t="rp"] span{left:54%}
+.rk_rkg .rgRw{box-sizing:border-box;overflow:hidden}
+.rk_rkg .rgRw .vl{margin-right:1.2em}
+.rk_rkg .rgHd{box-sizing:border-box;overflow:hidden}
+.arAc .acMid.ok{gap:.15em}.arAc .acMid.ok b{font-size:2.3em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.arAc .acMid.ok span{font-size:1.55em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}

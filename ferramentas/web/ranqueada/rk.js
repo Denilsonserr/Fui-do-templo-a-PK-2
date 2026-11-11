@@ -2345,3 +2345,182 @@ function mn2Cfg(){rkModal(`<div class="twM mn2CM"><h3>⚙️ OPÇÕES</h3><div c
 {const _a=rkAct;rkAct=function(a,b){if(a==='mn2Cfg'){rkSfx('whoosh');return mn2Cfg()}return _a.apply(this,arguments)}}
 {const _v=rkView;rkView=function(v){const r=_v.apply(this,arguments);if(v==='menu'){const A=document.querySelector('#rkWrap .rk_menu');if(A){A.style.backgroundImage=`url(${MN2.p})`;const vid=mn2Vid();A.insertBefore(vid,A.firstChild);const pl=vid.play();if(pl&&pl.catch)pl.catch(()=>{})}}else if(MN2V)try{MN2V.pause()}catch(e){}return r}}
 document.addEventListener('visibilitychange',()=>{if(!MN2V)return;if(document.hidden)MN2V.pause();else if(RKV==='menu'&&MN2V.isConnected)MN2V.play().catch(()=>{})});
+
+/* ================= v328: BIBLIOTECA NOVA (artes do dono, 1846x852) — Personagem · Equipamentos · Itens · Coleções · Anéis =================
+   Uma arte por aba (LB2.bg). Áreas de toque em pixels da arte (lbB). Centro (#lbCtr) e grade (#rkGrid/#anGrid) redesenham sem recarregar a tela.
+   Personagem e Equipamentos: o personagem flutua no meio com os anéis do chão (anDecor); os quadradinhos do lado equipam (equipamento é do jogador, vale para todos).
+   Evoluir = sobe o nível do personagem (na aba Anéis: evolui o anel escolhido). Equipar = usa o personagem / equipa o item / o anel / o título. */
+const LB2={W:1846,H:852,bg:{chr:'a/c1a2a7ad89428e.webp',an:'a/8520024d4bec40.webp',eq:'a/ff525611dbae3b.webp',it:'a/263a52872a169f.webp',col:'a/ffb598dd740e15.webp'},cat:{it:null,col:null},ef:null,es:null,ic:null};
+RKD.lib=[LB2.W,LB2.H];
+const lbB=(x0,y0,x1,y1)=>`left:${x0/LB2.W*100}%;top:${y0/LB2.H*100}%;width:${(x1-x0)/LB2.W*100}%;height:${(y1-y0)/LB2.H*100}%`;
+const LBTAB=[['chr',110,195],['eq',213,298],['it',315,400],['col',418,503],['an',520,605]];
+const LBX=[1235,1350,1465,1580,1693],LBY=[200,323,448,573];
+const lbSel=()=>{const o=rkG('own',['goku']),s=rkG('sel','goku');return o.includes(s)?s:(o[0]||'goku')};
+const lbC=r=>(TWEQR.find(R=>R.k===r)||TWEQR[0]).c;
+const lbEsc=s=>twEsc(String(s==null?'':s));
+const LBSLN={esp:'ESPADA',cap:'CAPACETE',anel:'ANEL / LUVAS',arm:'ARMADURA',bot:'BOTAS',poc:'POÇÃO'};
+const LBSLC=[['esp',320,225],['arm',320,337],['bot',320,450],['cap',726,225],['anel',726,337],['poc',726,450]];
+const LBSLE=[['cap',322,227],['arm',322,330],['anel',322,428],['bot',322,522],['esp',728,227],['poc',728,330],['x1',728,428],['x2',728,522]];
+function lbEqOf(k){if(k==='poc'){const o=twPocOn();return o?Object.assign({t:'poc'},o):null}const Q=twEqp();return Q[k]?twInv().find(y=>y.id===Q[k])||null:null}
+function lbSlot(k,x,y,w,h){if(k[0]==='x')return `<button class="hs lbSl lk" data-a="lbSl" data-s="${k}" style="${lbB(x,y,x+w,y+h)}"><span class="lbSn">🔒 EM BREVE</span></button>`;
+  const it=lbEqOf(k);return `<button class="hs lbSl ${it?'on':''}" data-a="lbSl" data-s="${k}" style="${lbB(x,y,x+w,y+h)};${it?'--c:'+rkItC(it):''}">${it?`<img src="${rkItIc(it)}" alt=""><b>+${rkItV(it)}%</b>`:''}<span class="lbSn">${LBSLN[k]}</span></button>`}
+function lbAtt(vals,col){const Y=col?[281,338,393,450,505]:[286,342,397,451,506],X=col?[836,948]:[1074,1192];
+  return `<button class="hs lbAtB" data-a="lbAt" style="${col?lbB(612,255,950,535):lbB(858,258,1198,535)}"></button>`+vals.map((v,i)=>`<b class="lbV" style="${lbB(X[0],Y[i]-21,X[1],Y[i]+21)}">${v}</b>`).join('')}
+const lbTot=id=>cbRows(id).map(v=>String(v).split(' ')[0]);
+function lbHead(t){return `<button class="hs" data-a="back" style="${lbB(38,8,158,72)}"></button><button class="hs" data-a="home" style="${lbB(1690,8,1810,72)}"></button>`+
+  LBTAB.map(([k,a,b])=>`<button class="hs lbTab ${t===k?'on':''}" data-a="tab" data-t="${k}" style="${lbB(10,a,292,b)}"><i class="sw"></i></button>`).join('')+
+  `<button class="hs lbBt" data-a="lbEvo2" style="${lbB(285,658,605,725)}"><i class="sw"></i></button><button class="hs lbBt" data-a="lbEq2" style="${lbB(625,658,975,725)}"><i class="sw" style="animation-delay:1.6s"></i></button>`}
+function lbSearch(t){if(t==='an')return `<input class="rkSrch lbSr" id="anSrch" placeholder="Buscar anel..." autocomplete="off" value="${lbEsc(AN.q)}" style="${lbB(1305,128,1672,176)}"><button class="hs" data-a="anFilt" style="${lbB(1700,125,1785,178)}"><span class="rkFl" id="anFl">${ANFL[AN.f]}</span></button><div id="anGrid"></div><button class="hs" data-a="anUp" style="${lbB(1793,180,1832,230)}"></button><button class="hs" data-a="anDn" style="${lbB(1793,655,1832,702)}"></button>`;
+  const fl=t==='eq'?(LB2.ef?LBSLN[LB2.ef].split(' ')[0]:'TUDO'):['TODOS','TENHO','FALTA'][RKL.f];
+  return `<input class="rkSrch lbSr" id="rkSrch" placeholder="Buscar..." autocomplete="off" value="${lbEsc(RKL.q)}" style="${lbB(1305,128,1672,176)}"><button class="hs" data-a="filt" style="${lbB(1700,125,1785,178)}"><span class="rkFl" id="rkFl">${fl}</span></button><div id="rkGrid"></div><button class="hs" data-a="up" style="${lbB(1793,180,1832,230)}"></button><button class="hs" data-a="down" style="${lbB(1793,655,1832,702)}"></button>`}
+/* ---------- listas ---------- */
+function lbChrList(){const t=RKL.tab;RKL.tab='chr';try{return rkLibItems()}finally{RKL.tab=t}}
+function lbEqList(){const q=RKL.q.toLowerCase();return twStacks().filter(x=>x.k!=='poc'&&(!LB2.ef||x.t===LB2.ef)&&(!q||rkItNm(x).toLowerCase().includes(q))).sort((a,b)=>(TWRK.indexOf(b.r)-TWRK.indexOf(a.r))||(rkItV(b)-rkItV(a)))}
+const LBIC=[['poc',222,312],['el',315,402],['cr',405,495],['bau',495,580],['bag',578,655]],LBIN={poc:'POÇÕES',el:'ITENS DE ELEVAÇÃO',cr:'CRISTAIS E PEDRAS',bau:'TESOUROS E SET DO LOBO',bag:'MOEDAS'};
+function lbItCat(x){const i=x.id;if(i==='senzu'||i==='jn'||/^ls/.test(i))return 'bau';if(/^el/.test(i))return 'el';if(i==='po'||/^cr/.test(i)||/^pd/.test(i))return 'cr';if(i==='gem'||i==='tic'||i==='red'||i==='mo')return 'bag';if(/^p/.test(i))return 'poc';return 'bag'}
+function lbItList(){const t=RKL.tab;RKL.tab='it';let L;try{L=rkLibItems()}finally{RKL.tab=t}const q=RKL.q.toLowerCase(),ex=[];
+  ex.push({id:'mo',k:'it',r:'lend',has:1,ico:'🪙',bigI:'🪙',nm:'MOEDAS DA TORRE',d:'Você tem '+rkFmtN(twLS.g('tw_moedas',0)|0)+' · ganhe na Torre · sobe o nível dos personagens e compra na loja da Torre'});
+  try{const n=psG().jn|0;ex.push({id:'jn',k:'it',r:'obs',has:n>0,img:RQA.jn,big:RQA.jn,nm:'JOIA NEGRA',d:'Você tem '+n+' · 1 joia = 1 giro de Passiva'})}catch(e){}
+  L=L.concat(ex.filter(x=>(!q||x.nm.toLowerCase().includes(q))&&(RKL.f===0||(RKL.f===1?x.has:!x.has))));
+  L=L.map((x,i)=>[x,i]).sort((a,b)=>(b[0].has?1:0)-(a[0].has?1:0)||a[1]-b[1]).map(z=>z[0]);return LB2.cat.it?L.filter(x=>lbItCat(x)===LB2.cat.it):L}
+const LBCC=[['bau',190,285],['tr',292,378],['as',380,460],['mk',460,540],['dr',545,630]],LBCN={bau:'ITENS ESPECIAIS',tr:'TÍTULOS DE RANK',as:'TÍTULOS',mk:'TÍTULOS ESPECIAIS',dr:'PERSONAGENS'};
+function lbColCat(x){if(x.k==='chr')return 'dr';if(!x.tit)return 'bau';const T=TWTIT[x.tit]||{};if(T.rk!=null)return 'tr';if(T.yt||T.inf||T.hid)return 'mk';return 'as'}
+function lbColList(){const t=RKL.tab;RKL.tab='col';let L;try{L=rkLibItems()}finally{RKL.tab=t}L=L.concat(lbChrList());return LB2.cat.col?L.filter(x=>lbColCat(x)===LB2.cat.col):L}
+/* ---------- centro ---------- */
+function lbPed(id,lock,box){return `<div class="lbPd ${lock?'no':''}" style="${lbB(...(box||[405,90,745,640]))}"><img src="${fullSrc(id)}" alt=""></div>`}
+function lbInfo(x,box){if(!x)return '';const c=x.r?lbC(x.r):'#ffd84a';return `<div class="lbInf" style="${lbB(...box)};--c:${c}"><b>${lbEsc(x.nm)}</b><span>${x.has===0||x.has===false?'🔒 ':''}${lbEsc(x.d||'')}</span></div>`}
+function lbCtrH(){const t=RKL.tab;
+  if(t==='chr'){let x=RKL.cur;if(!x||x.k!=='chr'){const L=lbChrList();x=RKL.cur=L.find(y=>y.id===lbSel())||L[0]}if(!x)return '';const id=x.id,L=lvOf(id),mx=LVMAX(id),c=lbC(x.r),use=rkG('sel','goku')===id;
+    return lbPed(id,!x.has,[405,95,745,598])+`<div class="lbNm2 top" style="${lbB(425,22,725,86)};--c:${c}"><b>${lbEsc(CH[id].name)}</b><small>${x.has?'NÍVEL '+L.lv+' / '+mx+(use?' · ✔ EM USO':''):'🔒 '+lbEsc(x.d)}</small></div>`+LBSLC.map(([k,a,b])=>lbSlot(k,a,b,92,93)).join('')+lbAtt(lbTot(id))}
+  if(t==='eq'){const id=lbSel(),X=LB2.es&&twStacks().find(y=>y.key===LB2.es);
+    return lbPed(id,0,[425,90,725,572])+LBSLE.map(([k,a,b])=>lbSlot(k,a,b,94,90)).join('')+lbAtt(lbTot(id))+
+      (X?`<div class="lbInf" style="${lbB(425,560,725,648)};--c:${rkItC(X)}"><b>${lbEsc(rkItNm(X))} +${rkItV(X)}%${X.n>1?' · x'+X.n:''}</b><span>${lbEsc(rkItEf(X))} · toque de novo para vender</span></div>`:`<div class="lbHint" style="${lbB(425,600,725,648)}">Toque num item da lista e depois em EQUIPAR</div>`)}
+  if(t==='it'){const L=lbItList();let x=RKL.cur;if(!x||x.k!=='it'||!L.find(y=>y.id===x.id))x=RKL.cur=L[0]||null;
+    return LBIC.map(([k,a,b])=>`<button class="hs lbCt ${LB2.cat.it===k?'on':''}" data-a="lbCat" data-c="${k}" style="${lbB(322,a,422,b)}"></button>`).join('')+
+      (x?`<div class="lbBig ${x.has?'':'no'}" style="${lbB(470,150,690,480)};--c:${lbC(x.r)}"><i class="glw"></i>${x.big||x.img?`<img src="${x.big||x.img}" alt="">`:`<em>${x.bigI||x.ico||''}</em>`}</div>`+lbInfo(x,[430,505,730,648]):`<div class="lbHint" style="${lbB(430,560,730,640)}">Nada aqui ainda</div>`)+
+      `<div class="lbCatN" style="${lbB(430,96,730,140)}">${LB2.cat.it?LBIN[LB2.cat.it]:'TODOS OS ITENS'}</div>`+lbAtt(lbTot(lbSel()))}
+  if(t==='col'){const L=lbColList();let x=RKL.cur;if(!x||!L.find(y=>y.id===x.id))x=RKL.cur=L[0]||null;
+    return LBCC.map(([k,a,b])=>`<button class="hs lbCt ${LB2.cat.col===k?'on':''}" data-a="lbCat" data-c="${k}" style="${lbB(318,a,430,b)}"></button>`).join('')+
+      `<div class="lbCatN cl" style="${lbB(1150,186,1650,212)}">${LB2.cat.col?LBCN[LB2.cat.col]:'COLEÇÃO'} · ${L.filter(y=>y.has).length}/${L.length}</div>`+
+      (x?`<div class="lbInf cl" style="${lbB(1040,576,1640,652)};--c:${x.r?lbC(x.r):'#ffd84a'}"><b>${lbEsc(x.nm)}</b><span>${x.has?'':'🔒 '}${lbEsc(x.d||'')}</span></div>`:'')+lbAtt(lbTot(lbSel()),1)}
+  if(t==='an'){const id=AN.ch&&rkG('own',['goku']).includes(AN.ch)?AN.ch:(AN.ch=lbSel()),E=anEq(id),n=anSlots(id),L=anL(),T=anSum(id),lv=lvOf(id).lv;
+    const SP=[[453,192],[697,192],[770,305],[750,435],[653,528],[500,528],[403,435],[383,305]];
+    const sl=SP.map(([x,y],i)=>{const r=E[i]&&L.find(z=>z.i===E[i]);return `<button class="hs lbAs ${i<n?'':'lk'} ${r?'on':''} ${r&&AN.sel===r.i?'sel':''}" data-a="anSlot" data-i="${i}" style="${lbB(x-50,y-50,x+50,y+50)};${r?'--c:'+ANC[r.c][1]:''}">${r?`<img src="${RQA.anel2[r.c]}" alt=""><b>${ANG[r.g]}</b>`:i<n?'':`<i>🔒</i><small>NV ${(i+1)*10}</small>`}</button>`}).join('');
+    const S=AN.sel&&L.find(z=>z.i===AN.sel);
+    return lbPed(id,0,[470,135,680,560])+sl+`<button class="hs lbNm2 an" data-a="lbNm" style="${lbB(425,585,725,645)}"><b>${lbEsc(CH[id]?CH[id].name:id)} ⇄</b><small>NÍVEL ${lv} · ${E.filter(Boolean).length}/${n} anéis${n<8?' · próxima vaga no '+(n+1)*10:''}</small></button>`+
+      (S?`<div class="lbInf an" style="${lbB(1235,712,1790,760)};--c:${ANC[S.c][1]}"><b>ANEL ${ANC[S.c][0]} · ${ANG[S.g]} · Nv ${anLvl(S)}/${ANMX[S.c]}</b><span>${lbEsc(anTxt(S))}</span></div>`:'')+
+      lbAtt(['+'+cbN(T.dano)+'%','+'+cbN(T.crit)+'%','+'+cbN(T.vel)+'%','+'+cbN(T.st),'+'+cbN(T.uv)+'%'])}
+  return ''}
+function lbBind(el){el.querySelectorAll('[data-a]').forEach(b=>b.onclick=e=>{e.stopPropagation();rkAct(b.dataset.a,b)})}
+function lbRef(){const C=$('lbCtr');if(C){C.innerHTML=lbCtrH();lbBind(C)}rkLibGrid();setTimeout(anDecor,40)}
+/* ---------- grades ---------- */
+function lbCellH(i,x,cur,X,Y,w,h){const c=x.r?lbC(x.r):'#ffd84a';return `<button class="rkCell lbCl ${x.has?'':'no'} ${cur?'on':''}" data-id="${lbEsc(x.id)}" style="${lbB(X,Y,X+w,Y+h)};--c:${c}">${x.img?`<img src="${x.img}" alt="">`:`<i>${x.ico||x.bigI||''}</i>`}${x.has?(x.k==='chr'?`<em>Nv ${lvOf(x.id).lv}</em>`:''):'<span class="lk">🔒</span>'}<b>${lbEsc(String(x.nm).replace('TÍTULO ',''))}</b></button>`}
+function lbPgH(pg,pages,box){return pages>1?`<div class="rkPg lbPg" style="${lbB(...box)}">${pg+1}/${pages}</div>`:''}
+rkLibGrid=function(){const t=RKL.tab;if(t==='an')return anGrid();const G0=$('rkGrid');if(!G0)return;
+  if(t==='col'){const L=lbColList(),N=18,pages=Math.max(1,Math.ceil(L.length/N));RKL.pg=Math.min(RKL.pg,pages-1);
+    G0.innerHTML=L.slice(RKL.pg*N,RKL.pg*N+N).map((x,i)=>lbCellH(i,x,RKL.cur&&RKL.cur.id===x.id,1042+(i%6)*122,212+((i/6)|0)*120,112,112)).join('')+
+      `<button class="hs lbPgB" data-a="up" style="${lbB(1652,588,1702,640)}">◀</button><button class="hs lbPgB" data-a="down" style="${lbB(1712,588,1762,640)}">▶</button>`+lbPgH(RKL.pg,pages,[1652,548,1762,580]);
+    G0.querySelectorAll('.rkCell').forEach(b=>b.onclick=()=>{const x=L.find(y=>y.id===b.dataset.id);if(x){rkSfx('whoosh');RKL.cur=x;lbRef()}});lbBind(G0);return}
+  if(t==='eq'){const L=lbEqList(),N=20,pages=Math.max(1,Math.ceil(L.length/N));RKL.pg=Math.min(RKL.pg,pages-1);
+    G0.innerHTML=L.length?L.slice(RKL.pg*N,RKL.pg*N+N).map((x,i)=>`<button class="rkCell lbCl eq ${LB2.es===x.key?'on':''}${x.uniq?' uniq':''}" data-k="${lbEsc(x.key)}" style="${lbB(LBX[i%5],LBY[(i/5)|0],LBX[i%5]+100,LBY[(i/5)|0]+110)};--c:${rkItC(x)}"><img src="${rkItIc(x)}" alt=""><em>+${rkItV(x)}%</em>${x.n>1?`<i class="lbN">x${x.n}</i>`:''}<b>${lbEsc(rkItNm(x))}</b></button>`).join('')+lbPgH(RKL.pg,pages,[1793,425,1832,455])
+      :`<div class="lbVz" style="${lbB(1250,330,1780,470)}">${LB2.ef?'Nenhum item desse tipo na mochila.':'Mochila vazia.'}<br>Ganhe equipamentos no Boss, na Torre e no Gacha!</div>`;
+    G0.querySelectorAll('.rkCell').forEach(b=>b.onclick=()=>{rkSfx('whoosh');if(LB2.es===b.dataset.k)return rkEquip(null,b.dataset.k);LB2.es=b.dataset.k;lbRef()});return}
+  const L=t==='it'?lbItList():lbChrList(),N=20,pages=Math.max(1,Math.ceil(L.length/N));RKL.pg=Math.min(RKL.pg,pages-1);
+  G0.innerHTML=L.slice(RKL.pg*N,RKL.pg*N+N).map((x,i)=>lbCellH(i,x,RKL.cur&&RKL.cur.id===x.id,LBX[i%5],LBY[(i/5)|0],100,110)).join('')+lbPgH(RKL.pg,pages,[1793,425,1832,455]);
+  G0.querySelectorAll('.rkCell').forEach(b=>b.onclick=()=>{const x=L.find(y=>y.id===b.dataset.id);if(x){rkSfx('whoosh');RKL.cur=x;lbRef()}})};
+anGrid=function(){const G0=$('anGrid');if(!G0)return;const L=anItems(),N=20,pages=Math.max(1,Math.ceil(L.length/N));AN.pg=Math.min(AN.pg,pages-1);
+  G0.innerHTML=L.length?L.slice(AN.pg*N,AN.pg*N+N).map((r,i)=>{const w=anWho(r),g=anGl(r);return `<button class="anCell lbCl ${AN.sel===r.i?'on':''}" data-i="${r.i}" style="${lbB(LBX[i%5],LBY[(i/5)|0],LBX[i%5]+100,LBY[(i/5)|0]+110)};--c:${ANC[r.c][1]}"><img src="${RQA.anel2[r.c]}" alt=""${g?` class="gl g${g}" style="--c:${ANC[r.c][1]}"`:''}><b class="g g${r.g}">${ANG[r.g]}</b><span>${anSt(r.s)[1].split(' ')[0]} +${anV(r)}${anSt(r.s)[2]}</span><i class="anLv">Nv ${anLvl(r)}</i>${w?`<em>${w===AN.ch?'EM USO':'✔ '+lbEsc((CH[w]||{}).name||w)}</em>`:''}</button>`}).join('')+lbPgH(AN.pg,pages,[1793,425,1832,455])
+    :`<div class="lbVz" style="${lbB(1250,330,1780,470)}">Você ainda não tem anéis.<br>Eles caem do <b>LOBO NEGRO</b> no modo Caça.</div>`;
+  G0.querySelectorAll('.anCell').forEach(b=>b.onclick=()=>{const r=anL().find(x=>x.i===b.dataset.i);if(!r)return;rkSfx('whoosh');if(AN.sel===r.i)return anInfo(r);AN.sel=r.i;lbRef()})};
+/* ---------- tela ---------- */
+rkLibH=function(){const t=RKL.tab;return lbHead(t)+`<div id="lbCtr" class="lbCtr">${lbCtrH()}</div>`+(t==='col'?'<div id="rkGrid"></div>':lbSearch(t))};
+rkLibOn=function(){const S=$('rkSrch'),A=$('anSrch');if(S)S.oninput=()=>{RKL.q=S.value;RKL.pg=0;rkLibGrid()};if(A)A.oninput=()=>{AN.q=A.value;AN.pg=0;anGrid()};rkLibGrid()};
+rkLibShow=function(x){RKL.cur=x;lbRef()};
+{const _t=rkLibTab;rkLibTab=function(t){LB2.es=null;if(t!=='eq')LB2.ef=null;return _t.apply(this,arguments)}}
+function lbEquipX(X){const Q=twEqp();if(rkLock(twInv().find(y=>y.id===Q[X.t]))&&!rkLock(X)){rkSfx('clang');rkToast('🌑 Item OBSCURO fica sempre equipado','#c46bff');return false}Q[X.t]=X.ids[0];twLS.s('tw_eqp',Q);TW.capOut=twCap();rkSfx('powerUp');return true}
+function lbUnequip(k){if(k==='poc'){const o=twPocOn();if(o){const P=twPocs();P.push(o);twLS.s('tw_poc',P);twLS.s('tw_pocOn',null)}}else{const Q=twEqp();if(rkLock(twInv().find(y=>y.id===Q[k]))){rkSfx('clang');rkToast('🌑 Item OBSCURO fica sempre equipado','#c46bff');return false}delete Q[k];twLS.s('tw_eqp',Q);const c=twCap();if(c)rkToast('Mochila cheia: o item mais fraco foi descartado','#ff8080')}rkSfx('whoosh');return true}
+function lbAct(a,b){const t=RKL.tab;
+  if(a==='lbSl'){const k=b.dataset.s;if(k[0]==='x'){rkSfx('clang');return rkToast('🔒 Esse espaço chega em breve','#d9b3ff')}
+    if(lbEqOf(k)){if(lbUnequip(k)){rkToast('Guardado na mochila','#cfd6ea');lbRef()}return}
+    if(k==='poc')return rkEquip('poc');if(t!=='eq'){LB2.ef=k;LB2.es=null;return rkLibTab('eq')}LB2.ef=k;RKL.pg=0;const F=$('rkFl');if(F)F.textContent=LBSLN[k].split(' ')[0];rkLibGrid();return rkToast('Escolha '+LBSLN[k].toLowerCase()+' na lista ➜','#d9b3ff')}
+  if(a==='lbCat'){const c=b.dataset.c,o=LB2.cat[t]===c?null:c;LB2.cat[t]=o;RKL.cur=null;RKL.pg=0;return lbRef()}
+  if(a==='lbAt')return cbModal(t==='chr'&&RKL.cur?RKL.cur.id:t==='an'?AN.ch:lbSel());
+  if(a==='lbNm'){const o=rkG('own',['goku']);AN.ch=o[(o.indexOf(AN.ch)+1)%o.length];AN.sel=null;return lbRef()}
+  if(a==='lbEvo2'){if(t==='an'){const r=AN.sel&&anL().find(z=>z.i===AN.sel);if(!r){rkSfx('clang');return rkToast('Escolha um anel na lista para evoluir','#d9b3ff')}return anUpM(r.i)}
+    const id=t==='chr'&&RKL.cur?RKL.cur.id:lbSel();if(!rkG('own',['goku']).includes(id)){rkSfx('clang');return rkToast('🔒 Você ainda não tem esse personagem','#cfd6ea')}return lvOpen(id)}
+  if(a==='lbEq2'){
+    if(t==='chr'){const x=RKL.cur;if(!x||!x.has){rkSfx('clang');return rkToast('🔒 Ganhe esse personagem no Gacha','#cfd6ea')}if(rkG('sel','goku')===x.id)return rkToast('✔ '+CH[x.id].name+' já está em uso','#7dff9a');return rkLibUse()}
+    if(t==='eq'){const X=LB2.es&&twStacks().find(y=>y.key===LB2.es);if(!X){rkSfx('clang');return rkToast('Toque num item da lista primeiro','#d9b3ff')}if(lbEquipX(X)){rkToast('✔ '+rkItNm(X)+' equipado!','#7dff9a');LB2.es=null;lbRef()}return}
+    if(t==='it'){const x=RKL.cur;if(x&&lbItCat(x)==='poc'&&x.id!=='senzu')return rkEquip('poc');rkSfx('clang');return rkToast(x&&x.id==='senzu'?'🌱 A Semente é usada sozinha quando você cai no Boss e na Torre':'Esse item é usado sozinho onde ele serve','#cfd6ea')}
+    if(t==='col'){const x=RKL.cur;if(!x||!x.has){rkSfx('clang');return rkToast('🔒 Você ainda não tem isso','#cfd6ea')}if(x.k==='chr'){rkS('sel',x.id);rkSfx('powerUp');rkToast('✔ '+CH[x.id].name+' vai lutar na ranqueada','#7dff9a');return lbRef()}if(x.tit){twLS.s('tw_titOn',x.tit);try{twTitSync()}catch(e){}rkSfx('powerUp');rkToast('✔ Título em uso','#7dff9a');return lbRef()}return rkToast('Item da coleção','#cfd6ea')}
+    if(t==='an'){const id=AN.ch,r=AN.sel&&anL().find(z=>z.i===AN.sel);if(!r){rkSfx('clang');return rkToast('Escolha um anel na lista','#d9b3ff')}const E=anEq(id),n=anSlots(id),w=anWho(r);
+      if(w===id)return anPut(id,E.indexOf(r.i),null);if(!n){rkSfx('clang');return rkToast('🔒 A 1ª vaga abre no nível 10 do personagem','#d9b3ff')}const free=E.slice(0,n).indexOf(null);if(free<0){rkSfx('clang');return rkToast('Todas as '+n+' vagas estão ocupadas: toque num anel do círculo para tirar','#ffb0b0')}if(w)anPut(w,anEq(w).indexOf(r.i),null,1);return anPut(id,free,r.i)}}
+  return null}
+{const _a=rkAct;rkAct=function(a,b){if(RKV==='lib'&&/^lb/.test(a)){rkSfx('whoosh');return lbAct(a,b)}
+  if(RKV==='lib'&&a==='filt'&&RKL.tab==='eq'){const L=[null,'esp','cap','anel','arm','bot'];LB2.ef=L[(L.indexOf(LB2.ef)+1)%L.length];RKL.pg=0;$('rkFl').textContent=LB2.ef?LBSLN[LB2.ef].split(' ')[0]:'TUDO';rkSfx('whoosh');return rkLibGrid()}
+  return _a.apply(this,arguments)}}
+{const _a=rkAct;rkAct=function(a,b){if(RKV==='lib'&&a==='anSlot'&&RKL.tab==='an'){const i=+b.dataset.i,id=AN.ch,E=anEq(id),r=AN.sel&&anL().find(z=>z.i===AN.sel);
+    if(r&&!E[i]&&i<anSlots(id)){const w=anWho(r);if(w)anPut(w,anEq(w).indexOf(r.i),null,1);return anPut(id,i,r.i)}}return _a.apply(this,arguments)}}
+{const _v=rkView;rkView=function(v){const r=_v.apply(this,arguments);if(v==='lib'){const A=document.querySelector('#rkWrap .rk_lib');if(A){A.style.backgroundImage=`url(${LB2.bg[RKL.tab]||LB2.bg.chr})`;A.classList.add('lb2');A.classList.remove('lbArt')}}return r}}
+{const _m=rkModal;rkModal=function(h){const r=_m.apply(this,arguments);if(h==null&&RKV==='lib'&&$('lbCtr')&&showScreen.cur==='ranked')lbRef();return r}}
+
+/* ================= v328: CONQUISTAS, RECOMPENSAS DE RANK, CONTA e RANKING com as artes do dono ================= */
+const ARI={ach:'a/02e61493fd5842.webp',rw:'a/80819e624bec84.webp',conta:'a/8271c159f959ab.webp',rank:'a/be246db3158b2a.webp'};
+const arBx=(W,H)=>(x0,y0,x1,y1)=>`left:${x0/W*100}%;top:${y0/H*100}%;width:${(x1-x0)/W*100}%;height:${(y1-y0)/H*100}%`;
+const arB16=arBx(1672,941);
+const arP=(img,cls,inner)=>`<div class="arP ${cls}" style="background-image:url(${img})">${inner}</div>`;
+/* ---------- CONQUISTAS ---------- */
+rkAch=function(){const S=rkSt(),c=rkG('achc',[]),pend=RKACH.filter(A=>A.ok(S)&&!c.includes(A.k)),got=RKACH.filter(A=>c.includes(A.k)).length;
+  const L=RKACH.slice().sort((a,b)=>{const o=A=>c.includes(A.k)?2:A.ok(S)?0:1;return o(a)-o(b)});
+  rkModal(arP(ARI.ach,'arAch',`<button class="arX" id="rkMX" style="${arB16(1555,22,1650,112)}">✕</button>
+    <div class="arCnt" style="${arB16(640,196,1032,236)}">${got} / ${RKACH.length} CONCLUÍDAS</div>
+    ${pend.length?`<button class="arBtn gold" id="rkAcAll" style="${arB16(1240,180,1570,236)}">RESGATAR TUDO · ${pend.length}</button>`:''}
+    <div class="arList" style="${arB16(75,250,1597,832)}">${L.map(A=>{const ok=A.ok(S),g=c.includes(A.k);return `<div class="arRow ${g?'got':ok?'ok':'lk'}"><i class="arIc">${g?'🏅':ok?'🎖️':'🔒'}</i><div class="arTx"><b>${twEsc(A.n)}</b><span>${twEsc(A.d)}</span></div><em class="arRw"><img src="${RQA.coin[0]}" alt="">${A.g}${A.tic?` <img src="${RQA.coin[2]}" alt="">${A.tic}`:''}</em>${ok&&!g?`<button class="arBtn gold" data-k="${A.k}">RESGATAR</button>`:`<span class="arSt">${g?'✔ FEITO':'BLOQUEADA'}</span>`}</div>`}).join('')}</div>`));
+  $('rkMX').onclick=()=>{rkModal(null);if(RKV==='menu')rkView('menu')};
+  const take=Lk=>{const c=rkG('achc',[]);let g=0,t=0;for(const A of Lk){if(c.includes(A.k)||!A.ok(rkSt()))continue;c.push(A.k);g+=A.g;t+=A.tic||0}rkS('achc',c);if(!g)return;rkAdd('gem',g);if(t)rkAdd('tic',t);rkSfx('powerUp');rkToast('+'+g+' 💎'+(t?' · +'+t+' 🎫':''),'#7fd8ff');rkAch()};
+  document.querySelectorAll(RKMS()+'.arAch .arRow button').forEach(b=>b.onclick=()=>take([RKACH.find(x=>x.k===b.dataset.k)]));if($('rkAcAll'))$('rkAcAll').onclick=()=>take(RKACH)};
+/* ---------- RECOMPENSAS DE RANK ---------- */
+rkRewards=function(){const c=rkG('rwc2',[]),ri=rkRank(rkG('rp',0));
+  rkModal(arP(ARI.rw,'arRwd',`<button class="arX" id="rkMX" style="${arB16(1555,22,1650,112)}">✕</button>
+    <div class="arCnt" style="${arB16(560,214,1112,248)}">Seu rank: <b style="color:${RKR[ri].c}">${RKR[ri].n}</b> · ${rkFmtN(rkG('rp',0))} XP</div>
+    <div class="arList" style="${arB16(82,262,1590,790)}">${RKR.map((R,i)=>{const got=c.includes(i)||i===0,can=i<=ri&&!got;return `<div class="arRow rw ${i<=ri?'ok':'lk'} ${got&&i<=ri?'got':''}" style="--c:${R.c}">${rkEmb(i,'xs')}<div class="arTx"><b style="color:${R.c}">${R.n}</b><span>${rkFmtN(R.min)} XP</span></div><div class="arRwT">${i?rkRwTxt(RKRW[i],i):'Rank inicial'}</div>${can?`<button class="arBtn gold" data-i="${i}">RESGATAR</button>`:`<span class="arSt">${got&&i<=ri?(i?'✔ RESGATADO':'✔'):'🔒 '+rkFmtN(R.min)+' XP'}</span>`}</div>`}).join('')}</div>`));
+  $('rkMX').onclick=()=>{rkModal(null);if(RKV==='menu')rkView('menu')};document.querySelectorAll(RKMS()+'.arRwd .arRow button').forEach(b=>b.onclick=()=>rkRwClaim(+b.dataset.i));
+  setTimeout(()=>{const e=document.querySelector(RKMS()+'.arRwd .arRow.ok:not(.got)')||document.querySelectorAll(RKMS()+'.arRwd .arRow.ok')[Math.max(0,ri-1)];if(e)e.scrollIntoView({block:'center'})},60)};
+/* ---------- CONTA (a lógica continua no acOpen; aqui só troca o desenho) ---------- */
+{const _m=acM;acM=function(h){if(h&&/id="acX"/.test(h)&&!/arAcc/.test(h)){const tab=/id="acSv"/.test(h)?'ok':/id="acIn"/.test(h)?'entrar':'novo';h=acArtH(tab,h)}return _m.call(this,h)}}
+function acArtH(tab,old){const n=localStorage.getItem('ac_n'),k=localStorage.getItem('ac_k'),me=String(twLS.g('tw_nome','')||''),rp=rkG('rp',0),ri=rkRank(rp);
+  const tabs=`<div class="twTab acTabs"><button data-t="${k?'ok':'novo'}" class="acTb l ${tab!=='entrar'?'on':'off'}" style="${arB16(490,230,826,306)}">${k?'':'<span>✨ CRIAR CONTA</span>'}</button><button data-t="entrar" class="acTb r ${tab==='entrar'?'on':'off'}" style="${arB16(874,230,1216,306)}"></button></div>`;
+  let mid='',bot='';
+  if(tab==='ok'){mid=`<div class="acMid ok" style="${arB16(540,352,1310,462)}"><b>Conectado: <i>${twEsc(n)}</i></b><span>Salvo sozinho · último: <i id="acLt">${acT(localStorage.getItem('ac_t'))}</i></span><span>Outro celular? ENTRAR com o mesmo nome e senha</span></div>`;
+    bot=`<button class="acHb" id="acSv" style="${arB16(385,640,826,722)}"></button><button class="acHb" id="acOut" style="${arB16(856,640,1296,722)}"></button>`}
+  else if(tab==='novo'){mid=`<div class="acMid cv" style="${arB16(352,340,1330,476)}">${me?`<span>Senha para o nome <i>${twEsc(me)}</i> (assim você nunca perde a conta)</span><div class="acIn2"><input id="acP1" class="rkCdI" type="password" maxlength="32" placeholder="SENHA (mín. 4)"><input id="acP2" class="rkCdI" type="password" maxlength="32" placeholder="REPITA A SENHA"></div>`:`<span class="err">Primeiro escolha seu nome (Modo Torre, botão do nome). Depois volte aqui.</span><span>Já tem conta? Toque em ENTRAR.</span>`}</div>`;
+    bot=`<div class="acCov" style="${arB16(378,632,1304,730)}">${me?'<button class="arBtn gold big" id="acNew">✨ CRIAR CONTA</button>':''}</div>`}
+  else{mid=`<div class="acMid cv" style="${arB16(352,340,1330,476)}"><span>Entre com o nome e a senha. O progresso deste aparelho será trocado pelo da conta.</span><div class="acIn2"><input id="acN" class="rkCdI" maxlength="16" placeholder="NOME" value="${twEsc(n||me)}"><input id="acP" class="rkCdI" type="password" maxlength="32" placeholder="SENHA"></div></div>`;
+    bot=`<div class="acCov" style="${arB16(378,632,1304,730)}"><button class="arBtn gold big" id="acIn">🔑 ENTRAR</button></div>`}
+  const st=`<div class="acSt" style="${arB16(500,500,722,575)}"><b style="color:${RKR[ri].c}">${RKR[ri].n}</b><small>${rkFmtN(rp)} XP</small></div><div class="acSt gm" style="${arB16(862,500,950,575)}"><b>${rkFmtN(rkG('gem',0))}</b></div><div class="acSt" style="${arB16(1090,500,1166,575)}"><b>${rkG('own',[]).length}</b></div><div class="acSt" style="${arB16(1290,500,1392,575)}"><b>${rkFmtN(twLS.g('tw_moedas',0)|0)}</b></div>`;
+  return `<div class="arAcc">${arP(ARI.conta,'arAc',tabs+mid+st+bot+`<p class="twH acMsg" id="acE" style="${arB16(300,585,1372,632)}"></p><button class="acHb" id="acX" style="${arB16(708,750,966,820)}"></button>`)}</div>`}
+/* ---------- RANKING (tela cheia) ---------- */
+const RG2={W:1846,H:852,tab:'rp',pg:0,L:null,err:0},rgB=arBx(1846,852);
+const RGT=[['rp','RANK',330,615],['dmg','DANO NO BROLY',630,925],['tt','MAIS RÁPIDO',940,1240],['t1','1ª FASE',1252,1528]];
+const RGY=[[296,380],[385,468],[472,553],[558,638],[642,723]];
+rkRanking=function(tab){RG2.tab=tab||'rp';RG2.pg=0;RG2.L=null;RG2.err=0;rkModal(null);rkView('rkg');
+  rkLoadRk(RG2.tab).then(A=>{let L=A.slice();const t=RG2.tab;if(t==='rp')L.sort((a,b)=>b.rp-a.rp);else if(t==='dmg')L.sort((a,b)=>b.dmg-a.dmg);else L=L.filter(e=>e[t]>0).sort((a,b)=>a[t]-b[t]);RG2.L=L.slice(0,50);if(RKV==='rkg'&&RG2.tab===t)rgDraw()}).catch(()=>{RG2.err=1;if(RKV==='rkg')rgDraw()})};
+function rgH(){return `<button class="hs" data-a="back" style="${rgB(30,12,172,80)}"></button><button class="hs" data-a="home" style="${rgB(1672,12,1816,80)}"></button>
+  <div class="rgTit" style="${rgB(640,18,1206,92)}">RANKING</div>
+  ${RGT.map(([k,n,a,b])=>`<button class="hs rgTb ${RG2.tab===k?'on':''}" data-a="rgTab" data-t="${k}" style="${rgB(a,118,b,184)}"><span>${n}</span></button>`).join('')}
+  <div id="rgBody"></div>`}
+function rgDraw(){const B=$('rgBody');if(!B)return;const L=RG2.L,t=RG2.tab,me=twUid();
+  if(!L){B.innerHTML=`<div class="rgMsg" style="${rgB(160,420,1690,600)}">${RG2.err?rkNetMsg():'Carregando...'}</div>`;return}
+  const pages=Math.max(1,Math.ceil(L.length/5));RG2.pg=Math.min(RG2.pg,pages-1);const mi=L.findIndex(e=>e.uid===me);
+  const val=e=>t==='rp'?rkFmtN(e.rp)+' XP':t==='dmg'?rkFmtN(e.dmg)+' DE DANO':twFmt(e[t]);
+  B.innerHTML=`<div class="rgHd" style="${rgB(160,244,1690,292)}"><span>TOP ${L.length} · ${RGT.find(x=>x[0]===t)[1]}</span><span>${mi>=0?'VOCÊ: <b>#'+(mi+1)+'</b>':'Jogue para entrar no ranking'} · toque num jogador para ver o perfil</span></div>`+
+    (L.length?L.slice(RG2.pg*5,RG2.pg*5+5).map((e,k)=>{const i=RG2.pg*5+k,ri=rkRank(e.rp);return `<div class="rgRw p${k}${RG2.pg?' pg':''}${e.uid===me?' me':''}" data-pu="${twEsc(e.uid||'')}" data-pn="${twEsc(e.nome||'')}" style="${rgB(150,RGY[k][0],1696,RGY[k][1])}"><b class="ps">${i<3?['🥇','🥈','🥉'][i]:'#'+(i+1)}</b><img src="${RQA.rank[ri]}" alt=""><span class="nm"><b>${twEsc(e.nome)}</b>${twTitTag(twTN(e),e.nome)}<small style="color:${RKR[ri].c}">${RKR[ri].n}</small></span><span class="vl">${val(e)}</span></div>`}).join('')
+      :`<div class="rgMsg" style="${rgB(160,420,1690,600)}">Ninguém no ranking ainda. Seja o primeiro!</div>`)+
+    `<button class="hs rgPg" data-a="rgPrev" style="${rgB(738,760,820,828)}" ${RG2.pg?'':'disabled'}>◀</button><div class="rgPn" style="${rgB(820,760,1020,828)}">${RG2.pg+1} / ${pages}</div><button class="hs rgPg" data-a="rgNext" style="${rgB(1020,760,1102,828)}" ${RG2.pg<pages-1?'':'disabled'}>▶</button>`;
+  B.querySelectorAll('[data-a]').forEach(b=>b.onclick=e=>{e.stopPropagation();rkAct(b.dataset.a,b)})}
+{const _v=rkView;rkView=function(v){if(v!=='rkg'){if(MN2V&&v!=='menu')try{MN2V.pause()}catch(e){}return _v.apply(this,arguments)}
+  RKV='rkg';const W=$('rkWrap');if(!W)return;clearInterval(rkView.iv);rkModal(null);
+  W.innerHTML=`<div class="rkA rk_rkg" data-w="1846" data-h="852" style="background-image:url(${ARI.rank})">${rgH()}<div id="rkToast"></div></div>`;rkFit();
+  W.querySelectorAll('[data-a]').forEach(b=>b.onclick=e=>{e.stopPropagation();rkAct(b.dataset.a,b)});rgDraw()}}
+{const _a=rkAct;rkAct=function(a,b){if(a==='rgTab'){rkSfx('whoosh');return rkRanking(b.dataset.t)}if(a==='rgPrev'||a==='rgNext'){rkSfx('whoosh');RG2.pg=Math.max(0,RG2.pg+(a==='rgNext'?1:-1));return rgDraw()}
+  if(RKV==='rkg'&&a==='back')return rkView('menu');return _a.apply(this,arguments)}}

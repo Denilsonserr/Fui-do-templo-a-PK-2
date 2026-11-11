@@ -1,0 +1,11 @@
+const {chromium}=require('playwright');
+(async()=>{const b=await chromium.launch();const p=await b.newPage({viewport:{width:915,height:412}});await p.route(/fonts\.g/,r=>r.abort());
+const cdp=await p.context().newCDPSession(p);await cdp.send('Emulation.setCPUThrottlingRate',{rate:4});
+await p.addInitScript(()=>{if(!sessionStorage.d){sessionStorage.d=1;localStorage.clear();Object.assign(localStorage,{rk_ini:'1',rk_xpv2:'1',rk_dia:'1',tw_nome:'"Denilson"',rk_rp:'5000'})}});
+await p.goto('http://localhost:8790/index.html');await p.waitForFunction(()=>!document.getElementById('goSelect').disabled,null,{timeout:180000});
+const fps=async(lbl)=>{const r=await p.evaluate(()=>new Promise(res=>{let n=0,mx=0,last=performance.now();const t0=last;const f=t=>{n++;mx=Math.max(mx,t-last);last=t;if(t-t0<3000)requestAnimationFrame(f);else res([Math.round(n/3),Math.round(mx)])};requestAnimationFrame(f)}));console.log(lbl,'fps',r[0],'pior quadro ms',r[1])};
+await fps('titulo');
+await p.click('#mRank');await p.waitForTimeout(2500);await p.evaluate(()=>{const m=document.querySelector('#rkModal');if(m){m.hidden=true;m.innerHTML=''}});await fps('modos');
+let t=Date.now();await p.evaluate(()=>document.querySelector('#rkWrap [data-a="lib"]').click());await p.waitForTimeout(50);console.log('abrir lib ms',Date.now()-t);await p.waitForTimeout(1500);await fps('biblioteca');
+t=Date.now();await p.evaluate(()=>document.querySelector('#rkWrap [data-a="tab"][data-t="an"]').click());console.log('aba ms',Date.now()-t);await p.waitForTimeout(1000);await fps('aneis');
+await b.close()})();

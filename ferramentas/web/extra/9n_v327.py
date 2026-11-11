@@ -33,6 +33,6 @@ setTimeout(fsIosTip,2500);
 css='''#fsTip{position:fixed;left:50%;bottom:max(10px,env(safe-area-inset-bottom));transform:translateX(-50%);z-index:9999;width:min(92vw,560px);display:flex;flex-direction:column;gap:6px;padding:12px 14px;border-radius:14px;background:rgba(14,8,30,.96);border:2px solid #d9a93a;box-shadow:0 0 20px rgba(217,169,58,.45);color:#fff;font:700 14px/1.3 "Saira Condensed",sans-serif;text-align:center}
 #fsTip b{color:#ffd76a;font-size:16px}#fsTip i{color:#ffd76a;font-style:normal}#fsTip svg{width:16px;height:16px;vertical-align:-3px;color:#4aa3ff}#fsTip button{align-self:center;margin-top:4px;padding:6px 22px;border:0;border-radius:9px;background:linear-gradient(#ffcf55,#d58a12);color:#2a1600;font:900 14px "Saira Condensed",sans-serif}
 '''
-i=s.rindex('</script>');s=s[:i]+js+s[i:]
+a='resize();menuSetup();\nrequestAnimationFrame(loop);\n';assert s.count(a)==1;i=s.index(a)+len(a);s=s[:i]+js+s[i:]
 i=s.index('</style>');s=s[:i]+css+s[i:]
 open(P,'w',encoding='utf8').write(s);print('v327 ok')
