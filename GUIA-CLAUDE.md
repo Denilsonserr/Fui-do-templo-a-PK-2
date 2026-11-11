@@ -1646,3 +1646,7 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - Conferido: sorte/drop já valiam na QUANTIDADE e na CHANCE (pó, cristais, gemas e moedas extras no Boss/Torre, Joia Negra, itens de elevação, baús, poções, tickets, anéis na Caça). Mas as chances já ficavam em 100% e a raridade quase não mudava, por isso o dono não sentia diferença.
 - Agora `lkK()` = giros extras "pega o melhor" pela sorte (`log2(lvLuck)`, máx. 5) em `twEqRoll` (equipamento), `twPoRoll` (poção), `lvCrRoll` (cristal) e na raridade do Anel da Alma (`anDropLobo`, que também passou o limite da sorte de 1,6 para 4).
 - Medido (4000 sorteios, `tsorte_v343.js`): jogador comum sem evento = 0,2% mítico; com evento 3x = 0,7%; ADM com evento (sorte 79x, drop 6x) = 1,2% mítico, 7,9% lendário, comum cai de 70% para 11%.
+
+## v344 — sorte e drop SOMADOS (regra do dono: +100% = dobra a chance)
+- `lvLuck = 1 + sorte%/100 + (evento-1) + (ADM 2x: +1)` e `rkDropF = 1 + drop%/100 + (evento-1) + (ADM: +1)` — tudo somado, nada multiplicado (antes multiplicava tudo e a sorte do ADM chegava a 79x). Ex.: chance 10% com +100% = 20%, +200% = 30%, +300% = 40%. A sorte dos itens/passivas agora conta inteira (antes era a metade, /200). ADM: +70 de sorte do título + 100% do 2x.
+- Medido: comum sem evento 1x; comum no evento 3x = sorte 3x/drop 3x; ADM sem evento = sorte 2,7x/drop 2x; ADM no evento = sorte 4,7x/drop 4x. Raridade continua melhorando pelos giros extras (`lkK`).
