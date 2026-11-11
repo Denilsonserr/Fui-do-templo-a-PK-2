@@ -1566,3 +1566,6 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - **Desempenho** (`extra/9p_v328.py`): o jogo não marcava a tela inicial como atual ao abrir, então a luta de fundo era desenhada atrás do menu o tempo todo — em CPU 4x mais lenta a tela inicial foi de 13 para 60 quadros/s. Também: sem `mix-blend-mode` nos menus, sem filtro animado no botão BATALHA AVENTURA, faixa de luz da parede parada, e `body.lowfx` (até 4 núcleos ou 3 GB) tira enfeites pequenos. Teste: `tdesempenho_v328.js`.
 - Os códigos de teste antigos clicavam no botão 🎟️ CÓDIGO do menu; agora o código fica no ⚙️ (OPÇÕES → CÓDIGO). `tfs_v309.js` já foi ajustado.
 - O código de tela cheia do v327 estava num `<script>` separado (não rodava o `fsFix`); agora fica junto do jogo.
+
+## v329
+- Anéis: personagem menor e no centro do círculo (`lbPed(id,0,[497,225,653,505])`). Ranking: só o nome (o emblema já mostra o rank) e o título só como escrita com brilho (`rgTit`, sem caixa; ADM só aparece para o nome do ADM). Equipamentos: tirados os nomes embaixo dos quadradinhos (fica só "EM BREVE" nos fechados).

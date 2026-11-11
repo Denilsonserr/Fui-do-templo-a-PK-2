@@ -1415,3 +1415,13 @@ img.anOn{position:relative;z-index:2}
 .rk_rkg .rgRw .vl{margin-right:1.2em}
 .rk_rkg .rgHd{box-sizing:border-box;overflow:hidden}
 .arAc .acMid.ok{gap:.15em}.arAc .acMid.ok b{font-size:2.3em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.arAc .acMid.ok span{font-size:1.55em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+/* v329 */
+.rk_rkg .rgRw .nm{gap:.2em}
+.rk_rkg .rgRw .nm>b{max-width:60%;font-size:1.9em;line-height:1.1}
+.rk_rkg .rgRw .nm small{display:none}
+.rk_rkg .rgT{font:italic 900 1.05em "Saira Condensed",sans-serif;letter-spacing:.06em;color:var(--c);text-shadow:0 0 .35em var(--c),0 0 .8em var(--c),0 .06em 0 #000;white-space:nowrap;animation:rgTg 2.6s ease-in-out infinite;align-self:flex-start;max-width:60%;overflow:hidden;text-overflow:ellipsis;font-style:normal}
+@keyframes rgTg{0%,100%{filter:brightness(1)}50%{filter:brightness(1.35)}}
+.lb2 .lbSl:not(.lk) .lbSn{display:none}
+.lb2 .lbPd.an{filter:none}
+.rk_rkg .rgT{background:none!important;border:0!important;box-shadow:none!important;padding:0!important;outline:0!important}
+.lb2 .lbNm2.an small{font-size:.8em}

@@ -2407,7 +2407,7 @@ function lbCtrH(){const t=RKL.tab;
     const SP=[[453,192],[697,192],[770,305],[750,435],[653,528],[500,528],[403,435],[383,305]];
     const sl=SP.map(([x,y],i)=>{const r=E[i]&&L.find(z=>z.i===E[i]);return `<button class="hs lbAs ${i<n?'':'lk'} ${r?'on':''} ${r&&AN.sel===r.i?'sel':''}" data-a="anSlot" data-i="${i}" style="${lbB(x-50,y-50,x+50,y+50)};${r?'--c:'+ANC[r.c][1]:''}">${r?`<img src="${RQA.anel2[r.c]}" alt=""><b>${ANG[r.g]}</b>`:i<n?'':`<i>🔒</i><small>NV ${(i+1)*10}</small>`}</button>`}).join('');
     const S=AN.sel&&L.find(z=>z.i===AN.sel);
-    return lbPed(id,0,[470,135,680,560])+sl+`<button class="hs lbNm2 an" data-a="lbNm" style="${lbB(425,585,725,645)}"><b>${lbEsc(CH[id]?CH[id].name:id)} ⇄</b><small>NÍVEL ${lv} · ${E.filter(Boolean).length}/${n} anéis${n<8?' · próxima vaga no '+(n+1)*10:''}</small></button>`+
+    return lbPed(id,0,[497,225,653,505])+sl+`<button class="hs lbNm2 an" data-a="lbNm" style="${lbB(425,572,725,652)}"><b>${lbEsc(CH[id]?CH[id].name:id)} ⇄</b><small>NÍVEL ${lv} · ${E.filter(Boolean).length}/${n} anéis${n<8?' · próxima vaga no '+(n+1)*10:''}</small></button>`+
       (S?`<div class="lbInf an" style="${lbB(1235,712,1790,760)};--c:${ANC[S.c][1]}"><b>ANEL ${ANC[S.c][0]} · ${ANG[S.g]} · Nv ${anLvl(S)}/${ANMX[S.c]}</b><span>${lbEsc(anTxt(S))}</span></div>`:'')+
       lbAtt(['+'+cbN(T.dano)+'%','+'+cbN(T.crit)+'%','+'+cbN(T.vel)+'%','+'+cbN(T.st),'+'+cbN(T.uv)+'%'])}
   return ''}
@@ -2509,12 +2509,15 @@ function rgH(){return `<button class="hs" data-a="back" style="${rgB(30,12,172,8
   <div class="rgTit" style="${rgB(640,18,1206,92)}">RANKING</div>
   ${RGT.map(([k,n,a,b])=>`<button class="hs rgTb ${RG2.tab===k?'on':''}" data-a="rgTab" data-t="${k}" style="${rgB(a,118,b,184)}"><span>${n}</span></button>`).join('')}
   <div id="rgBody"></div>`}
+/* título no ranking: só a escrita com brilho (sem caixa) */
+function rgTit(k,nm){if(!k)return '';if(k==='adm'){if(nm!=null&&String(nm).toLowerCase()!==TWADMN.toLowerCase())return '';return '<em class="rgT" style="--c:#ff4a4a">👑 ADMINISTRADOR</em>'}const T=TWTIT[k];if(!T)return '';
+  const n=T.yt?'YUTA Nº '+T.yt:T.n;return `<em class="rgT" style="--c:${T.c||'#ffd84a'}">${T.rk!=null?'':(T.i||'')+' '}${twEsc(n)}</em>`}
 function rgDraw(){const B=$('rgBody');if(!B)return;const L=RG2.L,t=RG2.tab,me=twUid();
   if(!L){B.innerHTML=`<div class="rgMsg" style="${rgB(160,420,1690,600)}">${RG2.err?rkNetMsg():'Carregando...'}</div>`;return}
   const pages=Math.max(1,Math.ceil(L.length/5));RG2.pg=Math.min(RG2.pg,pages-1);const mi=L.findIndex(e=>e.uid===me);
   const val=e=>t==='rp'?rkFmtN(e.rp)+' XP':t==='dmg'?rkFmtN(e.dmg)+' DE DANO':twFmt(e[t]);
   B.innerHTML=`<div class="rgHd" style="${rgB(160,244,1690,292)}"><span>TOP ${L.length} · ${RGT.find(x=>x[0]===t)[1]}</span><span>${mi>=0?'VOCÊ: <b>#'+(mi+1)+'</b>':'Jogue para entrar no ranking'} · toque num jogador para ver o perfil</span></div>`+
-    (L.length?L.slice(RG2.pg*5,RG2.pg*5+5).map((e,k)=>{const i=RG2.pg*5+k,ri=rkRank(e.rp);return `<div class="rgRw p${k}${RG2.pg?' pg':''}${e.uid===me?' me':''}" data-pu="${twEsc(e.uid||'')}" data-pn="${twEsc(e.nome||'')}" style="${rgB(150,RGY[k][0],1696,RGY[k][1])}"><b class="ps">${i<3?['🥇','🥈','🥉'][i]:'#'+(i+1)}</b><img src="${RQA.rank[ri]}" alt=""><span class="nm"><b>${twEsc(e.nome)}</b>${twTitTag(twTN(e),e.nome)}<small style="color:${RKR[ri].c}">${RKR[ri].n}</small></span><span class="vl">${val(e)}</span></div>`}).join('')
+    (L.length?L.slice(RG2.pg*5,RG2.pg*5+5).map((e,k)=>{const i=RG2.pg*5+k,ri=rkRank(e.rp);return `<div class="rgRw p${k}${RG2.pg?' pg':''}${e.uid===me?' me':''}" data-pu="${twEsc(e.uid||'')}" data-pn="${twEsc(e.nome||'')}" style="${rgB(150,RGY[k][0],1696,RGY[k][1])}"><b class="ps">${i<3?['🥇','🥈','🥉'][i]:'#'+(i+1)}</b><img src="${RQA.rank[ri]}" alt=""><span class="nm"><b>${twEsc(e.nome)}</b>${rgTit(twTN(e),e.nome)}</span><span class="vl">${val(e)}</span></div>`}).join('')
       :`<div class="rgMsg" style="${rgB(160,420,1690,600)}">Ninguém no ranking ainda. Seja o primeiro!</div>`)+
     `<button class="hs rgPg" data-a="rgPrev" style="${rgB(738,760,820,828)}" ${RG2.pg?'':'disabled'}>◀</button><div class="rgPn" style="${rgB(820,760,1020,828)}">${RG2.pg+1} / ${pages}</div><button class="hs rgPg" data-a="rgNext" style="${rgB(1020,760,1102,828)}" ${RG2.pg<pages-1?'':'disabled'}>▶</button>`;
   B.querySelectorAll('[data-a]').forEach(b=>b.onclick=e=>{e.stopPropagation();rkAct(b.dataset.a,b)})}
