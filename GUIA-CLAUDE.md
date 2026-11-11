@@ -1738,3 +1738,12 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - `ferramentas/bestas/hidra/baus2.py`: limites de coluna medidos à mão (`XB`, `YB`, só a linha de baixo = a do jogo), GrabCut por célula e depois corte do brilho por textura (desvio local > `TX=14`; o brilho é liso, o baú tem detalhe), fecha buracos e fica com o maior pedaço. Depois roda `assets_baus.py`.
 - O baú divino fechado ficou sem a auréola (cortada de propósito: ela grudava no brilho).
 - Teste: `texplora_v357.js` (agora usa `items[0]`, só 1 baú na exploração).
+
+## v360 — Hidra liberada para todos + ninhadas de filhotes + 2 códigos de diamante
+- **Hidra liberada**: tirei o cadeado de ADM (`hyStart`, `caH` com `adm=true`, `rkView`). Barra: "3 PARTES + 8 NÍVEIS".
+- **Hidra mais forte e com 8 níveis** (`HYMAX=8`, `HYS.hidra` com 8 linhas, ATK 60k→400k, vida 9→30 camadas).
+- **Ninhadas** (bloco v360 no fim do rk.js): `hyBossUp` refeito — ao cair, a Hidra some (`HY.boss`) e nasce uma ninhada de FILHOTES (`hySetup` tipo `'filhote'`: tamanho 0,42, rápidos, ATK 45% e DEF 50% do nível; `HYFN=[3,4,4,5,5,6,7]` filhotes; no máx. 3 na tela, 4 do nível 4 em diante, `hyFilTick`). Wrapper `_ko3` conta os filhotes; matou todos → `hyFilBack`: a Hidra VOLTA no nível seguinte (estágio destruído muda). 7 ninhadas no total. Lobos extras não nascem durante a ninhada. Golpe da fúria do filhote é raro (3,5%) e só atordoa.
+- **Códigos** (texto só com o dono): `l0xbdi` = 80.000 💎, 1 pessoa no jogo inteiro (campo novo `gm`, wrapper `_cp9`; não precisa de conta). `c4riff` = 3.000 a 6.000 💎, 1 vez por CONTA (`acc:1,rnd`).
+- Gancho de teste: `__pvT.hyBoss()` (pula direto para a Hidra nível 1), `__pvT.fil()`, `__pvT.rv(view)`.
+- Testes: `thidra_v360.js` (jogador sem título, 7 ninhadas até o fim), `tcod_v360.js` (C1/C2; reinicie o servidor local antes, ele guarda os códigos usados).
+- Cuidado nos testes: NÃO coloque `mhp` gigante no jogador — o HUD desenha uma bolinha por camada de vida e trava.
