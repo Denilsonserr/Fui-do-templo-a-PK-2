@@ -1581,3 +1581,7 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 ## v331 — 3 códigos para TODOS, só com CONTA, 1 vez por conta (texto só com o dono)
 - No fim do rk.js: `cf2w82` = 50 giros de passiva (`jn:50`, Joia Negra), `1gvgw6x` = 1000 a 4000 💎 aleatório (`rnd`), `1laos4r` = 10 a 40 tickets aleatórios (`rtic`). Todos com `acc:1` (sem conta: "Esse código é só para quem tem CONTA").
 - Teste `tcod_v331.js` com o servidor local (C1/C2/C3 = textos): 2 contas usam os 3, repetir na mesma conta é recusado pelo servidor. Obs.: logo depois de abrir o ranqueado a tela redesenha e fecha a janela do código; o teste espera 6 s.
+
+## v332 — código só para UMA conta + ferramenta de salvamentos
+- Campo novo `so` no `TWCUP` (wrapper `_cp6` no fim do rk.js): `twHash` do nome da conta em minúsculas; outra conta recebe "Esse código é de outro jogador". `1n4nhbj` = GAROU só para a conta **Sapopreto** (`acc:1`, 1 vez). Teste `tcod_v332.js` (C1 = texto, NOME = conta).
+- `.github/workflows/jogador.yml` (input `nome`): lista os 40 últimos salvamentos da conta no servidor novo (personagens ganhos/perdidos entre um e outro, diamantes, tickets, pity) e o histórico do gacha do último. Usado em 11/11: Sapopreto não perdeu nenhum personagem nos salvamentos (o drop das 09:54 foi a bota secreta do Shaka, não personagem).

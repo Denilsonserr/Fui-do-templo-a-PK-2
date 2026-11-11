@@ -2562,3 +2562,8 @@ rkCards=function(L){const O=document.createElement('div');O.className='rkRes2 cr
 TWCUP['cf2w82']={nm:'50 GIROS DE PASSIVA',acc:1,jn:50};
 TWCUP['1gvgw6x']={nm:'DIAMANTES DA SORTE',acc:1,rnd:[1000,4000]};
 TWCUP['1laos4r']={nm:'TICKETS DA SORTE',acc:1,rtic:[10,40]};
+/* v332: código só para UMA conta (campo so = twHash do nome da conta em minúsculas) */
+{const _cp6=twCupom;twCupom=async function(code,E){const C=TWCUP[twHash(String(code).toUpperCase())];
+  if(C&&C.so){const an=String(localStorage.getItem('ac_n')||'').toLowerCase().trim();if(!an||!localStorage.getItem('ac_k')||twHash(an)!==C.so){E.className='twH err';E.textContent='❌ Esse código é de outro jogador.';try{twSfx('clang')}catch(e){}return true}}
+  return _cp6.apply(this,arguments)}}
+TWCUP['1n4nhbj']={nm:'GAROU',it:[],chr:'garou',acc:1,so:'ymstjo'};
