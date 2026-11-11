@@ -1528,3 +1528,6 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 
 ## v322
 - Anéis girando um pouco mais rápido (40 s + 6 s por anel) para dar para ver o giro. Vermelho e preto ganharam um brilho pequeno: um risco claro que acende e apaga em volta do anel e uma estrelinha que pisca (gira junto com o anel).
+
+## v323 — 3 códigos de USO ÚNICO (texto só com o dono)
+- No fim do rk.js: `kdc5bt` = 40.000 💎, `e8a07j` = 10.000 💎, `yuirz0` = ZORO e SHAKA (campo novo `chrs:[...]`, wrapper `_cp5` põe todos em `rk_own`). Cada um: 1 pessoa no jogo inteiro (servidor recusa o segundo: "já foi usado por outro jogador"). Testado com o servidor local (`local.mjs 8790`).
