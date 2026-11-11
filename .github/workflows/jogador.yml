@@ -37,4 +37,8 @@ jobs:
                   print('  GANHOU',[x for x in own if x not in prev],'PERDEU',[x for x in prev if x not in own])
               prev=own
               print('  personagens no historico do gacha',ch[:12])
+          if L:
+              o=json.loads(L[-1]['fields']['d']['stringValue'])
+              print('===== ULTIMO SALVAMENTO: banner',o.get('rk_ban'),'chaves',sorted(o.keys()))
+              for x in json.loads(o.get('rk_hist','[]'))[:30]:x['d']=br(x.get('d',0));print('  H',json.dumps(x,ensure_ascii=False))
           P
