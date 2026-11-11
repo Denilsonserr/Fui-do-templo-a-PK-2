@@ -1681,3 +1681,7 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - Torre: inimigo ganha +25% de vida efetiva e +15% de dano por andar (jogadores ficaram bem mais fortes com o sistema RPG).
 - DESAFIO DO DIA (botão laranja no menu, `dsfOpen`/`dsfStart`/`dsfEnd`, `rk_dsf`, modo `G.gmode='dsf'`): rival e modificador do dia (`DSFC`, `DSFM`, sorteados pela data de Brasília). O rival tem a força do jogador +10% (não depende de item), IA combista no máximo. 3 tentativas/dia. Vitória: 2 Joias, 120 pó, 1 cristal (raridade sobe com a sequência), 1 ticket, 40 gemas; 7 dias seguidos = baú lendário + 10 Joias + 5 tickets. Derrota: 20 pó. Lutador = 1º do time do PVP. Resultado em `#lvrzM` (o menu fecha o rkModal sozinho logo depois de abrir).
 - Teste `tdesafio_v349.js`.
+
+## v350 — Bosses calibrados pela força REAL dos jogadores
+- `forca.yml` (ferramenta): lista os bônus reais de cada jogador pelas sombras do PVP. Em 11/11: os mais fortes (Vini_junior10, ZEUS_DARKBR, Breno) têm dano x20–30, tomam 7–11% do dano e crítico acima de 100%; o meio fica em dano x4–12; iniciantes x2.
+- `BSST` refeito para isso: ATK 90 → 518.200 e DEF 0 → 8.100 (níveis 1→11). Meta "Boss X vezes mais forte que um jogador típico daquele rank": 0,7x no nível 1 até 5x no 11 (contra um jogador de dano x25 e 9% de dano recebido).

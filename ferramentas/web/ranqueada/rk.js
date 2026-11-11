@@ -2949,7 +2949,7 @@ function cnsH(){const id=LVC.id,L=lvOf(id),fr=cnsFree(id),S=cstStats(id),sel=CNV
 
 /* ================= v347: BOSSES COM ATRIBUTOS (mesmo sistema do jogador) + passivas contra itens + Caça mais forte + recompensa diária ================= */
 /* Broly por nível do Boss: começa fraco (igual épico) e termina com 38.000 de ataque. Yuta = +20% de ataque. */
-const BSST=[[40,0,60],[80,30,70],[450,80,80],[850,150,95],[1600,250,110],[2900,380,130],[5400,550,155],[8600,750,185],[10500,950,220],[16000,1000,265],[38000,700,320]]; /* v349: equilibrado pela força esperada do jogador em cada rank */
+const BSST=[[90,0,60],[350,50,70],[900,160,80],[2800,390,95],[7800,740,110],[19200,1240,130],[48900,2100,155],[120500,3190,185],[181300,4720,220],[270900,6600,265],[518200,8100,320]]; /* v350: calibrado pela força REAL dos jogadores (sombras do PVP: os mais fortes têm dano x20–30 e tomam só 7–11% do dano) */
 const bsSt=lv=>{const r=BSST[Math.max(0,Math.min(BSST.length-1,lv|0))],k=RKBID==='yuta'?1.2:1;return {atk:Math.round(r[0]*k),def:r[1],spd:r[2]}};
 function bsStApply(o,ph){const S=bsSt(o.rkL||0),B=rkBoss(),f=ph===2?B.b2:B.b1,b1=B.b1;o.bst=S;
   o.rkB={dm:Math.pow(S.atk/150,.55)*(f.dm/b1.dm)*(o.ysK||1),df:1/(1+S.def/900)*(f.df/b1.df),sp:Math.pow(S.spd/80,.2)*(f.sp/b1.sp)};o.tdm=o.rkB.dm;o.tdf=o.rkB.df;o.tsp=o.rkB.sp}
