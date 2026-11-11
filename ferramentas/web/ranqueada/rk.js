@@ -620,7 +620,8 @@ function twPocFits(R){const k='p|'+R.k+'|'+R.v,S=twStacks();return S.some(x=>x.k
    cache das consultas (rankings/títulos/recordes guardados por alguns minutos, também no aparelho) + se o servidor disser "limite atingido" (429), para de consultar por 15 min e usa o que tem guardado */
 const _twFetchT=twFetchT,RKQC={};let RKQ429=0;
 const RKQH=b=>{const m=b.match(/"stringValue":"h(\d+)"/);return m&&+m[1]<Math.floor(Date.now()/36e5)};
-const RKQT=b=>/"(gh|ch)"/.test(b)&&RKQH(b)?6*3600e3:/"(mk[xpsv]?|avs)"/.test(b)?20e3:/"pf[uh]"/.test(b)?300e3:/"claim"/.test(b)?6*3600e3:/"(gh|ch)"/.test(b)?60e3:/"on"/.test(b)?600e3:/"(ca|rk)"/.test(b)?900e3:/"(sv|nome|nomeL|uid)"/.test(b)?0:/"(rkr|orderBy)"/.test(b)?600e3:/"(sem|ev)"/.test(b)?600e3:300e3;
+/* 11/11 (plano pago): quase tudo atualiza a cada 1 minuto; títulos e horas velhas do chat continuam 6 h; chat da hora atual 30 s */
+const RKQT=b=>/"(gh|ch)"/.test(b)&&RKQH(b)?6*3600e3:/"(mk[xpsv]?|avs)"/.test(b)?20e3:/"claim"/.test(b)?6*3600e3:/"(gh|ch)"/.test(b)?30e3:/"(sv|nome|nomeL|uid)"/.test(b)?0:60e3;
 twFetchT=function(url,o,ms){if(!/:runQuery/.test(url)||!o||!o.body)return _twFetchT(url,o,ms);const b=o.body,ttl=RKQT(b),now=Date.now(),mk=t=>new Response(t,{status:200,headers:{'Content-Type':'application/json'}});
   let c=RKQC[b];if(!c&&ttl>=180e3){try{const x=localStorage.getItem('qc_'+twHash(b));if(x)c=RKQC[b]=JSON.parse(x)}catch(e){}}
   if(c&&(now-c.t<ttl||now<RKQ429))return Promise.resolve(mk(c.v));

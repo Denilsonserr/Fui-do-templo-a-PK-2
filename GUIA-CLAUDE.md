@@ -1545,3 +1545,6 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 ## 11/11 — PLANO PAGO + TRAVA DE GASTO
 - O dono assinou o **Workers Paid (US$5/mês)** na conta Cloudflare Denilsinend: inclui 10 milhões de pedidos/mês e 25 bilhões de linhas lidas/mês no D1 (o limite diário de 5 milhões acabou).
 - O dono NÃO quer pagar mais que os US$5. A Cloudflare não tem trava de valor, então o worker tem a própria trava: tabela `uso(dia,req,rows)` (contagem gravada a cada 200 pedidos ou 1 min por isolate); se passar de `TRAVA` (300 mil pedidos/dia, 700 milhões de linhas/dia, 9 milhões de pedidos/mês, 22 bilhões de linhas/mês) responde 429 "trava de gasto" (o jogo mostra servidor no limite) até virar o dia/mês. Ver em `/fs-admin/uso` (status.yml mostra). Se o dono cancelar o plano pago, baixar a TRAVA para o grátis (5 milhões de linhas/dia, 100 mil pedidos/dia).
+
+## v325 — atualização a cada 1 minuto (plano pago)
+- `RKQT` (cache das consultas no aparelho): ranking, online, perfis, eventos e o resto = 60 s (antes 5 a 15 min); chat da hora atual 30 s; mercado/recados 20 s; títulos e horas velhas do chat 6 h; conta/nome/uid sem cache. Junto com o cache de 20 s do worker, cada consulta lê o banco no máximo ~3 vezes por minuto para todo mundo — cabe com folga nos US$5/mês.
