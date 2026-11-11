@@ -1709,3 +1709,12 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - Atributos (`HYS`): lobinho ATK 3.000/DEF 350, clone 9.000/800, Hidra 30.000/1.300 até 90.000/3.100 (vida 8 a 18 barras), mesmas contas do Boss.
 - CAIXA a cada parte e nível (`hyChest`, aparece no canto `#hyBox`): gemas (10→35, total 150 numa caçada completa), joias, pó, cristal e anéis (1, 2 do nível 1 da Hidra, 4 na vitória; `hyRing` com mais vermelho nos níveis altos). Anel VERMELHO da Hidra: idade 100 a 500.000 anos (`r.a`, `r.hy`), valor x0,5 (100 anos) até x2 (500 mil); `anAge` mostra a idade do vermelho.
 - Tela: slot 2 da Caça vira HIDRA só para ADM (`hySel`; arte nova `RQA.hidra.tela` quando selecionada; `caLobo` volta). Outros veem o cadeado. Recorde `rk_hyRec`. Teste `thidra_v354.js` (gancho `__autoP`, `__pvT.hy/stg`).
+
+## v355 — Hidra: VS transparente, caminho sem parar, itens no chão, 7 níveis
+- VS: `02_em_pe.jpg` recortado (fundo branco tirado, sombra translúcida) → `quadros/em_pe.png` → `RQA.hidra.vs`.
+- Mais monstros: Parte 1 14 abates (até 4 extras), Parte 2 20 (5), Parte 3 30 (6), nascendo a cada 55/45/35 quadros. No chefe, do nível 2 em diante nascem lobinhos (até 3).
+- Hidra até o NÍVEL 7 (`HYMAX`, mapas 6 e 7 = último mapa destruído). Muito mais dano: lobinho ATK 9.000, clone 24.000, Hidra 45.000 → 280.000 (vida 8 → 25 barras).
+- Sem parar a tela: ao terminar uma parte, o BAÚ cai no chão e aparece "➡ SIGA" na direita; o inimigo principal vira invisível e segue o jogador (`hyIdle`, para a câmera); andar até o fim do mapa (`hyNext`) troca de mapa num piscar (0,3 s) e o jogador entra pela esquerda. No chefe o baú cai onde a Hidra caiu.
+- Itens no chão (`HY.items`, `hyDrop`/`hyItemsTick`/`hyItemsDraw`): baú abre ao chegar perto e espalha os prêmios flutuando (gema, joia, pó, cristal, anéis, cura); passar por cima pega (`hyGrant`). Poção de CURA (+10% da vida) cai de 14% dos monstros, de cada baú e a cada nível da Hidra. O que ficar para trás é entregue ao trocar de mapa/terminar (`hyCollectAll`, menos a cura). Gemas somam 150 numa caçada completa (10 baús).
+- Lobinhos coloridos/clones: quadros pintados uma vez num canvas (`hyTinted`) em vez de `ctx.filter` a cada quadro (celular).
+- Correções: a Hidra não "morre" de novo enquanto levanta (`hyRev`; golpes com `lock` ignoravam a invencibilidade e davam vários baús); qualquer besta da caçada fora da lista não cai mais no `caLvUp` do lobo (aparecia a tela "NÍVEL 1 DERROTADO" no meio).

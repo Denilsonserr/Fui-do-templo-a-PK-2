@@ -15,7 +15,7 @@ for k,L in I.items():
         out[k].append([webp(im2),round(m['ax']*s,1),round(m['ay']*s,1),round(ALT/REF[k]/s,4),1])
 R=D+'/recebido/'
 out['por']=webp(Image.open(R+'01_retrato.png').convert('RGB').resize((256,256),Image.LANCZOS),88,False)
-out['vs']=webp(Image.open(R+'02_em_pe.jpg').convert('RGB'),88,False)
+out['vs']=webp(Image.open(D+'/quadros/em_pe.png'),88)   # recortado (fundo branco tirado) no v355
 out['tela']=webp(Image.open(R+'00_tela_caca.png').convert('RGB'),86,False)
 out['mapas']=[webp(Image.open(R+f'mapa{i}.png').convert('RGB'),84,False) for i in range(1,8)]
 A=json.load(open(D+'/../../web/ranqueada/rk_assets.json'));A['hidra']=out
