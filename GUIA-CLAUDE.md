@@ -1515,3 +1515,7 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 
 ## v318
 - Anéis CENTRALIZADOS: `anSil(img)` mede a silhueta do personagem (canvas 120 linhas, alpha>60, guardado por src); cada anel fica no centro do corpo NA ALTURA DELE e com a largura do corpo ali ×1,3 + folga (sem encostar), limitado a 1,18× a mediana e 1,25× a largura da imagem (cabelo grande não deixa um anel gigante). Mais deitados (`rotateX(78deg)`) para não se encavalarem com 8 anéis. Distribuídos de 2% acima do pé até 90% da altura do corpo. Teste: `tanel_v318.js` (Shaka com 8 anéis).
+
+## v319
+- Anéis do jeito da imagem do dono: TODOS NO CHÃO, um dentro do outro, em volta dos pés (atrás do personagem; ele fica em pé em cima). Ordem pela RARIDADE (cor, depois nota): o mais raro é o maior/de fora; os 3 mais fracos bem pequenos perto dos pés (`anGround`). Centro = meio dos pés (silhueta `anSil`).
+- A arte dos anéis (grossa, com espinhos grandes) virava uma mancha quando achatada e sobreposta → anel desenhado em SVG (`anRingSvg`): linha fina na cor do anel + linha clara + linha pontilhada de dentro + espinhos para fora (mais espinhos quanto mais raro / nota S+), os espinhos giram devagar (cada anel num sentido) = anel girando no lugar. Brilho fraco (drop-shadow 2/5 px) pulsando devagar.

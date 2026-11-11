@@ -2267,3 +2267,23 @@ addEventListener('resize',()=>setTimeout(anDecor,200));
 /* equipar os anéis pelo PERFIL: botão no seu perfil abre os anéis do personagem do pedestal */
 {const _h=pfH;pfH=function(){let h=_h.apply(this,arguments);if(PFO)return h;try{const ped=CH[pfCur().ped]?pfCur().ped:'goku';h+=`<button class="hs pfAnB" data-a="pfAnEq" data-c="${ped}" style="${rkB2(1390,22,1640,74)}">💍 ANÉIS DA ALMA</button>`}catch(e){}return h}}
 {const _ac3=rkAct;rkAct=function(a,b){if(a==='pfAnEq'){AN.ch=b.dataset.c;rkView('lib');try{rkLibTab('an')}catch(e){}return}return _ac3.apply(this,arguments)}}
+
+/* ================= v319: ANÉIS NO CHÃO, UM DENTRO DO OUTRO (igual à imagem do dono) =================
+   Todos deitados no chão em volta dos pés, atrás do personagem (ele fica em pé em cima). Ordem pela RARIDADE: o mais raro é o maior (por fora),
+   os 3 mais fracos ficam bem pequenos perto dos pés. Girando devagar no lugar. Brilho mais fraco para não ficar estranho. */
+function anGround(R,cx,cy,cw){const L=R.map((r,i)=>({r,i})).sort((a,b)=>(a.r.c-b.r.c)||(a.r.g-b.r.g)),n=L.length,small=Math.min(3,Math.max(0,n-2));let h='';
+  L.forEach(({r},k)=>{const w=Math.round(cw*(k<small?.42+k*.13:.95+(n-small>1?(k-small)/(n-small-1):1)*1.55)),col=ANC[r.c][1];
+    const hh=Math.round(w*.32);h+=`<i class="ag" style="width:${w}px;height:${hh}px;left:${Math.round(cx-w/2)}px;top:${Math.round(cy-hh/2)}px;--c:${col}"><i class="sp" style="animation-delay:${(-k*1.3).toFixed(1)}s">${anRingSvg(r,k)}</i></i>`});return h}
+/* anel desenhado (linha fina + espinhos, igual à imagem do dono): o espinho gira em volta = anel girando no lugar */
+function anRingSvg(r,k){const col=ANC[r.c][1],hi=['#ffffff','#fff3b0','#f0d8ff','#d8c8ff','#ffd0d0'][r.c],N=10+r.c*3+(r.g>=5?4:0),dur=(22+k*3).toFixed(0),dir=k%2?-1:1;let sp='';
+  for(let i=0;i<N;i++){const a=i/N*360,big=i%(r.c>=3?2:3)===0;sp+=`<path d="M-2.2,0 L0,-${big?11:6} L2.2,0 L0,${big?5:3}Z" transform="rotate(${a}) translate(0,-46)" fill="${hi}" opacity="${big?1:.75}"/>`}
+  return `<svg viewBox="-60 -60 120 120" preserveAspectRatio="none"><g fill="none"><circle r="46" stroke="${col}" stroke-width="2.6"/><circle r="46" stroke="${hi}" stroke-width=".9"/><circle r="40.5" stroke="${col}" stroke-width=".7" opacity=".55" stroke-dasharray="2 3"/></g><g>${sp}<animateTransform attributeName="transform" type="rotate" from="0" to="${360*dir}" dur="${dur}s" repeatCount="indefinite"/></g></svg>`}
+anDecor=function(){try{const M=SRC2ID(),H=innerHeight;document.querySelectorAll('#rkWrap img,#rkModal img').forEach(img=>{const id=M[img.getAttribute('src')];if(!id)return;
+  const Pa=img.parentElement;if(!Pa||img.closest('.pfMold,.rkCard,.eqI,.anCell,button.lk'))return;
+  if(!img.complete||!img.naturalWidth){img.addEventListener('load',()=>setTimeout(anDecor,30),{once:true});return}
+  const bw=img.offsetWidth,bh=img.offsetHeight;if(bh<H*.28)return;
+  const inPf=!!img.closest('.pfPed'),R=inPf&&PFO?(PFO.an||[]):anOfChar(id);Pa.querySelectorAll(':scope>.anFt').forEach(x=>x.remove());if(!R.length)return;
+  const ar=img.naturalWidth/img.naturalHeight,ch=Math.min(bh,bw/ar),cw=ch*ar,ox=img.offsetLeft+(bw-cw)/2,oy=img.offsetTop+bh-ch,S=anSil(img);
+  let cx=ox+cw/2,fy=1;if(S){fy=S.bot;const r0=Math.round(S.bot*S.R.length)-1;let sc=0,m=0;for(let q=r0-8;q<=r0;q++){const e=S.R[q];if(e){sc+=(e.l+e.r)/2;m++}}if(m)cx=ox+sc/m*cw}
+  const cy=oy+fy*ch-ch*.01,cs=getComputedStyle(Pa);if(cs.position==='static')Pa.style.position='relative';
+  const B=document.createElement('div');B.className='anFt b g';B.style.left='0px';B.style.top='0px';B.innerHTML=anGround(R,cx,cy,Math.min(cw,ch*.55));Pa.insertBefore(B,img);img.classList.add('anOn')})}catch(e){}};

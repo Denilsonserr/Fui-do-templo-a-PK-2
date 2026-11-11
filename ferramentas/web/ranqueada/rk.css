@@ -1182,3 +1182,18 @@ img.anOn{position:relative;z-index:2}
 
 .anFt .ar .sp{transform:rotateX(78deg) rotateZ(0);animation-name:anSpin2}
 @keyframes anSpin2{to{transform:rotateX(78deg) rotateZ(360deg)}}
+
+/* v319: anéis no chão um dentro do outro */
+.anFt.g{z-index:1}
+.anFt .ag{position:absolute;display:block;perspective:1200px}
+.anFt .ag .sp{position:absolute;inset:0;display:block;transform:rotateX(72deg) rotateZ(0);animation:anSpinG 20s linear infinite}
+.anFt .ag .sp img{width:100%;height:100%;object-fit:fill;display:block;opacity:.95;filter:drop-shadow(0 0 1px rgba(255,255,255,.7)) drop-shadow(0 0 3px var(--c))!important}
+@keyframes anSpinG{to{transform:rotateX(72deg) rotateZ(360deg)}}
+
+/* v319b: a arte do anel já é desenhada deitada → usar direto (achatada), sem 3D; brilho fraco pulsando devagar */
+.anFt .ag{perspective:none}
+.anFt .ag .sp{transform:none;animation:anGlw 4s ease-in-out infinite}
+@keyframes anGlw{0%,100%{opacity:.85}50%{opacity:1}}
+
+.anFt .ag svg{width:100%;height:100%;display:block;overflow:visible;filter:drop-shadow(0 0 2px var(--c)) drop-shadow(0 0 5px var(--c))}
+.anFt .ag .sp{opacity:.95}
