@@ -2949,7 +2949,7 @@ function cnsH(){const id=LVC.id,L=lvOf(id),fr=cnsFree(id),S=cstStats(id),sel=CNV
 
 /* ================= v347: BOSSES COM ATRIBUTOS (mesmo sistema do jogador) + passivas contra itens + Caça mais forte + recompensa diária ================= */
 /* Broly por nível do Boss: começa fraco (igual épico) e termina com 38.000 de ataque. Yuta = +20% de ataque. */
-const BSST=[[50,0,60],[70,0,70],[100,0,80],[150,0,95],[390,0,110],[1190,160,130],[3150,620,155],[10600,1250,185],[17700,2210,220],[29000,3170,265],[46000,4400,320]]; /* v351: pelo TEMPO de luta (dano medido: 51/s com dano x1); os mais fortes (dano x25) levam ~3 min no nível 11 */
+const BSST=[[50,0,60],[70,0,70],[100,0,80],[150,0,95],[390,0,110],[1190,160,130],[3150,620,155],[10600,1250,185],[17700,3000,220],[29000,4500,265],[46000,6300,320]]; /* v351/v352: pelo TEMPO de luta (51 de vida/s com dano x1). Nível 11: Vini (dano x22, crít. 100%) ~3 min, ADM ~2 min, ZEUS ~7 min */
 const bsSt=lv=>{const r=BSST[Math.max(0,Math.min(BSST.length-1,lv|0))],y=RKBID==='yuta';return {atk:Math.round(r[0]*(y?1.2:1)),def:Math.round(r[1]*(y?1.35:1)),spd:r[2]}};
 function bsStApply(o,ph){const S=bsSt(o.rkL||0),B=rkBoss(),f=ph===2?B.b2:B.b1,b1=B.b1;o.bst=S;
   o.rkB={dm:Math.pow(S.atk/150,.3)*(f.dm/b1.dm)*(o.ysK||1),df:1/(1+S.def/900)*(f.df/b1.df),sp:Math.pow(S.spd/80,.2)*(f.sp/b1.sp)};o.tdm=o.rkB.dm;o.tdf=o.rkB.df;o.tsp=o.rkB.sp}
@@ -3012,4 +3012,4 @@ function dsfEnd(w){G.mode='ranked';$('controls').hidden=true;$('pauseBtn').hidde
 
 /* só para testes de equilíbrio: window.__autoP = jogador controlado pela IA combista */
 {const _hi2=humanInput;humanInput=function(f){_hi2.apply(this,arguments);try{if(window.__autoP&&G.p&&f===G.p[0]){const o=G.p[1];if(!pvCombo(f,o,null)){const c=f.cpu;f.cpu=true;try{aiThink(f,o)}finally{f.cpu=c}}}}catch(e){}}}
-try{window.__pvT={G:()=>G,ko:(a,d)=>ko(a,d),ev:()=>rkEvX(),m:()=>[rkEvG(),rkEvL(),rkEvD(),rkEvA()],lk:()=>{const c={};for(let i=0;i<4000;i++){const r=twEqRoll().k;c[r]=(c[r]||0)+1}const a=[0,0,0,0,0];for(let i=0;i<4000;i++)a[lvCrRoll()]++;return {luck:+lvLuck().toFixed(2),drop:+rkDropF().toFixed(2),extra:lkK(),equip:c,cristal:a}},dl:id=>pvDelta(id),cs:id=>cstStats(id),lvo:id=>lvOpen(id),bs:lv=>bsSt(lv),dl:f=>dlCheck(f),ds:()=>dsfOpen()}}catch(e){} /* só para os testes */
+try{window.__pvT={G:()=>G,ko:(a,d)=>ko(a,d),ev:()=>rkEvX(),m:()=>[rkEvG(),rkEvL(),rkEvD(),rkEvA()],lk:()=>{const c={};for(let i=0;i<4000;i++){const r=twEqRoll().k;c[r]=(c[r]||0)+1}const a=[0,0,0,0,0];for(let i=0;i<4000;i++)a[lvCrRoll()]++;return {luck:+lvLuck().toFixed(2),drop:+rkDropF().toFixed(2),extra:lkK(),equip:c,cristal:a}},dl:id=>pvDelta(id),cs:id=>cstStats(id),lvo:id=>lvOpen(id),bs:lv=>bsSt(lv),dc:f=>dlCheck(f),ds:()=>dsfOpen()}}catch(e){} /* só para os testes */

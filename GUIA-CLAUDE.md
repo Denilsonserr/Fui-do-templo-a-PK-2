@@ -1691,3 +1691,8 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - `BSST` refeito para o tempo: ATK 50 → 46.000, DEF 0 nos níveis 1–5 → 4.400 no 11. Ataque do Boss agora converte com expoente 0,3 (`(ATK/150)^0,3`; o do jogador continua 0,55), para os números grandes não matarem em 2 golpes. Yuta: ATK +20% e DEF +35% (luta ~35% mais longa).
 - Tempo estimado no Broly nível 11: jogador de dano x25 (os mais fortes hoje) ≈ 3 min; dano x6 ≈ 12–16 min (na prática não vence); Yuta nível 11 ≈ 4 min para os mais fortes.
 - Caça (sem mudança): lobo inteiro (10 níveis) ≈ 5–6 min para os mais fortes, bem mais para o resto.
+
+## v352 — força REAL atual (as sombras do PVP estavam velhas)
+- As sombras no servidor eram de versões antigas (antes do sistema RPG), por isso o dono aparecia com dano x6. Calculado com os itens reais de cada conta (`build_conta.yml` mostra itens/anéis/passivas/estrelas; `tforca_v352.js` refaz o cálculo no jogo): **Denilson ADM: dano x33,6, toma 10% do dano, crítico 192%, dano crítico +101%** (o mais forte); Vini: x21,8 / 11% / 132%; ZEUS: x17,7 / 11% / 104%. O conjunto secreto do Shaka (raridade "sec", fator 120) dá ~19.000 de ataque e ~12.000 de defesa sozinho.
+- `BSST` níveis 9–11: DEF 3.000 / 4.500 / 6.300. Nível 11 (Broly): ADM ~2 min, Vini ~3 min, ZEUS ~7 min. Yuta ~35% mais. Caça inteira: ADM ~3 min, Vini ~4 min.
+- Gancho de teste: `__pvT.dl` = pvDelta (o da recompensa diária virou `__pvT.dc`).
