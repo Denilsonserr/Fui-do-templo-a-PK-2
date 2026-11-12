@@ -3302,4 +3302,215 @@ MEL.addEventListener('ended',()=>{if(EVMI>=0&&evMusOn())evMusPlay(1)});
 /* rádio: no lobby continua o evento; a escolha vale para as LUTAS */
 {const _rm=rkMusic;rkMusic=function(){const r=_rm.apply(this,arguments);if(!EVMUS)return r;try{const M=document.querySelector(RKMS()+'.rkMu');if(M){M.insertAdjacentHTML('beforebegin','<p class="twH evMuN">🎶 <b>EVENTO SAINT SEIYA</b>: no lobby tocam só as 3 músicas do evento. A música que você escolher aqui toca nas suas <b>LUTAS</b>.</p>');
   M.querySelectorAll('button').forEach(b=>b.onclick=()=>{rkS('mus',b.dataset.m);rkSfx('whoosh');rkMusic()})}}catch(e){}return r}}
-try{window.__pvT={G:()=>G,ko:(a,d)=>ko(a,d),ev:()=>rkEvX(),m:()=>[rkEvG(),rkEvL(),rkEvD(),rkEvA()],lk:()=>{const c={};for(let i=0;i<4000;i++){const r=twEqRoll().k;c[r]=(c[r]||0)+1}const a=[0,0,0,0,0];for(let i=0;i<4000;i++)a[lvCrRoll()]++;return {luck:+lvLuck().toFixed(2),drop:+rkDropF().toFixed(2),extra:lkK(),equip:c,cristal:a}},dl:id=>pvDelta(id),cs:id=>cstStats(id),hy:()=>HY,hyS:()=>hyStart(),fil:()=>HY.fil,rv:v=>rkView(v),skVid:cb=>{RKBAN='sk';rkPlayVid(cb||(()=>{}))},evm:()=>({EVMI,MCUR,src:MEL.src,loop:MEL.loop,paused:MEL.paused}),evNext:()=>evMusPlay(1),mn:{open:()=>mnOpen(),mine:()=>mnMine(),clean:o=>mnClean(o),give:o=>mnGive(o),view:o=>mnView(o),M:()=>MN},ps:{roll:o=>psRoll(o),def:psDef,sum:psSum,G:psG,S:psS,anim:(r,cb)=>psAnim(r,cb||(()=>{}))},hyBoss:()=>{HY.st=3;HY.lv=1;HY.mobs=[];G.p[1]=hyMk('hidra',900,1)},hyI:()=>(HY.items||[]).map(i=>[i.k,Math.round(i.x),Math.round(i.y),i.land,(()=>{const m=bsImg(HYIC[i.k](i));return m.complete+':'+m.naturalWidth})()]),stg:()=>[STAGE.name,STAGE.src0,STAGE.img&&STAGE.img.naturalWidth,!!STAGE.far],lvo:id=>lvOpen(id),bs:lv=>bsSt(lv),dc:f=>dlCheck(f),ds:()=>dsfOpen()}}catch(e){} /* só para os testes */
+/* ================= v368: PERFIL NOVO (artes do dono) + BATALHAS + ÁLBUM DE CARTAS + COLEÇÃO =================
+   Artes 1847×851 (ferramentas/ranqueada_artes/perfil_v368). Coordenadas em pixels da arte com rkB3.
+   Registro de lutas: rk_bt (últimas 120) e rk_btc (contadores; começa com os números antigos do Boss+Torre). */
+const P3A={pf:'a/4ccadcfbf82270.webp',al:'a/a2419864b10f52.webp',co:'a/e7c2d8ba316c82.webp',bt:'a/e9aba664acd0fc.webp'};
+const rkB3=(x0,y0,x1,y1)=>`left:${x0/18.47}%;top:${y0/8.51}%;width:${(x1-x0)/18.47}%;height:${(y1-y0)/8.51}%`;
+const p3X=x=>x*1672/1847,p3Y=y=>y*941/851;
+/* ---------- registro de lutas ---------- */
+const BTM={pvp:['PVP','⚔️'],boss:['BOSS','👹'],dsf:['DESAFIO','🔥'],pve:['VERSUS','🥊'],torre:['TORRE','🏰'],caca:['CAÇA','🐺'],hidra:['HIDRA','🐉']};
+const BTF={todas:null,pvp:['pvp'],pve:['boss','dsf','pve'],torre:['torre'],caca:['caca','hidra']};
+function btC(){const c=Object.assign({pt:0,w:0,l:0,pf:0,sq:0,bs:0,m:{},ch:{}},rkG('btc',{}));
+  if(!c.b0){try{const S=rkSt(),o=pfD();c.pt=rkPl(S)+(o.twf||0)+(o.twl||0);c.w=(S.wins||0)+(o.twf||0);c.l=Math.max(0,c.pt-c.w)}catch(e){}c.b0=1;rkS('btc',c)}return c}
+function btRec(m,w,x){try{x=x||{};if(G._btT&&Date.now()-G._btT<4000)return;G._btT=Date.now();const p=G.p&&G.p[0],o=G.p&&G.p[1];if(!p||!p.def)return;
+  const e={m,w:w?1:0,c:p.def.id,o:x.o||(o&&o.def&&o.def.id)||'',on:String(x.on||(o&&o.def&&o.def.name)||'?').slice(0,24),pf:w&&p.hp>=(p.mhp||MAXHP)?1:0,d:Date.now(),x:String(x.x||'').slice(0,30)};
+  const L=rkG('bt',[]);L.unshift(e);rkS('bt',L.slice(0,120));const c=btC();c.pt++;if(e.w){c.w++;c.sq++;c.bs=Math.max(c.bs,c.sq)}else{c.l++;c.sq=0}if(e.pf)c.pf++;
+  c.m[m]=(c.m[m]||0)+1;if(e.c)c.ch[e.c]=(c.ch[e.c]||0)+1;rkS('btc',c)}catch(err){}}
+{const _f=rkAfter;rkAfter=function(w){btRec('boss',w===0);return _f.apply(this,arguments)}}
+{const _f=twAfter;twAfter=function(w){btRec('torre',w===0,{x:'ANDAR '+((TW.fl|0)+1)});return _f.apply(this,arguments)}}
+{const _f=caEnd;caEnd=function(w){const o=G.p&&G.p[1],lv=(o&&o.bLv)||1;btRec('caca',!!(o&&o.ko&&lv>=10),{o:'lobo',on:'LOBO',x:'NÍVEL '+lv});return _f.apply(this,arguments)}}
+{const _f=pvEnd;pvEnd=function(w){const F=PV.fight;if(F)btRec('pvp',w===0,{on:(F.opp&&F.opp.nome||'SOMBRA')+(F.friendly?' (amistoso)':''),x:F.friendly?'AMISTOSO':'RANQUEADA'});return _f.apply(this,arguments)}}
+{const _f=dsfEnd;dsfEnd=function(w){btRec('dsf',w===0);return _f.apply(this,arguments)}}
+{const _f=hyEnd;hyEnd=function(won){btRec('hidra',!!won,{o:'hidra',on:'HIDRA',x:'NÍVEL '+(HY.lv||1)});return _f.apply(this,arguments)}}
+{const _f=showResult;showResult=function(){if(G.gmode!=='treino'&&!(G.gmode==='torre'&&TW.on))btRec(G.gmode==='torre'?'torre':'pve',G.wins&&G.wins[0]>=2);return _f.apply(this,arguments)}}
+/* ---------- números do jogador ---------- */
+function p3Lv(c){c=c||btC();const xp=c.w*30+Math.max(0,c.pt-c.w)*12+c.pf*10,lv=Math.min(99,Math.floor(Math.sqrt(xp/25))+1),a=(lv-1)*(lv-1)*25,b=lv*lv*25;return {lv,f:lv>=99?1:Math.max(0,Math.min(1,(xp-a)/(b-a)))}}
+function p3Id(uid,nome){if(nome&&String(nome).toLowerCase()===String(TWADMN).toLowerCase())return '10000001';const h=parseInt(String(twHash(String(uid||'?'))).slice(0,7),36)||7;return String(10000002+h%89999990)}
+function p3Top(c){const M=(c||btC()).ch||{};return Object.keys(M).filter(id=>CH[id]).sort((a,b)=>M[b]-M[a]).slice(0,3)}
+const p3Port=id=>(CRT.chr&&CRT.chr[id])||pvPortrait(id);
+function p3Fotos(){const F=rkG('pft',[]);return [0,1,2].map(i=>typeof F[i]==='string'?F[i]:'')}
+{const _m=pfMine;pfMine=function(){const D=_m.apply(this,arguments);try{const c=btC(),P=pvG();D.lv=p3Lv(c).lv;D.bc={pt:c.pt,w:c.w,pf:c.pf};D.top=p3Top(c);D.ft=p3Fotos();D.pvt=P.t|0;D.pvbt=Math.max(P.t|0,P.bt|0)}catch(e){}return D}}
+{const _c=pfClean;pfClean=function(o,uid,nome){const r=_c.apply(this,arguments);if(!r||!o)return r;const N=(v,mx)=>Math.max(0,Math.min(mx||1e9,+v||0))|0;
+  r.lv=N(o.lv,99);r.bc=o.bc&&typeof o.bc==='object'?{pt:N(o.bc.pt),w:N(o.bc.w),pf:N(o.bc.pf)}:null;r.top=(Array.isArray(o.top)?o.top:[]).filter(id=>CH[id]).slice(0,3);
+  r.ft=(Array.isArray(o.ft)?o.ft:[]).slice(0,3).map(s=>typeof s==='string'&&/^data:image\/jpeg;base64,[A-Za-z0-9+\/=]+$/.test(s)&&s.length<60000?s:'');r.pvt=Math.min(PVT.length-1,N(o.pvt));r.pvbt=Math.min(PVT.length-1,N(o.pvbt));return r}}
+/* ---------- curtidas e visitas (servidor) ---------- */
+const P3S={};
+function p3Post(f){const IV=v=>({integerValue:String(v)}),F={nome:{stringValue:String(twLS.g('tw_nome','')||'?').slice(0,16)},andar:IV(0),tempo:IV(0),uid:{stringValue:twUid()}};
+  for(const k in f)F[k]={stringValue:String(f[k])};return twFetchT(TWURL+'/torre?key='+TWFB.apiKey,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({fields:F})}).catch(()=>{})}
+async function p3Soc(uid,force){const C=P3S[uid];if(C&&!force&&Date.now()-C.t<180e3)return C;const o={t:Date.now(),lk:0,lkMe:0,vis:0,uv:0,rec:[]};
+  try{const L=await rkQ('lkt',uid,500),U=new Set(L.map(e=>e.uid));o.lk=U.size;o.lkMe=U.has(twUid())?1:0}catch(e){}
+  try{const V=(await rkQ('vst',uid,500)).filter(e=>e.uid!==uid).sort((a,b)=>b._ct-a._ct),U=new Set();o.vis=V.length;for(const e of V){if(U.has(e.uid))continue;U.add(e.uid);if(o.rec.length<3)o.rec.push({uid:e.uid,nome:e.nome,ft:/^data:image\/jpeg;base64,/.test(e.ft||'')?e.ft:''})}o.uv=U.size}catch(e){}
+  try{if(rkG('lks',{})[uid])o.lkMe=1}catch(e){}P3S[uid]=o;return o}
+function p3Thumb(){return new Promise(res=>{const f=rkG('foto','');if(!f)return res('');const im=new Image();im.onload=()=>{const c=document.createElement('canvas');c.width=c.height=64;c.getContext('2d').drawImage(im,0,0,64,64);res(c.toDataURL('image/jpeg',.7))};im.onerror=()=>res('');im.src=f})}
+async function p3Visit(uid){if(!uid||uid===twUid()||!twLS.g('tw_nome',''))return;const V=rkG('vsd',{}),d=new Date().toISOString().slice(0,10);if(V[uid]===d)return;V[uid]=d;rkS('vsd',V);p3Post({vst:uid,ft:await p3Thumb()})}
+{const _o=pfOpenOther;pfOpenOther=async function(uid){const r=await _o.apply(this,arguments);try{p3Visit(uid)}catch(e){}return r}}
+/* Top 1 de um personagem = quem está mais alto no PVP (rank, divisão, estrelas) entre os que usam aquele personagem */
+async function p3Top1(nome){try{const A=await pvLoadAll(),B={};for(const e of A){const id=e.ch;if(!CH[id])continue;const k=(e.t|0)*1e6+(e.dv|0)*1e3+(e.st|0);if(!B[id]||k>B[id].k)B[id]={k,n:String(e.nome||'').toLowerCase()}}
+  return Object.keys(B).filter(id=>B[id].n&&B[id].n===String(nome||'').toLowerCase()&&B[id].k>0)}catch(e){return []}}
+/* ---------- menu lateral (igual nas 4 artes) ---------- */
+function p3Side(){return [['pf',110,190],['hs',192,258],['p3al',262,326],['p3co',330,396],['p3bt',400,466],['p3st',470,536],['p3so',540,606],['conta',608,672]].map(([a,y0,y1])=>`<button class="hs" data-a="${a}" style="${rkB3(20,y0,252,y1)}"></button>`).join('')+`<button class="hs" data-a="back" style="${rkB3(40,0,232,86)}"></button>`}
+/* ---------- PERFIL ---------- */
+/* placa do título (modelo da referência do dono; quando ele mandar as artes dos títulos, troca aqui) */
+function p3Plate(t,n,adm,me){let ic='',nm='',c='#ffd84a';
+  if(t==='adm'&&adm){ic='👑';nm='Administrador'}else if(TWTIT[t]){const T=TWTIT[t];ic=T.rk!=null?`<img src="${RQA.rank[T.rk]}" alt="">`:T.i;nm=T.n;c=T.c||c}
+  if(!nm)return me?'<span class="p3Pl none"><b>SEM TÍTULO · toque para escolher</b></span>':'<span class="p3Pl none"><b>SEM TÍTULO</b></span>';
+  return `<span class="p3Pl${t==='adm'?' adm':''}" style="--c:${c}"><i class="w l"></i><b><em>${ic}</em>${twEsc(nm)}<s></s></b><i class="w r"></i></span>`}
+RKD.pf=[1847,851];
+pfH=function(){const D=pfCur(),me=!PFO,n=D.nome||'',adm=!!n&&n.toLowerCase()===String(TWADMN).toLowerCase(),ped=CH[D.ped]?D.ped:'goku',foto=PFO&&PFO.fh?'':D.foto;
+  const c=me?btC():null,bc=me?{pt:c.pt,w:c.w,pf:c.pf}:(D.bc||(D.h?{pt:D.h.pt,w:D.h.vw,pf:0}:null)),lv=me?p3Lv(c):D.bc?p3Lv({w:D.bc.w,pt:D.bc.pt,pf:D.bc.pf}):{lv:D.lv||1,f:0},tx=bc&&bc.pt?(bc.w/bc.pt*100):0,P=me?pvG():null,pt=me?P.t|0:D.pvt|0,pb=me?Math.max(P.t|0,P.bt|0):Math.max(D.pvt|0,D.pvbt|0);
+  const own=me?rkG('own',['goku']).filter(id=>CH[id]).length:(D.h?D.h.own:0),top=me?p3Top(c):(D.top||[]),FT=me?p3Fotos():(D.ft||[]),uid=me?twUid():D.uid,S=P3S[uid]||null;
+  const tops=top.length?top:[ped];const N=v=>v==null?'—':rkFmtN(v);
+  const md=D.mold?mdH(D.mold,p3X(296),p3Y(104),p3X(461),p3Y(269),p3Y(330)):'';
+  const med=(t,b)=>`<div class="p3Md" style="${b};--c:${PVT[t][1]}"><i class="g"></i><img src="${PVA.e[PVT[t][3]]}" alt=""><em>${PVT[t][0]}</em></div>`;
+  return `${p3Side()}
+  <div class="p3Bk" style="${rkB3(430,0,1240,330)}"><img src="${fullSrc(ped)}" alt=""></div>
+  <button class="hs p3Cfg" data-a="mn2Cfg" style="${rkB3(1650,15,1830,68)}"></button>
+  ${me?'':`<div class="pfOth p3Oth" style="${rkB3(470,8,1100,58)}">👀 PERFIL DE <b>${twEsc(n||'?')}</b>${PFO.old?'<small>ainda não atualizou o jogo</small>':''}</div>`}
+  ${md}<button class="pfFoto p3Ft${me?'':' ro'}" data-a="pfFoto" style="${rkB3(304,112,453,261)}">${foto?`<img src="${foto}" alt="">`:me?`<span><i>📷</i>FOTO</span>`:`<span class="h"><i>👤</i></span>`}</button>
+  ${adm?`<div class="p3Adm" style="${rkB3(338,246,420,276)}">ADM</div>`:''}
+  <div class="p3Nm${adm?' adm':''}" style="${rkB3(490,96,880,148)}"><b>${n?twEsc(n):'<i>SEM NOME</i>'}</b>${me?'<button class="p3Ed" data-a="p3nm" title="Trocar nome">✎</button>':''}</div>
+  <div class="p3Id" style="${rkB3(495,152,880,188)}">ID: <b>${p3Id(uid,n)}</b><button class="p3Cp" data-a="p3id" data-v="${p3Id(uid,n)}" title="Copiar">⧉</button></div>
+  <div class="p3Lv" style="${rkB3(495,192,880,228)}">Nv. <b>${lv.lv}</b><i><s style="width:${(lv.f*100).toFixed(1)}%"></s></i></div>
+  <button class="p3So lk${S&&S.lkMe?' on':''}" data-a="p3lk" style="${rkB3(860,130,962,232)}"><em id="p3Lk">${S?N(S.lk):'…'}</em></button>
+  <button class="p3So" data-a="p3pop" style="${rkB3(964,130,1062,232)}"><em id="p3Pop">${S?N(S.lk*10+S.vis):'…'}</em></button>
+  <button class="p3So" data-a="p3uv" style="${rkB3(1064,130,1166,232)}"><em id="p3Uv">${S?N(S.uv):'…'}</em></button>
+  <button class="p3Ti${me?'':' ro'}" data-a="pfTit" style="${rkB3(494,232,900,280)}">${p3Plate(D.tit,n,adm,me)}</button>
+  ${me?`<button class="p3Ed2" data-a="pfTit" style="${rkB3(1122,234,1168,276)}" title="Trocar título">✎</button>`:''}
+  <div class="p3T1" id="p3T1" style="${rkB3(500,290,1165,316)}"></div>
+  ${med(pt,rkB3(375,372,516,458))}${med(pb,rkB3(680,372,821,458))}
+  <div class="p3Nb" style="${rkB3(352,500,515,552)}">${bc?N(bc.pt):'—'}</div><div class="p3Nb" style="${rkB3(590,500,744,552)}">${bc?tx.toFixed(1).replace('.',',')+'%':'—'}</div>
+  <div class="p3Nb" style="${rkB3(820,500,972,552)}">${N(own)}</div><div class="p3Nb" style="${rkB3(1050,500,1199,552)}" title="Vitórias PERFEITAS (sem tomar dano)">${bc?N(bc.pf):'—'}</div>
+  ${tops.map((id,i)=>{const x=[375,508,641][i];return `<div class="p3He" style="${rkB3(x-52,616,x+52,720)}"><img src="${p3Port(id)}" alt=""><i>★</i><em>${CH[id].name}</em></div>`}).join('')}
+  <div class="p3Vi" id="p3Vi" style="${rkB3(492,762,690,814)}">${S?S.rec.map(v=>`<span title="${twEsc(v.nome||'')}">${v.ft?`<img src="${v.ft}" alt="">`:'👤'}</span>`).join(''):''}</div>
+  <div class="p3Nb sm" style="${rkB3(872,764,975,810)}">${bc?N(bc.pt):'—'}</div><div class="p3Nb sm" id="p3Lk2" style="${rkB3(1126,764,1199,810)}">${S?N(S.lk):'…'}</div>
+  <button class="p3Ch${me?'':' ro'}" data-a="${me?'pfPick':''}" style="${rkB3(1300,60,1730,600)}"><img src="${fullSrc(ped)}" alt=""></button>
+  ${[[1272,630,1438,782],[1459,652,1588,764],[1609,652,1738,764]].map(([x0,y0,x1,y1],i)=>`<button class="p3Ph${FT[i]?' on':''}${me?'':' ro'}" data-a="p3ph" data-i="${i}" style="${rkB3(x0,y0,x1,y1)}">${FT[i]?`<img src="${FT[i]}" alt="">`:''}</button>`).join('')}`};
+pfOn=function(){clearInterval(rkView.iv);const D=pfCur(),me=!PFO,uid=me?twUid():D.uid;if(me)setTimeout(()=>pfPub(1),400);
+  p3Soc(uid).then(S=>{if(RKV!=='pf'||pfCur().uid!==D.uid&&!me)return;const N=v=>rkFmtN(v),set=(id,v)=>{const e=$(id);if(e)e.textContent=v};set('p3Lk',N(S.lk));set('p3Lk2',N(S.lk));set('p3Pop',N(S.lk*10+S.vis));set('p3Uv',N(S.uv));
+    const L=document.querySelector('#rkWrap .p3So.lk');if(L)L.classList.toggle('on',!!S.lkMe);const V=$('p3Vi');if(V)V.innerHTML=S.rec.map(v=>`<span title="${twEsc(v.nome||'')}">${v.ft?`<img src="${v.ft}" alt="">`:'👤'}</span>`).join('')||'<small>ninguém ainda</small>'});
+  p3Top1(D.nome).then(L=>{const E=$('p3T1');if(!E||RKV!=='pf')return;E.innerHTML=(L.length?`<span class="t1">🏆 Top 1 <b>${L.map(id=>CH[id].name).join(', ')}</b> · Fúria do Templo</span>`:me?'<span class="t0">🏆 Seja o melhor do PVP com um personagem para virar Top 1</span>':'')+'<span class="cl">🛡️ Não possui Clã</span>'});
+  const E=$('p3T1');if(E)E.innerHTML='<span class="cl">🛡️ Não possui Clã</span>'};
+{const _v=rkView;rkView=function(v){const r=_v.apply(this,arguments);if(v==='pf'){const A=document.querySelector('#rkWrap .rk_pf');if(A)A.style.backgroundImage=`url(${P3A.pf})`}return r}}
+function p3PhotoPick(i){const I=document.createElement('input');I.type='file';I.accept='image/*';I.onchange=()=>{const f=I.files&&I.files[0];if(!f)return;const u=URL.createObjectURL(f),im=new Image();
+  im.onload=()=>{const m=480,s=Math.min(1,m/Math.max(im.width,im.height)),c=document.createElement('canvas');c.width=Math.round(im.width*s);c.height=Math.round(im.height*s);c.getContext('2d').drawImage(im,0,0,c.width,c.height);
+    let q=.82,d=c.toDataURL('image/jpeg',q);while(d.length>30000&&q>.3){q-=.1;d=c.toDataURL('image/jpeg',q)}if(d.length>45000){const c2=document.createElement('canvas');c2.width=c.width/2;c2.height=c.height/2;c2.getContext('2d').drawImage(c,0,0,c2.width,c2.height);d=c2.toDataURL('image/jpeg',.7)}
+    const F=p3Fotos();F[i]=d;rkS('pft',F);URL.revokeObjectURL(u);rkSfx('powerUp');rkToast('🖼️ Foto colocada no seu perfil!','#7dff9a');rkView('pf')};im.onerror=()=>rkToast('Não deu para abrir essa imagem','#ff8080');im.src=u};I.click()}
+function p3PhotoView(i){const me=!PFO,F=me?p3Fotos():(pfCur().ft||[]),src=F[i];if(!src){if(me)p3PhotoPick(i);return}
+  rkModal(`<div class="twM p3PV"><img src="${src}" alt=""><div class="row">${me?'<button class="btn" id="p3Tr">🔄 TROCAR</button><button class="btn" id="p3Rm">🗑️ TIRAR</button>':''}<button class="btn main" id="rkMX">FECHAR</button></div></div>`);
+  $('rkMX').onclick=()=>rkModal(null);if(me){$('p3Tr').onclick=()=>{rkModal(null);p3PhotoPick(i)};$('p3Rm').onclick=()=>{const F2=p3Fotos();F2[i]='';rkS('pft',F2);rkModal(null);rkView('pf')}}}
+/* ---------- BATALHAS ---------- */
+const BTV={f:'todas',pg:0};
+function btList(){const F=BTF[BTV.f];return rkG('bt',[]).filter(e=>!F||F.includes(e.m))}
+function btOppImg(e){if(e.o==='hidra')return RQA.hidra&&RQA.hidra.por||'';if(e.o==='lobo')return RQA.lobo&&RQA.lobo.por||'';return CH[e.o]?pvPortrait(e.o):''}
+const btWhen=d=>{const s=(Date.now()-d)/1000;return s<60?'agora':s<3600?Math.floor(s/60)+' min':s<86400?Math.floor(s/3600)+' h':Math.floor(s/86400)+' d'};
+function btH(){const L=btList(),pages=Math.max(1,Math.ceil(L.length/5));BTV.pg=Math.min(BTV.pg,pages-1);const c=btC(),Y=[240,344,448,552,655];
+  const mm=Object.entries(c.m||{}).sort((a,b)=>b[1]-a[1])[0];const tabs=[['todas',312,540],['pvp',558,758],['pve',778,978],['torre',997,1195],['caca',1215,1415]];
+  return `${p3Side()}<div class="p3Tt" style="${rkB3(262,10,560,64)}">BATALHAS</div>
+  ${tabs.map(([k,x0,x1])=>`<button class="p3Tab${BTV.f===k?' on':''}${k==='todas'&&BTV.f!=='todas'?' dim':''}" data-a="btF" data-f="${k}" style="${rkB3(x0,125,x1,198)}"></button>`).join('')}
+  ${Y.map((y,i)=>{const e=L[BTV.pg*5+i];if(!e)return `<div class="btE" style="${rkB3(312,y+4,1412,y+82)}">${i===0&&!L.length?'Nenhuma luta registrada ainda. Jogue qualquer modo e ela aparece aqui!':''}</div>`;const M=BTM[e.m]||['?','?'],oi=btOppImg(e);
+    return `<div class="btSq${e.w?' w':' l'}" style="${rkB3(342,y+3,428,y+83)}"><img src="${pvPortrait(CH[e.c]?e.c:'goku')}" alt=""></div>
+    <div class="btPl" style="${rkB3(480,y+12,668,y+72)}"><i>${M[1]}</i>${M[0]}</div>
+    <div class="btSq o" style="${rkB3(940,y+3,1027,y+83)}">${oi?`<img src="${oi}" alt="">`:'<b>?</b>'}</div>
+    <div class="btTx" style="${rkB3(1046,y+8,1318,y+78)}"><b class="${e.w?'w':'l'}">${e.w?(e.pf?'✨ PERFEITO':'🏆 VITÓRIA'):'💀 DERROTA'}</b><span>${twEsc(e.on)}${e.x?' · '+twEsc(e.x):''}</span><small>${CH[e.c]?CH[e.c].name:''} · há ${btWhen(e.d)}</small></div>
+    <button class="hs" data-a="btD" data-i="${BTV.pg*5+i}" style="${rkB3(1326,y+12,1392,y+74)}"></button>`}).join('')}
+  <button class="hs" data-a="btPg" data-d="-1" style="${rkB3(632,778,746,830)}"></button><button class="hs" data-a="btPg" data-d="1" style="${rkB3(990,778,1106,830)}"></button>
+  <div class="p3Dots" style="${rkB3(762,784,972,824)}">${BTV.pg+1} / ${pages}</div>
+  ${[['pt',c.pt],['tx',c.pt?(c.w/c.pt*100).toFixed(1).replace('.',',')+'%':'—'],['w',c.w],['l',c.l],['sq',c.sq],['bs',c.bs]].map(([k,v],i)=>`<div class="btSv" style="${rkB3(1690,220+i*49.5,1812,266+i*49.5)}">${typeof v==='number'?rkFmtN(v):v}</div>`).join('')}
+  <div class="btMm" style="${rkB3(1478,700,1812,762)}">${mm?`<b>${(BTM[mm[0]]||['?','?'])[1]} ${(BTM[mm[0]]||['?'])[0]}</b><small>${rkFmtN(mm[1])} lutas</small>`:'<small>jogue para descobrir</small>'}</div>`}
+function btDet(i){const e=rkG('bt',[])[i];if(!e)return;const M=BTM[e.m]||['?','?'];const dt=new Date(e.d);
+  rkModal(`<div class="twM sm btDM"><h3>${M[1]} ${M[0]} · ${e.w?(e.pf?'✨ VITÓRIA PERFEITA':'🏆 VITÓRIA'):'💀 DERROTA'}</h3><div class="btDV"><span><img src="${pvPortrait(CH[e.c]?e.c:'goku')}" alt=""><b>${CH[e.c]?CH[e.c].name:'?'}</b><small>você</small></span><em>VS</em><span>${btOppImg(e)?`<img src="${btOppImg(e)}" alt="">`:'<i>?</i>'}<b>${twEsc(e.on)}</b><small>${e.x?twEsc(e.x):M[0]}</small></span></div>
+  <p class="twH">📅 ${dt.toLocaleDateString('pt-BR')} às ${dt.toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'})}</p><div class="row"><button class="btn main" id="rkMX">FECHAR</button></div></div>`);$('rkMX').onclick=()=>rkModal(null)}
+/* ---------- ÁLBUM DE CARTAS ---------- */
+const ALB=[['db','DRAGON BALL',['goku','vegeta','gogeta','broly']],['nr','NARUTO',['naruto','madara']],['op','ONE PIECE',['luffy','zoro','aokiji']],['jjk','JUJUTSU KAISEN',['gojo','yuta']],
+  ['ds','DEMON SLAYER',['rengoku']],['cdz','CAVALEIROS DO ZODÍACO',['shaka']],['opm','ONE PUNCH MAN',['garou']],['ex','EXCLUSIVOS · FÚRIA DO TEMPLO',['aylla','zedry','zaykon','qingqing']]].map(([k,n,L])=>({k,n,L:L.filter(id=>CH[id]&&CRT.chr&&CRT.chr[id])}));
+const ALV={i:0,mode:''};const ALREW=300;
+function alG(){return Object.assign({},rkG('alb',{}))}
+function alA(k){const G0=alG(),a=G0[k]||{};return {nm:a.nm||'',p:Array.isArray(a.p)?a.p:[],o:Array.isArray(a.o)?a.o:null,rw:a.rw|0}}
+function alSv(k,a){const G0=alG();G0[k]=a;rkS('alb',G0);try{acSave()}catch(e){}}
+function alOrder(A,a){const L=A.L.slice();if(a.o){const o=a.o.filter(id=>L.includes(id));for(const id of L)if(!o.includes(id))o.push(id);return o}return L}
+function alPend(A){const own=rkG('own',['goku']),a=alA(A.k);return A.L.filter(id=>own.includes(id)&&!a.p.includes(id))}
+function alH(){const A=ALB[ALV.i],a=alA(A.k),O=alOrder(A,a),own=rkG('own',['goku']),pend=alPend(A),X=[[645,825],[866,1050],[1168,1348],[1373,1553],[1573,1753]],Y=[[152,386],[418,652]];
+  return `${p3Side()}
+  <div class="alLs" style="${rkB3(262,138,546,796)}">${ALB.map((B,i)=>{const b=alA(B.k),pd=alPend(B).length;return `<button class="alIt${i===ALV.i?' on':''}${b.p.length&&b.p.length===B.L.length?' ok':''}" data-a="alSel" data-i="${i}"><span class="ic">${B.L[0]?`<img src="${p3Port(B.L[0])}" alt="">`:'📖'}</span><span class="tx"><b>${twEsc(b.nm||B.n)}</b><small>${b.p.length}/${B.L.length} cartas${pd?` · <em>${pd} para colar</em>`:''}</small></span></button>`}).join('')}</div>
+  <div class="alNm" style="${rkB3(850,40,1262,92)}">${twEsc(a.nm||A.n)}</div><button class="hs" data-a="alRen" style="${rkB3(1262,42,1312,90)}"></button>
+  <div class="alCt" style="${rkB3(1588,74,1722,124)}">${a.p.length} / ${A.L.length}</div>
+  ${pend.length?`<button class="alCol" data-a="alAll" style="${rkB3(1330,46,1520,92)}">📥 COLAR ${pend.length}</button>`:''}
+  ${ALV.mode?`<div class="alMo" style="${rkB3(650,662,1750,700)}">${ALV.mode==='rm'?'🗑️ Toque numa carta para TIRAR do álbum':ALV.sw!=null?'⇄ Agora toque onde ela vai ficar':'⇄ Toque numa carta para TROCAR de lugar'}</div>`:''}
+  ${[0,1,2,3,4,5,6,7,8,9].map(s=>{const [x0,x1]=X[s%5],[y0,y1]=Y[s/5|0],id=O[s],st=rkB3(x0+6,y0+6,x1-6,y1-6);
+    if(!id)return `<div class="alSl x" style="${st}"><small>EM BREVE</small></div>`;
+    if(a.p.includes(id))return `<button class="alSl c${ALV.sw===s?' sel':''}" data-a="alSlot" data-s="${s}" style="${st}"><img src="${CRT.chr[id]}" alt=""><i class="sh"></i></button>`;
+    if(own.includes(id))return `<button class="alSl n" data-a="alSlot" data-s="${s}" style="${st}"><b>＋</b><em>COLAR</em><small>${CH[id].name}</small></button>`;
+    return `<button class="alSl q" data-a="alSlot" data-s="${s}" style="${st}"><img src="${CRT.bk}" alt=""><b>?</b><small>${CH[id].name}</small></button>`}).join('')}
+  <button class="hs" data-a="alRen" style="${rkB3(635,725,788,788)}"></button><button class="hs${ALV.mode==='rm'?' p3On':''}" data-a="alRm" style="${rkB3(820,725,972,788)}"></button>
+  <button class="hs" data-a="alPg" data-d="-1" style="${rkB3(1030,725,1132,788)}"></button><button class="hs" data-a="alPg" data-d="1" style="${rkB3(1323,725,1425,788)}"></button>
+  <button class="hs" data-a="alPg" data-d="-1" style="${rkB3(538,330,584,430)}"></button><button class="hs" data-a="alPg" data-d="1" style="${rkB3(1778,330,1824,430)}"></button>
+  <div class="p3Dots al" style="${rkB3(1136,738,1320,778)}">${ALB.map((B,i)=>`<i class="${i===ALV.i?'on':''}"></i>`).join('')}</div>
+  <button class="hs${ALV.mode==='sw'?' p3On':''}" data-a="alSw" style="${rkB3(1484,725,1667,788)}"></button>`}
+function alPlace(A,id){const a=alA(A.k);if(a.p.includes(id))return;a.p.push(id);alSv(A.k,a);rkSfx('powerUp');
+  if(a.p.length===A.L.length&&!a.rw){a.rw=1;alSv(A.k,a);rkAdd('gem',ALREW);try{acSave(1)}catch(e){}setTimeout(()=>{rkSfx('boom');rkToast('🏆 ÁLBUM '+A.n+' COMPLETO! +'+ALREW+' 💎','#ffd84a')},350)}else rkToast('✨ '+CH[id].name+' colado no álbum!','#7dff9a')}
+function alCardView(id){rkModal(`<div class="twM sm alCV"><img src="${CRT.chr[id]}" alt=""><b>${CH[id].name}</b><div class="row"><button class="btn main" id="rkMX">FECHAR</button></div></div>`);$('rkMX').onclick=()=>rkModal(null)}
+function alSlot(s){const A=ALB[ALV.i],a=alA(A.k),O=alOrder(A,a),id=O[s];if(!id)return;const own=rkG('own',['goku']);
+  if(ALV.mode==='sw'){if(ALV.sw==null){ALV.sw=s;rkSfx('whoosh');return rkView('p3al')}const t=O[ALV.sw];O[ALV.sw]=O[s];O[s]=t;a.o=O;alSv(A.k,a);ALV.sw=null;rkSfx('powerUp');return rkView('p3al')}
+  if(a.p.includes(id)){if(ALV.mode==='rm'){a.p=a.p.filter(x=>x!==id);alSv(A.k,a);rkSfx('whoosh');rkToast('Carta tirada do álbum (pode colar de novo quando quiser)','#cfd6ea');return rkView('p3al')}return alCardView(id)}
+  if(own.includes(id)){alPlace(A,id);return rkView('p3al')}
+  rkSfx('clang');rkToast('🔒 Você ainda não tem a carta de '+CH[id].name+'. Pegue no Gacha!','#cfd6ea')}
+/* ---------- COLEÇÃO ---------- */
+const COV={t:'all',c:'all',pg:0,sel:null};
+function coItems(){const sv=[RKL.tab,RKL.q,RKL.f],R=[];RKL.q='';RKL.f=0;
+  try{for(const tab of ['eq','it','col']){RKL.tab=tab;for(const x of rkLibItems()){const e=Object.assign({},x);const id=String(x.id);
+    if(tab==='eq'){if(id.startsWith('sp')){const S=RKSP[id.slice(2)]||{};e.c='esp';e.t=S.sk?'lot':/arm|cap|bot|capa|elmo|luv/i.test(S.t||S.s||'')?'def':'atk'}else{e.c='eq';e.t=id.startsWith('esp')?'atk':'def'}}
+    else if(tab==='it'){e.c=id.startsWith('p')||id==='senzu'?'con':'mat';e.t='bau'}else{e.c='out';e.t='bau'}R.push(e)}}}catch(err){}
+  RKL.tab=sv[0];RKL.q=sv[1];RKL.f=sv[2];
+  try{const L=anL();ANC.forEach((C,i)=>{const has=L.some(r=>r.c===i);R.push({id:'an'+i,c:'eq',t:'ring',r:['comum','rara','epica','lend','mit'][i]||'mit',has,img:RQA.anel2[i],big:RQA.anel2[i],nm:'ANEL '+C[0],d:'Anel da Alma · cor '+C[0].toLowerCase()+(i===4?' · o VERMELHO sai na Caça da Hidra (100 a 500.000 anos)':'')})})}catch(err){}
+  try{const g=psG();R.push({id:'jn',c:'mat',t:'lot',r:'sec',has:(g.jn|0)>0,img:RQA.jn,big:RQA.jn,nm:'JOIA NEGRA',d:'Você tem '+rkFmtN(g.jn|0)+' · 1 joia = 1 giro de PASSIVA'})}catch(err){}
+  try{R.push({id:'mo',c:'mat',t:'bau',r:'lend',has:1,img:'',big:'',ico:'🪙',bigI:'🪙',nm:'MOEDAS DE OURO',d:'Você tem '+rkFmtN(twCoins())})}catch(err){}
+  return R}
+function coList(){return coItems().filter(e=>(COV.t==='all'||e.t===COV.t)&&(COV.c==='all'||e.c===COV.c))}
+function coH(){const all=coItems(),L=coList(),pages=Math.max(1,Math.ceil(L.length/24));COV.pg=Math.min(COV.pg,pages-1);const X=[582,717,852,987,1122,1257],Y=[277,408,540,672];
+  const sel=L.find(e=>e.id===COV.sel)||L[0];if(sel)COV.sel=sel.id;const RC=r=>(TWEQR.find(q=>q.k===r)||{}).c||RKRC&&RKRC[['comum','rara','epica','lend','mit','sec','obs'].indexOf(r)]||'#c46bff';
+  return `${p3Side()}
+  ${[['all',540,752],['atk',770,888],['def',905,1022],['ring',1037,1152],['lot',1167,1282],['bau',1297,1412]].map(([k,x0,x1])=>`<button class="p3Tab sq${COV.t===k?' on':''}${k==='all'&&COV.t!=='all'?' dim':''}" data-a="coT" data-k="${k}" style="${rkB3(x0,155,x1,222)}"></button>`).join('')}
+  ${[['all',302],['eq',378],['mat',450],['con',522],['esp',597],['out',670]].map(([k,y])=>`<button class="p3Tab l${COV.c===k?' on':''}${k==='all'&&COV.c!=='all'?' dim':''}" data-a="coC" data-k="${k}" style="${rkB3(298,y,538,y+64)}"></button>`).join('')}
+  <div class="coCt l" style="${rkB3(1585,178,1652,218)}"><b>${all.filter(e=>e.has).length}</b></div><div class="coCt r" style="${rkB3(1672,178,1752,218)}">${all.length}</div>
+  ${X.flatMap((x,i)=>Y.map((y,j)=>[x,y,j*6+i])).sort((a,b)=>a[2]-b[2]).map(([x,y,k])=>{const e=L[COV.pg*24+k];if(!e)return '';const c=RC(e.r);
+    return `<button class="coCl${e.has?'':' no'}${sel&&sel.id===e.id?' on':''}" data-a="coSel" data-id="${twEsc(e.id)}" style="${rkB3(x+3,y+3,x+113,y+111)};--c:${c}">${e.img?`<img src="${e.img}" alt="">`:`<i>${e.ico||'?'}</i>`}${e.has?'':'<em>🔒</em>'}</button>`}).join('')}
+  ${L.length?'':`<div class="coE" style="${rkB3(582,420,1372,520)}">Nada nessa combinação de filtros</div>`}
+  <div class="coPg" style="${rkB3(860,792,1100,826)}"><button data-a="coPg" data-d="-1">◀</button><span>${COV.pg+1}/${pages}</span><button data-a="coPg" data-d="1">▶</button></div>
+  ${sel?`<div class="coBig${sel.has?'':' no'}" style="${rkB3(1540,300,1684,452)};--c:${RC(sel.r)}">${sel.big||sel.img?`<img src="${sel.big||sel.img}" alt="">`:`<i>${sel.bigI||sel.ico||'?'}</i>`}</div>
+  <div class="coNm" style="${rkB3(1446,496,1778,538)};color:${RC(sel.r)}">${twEsc(sel.nm||'?')}</div>
+  <div class="coDs" style="${rkB3(1438,570,1788,744)}"><b class="${sel.has?'y':'n'}">${sel.has?'✔ VOCÊ TEM':'🔒 AINDA NÃO TEM'}</b><p>${twEsc(sel.d||'')}</p></div>`:''}`}
+/* ---------- telas novas (al, co, bt) ---------- */
+{const _v=rkView;rkView=function(v){if(!['p3al','p3co','p3bt'].includes(v))return _v.apply(this,arguments);RKV=v;const W=$('rkWrap');if(!W)return;clearInterval(rkView.iv);rkModal(null);
+  const k=v.slice(2);W.innerHTML=`<div class="rkA rk_${v} p3V" data-w="1847" data-h="851" data-full="1" style="background-image:url(${P3A[k]})">${({al:alH,co:coH,bt:btH})[k]()}<div id="rkToast"></div></div>`;rkFit();
+  W.querySelectorAll('[data-a]').forEach(b=>b.onclick=e=>{e.stopPropagation();rkAct(b.dataset.a,b)})}}
+{const _a=rkAct;rkAct=function(a,b){
+  if(['p3al','p3co','p3bt'].includes(a)){if(PFO){rkSfx('clang');return rkToast('Essa parte só aparece no SEU perfil','#cfd6ea')}rkSfx('whoosh');ALV.mode='';ALV.sw=null;return rkView(a)}
+  if(a==='p3st'||a==='p3so'){rkSfx('clang');return rkToast(a==='p3st'?'📺 STREAM em breve!':'👥 SOCIAL em breve!','#d9b3ff')}
+  if(a==='back'&&['p3al','p3co','p3bt'].includes(RKV)){rkSfx('whoosh');return rkView('pf')}
+  if(a==='p3nm'){rkSfx('whoosh');return rkOverTw(()=>twAskName(()=>{})).then(()=>{try{pfPub(1)}catch(e){}if(RKV==='pf')rkView('pf')})}
+  if(a==='p3id'){const v=b.dataset.v;try{navigator.clipboard.writeText(v)}catch(e){}rkSfx('whoosh');return rkToast('ID '+v+' copiado!','#7dff9a')}
+  if(a==='p3lk'){const D=pfCur(),uid=PFO?D.uid:twUid(),S=P3S[uid];if(!PFO)return rkToast('👍 '+rkFmtN(S?S.lk:0)+' pessoas curtiram seu perfil','#ffd84a');
+    const M=rkG('lks',{});if(M[uid]||(S&&S.lkMe))return rkToast('Você já curtiu esse perfil 👍','#cfd6ea');if(!twLS.g('tw_nome',''))return rkToast('Coloque um nome para curtir','#ff8080');
+    M[uid]=1;rkS('lks',M);p3Post({lkt:uid});if(S){S.lk++;S.lkMe=1}rkSfx('powerUp');rkToast('👍 Você curtiu o perfil de '+(D.nome||'?')+'!','#7dff9a');for(const k of ['p3Lk','p3Lk2']){const e=$(k);if(e&&S)e.textContent=rkFmtN(S.lk)}if(b)b.classList.add('on');return}
+  if(a==='p3pop')return rkToast('🔥 POPULARIDADE = curtidas × 10 + visitas no perfil','#ffb347');
+  if(a==='p3uv')return rkToast('👥 Pessoas diferentes que visitaram o perfil','#d9b3ff');
+  if(a==='p3ph'){const i=+b.dataset.i;if(!PFO&&!p3Fotos()[i])return p3PhotoPick(i);return p3PhotoView(i)}
+  if(a==='btF'){BTV.f=b.dataset.f;BTV.pg=0;rkSfx('whoosh');return rkView('p3bt')}
+  if(a==='btPg'){const n=Math.max(1,Math.ceil(btList().length/5));BTV.pg=(BTV.pg+(+b.dataset.d)+n)%n;rkSfx('whoosh');return rkView('p3bt')}
+  if(a==='btD')return btDet(+b.dataset.i);
+  if(a==='alSel'){ALV.i=+b.dataset.i;ALV.mode='';ALV.sw=null;rkSfx('whoosh');return rkView('p3al')}
+  if(a==='alPg'){ALV.i=(ALV.i+(+b.dataset.d)+ALB.length)%ALB.length;ALV.mode='';ALV.sw=null;rkSfx('whoosh');return rkView('p3al')}
+  if(a==='alSlot')return alSlot(+b.dataset.s);
+  if(a==='alAll'){const A=ALB[ALV.i];for(const id of alPend(A))alPlace(A,id);return rkView('p3al')}
+  if(a==='alRm'){ALV.mode=ALV.mode==='rm'?'':'rm';ALV.sw=null;rkSfx('whoosh');return rkView('p3al')}
+  if(a==='alSw'){ALV.mode=ALV.mode==='sw'?'':'sw';ALV.sw=null;rkSfx('whoosh');return rkView('p3al')}
+  if(a==='alRen'){const A=ALB[ALV.i],ad=alA(A.k);rkModal(`<div class="twM sm"><h3>✎ NOME DO ÁLBUM</h3><input id="alNmI" maxlength="24" value="${twEsc(ad.nm||A.n)}"><div class="row"><button class="btn" id="alNmR">PADRÃO</button><button class="btn main" id="alNmOk">SALVAR</button></div></div>`);
+    $('alNmOk').onclick=()=>{ad.nm=String($('alNmI').value||'').trim().slice(0,24);alSv(A.k,ad);rkModal(null);rkView('p3al')};$('alNmR').onclick=()=>{ad.nm='';alSv(A.k,ad);rkModal(null);rkView('p3al')};return}
+  if(a==='coT'){COV.t=b.dataset.k;COV.pg=0;COV.sel=null;rkSfx('whoosh');return rkView('p3co')}
+  if(a==='coC'){COV.c=b.dataset.k;COV.pg=0;COV.sel=null;rkSfx('whoosh');return rkView('p3co')}
+  if(a==='coSel'){COV.sel=b.dataset.id;rkSfx('whoosh');return rkView('p3co')}
+  if(a==='coPg'){const n=Math.max(1,Math.ceil(coList().length/24));COV.pg=(COV.pg+(+b.dataset.d)+n)%n;COV.sel=null;rkSfx('whoosh');return rkView('p3co')}
+  return _a.apply(this,arguments)}}
+
+try{window.__pvT={G:()=>G,ko:(a,d)=>ko(a,d),ev:()=>rkEvX(),m:()=>[rkEvG(),rkEvL(),rkEvD(),rkEvA()],lk:()=>{const c={};for(let i=0;i<4000;i++){const r=twEqRoll().k;c[r]=(c[r]||0)+1}const a=[0,0,0,0,0];for(let i=0;i<4000;i++)a[lvCrRoll()]++;return {luck:+lvLuck().toFixed(2),drop:+rkDropF().toFixed(2),extra:lkK(),equip:c,cristal:a}},dl:id=>pvDelta(id),cs:id=>cstStats(id),hy:()=>HY,hyS:()=>hyStart(),fil:()=>HY.fil,rv:v=>rkView(v),pfo:(u,n)=>pfOpenOther(u,n,{sc:'ranked'}),bt:{rec:(m,w,x)=>btRec(m,w,x),c:()=>btC(),lv:()=>p3Lv()},al:()=>ALB,ch:id=>CH[id],skVid:cb=>{RKBAN='sk';rkPlayVid(cb||(()=>{}))},evm:()=>({EVMI,MCUR,src:MEL.src,loop:MEL.loop,paused:MEL.paused}),evNext:()=>evMusPlay(1),mn:{open:()=>mnOpen(),mine:()=>mnMine(),clean:o=>mnClean(o),give:o=>mnGive(o),view:o=>mnView(o),M:()=>MN},ps:{roll:o=>psRoll(o),def:psDef,sum:psSum,G:psG,S:psS,anim:(r,cb)=>psAnim(r,cb||(()=>{}))},hyBoss:()=>{HY.st=3;HY.lv=1;HY.mobs=[];G.p[1]=hyMk('hidra',900,1)},hyI:()=>(HY.items||[]).map(i=>[i.k,Math.round(i.x),Math.round(i.y),i.land,(()=>{const m=bsImg(HYIC[i.k](i));return m.complete+':'+m.naturalWidth})()]),stg:()=>[STAGE.name,STAGE.src0,STAGE.img&&STAGE.img.naturalWidth,!!STAGE.far],lvo:id=>lvOpen(id),bs:lv=>bsSt(lv),dc:f=>dlCheck(f),ds:()=>dsfOpen()}}catch(e){} /* só para os testes */
