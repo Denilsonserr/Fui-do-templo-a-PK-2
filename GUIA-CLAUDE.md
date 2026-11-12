@@ -1869,3 +1869,9 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - Dificuldade pelo rank: `RKTD` agora tem as 14 ranks (antes só 11 → ranks 11–13 davam NaN na vida do boss) e cresce até 3,6x de dano/vida no Deus Absoluto (2,7x no Deus Celestial). Vale também para o texto de recompensas.
 - Vidas: na Extrema ~75% dos bosses têm 2 vidas; o BOSS FINAL (andar 11) tem 3. Ao "morrer" com vida sobrando: `tnBossRev` = transforma (`startTransform`), vida cheia, dano x1,5 (máx. 14), recebe 40% menos dano, +8% vel. (≈3x mais forte). Barras/dano base `TNBARS`/`TNDM` reequilibrados (o rank já multiplica).
 - Tela: emblema da rank centralizado no círculo (`rtAv` 100,162–224,286); anéis do poder no personagem da torre (`anDecor` também em `#twMe img`). Teste: `ttorre5_v379.js` (G0 = andar inicial).
+
+## v380 — Torre como a antiga (um andar por luta) + subida SALVA + risco do andar + código
+- Cada andar é UMA luta (`tnFight`: VS → `startMatch`; o lutador do `setupFighters` vira o boss em `tnBossCfg`). Boss morre → baú + 4 cartas → `tnFloorEnd`: cura 40%, salva e VOLTA PARA A TELA DA TORRE (dá para usar poção/equipar — o `twApply` aplica na próxima luta). SELECIONAR continua.
+- Subida salva em `rk 'tnrun'` {g, g0, pick, bosses, stg, hp, bars, bl, nextPas, coins, loot, fr, tr, coinRun} (`tnSave`/`tnRestore`; o `twOpen` recupera). Sair da luta pelo pause (`twQuitFight`) = volta para a torre sem perder (andar recomeça com a vida do começo). VOLTAR não desiste; botão ✖ DESISTIR (`tnGiveUp` → `tnFinish(false,true)`). Morrer = fim (apaga a subida). Personagem trava durante a subida (como antes).
+- RISCO do andar (`TNRK`, escolhido na tela, `tn_risk`): 🛡️ SEGURO (boss -25%, prêmios pela metade), ⚔️ NORMAL, 🔥 ARRISCADO (boss +40% vida/+35% dano e +1 passiva; baú raro, prêmios x2).
+- Código `TORRENOVA` (hash `kzru11`): 1.000 💎, uma vez por conta. Teste: `ttorre6_v380.js`.
