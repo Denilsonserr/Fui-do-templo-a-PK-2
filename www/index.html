@@ -6683,7 +6683,7 @@ function capeBlit(im,S,k){const c=Math.max(0,S.ax-45);if(c<30){ctx.drawImage(im,
   ctx.drawImage(im,c*rx,0,(S.w-c)*rx,im.height,-S.ax+c,-S.ay,S.w-c,S.h);
   const st=G.hq?5:9;for(let x=0;x<c;x+=st){const w=Math.min(st,c-x),d=c-(x+w/2),q=d/c,dy=Math.sin(t*.14-d*.03)*9*q+Math.sin(t*.07-d*.012)*4*q,dx=-Math.sin(t*.09)*5*q*q;
     ctx.drawImage(im,x*rx,0,w*rx,im.height,-S.ax+x+dx,-S.ay+dy,w+.8,S.h)}}
-function blitD(im,S,e){const kU=e.kU||0,kH=e.kH||0;
+function blitD(im,S,e){if(!im||(im.tagName==='IMG'&&(!im.complete||!im.naturalWidth)))return;const kU=e.kU||0,kH=e.kH||0;
   if(Math.abs(kU)<.0015&&Math.abs(kH)<.0015){if(e.cape)return capeBlit(im,S,e.cape);ctx.drawImage(im,-S.ax,-S.ay,S.w,S.h);return}
   const iw=im.width,ih=im.height,ry=ih/S.h,y0=-S.ay,h1=Math.round(S.h*.56),h2=Math.round(S.h*(e.hr||.26)),yb1=y0+h1,yb2=y0+h2;
   ctx.drawImage(im,0,h1*ry,iw,(S.h-h1)*ry,-S.ax,yb1,S.w,S.h-h1);
@@ -8653,7 +8653,7 @@ function rkCards(L){const O=document.createElement('div');O.className='rkRes2';c
     <div class="row"><button class="btn" id="rkCdAll">REVELAR TUDO</button><button class="btn main" id="rkCdOk" hidden>OK</button></div>`;
   rkHost().appendChild(O);const C=[...O.querySelectorAll('.rkCd')];let k=0;
   const rev=async el=>{if(!el||el.classList.contains('rv')||el.dataset.b)return;el.dataset.b=1;const x=L[+el.dataset.i];
-    if(x.k==='chr'&&x.r==='mit')await (x.id==='yuta'?rkMegaY():x.id==='shaka'?rkMegaS():rkMega());
+    if(x.k==='chr'&&x.r==='mit')try{await (x.id==='yuta'?rkMegaY():x.id==='shaka'?rkMegaS():rkMega())}catch(e){} /* v374: erro 'hidden' de null travava a revelação */
     if((x.r==='lend'&&x.k==='chr')||rkHi(x.r)){O.classList.add('dim');await new Promise(r=>setTimeout(r,500));O.classList.remove('dim')}
     el.classList.add('rv');rkSfx(x.r==='lend'||x.r==='mit'?'boom':'whoosh');if(x.r==='lend'||x.r==='mit'||rkHi(x.r))setTimeout(()=>rkSfx('powerUp'),200);if(rkHi(x.r)){await new Promise(r=>setTimeout(r,400));await rkSecWin(x.s||'sec')}
     if(x.k==='chr'&&x.r==='mit'){await new Promise(r=>setTimeout(r,500));await rkCharWin(x.id,1,x.nw);if(x.id==='yuta'&&x.nw)await ytTitClaim(1);if(x.id==='shaka'&&x.nw)await skTitClaim(1)}
@@ -9445,7 +9445,7 @@ twAddPoc=function(R){const L=twPocs();L.push(Object.assign({id:Date.now().toStri
 function rkAddRing(r){const I=twInv(),it={id:'an'+Date.now().toString(36)+Math.random().toString(36).slice(2,5),t:'anel',r,v:0,drop:RKANV[rkPkI(r)],nm:'ANEL DE DROP'};I.push(it);twLS.s('tw_inv',I);
   const Q=twEqp(),cur=I.find(x=>x.id===Q.anel);if(!cur||(!rkIsY(cur)&&(cur.drop||0)<it.drop)){Q.anel=it.id;twLS.s('tw_eqp',Q)}TW.capOut=twCap();return it}
 /* começo da luta (Boss e Torre): arma a cura e liga o drop da poção */
-{const _ex=rkExtra;rkExtra=function(){const r=_ex.apply(this,arguments);try{if(!G.p)return r;const torre=typeof TW!=='undefined'&&TW.on&&G.gmode==='torre',boss=G.gmode==='boss';if(!torre&&!boss)return r;const p=G.p[0];
+{const _ex=rkExtra;rkExtra=function(){const r=_ex.apply(this,arguments);try{if(!G.p)return r;const torre=typeof TW!=='undefined'&&TW.on&&G.gmode==='torre',boss=G.gmode==='boss'||G.gmode==='caca'||G.gmode==='dsf'||G.gmode==='pve'; /* v374: passivas valem também na Caça, Hidra, Desafio e Versus */if(!torre&&!boss)return r;const p=G.p[0];
   const c=rkG('pk_cura',null),d=rkG('pk_drop',null);p.rkCura=c?c.v:0;RKPDN=d?d.v:0;if(c)rkS('pk_cura',null);if(d)rkS('pk_drop',null);
   if(c||d)setTimeout(()=>{try{txt(p.x,p.y-340,(c?'💚 CURA '+c.v+'% PRONTA':'')+(c&&d?' · ':'')+(d?'🎁 DROP +'+d.v+'%':''),'#7dff9a')}catch(e){}},2200)}catch(e){}return r}}
 function rkCuraTick(){const p=G.p&&G.p[0];if(!p||!p.rkCura||p.hp<=0||p.ko)return;const m=p.mhp||MAXHP;if(p.hp>=m*.35)return;
@@ -9534,7 +9534,7 @@ function psAct(a,b){const o=psG();
     o.pend=null;o.pendL=null;psS(o)}finally{PS.busy=0}rkSfx(a==='apply'?'powerUp':'whoosh');rkToast(a==='apply'?'✔ Passiva aplicada!':'Passiva antiga mantida','#7dff9a');return rkView('ps')}}
 function psAnim(r,cb){const W=$('psWheel'),T=$('psWT');if(!W){cb();return}let n=0;const tot=26;const step=()=>{const k=n<tot-1?PSRK[n%8]:r;W.style.setProperty('--rc',PSRC[k]);T.textContent=psRN(k);T.style.color=PSRC[k];try{if(n%2===0)rkSfx('whoosh')}catch(e){}n++;if(n<tot)setTimeout(step,40+n*n*.35);else{W.classList.add('done','psr_'+r);setTimeout(cb,900)}};step()}
 /* começo da luta: crítico, defesa, velocidade de ataque, regeneração, aura da passiva secreta */
-{const _ex2=rkExtra;rkExtra=function(){const r=_ex2.apply(this,arguments);try{if(!G.p)return r;const torre=typeof TW!=='undefined'&&TW.on&&G.gmode==='torre',boss=G.gmode==='boss';if(!torre&&!boss)return r;const p=G.p[0],id=p.def.id,S=psSum(id);
+{const _ex2=rkExtra;rkExtra=function(){const r=_ex2.apply(this,arguments);try{if(!G.p)return r;const torre=typeof TW!=='undefined'&&TW.on&&G.gmode==='torre',boss=G.gmode==='boss'||G.gmode==='caca'||G.gmode==='dsf'||G.gmode==='pve'; /* v374: passivas valem também na Caça, Hidra, Desafio e Versus */if(!torre&&!boss)return r;const p=G.p[0],id=p.def.id,S=psSum(id);
   p.tcd=(p.tcd||0)+S.cd;if(S.def)p.tdf=1/(1/(p.tdf||1)+S.def/100);p.pspd=S.spd;p.preg=S.reg;p.pregT=G.frame;p.pregTot=0;p._lhp=p.hp;
   const cp=psG().ch[id],d=psDef(cp);if(d&&psRI(d.r)>=5&&psG().aura[id]!==0){const c=PSTC[d.k];p.def=Object.assign({},p.def,{energy:c,energy2:'#ffffff',fe:c,fe2:'#ffffff',frame:c})}}catch(e){}return r}}
 function psRegTick(){const p=G.p&&G.p[0];if(!p||!p.preg||p.hp<=0||p.ko)return;const m=p.mhp||MAXHP;if(p._lhp!=null&&p.hp<p._lhp-.5)p.pregT=G.frame;p._lhp=p.hp;const dt=G.frame-(p.pregT||0);
@@ -10850,10 +10850,10 @@ rkCards=function(L){const O=document.createElement('div');O.className='rkRes2 cr
   rkHost().appendChild(O);const C=[...O.querySelectorAll('.crC')];
   const fr=rkPre(L.map(x=>x.k==='chr'&&CRT.chr[x.id]).filter(Boolean).concat([CRT.bk,CRT.it]));const ready=Promise.race([fr.p,crtW(2500)]);
   const rev=async el=>{if(!el||el.classList.contains('rv')||el.dataset.b)return;el.dataset.b=1;const x=L[+el.dataset.i],lv=crtLv(x);await ready;
-    if(x.k==='chr'&&x.r==='mit')await (x.id==='yuta'?rkMegaY():x.id==='shaka'?rkMegaS():rkMega());
+    if(x.k==='chr'&&x.r==='mit')try{await (x.id==='yuta'?rkMegaY():x.id==='shaka'?rkMegaS():rkMega())}catch(e){} /* v374: erro 'hidden' de null travava a revelação */
     if(lv>=2){el.classList.add('chg');rkSfx(lv>=3?'powerUp':'whoosh');await crtW(lv>=3?900:550);el.classList.remove('chg')}
     el.classList.add('rv');rkSfx(lv>=2?'boom':'whoosh');if(lv>=2)setTimeout(()=>rkSfx('powerUp'),220);
-    if(rkHi(x.r)){await crtW(500);await rkSecWin(x.s||'sec')}
+    if(rkHi(x.r)){await crtW(500);try{await rkSecWin(x.s||'sec')}catch(e){}}
     if(x.k==='chr'&&x.r==='mit'){await crtW(one?1700:1200);await rkCharWin(x.id,1,x.nw);if(x.id==='yuta'&&x.nw)await ytTitClaim(1);if(x.id==='shaka'&&x.nw)await skTitClaim(1)}
     else if(x.k==='chr'&&x.nw&&x.r==='lend'){await crtW(one?1500:1000);await rkCharWin(x.id)}
     if(C.every(c=>c.classList.contains('rv'))){$('rkCdAll').hidden=true;$('rkCdOk').hidden=false}};
@@ -11934,7 +11934,16 @@ function p3Tier(i){return i>=13?5:i>=11?4:i>=10?3:i>=7?2:i>=5?1:0}
     if(C.rmc){const own=rkG('own',['goku']),L=RK_MIT.filter(id=>CH[id]&&!own.includes(id));if(L.length){const id=L[(Math.random()*L.length)|0];own.push(id);rkS('own',own);nm=CH[id].name;setTimeout(()=>{try{rkCharWin(id,1,1)}catch(e){}},600)}else{rkAdd('gem',5000);nm='(você já tem todos os míticos: +5.000 💎)'}}
     try{acSave(1)}catch(e){}E.textContent='🎁 '+C.nm+'! +'+rkFmtN(C.gm||0)+' 💎 · +'+rkFmtN(C.red||0)+' 🔴 moedas vermelhas · ✦ MÍTICO: '+nm;try{twSfx('boom')}catch(e){}}return r}}
 TWCUP['1ilnmg2']={nm:'BAÚ MÍTICO',it:[],gm:10000,red:5000,rmc:1};
-try{window.__pvT={G:()=>G,ko:(a,d)=>ko(a,d),ev:()=>rkEvX(),m:()=>[rkEvG(),rkEvL(),rkEvD(),rkEvA()],lk:()=>{const c={};for(let i=0;i<4000;i++){const r=twEqRoll().k;c[r]=(c[r]||0)+1}const a=[0,0,0,0,0];for(let i=0;i<4000;i++)a[lvCrRoll()]++;return {luck:+lvLuck().toFixed(2),drop:+rkDropF().toFixed(2),extra:lkK(),equip:c,cristal:a}},dl:id=>pvDelta(id),cs:id=>cstStats(id),hy:()=>HY,hyS:()=>hyStart(),fil:()=>HY.fil,rv:v=>rkView(v),setQ:l=>setQ(l),prof2:N=>{window.__T=window.__T||{};for(const n of N){try{eval(`{const f=${n};${n}=function(){const t=performance.now();const r=f.apply(this,arguments);window.__T['${n}']=(window.__T['${n}']||0)+performance.now()-t;return r}}`)}catch(e){console.log('x',n)}}},prof:()=>{window.__T={};const W=(n,f,set)=>{set(function(){const t=performance.now();const r=f.apply(this,arguments);window.__T[n]=(window.__T[n]||0)+performance.now()-t;return r})};W('render',render,f=>render=f);W('drawBloom',drawBloom,f=>drawBloom=f);W('grade',grade,f=>grade=f);W('drawLights',drawLights,f=>drawLights=f);W('drawLit',drawLit,f=>drawLit=f);W('drawCastShadow',drawCastShadow,f=>drawCastShadow=f)},tsync:()=>tplSync(1),hsd:()=>[btC(),btSea()],pfo:(u,n)=>pfOpenOther(u,n,{sc:'ranked'}),bt:{rec:(m,w,x)=>btRec(m,w,x),c:()=>btC(),lv:()=>p3Lv()},al:()=>ALB,ch:id=>CH[id],skVid:cb=>{RKBAN='sk';rkPlayVid(cb||(()=>{}))},evm:()=>({EVMI,MCUR,src:MEL.src,loop:MEL.loop,paused:MEL.paused}),evNext:()=>evMusPlay(1),mn:{open:()=>mnOpen(),mine:()=>mnMine(),clean:o=>mnClean(o),give:o=>mnGive(o),view:o=>mnView(o),M:()=>MN},ps:{roll:o=>psRoll(o),def:psDef,sum:psSum,G:psG,S:psS,anim:(r,cb)=>psAnim(r,cb||(()=>{}))},hyBoss:()=>{HY.st=3;HY.lv=1;HY.mobs=[];G.p[1]=hyMk('hidra',900,1)},hyI:()=>(HY.items||[]).map(i=>[i.k,Math.round(i.x),Math.round(i.y),i.land,(()=>{const m=bsImg(HYIC[i.k](i));return m.complete+':'+m.naturalWidth})()]),stg:()=>[STAGE.name,STAGE.src0,STAGE.img&&STAGE.img.naturalWidth,!!STAGE.far],lvo:id=>lvOpen(id),bs:lv=>bsSt(lv),dc:f=>dlCheck(f),ds:()=>dsfOpen()}}catch(e){} /* só para os testes */
+/* ================= v374: CORREÇÃO "ZUMBI" =================
+   Quem saía da Caça da Hidra (ou do Lobo) pelo menu de pausa deixava HY.on/CA.on ligados e G.diff=3 (dificuldade da caça).
+   O wrapper do ko da Hidra continuava ativo nas lutas seguintes (Torre, Boss…) → inimigos não morriam. Agora tudo desliga
+   sempre que começa uma luta que não é a caçada, e ao voltar para o menu. */
+function hyReset(){try{if(HY&&HY.on){HY.on=0;HY.fil=null;HY.boss=null;HY.mobs=[];HY.items=[];HY.gate=0;HY.busy=0}}catch(e){}try{if(CA&&CA.on&&G.gmode!=='caca')CA.on=0}catch(e){}}
+{const _sm=startMatch;startMatch=function(){if(G.gmode!=='caca')hyReset();return _sm.apply(this,arguments)}}
+{const _cs=caStart;caStart=function(){try{HY.on=0;HY.fil=null}catch(e){}return _cs.apply(this,arguments)}}
+{const _u4=update;update=function(){if(HY&&HY.on&&G.mode==='fight'&&G.gmode!=='caca')hyReset();return _u4.apply(this,arguments)}}
+{const _o4=rkOpen;rkOpen=function(){if(G.mode!=='fight'){try{if(HY.on){HY.on=0;HY.fil=null}if(CA.on)CA.on=0}catch(e){}}return _o4.apply(this,arguments)}}
+try{window.__pvT={G:()=>G,ko:(a,d)=>ko(a,d),ev:()=>rkEvX(),m:()=>[rkEvG(),rkEvL(),rkEvD(),rkEvA()],lk:()=>{const c={};for(let i=0;i<4000;i++){const r=twEqRoll().k;c[r]=(c[r]||0)+1}const a=[0,0,0,0,0];for(let i=0;i<4000;i++)a[lvCrRoll()]++;return {luck:+lvLuck().toFixed(2),drop:+rkDropF().toFixed(2),extra:lkK(),equip:c,cristal:a}},dl:id=>pvDelta(id),cs:id=>cstStats(id),hy:()=>HY,hyS:()=>hyStart(),fil:()=>HY.fil,rv:v=>rkView(v),tws:()=>{TW.pick=G.pick=rkG('sel','goku');twStart();setTimeout(()=>twFight(),1200)},hyon:()=>[HY.on,CA.on,G.diff,G.gmode],setQ:l=>setQ(l),prof2:N=>{window.__T=window.__T||{};for(const n of N){try{eval(`{const f=${n};${n}=function(){const t=performance.now();const r=f.apply(this,arguments);window.__T['${n}']=(window.__T['${n}']||0)+performance.now()-t;return r}}`)}catch(e){console.log('x',n)}}},prof:()=>{window.__T={};const W=(n,f,set)=>{set(function(){const t=performance.now();const r=f.apply(this,arguments);window.__T[n]=(window.__T[n]||0)+performance.now()-t;return r})};W('render',render,f=>render=f);W('drawBloom',drawBloom,f=>drawBloom=f);W('grade',grade,f=>grade=f);W('drawLights',drawLights,f=>drawLights=f);W('drawLit',drawLit,f=>drawLit=f);W('drawCastShadow',drawCastShadow,f=>drawCastShadow=f)},tsync:()=>tplSync(1),hsd:()=>[btC(),btSea()],pfo:(u,n)=>pfOpenOther(u,n,{sc:'ranked'}),bt:{rec:(m,w,x)=>btRec(m,w,x),c:()=>btC(),lv:()=>p3Lv()},al:()=>ALB,ch:id=>CH[id],skVid:cb=>{RKBAN='sk';rkPlayVid(cb||(()=>{}))},evm:()=>({EVMI,MCUR,src:MEL.src,loop:MEL.loop,paused:MEL.paused}),evNext:()=>evMusPlay(1),mn:{open:()=>mnOpen(),mine:()=>mnMine(),clean:o=>mnClean(o),give:o=>mnGive(o),view:o=>mnView(o),M:()=>MN},ps:{roll:o=>psRoll(o),def:psDef,sum:psSum,G:psG,S:psS,anim:(r,cb)=>psAnim(r,cb||(()=>{}))},hyBoss:()=>{HY.st=3;HY.lv=1;HY.mobs=[];G.p[1]=hyMk('hidra',900,1)},hyI:()=>(HY.items||[]).map(i=>[i.k,Math.round(i.x),Math.round(i.y),i.land,(()=>{const m=bsImg(HYIC[i.k](i));return m.complete+':'+m.naturalWidth})()]),stg:()=>[STAGE.name,STAGE.src0,STAGE.img&&STAGE.img.naturalWidth,!!STAGE.far],lvo:id=>lvOpen(id),bs:lv=>bsSt(lv),dc:f=>dlCheck(f),ds:()=>dsfOpen()}}catch(e){} /* só para os testes */
 
 function twTrofList(){const tc=twLS.g('tw_tc',{}),run={};for(const t of TW.tr)run[t.k]=(run[t.k]||0)+1;
   twModal(`<div class="twM"><h3>🎖️ TROFÉUS</h3><div class="twTL">${Object.keys(TWTR).map(k=>{const T=TWTR[k];return `<div class="${tc[k]||run[k]?'got':''}"><i>${T.i}</i><b>${T.n}</b><span>${T.d}</span><em>+${T.p} 🏆</em><small>${run[k]?'nesta subida: '+run[k]+' · ':''}total: ${(tc[k]||0)}</small></div>`}).join('')}</div>
@@ -12127,7 +12136,7 @@ window.__dbg={mus:()=>[MCUR,MEL.src.split('/').pop()],stg:()=>STAGE.key,prepMatc
 })();
 </script>
 <style>#updB{position:fixed;left:50%;top:max(8px,env(safe-area-inset-top));transform:translateX(-50%);z-index:99999;padding:10px 22px;border-radius:14px;border:2px solid #fff3c0;background:linear-gradient(#ffd84a,#e08a10);color:#3a1d00;font:900 15px system-ui,sans-serif;box-shadow:0 0 18px #ffb21f;cursor:pointer;animation:updP 1s ease-in-out infinite alternate}@keyframes updP{to{transform:translateX(-50%) scale(1.05)}}</style>
-<script>(function(){const V='67ba760885c9';if(!/^https?:/.test(location.protocol))return;let nv=null;
+<script>(function(){const V='1a3970c28738';if(!/^https?:/.test(location.protocol))return;let nv=null;
 function show(){if(document.getElementById('updB'))return;try{if(typeof G!=='undefined'&&G.mode==='fight')return}catch(e){}const b=document.createElement('button');b.id='updB';b.textContent='🔄 ATUALIZAÇÃO NOVA! Toque para atualizar';
   b.onclick=()=>{b.textContent='⏳ Atualizando...';try{acSave(1)}catch(e){}setTimeout(()=>location.reload(),900)};document.body.appendChild(b)}
 async function chk(){if(document.hidden)return;if(nv){show();return}try{const r=await fetch('versao.txt?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const t=(await r.text()).trim();if(/^[0-9a-f]{8,40}$/.test(t)&&t!==V){nv=t;show()}}catch(e){}}
