@@ -1863,3 +1863,9 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - Saiu a estátua. Depois do boss + baú: `tnRoleta()` mostra DUAS ROLETAS que giram sozinhas (sem escolher): SUA PASSIVA (10 de `TNRL` = `TNBL` sem o ímã; raridade `twRoll`) e PASSIVA DO PRÓXIMO BOSS (`TNBP`; vai para `TN.nextPas`, entra garantida no próximo boss). Depois sobe.
 - Travada quando o boss aparecia: era o carregamento do PRÓXIMO boss começando na entrada do boss. Agora o próximo boss carrega quando o boss atual morre (`tnBossDown` → `prepMatch([pick, atual, próximo])`, `TN.preP`), durante o baú/roletas. Medido (`troleta_v378.js`): nenhum quadro > 90 ms na entrada do boss.
 - IA: boss da torre usa `TWLV[3 + andar/2]` (até o nível máximo). XP da torre: `RKTWX.fl` 0,6→1 por andar, `top` 2→3,2.
+
+## v379 — Torre: 4 passivas para escolher, rank deixa a torre mais difícil, vidas/transformação e boss final
+- Saiu a roleta (pesava no celular). Depois do boss + baú aparecem 4 cartas (`tnPick`, de `TNRL`) para escolher; a passiva do próximo boss é sorteada escondida (`TN.nextPas`).
+- Dificuldade pelo rank: `RKTD` agora tem as 14 ranks (antes só 11 → ranks 11–13 davam NaN na vida do boss) e cresce até 3,6x de dano/vida no Deus Absoluto (2,7x no Deus Celestial). Vale também para o texto de recompensas.
+- Vidas: na Extrema ~75% dos bosses têm 2 vidas; o BOSS FINAL (andar 11) tem 3. Ao "morrer" com vida sobrando: `tnBossRev` = transforma (`startTransform`), vida cheia, dano x1,5 (máx. 14), recebe 40% menos dano, +8% vel. (≈3x mais forte). Barras/dano base `TNBARS`/`TNDM` reequilibrados (o rank já multiplica).
+- Tela: emblema da rank centralizado no círculo (`rtAv` 100,162–224,286); anéis do poder no personagem da torre (`anDecor` também em `#twMe img`). Teste: `ttorre5_v379.js` (G0 = andar inicial).

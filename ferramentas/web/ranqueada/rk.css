@@ -1891,14 +1891,14 @@ img.anOn{position:relative;z-index:2}
 .tnPk{text-align:center;padding:2vh 3vh;border-radius:2vh;background:linear-gradient(#2a1a06f0,#120804f0);border:.3vh solid #ffd84a;box-shadow:0 0 4vh rgba(255,210,100,.5)}
 .tnPk h3{margin:0;font:900 3.4vh var(--f-ui);color:#ffe08a;text-shadow:0 0 1.2vh #ff9a00}
 .tnPk p{margin:.4vh 0 1.6vh;font:700 1.9vh var(--f-ui);color:#e8dcc0}
-.tnCs{display:flex;gap:2vh}
-.tnC{width:22vh;min-height:22vh;display:flex;flex-direction:column;align-items:center;gap:.8vh;padding:2vh 1.2vh;border-radius:1.6vh;border:.35vh solid var(--c);background:radial-gradient(circle at 50% 20%,color-mix(in srgb,var(--c) 35%,#000),#0a0604 75%);color:#fff;cursor:pointer;box-shadow:0 0 2vh var(--c);animation:tnCin .45s cubic-bezier(.2,1.4,.4,1) both;touch-action:manipulation}
+.tnCs{display:flex;gap:1.6vh}
+.tnC{width:20vh;min-height:22vh;display:flex;flex-direction:column;align-items:center;gap:.8vh;padding:2vh 1.2vh;border-radius:1.6vh;border:.35vh solid var(--c);background:radial-gradient(circle at 50% 20%,color-mix(in srgb,var(--c) 35%,#000),#0a0604 75%);color:#fff;cursor:pointer;box-shadow:0 0 2vh var(--c);animation:tnCin .45s cubic-bezier(.2,1.4,.4,1) both;touch-action:manipulation}
 .tnC:nth-child(2){animation-delay:.08s}.tnC:nth-child(3){animation-delay:.16s}
 .tnC i{font-style:normal;font-size:6vh;line-height:1.1}
 .tnC small{font:900 1.6vh var(--f-ui);color:var(--c);letter-spacing:.1em}
 .tnC b{font:900 2.1vh var(--f-ui)}
 .tnC span{font:700 1.7vh var(--f-ui);color:#e9e0cc}
-.tnC.r3,.tnC.r4{animation:tnCin .45s cubic-bezier(.2,1.4,.4,1) both,tnShine 1.2s ease-in-out .5s infinite}
+.tnC.r3,.tnC.r4{box-shadow:0 0 3.5vh var(--c)}
 @keyframes tnCin{from{transform:translateY(6vh) scale(.7);opacity:0}}
 @keyframes tnShine{50%{box-shadow:0 0 4.5vh var(--c),inset 0 0 2vh var(--c)}}
 #tnClimb{position:fixed;inset:0;z-index:58;opacity:0;pointer-events:none;transition:opacity .35s}
