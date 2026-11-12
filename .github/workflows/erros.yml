@@ -1,0 +1,36 @@
+name: Erros dos jogadores (ferramenta)
+# Lê os erros que o jogo envia (docs er_* na coleção torre: m=mensagem, st=pilha, w=onde, modo, nome, t=hora) e agrupa.
+on:
+  workflow_dispatch:
+    inputs:
+      horas: {description: 'quantas horas para trás', default: '48'}
+jobs:
+  q:
+    runs-on: ubuntu-latest
+    steps:
+      - name: erros
+        run: |
+          python3 - <<'P'
+          import json,urllib.request,time,collections,datetime
+          S='https://fui-do-templo-a-pk-2.denilsinend.workers.dev/fs/v1/projects/furia-do-templo/databases/(default)/documents:runQuery'
+          H={'Content-Type':'application/json','User-Agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/120 Safari/537.36'}
+          lim=int(time.time()*1000)-int('${{ inputs.horas }}')*3600*1000;A=[]
+          for w in ['win','prom','loop']:
+              body={'structuredQuery':{'from':[{'collectionId':'torre'}],'where':{'fieldFilter':{'field':{'fieldPath':'w'},'op':'EQUAL','value':{'stringValue':w}}},'limit':1000}}
+              try:R=json.load(urllib.request.urlopen(urllib.request.Request(S,data=json.dumps(body).encode(),headers=H),timeout=60))
+              except Exception as e:print('falhou',w,e);continue
+              for x in R:
+                  f=(x.get('document') or {}).get('fields') or {}
+                  if not f:continue
+                  t=int(f.get('t',{}).get('integerValue',0))
+                  if t<lim:continue
+                  A.append((w,f.get('m',{}).get('stringValue',''),f.get('st',{}).get('stringValue',''),f.get('modo',{}).get('stringValue',''),f.get('nome',{}).get('stringValue',''),t))
+          print('TOTAL',len(A))
+          G=collections.defaultdict(list)
+          for a in A:G[a[1]].append(a)
+          for m,L in sorted(G.items(),key=lambda z:-len(z[1])):
+              nomes=collections.Counter(a[4] for a in L);modos=collections.Counter(a[3] for a in L)
+              print('\n###',len(L),'x |',m);print('   onde:',L[0][0],'| modos:',dict(modos.most_common(4)),'| jogadores:',dict(nomes.most_common(6)))
+              print('   ultima:',datetime.datetime.utcfromtimestamp(max(a[5] for a in L)/1000)-datetime.timedelta(hours=3))
+              print('   pilha:',L[0][2][:500].replace('\n',' | '))
+          P
