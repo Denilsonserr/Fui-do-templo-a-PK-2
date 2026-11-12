@@ -223,7 +223,9 @@ const RKEVX=[[Date.UTC(2026,10,8,23,0),Date.UTC(2026,10,9,1,0),3,'3x XP'],
   /* v248: EVENTO DE ATUALIZAÇÃO — 10 horas (12:30 até 22:30 de Brasília, 09/11/2026): 2x XP de rank, 2x gemas, 2x sorte */
   [Date.UTC(2026,10,9,15,30),Date.UTC(2026,10,10,1,30),2,'2x XP · 2x GEMAS · 2x SORTE',{gem:2,luck:2}],
   /* v293: EVENTO 7 HORAS (15:30 até 22:30 de Brasília, 10/11/2026): 3x DROP, 2x SORTE, 2x XP de rank */
-  [Date.UTC(2026,10,10,18,30),Date.UTC(2026,10,11,1,30),2,'3x DROP · 2x SORTE · 2x XP · 2x GEMAS',{luck:2,drop:3,gem:2}]];
+  [Date.UTC(2026,10,10,18,30),Date.UTC(2026,10,11,1,30),2,'3x DROP · 2x SORTE · 2x XP · 2x GEMAS',{luck:2,drop:3,gem:2}],
+  /* v382: EVENTO 2x XP DE RANK — de 12/11 16:30 até 15/11 23:59 (Brasília) */
+  [Date.UTC(2026,10,12,19,30),Date.UTC(2026,10,16,2,59),2,'2x XP DE RANK']];
 const rkEvX=()=>{const t=Date.now();return RKEVX.find(e=>t>=e[0]&&t<e[1])||null};
 const rkAdm2=()=>{try{return twIsAdm()?2:1}catch(e){return 1}};
 const rkEvG=()=>((e=>(e&&e[4]&&e[4].gem)||1)(rkEvX()))*rkAdm2(),rkEvL=()=>((e=>(e&&e[4]&&e[4].luck)||1)(rkEvX()))+rkAdm2()-1,rkEvD=()=>((e=>(e&&e[4]&&e[4].drop)||1)(rkEvX()))+rkAdm2()-1; /* v344: somado (evento 3x = +200%, título ADM 2x = +100%) */
@@ -3239,7 +3241,8 @@ function hyFilTick(){if(!HY.on||!HY.fil||HY.busy||!G.p||G.mode!=='fight'||G.phas
   if(C&&C.gm&&r&&E&&/ok/.test(E.className||'')){rkAdd('gem',C.gm);try{acSave(1)}catch(e){}E.textContent='💎 '+C.nm+'! Você ganhou +'+rkFmtN(C.gm)+' 💎';try{setTimeout(()=>twSfx('boom'),300)}catch(e){}}return r}}
 TWCUP['l0xbdi']={nm:'TESOURO DE 80.000 DIAMANTES',it:[],gm:80000};
 TWCUP['c4riff']={nm:'DIAMANTES DA SORTE',acc:1,rnd:[3000,6000]};
-TWCUP['kzru11']={nm:'TORRE NOVA',acc:1,rnd:[1000,1000]}; /* v380: código da atualização da torre (1 vez por conta) */
+TWCUP['kzru11']={nm:'TORRE NOVA',acc:1,rnd:[1000,1000]};
+TWCUP['1kxa24y']={nm:'DOBRO DE XP',acc:1,rnd:[1000,4000]}; /* v382: 1.000 a 4.000 gemas, 1 vez por conta */ /* v380: código da atualização da torre (1 vez por conta) */
 /* v361: código único 30.000 💎 + 20.000 moedas de ouro + 1 equipamento aleatório do Shaka de Virgem (campos mo e rsk) */
 {const _cp10=twCupom;twCupom=async function(code,E){const C=TWCUP[twHash(String(code).toUpperCase())];const r=await _cp10.apply(this,arguments);
   if(C&&(C.mo||C.rsk)&&r&&E&&/ok/.test(E.className||'')){let nm='';if(C.mo)twAddCoins(C.mo);

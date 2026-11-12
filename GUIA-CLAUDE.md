@@ -1880,3 +1880,7 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - Botão "💀 ULTRA" na tela da torre (entre VOLTAR e SELECIONAR, `tn_ux`; só troca sem subida em andamento; vai junto na subida salva `ux`).
 - Na luta: força PURA do personagem — no fim do `rkApply` zera `tdm/tsp/tdf/tsb/tcd/tfd/pspd/preg/tki/rkCura`, crítico 5, vida = barras da torre; `psSum`/`anSum` devolvem zero durante a luta ULTRA (`tnUxOn`); poção e consumíveis (`tw_pocOn`, `pk_cura`, `pk_drop`) ficam guardados e não são gastos. Sem o multiplicador de rank no boss (`rkTwDiff` desligado). As passivas escolhidas na própria torre continuam valendo.
 - Prêmios do baú x2,5 (e baú raro). Teste: `tultra_v381.js` (normal: dano 1,75 / ULTRA: 1,0).
+
+## v382 — Evento 2x XP de rank + código
+- `RKEVX`: 2x XP DE RANK de 12/11 16:30 até 15/11 23:59 (Brasília) — `Date.UTC(2026,10,12,19,30)` a `Date.UTC(2026,10,16,2,59)`. Conferido `__pvT.ev()`.
+- Código `DOBRODEXP` (hash `1kxa24y`): 1.000 a 4.000 💎 sorteado, uma vez por conta.
