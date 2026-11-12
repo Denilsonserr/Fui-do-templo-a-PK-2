@@ -3246,7 +3246,7 @@ TWCUP['1kxa24y']={nm:'DOBRO DE XP',acc:1,rnd:[1000,4000]}; /* v382: 1.000 a 4.00
 /* v361: código único 30.000 💎 + 20.000 moedas de ouro + 1 equipamento aleatório do Shaka de Virgem (campos mo e rsk) */
 {const _cp10=twCupom;twCupom=async function(code,E){const C=TWCUP[twHash(String(code).toUpperCase())];const r=await _cp10.apply(this,arguments);
   if(C&&(C.mo||C.rsk)&&r&&E&&/ok/.test(E.className||'')){let nm='';if(C.mo)twAddCoins(C.mo);
-    if(C.rsk){const K=Object.keys(RKSP).filter(k=>RKSP[k].sk),k=K[(Math.random()*K.length)|0];rkGiveSp(k);nm=RKSP[k].nm}try{acSave(1)}catch(e){}
+    if(C.rsk){const K=Object.keys(RKSP).filter(k=>RKSP[k].sk),k=K[(Math.random()*K.length)|0];rkGiveSp(k);nm=RKSP[k].nm;TWCUP._sp=nm}try{acSave(1)}catch(e){}
     E.textContent='🎁 '+C.nm+'! +'+rkFmtN(C.gm||0)+' 💎 · +'+rkFmtN(C.mo||0)+' 🪙 moedas de ouro'+(nm?' · ✦ '+nm+' (na 🎒 MOCHILA)':'');try{twSfx('boom')}catch(e){}}return r}}
 TWCUP['mc90e4']={nm:'PRESENTE DO SHAKA',it:[],gm:30000,mo:20000,rsk:1};
 /* v362: DEVOLUÇÃO para TODOS (gasto de gemas nos anéis): +5.000 💎 e +100.000 moedas de ouro, automático, 1 vez (marca rk_gf362 vai junto na conta) */
@@ -3642,8 +3642,9 @@ function p3Tier(i){return i>=13?5:i>=11?4:i>=10?3:i>=7?2:i>=5?1:0}
 {const _cp11=twCupom;twCupom=async function(code,E){const C=TWCUP[twHash(String(code).toUpperCase())];const r=await _cp11.apply(this,arguments);
   if(C&&(C.red||C.rmc)&&r&&E&&/ok/.test(E.className||'')){if(C.red)rkAdd('red',C.red);let nm='';
     if(C.rmc){const own=rkG('own',['goku']),L=RK_MIT.filter(id=>CH[id]&&!own.includes(id));if(L.length){const id=L[(Math.random()*L.length)|0];own.push(id);rkS('own',own);nm=CH[id].name;setTimeout(()=>{try{rkCharWin(id,1,1)}catch(e){}},600)}else{rkAdd('gem',5000);nm='(você já tem todos os míticos: +5.000 💎)'}}
-    try{acSave(1)}catch(e){}E.textContent='🎁 '+C.nm+'! +'+rkFmtN(C.gm||0)+' 💎 · +'+rkFmtN(C.red||0)+' 🔴 moedas vermelhas · ✦ MÍTICO: '+nm;try{twSfx('boom')}catch(e){}}return r}}
+    try{acSave(1)}catch(e){}E.textContent='🎁 '+C.nm+'! +'+rkFmtN(C.gm||0)+' 💎'+(C.red?' · +'+rkFmtN(C.red)+' 🔴 moedas vermelhas':'')+' · ✦ MÍTICO: '+nm+(C.rsk&&TWCUP._sp?' · ✦ '+TWCUP._sp+' (na 🎒 MOCHILA)':'');try{twSfx('boom')}catch(e){}}return r}}
 TWCUP['1ilnmg2']={nm:'BAÚ MÍTICO',it:[],gm:10000,red:5000,rmc:1};
+TWCUP['1k4a4is']={nm:'TESOURO SUPREMO',it:[],gm:40000,rsk:1,rmc:1}; /* v386: código único do dono — 40.000 💎 + personagem mítico + equipamento do Shaka */
 /* ================= v374: CORREÇÃO "ZUMBI" =================
    Quem saía da Caça da Hidra (ou do Lobo) pelo menu de pausa deixava HY.on/CA.on ligados e G.diff=3 (dificuldade da caça).
    O wrapper do ko da Hidra continuava ativo nas lutas seguintes (Torre, Boss…) → inimigos não morriam. Agora tudo desliga

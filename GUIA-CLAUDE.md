@@ -1896,3 +1896,6 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 
 ## v385 — fim da devolução automática do v362
 - O dono pediu para tirar o presente de desculpas (5.000 💎 + 100.000 moedas) para quem entra agora: o gancho `gfDev()` no `rkOpen` foi removido (a função ficou, sem uso).
+
+## v386 — código único SUPREMO40MIL
+- `TWCUP['1k4a4is']` (SUPREMO40MIL): uso ÚNICO (1 jogador): 40.000 💎 + personagem MÍTICO aleatório (`rmc`) + 1 equipamento do Shaka de Virgem (`rsk`, nível secreto, o mais forte). Mensagem junta os dois prêmios (`TWCUP._sp`). Teste: `tcupom_v386.js` (2º aparelho = "já foi usado").
