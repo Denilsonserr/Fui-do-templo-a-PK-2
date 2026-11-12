@@ -2282,6 +2282,66 @@ img.anOn{position:relative;z-index:2}
 .p3Pl .w.r{right:.2em;clip-path:polygon(0 35%,100% 0,78% 30%,100% 38%,70% 55%,92% 70%,55% 78%,0 70%)}
 .p3Pl.none b{background:rgba(20,6,40,.6);border-color:#7a5cc8;color:#b9a6e0;font:italic 700 .9em var(--f-ui)}.p3Pl.none{padding:0}
 
+/* ================= v369: PLACAS DE TÍTULO + HISTÓRICO NOVO ================= */
+.tpl{position:relative;display:inline-block;height:100%;aspect-ratio:var(--ar);vertical-align:middle;isolation:isolate}
+.tpl>img{position:relative;z-index:2;width:100%;height:100%;object-fit:contain;display:block}
+.tpl.sm{height:1.7em;margin:0 .2em}
+.p3Ti .tpl.big{height:118%}
+.tpl .sh{position:absolute;z-index:3;inset:18% 12%;pointer-events:none;background:linear-gradient(105deg,transparent 40%,rgba(255,255,255,.55) 50%,transparent 60%);background-size:260% 100%;animation:alSh 3.2s linear infinite;mix-blend-mode:screen;
+  -webkit-mask-image:linear-gradient(#000,#000);border-radius:.4em}
+.tpl.g1>img{filter:drop-shadow(0 0 .25em rgba(200,140,255,.55))}
+.tpl.g2>img{animation:tpG2 2.2s ease-in-out infinite}
+@keyframes tpG2{0%,100%{filter:drop-shadow(0 0 .2em rgba(255,200,120,.5))}50%{filter:drop-shadow(0 0 .6em rgba(255,210,140,.95)) brightness(1.08)}}
+.tpl.g3>img{animation:tpG3 1.6s ease-in-out infinite}
+@keyframes tpG3{0%,100%{filter:drop-shadow(0 0 .3em #ffd84a) drop-shadow(0 0 .1em #fff)}50%{filter:drop-shadow(0 0 .9em #ffd84a) drop-shadow(0 0 .3em #fff) brightness(1.15)}}
+.tp_deus_celestial.g3>img{animation-name:tpG3c}@keyframes tpG3c{0%,100%{filter:drop-shadow(0 0 .3em #c46bff)}50%{filter:drop-shadow(0 0 1em #e0a0ff) drop-shadow(0 0 .3em #fff) brightness(1.15)}}
+.tp_top1_pvp.g3>img{animation-name:tpG3p}@keyframes tpG3p{0%,100%{filter:drop-shadow(0 0 .3em #ff3a3a)}50%{filter:drop-shadow(0 0 1em #ff5a3a) drop-shadow(0 0 .3em #ffd0a0) brightness(1.12)}}
+/* DEUS: asas com brilho branco + auréola */
+.tpl.deus>img{animation:tpDe 2.4s ease-in-out infinite}
+@keyframes tpDe{0%,100%{filter:drop-shadow(0 0 .35em #fff) drop-shadow(0 0 .8em #cfe8ff)}50%{filter:drop-shadow(0 0 .7em #fff) drop-shadow(0 0 1.6em #e8f4ff) brightness(1.12)}}
+.tpl .wg{position:absolute;z-index:1;top:5%;bottom:5%;width:32%;background:radial-gradient(ellipse at center,rgba(255,255,255,.9),rgba(220,240,255,.35) 45%,transparent 70%);filter:blur(.25em);animation:tpWg 2.4s ease-in-out infinite}
+.tpl .wg.l{left:-4%}.tpl .wg.r{right:-4%;animation-delay:.3s}@keyframes tpWg{0%,100%{opacity:.35;transform:scale(.9)}50%{opacity:1;transform:scale(1.12)}}
+.tpl .hl{position:absolute;z-index:1;left:38%;right:38%;top:-38%;height:40%;border-radius:50%;border:2px solid rgba(255,250,220,.9);box-shadow:0 0 .6em #fff,inset 0 0 .4em #fff8d0;animation:tpHl 3s ease-in-out infinite}
+@keyframes tpHl{50%{transform:translateY(-12%);box-shadow:0 0 1.2em #fff,inset 0 0 .6em #fff8d0}}
+/* ADMINISTRADOR: "quebrando o universo" — raios girando, ondas de choque, rachaduras douradas, coroa faiscando, raios elétricos */
+.tpl.adm>img{animation:tpAd 1.4s ease-in-out infinite}
+@keyframes tpAd{0%,100%{filter:drop-shadow(0 0 .35em #ffb300) drop-shadow(0 0 .1em #fff)}50%{filter:drop-shadow(0 0 1.1em #ffd84a) drop-shadow(0 0 .35em #fff) brightness(1.2) saturate(1.2)}}
+.tpl .ra{position:absolute;z-index:0;left:12%;top:50%;width:26%;aspect-ratio:1;translate:0 -50%;border-radius:50%;background:repeating-conic-gradient(from 0deg,rgba(255,220,100,.85) 0 6deg,transparent 6deg 22deg);
+  -webkit-mask-image:radial-gradient(circle,#000 25%,transparent 70%);mask-image:radial-gradient(circle,#000 25%,transparent 70%);animation:tpRa 6s linear infinite;scale:2.2}
+@keyframes tpRa{to{rotate:360deg}}
+.tpl .sw1,.tpl .sw2{position:absolute;z-index:0;left:20%;top:50%;width:12%;aspect-ratio:1;translate:-50% -50%;border-radius:50%;border:2px solid #ffe08a;box-shadow:0 0 .6em #ffb300;animation:tpSw 2.2s ease-out infinite}
+.tpl .sw2{animation-delay:1.1s}@keyframes tpSw{0%{scale:.4;opacity:1}100%{scale:6;opacity:0}}
+.tpl .ck{position:absolute;z-index:3;inset:-10% -2%;pointer-events:none;background:
+  linear-gradient(115deg,transparent 47%,#fff6c8 48%,#ffd84a 49%,transparent 50%) 8% 0/18% 100% no-repeat,
+  linear-gradient(65deg,transparent 47%,#fff6c8 48%,#ffb300 49%,transparent 50%) 88% 0/16% 100% no-repeat,
+  linear-gradient(160deg,transparent 48%,#fff 49%,transparent 50%) 50% 0/30% 60% no-repeat;filter:drop-shadow(0 0 .25em #ffb300);opacity:0;animation:tpCk 2.8s steps(1) infinite}
+@keyframes tpCk{0%,58%,72%,100%{opacity:0}60%,64%{opacity:1}66%{opacity:.3}68%{opacity:1}}
+.tpl .cr{position:absolute;z-index:3;left:14%;top:6%;width:16%;height:60%;border-radius:50%;background:radial-gradient(circle,rgba(255,255,230,.95),rgba(255,210,80,.5) 35%,transparent 65%);mix-blend-mode:screen;animation:tpCr 1.2s ease-in-out infinite}
+@keyframes tpCr{50%{opacity:.35;scale:1.3}}
+.tpl .sp{position:absolute;z-index:4;font-style:normal;color:#fff8d0;text-shadow:0 0 .3em #ffd84a,0 0 .7em #ffb300;font-size:.9em;line-height:1;animation:tpSp 1.8s ease-in-out infinite}
+.tpl .sp.a{left:14%;top:-6%}.tpl .sp.b{left:27%;top:4%;animation-delay:.5s;font-size:.7em}.tpl .sp.c{right:16%;top:-4%;animation-delay:.9s}.tpl .sp.d{left:45%;bottom:-8%;animation-delay:1.3s;font-size:.7em}
+@keyframes tpSp{0%,100%{opacity:0;scale:.3;rotate:0deg}40%{opacity:1;scale:1.3}60%{opacity:1;rotate:90deg}}
+.tpl .lt{position:absolute;z-index:3;top:-30%;width:3%;height:160%;background:linear-gradient(#fff,#ffd84a 40%,transparent);clip-path:polygon(40% 0,100% 0,55% 40%,90% 40%,20% 100%,40% 55%,0 55%);filter:drop-shadow(0 0 .3em #ffd84a);opacity:0}
+.tpl .lt.l1{left:4%;animation:tpLt 3.1s steps(1) infinite}.tpl .lt.l2{right:6%;animation:tpLt 3.1s steps(1) 1.4s infinite}
+@keyframes tpLt{0%,88%,94%,100%{opacity:0}89%,91%{opacity:1}92%{opacity:.2}}
+.tpl.sm .ra,.tpl.sm .sw1,.tpl.sm .sw2,.tpl.sm .lt,.tpl.sm .hl{display:none}
+.tpl.sm .sp{font-size:.55em}
+/* histórico */
+.hsDim{position:absolute;background:rgba(14,3,30,.55);border-radius:.6em;pointer-events:none}
+.hsSeaN{position:absolute;display:flex;align-items:center;justify-content:center;font:900 .78em var(--f-ui);color:#ffd84a;letter-spacing:.08em}
+.hsMd{position:absolute;border:0;background:none;cursor:pointer;display:flex;align-items:center;justify-content:flex-start;padding-left:1.4em}
+.hsMd{font-size:inherit}.hsMd b{font:700 1.3em 'Georgia',serif;color:#fff;background:#160531;padding:.15em .5em;border-radius:.3em;white-space:nowrap;min-width:72%;text-align:left}
+.hsCi{position:absolute;display:flex;align-items:center;justify-content:center;font:900 2.3em var(--f-ui);color:#fff;text-shadow:0 .06em 0 #2a0750,0 0 .4em #c46bff}
+.hsV{position:absolute;display:flex;align-items:center;justify-content:flex-end;font:900 1.3em var(--f-ui);color:#ffd84a;text-shadow:0 0 .3em #000;white-space:nowrap}
+.hsRd{position:absolute;pointer-events:none;overflow:visible}
+.hsRd polygon{fill:rgba(196,107,255,.38);stroke:#ff9cf2;stroke-width:.25;filter:drop-shadow(0 0 .6px #ff9cf2)}
+.hsRv{position:absolute;display:flex;align-items:center;justify-content:center;font:900 1.1em var(--f-ui);color:#ffd84a;text-shadow:0 0 .3em #000}
+.hsE{position:absolute;display:flex;align-items:center;justify-content:center;font:700 .85em var(--f-ui);color:#cbb8f0;text-align:center}
+.hsDr{display:grid;grid-template-columns:8em 1fr 2.4em;align-items:center;gap:.2em .6em;margin:.35em 0}.hsDr b{font:900 .9em var(--f-ui);color:#ffd84a}.hsDr em{font:900 1em var(--f-ui);font-style:normal;color:#fff;text-align:right}
+.hsDr i{height:.6em;border-radius:1em;background:#1a0630;border:1px solid #7a4cc8;overflow:hidden}.hsDr s{display:block;height:100%;background:linear-gradient(90deg,#b14dff,#ff7af0)}.hsDr small{grid-column:1/-1;color:#b9a6e0;font:600 .78em var(--f-ui)}
+.hsML{display:flex;flex-direction:column;gap:.4em;margin:.6em 0}
+.hsV.t{font-size:.95em;padding-right:.15em}
+
 .twBag .bgw{display:flex;gap:1em;justify-content:center;align-items:flex-start;margin:.4em 0}
 .twBag .bgc{flex:1;max-width:16em;display:flex;flex-direction:column;gap:.4em;max-height:52vh;overflow:auto;padding:.2em}
 .twBag h5{margin:0 0 .2em;font:900 1em var(--f-ui);letter-spacing:.1em;color:#ffcf4a;display:flex;flex-direction:column}.twBag h5 small{font-size:.65em;color:#cdbfcf;letter-spacing:0}
@@ -11716,7 +11776,105 @@ function coH(){const all=coItems(),L=coList(),pages=Math.max(1,Math.ceil(L.lengt
   if(a==='coPg'){const n=Math.max(1,Math.ceil(coList().length/24));COV.pg=(COV.pg+(+b.dataset.d)+n)%n;COV.sel=null;rkSfx('whoosh');return rkView('p3co')}
   return _a.apply(this,arguments)}}
 
-try{window.__pvT={G:()=>G,ko:(a,d)=>ko(a,d),ev:()=>rkEvX(),m:()=>[rkEvG(),rkEvL(),rkEvD(),rkEvA()],lk:()=>{const c={};for(let i=0;i<4000;i++){const r=twEqRoll().k;c[r]=(c[r]||0)+1}const a=[0,0,0,0,0];for(let i=0;i<4000;i++)a[lvCrRoll()]++;return {luck:+lvLuck().toFixed(2),drop:+rkDropF().toFixed(2),extra:lkK(),equip:c,cristal:a}},dl:id=>pvDelta(id),cs:id=>cstStats(id),hy:()=>HY,hyS:()=>hyStart(),fil:()=>HY.fil,rv:v=>rkView(v),pfo:(u,n)=>pfOpenOther(u,n,{sc:'ranked'}),bt:{rec:(m,w,x)=>btRec(m,w,x),c:()=>btC(),lv:()=>p3Lv()},al:()=>ALB,ch:id=>CH[id],skVid:cb=>{RKBAN='sk';rkPlayVid(cb||(()=>{}))},evm:()=>({EVMI,MCUR,src:MEL.src,loop:MEL.loop,paused:MEL.paused}),evNext:()=>evMusPlay(1),mn:{open:()=>mnOpen(),mine:()=>mnMine(),clean:o=>mnClean(o),give:o=>mnGive(o),view:o=>mnView(o),M:()=>MN},ps:{roll:o=>psRoll(o),def:psDef,sum:psSum,G:psG,S:psS,anim:(r,cb)=>psAnim(r,cb||(()=>{}))},hyBoss:()=>{HY.st=3;HY.lv=1;HY.mobs=[];G.p[1]=hyMk('hidra',900,1)},hyI:()=>(HY.items||[]).map(i=>[i.k,Math.round(i.x),Math.round(i.y),i.land,(()=>{const m=bsImg(HYIC[i.k](i));return m.complete+':'+m.naturalWidth})()]),stg:()=>[STAGE.name,STAGE.src0,STAGE.img&&STAGE.img.naturalWidth,!!STAGE.far],lvo:id=>lvOpen(id),bs:lv=>bsSt(lv),dc:f=>dlCheck(f),ds:()=>dsfOpen()}}catch(e){} /* só para os testes */
+/* ================= v369: PLACAS DE TÍTULO (artes do dono) + títulos de TOP automáticos + HISTÓRICO NOVO (estatísticas, temporada, radar) ================= */
+const TPL={"adm":["a/00523d62094050.webp",6.469],"campeao_servidor":["a/399fb7683b19b4.webp",9.312],"conquistador":["a/fb70c1212d69d9.webp",7.76],"deus":["a/73cc4d7252bb50.webp",6.729],"deus_celestial":["a/13dedc317213a1.webp",6.729],"divindade":["a/d1bcdc4e0aa28c.webp",7.479],"elite":["a/7b99144fdf7d60.webp",8.812],"imortal":["a/a1eadcde820639.webp",8.573],"lenda_viva":["a/f2a29895001ad6.webp",8.135],"mestre_supremo":["a/ed0e0335c597eb.webp",8.458],"top10_servidor":["a/3a5b0cc8c9ea2e.webp",8.76],"top1_aventura":["a/b7d042078e013e.webp",9.385],"top1_caca":["a/5332da73bf319f.webp",9.885],"top1_pvp":["a/de08a12cd6c611.webp",8.625],"top1_servidor":["a/83cd635aaa4eaf.webp",7.406],"top1_torre":["a/69698497a86b38.webp",9.01],"top2_pvp":["a/c6d689a2a059ba.webp",9.177],"top2_servidor":["a/731edae9967586.webp",8.573],"top3_pvp":["a/bba5ac51861e6b.webp",9.0],"top3_servidor":["a/01560f78fcde8e.webp",8.677],"veterano":["a/334bef2adddec1.webp",9.177]};
+/* títulos de TOP (dinâmicos: entram e saem sozinhos quando você entra no jogo) */
+const TPD=[['tps1','top1_servidor','TOP 1 DO SERVIDOR','🥇','#ffd84a','1º lugar no ranking do Ranqueado'],['tpp1','top1_pvp','TOP 1 DO PVP','⚔️','#ff4a4a','1º lugar no PVP'],
+  ['tps2','top2_servidor','TOP 2 DO SERVIDOR','🥈','#9fd0ff','2º lugar no ranking do Ranqueado'],['tpp2','top2_pvp','TOP 2 DO PVP','⚔️','#7fb0ff','2º lugar no PVP'],
+  ['tps3','top3_servidor','TOP 3 DO SERVIDOR','🥉','#ff9a4a','3º lugar no ranking do Ranqueado'],['tpp3','top3_pvp','TOP 3 DO PVP','⚔️','#e08a4a','3º lugar no PVP'],
+  ['tpc1','top1_caca','TOP 1 DO MODO CAÇA','🐺','#c46bff','1º lugar no ranking da Caça (mais longe)'],['tpt1','top1_torre','TOP 1 DA TORRE','🏰','#ffd84a','1º lugar no ranking da Torre da semana'],
+  ['tpa1','top1_aventura','TOP 1 DA AVENTURA','🛡️','#5ab8ff','1º lugar no ranking de DANO do Modo Boss'],['tps10','top10_servidor','TOP 10 DO SERVIDOR','🔟','#d36bff','Entre os 10 primeiros do Ranqueado']];
+for(const [k,,n,i,c,d] of TPD)TWTIT[k]={n,i,c,d:d+' · atualiza sozinho quando você entra no jogo',dyn:1};
+TWTIT.deus={n:'DEUS',i:'🕊️',c:'#ffffff',d:'Título especial dado pelo ADM',hid:1};
+/* qual placa cada título usa (ranks do Ranqueado: Bronze=Elite … Deus Celestial) */
+const TPRK=['','elite','veterano','conquistador','mestre_supremo','lenda_viva','imortal','divindade','divindade','divindade','deus_celestial'];
+function tplOf(k){if(!k)return '';if(k==='adm'||k==='deus')return k;if(/^rk\d+$/.test(k))return TPRK[+k.slice(2)]||'';if(k==='con')return 'conquistador';if(k==='sem'||k==='tor')return 'campeao_servidor';const D=TPD.find(x=>x[0]===k);return D?D[1]:''}
+const TPGL={adm:'adm',deus:'deus',deus_celestial:'g3',top1_servidor:'g3',top1_pvp:'g3',divindade:'g2',imortal:'g2',top2_servidor:'g2',top2_pvp:'g2',top1_caca:'g2',top1_torre:'g2',top1_aventura:'g2',lenda_viva:'g1',mestre_supremo:'g1',top3_servidor:'g1',top3_pvp:'g1',top10_servidor:'g1'};
+function tplH(k,big){const p=tplOf(k),A=TPL[p];if(!A)return '';const gl=TPGL[p]||'g0';
+  return `<span class="tpl ${gl} tp_${p}${big?' big':''}" style="--ar:${A[1]}">${gl==='adm'?'<i class="ra"></i><i class="sw1"></i><i class="sw2"></i><i class="ck"></i>':''}${gl==='deus'?'<i class="hl"></i>':''}<img src="${A[0]}" alt="">${gl!=='g0'?'<i class="sh"></i>':''}${gl==='adm'?'<i class="cr"></i><i class="sp a">✦</i><i class="sp b">✦</i><i class="sp c">✧</i><i class="sp d">✦</i><i class="lt l1"></i><i class="lt l2"></i>':''}${gl==='deus'?'<i class="wg l"></i><i class="wg r"></i>':''}</span>`}
+/* perfil: usa a placa quando existe */
+{const _p=p3Plate;p3Plate=function(t,n,adm,me){if(t==='adm'&&!adm)return _p.apply(this,arguments);const h=tplH(t,1);return h||_p.apply(this,arguments)}}
+/* rankings / listas: placa pequena */
+{const _r=rgTit;rgTit=function(k,nm){if(k==='adm'&&nm!=null&&String(nm).toLowerCase()!==TWADMN.toLowerCase())return '';const h=tplH(k);return h?h.replace('class="tpl ','class="tpl sm '):_r.apply(this,arguments)}}
+/* ---------- títulos de TOP + título do rank: atualiza quando entra no jogo (no máx. a cada 20 min) ---------- */
+async function tplSync(force){const last=rkG('tsync',0);if(!force&&Date.now()-last<20*60e3)return;rkS('tsync',Date.now());const me=twUid(),nm=String(twLS.g('tw_nome','')||'').toLowerCase();if(!nm)return;
+  const isMe=e=>e&&((e.uid&&e.uid===me)||String(e.nome||'').toLowerCase()===nm);const W=new Set();let ok=0;
+  try{const L=(await rkLoadRk('rp')).filter(e=>!e.bot).sort((a,b)=>(b.rp|0)-(a.rp|0));const i=L.findIndex(isMe);ok++;if(i===0)W.add('tps1');else if(i===1)W.add('tps2');else if(i===2)W.add('tps3');else if(i>=3&&i<10)W.add('tps10')}catch(e){}
+  try{const L=(await pvLoadAll()).slice().sort((a,b)=>((b.t|0)*1e6+(b.dv|0)*1e3+(b.st|0))-((a.t|0)*1e6+(a.dv|0)*1e3+(a.st|0)));const i=L.findIndex(e=>e.pva===pvAcc()||isMe(e));ok++;if(i===0)W.add('tpp1');else if(i===1)W.add('tpp2');else if(i===2)W.add('tpp3')}catch(e){}
+  try{const L=await rkQ('ca','1',1000),M={};for(const e of L){const k=e.uid||e.nome;const m=M[k]||(M[k]={uid:e.uid,nome:e.nome,lv:0,dm:0});m.lv=Math.max(m.lv,e.clv|0);m.dm=Math.max(m.dm,e.cdm|0)}
+    const S=Object.values(M).filter(m=>m.lv>0).sort((a,b)=>b.lv-a.lv||b.dm-a.dm);ok++;if(S[0]&&isMe(S[0]))W.add('tpc1')}catch(e){}
+  try{const L=await twWeekL(0);ok++;if(L[0]&&isMe(L[0]))W.add('tpt1')}catch(e){}
+  try{const L=(await rkLoadRk('dmg')).filter(e=>!e.bot);ok++;if(L[0]&&isMe(L[0]))W.add('tpa1')}catch(e){}
+  if(!ok)return;let T=twTits().filter(k=>!(TWTIT[k]&&TWTIT[k].dyn)||W.has(k));for(const k of W)if(!T.includes(k))T.push(k);twLS.s('tw_tit',T);
+  const cur=twLS.g('tw_titOn',''),auto=!cur||/^rk\d+$/.test(cur)||(TWTIT[cur]&&TWTIT[cur].dyn)||!T.includes(cur);
+  if(auto){const best=TPD.map(x=>x[0]).find(k=>W.has(k))||T.filter(k=>/^rk\d+$/.test(k)).sort((a,b)=>+b.slice(2)-+a.slice(2))[0]||'';if(best!==cur){twLS.s('tw_titOn',best);if(best&&TWTIT[best]&&TWTIT[best].dyn)setTimeout(()=>rkToast('🏆 Novo título: '+TWTIT[best].n+'!','#ffd84a'),1500)}}
+  try{acSave()}catch(e){}try{pfPub(1)}catch(e){}if(RKV==='pf'&&showScreen.cur==='ranked')rkView('pf')}
+{const _o=rkOpen;rkOpen=function(){const r=_o.apply(this,arguments);setTimeout(()=>{try{tplSync()}catch(e){}},2500);return r}}
+/* ================= HISTÓRICO NOVO ================= */
+P3A.hs='a/0f0abd15d2fbd7.webp';
+const TEMP={id:1,n:'TEMPORADA 1',ini:'2026-11-12'}; /* reiniciar a temporada = TEMP.id+1 */
+const BTAGG=()=>({pt:0,n:0,w:0,l:0,pf:0,mvp:0,sq:0,bs:0,t:0,k:0,dd:0,dr:0,g:0,gm:0,hp:0,xdpm:0,xrpm:0,xgpm:0,tm:0,tw:0,bf:0,bc:0,bh:0});
+function btSea(){let s=rkG('bts',null);if(!s||s.sid!==TEMP.id){s=Object.assign(BTAGG(),{sid:TEMP.id,mm:{}});rkS('bts',s)}return s}
+/* medição durante a luta: tempo, dano causado/recebido, abates, ouro/gemas */
+{const _s=startMatch;startMatch=function(){G._bs={f:0,dd:0,dr:0,k:0,g0:twCoins(),m0:rkG('gem',0)|0};return _s.apply(this,arguments)}}
+{const _u=update;update=function(){_u.apply(this,arguments);const B=G._bs;if(!B||G.mode!=='fight'||G.phase!=='fight'||G.paused||!G.p)return;B.f++;
+  const T=[G.p[1]].concat(typeof HY!=='undefined'&&HY.on?HY.mobs:[]);for(const f of T){if(!f)continue;if(f._lh!=null&&f.hp<f._lh)B.dd+=f._lh-f.hp;f._lh=f.hp}
+  const p=G.p[0];if(p){if(p._lh!=null&&p.hp<p._lh)B.dr+=p._lh-p.hp;p._lh=p.hp}}}
+{const _k=ko;ko=function(a,d){try{if(G._bs&&G.p&&d&&d!==G.p[0]&&!d.ko)G._bs.k++}catch(e){}return _k.apply(this,arguments)}}
+function btAdd(A,e){A.pt++;A.n++;if(e.w){A.w++;A.sq++;A.bs=Math.max(A.bs,A.sq)}else{A.l++;A.sq=0}if(e.pf)A.pf++;if(e.mvp)A.mvp++;A.t+=e.t;A.k+=e.k;A.dd+=e.dd;A.dr+=e.dr;A.hp+=e.hp;
+  const mn=Math.max(e.t,20)/60;A.xdpm=Math.max(A.xdpm,e.dd/mn);A.xrpm=Math.max(A.xrpm,e.dr/mn);if(e.tm){A.tm++;if(e.w)A.tw++}if(e.n){if(e.m==='torre')A.bf=Math.max(A.bf,e.n);if(e.m==='caca')A.bc=Math.max(A.bc,e.n);if(e.m==='hidra')A.bh=Math.max(A.bh,e.n)}}
+function btAddG(A,g,gm,t){A.g+=g;A.gm+=gm;A.xgpm=Math.max(A.xgpm,g/(Math.max(t,20)/60))}
+{const _r=btRec;btRec=function(m,w,x){const before=btC().pt;_r.apply(this,arguments);const L=rkG('bt',[]),e=L[0];if(!e||btC().pt===before)return;const B=G._bs||{f:0,dd:0,dr:0,k:0},p=G.p&&G.p[0];
+  e.t=Math.round(B.f/60);e.k=B.k|0;e.dd=Math.round(B.dd);e.dr=Math.round(B.dr);e.hp=e.w&&p?Math.max(0,Math.min(1,p.hp/(p.mhp||MAXHP))):0;e.mvp=e.w&&(e.pf||e.hp>=.5)?1:0;e.tm=G.teams?1:0;
+  const mt=String(e.x||'').match(/(\d+)/);e.n=mt?+mt[1]:0;L[0]=e;rkS('bt',L);
+  const c=btC(),s=btSea();for(const A of [c,s]){for(const f in BTAGG())if(A[f]==null)A[f]=0;const z=A.pt,zw=A.w,zl=A.l,zpf=A.pf,zsq=A.sq,zbs=A.bs;btAdd(A,e);if(A===c){A.pt=z;A.w=zw;A.l=zl;A.pf=zpf;A.sq=zsq;A.bs=zbs}
+    A.mm=A.mm||{};const M=A.mm[m]=Object.assign(BTAGG(),A.mm[m]||{});btAdd(M,e)}
+  rkS('btc',c);rkS('bts',s);const g0=B.g0,m0=B.m0,t=e.t,d=e.d;G._bs=null;
+  setTimeout(()=>{try{const g=Math.max(0,twCoins()-(g0||0)),gm=Math.max(0,(rkG('gem',0)|0)-(m0||0));const L2=rkG('bt',[]),i=L2.findIndex(q=>q.d===d);if(i>=0){L2[i].g=g;L2[i].gm=gm;rkS('bt',L2)}
+    const c2=btC(),s2=btSea();for(const A of [c2,s2]){btAddG(A,g,gm,t);if(A.mm&&A.mm[m])btAddG(A.mm[m],g,gm,t)}rkS('btc',c2);rkS('bts',s2)}catch(err){}},5000)}}
+const HSV={sea:1,m:'all'};
+const HSM=[['all','TODOS OS MODOS'],['pvp','PVP'],['boss','BOSS'],['dsf','DESAFIO'],['pve','VERSUS'],['torre','TORRE'],['caca','CAÇA'],['hidra','HIDRA']];
+function hsData(D){const S=D?(HSV.sea?D.sea:D.all):(HSV.sea?btSea():btC());if(!S)return null;const A=Object.assign(BTAGG(),HSV.m==='all'?S:(S.mm&&S.mm[HSV.m])||{});return A}
+const hsK=v=>v>=1e9?(v/1e9).toFixed(1).replace('.',',')+'B':v>=1e6?(v/1e6).toFixed(1).replace('.',',')+'M':v>=1e4?(v/1e3).toFixed(1).replace('.',',')+'K':rkFmtN(Math.round(v));
+const hsK2=v=>v>=1e9?Math.round(v/1e9)+'B':v>=1e6?Math.round(v/1e6)+'M':v>=1e3?Math.round(v/1e3)+'K':String(Math.round(v));
+const hsT=s=>{s=Math.round(s);if(s<60)return s+'s';if(s<3600)return Math.floor(s/60)+'min '+String(s%60).padStart(2,'0')+'s';return Math.floor(s/3600)+'h '+Math.floor(s%3600/60)+'min'};
+function hsRadar(A,me){const n=Math.max(1,A.n),mn=Math.max(1,A.t)/60,lg=(v,r)=>Math.max(0,Math.min(100,100*Math.log10(1+v)/Math.log10(1+r)));
+  let av=0;try{const P=me?pvG():{bt:0};av=Math.round(100*((Math.max(P.t|0,P.bt|0))/(PVT.length-1)+Math.min(1,A.bf/TWN)+Math.min(1,A.bc/10)+Math.min(1,A.bh/HYMAX))/4)}catch(e){}
+  return [['AVANÇAR',av,'Quanto você já avançou: rank do PVP, andar da Torre, nível da Caça e da Hidra'],['KDA',Math.min(100,Math.round(((A.k+A.w)/Math.max(1,A.l))*12)),'(abates + vitórias) ÷ derrotas'],
+    ['SOBREVIVÊNCIA',Math.round(A.hp/n*100),'Vida que sobra no fim das lutas (média)'],['LUTA EM EQUIPE',A.tm?Math.round(A.tw/A.tm*100):0,'Vitórias nas lutas de time (PVP 3x3)'],
+    ['FARM',Math.round(lg((A.g+A.gm*10)/mn,2000)),'Ouro e diamantes ganhos por minuto'],['DANO',Math.round(lg(A.dd/LAYER/mn,30)),'Dano causado por minuto']]}
+function hsH3(){const D=PFO?(PFO.hs||null):null,A=hsData(D)||BTAGG(),n=Math.max(1,A.n),me=!PFO,own=me?rkG('own',['goku']).filter(id=>CH[id]).length:(PFO&&PFO.h?PFO.h.own:0);
+  const R=hsRadar(A,me),cx=1465,cy=428,V=[[1465,243],[1628,335],[1628,520],[1465,615],[1302,520],[1302,335]];
+  const pts=R.map((r,i)=>[cx+(V[i][0]-cx)*Math.max(4,r[1])/100,cy+(V[i][1]-cy)*Math.max(4,r[1])/100]);
+  const L=[[A.w,408],[A.l,459],[hsT(A.t),510],[(A.k/n).toFixed(1).replace('.',','),561],[A.bs,612],[hsK2(A.xdpm),664,1],[hsK2(A.xgpm),716]],Rr=[[hsK(A.gm),408],[own,459],[A.mvp,510],[hsT(A.t/n),561],[A.k?hsT(A.t/A.k):'—',612],[hsK2(A.xrpm),664,1]];
+  const P=v=>`${(v[0]/18.47).toFixed(3)}% ${(v[1]/8.51).toFixed(3)}%`;
+  return `${p3Side()}${PFO?`<div class="pfOth p3Oth" style="${rkB3(560,8,1150,58)}">👀 HISTÓRICO DE <b>${twEsc(PFO.nome||'?')}</b></div>`:''}
+  <button class="p3Tab${HSV.sea?' on':''}" data-a="hsSea" data-v="1" style="${rkB3(610,98,874,150)}"></button><button class="p3Tab${HSV.sea?'':' on'}" data-a="hsSea" data-v="0" style="${rkB3(888,98,1136,150)}"></button>
+  ${HSV.sea?'':`<div class="hsDim" style="${rkB3(612,100,872,148)}"></div>`}<div class="hsSeaN" style="${rkB3(612,150,872,172)}">${TEMP.n}</div>
+  <button class="hsMd" data-a="hsMode" style="${rkB3(1410,98,1726,150)}"><b>${(HSM.find(x=>x[0]===HSV.m)||HSM[0])[1]}</b></button>
+  <div class="hsCi" style="${rkB3(415,256,575,312)}">${hsK(A.pt)}</div><div class="hsCi" style="${rkB3(670,256,830,312)}">${A.pt?(A.w/A.pt*100).toFixed(1).replace('.',',')+'%':'—'}</div><div class="hsCi" style="${rkB3(930,256,1090,312)}">${hsK(A.mvp)}</div>
+  ${L.map(([v,y,t])=>`<div class="hsV${t?' t':''}" style="${rkB3(560,y+2,730,y+42)}">${v}</div>`).join('')}${Rr.map(([v,y,t])=>`<div class="hsV${t?' t':''}" style="${rkB3(1010,y+2,1170,y+42)}">${v}</div>`).join('')}
+  <svg class="hsRd" viewBox="0 0 100 100" preserveAspectRatio="none" style="left:0;top:0;width:100%;height:100%"><polygon points="${pts.map(p=>(p[0]/18.47).toFixed(2)+','+(p[1]/8.51).toFixed(2)).join(' ')}"/></svg>
+  ${R.map((r,i)=>{const [x,y]=V[i],dx=x<cx-5?-1:x>cx+5?1:0,dy=y<cy?-1:1;return `<div class="hsRv" style="${rkB3(x-40+dx*58,y-16+(dx?0:dy*0)+(i===0?40:i===3?-62:28),x+40+dx*58,y+14+(i===0?40:i===3?-62:28))}">${r[1]}</div>`}).join('')}
+  <button class="hs" data-a="hsDet" style="${rkB3(1312,688,1648,758)}"></button>
+  ${A.n?'':`<div class="hsE" style="${rkB3(340,775,1180,800)}">${PFO?'Esse jogador ainda não tem estatísticas nesta versão.':'Os números novos (tempo, dano, abates, ouro) começam a contar a partir das suas próximas lutas.'}</div>`}`}
+function hsDet(){const D=PFO?(PFO.hs||null):null,A=hsData(D)||BTAGG(),R=hsRadar(A,!PFO);
+  rkModal(`<div class="twM sm hsDM"><h3>ℹ️ DETALHES DO GRÁFICO</h3><p class="twH">${HSV.sea?TEMP.n:'TUDO'} · ${(HSM.find(x=>x[0]===HSV.m)||HSM[0])[1]}</p>${R.map(r=>`<div class="hsDr"><b>${r[0]}</b><i><s style="width:${r[1]}%"></s></i><em>${r[1]}</em><small>${r[2]}</small></div>`).join('')}
+  <p class="twH">MVP = vitória terminando com mais da metade da vida · Estrela Solitária = vitória PERFEITA (sem tomar dano)</p><div class="row"><button class="btn main" id="rkMX">FECHAR</button></div></div>`);$('rkMX').onclick=()=>rkModal(null)}
+/* publica um resumo das estatísticas no perfil (outros jogadores veem) */
+{const _m=pfMine;pfMine=function(){const D=_m.apply(this,arguments);try{const pick=A=>{const o={};for(const f in BTAGG())o[f]=Math.round(+A[f]||0);return o};D.hs={all:pick(btC()),sea:pick(btSea())}}catch(e){}return D}}
+{const _c=pfClean;pfClean=function(o){const r=_c.apply(this,arguments);if(!r||!o||!o.hs||typeof o.hs!=='object')return r;const N=v=>Math.max(0,Math.min(1e12,+v||0));const cl=A=>{if(!A||typeof A!=='object')return null;const q={};for(const f in BTAGG())q[f]=N(A[f]);return q};r.hs={all:cl(o.hs.all),sea:cl(o.hs.sea)};return r}}
+{const _v=rkView;rkView=function(v){if(v!=='hs')return _v.apply(this,arguments);RKV='hs';const W=$('rkWrap');if(!W)return;clearInterval(rkView.iv);rkModal(null);
+  W.innerHTML=`<div class="rkA rk_hs3 p3V" data-w="1847" data-h="851" data-full="1" style="background-image:url(${P3A.hs})">${hsH3()}<div id="rkToast"></div></div>`;rkFit();W.querySelectorAll('[data-a]').forEach(b=>b.onclick=e=>{e.stopPropagation();rkAct(b.dataset.a,b)})}}
+{const _a=rkAct;rkAct=function(a,b){
+  if(a==='hsSea'){HSV.sea=+b.dataset.v;rkSfx('whoosh');return rkView('hs')}
+  if(a==='hsDet')return hsDet();
+  if(a==='hsMode'){rkModal(`<div class="twM sm"><h3>MODO</h3><div class="hsML">${HSM.map(([k,n])=>`<button class="btn${HSV.m===k?' main':''}" data-k="${k}">${n}</button>`).join('')}</div></div>`);
+    document.querySelectorAll('#rkModal .hsML button').forEach(x=>x.onclick=()=>{HSV.m=x.dataset.k;rkModal(null);rkSfx('whoosh');rkView('hs')});return}
+  if(a==='back'&&RKV==='hs'&&!PFO){rkSfx('whoosh');return rkView('pf')}
+  return _a.apply(this,arguments)}}
+
+try{window.__pvT={G:()=>G,ko:(a,d)=>ko(a,d),ev:()=>rkEvX(),m:()=>[rkEvG(),rkEvL(),rkEvD(),rkEvA()],lk:()=>{const c={};for(let i=0;i<4000;i++){const r=twEqRoll().k;c[r]=(c[r]||0)+1}const a=[0,0,0,0,0];for(let i=0;i<4000;i++)a[lvCrRoll()]++;return {luck:+lvLuck().toFixed(2),drop:+rkDropF().toFixed(2),extra:lkK(),equip:c,cristal:a}},dl:id=>pvDelta(id),cs:id=>cstStats(id),hy:()=>HY,hyS:()=>hyStart(),fil:()=>HY.fil,rv:v=>rkView(v),tsync:()=>tplSync(1),hsd:()=>[btC(),btSea()],pfo:(u,n)=>pfOpenOther(u,n,{sc:'ranked'}),bt:{rec:(m,w,x)=>btRec(m,w,x),c:()=>btC(),lv:()=>p3Lv()},al:()=>ALB,ch:id=>CH[id],skVid:cb=>{RKBAN='sk';rkPlayVid(cb||(()=>{}))},evm:()=>({EVMI,MCUR,src:MEL.src,loop:MEL.loop,paused:MEL.paused}),evNext:()=>evMusPlay(1),mn:{open:()=>mnOpen(),mine:()=>mnMine(),clean:o=>mnClean(o),give:o=>mnGive(o),view:o=>mnView(o),M:()=>MN},ps:{roll:o=>psRoll(o),def:psDef,sum:psSum,G:psG,S:psS,anim:(r,cb)=>psAnim(r,cb||(()=>{}))},hyBoss:()=>{HY.st=3;HY.lv=1;HY.mobs=[];G.p[1]=hyMk('hidra',900,1)},hyI:()=>(HY.items||[]).map(i=>[i.k,Math.round(i.x),Math.round(i.y),i.land,(()=>{const m=bsImg(HYIC[i.k](i));return m.complete+':'+m.naturalWidth})()]),stg:()=>[STAGE.name,STAGE.src0,STAGE.img&&STAGE.img.naturalWidth,!!STAGE.far],lvo:id=>lvOpen(id),bs:lv=>bsSt(lv),dc:f=>dlCheck(f),ds:()=>dsfOpen()}}catch(e){} /* só para os testes */
 
 function twTrofList(){const tc=twLS.g('tw_tc',{}),run={};for(const t of TW.tr)run[t.k]=(run[t.k]||0)+1;
   twModal(`<div class="twM"><h3>🎖️ TROFÉUS</h3><div class="twTL">${Object.keys(TWTR).map(k=>{const T=TWTR[k];return `<div class="${tc[k]||run[k]?'got':''}"><i>${T.i}</i><b>${T.n}</b><span>${T.d}</span><em>+${T.p} 🏆</em><small>${run[k]?'nesta subida: '+run[k]+' · ':''}total: ${(tc[k]||0)}</small></div>`}).join('')}</div>
@@ -11905,7 +12063,7 @@ window.__dbg={mus:()=>[MCUR,MEL.src.split('/').pop()],stg:()=>STAGE.key,prepMatc
 })();
 </script>
 <style>#updB{position:fixed;left:50%;top:max(8px,env(safe-area-inset-top));transform:translateX(-50%);z-index:99999;padding:10px 22px;border-radius:14px;border:2px solid #fff3c0;background:linear-gradient(#ffd84a,#e08a10);color:#3a1d00;font:900 15px system-ui,sans-serif;box-shadow:0 0 18px #ffb21f;cursor:pointer;animation:updP 1s ease-in-out infinite alternate}@keyframes updP{to{transform:translateX(-50%) scale(1.05)}}</style>
-<script>(function(){const V='187935f87ff4';if(!/^https?:/.test(location.protocol))return;let nv=null;
+<script>(function(){const V='4ae611ea96e2';if(!/^https?:/.test(location.protocol))return;let nv=null;
 function show(){if(document.getElementById('updB'))return;try{if(typeof G!=='undefined'&&G.mode==='fight')return}catch(e){}const b=document.createElement('button');b.id='updB';b.textContent='🔄 ATUALIZAÇÃO NOVA! Toque para atualizar';
   b.onclick=()=>{b.textContent='⏳ Atualizando...';try{acSave(1)}catch(e){}setTimeout(()=>location.reload(),900)};document.body.appendChild(b)}
 async function chk(){if(document.hidden)return;if(nv){show();return}try{const r=await fetch('versao.txt?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const t=(await r.text()).trim();if(/^[0-9a-f]{8,40}$/.test(t)&&t!==V){nv=t;show()}}catch(e){}}
