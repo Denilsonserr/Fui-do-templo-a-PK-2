@@ -1851,3 +1851,9 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - Poucos lobos e só em alguns andares: `TNCH` por andar = `lobos` (3–4, no máx. 2 ao mesmo tempo), `met` (CHUVA DE METEOROS: sobreviver 20s, meteoros caindo perto) ou `duelo` (boss na hora com +1 passiva). Fase em `TN.ph` ('mob'/'met'/'duelo'/'boss'/'clear'); `tnPh(nome)` = inimigo invisível de espera. Meteoros fora da chuva ficaram raros.
 - DESAFIO BÔNUS por andar (`TNBO`: boss em 60s, perder <30% da vida, combo 12, não levar dano de armadilha/meteoro) → cumpriu = baú ESPECIAL (roxo, +1 item, diamantes).
 - Visual: mapas reprocessados (nitidez + contraste/cor, webp 92). `TNST` por mapa: luz do personagem (LT com `key` do cenário), partículas (vaga-lumes, brasas, poeira dourada, cinzas, neve, brilhos de cristal, névoa), raios de luz, neblina no chão, cor (Ultra/4K) e vinheta; clima: gelo=neve, pântano=chuva, assombrado=tempestade. Partículas por nível gráfico (Mínimo nenhuma). Teste: `ttorre3_v376.js`.
+
+## v377 — Torre simplificada (pedido do dono)
+- Voltaram os CENÁRIOS ANTIGOS (sorteio entre os `STG` não escondidos, `TN.stg`; ao subir troca com `setStage` + o mesmo ajuste do dia/noite `DN` do `startRound`). Os mapas novos (`tn_*`) ficam registrados mas sem uso.
+- Saíram: armadilhas, lobos, meteoros, chuva/duelo/caçada, desafio bônus, alavanca, portão, efeitos dos mapas novos. Andar = só o BOSS (`TN.ph` 'duelo' → 'boss' → 'clear').
+- Boss morre → baú cai do céu (perto) + ESTÁTUA DO ANJO aparece perto; tocar nela = escolher a passiva e SUBIR (tela "subindo"). Último andar: abrir o baú → fim.
+- Bosses bem mais fortes: `TNBARS` 4→15 barras, `TNDM` 1,3→3, defesa `tdf` .9→.55, vel. até 1,45, crítico 10+3/andar, energia cheia, IA no máximo (G.diff 3; só o 1º andar é 2), passivas `TNNP` 1→7 (sem invocador/meteoros). Teste: `ttorre4_v377.js`.
