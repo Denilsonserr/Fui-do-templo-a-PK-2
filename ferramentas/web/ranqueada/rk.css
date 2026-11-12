@@ -1834,3 +1834,34 @@ img.anOn{position:relative;z-index:2}
 .hsDr i{height:.6em;border-radius:1em;background:#1a0630;border:1px solid #7a4cc8;overflow:hidden}.hsDr s{display:block;height:100%;background:linear-gradient(90deg,#b14dff,#ff7af0)}.hsDr small{grid-column:1/-1;color:#b9a6e0;font:600 .78em var(--f-ui)}
 .hsML{display:flex;flex-direction:column;gap:.4em;margin:.6em 0}
 .hsV.t{font-size:.95em;padding-right:.15em}
+
+/* v370: rank do Modo Boss no perfil */
+.p3RkB{position:absolute;display:flex;align-items:center;justify-content:center;pointer-events:none}
+.p3RkB .pfRk{position:relative!important;left:auto!important;top:auto!important;width:auto!important;height:88%!important;aspect-ratio:1;margin-top:-8%}
+.p3RkB em{position:absolute;bottom:-.25em;left:-20%;right:-20%;text-align:center;font:900 .72em var(--f-ui);font-style:normal;text-shadow:0 0 .3em #000,0 0 .2em #000;letter-spacing:.05em;white-space:nowrap}
+/* v370: brilho do perfil pelo rank (pa0..pa5) */
+.rk_pf.pa1 .p3Ft,.rk_pf.pa2 .p3Ft{box-shadow:0 0 .6em var(--rc)}
+.p3Au{position:absolute;pointer-events:none;z-index:1}
+.p3Au i{position:absolute;inset:-6%;border-radius:.8em;border:2px solid var(--rc);box-shadow:0 0 .8em var(--rc),inset 0 0 .6em var(--rc);animation:p3Au 2s ease-in-out infinite}
+.p3Au i+i{inset:-14%;border-radius:1em;opacity:.5;animation-delay:1s}
+@keyframes p3Au{50%{opacity:.35;transform:scale(1.04)}}
+.rk_pf.pa3 .p3Au i,.rk_pf.pa4 .p3Au i,.rk_pf.pa5 .p3Au i{border-image:conic-gradient(from var(--a,0deg),#fff,var(--rc),#ffd84a,var(--rc),#fff) 1;animation:p3Au 2s ease-in-out infinite,p3Rot 4s linear infinite}
+@property --a{syntax:'<angle>';inherits:false;initial-value:0deg}@keyframes p3Rot{to{--a:360deg}}
+.p3Mer{font:900 .75em var(--f-ui);font-style:normal;color:var(--rc);letter-spacing:.08em;text-shadow:0 0 .4em var(--rc),0 0 .2em #000;white-space:nowrap;animation:p3G 1.6s ease-in-out infinite}
+.rk_pf.pa3 .p3Ch img{filter:drop-shadow(0 0 1em var(--rc)) drop-shadow(0 0 .3em #fff)}
+.rk_pf.pa4 .p3Ch img,.rk_pf.pa5 .p3Ch img{filter:drop-shadow(0 0 1.2em var(--rc)) drop-shadow(0 0 .5em #fff) drop-shadow(0 0 2.4em #ffd84a)}
+.p3Cos{position:absolute;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+.p3Cos s{position:absolute;width:.35em;height:.35em;border-radius:50%;background:#fff;box-shadow:0 0 .6em var(--rc),0 0 1.2em var(--rc);animation:p3St 6s linear infinite;opacity:0}
+.p3Cos s:nth-child(3n){background:var(--rc)}.p3Cos s:nth-child(4n){width:.22em;height:.22em}
+@keyframes p3St{0%{opacity:0;transform:translateY(0) scale(.4)}15%{opacity:1}100%{opacity:0;transform:translateY(-38vh) scale(1.2)}}
+.rk_pf.pa5 .p3Cos s{background:#ffe27a}
+.p3Cos s:nth-child(1){left:1%;top:55%;animation-delay:0.00s;animation-duration:4s}.p3Cos s:nth-child(2){left:54%;top:92%;animation-delay:0.37s;animation-duration:5s}.p3Cos s:nth-child(3){left:10%;top:84%;animation-delay:0.74s;animation-duration:6s}.p3Cos s:nth-child(4){left:63%;top:76%;animation-delay:1.11s;animation-duration:7s}.p3Cos s:nth-child(5){left:19%;top:68%;animation-delay:1.48s;animation-duration:8s}.p3Cos s:nth-child(6){left:72%;top:60%;animation-delay:1.85s;animation-duration:4s}.p3Cos s:nth-child(7){left:28%;top:97%;animation-delay:2.22s;animation-duration:5s}.p3Cos s:nth-child(8){left:81%;top:89%;animation-delay:2.59s;animation-duration:6s}.p3Cos s:nth-child(9){left:37%;top:81%;animation-delay:2.96s;animation-duration:7s}.p3Cos s:nth-child(10){left:90%;top:73%;animation-delay:3.33s;animation-duration:8s}.p3Cos s:nth-child(11){left:46%;top:65%;animation-delay:3.70s;animation-duration:4s}.p3Cos s:nth-child(12){left:2%;top:57%;animation-delay:4.07s;animation-duration:5s}.p3Cos s:nth-child(13){left:55%;top:94%;animation-delay:4.44s;animation-duration:6s}.p3Cos s:nth-child(14){left:11%;top:86%;animation-delay:4.81s;animation-duration:7s}.p3Cos s:nth-child(15){left:64%;top:78%;animation-delay:5.18s;animation-duration:8s}.p3Cos s:nth-child(16){left:20%;top:70%;animation-delay:5.55s;animation-duration:4s}.p3Cos s:nth-child(17){left:73%;top:62%;animation-delay:5.92s;animation-duration:5s}.p3Cos s:nth-child(18){left:29%;top:99%;animation-delay:0.29s;animation-duration:6s}
+/* emblemas dos ranks novos: mais brilho */
+.pfRk.t11 .rkEmb img,.pfRk.t12 .rkEmb img,.pfRk.t13 .rkEmb img{animation:rkCos 2s ease-in-out infinite}
+@keyframes rkCos{0%,100%{filter:drop-shadow(0 0 .4em #fff) drop-shadow(0 0 1em var(--c))}50%{filter:drop-shadow(0 0 .8em #fff) drop-shadow(0 0 2em var(--c)) drop-shadow(0 0 3em #ffd84a) brightness(1.15)}}
+.pfRk.t12 .rg,.pfRk.t13 .rg{animation-duration:.7s!important}
+.pfRk.t13::before{background:repeating-conic-gradient(from 0deg,rgba(255,240,170,.95) 0 4deg,transparent 4deg 14deg)!important;animation-duration:3s!important}
+.p3RkB .pfRk{height:96%!important;margin-top:-4%!important}
+.p3RkB .pfRk::before{inset:-18%!important;opacity:.55}.p3RkB .pfRk::after{display:none!important}
+.p3RkB .pfRk .rg{inset:-8%!important;opacity:.7}
+.p3RkB em{bottom:-.55em}

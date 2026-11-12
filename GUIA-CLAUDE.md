@@ -1807,3 +1807,11 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - TEMPORADA: `TEMP={id:1,n:'TEMPORADA 1'}`. Para reiniciar (quando o dono pedir): `TEMP.id+1` (zera `rk_bts` de todo mundo ao abrir) + resetar os rankings.
 - Perfil publica `hs:{all,sea}` (números) para o histórico de outros jogadores.
 - Teste `ttitulos_v369.js` (ADM com placa e histórico; Bia ganha Top 1 do Servidor e do PVP com servidor falso).
+
+## v370 — 3 RANKS NOVOS + emblemas novos do dono + rank do MODO BOSS no perfil
+- Perfil: as 2 medalhas (atual / mais alta) agora são o rank do MODO BOSS (Ranqueado: `rkRank(rp)` e `pfRkMax`), não mais o PVP (`p3Rk`, com os efeitos do `pfRkH`).
+- RKR ganhou DEUS CÓSMICO (180k XP, 4.000 💎), DEUS PRIMORDIAL (300k, 6.000 💎), DEUS ABSOLUTO (500k, 10.000 💎). RKTOP = 13. Tudo que é por nível do Boss ganhou 3 níveis (Boss nível 12–14): RKXP, RKXW (+680/+800/+950), RKXL, RKLVS, RKPAS, `ph` de cada boss, BSST (160k ATK no 14), BSANTI, RKRW (baús míticos, tickets, sementes, caixas secretas) + presente extra `RKRWX` (joias negras 50/100/250 e moedas 200k/500k/1M, wrapper do `rkRwClaim`).
+- Emblemas: `ferramentas/ranqueada_artes/ranks_v370/` (`cortar.py`: fundo preto → transparência pela luminosidade). `RQA.rank` = [Madeira antigo, Bronze, Prata, Ouro, Diamante, Lendário, Dragão, Divindade, Div. Suprema, Div. Celestial, Deus Celestial, Deus Cósmico, Primordial, Absoluto]. O emblema azul do MEIO da 2ª folha ficou guardado (`emb/extra_guardado.png`).
+- Placa de título dos 3 novos = Deus Celestial por enquanto (`TPRK`); o dono vai fazer as placas e as molduras.
+- Brilho do perfil pelo rank (`p3Tier`, classes `pa0..pa5`): Diamante+ foto brilha; Divindade+ moldura animada na foto; Div. Celestial+ moldura arco-íris girando + "✦ RANK ✦" ao lado do nome + personagem brilhando; Deus Cósmico+ estrelinhas subindo pela tela; Absoluto dourado. Emblemas t11–13 pulsam mais forte.
+- Teste `trank_v370.js`.

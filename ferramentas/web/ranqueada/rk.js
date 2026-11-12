@@ -11,7 +11,9 @@ const RKXB={dmg:.8,cmb:60,me:150,srv:600};
 const RKR=[{n:'MADEIRA',c:'#d29a5a',min:0,rw:0},{n:'BRONZE',c:'#ef9a5a',min:1000,rw:50},{n:'PRATA',c:'#dfe8ff',min:2500,rw:100},{n:'OURO',c:'#ffd23a',min:5000,rw:150},
   {n:'DIAMANTE',c:'#5ab8ff',min:9000,rw:250},{n:'LENDÁRIO',c:'#c46aff',min:15000,rw:400},{n:'DRAGÃO LENDÁRIO',c:'#ff4a2a',min:23000,rw:600},{n:'DIVINDADE',c:'#fff4c0',min:35000,rw:1000},
   /* v250: 3 ranks acima da Divindade */
-  {n:'DIVINDADE SUPREMA',c:'#ffd86b',min:50000,rw:1500},{n:'DIVINDADE CELESTIAL',c:'#6fc8ff',min:70000,rw:2000},{n:'DEUS CELESTIAL',c:'#e0a0ff',min:100000,rw:3000}];
+  {n:'DIVINDADE SUPREMA',c:'#ffd86b',min:50000,rw:1500},{n:'DIVINDADE CELESTIAL',c:'#6fc8ff',min:70000,rw:2000},{n:'DEUS CELESTIAL',c:'#e0a0ff',min:100000,rw:3000},
+  /* v370: 3 ranks novos (o último pede 500 mil XP) */
+  {n:'DEUS CÓSMICO',c:'#8f7bff',min:180000,rw:4000},{n:'DEUS PRIMORDIAL',c:'#ff7ad9',min:300000,rw:6000},{n:'DEUS ABSOLUTO',c:'#ffe27a',min:500000,rw:10000}];
 const RKTOP=RKR.length-1;
 /* escala do Boss por nível (100% = atributos originais) */
 const RKLVS=[{v:100,d:100,s:100},{v:115,d:110,s:105},{v:135,d:120,s:110},{v:160,d:135,s:115},{v:190,d:150,s:120},{v:225,d:165,s:125},{v:265,d:180,s:130},{v:320,d:200,s:135},{v:380,d:220,s:140},{v:450,d:240,s:145},{v:540,d:265,s:150}];
@@ -3351,6 +3353,8 @@ async function p3Top1(nome){try{const A=await pvLoadAll(),B={};for(const e of A)
 /* ---------- menu lateral (igual nas 4 artes) ---------- */
 function p3Side(){return [['pf',110,190],['hs',192,258],['p3al',262,326],['p3co',330,396],['p3bt',400,466],['p3st',470,536],['p3so',540,606],['conta',608,672]].map(([a,y0,y1])=>`<button class="hs" data-a="${a}" style="${rkB3(20,y0,252,y1)}"></button>`).join('')+`<button class="hs" data-a="back" style="${rkB3(40,0,232,86)}"></button>`}
 /* ---------- PERFIL ---------- */
+/* v370: medalhas do perfil = rank do MODO BOSS (Ranqueado), com os efeitos do rank */
+function p3Rk(i,st){i=Math.max(0,Math.min(RKTOP,i|0));return `<div class="p3RkB" style="${st}">${pfRkH(i,'')}<em style="color:${RKR[i].c}">${RKR[i].n}</em></div>`}
 /* placa do título (modelo da referência do dono; quando ele mandar as artes dos títulos, troca aqui) */
 function p3Plate(t,n,adm,me){let ic='',nm='',c='#ffd84a';
   if(t==='adm'&&adm){ic='👑';nm='Administrador'}else if(TWTIT[t]){const T=TWTIT[t];ic=T.rk!=null?`<img src="${RQA.rank[T.rk]}" alt="">`:T.i;nm=T.n;c=T.c||c}
@@ -3378,7 +3382,7 @@ pfH=function(){const D=pfCur(),me=!PFO,n=D.nome||'',adm=!!n&&n.toLowerCase()===S
   <button class="p3Ti${me?'':' ro'}" data-a="pfTit" style="${rkB3(494,232,900,280)}">${p3Plate(D.tit,n,adm,me)}</button>
   ${me?`<button class="p3Ed2" data-a="pfTit" style="${rkB3(1122,234,1168,276)}" title="Trocar título">✎</button>`:''}
   <div class="p3T1" id="p3T1" style="${rkB3(500,290,1165,316)}"></div>
-  ${med(pt,rkB3(375,372,516,458))}${med(pb,rkB3(680,372,821,458))}
+  ${p3Rk(rkRank(D.rp),rkB3(386,378,506,470))}${p3Rk(Math.max(rkRank(D.rp),D.mx|0),rkB3(691,378,811,470))}
   <div class="p3Nb" style="${rkB3(352,500,515,552)}">${bc?N(bc.pt):'—'}</div><div class="p3Nb" style="${rkB3(590,500,744,552)}">${bc?tx.toFixed(1).replace('.',',')+'%':'—'}</div>
   <div class="p3Nb" style="${rkB3(820,500,972,552)}">${N(own)}</div><div class="p3Nb" style="${rkB3(1050,500,1199,552)}" title="Vitórias PERFEITAS (sem tomar dano)">${bc?N(bc.pf):'—'}</div>
   ${tops.map((id,i)=>{const x=[375,508,641][i];return `<div class="p3He" style="${rkB3(x-52,616,x+52,720)}"><img src="${p3Port(id)}" alt=""><i>★</i><em>${CH[id].name}</em></div>`}).join('')}
@@ -3611,4 +3615,23 @@ function hsDet(){const D=PFO?(PFO.hs||null):null,A=hsData(D)||BTAGG(),R=hsRadar(
   if(a==='back'&&RKV==='hs'&&!PFO){rkSfx('whoosh');return rkView('pf')}
   return _a.apply(this,arguments)}}
 
+/* ================= v370: 3 RANKS NOVOS (Deus Cósmico 180k, Deus Primordial 300k, Deus Absoluto 500k) + emblemas novos do dono + brilho do rank no perfil =================
+   Tudo que é "por nível do Boss" ganhou 3 níveis a mais (Boss nível 12, 13 e 14, mais fortes). */
+RKXP.push(180000,300000,500000);RKXW.push(680,800,950);RKXL.push(360,430,520);
+RKLVS.push({v:650,d:290,s:155},{v:780,d:320,s:160},{v:950,d:355,s:165});
+RKPAS.push(['DEUS CÓSMICO: barreira de 20% + regenera 5% ao chegar a 35%','IA perfeita: lê seus combos e contra-ataca'],['DEUS PRIMORDIAL: 2 fases supremas, +30% de dano e velocidade','Nunca para de atacar, combos infinitos'],['DEUS ABSOLUTO: 3 barreiras, fúria eterna e cura no fim','O boss mais forte do jogo: só os melhores vencem']);
+for(const B0 of RKBOSS){const L=B0.ph[B0.ph.length-1];B0.ph.push([L[0]+1,L[1]+2],[L[0]+2,L[1]+4],[L[0]+3,L[1]+6])}
+BSST.push([70000,8500,380],[105000,11000,450],[160000,14500,540]);BSANTI.push({cr:28,ls:.2,pd:.45},{cr:32,ls:.15,pd:.5},{cr:36,ls:.1,pd:.55});
+RKRW.push({g:10000,tic:40,bau:[['mit',6]],sz:25,sec:['rnd','rnd']},{g:15000,tic:60,bau:[['mit',8]],sz:30,sec:['sec','rnd','rnd']},{g:25000,tic:100,bau:[['mit',10]],sz:50,sec:['sec','rnd','rnd','rnd']});
+/* presentes extras dos ranks novos: joias negras (giros de passiva) + moedas de ouro */
+const RKRWX={11:{jn:50,mo:200000},12:{jn:100,mo:500000},13:{jn:250,mo:1000000}};
+{const _c=rkRwClaim;rkRwClaim=async function(i){const had=rkG('rwc2',[]).includes(i);const r=await _c.apply(this,arguments);const X=RKRWX[i];
+  if(X&&!had&&rkG('rwc2',[]).includes(i)){try{psAddJn(X.jn)}catch(e){}try{twAddCoins(X.mo)}catch(e){}try{acSave(1)}catch(e){}setTimeout(()=>rkToast('🎁 PRESENTE EXTRA: +'+X.jn+' Joias Negras · +'+rkFmtN(X.mo)+' 🪙','#ffd84a'),1200)}return r}}
+for(let k=11;k<=13;k++){TWTIT['rk'+k]={n:RKR[k].n,i:'',c:RKR[k].c,d:'Chegar ao rank '+RKR[k].n+' no Modo Ranqueado',rk:k}}
+TPRK.push('deus_celestial','deus_celestial','deus_celestial'); /* o dono vai fazer as placas desses 3 */
+/* brilho do perfil pelo rank: quanto mais alto, mais forte (classe pa0..pa5 no perfil) */
+function p3Tier(i){return i>=13?5:i>=11?4:i>=10?3:i>=7?2:i>=5?1:0}
+{const _v=rkView;rkView=function(v){const r=_v.apply(this,arguments);if(v==='pf'){const A=document.querySelector('#rkWrap .rk_pf');if(A){const D=pfCur(),i=Math.max(rkRank(D.rp),D.mx|0),t=p3Tier(i);
+  A.classList.add('pa'+t);A.style.setProperty('--rc',RKR[i].c);if(t>=2)A.insertAdjacentHTML('afterbegin',`<div class="p3Au" style="${rkB3(296,96,465,272)}"><i></i><i></i></div>`);
+  if(t>=4)A.insertAdjacentHTML('afterbegin','<div class="p3Cos">'+'<s></s>'.repeat(18)+'</div>');if(t>=3){const N=A.querySelector('.p3Nm');if(N)N.insertAdjacentHTML('beforeend',`<em class="p3Mer">✦ ${RKR[i].n} ✦</em>`)}}}return r}}
 try{window.__pvT={G:()=>G,ko:(a,d)=>ko(a,d),ev:()=>rkEvX(),m:()=>[rkEvG(),rkEvL(),rkEvD(),rkEvA()],lk:()=>{const c={};for(let i=0;i<4000;i++){const r=twEqRoll().k;c[r]=(c[r]||0)+1}const a=[0,0,0,0,0];for(let i=0;i<4000;i++)a[lvCrRoll()]++;return {luck:+lvLuck().toFixed(2),drop:+rkDropF().toFixed(2),extra:lkK(),equip:c,cristal:a}},dl:id=>pvDelta(id),cs:id=>cstStats(id),hy:()=>HY,hyS:()=>hyStart(),fil:()=>HY.fil,rv:v=>rkView(v),tsync:()=>tplSync(1),hsd:()=>[btC(),btSea()],pfo:(u,n)=>pfOpenOther(u,n,{sc:'ranked'}),bt:{rec:(m,w,x)=>btRec(m,w,x),c:()=>btC(),lv:()=>p3Lv()},al:()=>ALB,ch:id=>CH[id],skVid:cb=>{RKBAN='sk';rkPlayVid(cb||(()=>{}))},evm:()=>({EVMI,MCUR,src:MEL.src,loop:MEL.loop,paused:MEL.paused}),evNext:()=>evMusPlay(1),mn:{open:()=>mnOpen(),mine:()=>mnMine(),clean:o=>mnClean(o),give:o=>mnGive(o),view:o=>mnView(o),M:()=>MN},ps:{roll:o=>psRoll(o),def:psDef,sum:psSum,G:psG,S:psS,anim:(r,cb)=>psAnim(r,cb||(()=>{}))},hyBoss:()=>{HY.st=3;HY.lv=1;HY.mobs=[];G.p[1]=hyMk('hidra',900,1)},hyI:()=>(HY.items||[]).map(i=>[i.k,Math.round(i.x),Math.round(i.y),i.land,(()=>{const m=bsImg(HYIC[i.k](i));return m.complete+':'+m.naturalWidth})()]),stg:()=>[STAGE.name,STAGE.src0,STAGE.img&&STAGE.img.naturalWidth,!!STAGE.far],lvo:id=>lvOpen(id),bs:lv=>bsSt(lv),dc:f=>dlCheck(f),ds:()=>dsfOpen()}}catch(e){} /* só para os testes */
