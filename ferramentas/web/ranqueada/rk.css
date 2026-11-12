@@ -1919,3 +1919,24 @@ img.anOn{position:relative;z-index:2}
 @keyframes tnUp{from{transform:translateY(12vh);opacity:0}}
 .tnBlL{display:flex;flex-wrap:wrap;justify-content:center;gap:.4em;margin:.4em 0}
 .tnBlL span{padding:.2em .6em;border-radius:.6em;background:rgba(60,30,10,.7);border:1px solid #a06a20;font:800 .85em var(--f-ui);color:#ffe9c8}
+/* v378: roletas de passiva da torre */
+#tnRol{position:fixed;inset:0;z-index:60;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.45);opacity:0;pointer-events:none;transition:opacity .3s}
+#tnRol.on{opacity:1;pointer-events:auto}
+.tnRb{display:flex;gap:4vh}
+.tnRc{display:flex;flex-direction:column;align-items:center;gap:1vh;padding:1.6vh 2.4vh;border-radius:2vh;background:linear-gradient(#2a1a06f2,#120804f2);border:.3vh solid #ffd84a;box-shadow:0 0 3vh rgba(255,210,100,.45)}
+.tnRc.ex{border-color:#ff4a4a;box-shadow:0 0 3vh rgba(255,60,60,.45)}
+.tnRc h4{margin:0;font:900 2.3vh var(--f-ui);color:#ffe08a;letter-spacing:.05em}.tnRc.ex h4{color:#ff8a7a}
+.tnW{position:relative;width:34vh;height:34vh}
+.tnWh{position:absolute;inset:0;border-radius:50%;border:.5vh solid #ffd84a;box-shadow:inset 0 0 2vh #000,0 0 2vh rgba(255,200,80,.5)}
+.tnRc.ex .tnWh{border-color:#ff5a4a}
+.tnWh i{position:absolute;left:50%;top:50%;width:0;height:50%;transform-origin:0 0;margin-top:-50%;display:flex;justify-content:center;font-style:normal}
+.tnWh i{transform-origin:50% 100%;left:calc(50% - 2.5vh);top:0;width:5vh;height:50%;margin:0;align-items:flex-start;padding-top:1.2vh}
+.tnWh b{display:block;font-size:3.4vh;line-height:1}
+.tnW em{position:absolute;left:50%;top:-1.4vh;transform:translateX(-50%);width:0;height:0;border-left:1.6vh solid transparent;border-right:1.6vh solid transparent;border-top:3vh solid #fff;filter:drop-shadow(0 .3vh .4vh #000)}
+.tnW:after{content:'';position:absolute;left:50%;top:50%;width:6vh;height:6vh;transform:translate(-50%,-50%);border-radius:50%;background:radial-gradient(#ffe9a0,#a86a10);border:.3vh solid #fff}
+.tnRc.ex .tnW:after{background:radial-gradient(#ffb0a0,#8a1a10)}
+.tnRr{min-height:8vh;display:flex;flex-direction:column;align-items:center;opacity:0;transform:scale(.6);transition:all .35s cubic-bezier(.2,1.5,.4,1)}
+.tnRr.on{opacity:1;transform:none}
+.tnRr small{font:900 1.6vh var(--f-ui);color:var(--c,#ffd84a);letter-spacing:.12em}.tnRr.ex small{color:#ff8a7a}
+.tnRr b{font:900 2.4vh var(--f-ui);color:#fff}
+.tnRr span{font:700 1.7vh var(--f-ui);color:#e9e0cc}

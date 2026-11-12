@@ -1857,3 +1857,9 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - Saíram: armadilhas, lobos, meteoros, chuva/duelo/caçada, desafio bônus, alavanca, portão, efeitos dos mapas novos. Andar = só o BOSS (`TN.ph` 'duelo' → 'boss' → 'clear').
 - Boss morre → baú cai do céu (perto) + ESTÁTUA DO ANJO aparece perto; tocar nela = escolher a passiva e SUBIR (tela "subindo"). Último andar: abrir o baú → fim.
 - Bosses bem mais fortes: `TNBARS` 4→15 barras, `TNDM` 1,3→3, defesa `tdf` .9→.55, vel. até 1,45, crítico 10+3/andar, energia cheia, IA no máximo (G.diff 3; só o 1º andar é 2), passivas `TNNP` 1→7 (sem invocador/meteoros). Teste: `ttorre4_v377.js`.
+
+## v378 — Torre: roletas de passiva, baús recortados, sem travada do boss, IA e XP
+- Baús recortados de novo (`torre_v375/cortar_baus.py`: grama verde = fundo + GrabCut com caixa larga + tira o verde da borda) e menores no jogo (105 / 135 o final).
+- Saiu a estátua. Depois do boss + baú: `tnRoleta()` mostra DUAS ROLETAS que giram sozinhas (sem escolher): SUA PASSIVA (10 de `TNRL` = `TNBL` sem o ímã; raridade `twRoll`) e PASSIVA DO PRÓXIMO BOSS (`TNBP`; vai para `TN.nextPas`, entra garantida no próximo boss). Depois sobe.
+- Travada quando o boss aparecia: era o carregamento do PRÓXIMO boss começando na entrada do boss. Agora o próximo boss carrega quando o boss atual morre (`tnBossDown` → `prepMatch([pick, atual, próximo])`, `TN.preP`), durante o baú/roletas. Medido (`troleta_v378.js`): nenhum quadro > 90 ms na entrada do boss.
+- IA: boss da torre usa `TWLV[3 + andar/2]` (até o nível máximo). XP da torre: `RKTWX.fl` 0,6→1 por andar, `top` 2→3,2.
