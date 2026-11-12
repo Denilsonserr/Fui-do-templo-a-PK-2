@@ -1824,3 +1824,10 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - Teto de resolução: Ultra 1,6x (antes 2,25x), 4K 2,2x (antes até 3,5x) e no máx. ~2,1 milhões de pixels.
 - Resolução dinâmica: se mesmo no mínimo ficar lento, desliga sozinha, um por vez: AO+pop → bloom → luz dos personagens (antes ela só desistia). Trocar o gráfico no menu religa tudo.
 - Medição (`tgrafico_cmp.js`, U=<outro index> para comparar): Ultra 5 → 14 qps e 4K 5 → 10 qps no navegador de teste (sem GPU); drawLit ~4x mais barato. Gancho `__pvT.setQ`, `__pvT.prof`.
+
+## v373 — 5 níveis de gráfico: MÍNIMO, LEVE, MÉDIO, ULTRA, 4K
+- `extra/9v_v373.py`. `G.qlv` 0..4 salvo em `ft_q` (quem tinha Ultra/4K continua). Botão "Gráfico:" passa pelos 5.
+- MÍNIMO: resolução 1x, sem clima, fumaça, ambiente e vida do mapa; partículas cortadas em 60.
+- MÉDIO: liga os efeitos BARATOS do Ultra (cor do mapa, luzes do cenário, sombra no chão, céu/água animados, filtro de cor mais forte `#cv.hd.qmed`) com a resolução do Leve, e desliga os CAROS: luz por personagem (`noLit`), bloom e `cinePass` (os dois copiam a tela inteira todo quadro) e o cenário em 2 camadas (`nosplit`). `qFlags()`.
+- Medição sem GPU (`tgrafico_cmp.js`): Mínimo ~40 · Leve ~38 · Médio ~27 · Ultra ~16 · 4K ~10 qps.
+- Gancho `__pvT.prof2([nomes])` mede qualquer função (usa eval só com nomes).
