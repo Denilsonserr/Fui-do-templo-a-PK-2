@@ -1893,3 +1893,6 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 ## v384 — COMBO do Shaka respeita os 3 s + energia da transformação não para no combo
 - `tryCommon` não tinha o bloqueio da espera (`f.spCD`) para o Shaka (`isSk`) — o botão mostrava a contagem mas o combo saía. Embrulhado no `rk.js`: Shaka com espera → "COMBO EM Xs".
 - A energia da transformação (`f.sb`) só enche na linha do `updFighter`, que o combo pula, e no hitstop nada roda. Agora: embrulho do `updFighter` (lutador em `CMBS`/`inCmb` sem ter enchido → enche no mesmo ritmo `tsb/SB_FR`) e do `update` (durante o hitstop também enche para quem está no combo). Teste: `tcombo_v384.js`.
+
+## v385 — fim da devolução automática do v362
+- O dono pediu para tirar o presente de desculpas (5.000 💎 + 100.000 moedas) para quem entra agora: o gancho `gfDev()` no `rkOpen` foi removido (a função ficou, sem uso).

@@ -3254,7 +3254,7 @@ function gfDev(){if(rkG('gf362',0))return;rkS('gf362',1);rkAdd('gem',5000);twAdd
   const show=()=>{if(document.getElementById('lvrzM'))return setTimeout(show,1500);const M=document.createElement('div');M.id='lvrzM';
     M.innerHTML=`<div class="twM gold"><h3>🎁 DEVOLUÇÃO PARA TODOS!</h3><p class="twH">Os anéis gastaram gemas demais para upar. Como pedido de desculpas, todo mundo recebeu:</p><p class="twH" style="font-size:1.25em"><b>💎 +5.000 gemas</b> · <b>🪙 +100.000 moedas de ouro</b></p><p class="twH">Já está na sua conta. Bom jogo! — Denilson ADM</p><div class="row"><button class="btn main" id="gfOk">PEGAR</button></div></div>`;
     document.body.appendChild(M);try{rkSfx('powerUp')}catch(e){}M.querySelector('#gfOk').onclick=()=>{M.remove();try{rkView(RKV)}catch(e){}}};setTimeout(show,1200)}
-{const _o=rkOpen;rkOpen=function(){const r=_o.apply(this,arguments);try{gfDev()}catch(e){}return r}}
+/* v385: devolução do v362 ENCERRADA a pedido do dono — quem entra agora não ganha mais os 5.000 💎 + 100.000 moedas */
 /* v363: revelação especial quando sai DIVINA ou PRIMORDIAL */
 {const _pa=psAnim;psAnim=function(r,cb){return _pa.call(this,r,function(){const x=cb.apply(this,arguments);try{if(psRI(r)>=6){const O=document.createElement('div');O.className='psRev psr_'+r;
   O.innerHTML=`<i></i><b>${r==='pri'?'✴ PASSIVA PRIMORDIAL ✴':'☀ PASSIVA DIVINA ☀'}</b><small>${r==='pri'?'ACIMA DOS DEUSES':'ACIMA DA SECRETA'}</small>`;document.body.appendChild(O);try{SFX.boom();setTimeout(()=>SFX.boom(),350)}catch(e){}setTimeout(()=>O.remove(),2600)}}catch(e){}return x})}}
