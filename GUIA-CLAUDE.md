@@ -1899,3 +1899,8 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 
 ## v386 — código único SUPREMO40MIL
 - `TWCUP['1k4a4is']` (SUPREMO40MIL): uso ÚNICO (1 jogador): 40.000 💎 + personagem MÍTICO aleatório (`rmc`) + 1 equipamento do Shaka de Virgem (`rsk`, nível secreto, o mais forte). Mensagem junta os dois prêmios (`TWCUP._sp`). Teste: `tcupom_v386.js` (2º aparelho = "já foi usado").
+
+## v387 — TESTE: cabelo do Shaka balançando com o vento (só a conta ADM vê)
+- `ferramentas/personagens/shaka/cabelo/separar.py`: polígonos feitos à mão na juba solta dos 3 quadros únicos da pose de luta parada (`idle`; o 3º também é o 1º do `block`) → camadas `corpo_*.png` e `cabelo_*.png` (máscara dura; as camadas se sobrepõem 3 px para não ficar linha) → `RQA.skhair` {nome do quadro: {b, h, rx = raiz}}. A pose `relax` não precisa (o desenho já tem o cabelo mexendo quadro a quadro).
+- `rk.js` "v387": `renderFighter` guarda o lutador (`SKHF`); `blitD` do Shaka desenha o corpo, a parte presa da juba (recorte, mesmas inclinações do `blitD`) e a juba solta em fatias verticais (`skhDraw`): parada na raiz e mais solta na ponta, ondas de vento, reage a andar/correr (`vx`), pulo/queda (`vy`) e transformação/carregar.
+- MODO TESTE: só aparece para quem tem o título ADM (`skhAdm`). Para liberar a todos: tirar o `(SKHON===2||skhAdm())`. Desligar: `localStorage.sk_hair='0'`. Teste: `tskhair_v387.js`.
