@@ -1889,3 +1889,7 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - Causa principal achada nos erros dos jogadores (`erros.yml`): `dnLife … reading 'fp'` no desenho do dia/noite — ultimate que troca de cenário deixava `DN.lv` maior que os níveis do cenário (`CUP.L`) e o desenho quebrava todo quadro (tela parava). Nos andares difíceis os bosses têm energia cheia e soltam mais ultimate → acontecia mais. Correção: `drawDN` embrulhado prende `DN.lv/DN.from` dentro do cenário atual.
 - VIGIA da torre (`tnWatch`, todo quadro): boss morto (hp 0/ko) sem passar pelo `ko` → chama `tnBossDown`; lutador do boss trocado por outro objeto (transformação/ultimate) → passa as marcas do boss para o novo; andar sem boss → arruma; depois do boss, se as 4 cartas não aparecerem em 5s → mostra; andar final: abre o baú sozinho e termina a torre se ficar parado.
 - Guarda no botão de salvar a conta (`acLt` nulo). Teste: `tvigia_v383.js`.
+
+## v384 — COMBO do Shaka respeita os 3 s + energia da transformação não para no combo
+- `tryCommon` não tinha o bloqueio da espera (`f.spCD`) para o Shaka (`isSk`) — o botão mostrava a contagem mas o combo saía. Embrulhado no `rk.js`: Shaka com espera → "COMBO EM Xs".
+- A energia da transformação (`f.sb`) só enche na linha do `updFighter`, que o combo pula, e no hitstop nada roda. Agora: embrulho do `updFighter` (lutador em `CMBS`/`inCmb` sem ter enchido → enche no mesmo ritmo `tsb/SB_FR`) e do `update` (durante o hitstop também enche para quem está no combo). Teste: `tcombo_v384.js`.
