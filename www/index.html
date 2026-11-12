@@ -2456,6 +2456,11 @@ img.anOn{position:relative;z-index:2}
 #tnUI .tnQuit{position:absolute;border:1px solid #ff5a4a;border-radius:.7em;background:rgba(40,6,6,.85);color:#ffb0a8;font:900 1.5em var(--f-ui);cursor:pointer}
 #tnUI .tnQuit[hidden]{display:none}
 #tnUI .tnSl.cur{color:#fff;background:rgba(255,200,60,.22);box-shadow:inset 0 0 1.2em rgba(255,210,90,.8);animation:tnSel 1s ease-in-out infinite}
+/* v381: ULTRA EXTREMO */
+#tnUI .tnUx{position:absolute;border:1px solid #7a2a2a;border-radius:.7em;background:rgba(20,6,8,.85);color:#d8b8b8;font:900 1.25em/1.05 var(--f-ui);cursor:pointer}
+#tnUI .tnUx small{font-size:.7em;letter-spacing:.08em}
+#tnUI .tnUx.on{color:#fff;border-color:#ff3a2a;background:linear-gradient(#6a0a0a,#2a0404);box-shadow:0 0 1.2em rgba(255,40,30,.8);animation:tnSel 1.2s ease-in-out infinite}
+#tnUI .tnUx.lk{opacity:.8}
 
 .twBag .bgw{display:flex;gap:1em;justify-content:center;align-items:flex-start;margin:.4em 0}
 .twBag .bgc{flex:1;max-width:16em;display:flex;flex-direction:column;gap:.4em;max-height:52vh;overflow:auto;padding:.2em}
@@ -12072,23 +12077,30 @@ const tnFl=g=>g<TNP?{t:'PRINCIPAL',n:g+1,N:TNP}:{t:'EXTREMA',n:g-TNP+1,N:TNT-TNP
 /* v380: como a torre antiga — cada andar é uma luta e depois VOLTA PARA A TELA DA TORRE (dá para usar poção, equipar...).
    A subida fica SALVA (rk 'tnrun'): saiu para outro lugar, fechou o jogo, saiu da luta pelo pause → continua do andar onde parou. */
 const TNRK=[{k:0,i:'🛡️',n:'SEGURO',d:'boss -25% · prêmios pela metade',hp:.75,dm:.75,rw:.5},{k:1,i:'⚔️',n:'NORMAL',d:'como sempre',hp:1,dm:1,rw:1},{k:2,i:'🔥',n:'ARRISCADO',d:'boss +40% e +1 passiva · prêmios x2 e baú raro',hp:1.4,dm:1.35,rw:2}];
+let TNUX=0;try{TNUX=+(localStorage.getItem('tn_ux')||0)?1:0}catch(e){}
+const tnUxOn=()=>TN&&TN.on&&TN.ux&&G.gmode==='torre';
 let TNRISK=1;try{TNRISK=+(localStorage.getItem('tn_risk')||1);if(!(TNRISK>=0&&TNRISK<=2))TNRISK=1}catch(e){}
 const tnRun=()=>{const r=rkG('tnrun',null);return r&&r.pick&&Array.isArray(r.bosses)?r:null};
-function tnSave(){try{rkS('tnrun',{g:TN.g,g0:TN.g0,pick:TW.pick,bosses:TN.bosses,stg:TN.stg,hp:Math.round(TW.hpv),bars:TW.bars,bl:TN.bl,nextPas:TN.nextPas||null,coins:TN.coins,loot:(TN.loot||[]).slice(-30),fr:TN.fr|0,tr:TW.tr||[],coinRun:TW.coinRun||0});acSave&&acSave(1)}catch(e){}}
-function tnRestore(R){TN={on:0,g:R.g|0,g0:R.g0|0,bosses:R.bosses,stg:R.stg,mobs:[],dead:[],traps:[],dec:[],items:[],mets:[],fx:[],cr:[],bl:R.bl||{},fr:R.fr|0,coins:R.coins|0,clear:0,busy:0,hcd:0,loot:R.loot||[],pk:0,nextPas:R.nextPas||null};
+function tnSave(){try{rkS('tnrun',{g:TN.g,g0:TN.g0,pick:TW.pick,bosses:TN.bosses,stg:TN.stg,hp:Math.round(TW.hpv),bars:TW.bars,bl:TN.bl,ux:TN.ux?1:0,nextPas:TN.nextPas||null,coins:TN.coins,loot:(TN.loot||[]).slice(-30),fr:TN.fr|0,tr:TW.tr||[],coinRun:TW.coinRun||0});acSave&&acSave(1)}catch(e){}}
+function tnRestore(R){TN={on:0,g:R.g|0,g0:R.g0|0,bosses:R.bosses,stg:R.stg,mobs:[],dead:[],traps:[],dec:[],items:[],mets:[],fx:[],cr:[],bl:R.bl||{},fr:R.fr|0,coins:R.coins|0,clear:0,busy:0,hcd:0,loot:R.loot||[],pk:0,ux:R.ux?1:0,nextPas:R.nextPas||null};
   TW.pick=R.pick;G.pick=R.pick;TW.on=true;TW.fl=TN.g;TW.bars=R.bars||TWPB;TW.hpv=Math.max(1,R.hp||TW.bars*LAYER);TW.hp=TW.hpv/(TW.bars*LAYER);TW.tr=R.tr||[];TW.coinRun=R.coinRun|0;TW.time=TN.fr/60;TW.pas={vida:0,dano:0,vel:0,trf:0};TW.sent=false;TW.last=null;TW.busy=false}
 function tnGo(){if(TW.busy)return;if(!SPR_OK)return;const R=tnRun();if(R){tnRestore(R);tnFight();return}const b=tnBest(),g0=TNSEL===1&&b>=TNP?TNP:0;tnStart(g0)}
 function tnStart(g0){rkInit&&rkInit();g0=g0|0;const sel=TW.pick||rkG('sel','goku');
   TW.pick=sel;G.pick=sel;TW.on=true;TW.fl=0;TW.rev=false;TW.hp=1;TW.bars=TWPB;TW.hpv=TWPB*LAYER;TW.pas={vida:0,dano:0,vel:0,trf:0};TW.time=0;TW.tr=[];TW.coinRun=0;TW.sent=false;TW.last=null;
   const pool=TWC.filter(x=>x!==sel&&CH[x]),bs=[];while(bs.length<TNT){const s=twShuf(pool.slice());for(const x of s)if(bs.length<TNT)bs.push(x)}
-  TN={on:0,g:g0,g0,bosses:bs,mobs:[],dead:[],traps:[],dec:[],items:[],mets:[],fx:[],cr:[],bl:{},fr:0,coins:0,clear:0,busy:0,hcd:0,loot:[],pk:0};
+  TN={on:0,g:g0,g0,bosses:bs,mobs:[],dead:[],traps:[],dec:[],items:[],mets:[],fx:[],cr:[],bl:{},fr:0,coins:0,clear:0,busy:0,hcd:0,loot:[],pk:0,ux:TNUX};
   let sk=Object.keys(STG).filter(k=>!STG[k].hid);if(!sk.length)sk=['cupula'];const st=[];while(st.length<TNT){const q=twShuf(sk.slice());if(st.length&&q[0]===st[st.length-1])q.push(q.shift());st.push(...q)}TN.stg=st.slice(0,TNT);
   tnSave();tnFight()}
-function tnFight(){fsTry();try{audioInit()}catch(e){}TN.on=1;TN.risk=TNRISK;TW.on=true;TW.busy=true;TW.diff0=G.diff;TW.fl=TN.g;G.pick=TW.pick;G.gmode='torre';G.opp=TN.bosses[TN.g];G.nextStg=TN.stg[TN.g];
+function tnFight(){if(TN.ux){TN._st={po:twLS.g('tw_pocOn',null),c:rkG('pk_cura',null),d:rkG('pk_drop',null)};twLS.s('tw_pocOn',null);rkS('pk_cura',null);rkS('pk_drop',null)}else TN._st=null;fsTry();try{audioInit()}catch(e){}TN.on=1;TN.risk=TNRISK;TW.on=true;TW.busy=true;TW.diff0=G.diff;TW.fl=TN.g;G.pick=TW.pick;G.gmode='torre';G.opp=TN.bosses[TN.g];G.nextStg=TN.stg[TN.g];
   try{twSfx('whoosh')}catch(e){}const PM=prepMatch([G.pick,G.opp],G.nextStg);showVS(()=>PM.then(()=>{vsLoadEnd();TW.busy=false;startMatch()}),PM)}
 function tnGiveUp(){const R=tnRun();if(!R)return;tnRestore(R);TN.on=1;TN.ph='x';tnFinish(false,true)}
 /* depois do twApply/rkApply: o inimigo da largada vira um lobinho e monta o andar */
-{const _ra=rkApply;rkApply=function(){const r=_ra.apply(this,arguments);try{if(TN.on&&G.gmode==='torre'&&G.p&&!G.p[1].hyK)tnFloorInit()}catch(e){console.warn(e)}return r}}
+{const _ra=rkApply;rkApply=function(){const r=_ra.apply(this,arguments);try{if(TN.on&&G.gmode==='torre'&&G.p&&TN._st){const S=TN._st;TN._st=null;if(S.po)twLS.s('tw_pocOn',S.po);if(S.c)rkS('pk_cura',S.c);if(S.d)rkS('pk_drop',S.d)}
+  if(TN.on&&TN.ux&&G.gmode==='torre'&&G.p){const p=G.p[0];/* v381 ULTRA EXTREMO: força pura do personagem — sem equipamentos, anéis, joias/passivas, bônus de rank, títulos, poção e ADM */
+    p.tdm=1;p.tsp=1;p.tdf=1;p.tcr=5;p.tsb=1;p.tcd=0;p.tfd=0;p.pspd=0;p.preg=0;p.tki=1;p.rkCura=0;p.mhp=TW.bars*LAYER;p.hp=p.hpLag=Math.max(1,Math.min(p.mhp,Math.round(TW.hpv)))}
+  if(TN.on&&G.gmode==='torre'&&G.p&&!G.p[1].hyK)tnFloorInit()}catch(e){console.warn(e)}return r}}
+{const _ps=psSum;psSum=function(){const o=_ps.apply(this,arguments);if(tnUxOn()&&o&&typeof o==='object'){const z={};for(const k in o)z[k]=typeof o[k]==='number'?0:o[k];return z}return o}}
+{const _as=anSum;anSum=function(){const o=_as.apply(this,arguments);if(tnUxOn()&&o&&typeof o==='object'){const z={};for(const k in o)z[k]=typeof o[k]==='number'?0:o[k];return z}return o}}
 function tnWolf(x){const p=G.p[0],g=TN.g,m=hyMk('lobo',clamp(x,100,WW-100));const k=RKTD.dm[rkTwLv()]||1;m.mhp=Math.round((.8+g*.18)*LAYER/50)*50;m.hp=m.hpLag=m.mhp;m.tdm*=(.42+g*.07)*k;m.facing=m.x<p.x?1:-1;m.inv=30;m.tnW=1;return m}
 function tnFloorInit(){const g=TN.g,p=G.p[0];TN.ph='boss';TN.mobs=[];TN.dead=[];TN.items=[];TN.mets=[];TN.fx=[];TN.cr=[];TN.dec=[];TN.traps=[];TN.boss=null;TN.chest=null;TN.statue=null;TN.lever=null;TN.gate=null;TN.ft=0;TN.metT=1e9;TN.hp0=p.hp/(p.mhp||1);TN.fs={cmb:0};TN.done=0;
   tnApplyBl(p);TN.bossId=TN.bosses[g];tnBossCfg(G.p[1]);tnHud()}
@@ -12146,7 +12158,7 @@ function tnItemsTick(p){for(const it of TN.items){it.t++;if(it.vy!=null){it.vy+=
 function tnBossCfg(o){const g=TN.g,id=o.def.id,RK=TNRK[TN.risk==null?1:TN.risk];
   let pas=twShuf(Object.keys(TNBP));if(TN.nextPas){pas=[TN.nextPas].concat(pas.filter(k=>k!==TN.nextPas));TN.nextPas=null}pas=pas.slice(0,Math.min(8,TNNP[g]+(RK.k===2?1:0)));o.tnBoss=1;o.tnPas=pas;o.mhp=TNBARS[g]*LAYER*(pas.includes('gig')?1.5:1);o.mhp=Math.round(o.mhp/LAYER*2)/2*LAYER;o.hp=o.hpLag=o.mhp;
   o.tdm=TNDM[g];o.tsp=Math.min(1.45,1.08+.035*g)*(pas.includes('vel')?1.2:1);o.tdf=Math.max(.55,.9-g*.035);o.tcr=10+g*3;o.ki=g>=2?100:50;if(g>=3)o.sb=Math.max(o.sb||0,SB_COST);
-  try{rkTwDiff(o)}catch(e){}G.diff=g===0&&!pas.includes('imp')?2:3;o._tdf0=o.tdf;o._tnh=o.hp;const fin=g>=TNT-1;o.tnFin=fin;o.tnL=fin?3:g>=TNP&&Math.random()<.75?2:1;o.tnLN=o.tnL;if(fin){o.mhp=Math.round(o.mhp/LAYER*.6)*LAYER}o.mhp=Math.max(LAYER,Math.round(o.mhp/LAYER*RK.hp*2)/2*LAYER);o.hp=o.hpLag=o.mhp;o._tnh=o.hp;o.tdm*=RK.dm;o.def=Object.assign({},o.def,{name:(fin?'☠️ BOSS FINAL · ':'👑 ')+CH[id].name});
+  if(!TN.ux)try{rkTwDiff(o)}catch(e){}G.diff=g===0&&!pas.includes('imp')?2:3;o._tdf0=o.tdf;o._tnh=o.hp;const fin=g>=TNT-1;o.tnFin=fin;o.tnL=fin?3:g>=TNP&&Math.random()<.75?2:1;o.tnLN=o.tnL;if(fin){o.mhp=Math.round(o.mhp/LAYER*.6)*LAYER}o.mhp=Math.max(LAYER,Math.round(o.mhp/LAYER*RK.hp*2)/2*LAYER);o.hp=o.hpLag=o.mhp;o._tnh=o.hp;o.tdm*=RK.dm;o.def=Object.assign({},o.def,{name:(fin?'☠️ BOSS FINAL · ':'👑 ')+CH[id].name});
   TN.boss=o;TN.ph='boss';TN.bt=0;TN.bt0=0;const T=tnFl(g);
   setTimeout(()=>{if(TN.on&&TN.boss===o)banner((o.tnFin?'☠️ BOSS FINAL: ':'👑 BOSS: ')+CH[id].name,'#ff4a4a',150,(o.tnL>1?'❤️ '+o.tnL+' VIDAS · ':'')+pas.map(k=>TNBP[k][0]+' '+TNBP[k][1]).join(' · ')+(RK.k!==1?' · '+RK.i+' '+RK.n:''))},900);setTimeout(()=>{if(TN.on&&TN.boss===o)banner((T.t==='EXTREMA'?'☠️ TORRE EXTREMA':'🏯 TORRE PRINCIPAL')+' · ANDAR '+T.n,T.t==='EXTREMA'?'#ff4a4a':'#ffd23f',80)},100);if(o.tnFin){G.flash=16;G.flashCol='#ff0000'}tnHud()}
 function tnBossTick(o,p){if(o.ko)return;TN.bt++;const P=o.tnPas;
@@ -12174,7 +12186,7 @@ function tnBossDown(a,d){d.ko=true;d.hp=0;d.vy=-12;d.vx=(a&&a.facing||1)*7;TN.de
   const T=tnFl(g),fim=g>=TNT-1;banner(fim?'👑 TORRE EXTREMA CONQUISTADA!':'ANDAR '+T.n+' CONQUISTADO!','#ffd84a',130,fim?'🎁 ABRA O BAÚ LENDÁRIO':'🎁 BAÚ CAINDO DO CÉU · ✨ ESCOLHA SUA PASSIVA');
   const cx=clamp(p.x+(p.x<WW/2?230:-230),200,WW-200);setTimeout(()=>{if(TN.on)tnChestDrop(cx)},700);if(!fim){TN.nextPas=Object.keys(TNBP)[(Math.random()*Object.keys(TNBP).length)|0];setTimeout(()=>{if(TN.on&&TN.g===g){TN.statue={on:1,used:0,x:-9999};tnPick()}},1900)}tnHud()}
 /* ---------- baú caindo do céu (sem pausar) ---------- */
-function tnChestDrop(x){const g=TN.g,rk=TN.risk==null?1:TN.risk,ex=g>=TNP||rk===2;TN.chest={x,y:-300,vy:6,t:0,land:0,open:0,ex,sp:rk===2,rw:TNRK[rk].rw,fim:g>=TNT-1};try{SFX.whoosh()}catch(e){}}
+function tnChestDrop(x){const g=TN.g,rk=TN.risk==null?1:TN.risk,ex=g>=TNP||rk===2;TN.chest={x,y:-300,vy:6,t:0,land:0,open:0,ex:ex||!!TN.ux,sp:rk===2,rw:TNRK[rk].rw*(TN.ux?2.5:1),fim:g>=TNT-1};try{SFX.whoosh()}catch(e){}}
 function tnChestOpen(){const C=TN.chest;if(!C||C.open)return;C.open=1;C.ot=0;const g=TN.g,R=[];G.shake=Math.max(G.shake,8);try{SFX.boom();ring(C.x,FLOOR-80,C.ex?'#c46bff':'#ffd84a',220,20,8)}catch(e){}
   const c=tnCoins((80+g*30)*(C.fim?4:1)*(C.rw||1));R.push('🪙 +'+c);
   if(C.ex||C.fim||Math.random()<.35*(C.rw||1)){const n=Math.max(1,Math.round(((C.fim?60:C.ex?12:5)+g*2)*(C.rw||1)));rkAdd('gem',n);R.push('💎 +'+n)}
@@ -12260,7 +12272,7 @@ function tnKill(d){TN.kills++;const c=tnCoins(3+TN.g);try{txt(d.x,d.y-230,'+1 �
 /* ---------- HUD ---------- */
 function tnHud(){let E=document.getElementById('tnHud');if(!TN.on||G.mode!=='fight'){if(E)E.hidden=true;return}if(!E){E=document.createElement('div');E.id='tnHud';document.body.appendChild(E)}E.hidden=false;
   const T=tnFl(TN.g),b=TN.boss,bl=Object.keys(TN.bl).map(k=>{const B=TNBL.find(x=>x.k===k);return B?B.i:''}).join('');
-  const h=`<b class="${T.t==='EXTREMA'?'ex':''}">${T.t==='EXTREMA'?'☠️':'🏯'} ${T.t} · ANDAR ${T.n}/${T.N}</b><span>${TN.ph==='mob'?'🐺 '+Math.min(TN.kills,TN.need)+'/'+TN.need:TN.ph==='duelo'?'⏳ BOSS VINDO':TN.ph==='boss'&&b?(b.tnFin?'☠️ FINAL ':'👑 BOSS ')+(b.tnLN>1?'❤️'+(b.tnL)+' ':'')+b.tnPas.map(k=>TNBP[k][0]).join(''):'✅ LIVRE'}</span><span>⏱ ${twFmt(TN.fr/60)}</span><span>🪙 ${TN.coins}</span>${bl?`<span>${bl}</span>`:''}`;
+  const h=`${TN.ux?'<b class="ex">💀 ULTRA</b>':''}<b class="${T.t==='EXTREMA'?'ex':''}">${T.t==='EXTREMA'?'☠️':'🏯'} ${T.t} · ANDAR ${T.n}/${T.N}</b><span>${TN.ph==='mob'?'🐺 '+Math.min(TN.kills,TN.need)+'/'+TN.need:TN.ph==='duelo'?'⏳ BOSS VINDO':TN.ph==='boss'&&b?(b.tnFin?'☠️ FINAL ':'👑 BOSS ')+(b.tnLN>1?'❤️'+(b.tnL)+' ':'')+b.tnPas.map(k=>TNBP[k][0]).join(''):'✅ LIVRE'}</span><span>⏱ ${twFmt(TN.fr/60)}</span><span>🪙 ${TN.coins}</span>${bl?`<span>${bl}</span>`:''}`;
   if(E._h!==h){E._h=h;E.innerHTML=h}}
 /* ---------- desenho ---------- */
 function tnDrawBack(){const f=G.frame;
@@ -12334,7 +12346,7 @@ function tnFinish(won,quit){if(!TN.on)return;const p=G.p&&G.p[0],andar=Math.max(
 function tnEndModal(){const L=TW.last;if(!L)return;const {won,quit,rec,best}=L,a=rec.andar,T=a>=TNP?'EXTREMA '+(a-TNP)+'/'+(TNT-TNP):'PRINCIPAL '+a+'/'+TNP,name=twLS.g('tw_nome','');
   const cnt={};for(const t of TW.tr)cnt[t.k]=(cnt[t.k]||0)+1;const tl=Object.keys(cnt).map(k=>`<span class="twT"><i>${TWTR[k].i}</i><b>${TWTR[k].n}</b><span>×${cnt[k]}</span></span>`).join('')||'<p class="twH">Nenhum troféu nesta subida.</p>';
   const bl=Object.keys(TN.bl||{}).map(k=>{const B=TNBL.find(x=>x.k===k);return B?`<span>${B.i} ${B.n}</span>`:''}).join('');
-  twModal(`<div class="twM ${won?'gold':''}"><h3>${won?'👑 VOCÊ CONQUISTOU AS DUAS TORRES!':quit?'VOCÊ DESISTIU':'VOCÊ CAIU NA TORRE'}</h3>
+  twModal(`<div class="twM ${won?'gold':''}"><h3>${TN.ux?'💀 ULTRA EXTREMO · ':''}${won?'👑 VOCÊ CONQUISTOU AS DUAS TORRES!':quit?'VOCÊ DESISTIU':'VOCÊ CAIU NA TORRE'}</h3>
     <div class="twSt"><div><small>MOEDAS</small><b class="coin">🪙 +${TW.coinRun||0}</b></div><div><small>PERSONAGEM</small><b class="twCh"><img src="${IMG[rec.char]?IMG[rec.char].src:''}" alt="">${CH[rec.char]?CH[rec.char].name:''}</b></div><div><small>ANDARES</small><b>${a}/${TNT}</b><small>${T}</small></div><div><small>TEMPO</small><b>${twFmt(rec.tempo)}</b></div><div><small>TROFÉUS</small><b>🏆 ${rec.trof}</b></div></div>
     ${L.xp?rkTwXPH(L.xp):''}${best?'<div class="twNew">⭐ NOVO RECORDE DA TORRE ⭐</div>':''}${bl?`<div class="tnBlL">${bl}</div>`:''}${(TN.loot||[]).length?`<div class="tnBlL">${TN.loot.slice(0,14).map(x=>`<span>${x}</span>`).join('')}</div>`:''}
     <div class="twTs sm">${tl}</div>
@@ -12357,7 +12369,8 @@ function tnSkin(){const B=$('twBox');if(!B||!TNA.menu||B.dataset.tn||!B.dataset.
   const U=document.createElement('div');U.id='tnUI';
   U.innerHTML=`<button class="twHit tnTw" id="tnTP" style="${tnB(1010,0,1400,600)}" aria-label="Torre Principal"></button><button class="twHit tnTw" id="tnTE" style="${tnB(1440,110,1795,600)}" aria-label="Torre Extrema"></button>
     ${TNSP.map((b,i)=>`<div class="tnSl" id="tnSP${i}" style="${tnB(...b)}"></div>`).join('')}${TNSE.map((b,i)=>`<div class="tnSl ex" id="tnSE${i}" style="${tnB(...b)}"></div>`).join('')}
-    <div class="tnSelT" id="tnSelT" style="${tnB(600,662,1190,716)}"></div><button class="tnQuit" id="tnQuit" style="${tnB(1215,742,1405,806)}">✖ DESISTIR</button>`;B.appendChild(U);
+    <div class="tnSelT" id="tnSelT" style="${tnB(600,662,1190,716)}"></div><button class="tnQuit" id="tnQuit" style="${tnB(1215,742,1405,806)}">✖ DESISTIR</button><button class="tnUx" id="tnUx" style="${tnB(382,742,588,806)}"></button>`;B.appendChild(U);
+  $('tnUx').onclick=()=>{if(!$('twModal').hidden)return;if(tnRun()){twToast('Termine ou desista da subida para trocar o modo','#ff8080');return}TNUX=TNUX?0:1;try{localStorage.setItem('tn_ux',TNUX)}catch(e){}twSfx(TNUX?'boom':'whoosh');twToast(TNUX?'💀 ULTRA LIGADO · só a força do personagem · prêmios x2,5':'Modo normal: seus itens contam',TNUX?'#ff5a4a':'#cfd6ea');tnMenu()};
   $('tnQuit').onclick=()=>{if(!tnRun()||!$('twModal').hidden)return;twModal(`<div class="twM sm"><h3>DESISTIR DA SUBIDA?</h3><p class="twH">Conta até o andar ${tnRun().g} e começa de novo do 1º.</p><div class="row"><button class="btn" id="tnQN">CONTINUAR</button><button class="btn main" id="tnQY">DESISTIR</button></div></div>`);$('tnQN').onclick=()=>twModal(null);$('tnQY').onclick=()=>{twModal(null);tnGiveUp()}};
   $('tnTP').onclick=()=>{TNSEL=0;try{localStorage.setItem('tn_sel',0)}catch(e){}twSfx('whoosh');tnMenu()};
   $('tnTE').onclick=()=>{if(tnBest()<TNP){twToast('🔒 Conquiste os 6 andares da TORRE PRINCIPAL para liberar a EXTREMA','#ff8080');return}TNSEL=1;try{localStorage.setItem('tn_sel',1)}catch(e){}twSfx('whoosh');tnMenu()};
@@ -12366,7 +12379,7 @@ function tnMenu(){if(!$('tnUI'))return;const b=tnBest(),ex=b>=TNP,RN=tnRun();if(
   TNSP.forEach((_,i)=>{const e=$('tnSP'+i);if(e){e.className='tnSl'+(b>i?' ok':'')+(TNSEL===0?' sel':'');e.innerHTML=`<b>${i+1}</b>${b>i?'<i>✔</i>':i===TNP-1?'<i>👑</i>':''}`}});
   TNSE.forEach((_,i)=>{const e=$('tnSE'+i);if(e){e.className='tnSl ex'+(b>TNP+i?' ok':'')+(!ex?' lock':'')+(TNSEL===1?' sel':'');e.innerHTML=`<b>${i+1}</b>${!ex?'<i>🔒</i>':b>TNP+i?'<i>✔</i>':i===TNT-TNP-1?'<i>☠️</i>':''}`}});
   $('tnTP').classList.toggle('on',TNSEL===0);$('tnTE').classList.toggle('on',TNSEL===1);
-  const cur=RN?(RN.g<TNP?$('tnSP'+RN.g):$('tnSE'+(RN.g-TNP))):null;if(cur)cur.classList.add('cur');$('tnQuit').hidden=!RN;
+  const cur=RN?(RN.g<TNP?$('tnSP'+RN.g):$('tnSE'+(RN.g-TNP))):null;if(cur)cur.classList.add('cur');$('tnQuit').hidden=!RN;{const ux=RN?!!RN.ux:!!TNUX,e=$('tnUx');e.className='tnUx'+(ux?' on':'')+(RN?' lk':'');e.innerHTML=ux?'💀 ULTRA<br><small>LIGADO</small>':'💀 ULTRA<br><small>EXTREMO</small>'}
   const info=RN?`▶ <b>${RN.g>=TNP?'EXTREMA':'PRINCIPAL'} · ANDAR ${tnFl(RN.g).n}</b> ❤️${Math.round(100*RN.hp/((RN.bars||TWPB)*LAYER))}%`:(TNSEL===1?'☠️ <b>EXTREMA</b>':'🏯 <b>PRINCIPAL</b>');
   $('tnSelT').innerHTML=`<span class="tnInf">${info}</span>`+TNRK.map(r=>`<button class="tnRk${r.k===TNRISK?' on':''} r${r.k}" data-k="${r.k}" title="${r.d}">${r.i} ${r.n}</button>`).join('');
   $('tnSelT').querySelectorAll('.tnRk').forEach(b=>b.onclick=e=>{e.stopPropagation();TNRISK=+b.dataset.k;try{localStorage.setItem('tn_risk',TNRISK)}catch(_){}twSfx('whoosh');twToast(TNRK[TNRISK].i+' '+TNRK[TNRISK].n+': '+TNRK[TNRISK].d,'#ffd23f');tnMenu()})}
@@ -12570,7 +12583,7 @@ window.__dbg={mus:()=>[MCUR,MEL.src.split('/').pop()],stg:()=>STAGE.key,prepMatc
 })();
 </script>
 <style>#updB{position:fixed;left:50%;top:max(8px,env(safe-area-inset-top));transform:translateX(-50%);z-index:99999;padding:10px 22px;border-radius:14px;border:2px solid #fff3c0;background:linear-gradient(#ffd84a,#e08a10);color:#3a1d00;font:900 15px system-ui,sans-serif;box-shadow:0 0 18px #ffb21f;cursor:pointer;animation:updP 1s ease-in-out infinite alternate}@keyframes updP{to{transform:translateX(-50%) scale(1.05)}}</style>
-<script>(function(){const V='45ed5c67fde0';if(!/^https?:/.test(location.protocol))return;let nv=null;
+<script>(function(){const V='4323e4171fb7';if(!/^https?:/.test(location.protocol))return;let nv=null;
 function show(){if(document.getElementById('updB'))return;try{if(typeof G!=='undefined'&&G.mode==='fight')return}catch(e){}const b=document.createElement('button');b.id='updB';b.textContent='🔄 ATUALIZAÇÃO NOVA! Toque para atualizar';
   b.onclick=()=>{b.textContent='⏳ Atualizando...';try{acSave(1)}catch(e){}setTimeout(()=>location.reload(),900)};document.body.appendChild(b)}
 async function chk(){if(document.hidden)return;if(nv){show();return}try{const r=await fetch('versao.txt?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const t=(await r.text()).trim();if(/^[0-9a-f]{8,40}$/.test(t)&&t!==V){nv=t;show()}}catch(e){}}

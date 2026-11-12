@@ -1875,3 +1875,8 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - Subida salva em `rk 'tnrun'` {g, g0, pick, bosses, stg, hp, bars, bl, nextPas, coins, loot, fr, tr, coinRun} (`tnSave`/`tnRestore`; o `twOpen` recupera). Sair da luta pelo pause (`twQuitFight`) = volta para a torre sem perder (andar recomeça com a vida do começo). VOLTAR não desiste; botão ✖ DESISTIR (`tnGiveUp` → `tnFinish(false,true)`). Morrer = fim (apaga a subida). Personagem trava durante a subida (como antes).
 - RISCO do andar (`TNRK`, escolhido na tela, `tn_risk`): 🛡️ SEGURO (boss -25%, prêmios pela metade), ⚔️ NORMAL, 🔥 ARRISCADO (boss +40% vida/+35% dano e +1 passiva; baú raro, prêmios x2).
 - Código `TORRENOVA` (hash `kzru11`): 1.000 💎, uma vez por conta. Teste: `ttorre6_v380.js`.
+
+## v381 — Torre: modo 💀 ULTRA EXTREMO
+- Botão "💀 ULTRA" na tela da torre (entre VOLTAR e SELECIONAR, `tn_ux`; só troca sem subida em andamento; vai junto na subida salva `ux`).
+- Na luta: força PURA do personagem — no fim do `rkApply` zera `tdm/tsp/tdf/tsb/tcd/tfd/pspd/preg/tki/rkCura`, crítico 5, vida = barras da torre; `psSum`/`anSum` devolvem zero durante a luta ULTRA (`tnUxOn`); poção e consumíveis (`tw_pocOn`, `pk_cura`, `pk_drop`) ficam guardados e não são gastos. Sem o multiplicador de rank no boss (`rkTwDiff` desligado). As passivas escolhidas na própria torre continuam valendo.
+- Prêmios do baú x2,5 (e baú raro). Teste: `tultra_v381.js` (normal: dano 1,75 / ULTRA: 1,0).
