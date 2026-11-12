@@ -1818,3 +1818,9 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 
 ## v371 — código único BAÚ MÍTICO
 - `1ilnmg2` (texto só com o dono) = 10.000 💎 (`gm`) + 5.000 moedas vermelhas (`red`) + personagem MÍTICO aleatório que a pessoa ainda não tem (`rmc`, de `RK_MIT`; mostra a animação `rkCharWin`; se já tem todos: +5.000 💎). 1 pessoa no jogo inteiro. Wrapper `_cp11`. Teste `tcod_v371.js` (C1).
+
+## v372 — gráfico Ultra e 4K mais leves
+- Causa: no Ultra/4K a LUZ DOS PERSONAGENS (`drawLit`: ambiente, sombra de forma, AO, 2 luzes de borda, contorno = ~15 passes por lutador) era feita na resolução TOTAL da tela (4K chegava a 2600×1171 px). `extra/9u_v372.py`: o buffer da luz agora usa no máx. `G.litCap` px por px de tela (Ultra 1,05 · 4K 1,25) e é esticado — visualmente igual.
+- Teto de resolução: Ultra 1,6x (antes 2,25x), 4K 2,2x (antes até 3,5x) e no máx. ~2,1 milhões de pixels.
+- Resolução dinâmica: se mesmo no mínimo ficar lento, desliga sozinha, um por vez: AO+pop → bloom → luz dos personagens (antes ela só desistia). Trocar o gráfico no menu religa tudo.
+- Medição (`tgrafico_cmp.js`, U=<outro index> para comparar): Ultra 5 → 14 qps e 4K 5 → 10 qps no navegador de teste (sem GPU); drawLit ~4x mais barato. Gancho `__pvT.setQ`, `__pvT.prof`.
