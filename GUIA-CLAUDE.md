@@ -1815,3 +1815,6 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - Placa de título dos 3 novos = Deus Celestial por enquanto (`TPRK`); o dono vai fazer as placas e as molduras.
 - Brilho do perfil pelo rank (`p3Tier`, classes `pa0..pa5`): Diamante+ foto brilha; Divindade+ moldura animada na foto; Div. Celestial+ moldura arco-íris girando + "✦ RANK ✦" ao lado do nome + personagem brilhando; Deus Cósmico+ estrelinhas subindo pela tela; Absoluto dourado. Emblemas t11–13 pulsam mais forte.
 - Teste `trank_v370.js`.
+
+## v371 — código único BAÚ MÍTICO
+- `1ilnmg2` (texto só com o dono) = 10.000 💎 (`gm`) + 5.000 moedas vermelhas (`red`) + personagem MÍTICO aleatório que a pessoa ainda não tem (`rmc`, de `RK_MIT`; mostra a animação `rkCharWin`; se já tem todos: +5.000 💎). 1 pessoa no jogo inteiro. Wrapper `_cp11`. Teste `tcod_v371.js` (C1).
