@@ -1,0 +1,39 @@
+name: Tempo de jogo por jogador (ferramenta)
+# O jogo manda um "ping" a cada 5 min enquanto está aberto e na tela (rkPing, campo on='p'+bloco de 5 min).
+# Conta blocos distintos por jogador (uid) por dia (horário de Brasília) → minutos ≈ blocos × 5.
+on:
+  workflow_dispatch:
+    inputs:
+      dias: {description: 'quantos dias para trás', default: '7'}
+jobs:
+  q:
+    runs-on: ubuntu-latest
+    steps:
+      - name: tempo
+        run: |
+          python3 - <<'P'
+          import json,urllib.request,time,collections,datetime,concurrent.futures as cf
+          S='https://fui-do-templo-a-pk-2.denilsinend.workers.dev/fs/v1/projects/furia-do-templo/databases/(default)/documents:runQuery'
+          H={'Content-Type':'application/json','User-Agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/120 Safari/537.36'}
+          D=int('${{ inputs.dias }}');now=int(time.time()*1000);b1=now//300000;b0=b1-D*288
+          def q(b):
+              for t in range(4):
+                  try:
+                      body={'structuredQuery':{'from':[{'collectionId':'torre'}],'where':{'fieldFilter':{'field':{'fieldPath':'on'},'op':'EQUAL','value':{'stringValue':'p%d'%b}}},'limit':500}}
+                      R=json.load(urllib.request.urlopen(urllib.request.Request(S,data=json.dumps(body).encode(),headers=H),timeout=30))
+                      return b,[(x['document']['fields']['uid']['stringValue'],x['document']['fields'].get('nome',{}).get('stringValue','?')) for x in R if x.get('document')]
+                  except Exception as e:time.sleep(2)
+              return b,None
+          T=collections.defaultdict(lambda:collections.defaultdict(set));N={};falhas=0
+          with cf.ThreadPoolExecutor(8) as ex:
+              for b,L in ex.map(q,range(b0,b1+1)):
+                  if L is None:falhas+=1;continue
+                  dia=(datetime.datetime.utcfromtimestamp(b*300)-datetime.timedelta(hours=3)).strftime('%Y-%m-%d')
+                  for u,n in L:T[dia][u].add(b);N[u]=n
+          print('blocos sem resposta:',falhas)
+          for dia in sorted(T):
+              M={u:len(s)*5 for u,s in T[dia].items()}
+              c=lambda m:sum(1 for v in M.values() if v>=m)
+              print('DIA',dia,'| jogaram:',len(M),'| 15min+:',c(15),'| 30min+:',c(30),'| 1h+:',c(60),'| 2h+:',c(120))
+              for u,m in sorted(M.items(),key=lambda z:-z[1]):print('   ',N[u][:16].ljust(16),'%4d min'%m)
+          P
