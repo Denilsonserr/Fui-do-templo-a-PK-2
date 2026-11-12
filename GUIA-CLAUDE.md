@@ -1884,3 +1884,8 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 ## v382 — Evento 2x XP de rank + código
 - `RKEVX`: 2x XP DE RANK de 12/11 16:30 até 15/11 23:59 (Brasília) — `Date.UTC(2026,10,12,19,30)` a `Date.UTC(2026,10,16,2,59)`. Conferido `__pvT.ev()`.
 - Código `DOBRODEXP` (hash `1kxa24y`): 1.000 a 4.000 💎 sorteado, uma vez por conta.
+
+## v383 — Torre: "matei o boss e não apareceu nada" (modos difíceis)
+- Causa principal achada nos erros dos jogadores (`erros.yml`): `dnLife … reading 'fp'` no desenho do dia/noite — ultimate que troca de cenário deixava `DN.lv` maior que os níveis do cenário (`CUP.L`) e o desenho quebrava todo quadro (tela parava). Nos andares difíceis os bosses têm energia cheia e soltam mais ultimate → acontecia mais. Correção: `drawDN` embrulhado prende `DN.lv/DN.from` dentro do cenário atual.
+- VIGIA da torre (`tnWatch`, todo quadro): boss morto (hp 0/ko) sem passar pelo `ko` → chama `tnBossDown`; lutador do boss trocado por outro objeto (transformação/ultimate) → passa as marcas do boss para o novo; andar sem boss → arruma; depois do boss, se as 4 cartas não aparecerem em 5s → mostra; andar final: abre o baú sozinho e termina a torre se ficar parado.
+- Guarda no botão de salvar a conta (`acLt` nulo). Teste: `tvigia_v383.js`.
