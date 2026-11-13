@@ -2008,3 +2008,8 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 
 ## v405 — abóboras da Sexta-feira 13 aparecem no resultado
 - As abóboras já caíam no Boss (inclusive Shaka), mas só num texto rápido no K.O. Agora `sxGive` guarda `SXL` e: no Boss (Broly/Yuta/Shaka, ranqueado e farm) a linha "🎃 +N ABÓBORAS (+ caixa)" entra no topo da lista de prêmios do resultado (`rkResult`); nos outros modos aparece um aviso ao voltar para a tela (Torre/Ranqueado) com o total.
+
+## v406 — Boss Shaka dá 200–230 abóboras, Caixa Surpresa mais modesta, evento 2x SORTE + 2x DROP até 00:00 de 13/11
+- `sxGive`: vitória no Boss SHAKA (ranqueado ou farm) = 200–230 🎃.
+- `sxBoxOpen`: 💎 15–30 · 🎫 1 · 🔴 5–10 · 🎃 20–50; item da Armadura Divina = `min(1,5%, lvLuck())` (1% base, sobe com a sorte até 1,5%).
+- `RKEVX` (1º da lista): 13/11 16:10 → 14/11 00:00 (Brasília) 2x XP · 2x SORTE · 2x DROP (`{luck:2,drop:2}`), por cima do 2x XP de rank que vai até domingo.
