@@ -2039,3 +2039,7 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 
 ## v414 — forma divina NÃO exige mais vida baixa
 - O dono: transformar = 2 barras de ENERGIA; 2ª transformação (divina) = já de olhos abertos + 1 barra de ENERGIA. Tirado o "1 barra de vida" do `skDivWhy` (ranqueado/boss continuam exigindo os 5 V2 equipados; modo livre não). Texto da tela "Armadura Divina completa" corrigido. Teste `tshaka_divino_v394.js` agora com vida cheia.
+
+## v415 — a FORMA do personagem é escolhida na aba PERSONAGEM e vale em TODO o jogo
+- Botões NORMAL · TRANSFORMADO · 2ª FORMA embaixo do personagem na aba Personagem (biblioteca `lib`, `lbPed` + `pfFormBtns(id,st)`), só para personagens que a pessoa tem. Escolha em `rk_pedf` por personagem.
+- `fullSrc` embrulhado (guarda `fullSrc0`): toda imagem grande do personagem (aba Personagem, Anéis com os anéis em volta, perfil, Equipamentos…) usa a forma escolhida. Perfil não tem mais botões (só mostra; visitantes veem a forma pelo campo `pf`). `tperfil_forma_v413.js` (agora sem botões no perfil) e `tforma_lib_v415.js`.

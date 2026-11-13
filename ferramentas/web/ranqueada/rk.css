@@ -2050,3 +2050,4 @@ img.anOn{position:relative;z-index:2}
 .pfPed.pfF1 img,.pfPed.pfF2 img{filter:drop-shadow(0 0 .8em rgba(255,216,74,.55))}
 .p3Ch.pfF img{filter:drop-shadow(0 0 .8em rgba(255,216,74,.6))}.pfFm{position:absolute}.pfFm.ro button{flex:0 1 auto;padding:.25em .8em}
 .p3Ch~.pfFm button,.pfFm button{font-size:.62em;padding:.35em .2em}
+.lbPd~.pfFm button,.rkA .pfFm button{font-size:.66em}
