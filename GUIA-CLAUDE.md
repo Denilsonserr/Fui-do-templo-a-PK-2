@@ -2032,3 +2032,7 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - Código ADMABOBORA50K (uso único, do dono): 50.000 🎃.
 
 ## v412 — Boss SHAKA dá 450 🎃 por vitória (ranqueado ou farm do evento)
+
+## v413 — PERFIL: escolher a forma do personagem do pedestal (NORMAL / TRANSFORMAÇÃO / 2ª TRANSFORMAÇÃO)
+- Botões embaixo do personagem no perfil (`pfFormBtns`, perfil novo `p3Ch`). Escolha por personagem em `rk_pedf` ({id:0|1|2}) e publicada no perfil (`pf` no `pfMine`) → quem visita vê a forma e a etiqueta "⚡ TRANSFORMAÇÃO"/"✦ 2ª TRANSFORMAÇÃO".
+- Imagens (`pedSrc`): normal = `fullSrc`; transformações = 1º quadro parado do sprite da forma (`PFFS`: sid base → [forma1, forma2]); 2ª do Shaka = arte de corpo inteiro divina (`RQA.skdv.corpo`) e só aparece com a Armadura Divina completa (`skDivHave`); Zedry tem 2ª (`zed3`). Teste `ferramentas/testes/tperfil_forma_v413.js`.

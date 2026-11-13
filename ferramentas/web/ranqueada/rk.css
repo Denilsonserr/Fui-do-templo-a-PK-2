@@ -2042,3 +2042,11 @@ img.anOn{position:relative;z-index:2}
 .sxGr div{display:flex;flex-direction:column;align-items:center;gap:.15em;padding:.35em .2em;border-radius:.6em;background:rgba(40,10,40,.85);border:1px solid #7a3aa0}
 .sxGr img{width:2.4em;height:2.4em;object-fit:contain}.sxGr b{font:800 .58em var(--f-ui);color:#ffe0a0;text-align:center;line-height:1.15}
 .sxGr div.ev{border:2px solid #ffd84a;box-shadow:0 0 .9em #ffd84a;animation:skv2g 1.4s ease-in-out infinite}
+/* v413: escolher a forma do personagem no perfil */
+.pfFm{display:flex;gap:.25em;justify-content:center;align-items:center;z-index:3}
+.pfFm button{flex:1;min-width:0;padding:.25em .2em;border-radius:.5em;border:1.5px solid #8a5cff;background:rgba(20,8,40,.85);color:#d9c8ff;font:800 .5em var(--f-ui);letter-spacing:.03em;cursor:pointer;touch-action:manipulation;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pfFm button.on{border-color:#ffd84a;color:#fff3b0;background:linear-gradient(180deg,#5a3a06,#2a1604);box-shadow:0 0 .6em rgba(255,216,74,.6)}
+.pfFn{font-style:normal;font-size:.7em;color:#ffd84a}
+.pfPed.pfF1 img,.pfPed.pfF2 img{filter:drop-shadow(0 0 .8em rgba(255,216,74,.55))}
+.p3Ch.pfF img{filter:drop-shadow(0 0 .8em rgba(255,216,74,.6))}.pfFm{position:absolute}.pfFm.ro button{flex:0 1 auto;padding:.25em .8em}
+.p3Ch~.pfFm button,.pfFm button{font-size:.62em;padding:.35em .2em}

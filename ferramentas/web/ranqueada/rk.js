@@ -677,10 +677,19 @@ const PFRV=[[1331,316],[1478,404],[1478,567],[1331,648],[1193,570],[1184,407]],P
 /* dados do perfil (o seu = pfMine; de outro jogador = PFO, vindo do servidor) */
 function pfMine(){try{pfMoedas();pfMaxUp(rkG('rp',0))}catch(e){}const S=rkSt(),o=pfD(),rec=Object.entries(S.rec||{}).filter(e=>e[1]>0).sort((a,b)=>a[1]-b[1])[0];
   const n=twLS.g('tw_nome',''),VT=pfVit().map(e=>e&&{t:e.t,r:e.r,v:e.v,nm:e.nm||'',img:e.img||'',uniq:e.uniq?1:0,crit:e.crit||0,dmg:e.dmg||0,vel:e.vel||0,st:e.st||0,def:e.def||0,fdmg:e.fdmg||0,trf:e.trf||0,drop:e.drop||0,yt:e.yt?1:0,ysec:e.ysec?1:0,ps:e.ps||null});
-  return {uid:twUid(),mold:mdCur(),nome:n,tit:twTitOn(),rp:rkG('rp',0)|0,mx:pfRkMax(),foto:rkG('foto',''),vit:VT,ped:pfPed(),R:pfRadar().map(r=>({n:r.n,v:r.v,t:r.t})),
+  return {uid:twUid(),mold:mdCur(),nome:n,tit:twTitOn(),rp:rkG('rp',0)|0,mx:pfRkMax(),foto:rkG('foto',''),vit:VT,ped:pfPed(),pf:pfForm(pfPed()),R:pfRadar().map(r=>({n:r.n,v:r.v,t:r.t})),
     h:{pt:rkPl(S)+(o.twf||0)+(o.twl||0),vw:(S.wins||0)+(o.twf||0),tw:o.tw||0,twc:o.twc||0,twf:o.twf||0,wins:S.wins||0,loss:S.loss||0,own:rkG('own',['goku']).filter(id=>CH[id]).length,tt:S.tt||0,rl:rec?(+rec[0]):-1}}}
 let PFO=null,PFRET=null;
 const pfCur=()=>PFO||pfMine();
+/* v413: PERFIL — escolher a FORMA do personagem do pedestal: NORMAL · TRANSFORMAÇÃO · 2ª TRANSFORMAÇÃO (quando existe e está liberada). Outros jogadores veem a forma escolhida (campo pf). */
+const PFFS={sk:['skd','skv'],yt:['ytd'],gr:['grm'],nr:['nrk'],lf:['lfs'],vg:['vgf'],gg:['ggf'],br:['brf'],zr:['zrf'],ao:['aof'],gk:['gkf'],qq:['qqf'],zyk:['zykf'],zed:['zedf','zed3'],gmg:['gmgf'],dn2:['dn2f'],xw:['xwf']};
+function pfForms(id){const c=CH[id],L=c&&PFFS[c.sid]?PFFS[c.sid].filter(s=>SPRH[s]):[];if(c&&c.sid==='sk'){let ok=false;try{ok=skDivHave()}catch(e){}if(!ok)return L.slice(0,1)}return L} /* 2ª do Shaka = forma divina: só com a Armadura Divina (5 V2) */
+const pfForm=id=>{const m=rkG('pedf',{})||{},f=m[id]|0;return f<=pfForms(id).length?f:0};
+function sprSrc(sid){const A=SPRH[sid];const S=A&&((A.idle&&A.idle[0])||(A.fidle&&A.fidle[0])||(A.relax&&A.relax[0]));return S?((S.img&&S.img.src)||S.src||S.src0||''):''}
+function pedSrc(id,f){if(!f||!CH[id])return fullSrc(id);const c=CH[id];if(c.sid==='sk'&&f===2&&RQA.skdv&&RQA.skdv.corpo)return RQA.skdv.corpo;const sid=(PFFS[c.sid]||[])[f-1];return (sid&&sprSrc(sid))||fullSrc(id)}
+function pfFormBtns(id){const L=pfForms(id);if(!L.length)return '';const f=pfForm(id),N=['NORMAL','TRANSFORMAÇÃO','2ª TRANSFORMAÇÃO'];
+  return `<div class="pfFm" style="${rkB2(1080,910,1540,960)}">${[0,...L.map((_,i)=>i+1)].map(k=>`<button class="${k===f?'on':''}" data-pff="${k}">${k===f?'✔ ':''}${N[k]}</button>`).join('')}</div>`}
+document.addEventListener('click',e=>{const b=e.target.closest&&e.target.closest('[data-pff]');if(!b)return;e.stopPropagation();const id=pfPed(),m=Object.assign({},rkG('pedf',{})||{});m[id]=+b.dataset.pff;rkS('pedf',m);rkSfx('whoosh');try{pfPub&&pfPub()}catch(_){}try{acSave()}catch(_){}rkView('pf')},true);
 function pfH(){const D=pfCur(),me=!PFO,n=D.nome||'',adm=!!n&&n.toLowerCase()===String(TWADMN).toLowerCase(),t=D.tit,ri=rkRank(D.rp),mx=Math.max(ri,D.mx|0),VT=D.vit||[],ped=CH[D.ped]?D.ped:'goku',foto=PFO&&PFO.fh?'':D.foto;
   const RC=[[397,748],[597,748],[796,748]];
   return `<button class="hs" data-a="back" style="${rkB2(40,0,200,100)}"></button>
@@ -693,8 +702,8 @@ function pfH(){const D=pfCur(),me=!PFO,n=D.nome||'',adm=!!n&&n.toLowerCase()===S
   <div class="pfCap" style="${rkB2(343,618,578,640)}"><b style="color:${RKR[ri].c}">${RKR[ri].n}</b> · ATUAL</div>
   <div class="pfCap" style="${rkB2(620,618,855,640)}"><b style="color:${RKR[mx].c}">${RKR[mx].n}</b> · MÁXIMO</div>
   ${RC.map(([x,y],i)=>{const e=VT[i],ri2=e?Math.max(0,TWRK.indexOf(e.r)):0,c=e?rkItC(e):'#7a5cc8';return `<button class="pfV${e?' on r'+ri2:''}${e&&e.uniq?' uq':''}${rkYC(e)}" data-a="pfVit" data-i="${i}" style="${rkB2(x-56,y-56,x+56,y+56)};--c:${c}">${e?`<i class="g"></i><i class="ry"></i><img src="${rkItIc(e)}" alt=""><b>+${rkItV(e)}%</b>`:me?'<span>＋</span>':''}</button><div class="pfCap sm" style="${rkB2(x-96,852,x+96,876)}">${e?`<b style="color:${e.uniq?'#fff0a0':c}">${e.uniq?'✦ ':''}${twEsc(rkItNm(e))}${e.nm?'':' '+(TWEQR.find(q=>q.k===e.r)||TWEQR[0]).n}</b>`:me?'toque para mostrar um item':'—'}</div>`}).join('')}
-  <button class="pfPed" data-a="${me?'pfPick':''}" style="${rkB2(1070,130,1550,650)}"><img src="${fullSrc(ped)}" alt=""></button>
-  <div class="pfPedN" style="${rkB2(1110,860,1510,905)}">${CH[ped]?CH[ped].name:''}</div>
+  <button class="pfPed${D.pf?' pfF'+D.pf:''}" data-a="${me?'pfPick':''}" style="${rkB2(1070,130,1550,650)}"><img src="${pedSrc(ped,me?pfForm(ped):(D.pf|0))}" alt=""></button>
+  <div class="pfPedN" style="${rkB2(1110,860,1510,905)}">${CH[ped]?CH[ped].name:''}${!me&&D.pf?' <i class="pfFn">'+(D.pf===2?'✦ 2ª TRANSFORMAÇÃO':'⚡ TRANSFORMADO')+'</i>':''}</div>${me?pfFormBtns(ped):''}
   ${me?`<button class="pfLupa" data-a="pfPick" style="${rkB2(1585,665,1657,737)}" title="Trocar personagem">🔍</button>`:''}`}
 function pfOn(){clearInterval(rkView.iv);if(!PFO)setTimeout(()=>pfPub(1),400)}
 function hsH(){const D=pfCur(),H=D.h,R=D.R,tot=['yuta',...RK_MIT,...RK_LEG,...RK_EPI].filter(id=>CH[id]).length,tx=H&&H.pt?Math.round(H.vw/H.pt*100):0,N=v=>H?rkFmtN(v||0):'—';
@@ -3398,7 +3407,7 @@ pfH=function(){const D=pfCur(),me=!PFO,n=D.nome||'',adm=!!n&&n.toLowerCase()===S
   ${tops.map((id,i)=>{const x=[375,508,641][i];return `<div class="p3He" style="${rkB3(x-52,616,x+52,720)}"><img src="${p3Port(id)}" alt=""><i>★</i><em>${CH[id].name}</em></div>`}).join('')}
   <div class="p3Vi" id="p3Vi" style="${rkB3(492,762,690,814)}">${S?S.rec.map(v=>`<span title="${twEsc(v.nome||'')}">${v.ft?`<img src="${v.ft}" alt="">`:'👤'}</span>`).join(''):''}</div>
   <div class="p3Nb sm" style="${rkB3(872,764,975,810)}">${bc?N(bc.pt):'—'}</div><div class="p3Nb sm" id="p3Lk2" style="${rkB3(1126,764,1199,810)}">${S?N(S.lk):'…'}</div>
-  <button class="p3Ch${me?'':' ro'}" data-a="${me?'pfPick':''}" style="${rkB3(1300,60,1730,600)}"><img src="${fullSrc(ped)}" alt=""></button>
+  <button class="p3Ch${me?'':' ro'}${(me?pfForm(ped):(D.pf|0))?' pfF':''}" data-a="${me?'pfPick':''}" style="${rkB3(1300,60,1730,600)}"><img src="${pedSrc(ped,me?pfForm(ped):(D.pf|0))}" alt=""></button>${me?pfFormBtns(ped).replace(/style="[^"]*"/,'style="'+rkB3(1290,588,1748,642)+'"'):(D.pf?`<div class="pfFm ro" style="${rkB3(1290,588,1748,642)}"><button class="on">${D.pf===2?'✦ 2ª TRANSFORMAÇÃO':'⚡ TRANSFORMAÇÃO'}</button></div>`:'')}
   ${[[1272,630,1438,782],[1459,652,1588,764],[1609,652,1738,764]].map(([x0,y0,x1,y1],i)=>`<button class="p3Ph${FT[i]?' on':''}${me?'':' ro'}" data-a="p3ph" data-i="${i}" style="${rkB3(x0,y0,x1,y1)}">${FT[i]?`<img src="${FT[i]}" alt="">`:''}</button>`).join('')}`};
 pfOn=function(){clearInterval(rkView.iv);const D=pfCur(),me=!PFO,uid=me?twUid():D.uid;if(me)setTimeout(()=>pfPub(1),400);
   p3Soc(uid).then(S=>{if(RKV!=='pf'||pfCur().uid!==D.uid&&!me)return;const N=v=>rkFmtN(v),set=(id,v)=>{const e=$(id);if(e)e.textContent=v};set('p3Lk',N(S.lk));set('p3Lk2',N(S.lk));set('p3Pop',N(S.lk*10+S.vis));set('p3Uv',N(S.uv));
