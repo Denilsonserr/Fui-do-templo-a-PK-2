@@ -1,0 +1,10 @@
+const {chromium}=require('playwright');
+(async()=>{const b=await chromium.launch();const p=await b.newPage({viewport:{width:915,height:412}});const errs=[];p.on('pageerror',e=>errs.push(e.message));await p.route(/fonts\.g|firestore/,r=>r.abort());
+await p.addInitScript(()=>{if(!sessionStorage.d){sessionStorage.d=1;localStorage.clear();Object.assign(localStorage,{tw_nome:'"E"',rk_ini:'1',rk_xpv2:'1',rk_own:'["goku"]',rk_sel:'"goku"',rk_rp:'5200',rk_bsel:'shaka',rk_dl:JSON.stringify({d:new Date(Date.now()-3*3600e3).toISOString().slice(0,10),s:0})})}});
+await p.goto('file:///home/claude/fui-do-templo-a-pk-2/www/index.html');await p.waitForFunction(()=>!document.getElementById('goSelect').disabled,null,{timeout:120000});
+await p.click('#mRank');await p.waitForTimeout(500);await p.click('#rkWrap [data-a="boss"]');await p.waitForTimeout(800);
+const a=await p.evaluate(()=>({view:document.querySelector('#rkWrap .rkA').className,slot:document.querySelector('.skSlot em').textContent}));
+await p.click('#rkWrap .skSlot',{force:true});await p.waitForTimeout(300);const t=await p.$eval('#rkToast',e=>e.textContent);
+await p.evaluate(()=>{window.__ysT=2*3600e3});await p.click('#rkWrap .skSlot',{force:true});await p.waitForTimeout(800);
+const c=await p.evaluate(()=>document.querySelector('#rkWrap .rkA').className);
+console.log(JSON.stringify({a,t,c}),errs);await b.close()})();

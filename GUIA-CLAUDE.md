@@ -1934,3 +1934,7 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - No modal do Shaka (`skStart`), abaixo do RANQUEADO: botões NÍV. 1 … (seu rank − 1) (`.skLv`, `skGo(-1,l)` → `RKSEL=l`). `rkBossStart` agora trata o Shaka igual ao Broly: `RKSEL` abaixo do rank = MODO FARM (`RKFL`): boss daquele nível, sem XP de rank (nem perde), gemas pela metade e baú menor (lógica `FM` do `rkAfter`).
 - Drops especiais pelo nível que lutou: V2 `skV2Ch(R.farm-1)` (farm do evento usa o nível da dificuldade), item de Virgem no farm de nível 0,1% (ranqueado 0,2%).
 - Teste `ferramentas/testes/tshaka_nivel_v391.js`.
+
+## v392 — Boss SHAKA libera ao MEIO-DIA de 13/11
+- `SKEV.ini` = 13/11 12:00 (Brasília). Antes disso a vaga mostra "LIBERA 12:00" (`skAntes()`) e tocar avisa "libera hoje ao MEIO-DIA". Quem tem o título ADM entra antes (`skOn` deixa ADM passar) para testar. Fim continua 18/11 23:59.
+- Teste `ferramentas/testes/tshaka_meiodia_v392.js`.
