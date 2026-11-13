@@ -2013,3 +2013,8 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - `sxGive`: vitória no Boss SHAKA (ranqueado ou farm) = 200–230 🎃.
 - `sxBoxOpen`: 💎 15–30 · 🎫 1 · 🔴 5–10 · 🎃 20–50; item da Armadura Divina = `min(1,5%, lvLuck())` (1% base, sobe com a sorte até 1,5%).
 - `RKEVX` (1º da lista): 13/11 16:10 → 14/11 00:00 (Brasília) 2x XP · 2x SORTE · 2x DROP (`{luck:2,drop:2}`), por cima do 2x XP de rank que vai até domingo.
+
+## v407 — CRASH do Boss Shaka no nível 13 (forma divina pesada demais)
+- Causa: no rank alto (3 vidas) o jogo carregava na entrada da luta sk + skd + **skv (271 MB decodificado, 22 MB de download)** + vídeo divino (75 MB) → +500 MB → celular travava/fechava.
+- `divina/reduzir_v407.py`: quadros skv de 2,4x → 1,45x (99 MB / 9,8 MB) e vídeos 800×450 → 640×360. Arquivos antigos apagados do www/a.
+- Carregamento SOB DEMANDA (rk.js "v407", `skvNeed`): `skDivLd()` = false (nada divino na entrada); sprites `skv` (`loadSid`) + vídeo começam a carregar quando o Shaka ABRE OS OLHOS e pode virar divino (jogador no modo livre / com a armadura; boss com `shk3On`). Jogador: o botão só transforma com tudo pronto (`SKVOK`/`SKDOK`), senão "CARREGANDO A FORMA DIVINA...". Boss 3ª vida: se ainda não carregou, luta de olhos abertos e vira divino assim que terminar. Tudo é liberado no `startMatch` seguinte.

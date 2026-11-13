@@ -4192,7 +4192,7 @@ const SKDN={skcap:'ELMO DIVINO',skarm:'ARMADURA DIVINA',skluv:'LUVAS DIVINAS',sk
 function skDivSet(){try{if(typeof SPRH==='undefined'||!SPRH.skv)return false;const q=twEqOn();return ['cap','arm','esp','bot','anel'].every(k=>q[k]&&q[k].v2)}catch(e){return false}}
 /* v395: ADM testa na BATALHA TREINO: a forma divina ativa logo depois de abrir os olhos, sem itens V2 e sem precisar de 1 barra */
 /* v397: na BATALHA TREINO (modo livre, `pve`/`treino`) a forma divina é de TODO MUNDO: logo depois de abrir os olhos */
-const skLivre=()=>G.gmode==='treino'||G.gmode==='pve',skDivTreino=()=>{try{return skLivre()&&!!SPRH.skv}catch(e){return false}},skDivLd=()=>{try{return skDivSet()||skLivre()||shk3On()}catch(e){return false}};
+const skLivre=()=>G.gmode==='treino'||G.gmode==='pve',skDivTreino=()=>{try{return skLivre()&&!!SPRH.skv}catch(e){return false}},skDivLd=()=>false; /* v407: a forma divina carrega só quando o Shaka ABRE OS OLHOS (skvNeed) */
 const skDivHave=()=>{try{const I=twInv();return SKSEC.every(k=>I.some(x=>x&&x.v2&&x.skb===k))}catch(e){return false}};
 /* itens V2 viram a ARMADURA DIVINA (nome e ícone novos) */
 (function(){try{const I=twInv();let ch=0;for(const it of I){if(it&&it.v2&&it.skb&&SKDN[it.skb]){const nm=SKDN[it.skb]+' V2';if(it.nm!==nm){it.nm=nm;ch=1}if(SKV2[it.skb]&&it.img!==SKV2[it.skb]){it.img=SKV2[it.skb];ch=1}}}if(ch)twLS.s('tw_inv',I)}catch(e){}})();
@@ -4241,7 +4241,7 @@ function skPurTick(f){const P=f.skPur,d=P&&P.o;if(!d||d.ko||G.phase!=='fight'){f
 /* v397: MODO LIVRE (Batalha Treino): sem bônus de nada (itens, título, ADM) — só a força normal do personagem */
 {const _sf=setupFighters;setupFighters=function(){const r=_sf.apply(this,arguments);try{if(skLivre()&&G.p)for(const f of G.p){if(!f)continue;for(const k of ['tdm','tsp','tdf','tsb'])delete f[k];f.tcr=0}}catch(e){}return r}}
 /* vídeos da forma divina entram no carregamento da luta (antes carregavam só na hora → a transformação aparecia pronta) */
-{const _pm=prepMatch;prepMatch=function(ids){const r=_pm.apply(this,arguments);try{if(ids&&ids.includes('shaka')&&skDivLd())return Promise.all([r,skDvLoad()]).then(x=>x[0])}catch(e){}return r}}
+
 /* TEMPLO DE VIRGEM na escolha de cenário da Batalha Treino (fora do sorteio "Aleatório") e desmoronando com a luta */
 try{if(STG.shk){STG.shk.sel=1;STG.shk.nw=1;STG.shk.thumb=SKA.thumb}}catch(e){}
 {const _u2=update;update=function(){const r=_u2.apply(this,arguments);try{if(G.mode==='fight'&&STAGE&&STAGE.shk&&G.gmode!=='boss'&&G.p){if(SHK.k<1)SHK.k=Math.min(1,SHK.k+1/45);let l=0;for(const f of G.p)if(f)l=Math.max(l,1-Math.max(0,f.hp)/(f.mhp||MAXHP));const w=l>=.75?2:l>=.4?1:0;if(w>SHK.ph)shkSet(w)}}catch(e){}return r}}
@@ -4252,7 +4252,7 @@ function skDivWin(){return new Promise(res=>{const O=document.createElement('div
    Modo livre (Batalha Treino): sempre pode. Ranqueado/Boss: 5 itens V2 equipados + 1 barra de vida. Aura dourada clara, cabelão balançando. ================= */
 const skDivWhy=f=>{if(!f.form||f.skDiv)return 'x';if(!SPRH.skv)return 'x';if(!skLivre()){if(!skDivSet())return 'PRECISA DA ARMADURA DIVINA (5 ITENS V2)';if(f.hp>LAYER)return 'SÓ COM 1 BARRA DE VIDA'}if((f.sb||0)<1)return 'PRECISA DE 1 BARRA DE ENERGIA';return ''};
 {const _tc=tryCommon;tryCommon=function(f,o){if(f&&isSk(f)&&f.form&&!f.skDiv&&!f.cpu&&bufd(f,'tr')){use(f,'tr');const w=skDivWhy(f);if(w){if(w!=='x')say(f,w);return false}
-    if(!SKDOK){skDvLoad();say(f,'CARREGANDO...');return false}f.sb=Math.max(0,(f.sb||0)-1);f.skDivT=1;f.state='transform';f.st=0;f.vx=0;f.vy=0;f.move=null;f.inv=999;G.trans={f,t:0,skv:1};try{SFX.powerUp()}catch(e){}buzz(80);return true}
+    if(!SKDOK||!SKVOK){skvNeed();say(f,'CARREGANDO A FORMA DIVINA...');return false}f.sb=Math.max(0,(f.sb||0)-1);f.skDivT=1;f.state='transform';f.st=0;f.vx=0;f.vy=0;f.move=null;f.inv=999;G.trans={f,t:0,skv:1};try{SFX.powerUp()}catch(e){}buzz(80);return true}
   return _tc.apply(this,arguments)}}
 skDivTry=function(){};   /* não transforma mais sozinho */
 /* botão de transformar acende quando dá para virar divino */
@@ -4304,7 +4304,7 @@ function skPhase3(a,d){d.skP3=1;d.rkPh=3;if(RKB.fs)RKB.fs.t2=RKB.fs.t;d.ko=false
   d.rkB.dm*=1.35;d.rkB.df*=.85;d.rkB.sp*=.7;d.tdm=d.rkB.dm;d.tdf=d.rkB.df;d.tsp=d.rkB.sp;d.rkSh=0;
   d.state='idle';d.st=0;d.vx=0;d.vy=0;d.y=FLOOR;d.grounded=true;d.flying=false;d.move=null;d.hitstun=0;d.inv=60;d.form=1;d.formT=FORM_T;
   a.vx=-a.facing*10;G.hitstop=Math.max(G.hitstop,20);G.shake=34;G.flash=14;G.flashCol='#fff3c0';for(const r of [420,290,160])ring(d.x,d.y-150,r===160?'#ffffff':'#ffe680',r,30,8);
-  if(SKDOK&&SPRH.skv){d.skDivT=1;d.state='transform';d.inv=999;G.trans={f:d,t:0,skv:1}}else d.skDiv=1;
+  if(SKDOK&&SKVOK){d.skDivT=1;d.state='transform';d.inv=999;G.trans={f:d,t:0,skv:1}}else skvNeed();
   setTimeout(()=>{try{banner('3ª VIDA · FORMA DIVINA!','#ffe680',130,'O SHAKA ESTÁ NO PODER MÁXIMO · '+P[1]+' BARRAS')}catch(e){}},G.trans?3600:0);buzz(240)}
 {const _ko3=ko;ko=function(a,d){if(G.phase==='fight'&&G.gmode==='boss'&&G.p&&d===G.p[1]&&d.rkPh===2&&!d.skP3&&shk3On()){skPhase3(a,d);return}return _ko3.apply(this,arguments)}}
 /* templo: com 3 vidas ele racha na 2ª e desmorona na 3ª */
@@ -4416,6 +4416,14 @@ function luvGive(C){const own=rkG('own',['goku']);for(const id of ALLC)if(CH[id]
 const sxLine=()=>SXL&&Date.now()-SXL.t<30000?`<span class="spd" style="--c:#ffb040"><img src="${SX.moeda||''}" alt="">🎃 +${SXL.n} ABÓBORAS${SXL.box?' · ❓ +1 CAIXA SURPRESA':''}</span>`:'';
 {const _rr5=rkResult;rkResult=function(R){const r=_rr5.apply(this,arguments);try{const h=sxLine();if(h){const C=document.querySelector(RKMS()+'.rkItems');if(C)C.insertAdjacentHTML('afterbegin',h);SXL=null}}catch(e){}return r}}
 {const _so=showScreen;showScreen=function(n){const r=_so.apply(this,arguments);try{if(SXL&&SXL.gm!=='boss'&&Date.now()-SXL.t<30000&&n!=='game'&&G.mode!=='fight'){const L=SXL;SXL=null;setTimeout(()=>{try{const t='🎃 +'+L.n+' ABÓBORAS'+(L.box?' · ❓ +1 CAIXA SURPRESA':'')+' · total '+rkFmtN(rkG('sx',0));if(showScreen.cur==='tower')twToast(t,'#ffb040');else if(showScreen.cur==='ranked')rkToast(t,'#ffb040')}catch(e){}},900)}}catch(e){}return r}}
+/* v407: CARREGAMENTO SOB DEMANDA da forma divina (crash no Boss Shaka nível 13: carregava tudo junto = +500 MB no celular)
+   Sprites skv + vídeo da transformação começam a carregar quando o Shaka (jogador ou boss) abre os olhos e pode virar divino. */
+let SKVP=null,SKVOK=0;
+function skvNeed(){if(!SKVP){SKVP=loadSid('skv').then(()=>{SKVOK=1}).catch(()=>{});skDvLoad()}return SKVP}
+{const _sm2=startMatch;startMatch=function(){SKVP=null;SKVOK=0;skDvFree(1);return _sm2.apply(this,arguments)}}
+{const _u7=update;update=function(){const r=_u7.apply(this,arguments);try{if(G.mode==='fight'&&G.p)for(const f of G.p){if(!f||!isSk(f)||!f.form||f.skDiv)continue;
+    if(f.cpu?(f===G.p[1]&&shk3On()):(skLivre()||skDivSet()))skvNeed();
+    if(f.cpu&&f.skP3&&!f.skDiv&&SKVOK&&!G.trans){f.skDiv=1;txt(f.x,f.y-320,'FORMA DIVINA!','#fff3b0');G.flash=10;G.flashCol='#fff3c0'}}}catch(e){}return r}}
 {const _sk=rkTwSkin;rkTwSkin=function(){const r=_sk.apply(this,arguments);try{tnSkin()}catch(e){console.warn(e)}return r}}
 {const _lv2=twLV;twLV=function(){if(TN.on&&G.gmode==='torre'){const B=G.p&&G.p[1];if(B&&B.tnBoss)return TWLV[Math.min(TWLV.length-1,3+Math.floor(TN.g/2))]}return _lv2.apply(this,arguments)}}
 try{RKTWX.fl=1;RKTWX.top=3.2}catch(e){}
