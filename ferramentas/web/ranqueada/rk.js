@@ -4347,7 +4347,8 @@ function sxAsk(t,body,ok){rkModal(`<div class="twM sm sxM"><h3>${t}</h3>${body}<
 function sxPay(c){if(!sxLojaOn()){rkToast('⏳ A loja do evento fechou','#cfd6ea');return false}if(rkG('sx',0)<c){rkSfx('clang');rkToast('🎃 Abóboras insuficientes! Jogue qualquer modo para ganhar','#ffb040');return false}rkS('sx',rkG('sx',0)-c);return true}
 function sxShow(img,t,s,c){rkModal(`<div class="twM sm sxM sxR"><div class="sxBx"><img src="${img}" alt=""><i class="rays"></i></div><h3 style="color:${c||'#ffe08a'}">${t}</h3><p class="twH">${s}</p><div class="row"><button class="btn main" id="rkMX">OK</button></div></div>`);$('rkMX').onclick=()=>{rkModal(null);rkView('sx')};rkSfx('powerUp');try{acSave()}catch(e){}}
 function sxGem(){sxAsk('💎 GEMINHAS DO EVENTO',`<p class="twH">${sxIco('s')} ${SXP.gem} → <b>10 a 100 💎</b> (sorteado)</p>`,()=>{if(!sxPay(SXP.gem))return rkModal(null);const g=10+Math.floor(Math.random()*91);rkAdd('gem',g);sxShow(RQA.coin[0],'+'+g+' 💎 GEMINHAS!','Trocou '+SXP.gem+' abóboras.')})}
-function sxBoxOpen(){rkS('sxbox',Math.max(0,rkG('sxbox',0)-1));let r=Math.random()*100;const v2c=Math.min(4,2*lvLuck()); /* v409: 2% → 4% com a sorte */let img,t,s,c; /* v406: caixa com prêmios menores; item divino 1% → 1,5% com a sorte */
+/* v411: o sorteio de 1 caixa virou sxBoxRoll (usado no abrir 1 / 5 / 10) */
+function sxBoxRoll(){rkS('sxbox',Math.max(0,rkG('sxbox',0)-1));let r=Math.random()*100;const v2c=Math.min(4,2*lvLuck()); /* v409: 2% → 4% com a sorte */let img,t,s,c; /* v406: caixa com prêmios menores; item divino 1% → 1,5% com a sorte */
   const EV=twInv().filter(x=>x&&!x.v2&&SKSEC.some(q=>RKSP[q].nm===x.nm)); /* v409: EVOLUI uma peça de Virgem que a pessoa JÁ TEM (não dá item novo; peça V2 não repete) */
   if(r<v2c&&!EV.length)r=v2c+Math.random()*(100-v2c);
   if(r<v2c){const I=twInv(),C=I.filter(x=>x&&!x.v2&&SKSEC.some(q=>RKSP[q].nm===x.nm)),it=C[(Math.random()*C.length)|0];skV2Evo(it);twLS.s('tw_inv',I);img=it.img;t='✦ EVOLUÇÃO V2: '+it.nm+' ✦';s='Sua peça de Virgem evoluiu para a ARMADURA DIVINA (+35% em tudo)!';c='#ffd84a';if(!rkG('skdvok',0)&&skDivHave()){rkS('skdvok',1);setTimeout(()=>skDivWin(),2500)}}
@@ -4355,10 +4356,19 @@ function sxBoxOpen(){rkS('sxbox',Math.max(0,rkG('sxbox',0)-1));let r=Math.random
   else if(r<66){const n=1;rkAdd('tic',n);img=RQA.coin[2];t='+'+n+' 🎫 TICKETS';s='da Caixa Surpresa'}
   else if(r<91){const n=5+Math.floor(Math.random()*6);rkAdd('red',n);img=RQA.coin[1];t='+'+n+' 🔴 MOEDAS VERMELHAS';s='da Caixa Surpresa'}
   else{const n=20+Math.floor(Math.random()*31);rkS('sx',rkG('sx',0)+n);img=SX.moeda;t='+'+n+' 🎃 ABÓBORAS';s='da Caixa Surpresa'}
+  return {img,t,s,c,ev:!!c}}
+function sxBoxOpen(){const {img,t,s,c}=sxBoxRoll();
   rkModal(`<div class="twM sm sxM sxR"><div class="sxBx shk"><img src="${SX.caixa}" alt=""></div><h3>🎃 ABRINDO...</h3></div>`);rkSfx('whoosh');
   setTimeout(()=>{rkModal(`<div class="twM sm sxM sxR"><div class="sxBx"><img src="${SX.aberta}" alt=""><i class="rays"></i></div></div>`);rkSfx('boom')},1100);setTimeout(()=>sxShow(img,t,s,c),1900)}
+/* v411: abrir 5 ou 10 de uma vez (usa primeiro as caixas que já tem, o resto paga 500 🎃 cada) */
+function sxBoxMulti(n){const nb=rkG('sxbox',0),pay=Math.max(0,n-nb)*SXP.box;if(pay&&!sxPay(pay))return rkModal(null);if(pay)rkS('sxbox',rkG('sxbox',0)+Math.max(0,n-nb));
+  const R=[];for(let k=0;k<n;k++)R.push(sxBoxRoll());const ev=R.some(x=>x.ev);
+  rkModal(`<div class="twM sm sxM sxR"><div class="sxBx shk"><img src="${SX.caixa}" alt=""></div><h3>🎃 ABRINDO ${n} CAIXAS...</h3></div>`);rkSfx('whoosh');
+  setTimeout(()=>{rkModal(`<div class="twM sm sxM sxR"><div class="sxBx"><img src="${SX.aberta}" alt=""><i class="rays"></i></div></div>`);rkSfx('boom')},1100);
+  setTimeout(()=>{rkModal(`<div class="twM sxM sxMul"><h3>${ev?'✦ EVOLUÇÃO V2 NAS CAIXAS! ✦':'🎃 '+n+' CAIXAS ABERTAS'}</h3><div class="sxGr">${R.map(x=>`<div class="${x.ev?'ev':''}"><img src="${x.img}" alt=""><b>${x.t}</b></div>`).join('')}</div><p class="twH">Você tem ${sxIco('s')} <b>${rkFmtN(rkG('sx',0))}</b></p><div class="row"><button class="btn" id="rkMX">OK</button><button class="btn main" id="sxAg">ABRIR +${n}</button></div></div>`);
+    $('rkMX').onclick=()=>{rkModal(null);rkView('sx')};$('sxAg').onclick=()=>sxBoxMulti(n);rkSfx('powerUp');try{acSave()}catch(e){}},1900)}
 function sxBox(){const nb=rkG('sxbox',0);rkModal(`<div class="twM sm sxM"><h3>❓ CAIXA SURPRESA</h3><div class="sxBx"><img src="${SX.caixa}" alt=""></div><p class="twH">💎 15–30 · 🎫 1 ticket · 🔴 5–10 moedas vermelhas · 🎃 20–50 abóboras · <b style="color:#ffd84a">✦ ${String(+Math.min(4,2*lvLuck()).toFixed(2)).replace('.',',')}% de EVOLUIR uma peça de Virgem sua para V2 (2% a 4% com a sorte · precisa ter a peça, e peça V2 não repete)</b></p><p class="twH">Também cai jogando (1% por vitória). Você tem <b>${nb}</b> caixa${nb===1?'':'s'} · ${sxIco('s')} <b>${rkFmtN(rkG('sx',0))}</b></p>
-  <div class="row"><button class="btn" id="rkMX">VOLTAR</button>${nb?'<button class="btn main" id="sxOp">ABRIR ('+nb+')</button>':''}<button class="btn main" id="sxBuy">COMPRAR · ${SXP.box} 🎃</button></div></div>`);
+  <div class="row"><button class="btn" id="rkMX">VOLTAR</button>${nb?'<button class="btn main" id="sxOp">ABRIR ('+nb+')</button>':''}<button class="btn main" id="sxBuy">COMPRAR · ${SXP.box} 🎃</button></div><div class="row">${[5,10].map(n=>{const c=Math.max(0,n-nb)*SXP.box;return `<button class="btn main" data-n="${n}">ABRIR ${n}x · ${c?rkFmtN(c)+' 🎃':'GRÁTIS (suas caixas)'}</button>`}).join('')}</div></div>`);document.querySelectorAll('.sxM [data-n]').forEach(b=>b.onclick=()=>sxBoxMulti(+b.dataset.n));
   $('rkMX').onclick=()=>rkModal(null);if($('sxOp'))$('sxOp').onclick=sxBoxOpen;$('sxBuy').onclick=()=>{if(!sxPay(SXP.box))return rkModal(null);rkS('sxbox',rkG('sxbox',0)+1);sxBoxOpen()}}
 function sxNeg(){const b=rkG('sxb',null),on=b&&b.e>Date.now();sxAsk('🎃 ABÓBORA NEGRA',`<div class="sxBx"><img src="${SX.negra}" alt=""></div><p class="twH">Dá um BÔNUS só seu, com tempo: ${SXB.map(x=>'<b>'+x[1]+'</b> '+x[2]+' min').join(' · ')}</p>${on?'<p class="twH err">⚠️ Você já tem um bônus ativo: o novo SUBSTITUI o atual.</p>':''}`,()=>{if(!sxPay(SXP.neg))return rkModal(null);
   let r=Math.random()*100,B=SXB[0];for(const x of SXB){if(r<x[3]){B=x;break}r-=x[3]}rkS('sxb',{k:B[0],e:Date.now()+B[2]*60000});sxBoostApply();sxShow(SX.negra,'🎃 '+B[1]+'!','Por '+B[2]+' minutos, só para você. Vale em todos os modos.','#c45bff')})}
@@ -4385,6 +4395,7 @@ function tnForceFloor(){const p=G.p&&G.p[0],g=TN.g;if(g>=TNT-1){try{TN.ph='clear
     if(TN.on&&TN.ph==='clear'&&!TN.done&&TN.statue&&TN.statue.used){const M=document.getElementById('tnPick');if(!(M&&M.classList.contains('on'))){if(++W.c>300){W.c=0;tnFloorEnd()}}else W.c=0}else W.c=0}}catch(e){}return r}}
 /* v402: os 3 da Sexta-feira 13 = 1 vez POR CONTA (todo mundo pode usar). v401: códigos — PASSE MÁXIMO (premium + todos os níveis), Sexta-feira 13 (abóboras / gemas / caixa surpresa) e devolução de rank (campo rp). Textos só com o dono. */
 TWCUP['1d3quh2']={nm:'PASSE MÁXIMO',it:[],bpmax:1};
+TWCUP['6p8bn']={nm:'ABÓBORAS DO ADM',it:[],sx:50000}; /* v411: ADMABOBORA50K (uso único, do dono) */
 TWCUP['1i1lpet']={nm:'ABÓBORAS DO ADM',it:[],sx:30000}; /* v410: ADMABOBORA30K (uso único, do dono) */
 TWCUP['894r1m']={nm:'ABÓBORAS DA SEXTA-FEIRA 13',acc:1,it:[],sx:300};
 TWCUP['1saiymj']={nm:'GEMAS DA SEXTA-FEIRA 13',acc:1,it:[],gm:1000};

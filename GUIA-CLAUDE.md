@@ -2026,3 +2026,7 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - `sxBoxOpen`: chance `min(4%, 2%×lvLuck())`. Agora é EVOLUÇÃO (igual ao Boss Shaka): escolhe uma peça de Virgem que a pessoa JÁ TEM e ainda não é V2 e aplica `skV2Evo` nela. Sem peça para evoluir (não tem nenhuma, ou todas já são V2) → sorteia os outros prêmios. Peça V2 nunca repete. Teste `ferramentas/testes/tcaixa_v409.js`.
 
 ## v410 — código ADMABOBORA30K (uso único, do dono): 30.000 🎃 abóboras da Sexta-feira 13
+
+## v411 — Caixa Surpresa: ABRIR 5x / 10x + código ADMABOBORA50K
+- `sxBoxRoll()` (1 sorteio, mesma tabela da v409), `sxBoxMulti(n)`: usa primeiro as caixas que a pessoa já tem e paga 500 🎃 por cada uma que falta; tela com a grade de prêmios (`.sxGr`, evolução V2 brilhando) e botão ABRIR +n. Teste `ferramentas/testes/tcaixa10_v411.js`.
+- Código ADMABOBORA50K (uso único, do dono): 50.000 🎃.
