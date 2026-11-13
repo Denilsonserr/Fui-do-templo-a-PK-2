@@ -1985,3 +1985,13 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - SEXTA-FEIRA 13 (rk.js "v400", arte `ferramentas/ranqueada_artes/sexta13/` → `RQA.sx13`): ABÓBORAS (`rk_sx`) caem só em 13/11 (`SXDROP`) no fim de toda luta (`ko`/`timeOver` → `sxGive`): Batalha 3–7, Torre 5–10/andar, Boss 12–25 (Shaka ×1,5), Caça 10–20, PVP 10–18, Desafio 8–15; derrota 1–3; vitória 1% de CAIXA SURPRESA (`rk_sxbox`). Boneco de treino não dá.
 - Loja `sx` (`sxH`, 1847×851) até 15/11 23:59 (`SXLOJA`), botão na Loja (2º espaço da esquerda): GEMINHAS 100 🎃 → 10–100 💎 · CAIXA SURPRESA 500 🎃 (ou abre as ganhas): 💎 200–1000 40% / 🎫 3–8 25% / 🔴 150–500 25% / 🎃 150–400 9% / 1% item da ARMADURA DIVINA (V2 que falta; completo = 3000 💎), animação fechada→aberta · ABÓBORA NEGRA 250 🎃: bônus pessoal com tempo (`rk_sxb`; 2x XP 10 min 30%, 2x gemas 5 min 25%, 2x sorte 5 min 20%, 2x drop 3 min 15%, 3x XP 5 min 10%) que entra em `RKEVX` como evento só do jogador (`sxBoostApply`, multiplica por cima do evento global; o novo substitui o anterior).
 - Teste `ferramentas/testes/tsexta13_v400.js`.
+
+## v401 — TORRE não trava mais depois do boss morrer (jogador Honrado) + códigos novos
+- Caso "Honrado" (Shaka, rank 95 mil): matava o boss da Torre, o andar não terminava e ele ficava pulando na arena; saía pela pausa (a subida salvava no MESMO andar → "precisa fazer 2 vezes") ou desistia (perdia rank). Não reproduzi no PC (nem com o salvamento real dele, `ttorre_honrado_v401.js` com SAVE=json), então blindei todos os caminhos (rk.js "v401"):
+  - `twQuitFight` (pausa → menu) e `tnFinish(false,…)` (desistir/endRound) com o boss do andar JÁ morto (`TN.ph==='clear'`) contam o ANDAR COMO VENCIDO (`tnForceFloor`), sem perder rank.
+  - Carta da passiva: um toque só (toque duplo/erro não trava); se der erro, fecha e termina o andar.
+  - Vigias: carta escolhida e andar não terminou em 5 s → `tnFloorEnd`; andar terminado mas ainda na luta em 4,2 s → força a volta (`tnForceFloor`/`tnGoTower`); luta da Torre com `TN.on=0` por 4 s → volta para a Torre.
+  - Teste `ferramentas/testes/ttorre_trava_v401.js`.
+- Perdas do Honrado desde 12/11: 5 × 125 = 625 → devolvido em DOBRO (1.250) pelo código de uso único HONRADO1250 (campo novo `rp`).
+- Códigos (uso único no jogo inteiro, textos só com o dono): PASSEMAXIMO (`bpmax`: passe premium `own=2` + XP do nível 20), ABOBORA300 (`sx` 300 🎃), SEXTA13GEMAS (1000 💎), CAIXASEXTA13 (`sxbox` 1 caixa surpresa). Teste `CODE=... node ferramentas/testes/tcupom_v401.js`.
+- `.github/workflows/restaurar.yml`: agora soma as perdas de rank desde 12/11 e com ts=dump imprime o último salvamento (zlib+base64).

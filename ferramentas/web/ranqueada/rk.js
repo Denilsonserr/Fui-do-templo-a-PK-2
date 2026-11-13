@@ -4364,6 +4364,36 @@ function sxInfo(){rkModal(`<div class="twM sm sxM"><h3>🎃 COMO OBTER AS ABÓBO
 {const _ra=rkAct;rkAct=function(a,b){if(a==='sxShop'){if(!sxLojaOn())return rkToast('⏳ Loja do evento fechada','#cfd6ea');return rkView('sx')}if(RKV==='sx'){if(a==='back')return rkView('shop');if(a==='sxGem')return sxGem();if(a==='sxBox')return sxBox();if(a==='sxNeg')return sxNeg();if(a==='sxInfo')return sxInfo()}return _ra.apply(this,arguments)}}
 /* aviso 1 vez por dia ao abrir o Ranqueado */
 {const _ro=rkOpen;rkOpen=function(v){const r=_ro.apply(this,arguments);try{if(sxDropOn()&&rkG('sxav','')!==dlDay()){rkS('sxav',dlDay());setTimeout(()=>rkToast('🎃 SEXTA-FEIRA 13! Todo modo dá ABÓBORAS hoje · troque na LOJA','#ffb040'),2500)}}catch(e){}return r}}
+/* ================= v401: TORRE NUNCA MAIS TRAVA depois do boss morrer (caso do jogador Honrado)
+   1) DESISTIR / sair da luta com o boss do andar JÁ MORTO conta como ANDAR VENCIDO (não perde rank).
+   2) Escolher a carta: à prova de erro e de toque duplo; sempre fecha e sempre termina o andar.
+   3) Vigia extra: carta escolhida e o andar não terminou em 4 s → termina; andar terminado mas ainda na luta em 4 s → volta para a Torre;
+      luta da Torre "órfã" (TN desligado mas ainda lutando) → volta para a Torre. ================= */
+function tnGoTower(){try{TN.on=0;G.diff=TW.diff0;G.mode='tower';$('controls').hidden=true;$('pauseBtn').hidden=true;G.paused=false}catch(e){}try{rainSound(0)}catch(e){}try{tnHud();const b=document.getElementById('tnAct');if(b)b.hidden=true}catch(e){}
+  try{const M=document.getElementById('tnPick');if(M){M.className='';M.innerHTML=''}}catch(e){}try{showScreen('tower')}catch(e){}try{twRender()}catch(e){console.warn(e)}}
+function tnForceFloor(){const p=G.p&&G.p[0],g=TN.g;if(g>=TNT-1){try{TN.ph='clear';tnFinish(true,false)}catch(e){tnGoTower()}return}
+  try{TN.g=g+1;TW.fl=TN.g;if(p){TW.hpv=Math.max(1,Math.min(p.mhp,p.hp+p.mhp*.4));TW.hp=TW.hpv/(TW.bars*LAYER)}}catch(e){}try{tnSave()}catch(e){}try{if(TN.g>tnBest())localStorage.setItem('tn_best',TN.g)}catch(e){}
+  tnGoTower();try{const T=tnFl(TN.g);twToast('✅ ANDAR '+tnFl(g).n+' CONQUISTADO! · próximo: ANDAR '+T.n,'#7dff9a')}catch(e){}}
+{const _tf=tnFinish;tnFinish=function(won,quit){try{if(!won&&TN.on&&TN.ph==='clear'&&TN.g<TNT){if(TN.done){tnGoTower();return}TN.done=1;tnForceFloor();return}}catch(e){}return _tf.apply(this,arguments)}}
+{const _fe=tnFloorEnd;tnFloorEnd=function(){const was=TN.done,g=TN.g;const r=_fe.apply(this,arguments);if(!was&&TN.done){const t0=Date.now();setTimeout(()=>{try{if(G.mode==='fight'&&G.gmode==='torre'&&TN.g===g&&TN.done){console.warn('tn: forçando fim do andar');TN.on=1;tnForceFloor()}}catch(e){}},4200)}return r}}
+{const _pk=tnPick;tnPick=function(){const r=_pk.apply(this,arguments);try{const M=document.getElementById('tnPick');if(!M)return r;let once=0;M.querySelectorAll('.tnC').forEach(b=>{const f0=b.onclick;const f=e=>{try{e.preventDefault();e.stopPropagation()}catch(_){}if(once)return;once=1;try{f0.call(b,e)}catch(err){console.warn(err);try{M.className='';setTimeout(()=>{M.innerHTML=''},300)}catch(_){}setTimeout(()=>{if(TN.on&&!TN.done)tnFloorEnd()},1100)}};b.onclick=f;b.ontouchend=f})}catch(e){}return r}}
+{const _qf=twQuitFight;twQuitFight=function(){try{if(TN.on&&TN.ph==='clear'&&TN.g<TNT){G.paused=false;TN.done=1;tnForceFloor();return}}catch(e){}return _qf.apply(this,arguments)}}
+{const _uT=update;update=function(){const r=_uT.apply(this,arguments);try{if(G.mode==='fight'&&G.gmode==='torre'&&typeof TN!=='undefined'){const W=update._tn||(update._tn={o:0,c:0});
+    if(!TN.on&&G.phase==='fight'){if(++W.o>240){W.o=0;console.warn('tn: luta órfã → Torre');tnGoTower()}}else W.o=0;
+    if(TN.on&&TN.ph==='clear'&&!TN.done&&TN.statue&&TN.statue.used){const M=document.getElementById('tnPick');if(!(M&&M.classList.contains('on'))){if(++W.c>300){W.c=0;tnFloorEnd()}}else W.c=0}else W.c=0}}catch(e){}return r}}
+/* v401: códigos — PASSE MÁXIMO (premium + todos os níveis), Sexta-feira 13 (abóboras / gemas / caixa surpresa) e devolução de rank (campo rp). Textos só com o dono. */
+TWCUP['1d3quh2']={nm:'PASSE MÁXIMO',it:[],bpmax:1};
+TWCUP['894r1m']={nm:'ABÓBORAS DA SEXTA-FEIRA 13',it:[],sx:300};
+TWCUP['1saiymj']={nm:'GEMAS DA SEXTA-FEIRA 13',it:[],gm:1000};
+TWCUP['10fttsa']={nm:'CAIXA SURPRESA DA SEXTA-FEIRA 13',it:[],sxbox:1};
+TWCUP['mxbknc']={nm:'DEVOLUÇÃO DE RANK',it:[],rp:1250};
+{const _cp12=twCupom;twCupom=async function(code,E){const C=TWCUP[twHash(String(code).toUpperCase())];const r=await _cp12.apply(this,arguments);
+  if(C&&(C.bpmax||C.sx||C.sxbox||C.rp)&&r&&E&&/ok/.test(E.className||'')){const L=[];
+    if(C.bpmax){const o=bpG();o.own=2;o.xp=Math.max(o.xp|0,20*BPS.xpL);bpS(o);L.push('🎖️ PASSE PREMIUM + NÍVEL MÁXIMO (pegue os prêmios no Passe)')}
+    if(C.sx){rkS('sx',rkG('sx',0)+C.sx);L.push('🎃 +'+C.sx+' ABÓBORAS')}
+    if(C.sxbox){rkS('sxbox',rkG('sxbox',0)+C.sxbox);L.push('❓ +'+C.sxbox+' CAIXA SURPRESA (abra na Loja Sexta-feira 13)')}
+    if(C.rp){rkS('rp',rkG('rp',0)+C.rp);try{for(let i=0;i<=rkLvl();i++)twGiveTit('rk'+i)}catch(e){}L.push('🏅 +'+rkFmtN(C.rp)+' XP DE RANK')}
+    try{acSave(1)}catch(e){}E.textContent='🎁 '+C.nm+'! '+(C.gm?'+'+rkFmtN(C.gm)+' 💎 · ':'')+L.join(' · ');try{twSfx('boom')}catch(e){}}return r}}
 {const _sk=rkTwSkin;rkTwSkin=function(){const r=_sk.apply(this,arguments);try{tnSkin()}catch(e){console.warn(e)}return r}}
 {const _lv2=twLV;twLV=function(){if(TN.on&&G.gmode==='torre'){const B=G.p&&G.p[1];if(B&&B.tnBoss)return TWLV[Math.min(TWLV.length-1,3+Math.floor(TN.g/2))]}return _lv2.apply(this,arguments)}}
 try{RKTWX.fl=1;RKTWX.top=3.2}catch(e){}
