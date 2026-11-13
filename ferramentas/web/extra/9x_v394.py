@@ -10,7 +10,7 @@ rep('const SKV={"f":','SPRH.skv=%s;\n(function(){const S=SPRH.skv;Object.assign(
 rep("HAIR.sk=1.25;HAIR.skd=1.25;HAND.sk={};HAND.skd={};","HAIR.sk=1.25;HAIR.skd=1.25;HAIR.skv=1.25;HAND.sk={};HAND.skd={};HAND.skv={};FR.skv=FR.sk;")
 rep("RUSHK.skd=RUSHK.sk;","RUSHK.skd=RUSHK.sk;RUSHK.skv=RUSHK.sk;")
 rep("const ssid=f=>f.def.sid==='sk'?(f.form?'skd':'sk')","const ssid=f=>f.def.sid==='sk'?(f.skDiv?'skv':f.form?'skd':'sk')")
-rep("s==='sk'?['sk','skd']:","s==='sk'?(skDivSet()?['sk','skd','skv']:['sk','skd']):")
+rep("s==='sk'?['sk','skd']:","s==='sk'?(skDivLd()?['sk','skd','skv']:['sk','skd']):")
 rep("isSk(f)?1.82:","isSk(f)?(f.skDiv?3.3:1.82):")
 rep("if(isSk(f))return updSKT(T,f,t);","if(isSk(f))return T.skv?updSKDV(T,f,t):updSKT(T,f,t);")
 rep("  if(G.trans&&isSk(G.trans.f)&&G.trans.t<SKVE){","  if(G.trans&&G.trans.skv&&G.trans.t<SKDVE){gkFull(SKDVF,SKDV.length,Math.floor(G.trans.t/SKDVD),Math.min(1,G.trans.t/6,(SKDVE-G.trans.t)/6+.25));if(G.mode==='fight')drawHUD();return}\n  if(G.trans&&isSk(G.trans.f)&&!G.trans.skv&&G.trans.t<SKVE){")

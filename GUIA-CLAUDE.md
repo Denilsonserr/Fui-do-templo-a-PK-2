@@ -1950,3 +1950,7 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - Tela "ARMADURA DIVINA COMPLETA" (`skDivWin`, arte de corpo inteiro `RQA.skdv.corpo`) quando o 5º item vira V2 (uma vez, `rk_skdvok`).
 - Sprites: `ferramentas/personagens/shaka/divina/` — `folhas/d01..d13` (folhas do dono), `seg_skv.py` (recorte por grade), `build_skv.py` (mesmas animações do sk, IA 2x, cache `build/cache_ai.json`; rodar na pasta `/home/claude/skv_build`), `build/skv.json` → patch `ferramentas/web/extra/9x_v394.py` (SPRH.skv, ssid, sidsOf carrega skv só com o set, speedMul, vídeos). Combo pronto usa `cmb` = folha d07 (16 quadros); `cmb2` (folha d03) guardado.
 - Teste `ferramentas/testes/tshaka_divino_v394.js`.
+
+## v395 — ADM testa a FORMA DIVINA na Batalha Treino
+- `skDivTreino()`: na Batalha Treino (`G.gmode==='treino'`), quem tem o título ADM vira a forma divina logo depois de ABRIR OS OLHOS, sem os 5 itens V2 e sem precisar de 1 barra (o boneco não ataca). Fora do treino a regra continua a mesma. `skDivLd()` (no `sidsOf`) carrega os sprites `skv` para ADM sempre.
+- Gancho de teste `__pvT.treino(eu, rival)`. Teste `ferramentas/testes/tshaka_treino_v395.js`.
