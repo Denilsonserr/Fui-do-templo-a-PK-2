@@ -2024,3 +2024,5 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 
 ## v409 — Caixa Surpresa: 2% → 4% de EVOLUIR uma peça de Virgem (não dá item novo)
 - `sxBoxOpen`: chance `min(4%, 2%×lvLuck())`. Agora é EVOLUÇÃO (igual ao Boss Shaka): escolhe uma peça de Virgem que a pessoa JÁ TEM e ainda não é V2 e aplica `skV2Evo` nela. Sem peça para evoluir (não tem nenhuma, ou todas já são V2) → sorteia os outros prêmios. Peça V2 nunca repete. Teste `ferramentas/testes/tcaixa_v409.js`.
+
+## v410 — código ADMABOBORA30K (uso único, do dono): 30.000 🎃 abóboras da Sexta-feira 13

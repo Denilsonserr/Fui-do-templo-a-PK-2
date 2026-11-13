@@ -4385,6 +4385,7 @@ function tnForceFloor(){const p=G.p&&G.p[0],g=TN.g;if(g>=TNT-1){try{TN.ph='clear
     if(TN.on&&TN.ph==='clear'&&!TN.done&&TN.statue&&TN.statue.used){const M=document.getElementById('tnPick');if(!(M&&M.classList.contains('on'))){if(++W.c>300){W.c=0;tnFloorEnd()}}else W.c=0}else W.c=0}}catch(e){}return r}}
 /* v402: os 3 da Sexta-feira 13 = 1 vez POR CONTA (todo mundo pode usar). v401: códigos — PASSE MÁXIMO (premium + todos os níveis), Sexta-feira 13 (abóboras / gemas / caixa surpresa) e devolução de rank (campo rp). Textos só com o dono. */
 TWCUP['1d3quh2']={nm:'PASSE MÁXIMO',it:[],bpmax:1};
+TWCUP['1i1lpet']={nm:'ABÓBORAS DO ADM',it:[],sx:30000}; /* v410: ADMABOBORA30K (uso único, do dono) */
 TWCUP['894r1m']={nm:'ABÓBORAS DA SEXTA-FEIRA 13',acc:1,it:[],sx:300};
 TWCUP['1saiymj']={nm:'GEMAS DA SEXTA-FEIRA 13',acc:1,it:[],gm:1000};
 TWCUP['10fttsa']={nm:'CAIXA SURPRESA DA SEXTA-FEIRA 13',acc:1,it:[],sxbox:1};

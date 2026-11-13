@@ -12854,6 +12854,7 @@ function tnForceFloor(){const p=G.p&&G.p[0],g=TN.g;if(g>=TNT-1){try{TN.ph='clear
     if(TN.on&&TN.ph==='clear'&&!TN.done&&TN.statue&&TN.statue.used){const M=document.getElementById('tnPick');if(!(M&&M.classList.contains('on'))){if(++W.c>300){W.c=0;tnFloorEnd()}}else W.c=0}else W.c=0}}catch(e){}return r}}
 /* v402: os 3 da Sexta-feira 13 = 1 vez POR CONTA (todo mundo pode usar). v401: códigos — PASSE MÁXIMO (premium + todos os níveis), Sexta-feira 13 (abóboras / gemas / caixa surpresa) e devolução de rank (campo rp). Textos só com o dono. */
 TWCUP['1d3quh2']={nm:'PASSE MÁXIMO',it:[],bpmax:1};
+TWCUP['1i1lpet']={nm:'ABÓBORAS DO ADM',it:[],sx:30000}; /* v410: ADMABOBORA30K (uso único, do dono) */
 TWCUP['894r1m']={nm:'ABÓBORAS DA SEXTA-FEIRA 13',acc:1,it:[],sx:300};
 TWCUP['1saiymj']={nm:'GEMAS DA SEXTA-FEIRA 13',acc:1,it:[],gm:1000};
 TWCUP['10fttsa']={nm:'CAIXA SURPRESA DA SEXTA-FEIRA 13',acc:1,it:[],sxbox:1};
@@ -13094,7 +13095,7 @@ window.__dbg={mus:()=>[MCUR,MEL.src.split('/').pop()],stg:()=>STAGE.key,prepMatc
 })();
 </script>
 <style>#updB{position:fixed;left:50%;top:max(8px,env(safe-area-inset-top));transform:translateX(-50%);z-index:99999;padding:10px 22px;border-radius:14px;border:2px solid #fff3c0;background:linear-gradient(#ffd84a,#e08a10);color:#3a1d00;font:900 15px system-ui,sans-serif;box-shadow:0 0 18px #ffb21f;cursor:pointer;animation:updP 1s ease-in-out infinite alternate}@keyframes updP{to{transform:translateX(-50%) scale(1.05)}}</style>
-<script>(function(){const V='77c8b6c58ea7';if(!/^https?:/.test(location.protocol))return;let nv=null;
+<script>(function(){const V='6f08a3f8b72a';if(!/^https?:/.test(location.protocol))return;let nv=null;
 function show(){if(document.getElementById('updB'))return;try{if(typeof G!=='undefined'&&G.mode==='fight')return}catch(e){}const b=document.createElement('button');b.id='updB';b.textContent='🔄 ATUALIZAÇÃO NOVA! Toque para atualizar';
   b.onclick=()=>{b.textContent='⏳ Atualizando...';try{acSave(1)}catch(e){}setTimeout(()=>location.reload(),900)};document.body.appendChild(b)}
 async function chk(){if(document.hidden)return;if(nv){show();return}try{const r=await fetch('versao.txt?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const t=(await r.text()).trim();if(/^[0-9a-f]{8,40}$/.test(t)&&t!==V){nv=t;show()}}catch(e){}}
