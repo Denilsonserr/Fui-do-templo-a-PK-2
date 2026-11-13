@@ -4394,6 +4394,24 @@ TWCUP['mxbknc']={nm:'DEVOLUÇÃO DE RANK',it:[],rp:1250};
     if(C.sxbox){rkS('sxbox',rkG('sxbox',0)+C.sxbox);L.push('❓ +'+C.sxbox+' CAIXA SURPRESA (abra na Loja Sexta-feira 13)')}
     if(C.rp){rkS('rp',rkG('rp',0)+C.rp);try{for(let i=0;i<=rkLvl();i++)twGiveTit('rk'+i)}catch(e){}L.push('🏅 +'+rkFmtN(C.rp)+' XP DE RANK')}
     try{acSave(1)}catch(e){}E.textContent='🎁 '+C.nm+'! '+(C.gm?'+'+rkFmtN(C.gm)+' 💎 · ':'')+L.join(' · ');try{twSfx('boom')}catch(e){}}return r}}
+/* ================= v403: títulos LOVE (+50% em tudo) e MINHA PROTEGIDA (efeito de corações rosa) + códigos de uso único (textos só com o dono) ================= */
+TWTIT.love={n:'LOVE',i:'💖',c:'#ff5fa8',d:'Título do coração · ✦ +50% em TUDO (dano, defesa, velocidade, crítico e sorte)',hid:1,luv:1};
+TWTIT.prot={n:'MINHA PROTEGIDA',i:'💗',c:'#ff8fc8',d:'Título do coração · protegida do dono do jogo · ✦ +20% em tudo',hid:1,luv:2};
+TBUF.love={dano:50,def:50,vel:50,crit:50,st:50};TBUF.prot={dano:20,def:20,vel:20,crit:20,st:20};
+const luvH=T=>`<i class="lh a">💗</i><i class="lh b">💖</i><i class="lh c">💕</i><i class="lh d">💗</i>`;
+{const _pt=pfTitH;pfTitH=function(t,n,adm){const T=TWTIT[t];if(T&&T.luv)return `<span class="pfTt luvT l${T.luv}"><i>${T.i}</i><b>${T.n}</b>${luvH(T)}</span>`;return _pt.apply(this,arguments)}}
+TWCUP['g3ina9']={nm:'MEU AMOR 💖',it:[],gm:200000,luv:'love'};
+TWCUP['1841w3z']={nm:'MINHA PROTEGIDA 💗',it:[],gm:50000,luv:'prot'};
+function luvGive(C){const own=rkG('own',['goku']);for(const id of ALLC)if(CH[id]&&!own.includes(id))own.push(id);rkS('own',own);
+  const I=twInv(),has=nm=>I.some(x=>x&&x.nm===nm);let n=0;
+  for(const k in RKSP){const S=RKSP[k];if(has(S.nm))continue;I.push(Object.assign({id:'lv'+k+Date.now().toString(36)+Math.random().toString(36).slice(2,5)},S));n++}
+  for(const k of SKSEC){if(I.some(x=>x&&x.v2&&x.skb===k))continue;const it=Object.assign({id:'lvv'+k+Date.now().toString(36)},RKSP[k]);skV2Evo(it);I.push(it);n++}
+  twLS.s('tw_inv',I);const RT=TWEQR[TWEQR.length-1];for(const E of TWEQ){try{twAddItem(E,RT);n++}catch(e){}}try{TW.capOut=twCap()}catch(e){}
+  if(C.luv==='love'){rkAdd('tic',500);rkAdd('red',30000);try{twAddCoins(200000)}catch(e){}rkS('sx',rkG('sx',0)+3000);rkS('sxbox',rkG('sxbox',0)+10);const o=bpG();o.own=2;o.xp=Math.max(o.xp|0,20*BPS.xpL);bpS(o);rkS('skdvok',1)}
+  twGiveTit(C.luv);twLS.s('tw_titOn',C.luv);return {own:own.length,n}}
+{const _cp13=twCupom;twCupom=async function(code,E){const C=TWCUP[twHash(String(code).toUpperCase())];const r=await _cp13.apply(this,arguments);
+  if(C&&C.luv&&r&&E&&/ok/.test(E.className||'')){let R={own:0,n:0};try{R=luvGive(C)}catch(e){console.warn(e)}try{acSave(1)}catch(e){}
+    E.textContent=(C.luv==='love'?'💖 MEU AMOR! ':'💗 MINHA PROTEGIDA! ')+'TODOS os '+R.own+' personagens · '+R.n+' equipamentos na 🎒 MOCHILA · título '+TWTIT[C.luv].n+(C.luv==='love'?' (+50% em tudo) · 💎 200.000 · 🎫 500 · 🔴 30.000 · 🪙 200.000 · 🎃 3.000 + 10 caixas · passe máximo':' · 💎 50.000');try{twSfx('boom')}catch(e){}}return r}}
 {const _sk=rkTwSkin;rkTwSkin=function(){const r=_sk.apply(this,arguments);try{tnSkin()}catch(e){console.warn(e)}return r}}
 {const _lv2=twLV;twLV=function(){if(TN.on&&G.gmode==='torre'){const B=G.p&&G.p[1];if(B&&B.tnBoss)return TWLV[Math.min(TWLV.length-1,3+Math.floor(TN.g/2))]}return _lv2.apply(this,arguments)}}
 try{RKTWX.fl=1;RKTWX.top=3.2}catch(e){}

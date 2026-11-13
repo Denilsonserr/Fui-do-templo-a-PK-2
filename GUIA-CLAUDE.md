@@ -1998,3 +1998,7 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 
 ## v402 — códigos da Sexta-feira 13 para TODO MUNDO (1 vez por conta)
 - ABOBORA300, SEXTA13GEMAS e CAIXASEXTA13 agora `acc:1` (cada CONTA usa 1 vez; precisa estar logado na conta). PASSEMAXIMO e HONRADO1250 continuam de uso único no jogo inteiro. Teste: `CODE=... REP=1 node ferramentas/testes/tcupom_v401.js`.
+
+## v403 — títulos do coração e 2 códigos de uso único (namorada e protegida do dono)
+- Títulos (rk.js "v403", `hid`, só quem ganha vê): `love` "💖 LOVE" (+50% dano/defesa/velocidade/crítico/sorte via `TBUF.love`) e `prot` "💗 MINHA PROTEGIDA" (+20% em tudo). Perfil: `.pfTt.luvT` (borda rosa girando, texto rosa/branco animado, corações subindo); chat/rankings: `.twTit.luv` (patch 9x muda o `twTitTag`).
+- Códigos (uso único no jogo inteiro, textos só com o dono): MEUAMORLOVE (`luv:'love'`) = TODOS os personagens (`ALLC`), todos os equipamentos especiais (`RKSP`) + Armadura Divina V2 completa + 1 equipamento de cada tipo na raridade máxima, 200.000 💎, 500 🎫, 30.000 🔴, 200.000 🪙, 3.000 🎃 + 10 caixas surpresa, passe máximo, título LOVE já equipado. MINHAPROTEGIDA (`luv:'prot'`) = todos os personagens, todos os equipamentos (mesma lista), 50.000 💎, título MINHA PROTEGIDA equipado. `luvGive`. Teste `CODE=... node ferramentas/testes/tcupom_v401.js`.

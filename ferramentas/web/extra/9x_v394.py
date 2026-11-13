@@ -19,4 +19,5 @@ rep("function updSKU(){const R=G.ws,a=R.a,d=R.d,FL=SKU.f.length;","function updS
 rep("[...Object.keys(STG).filter(k=>!STG[k].hid),'auto'].forEach((k,n)=>{","[...Object.keys(STG).filter(k=>!STG[k].hid||STG[k].sel),'auto'].forEach((k,n)=>{")   # v397: Templo de Virgem na escolha
 rep('<img src="${STH[k]}" alt="" decoding="async" loading="lazy">','<img src="${STH[k]||STG[k].thumb}" alt="" decoding="async" loading="lazy">')
 rep('const SZK={ao:.93,','const SZK={skv:.9,ao:.93,')   # v398: divino um pouco menor (igual ao normal)
+rep("`<em class=\"twTit${TWTIT[k].inf?' inf'","`<em class=\"twTit${TWTIT[k].luv?' luv':''}${TWTIT[k].inf?' inf'")   # v403: títulos do coração no chat/rankings
 open(P,'w',encoding='utf8').write(s);print('v394 forma divina ok')
