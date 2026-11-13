@@ -4182,18 +4182,19 @@ const skV2n=()=>{try{const q=twEqOn();let n=0;for(const k in q)if(q[k]&&q[k].v2)
    Divina: velocidade 3,3 (olhos abertos 1,82 ≈ +80%; normal 1,3 ≈ +150%… o dono pediu "180%"), +120% dano (×2,2), combo a cada 2 s, inimigo paralisado 3 s.
    Ultimate divina: vídeo do dono; depois PURIFICAÇÃO: o inimigo sobe, fica CONGELADO 4 s tomando só golpes CRÍTICOS e cai. ================= */
 const SKDA=RQA.skdv||{},SKDV=SKDA.t||[],SKDU=SKDA.u||[],SKDVF=[],SKDUF=[],SKDVD=Math.min(5,192/Math.max(1,SKDV.length)),SKDVE=Math.round(SKDV.length*SKDVD);let SKDP=null;
-function skDvLoad(){if(SKDP)return SKDP;const L=(A,F)=>A.map((p,i)=>new Promise(r=>{const im=new Image();im.decoding='async';im.onload=()=>{F[i]=im;r()};im.onerror=()=>r();im.src=p}));SKDP=Promise.all(L(SKDV,SKDVF));L(SKDU,SKDUF);return SKDP}
+let SKDOK=0;function skDvLoad(){if(SKDP)return SKDP;const L=(A,F)=>A.map((p,i)=>new Promise(r=>{const im=new Image();im.decoding='async';im.onload=()=>{F[i]=im;r()};im.onerror=()=>r();im.src=p}));SKDP=Promise.all(L(SKDV,SKDVF).concat(L(SKDU,SKDUF))).then(()=>{SKDOK=1});return SKDP}
 const SKDN={skcap:'ELMO DIVINO',skarm:'ARMADURA DIVINA',skluv:'LUVAS DIVINAS',skbot:'BOTAS DIVINAS',skros:'ROSÁRIO DIVINO'};
 function skDivSet(){try{if(typeof SPRH==='undefined'||!SPRH.skv)return false;const q=twEqOn();return ['cap','arm','esp','bot','anel'].every(k=>q[k]&&q[k].v2)}catch(e){return false}}
 /* v395: ADM testa na BATALHA TREINO: a forma divina ativa logo depois de abrir os olhos, sem itens V2 e sem precisar de 1 barra */
-const skDivTreino=()=>{try{return (G.gmode==='treino'||G.gmode==='pve')&&twIsAdm()&&!!SPRH.skv}catch(e){return false}},skDivLd=()=>{try{return skDivSet()||(twIsAdm()&&!!SPRH.skv)}catch(e){return false}};
+/* v397: na BATALHA TREINO (modo livre, `pve`/`treino`) a forma divina é de TODO MUNDO: logo depois de abrir os olhos */
+const skLivre=()=>G.gmode==='treino'||G.gmode==='pve',skDivTreino=()=>{try{return skLivre()&&!!SPRH.skv}catch(e){return false}},skDivLd=()=>{try{return skDivSet()||skLivre()}catch(e){return false}};
 const skDivHave=()=>{try{const I=twInv();return SKSEC.every(k=>I.some(x=>x&&x.v2&&x.skb===k))}catch(e){return false}};
 /* itens V2 viram a ARMADURA DIVINA (nome e ícone novos) */
 (function(){try{const I=twInv();let ch=0;for(const it of I){if(it&&it.v2&&it.skb&&SKDN[it.skb]){const nm=SKDN[it.skb]+' V2';if(it.nm!==nm){it.nm=nm;ch=1}if(SKV2[it.skb]&&it.img!==SKV2[it.skb]){it.img=SKV2[it.skb];ch=1}}}if(ch)twLS.s('tw_inv',I)}catch(e){}})();
 /* começar a forma divina */
 function skDivTry(f){if(!isSk(f)||f.cpu||f.skDiv||f.skDivT||!f.form||f.ko||G.trans||G.ws||G.phase!=='fight'||!G.p||f!==G.p[0])return;
   if(!skDivTreino()&&(f.hp>LAYER||!skDivSet()))return;if(!f.grounded||['transform','whtS','rushed','hit','airhit','down','getup','skc','skk','skcn','attack','blockstun'].includes(f.state))return;
-  f.skDivT=1;skDvLoad();f.state='transform';f.st=0;f.vx=0;f.vy=0;f.move=null;f.inv=999;G.trans={f,t:0,skv:1};try{SFX.powerUp()}catch(e){}buzz(80)}
+  if(!SKDOK){skDvLoad();return}f.skDivT=1;f.state='transform';f.st=0;f.vx=0;f.vy=0;f.move=null;f.inv=999;G.trans={f,t:0,skv:1};try{SFX.powerUp()}catch(e){}buzz(80)}
 function updSKDV(T,f,t){G.tz=1.15;G.tzx=sxs(f.x);G.tzy=sys(f.y-150);if(t<SKDVE)return;
   if(t===SKDVE){f.skDiv=1;f.form=1;f.formT=FORM_T;f.flick=0;f.tdm=(f.tdm||1)*2.2;G.flash=16;G.flashCol='#fff6d0';G.shake=30;
     for(const r of [460,330,210,110])ring(f.x,f.y-150,r===110?'#ffffff':'#ffd84a',r,28,8);for(let i=0;i<70;i++)spark(f.x,f.y-150,pick(SKC),1,rand(6,18));
@@ -4230,6 +4231,14 @@ function skPurTick(f){const P=f.skPur,d=P&&P.o;if(!d||d.ko||G.phase!=='fight'){f
 /* carrega os vídeos quando o jogador entra com o Shaka e a armadura divina */
 {const _ap=rkApply;rkApply=function(){const r=_ap.apply(this,arguments);try{if(G.pick==='shaka'&&skDivSet())skDvLoad()}catch(e){}return r}}
 {const _sm=startMatch;startMatch=function(){const r=_sm.apply(this,arguments);try{if(G.p&&G.p.some(f=>f&&isSk(f)&&!f.cpu)&&(skDivSet()||skDivTreino()))skDvLoad();const C=$('controls');if(C)C.classList.remove('skdv')}catch(e){}return r}}
+
+/* v397: MODO LIVRE (Batalha Treino): sem bônus de nada (itens, título, ADM) — só a força normal do personagem */
+{const _sf=setupFighters;setupFighters=function(){const r=_sf.apply(this,arguments);try{if(skLivre()&&G.p)for(const f of G.p){if(!f)continue;for(const k of ['tdm','tsp','tdf','tsb'])delete f[k];f.tcr=0}}catch(e){}return r}}
+/* vídeos da forma divina entram no carregamento da luta (antes carregavam só na hora → a transformação aparecia pronta) */
+{const _pm=prepMatch;prepMatch=function(ids){const r=_pm.apply(this,arguments);try{if(ids&&ids.includes('shaka')&&skDivLd())return Promise.all([r,skDvLoad()]).then(x=>x[0])}catch(e){}return r}}
+/* TEMPLO DE VIRGEM na escolha de cenário da Batalha Treino (fora do sorteio "Aleatório") e desmoronando com a luta */
+try{if(STG.shk){STG.shk.sel=1;STG.shk.nw=1;STG.shk.thumb=SKA.thumb}}catch(e){}
+{const _u2=update;update=function(){const r=_u2.apply(this,arguments);try{if(G.mode==='fight'&&STAGE&&STAGE.shk&&G.gmode!=='boss'&&G.p){if(SHK.k<1)SHK.k=Math.min(1,SHK.k+1/45);let l=0;for(const f of G.p)if(f)l=Math.max(l,1-Math.max(0,f.hp)/(f.mhp||MAXHP));const w=l>=.75?2:l>=.4?1:0;if(w>SHK.ph)shkSet(w)}}catch(e){}return r}}
 /* tela "ARMADURA DIVINA COMPLETA" quando o 5º item vira V2 */
 function skDivWin(){return new Promise(res=>{const O=document.createElement('div');O.className='rkWin end sec skDvW';O.innerHTML=`<div class="t"><b>✦ ARMADURA DIVINA COMPLETA! ✦</b><span>FORMA DIVINA DO SHAKA LIBERADA</span></div><img class="fl" src="${SKDA.corpo||''}" alt=""><i class="rays"></i><div class="t2">Equipe os 5 itens V2 e jogue com o SHAKA: de olhos abertos e com 1 barra de vida ele vira a FORMA DIVINA · +180% velocidade · +120% dano · combo a cada 2 s · ultimate PURIFICAÇÃO DIVINA</div>`;rkHost().appendChild(O);rkSfx('boom');setTimeout(()=>rkSfx('powerUp'),300);setTimeout(()=>{O.onclick=()=>{O.remove();res()}},600)})}
 {const _w=skV2Win;skV2Win=function(it){const had=rkG('skdvok',0);return _w.apply(this,arguments).then(()=>{if(!had&&skDivHave()){rkS('skdvok',1);return skDivWin()}})}}

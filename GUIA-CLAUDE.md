@@ -1957,3 +1957,10 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 
 ## v396 — conserto: a "Batalha Treino" do menu é o modo `pve` (luta normal), não `treino` (boneco)
 - `skDivTreino()` agora vale em `pve` E `treino` para quem tem o título ADM. Testado pelo caminho real (botão de transformar → abrir os olhos → forma divina). Gancho novo `__pvT.trf()` (transforma o jogador 1). Teste: `GM=pve node ferramentas/testes/tshaka_treino_v395.js`.
+
+## v397 — BATALHA TREINO = modo livre (sem bônus) com a FORMA DIVINA para todos + Templo de Virgem
+- O dono: a Batalha Treino (menu; `G.gmode` 'pve', e também o boneco 'treino') é o modo de só brincar, separado do ranqueado: sem bônus de nada. `setupFighters` embrulhado: em `pve`/`treino` apaga `tdm/tsp/tdf/tsb` e zera `tcr` dos dois lutadores (o ADM ganhava +70%). Todos os personagens já ficam liberados nessa tela.
+- Forma divina do Shaka para TODO MUNDO nesse modo (`skLivre`, `skDivTreino` sem ADM): logo depois de abrir os olhos, sem itens V2 e sem precisar de 1 barra. No ranqueado/boss a regra continua (5 V2 + olhos abertos + 1 barra).
+- Conserto "a segunda transformação já aparece pronta": os vídeos divinos só começavam a baixar na hora de transformar. Agora `prepMatch` (com Shaka) espera os vídeos (`skDvLoad`, inclui a ultimate) e `skDivTry` só começa com `SKDOK`.
+- TEMPLO DE VIRGEM na escolha de fase (`STG.shk.sel`, miniatura `RQA.shk.thumb`; o patch 9x mostra `hid` com `sel` e usa `STG[k].thumb`), fora do "Aleatório". Fora do boss ele racha quando alguém perde 40% da vida e desmorona com 75%.
+- Teste: `GM=pve node ferramentas/testes/tshaka_treino_v395.js` (jogador sem ADM).

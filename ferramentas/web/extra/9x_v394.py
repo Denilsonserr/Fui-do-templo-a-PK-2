@@ -16,4 +16,6 @@ rep("if(isSk(f))return updSKT(T,f,t);","if(isSk(f))return T.skv?updSKDV(T,f,t):u
 rep("  if(G.trans&&isSk(G.trans.f)&&G.trans.t<SKVE){","  if(G.trans&&G.trans.skv&&G.trans.t<SKDVE){gkFull(SKDVF,SKDV.length,Math.floor(G.trans.t/SKDVD),Math.min(1,G.trans.t/6,(SKDVE-G.trans.t)/6+.25));if(G.mode==='fight')drawHUD();return}\n  if(G.trans&&isSk(G.trans.f)&&!G.trans.skv&&G.trans.t<SKVE){")
 rep("{gkFull(SKUF,SKU.f.length,Math.floor((G.ws.vt||0)*12),1);","{if(G.ws.skv)gkFull(SKDUF,SKDU.length,Math.floor((G.ws.vt||0)*12),1);else gkFull(SKUF,SKU.f.length,Math.floor((G.ws.vt||0)*12),1);")
 rep("function updSKU(){const R=G.ws,a=R.a,d=R.d,FL=SKU.f.length;","function updSKU(){const R=G.ws,a=R.a,d=R.d,FL=R.skv?SKDU.length:SKU.f.length;")
+rep("[...Object.keys(STG).filter(k=>!STG[k].hid),'auto'].forEach((k,n)=>{","[...Object.keys(STG).filter(k=>!STG[k].hid||STG[k].sel),'auto'].forEach((k,n)=>{")   # v397: Templo de Virgem na escolha
+rep('<img src="${STH[k]}" alt="" decoding="async" loading="lazy">','<img src="${STH[k]||STG[k].thumb}" alt="" decoding="async" loading="lazy">')
 open(P,'w',encoding='utf8').write(s);print('v394 forma divina ok')
