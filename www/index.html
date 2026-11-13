@@ -12908,6 +12908,10 @@ TBUF.love={dano:50,def:50,vel:50,crit:50,st:50};TBUF.prot={dano:20,def:20,vel:20
 const luvH=T=>`<i class="lh a">💗</i><i class="lh b">💖</i><i class="lh c">💕</i><i class="lh d">💗</i>`;
 {const _pt=pfTitH;pfTitH=function(t,n,adm){const T=TWTIT[t];if(T&&T.luv)return `<span class="pfTt luvT l${T.luv}"><i>${T.i}</i><b>${T.n}</b>${luvH(T)}</span>`;return _pt.apply(this,arguments)}}
 TWCUP['4zocj2']={nm:'CAIXA DE PERSONAGEM MÍTICO',it:[],rmc:1}; /* v408: MITICOALEATORIO (uso único) */
+TWCUP['147gjni']={nm:'ARMADURA DE VIRGEM',it:[],skv1:1}; /* v416: ARMADURAVIRGEM (uso único, do dono): as 5 peças V1 de Virgem que ainda não tem */
+{const _cp14=twCupom;twCupom=async function(code,E){const C=TWCUP[twHash(String(code).toUpperCase())];const r=await _cp14.apply(this,arguments);
+  if(C&&C.skv1&&r&&E&&/ok/.test(E.className||'')){const I=twInv(),L=[];for(const k of SKSEC){const S=RKSP[k];if(I.some(x=>x&&(x.nm===S.nm||x.skb===k)))continue;I.push(Object.assign({id:'v1'+k+Date.now().toString(36)},S));L.push(S.nm)}twLS.s('tw_inv',I);try{TW.capOut=twCap()}catch(e){}try{acSave(1)}catch(e){}
+    E.textContent=L.length?'🎁 ARMADURA DE VIRGEM! '+L.join(' · ')+' (na 🎒 MOCHILA)':'🎁 Você já tem todas as peças da armadura de Virgem!';try{twSfx('boom')}catch(e){}}return r}}
 TWCUP['g3ina9']={nm:'MEU AMOR 💖',it:[],gm:200000,luv:'love'};
 TWCUP['1841w3z']={nm:'MINHA PROTEGIDA 💗',it:[],gm:50000,luv:'prot'};
 function luvGive(C){const own=rkG('own',['goku']);for(const id of ALLC)if(CH[id]&&!own.includes(id))own.push(id);rkS('own',own);
@@ -13130,7 +13134,7 @@ window.__dbg={mus:()=>[MCUR,MEL.src.split('/').pop()],stg:()=>STAGE.key,prepMatc
 })();
 </script>
 <style>#updB{position:fixed;left:50%;top:max(8px,env(safe-area-inset-top));transform:translateX(-50%);z-index:99999;padding:10px 22px;border-radius:14px;border:2px solid #fff3c0;background:linear-gradient(#ffd84a,#e08a10);color:#3a1d00;font:900 15px system-ui,sans-serif;box-shadow:0 0 18px #ffb21f;cursor:pointer;animation:updP 1s ease-in-out infinite alternate}@keyframes updP{to{transform:translateX(-50%) scale(1.05)}}</style>
-<script>(function(){const V='b44b7b2f8b56';if(!/^https?:/.test(location.protocol))return;let nv=null;
+<script>(function(){const V='db89168eb33f';if(!/^https?:/.test(location.protocol))return;let nv=null;
 function show(){if(document.getElementById('updB'))return;try{if(typeof G!=='undefined'&&G.mode==='fight')return}catch(e){}const b=document.createElement('button');b.id='updB';b.textContent='🔄 ATUALIZAÇÃO NOVA! Toque para atualizar';
   b.onclick=()=>{b.textContent='⏳ Atualizando...';try{acSave(1)}catch(e){}setTimeout(()=>location.reload(),900)};document.body.appendChild(b)}
 async function chk(){if(document.hidden)return;if(nv){show();return}try{const r=await fetch('versao.txt?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const t=(await r.text()).trim();if(/^[0-9a-f]{8,40}$/.test(t)&&t!==V){nv=t;show()}}catch(e){}}

@@ -4425,6 +4425,10 @@ TBUF.love={dano:50,def:50,vel:50,crit:50,st:50};TBUF.prot={dano:20,def:20,vel:20
 const luvH=T=>`<i class="lh a">💗</i><i class="lh b">💖</i><i class="lh c">💕</i><i class="lh d">💗</i>`;
 {const _pt=pfTitH;pfTitH=function(t,n,adm){const T=TWTIT[t];if(T&&T.luv)return `<span class="pfTt luvT l${T.luv}"><i>${T.i}</i><b>${T.n}</b>${luvH(T)}</span>`;return _pt.apply(this,arguments)}}
 TWCUP['4zocj2']={nm:'CAIXA DE PERSONAGEM MÍTICO',it:[],rmc:1}; /* v408: MITICOALEATORIO (uso único) */
+TWCUP['147gjni']={nm:'ARMADURA DE VIRGEM',it:[],skv1:1}; /* v416: ARMADURAVIRGEM (uso único, do dono): as 5 peças V1 de Virgem que ainda não tem */
+{const _cp14=twCupom;twCupom=async function(code,E){const C=TWCUP[twHash(String(code).toUpperCase())];const r=await _cp14.apply(this,arguments);
+  if(C&&C.skv1&&r&&E&&/ok/.test(E.className||'')){const I=twInv(),L=[];for(const k of SKSEC){const S=RKSP[k];if(I.some(x=>x&&(x.nm===S.nm||x.skb===k)))continue;I.push(Object.assign({id:'v1'+k+Date.now().toString(36)},S));L.push(S.nm)}twLS.s('tw_inv',I);try{TW.capOut=twCap()}catch(e){}try{acSave(1)}catch(e){}
+    E.textContent=L.length?'🎁 ARMADURA DE VIRGEM! '+L.join(' · ')+' (na 🎒 MOCHILA)':'🎁 Você já tem todas as peças da armadura de Virgem!';try{twSfx('boom')}catch(e){}}return r}}
 TWCUP['g3ina9']={nm:'MEU AMOR 💖',it:[],gm:200000,luv:'love'};
 TWCUP['1841w3z']={nm:'MINHA PROTEGIDA 💗',it:[],gm:50000,luv:'prot'};
 function luvGive(C){const own=rkG('own',['goku']);for(const id of ALLC)if(CH[id]&&!own.includes(id))own.push(id);rkS('own',own);

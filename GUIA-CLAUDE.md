@@ -2043,3 +2043,6 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 ## v415 — a FORMA do personagem é escolhida na aba PERSONAGEM e vale em TODO o jogo
 - Botões NORMAL · TRANSFORMADO · 2ª FORMA embaixo do personagem na aba Personagem (biblioteca `lib`, `lbPed` + `pfFormBtns(id,st)`), só para personagens que a pessoa tem. Escolha em `rk_pedf` por personagem.
 - `fullSrc` embrulhado (guarda `fullSrc0`): toda imagem grande do personagem (aba Personagem, Anéis com os anéis em volta, perfil, Equipamentos…) usa a forma escolhida. Perfil não tem mais botões (só mostra; visitantes veem a forma pelo campo `pf`). `tperfil_forma_v413.js` (agora sem botões no perfil) e `tforma_lib_v415.js`.
+
+## v416 — código ARMADURAVIRGEM (uso único, do dono): as 5 peças V1 da armadura de Virgem
+- Campo `skv1`: coloca na mochila as peças de `SKSEC` que a pessoa ainda não tem (nem V1 nem V2). Depois elas podem evoluir para V2 no Boss Shaka ou na Caixa Surpresa.

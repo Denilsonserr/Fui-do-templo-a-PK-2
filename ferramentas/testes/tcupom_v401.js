@@ -9,5 +9,5 @@ const CODE=process.env.CODE;const run=async(uid)=>{const p=await b.newPage({view
   await p.evaluate(()=>{document.querySelectorAll('#lvrzM').forEach(x=>x.remove());__pvT.tnO()});await p.waitForTimeout(1500);const g0=await p.evaluate(()=>localStorage.rk_gem);
   await p.evaluate(()=>document.getElementById('twNameB').click());await p.waitForTimeout(500);await p.fill('#twName0',CODE);await p.click('#twNmOk');await p.waitForTimeout(800);const msg=await p.evaluate(()=>(document.getElementById('twNameE')||{}).textContent);await p.waitForTimeout(4000);
   await p.screenshot({path:'/tmp/sup_'+uid+'.png'});
-  console.log(uid,msg,'|',await p.evaluate(()=>'gem '+localStorage.rk_gem+' sx '+localStorage.rk_sx+' box '+localStorage.rk_sxbox+' rp '+localStorage.rk_rp+' bp '+(localStorage.rk_bp||'').slice(0,60)),'ERROS',JSON.stringify(errs));await p.close()};
+  console.log(uid,msg,'|',await p.evaluate(()=>'gem '+localStorage.rk_gem+' sx '+localStorage.rk_sx+' box '+localStorage.rk_sxbox+' rp '+localStorage.rk_rp+' bp '+(localStorage.rk_bp||'').slice(0,60)+' mochila '+JSON.parse(localStorage.tw_inv||'[]').map(x=>x.nm).join(',')),'ERROS',JSON.stringify(errs));await p.close()};
 await run('a1');await run('b2');if(process.env.REP)await run('a1');await b.close()})();
