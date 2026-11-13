@@ -31,6 +31,8 @@ jobs:
                   dia=(datetime.datetime.utcfromtimestamp(b*300)-datetime.timedelta(hours=3)).strftime('%Y-%m-%d')
                   for u,n in L:T[dia][u].add(b);N[u]=n
           print('blocos sem resposta:',falhas)
+          AG={u for d in T for u,bs in T[d].items() if max(bs)>=b1-2}
+          print('ONLINE AGORA (últimos ~15 min):',len(AG),'|',', '.join(sorted(N[u][:16] for u in AG)))
           for dia in sorted(T):
               M={u:len(s)*5 for u,s in T[dia].items()}
               c=lambda m:sum(1 for v in M.values() if v>=m)
