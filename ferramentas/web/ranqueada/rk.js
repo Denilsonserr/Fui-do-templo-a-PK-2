@@ -788,9 +788,9 @@ async function pfOpenOther(uid,nome,ret){if(!uid)return;if(ret.sc==='tower'){try
 function pfBack(){const R=PFRET;PFO=null;PFRET=null;if(R&&R.back)R.back();else rkView('menu')}
 /* toque num nome do ranking/chat abre o perfil */
 document.addEventListener('click',ev=>{const el=ev.target&&ev.target.closest&&ev.target.closest('[data-pu]');if(!el)return;const u=el.dataset.pu;if(!u)return;
-  const inRk=el.closest('#rkModal .twRk'),inGc=el.closest('#rkChL'),inTc=el.closest('#twChL');if(!inRk&&!inGc&&!inTc)return;ev.stopPropagation();
-  const sc=showScreen.cur,v=RKV,tab=rkRanking.tab||'rp';rkSfx('whoosh');
-  pfOpenOther(u,el.dataset.pn,{sc,back:inTc?()=>{if(sc==='tower'){showScreen('tower');try{twRender();twChat()}catch(e){}}else{rkView(v);rkOverTw(twChat)}}:inRk?()=>{rkView(v);rkRanking(tab)}:()=>rkView(v)})},true);
+  const inRg=el.closest('.rk_rkg'),inRk=el.closest('#rkModal .twRk')||inRg,inGc=el.closest('#rkChL'),inTc=el.closest('#twChL');if(!inRk&&!inGc&&!inTc)return;ev.stopPropagation(); /* v404: a tela nova de RANKING (rkg) também abre o perfil */
+  const sc=showScreen.cur,v=RKV,tab=inRg&&typeof RG2!=='undefined'?RG2.tab:(rkRanking.tab||'rp'),pg=inRg&&typeof RG2!=='undefined'?RG2.pg:0;rkSfx('whoosh');
+  pfOpenOther(u,el.dataset.pn,{sc,back:inTc?()=>{if(sc==='tower'){showScreen('tower');try{twRender();twChat()}catch(e){}}else{rkView(v);rkOverTw(twChat)}}:inRk?()=>{if(inRg){rkRanking(tab);setTimeout(()=>{try{if(pg&&RG2.L){RG2.pg=pg;rkView('rkg')}}catch(e){}},1500);return}rkView(v);rkRanking(tab)}:()=>rkView(v)})},true);
 twChatHTML=function(L){const me=twUid();if(!L.length)return '<p class="twH">Ninguém falou nada ainda hoje. Mande um oi! 👋</p>';
   return L.map(m=>{const t=new Date(m.ct-BRT).toISOString().slice(11,16);return `<div class="cm${m.uid===me?' me':''}${String(m.nome).toLowerCase()===TWADMN.toLowerCase()&&m.tit==='adm'?' adm':''}" data-pu="${twEsc(m.uid||'')}" data-pn="${twEsc(m.nome)}"><span class="ch"><b>${twEsc(m.nome)}</b>${twTitTag(m.tit,m.nome)}<small>${t}</small></span><p>${twEsc(twClean(m.msg))}</p></div>`}).join('')};
 /* ADM: esconder/mostrar a foto de alguém (doc pfh; vale o mais novo) */
