@@ -1,4 +1,4 @@
-// v389: evento do Shaka no Modo Boss — lobby (arte do dono), escolha ranqueado/farm, cenário Templo de Virgem com 3 estados, drops
+// v389/v390: passiva antes da luta + evolução V2 · evento do Shaka no Modo Boss — lobby (arte do dono), escolha ranqueado/farm, cenário Templo de Virgem com 3 estados, drops
 const {chromium}=require('playwright');const SH=process.env.SH||'/tmp/';
 (async()=>{const b=await chromium.launch();const p=await b.newPage({viewport:{width:915,height:412},deviceScaleFactor:2});const errs=[];p.on('pageerror',e=>errs.push(e.message));await p.route(/fonts\.g|firestore/,r=>r.abort());
 await p.addInitScript(()=>{if(!sessionStorage.d){sessionStorage.d=1;localStorage.clear();Object.assign(localStorage,{tw_nome:'"E"',rk_ini:'1',rk_xpv2:'1',rk_own:'["goku"]',rk_sel:'"goku"',rk_rp:'5200',rk_dia:'1',rk_gem:'0',rk_po:'0',rk_dl:JSON.stringify({d:new Date(Date.now()-3*3600e3).toISOString().slice(0,10),s:0})})}});
@@ -16,7 +16,13 @@ const fight=async(tag)=>{await p.waitForFunction(()=>__dbg.G.mode==='fight'&&__d
   await p.evaluate(async()=>{const G=__dbg.G,[a,o]=G.p;o.hp=5;o.inv=0;o.state='idle';__dbg.applyHit(a,o,{dmg:900,kb:0,hs:2,kind:'melee',lock:1,px:o.x,py:o.y-150})});
   info.s2=i2;return info};
 await p.evaluate(()=>{Math.random=()=>0.0001});
-await p.click('.skPick .skDf button[data-i="4"]');const f1=await fight('farm');await p.waitForSelector('#rkModal .rkRes',{timeout:60000});await W(900);await shot('farm_res');
+await p.click('.skPick .skDf button[data-i="4"]');await W(500);await shot('passiva');await p.click('.skPp [data-i="0"]');const f1=await fight('farm');await p.waitForSelector('#rkModal .rkRes',{timeout:60000});await W(900);await shot('farm_res');
 const s1=await p.evaluate(()=>({own:localStorage.rk_own,gem:localStorage.rk_gem,po:localStorage.rk_po,st:localStorage.rk_st}));
-console.log(JSON.stringify({f1,s1}));
+await p.evaluate(()=>{document.querySelectorAll('.rkWin,.rkMega,.rkRes2').forEach(x=>x.remove())});await p.click('text=LUTAR DE NOVO',{force:true});
+await p.waitForFunction(()=>__dbg.G.mode==='fight'&&__dbg.G.phase==='fight',null,{timeout:120000});await W(1200);
+const f2=await p.evaluate(()=>{const G=__dbg.G,[a,o]=G.p;return {tdm:+a.tdm.toFixed(2),timer:G.timer,v2:G.skV2}});
+await p.evaluate(()=>{const G=__dbg.G,[a,o]=G.p;G.noAI=true;o.rkPh=2;o.hp=5;o.inv=0;o.state='idle';__dbg.applyHit(a,o,{dmg:900,kb:0,hs:2,kind:'melee',lock:1,px:o.x,py:o.y-150})});
+await p.waitForSelector('#rkModal .rkRes',{timeout:60000});await W(3500);await shot('v2');
+const inv=await p.evaluate(()=>JSON.parse(localStorage.tw_inv||'[]').filter(x=>/VIRGEM|SHAKA/.test(x.nm)).map(x=>({nm:x.nm,v2:x.v2,img:x.img&&x.img.slice(0,20),dmg:x.dmg,def:x.def,crit:x.crit,st:x.st})));
+console.log(JSON.stringify({f1,s1,f2,inv}));
 console.log('ERRS',errs.slice(0,5));await b.close()})();

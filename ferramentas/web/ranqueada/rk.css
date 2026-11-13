@@ -1974,3 +1974,12 @@ img.anOn{position:relative;z-index:2}
 .skDf b{font:900 .78em var(--f-ui);color:var(--c);text-align:center}.skDf small{font:700 .66em var(--f-ui)}.skDf em{font:900 .6em var(--f-ui);font-style:normal;color:#ffd84a}
 @media (max-width:600px){.skDf{grid-template-columns:repeat(3,1fr)}}
 .skSlot b{font-size:1.6em}.skSlot em{font-size:.62em}
+/* v390: passiva antes da luta do Shaka + itens V2 */
+.skPp{max-width:min(94vw,48em)}.skPp h3 small{display:block;font-size:.55em;color:#e8dcff}
+.skPpC{display:grid;grid-template-columns:repeat(3,1fr);gap:.6em;margin:.4em 0}
+.skPpC button{display:flex;flex-direction:column;align-items:center;gap:.2em;padding:.8em .4em;border-radius:.9em;border:2px solid var(--c);background:radial-gradient(circle at 50% 20%,color-mix(in srgb,var(--c) 30%,#120820),#0a0614);color:#fff;cursor:pointer;touch-action:manipulation;box-shadow:0 0 1em color-mix(in srgb,var(--c) 55%,transparent);transition:transform .12s}
+.skPpC button:hover{transform:translateY(-3px) scale(1.03)}
+.skPpC small{font:900 .72em var(--f-ui);letter-spacing:.12em;color:var(--c)}.skPpC i{font-size:2.2em;font-style:normal}.skPpC b{font:900 .9em var(--f-ui);text-align:center}.skPpC span{font:800 .8em var(--f-ui);color:#ffe9a0;text-align:center}
+.skPpC button.hi{animation:skv2g 1.2s ease-in-out infinite}
+@keyframes skv2g{0%,100%{filter:drop-shadow(0 0 .25em #ffd84a) brightness(1)}50%{filter:drop-shadow(0 0 .8em #c45bff) drop-shadow(0 0 .3em #ffd84a) brightness(1.25)}}
+.skV2W .t b{color:#ffd84a}.skV2W .fl{animation:skv2g 1.2s ease-in-out infinite}

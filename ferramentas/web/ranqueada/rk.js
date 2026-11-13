@@ -26,7 +26,7 @@ const RKBOSS=[{id:'broly',n:'BROLY',sub:'O Super Saiyajin Lendário',ph:[[2,3],[
   /* v243: Yuta do EVENTO — mais forte que o Broly em cada nível (no Despertar ele já ganha velocidade x3 e dano +60% do próprio personagem) */
   {id:'yuta',n:'YUTA',sub:'Feiticeiro de Jujutsu',ph:[[3,4],[3,5],[4,6],[4,7],[5,9],[6,11],[7,13],[8,15],[9,17],[10,19],[11,21]],b1:{dm:.78,df:1.12,sp:.96},b2:{dm:.72,df:1,sp:.62},c:'#b57bff'},
   /* v389: SHAKA — evento especial de 5 dias (mais barras e mais forte que o Yuta) */
-  {id:'shaka',n:'SHAKA',sub:'O Cavaleiro de Virgem',ph:[[3,5],[4,6],[4,7],[5,8],[6,10],[7,12],[8,14],[9,16],[10,18],[11,20],[12,22]],b1:{dm:.82,df:1.15,sp:1},b2:{dm:.76,df:1.02,sp:.66},c:'#ffd84a'}];
+  {id:'shaka',n:'SHAKA',sub:'O Cavaleiro de Virgem',ph:[[5,6],[5,8],[6,9],[6,11],[8,14],[9,17],[11,20],[12,23],[14,26],[15,29],[17,32]],b1:{dm:.82,df:1.15,sp:1},b2:{dm:.76,df:1.02,sp:.66},c:'#ffd84a'}];
 /* v243: boss atual (Broly ou Yuta do evento) */
 let RKBID='broly';const rkBoss=()=>RKBOSS.find(b=>b.id===RKBID)||RKBOSS[0],rkBP=()=>RKBID==='yuta'?'Y':RKBID==='shaka'?'S':'L';
 const rkPhB=lv=>rkBoss().ph[Math.max(0,Math.min(RKTOP,lv))];
@@ -1937,7 +1937,7 @@ function lsOpen(){const I=lsInv(),E=lsEq();
 const SKG0=Date.UTC(2026,10,10,16,20),SKG1=SKG0+7*864e5;
 const skgOpen=()=>{const n=Date.now();return n>=SKG0&&n<SKG1},skgHHMM=()=>'13:20';
 const skOwned=()=>rkG('own',[]).includes('shaka');const SKSEC=['skcap','skarm','skluv','skbot','skros'];
-const skSecLeft=()=>{const I=twInv();return SKSEC.filter(k=>!I.some(x=>x.nm===RKSP[k].nm))};
+const skSecLeft=()=>{const I=twInv();return SKSEC.filter(k=>!I.some(x=>x.nm===RKSP[k].nm||x.skb===k))};
 function rkRollS(){
   if(!skOwned()&&!RKMTMP.includes('shaka')){const p=rkG('pityS',0)+1;if(p>=170||Math.random()*100<.35){rkS('pityS',0);RKMTMP.push('shaka');return {k:'chr',r:'mit',id:'shaka'}}rkS('pityS',p)}
   {const L=skSecLeft().filter(k=>!RKMTMP.includes(k));if(L.length){const p=rkG('pitySS',0)+1;if(p>=220||Math.random()*100<.25){rkS('pitySS',0);const s=L[(Math.random()*L.length)|0];RKMTMP.push(s);return {k:'sp',r:'sec',s}}rkS('pitySS',p)}}
@@ -2015,7 +2015,7 @@ const skTitOn=()=>twTits().some(k=>/^sk\d+$/.test(k));
 
 /* v292: devolve itens do Shaka que sumiram (a mochila cheia descartava item com valor 0). Usa o histórico do gacha. */
 (function(){try{if(rkG('skfix292',0))return;const H=rkG('hist',[]),I=twInv();let ch=0;
-  for(const h of H){if(h.k!=='sp'||!RKSP[h.s]||!RKSP[h.s].sk)continue;const S=RKSP[h.s];if(I.some(x=>x.nm===S.nm))continue;I.push(Object.assign({id:'fx'+h.s+Date.now().toString(36)},S));ch++}
+  for(const h of H){if(h.k!=='sp'||!RKSP[h.s]||!RKSP[h.s].sk)continue;const S=RKSP[h.s];if(I.some(x=>x.nm===S.nm||x.skb===h.s))continue;I.push(Object.assign({id:'fx'+h.s+Date.now().toString(36)},S));ch++}
   if(ch){twLS.s('tw_inv',I);setTimeout(()=>{try{rkToast('✦ '+ch+' item(ns) do Shaka devolvido(s)!','#ffd84a')}catch(e){}},2500)}rkS('skfix292',1)}catch(e){}})();
 
 /* ================= v293: BAÚ DA CAÇA + CÓDIGOS + ITENS NO ESPAÇO CERTO + QUADRADOS DA MOCHILA =================
@@ -2963,7 +2963,7 @@ function cnsH(){const id=LVC.id,L=lvOf(id),fr=cnsFree(id),S=cstStats(id),sel=CNV
 /* ================= v347: BOSSES COM ATRIBUTOS (mesmo sistema do jogador) + passivas contra itens + Caça mais forte + recompensa diária ================= */
 /* Broly por nível do Boss: começa fraco (igual épico) e termina com 38.000 de ataque. Yuta = +20% de ataque. */
 const BSST=[[50,0,60],[70,0,70],[100,0,80],[150,0,95],[390,0,110],[1190,160,130],[3150,620,155],[10600,1250,185],[17700,3000,220],[29000,4500,265],[46000,6300,320]]; /* v351/v352: pelo TEMPO de luta (51 de vida/s com dano x1). Nível 11: Vini (dano x22, crít. 100%) ~3 min, ADM ~2 min, ZEUS ~7 min */
-const bsSt=lv=>{const r=BSST[Math.max(0,Math.min(BSST.length-1,lv|0))],y=RKBID==='yuta',z=RKBID==='shaka';return {atk:Math.round(r[0]*(z?1.3:y?1.2:1)),def:Math.round(r[1]*(z?1.45:y?1.35:1)),spd:r[2]}};
+const bsSt=lv=>{const r=BSST[Math.max(0,Math.min(BSST.length-1,lv|0))],y=RKBID==='yuta',z=RKBID==='shaka';return {atk:Math.round(r[0]*(z?3.6:y?1.2:1)),def:Math.round(r[1]*(z?4.05:y?1.35:1)),spd:r[2]}};
 function bsStApply(o,ph){const S=bsSt(o.rkL||0),B=rkBoss(),f=ph===2?B.b2:B.b1,b1=B.b1;o.bst=S;
   o.rkB={dm:Math.pow(S.atk/150,.3)*(f.dm/b1.dm)*(o.ysK||1),df:1/(1+S.def/900)*(f.df/b1.df),sp:Math.pow(S.spd/80,.2)*(f.sp/b1.sp)};o.tdm=o.rkB.dm;o.tdf=o.rkB.df;o.tsp=o.rkB.sp}
 /* passivas do Boss contra os itens do jogador (por nível) */
@@ -4065,7 +4065,7 @@ const SKA=RQA.shk||{};if(SKA.lobby)RQA.boss_sk=SKA.lobby;
 function skSlot(a,b){const on=skOn();return `<button class="ysSlot skSlot ${on?'':'off'}" data-a="bsel" data-b="shaka" style="${rkB(12,a,415,b)}"><img src="${IMG.shaka?IMG.shaka.src:''}" alt=""><b>Shaka</b><em>${on?'EVENTO · '+skLeft():'ENCERRADO'}</em></button>`}
 function skLobbyH(){const sel=rkG('sel','goku'),ri=rkRank(rkG('rp',0)),P=rkPhB(ri);let cn=0;try{cn=twCoins()}catch(e){}
   const RW=[[RQA.coin[0],'2-15','💎 Ranqueado: 5 a 15 · Farm do evento: 2 a 14 (pela dificuldade)'],[RQA.lvi.po[3],'PÓ','🟣 '+LVPON+' e cristais de elevação · muito mais no farm do evento'],[twIco('arm','epica'),'EQUIP.','🛡️ Equipamentos do jogo (25% a 50% no farm, raridade melhor nas dificuldades altas)'],
-    [RQA.ssp.skros,'✦ 0,3%','✦ Farm DIFÍCIL para cima: 0,3% de um item de VIRGEM (elmo, armadura, luvas, botas, rosário) · ranqueado: 0,2% · a SORTE aumenta'],[IMG.shaka?IMG.shaka.src:'','✦ 0,5%','✦ Farm MESTRE e SUPER DIFÍCIL: 0,5% de ganhar o SHAKA · a SORTE aumenta a chance']];
+    [(SKA.v2&&SKA.v2.skros)||RQA.ssp.skros,'V2',`✦ EVOLUÇÃO V2: vencendo o Shaka, um item de Virgem que você JÁ TEM pode evoluir para V2 (+35% em tudo + efeito especial) · chance ${skV2Ch()}% no seu rank (0,3% no 1º rank até 3% no mais alto) · itens de Virgem: 0,3% no farm DIFÍCIL+, 0,2% no ranqueado`],[IMG.shaka?IMG.shaka.src:'','✦ 0,5%','✦ Farm MESTRE e SUPER DIFÍCIL: 0,5% de ganhar o SHAKA · a SORTE aumenta a chance']];
   const RX=[[470,565],[573,665],[673,765],[773,868],[875,970]];
   return `<button class="hs" data-a="back" style="${rkB(15,18,640,105)}"></button>
   <div class="skCur" style="${rkB(1384,17,1428,50)}">${rkFmtN(rkG('gem',0))}</div><div class="skCur" style="${rkB(1477,17,1522,50)}">${rkFmtN(cn)}</div><div class="skCur" style="${rkB(1574,17,1618,50)}">${rkFmtN(rkG('tic',0))}</div>
@@ -4089,16 +4089,17 @@ function skStart(){if(!skOn()){rkToast('⏳ O evento do Shaka acabou','#cfd6ea')
   rkModal(`<div class="twM skPick"><h3>🪷 SHAKA · O CAVALEIRO DE VIRGEM <small>⏳ ${skLeft()}</small></h3>
     <button class="skRk" data-a="skgo" data-i="-1"><b>👑 RANQUEADO · NÍVEL ${ri+1}</b><small>${P[0]} barras → abre os olhos com ${P[1]} barras · dá XP de rank</small></button>
     <p class="twH">🪷 FARM DO EVENTO · sem XP de rank · passivas sorteadas a cada luta</p>
-    <div class="skDf">${YSDIF.map((x,i)=>`<button data-a="skgo" data-i="${i}" style="--c:${x.c}"><b>${x.n}</b><small>${x.ph[0]}→${x.ph[1]} barras</small>${x.yt?'<em>✦ SHAKA 0,5%</em>':x.sec?'<em>✦ ITENS 0,3%</em>':''}</button>`).join('')}</div>
-    <p class="twH">🏛️ O Templo de Virgem racha quando o Shaka abre os olhos e desmorona no fim da luta.</p>
+    <div class="skDf">${YSDIF.map((x,i)=>`<button data-a="skgo" data-i="${i}" style="--c:${x.c}"><b>${x.n}</b><small>${skFph(x)[0]}→${skFph(x)[1]} barras</small>${x.yt?'<em>✦ SHAKA 0,5%</em>':x.sec?'<em>✦ ITENS 0,3%</em>':''}</button>`).join('')}</div>
+    <p class="twH">✦ Vencendo: chance de <b style="color:#ffd84a">${skV2Ch()}%</b> de um item de Virgem seu evoluir para <b style="color:#ffd84a">V2</b> (+35%) · luta de 7 min · 🏛️ O Templo de Virgem racha quando o Shaka abre os olhos e desmorona no fim da luta.</p>
     <div class="row"><button class="btn" data-a="skx">VOLTAR</button></div></div>`);
   document.querySelectorAll('.skPick [data-a]').forEach(b=>b.onclick=e=>{e.stopPropagation();rkSfx('whoosh');if(b.dataset.a==='skx')return rkModal(null);skGo(b.dataset.i)})}
-function skGo(i){i=+i;rkModal(null);if(!skOn()){rkToast('⏳ O evento do Shaka acabou','#cfd6ea');return}RKBID='shaka';RKYD=i>=0?i:null;rkBossStart()}
+function skGo(i){i=+i;rkModal(null);if(!skOn()){rkToast('⏳ O evento do Shaka acabou','#cfd6ea');return}RKBID='shaka';RKYD=i>=0?i:null;skPpPick()}
+const skFph=D=>D.ph.map(x=>Math.round(x*1.5));
 /* passivas do farm do Shaka (sorteadas, sem roleta) */
 const SKPOOL=[['blk','dge','crit','ki'],['reg','rage','bar','curse'],['fury','sup','vamp']],SKPN={crit:['👁️','SEXTO SENTIDO'],curse:['🌸','TESOURO DO CÉU']};
 const skPn=k=>SKPN[k]||YSPN[k];
 function skRoll(d){const D=YSDIF[d],out=[];D.np.forEach((n,t)=>{const P=SKPOOL[t].slice();for(let i=0;i<n&&P.length;i++)out.push(P.splice((Math.random()*P.length)|0,1)[0])});return out}
-{const _ya=ysApply;ysApply=function(o){if(RKBID!=='shaka')return _ya.apply(this,arguments);o.rkPS=null;o.ysK=1;if(RKYD==null)return;const D=YSDIF[RKYD];o.ysK=D.k;o.rkPhB=D.ph.slice();o.mhp=o.rkPhB[0]*LAYER;o.hp=o.hpLag=o.mhp;o.rkHp=o.hp;o.rkB.dm*=D.k;o.tdm=o.rkB.dm;
+{const _ya=ysApply;ysApply=function(o){if(RKBID!=='shaka')return _ya.apply(this,arguments);o.rkPS=null;o.ysK=1;if(RKYD==null)return;const D=YSDIF[RKYD];o.ysK=D.k;o.rkPhB=skFph(D);o.mhp=o.rkPhB[0]*LAYER;o.hp=o.hpLag=o.mhp;o.rkHp=o.hp;o.rkB.dm*=D.k;o.tdm=o.rkB.dm;
   const L=skRoll(RKYD);o.rkPS={};for(const k of L)o.rkPS[k]=1;setTimeout(()=>{try{if(L.length)txt(o.x,o.y-330,L.map(k=>skPn(k)[0]+' '+skPn(k)[1]).join(' · '),'#ffe08a')}catch(e){}},2200)}}
 /* drops do Shaka: farm (igual ao do Yuta) + itens de Virgem e o próprio Shaka */
 {const _rr3=rkResult;rkResult=function(R){if(R.bn!=='SHAKA')return _rr3.apply(this,arguments);const L=lvLuck(),it=[],after=[];
@@ -4141,6 +4142,37 @@ function shkSet(n){if(n<=SHK.ph||SHK.want>=n)return;SHK.want=n;const go=()=>{if(
   if(SHK.I[n])SHK.I[n].P.then(go);else shkImgs(n).then(go)}
 {const _rt=rkTick;rkTick=function(){const r=_rt.apply(this,arguments);try{if(STAGE&&STAGE.shk&&G.p){if(SHK.k<1)SHK.k=Math.min(1,SHK.k+1/45);const o=G.p[1];if(o&&o.rkB){const w=o.rkPh===2?(o.hp/(o.mhp||1)<=.45?2:1):0;if(w>SHK.ph)shkSet(w)}}}catch(e){}return r}}
 {const _ap=rkApply;rkApply=function(){SHK.want=0;SHK.ph=0;SHK.from=0;SHK.k=1;SHK.pet=[];return _ap.apply(this,arguments)}}
+/* ================= v390: SHAKA — passiva antes da luta (comum → primordial), +20% jogando COM o Shaka, 7 min de luta, EVOLUÇÃO V2 do equipamento de Virgem ================= */
+const SKV2=(SKA.v2)||{};
+const SKPPT=[['dano','💥','FÚRIA DE VIRGEM','de dano',[5,8,12,17,23,30,40,55]],['def','🛡️','ESCUDO DO KAN','de defesa',[5,8,12,17,23,30,40,55]],['vel','⚡','PASSOS DE BUDA','de velocidade',[3,5,8,11,15,19,24,30]],
+  ['crit','🎯','SEXTO SENTIDO','de crítico',[4,7,10,14,19,25,32,42]],['vamp','🩸','RODA DA REENCARNAÇÃO','de roubo de vida',[2,3,5,7,10,13,17,22]],['trf','🔥','COSMO DESPERTO','de energia de transformação',[5,8,12,17,23,30,40,55]]];
+const SKPPW=[38,26,17,10,5.5,2.5,.8,.2];let SKPP=null;
+function skPpRoll(){let t=Math.random()*SKPPW.reduce((a,b)=>a+b,0),i=0;for(;i<SKPPW.length-1;i++){t-=SKPPW[i];if(t<0)break}return i}
+function skPpPick(){SKPP=null;const T=twShuf(SKPPT.slice()).slice(0,3),O=T.map(t=>{const ri=skPpRoll();return {t,ri,r:PSRK[ri],v:t[4][ri]}}),me=rkG('sel','goku')==='shaka';
+  rkModal(`<div class="twM skPp"><h3>🪷 ESCOLHA SUA PASSIVA <small>vale só nesta luta contra o Shaka · comum até primordial</small></h3>
+    <div class="skPpC">${O.map((o,i)=>`<button data-i="${i}" class="${o.ri>=6?'hi':''}" style="--c:${PSRC[o.r]}"><small>${psRN(o.r)}</small><i>${o.t[1]}</i><b>${o.t[2]}</b><span>+${o.v}% ${o.t[3]}</span></button>`).join('')}</div>
+    <p class="twH">${me?'🪷 Lutando COM o Shaka: <b style="color:#ffd84a">+20% de dano e de defesa</b> no evento':'🪷 Lute COM o Shaka para ganhar +20% de dano e de defesa no evento'}</p></div>`);
+  if(O.some(o=>o.ri>=6))try{rkSfx('powerUp')}catch(e){}
+  document.querySelectorAll('.skPp [data-i]').forEach(b=>b.onclick=e=>{e.stopPropagation();const o=O[+b.dataset.i];SKPP={k:o.t[0],v:o.v,r:o.r,n:o.t[2],i:o.t[1]};rkSfx('whoosh');rkModal(null);rkBossStart()})}
+{const _ap=rkApply;rkApply=function(){const r=_ap.apply(this,arguments);try{if(G.gmode==='boss'&&G.p&&RKBID==='shaka'){const p=G.p[0],L=[];
+    if(G.pick==='shaka'){p.tdm=(p.tdm||1)+.2;p.tdf=1/(1/(p.tdf||1)+.2);L.push('🪷 SHAKA NO EVENTO +20%')}
+    const P=SKPP;if(P){const v=P.v;if(P.k==='dano')p.tdm=(p.tdm||1)+v/100;else if(P.k==='def')p.tdf=1/(1/(p.tdf||1)+v/100);else if(P.k==='vel')p.tsp=(p.tsp||1)+v/100;else if(P.k==='crit')p.tcr=(p.tcr||0)+v;else if(P.k==='vamp')p.skVamp=v/100;else if(P.k==='trf')p.tsb=(p.tsb||1)+v/100;
+      L.push(P.i+' '+P.n+' +'+v+'% ('+psRN(P.r)+')')}
+    if(L.length)setTimeout(()=>{try{txt(p.x,p.y-300,L.join(' · '),SKPP?PSRC[SKPP.r]:'#ffd84a')}catch(e){}},1600)}}catch(e){}return r}}
+{const _ah=applyHit;applyHit=function(a,d,h){const h0=d?d.hp:0,r=_ah.apply(this,arguments);try{if(r&&a&&a.skVamp&&!a.ko&&d&&h0>d.hp){a.hp=Math.min(a.mhp||MAXHP,a.hp+(h0-d.hp)*a.skVamp);a.hpLag=Math.max(a.hpLag||0,a.hp)}}catch(e){}return r}}
+{const _bg=rkBossGo;rkBossGo=function(){const r=_bg.apply(this,arguments);try{if(RKBID==='shaka'&&G.gmode==='boss'&&G.tlim!==0)G.timer=420}catch(e){}return r}}
+/* EVOLUÇÃO V2: vencendo o Shaka, um item de Virgem que você JÁ TEM evolui (não vem item novo). Chance 0,3% (rank 1) → 3% (rank mais alto). V2 = +35% em todos os atributos + efeito especial */
+const skV2Ch=()=>+(0.3+2.7*Math.min(1,rkLvl()/RKTOP)).toFixed(2);
+function skV2Evo(it){const k=SKSEC.find(q=>RKSP[q].nm===it.nm);if(!k)return false;for(const f of ['v','dmg','crit','def','vel','st','drop','trf','fdmg'])if(typeof it[f]==='number'&&it[f])it[f]=Math.round(it[f]*1.35);
+  it.v2=1;it.skb=k;it.nm=RKSP[k].nm+' V2';if(SKV2[k])it.img=SKV2[k];return true}
+function skV2Win(it){return new Promise(res=>{const O=document.createElement('div');O.className='rkWin end sec skV2W';O.innerHTML=`<div class="t"><b>✦ EVOLUÇÃO V2! ✦</b><span>${it.nm}</span></div><img class="fl" src="${it.img}" alt=""><i class="rays"></i><div class="t2">+35% em tudo · ${rkSpTxt(it)}</div>`;rkHost().appendChild(O);rkSfx('boom');setTimeout(()=>rkSfx('powerUp'),300);setTimeout(()=>{O.onclick=()=>{O.remove();res()}},500)})}
+{const _rr4=rkResult;rkResult=function(R){if(R.bn!=='SHAKA'||!R.won)return _rr4.apply(this,arguments);let ev=null;
+  try{if(Math.random()*100<skV2Ch()){const I=twInv(),C=I.filter(x=>x&&!x.v2&&SKSEC.some(q=>RKSP[q].nm===x.nm));if(C.length){const it=C[(Math.random()*C.length)|0];if(skV2Evo(it)){twLS.s('tw_inv',I);ev=Object.assign({},it);try{acSave()}catch(e){}}}}}catch(e){}
+  const r=_rr4.apply(this,arguments);if(ev){try{const C=document.querySelector(RKMS()+'.rkItems');if(C)C.insertAdjacentHTML('beforeend',`<span class="spd" style="--c:#ffd84a"><img src="${ev.img}" alt="">✦ ${ev.nm}</span>`)}catch(e){}setTimeout(()=>{skV2Win(ev)},2700)}return r}}
+/* efeito especial dos itens V2: brilho dourado/roxo em todo lugar que o ícone aparece + faíscas na luta para quem usa V2 */
+try{const st=document.createElement('style');st.textContent=Object.values(SKV2).map(u=>`img[src="${u}"]`).join(',')+'{animation:skv2g 1.6s ease-in-out infinite!important}';document.head.appendChild(st)}catch(e){}
+const skV2n=()=>{try{const q=twEqOn();let n=0;for(const k in q)if(q[k]&&q[k].v2)n++;return n}catch(e){return 0}};
+{const _up=update;update=function(){const r=_up.apply(this,arguments);try{if(G.mode==='fight'&&G.p&&G.p[0]){if(G.frame%120===1)G.skV2=skV2n();const p=G.p[0];if(G.skV2&&!p.ko&&G.frame%Math.max(2,7-G.skV2)===0&&!G.paused)addP({x:p.x+rand(-55,55),y:p.y-rand(20,250),vx:rand(-.6,.6),vy:-rand(.8,2.2),life:34,max:34,c:Math.random()<.5?'#ffd84a':'#c45bff',type:'glow',sz:rand(3,6),g:0})}}catch(e){}return r}}
 {const _sk=rkTwSkin;rkTwSkin=function(){const r=_sk.apply(this,arguments);try{tnSkin()}catch(e){console.warn(e)}return r}}
 {const _lv2=twLV;twLV=function(){if(TN.on&&G.gmode==='torre'){const B=G.p&&G.p[1];if(B&&B.tnBoss)return TWLV[Math.min(TWLV.length-1,3+Math.floor(TN.g/2))]}return _lv2.apply(this,arguments)}}
 try{RKTWX.fl=1;RKTWX.top=3.2}catch(e){}
