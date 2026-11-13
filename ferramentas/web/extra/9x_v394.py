@@ -18,4 +18,5 @@ rep("{gkFull(SKUF,SKU.f.length,Math.floor((G.ws.vt||0)*12),1);","{if(G.ws.skv)gk
 rep("function updSKU(){const R=G.ws,a=R.a,d=R.d,FL=SKU.f.length;","function updSKU(){const R=G.ws,a=R.a,d=R.d,FL=R.skv?SKDU.length:SKU.f.length;")
 rep("[...Object.keys(STG).filter(k=>!STG[k].hid),'auto'].forEach((k,n)=>{","[...Object.keys(STG).filter(k=>!STG[k].hid||STG[k].sel),'auto'].forEach((k,n)=>{")   # v397: Templo de Virgem na escolha
 rep('<img src="${STH[k]}" alt="" decoding="async" loading="lazy">','<img src="${STH[k]||STG[k].thumb}" alt="" decoding="async" loading="lazy">')
+rep('const SZK={ao:.93,','const SZK={skv:.9,ao:.93,')   # v398: divino um pouco menor (igual ao normal)
 open(P,'w',encoding='utf8').write(s);print('v394 forma divina ok')

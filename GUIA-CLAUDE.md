@@ -1964,3 +1964,11 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - Conserto "a segunda transformação já aparece pronta": os vídeos divinos só começavam a baixar na hora de transformar. Agora `prepMatch` (com Shaka) espera os vídeos (`skDvLoad`, inclui a ultimate) e `skDivTry` só começa com `SKDOK`.
 - TEMPLO DE VIRGEM na escolha de fase (`STG.shk.sel`, miniatura `RQA.shk.thumb`; o patch 9x mostra `hid` com `sel` e usa `STG[k].thumb`), fora do "Aleatório". Fora do boss ele racha quando alguém perde 40% da vida e desmorona com 75%.
 - Teste: `GM=pve node ferramentas/testes/tshaka_treino_v395.js` (jogador sem ADM).
+
+## v398 — forma divina pelo BOTÃO, aura dourada clara, cabelão balançando, tamanho certo e otimização
+- Não transforma mais sozinho (`skDivTry` virou vazio). De OLHOS ABERTOS, apertar TRANSFORMAR de novo (`tryCommon` embrulhado) com **1 barra de energia** (gasta 1) vira a forma divina. Modo livre: sempre. Ranqueado/Boss: 5 V2 + 1 barra de vida (`skDivWhy` diz o que falta). O botão de transformar acende (`updateButtons` → `.skdvR`).
+- Tamanho: `SZK.skv=.9` (mesma altura do Shaka normal).
+- Aura divina: chama do Gojo recolorida em DOURADO CLARO (`skGold2`) no lugar da dourada; sem o degradê grande e sem a auréola.
+- Cabelão: `blitD` embrulhado só para quadros `skvH` (forma divina): a parte de trás do sprite (atrás do corpo, `xb`) é desenhada em fatias verticais de 9 (14 em qualidade baixa) que balançam mais nas pontas e reagem a andar/correr/pular/carregar.
+- OTIMIZAÇÃO: os botões de olhos abertos (`#controls.skf`, desde a v282) e da forma divina pulsavam com `filter` animado = celular redesenhando os controles a cada quadro. Agora brilho FIXO. Vídeos: só a transformação divina carrega na luta; a ultimate carrega quando ele vira divino (`skDuLoad`); a transformação é liberada da memória depois de usada (`skDvFree`) e tudo é liberado quando o Shaka sai (`VIDF.shaka`).
+- Testes: `tshaka_treino_v395.js` (GM=pve) e `tshaka_divino_v394.js` apertam o botão (`__pvT.dvBtn()`).
