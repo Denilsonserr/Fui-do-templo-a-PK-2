@@ -1995,3 +1995,6 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - Perdas do Honrado desde 12/11: 5 × 125 = 625 → devolvido em DOBRO (1.250) pelo código de uso único HONRADO1250 (campo novo `rp`).
 - Códigos (uso único no jogo inteiro, textos só com o dono): PASSEMAXIMO (`bpmax`: passe premium `own=2` + XP do nível 20), ABOBORA300 (`sx` 300 🎃), SEXTA13GEMAS (1000 💎), CAIXASEXTA13 (`sxbox` 1 caixa surpresa). Teste `CODE=... node ferramentas/testes/tcupom_v401.js`.
 - `.github/workflows/restaurar.yml`: agora soma as perdas de rank desde 12/11 e com ts=dump imprime o último salvamento (zlib+base64).
+
+## v402 — códigos da Sexta-feira 13 para TODO MUNDO (1 vez por conta)
+- ABOBORA300, SEXTA13GEMAS e CAIXASEXTA13 agora `acc:1` (cada CONTA usa 1 vez; precisa estar logado na conta). PASSEMAXIMO e HONRADO1250 continuam de uso único no jogo inteiro. Teste: `CODE=... REP=1 node ferramentas/testes/tcupom_v401.js`.

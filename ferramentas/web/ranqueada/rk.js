@@ -4381,11 +4381,11 @@ function tnForceFloor(){const p=G.p&&G.p[0],g=TN.g;if(g>=TNT-1){try{TN.ph='clear
 {const _uT=update;update=function(){const r=_uT.apply(this,arguments);try{if(G.mode==='fight'&&G.gmode==='torre'&&typeof TN!=='undefined'){const W=update._tn||(update._tn={o:0,c:0});
     if(!TN.on&&G.phase==='fight'){if(++W.o>240){W.o=0;console.warn('tn: luta órfã → Torre');tnGoTower()}}else W.o=0;
     if(TN.on&&TN.ph==='clear'&&!TN.done&&TN.statue&&TN.statue.used){const M=document.getElementById('tnPick');if(!(M&&M.classList.contains('on'))){if(++W.c>300){W.c=0;tnFloorEnd()}}else W.c=0}else W.c=0}}catch(e){}return r}}
-/* v401: códigos — PASSE MÁXIMO (premium + todos os níveis), Sexta-feira 13 (abóboras / gemas / caixa surpresa) e devolução de rank (campo rp). Textos só com o dono. */
+/* v402: os 3 da Sexta-feira 13 = 1 vez POR CONTA (todo mundo pode usar). v401: códigos — PASSE MÁXIMO (premium + todos os níveis), Sexta-feira 13 (abóboras / gemas / caixa surpresa) e devolução de rank (campo rp). Textos só com o dono. */
 TWCUP['1d3quh2']={nm:'PASSE MÁXIMO',it:[],bpmax:1};
-TWCUP['894r1m']={nm:'ABÓBORAS DA SEXTA-FEIRA 13',it:[],sx:300};
-TWCUP['1saiymj']={nm:'GEMAS DA SEXTA-FEIRA 13',it:[],gm:1000};
-TWCUP['10fttsa']={nm:'CAIXA SURPRESA DA SEXTA-FEIRA 13',it:[],sxbox:1};
+TWCUP['894r1m']={nm:'ABÓBORAS DA SEXTA-FEIRA 13',acc:1,it:[],sx:300};
+TWCUP['1saiymj']={nm:'GEMAS DA SEXTA-FEIRA 13',acc:1,it:[],gm:1000};
+TWCUP['10fttsa']={nm:'CAIXA SURPRESA DA SEXTA-FEIRA 13',acc:1,it:[],sxbox:1};
 TWCUP['mxbknc']={nm:'DEVOLUÇÃO DE RANK',it:[],rp:1250};
 {const _cp12=twCupom;twCupom=async function(code,E){const C=TWCUP[twHash(String(code).toUpperCase())];const r=await _cp12.apply(this,arguments);
   if(C&&(C.bpmax||C.sx||C.sxbox||C.rp)&&r&&E&&/ok/.test(E.className||'')){const L=[];
