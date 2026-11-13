@@ -2036,3 +2036,6 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 ## v413 — PERFIL: escolher a forma do personagem do pedestal (NORMAL / TRANSFORMAÇÃO / 2ª TRANSFORMAÇÃO)
 - Botões embaixo do personagem no perfil (`pfFormBtns`, perfil novo `p3Ch`). Escolha por personagem em `rk_pedf` ({id:0|1|2}) e publicada no perfil (`pf` no `pfMine`) → quem visita vê a forma e a etiqueta "⚡ TRANSFORMAÇÃO"/"✦ 2ª TRANSFORMAÇÃO".
 - Imagens (`pedSrc`): normal = `fullSrc`; transformações = 1º quadro parado do sprite da forma (`PFFS`: sid base → [forma1, forma2]); 2ª do Shaka = arte de corpo inteiro divina (`RQA.skdv.corpo`) e só aparece com a Armadura Divina completa (`skDivHave`); Zedry tem 2ª (`zed3`). Teste `ferramentas/testes/tperfil_forma_v413.js`.
+
+## v414 — forma divina NÃO exige mais vida baixa
+- O dono: transformar = 2 barras de ENERGIA; 2ª transformação (divina) = já de olhos abertos + 1 barra de ENERGIA. Tirado o "1 barra de vida" do `skDivWhy` (ranqueado/boss continuam exigindo os 5 V2 equipados; modo livre não). Texto da tela "Armadura Divina completa" corrigido. Teste `tshaka_divino_v394.js` agora com vida cheia.
