@@ -1,7 +1,7 @@
 // v389/v390: passiva antes da luta + evolução V2 · evento do Shaka no Modo Boss — lobby (arte do dono), escolha ranqueado/farm, cenário Templo de Virgem com 3 estados, drops
 const {chromium}=require('playwright');const SH=process.env.SH||'/tmp/';
 (async()=>{const b=await chromium.launch();const p=await b.newPage({viewport:{width:915,height:412},deviceScaleFactor:2});const errs=[];p.on('pageerror',e=>errs.push(e.message));await p.route(/fonts\.g|firestore/,r=>r.abort());
-await p.addInitScript(()=>{if(!sessionStorage.d){sessionStorage.d=1;localStorage.clear();Object.assign(localStorage,{tw_nome:'"E"',rk_ini:'1',rk_xpv2:'1',rk_own:'["goku"]',rk_sel:'"goku"',rk_rp:'5200',rk_dia:'1',rk_gem:'0',rk_po:'0',rk_dl:JSON.stringify({d:new Date(Date.now()-3*3600e3).toISOString().slice(0,10),s:0})})}});
+await p.addInitScript(()=>{window.__ysT=Math.max(0,Date.UTC(2026,10,13,15,5)-Date.now());if(!sessionStorage.d){sessionStorage.d=1;localStorage.clear();Object.assign(localStorage,{tw_nome:'"E"',rk_ini:'1',rk_xpv2:'1',rk_own:'["goku"]',rk_sel:'"goku"',rk_rp:'5200',rk_dia:'1',rk_gem:'0',rk_po:'0',rk_dl:JSON.stringify({d:new Date(Date.now()-3*3600e3).toISOString().slice(0,10),s:0})})}});
 await p.goto('file:///home/claude/fui-do-templo-a-pk-2/www/index.html');await p.waitForFunction(()=>!document.getElementById('goSelect').disabled,null,{timeout:120000});
 const shot=n=>p.screenshot({path:SH+'sk_'+n+'.png'}),W=ms=>p.waitForTimeout(ms);
 await p.click('#mRank');await W(500);await p.click('#rkWrap [data-a="boss"]');await W(900);await shot('broly');
@@ -16,7 +16,7 @@ const fight=async(tag)=>{await p.waitForFunction(()=>__dbg.G.mode==='fight'&&__d
   await p.evaluate(async()=>{const G=__dbg.G,[a,o]=G.p;o.hp=5;o.inv=0;o.state='idle';__dbg.applyHit(a,o,{dmg:900,kb:0,hs:2,kind:'melee',lock:1,px:o.x,py:o.y-150})});
   info.s2=i2;return info};
 await p.evaluate(()=>{Math.random=()=>0.0001});
-await p.click('.skPick .skDf button[data-i="4"]');await W(500);await shot('passiva');await p.click('.skPp [data-i="0"]');const f1=await fight('farm');await p.waitForSelector('#rkModal .rkRes',{timeout:60000});await W(900);await shot('farm_res');
+await p.click('#rkWrap .skpDf[data-i="4"]',{force:true});await W(500);await shot('passiva');await p.click('.skPp [data-i="0"]');const f1=await fight('farm');await p.waitForSelector('#rkModal .rkRes',{timeout:60000});await W(900);await shot('farm_res');
 const s1=await p.evaluate(()=>({own:localStorage.rk_own,gem:localStorage.rk_gem,po:localStorage.rk_po,st:localStorage.rk_st}));
 await p.evaluate(()=>{document.querySelectorAll('.rkWin,.rkMega,.rkRes2').forEach(x=>x.remove())});await p.click('text=LUTAR DE NOVO',{force:true});
 await p.waitForFunction(()=>__dbg.G.mode==='fight'&&__dbg.G.phase==='fight',null,{timeout:120000});await W(1200);

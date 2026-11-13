@@ -1987,3 +1987,19 @@ img.anOn{position:relative;z-index:2}
 .skLv{display:flex;flex-wrap:wrap;gap:.3em;justify-content:center}
 .skLv button{display:flex;flex-direction:column;align-items:center;min-width:4.6em;padding:.3em .4em;border-radius:.6em;border:2px solid var(--c);background:rgba(10,6,24,.9);color:#fff;cursor:pointer;touch-action:manipulation}
 .skLv b{font:900 .72em var(--f-ui);color:var(--c)}.skLv small{font:700 .6em var(--f-ui)}
+/* v393: tela de escolha do Shaka (arte do dono) */
+.rk_skp .rkMusB,.rk_skp .rkCodB,.rk_skp .rkAcB{display:none}
+.skpT{display:flex;align-items:center;justify-content:flex-end;font:900 .85em var(--f-ui);color:#ffe08a;text-shadow:0 1px 3px #000}
+.skpRk{display:flex;align-items:flex-end;justify-content:center;padding-bottom:.55em}.skpRk span{font:800 .78em var(--f-ui);color:#fff2c0;text-shadow:0 1px 3px #000}
+.skpH{display:flex;align-items:center;justify-content:center;font:800 .62em var(--f-ui);color:#e8dcff;text-shadow:0 1px 2px #000;white-space:nowrap}
+.skpLv,.skpDf{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.1em;color:#fff;text-shadow:0 1px 3px #000}
+.skpLv b{font:900 .85em var(--f-ui);color:var(--c)}.skpLv small{font:800 .7em var(--f-ui)}
+.skpLv.lk{filter:grayscale(.7) brightness(.6)}.skpLv.me b{color:#ffd84a}
+.skpDf{justify-content:flex-end;padding-bottom:.4em}.skpDf b{font:900 .95em var(--f-ui);color:var(--c)}.skpDf small{font:800 .75em var(--f-ui)}.skpDf em{font:900 .65em var(--f-ui);font-style:normal;color:#ffd84a}
+.skpRk:active,.skpLv:active,.skpDf:active{transform:scale(.96)}
+.skpRk{padding-bottom:1.15em}.skpDf{padding-bottom:.95em;gap:0}.skpDf b{font-size:.88em}.skpDf small{font-size:.68em}.skpT{font-size:.75em}
+.rkA .hs.skpRk{padding-bottom:2.1em}.rkA .hs.skpDf{padding-bottom:1.5em}.rkA .hs.skpLv{padding:0}
+.rkA .hs.skpRk{padding-bottom:1.1em}.rkA .hs.skpDf{padding-bottom:.8em}
+.rkA .hs.skpRk,.rkA .hs.skpDf{padding:0}
+.skpRk span{position:absolute;left:0;right:0;bottom:13%;text-align:center}
+.skpDf span{position:absolute;left:0;right:0;top:43%;display:flex;flex-direction:column;align-items:center;gap:.05em}

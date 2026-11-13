@@ -1938,3 +1938,7 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 ## v392 — Boss SHAKA libera ao MEIO-DIA de 13/11
 - `SKEV.ini` = 13/11 12:00 (Brasília). Antes disso a vaga mostra "LIBERA 12:00" (`skAntes()`) e tocar avisa "libera hoje ao MEIO-DIA". Quem tem o título ADM entra antes (`skOn` deixa ADM passar) para testar. Fim continua 18/11 23:59.
 - Teste `ferramentas/testes/tshaka_meiodia_v392.js`.
+
+## v393 — tela de ESCOLHA do Shaka com a arte do dono
+- O modal do `skStart` virou a tela `skp` (`skPickH`, arte `ferramentas/cenarios/shaka/recebido/escolha.png` → `RQA.shk.pick` = `RQA.shk_pick`, 1847×851). Botão RANQUEADO (nível, barras, XP, chance V2), 11 vagas de NÍVEL (níveis abaixo do rank liberados; ★ = seu rank; 🔒 acima; com rank > 11 a janela mostra os 11 níveis logo abaixo), 5 dificuldades do farm, VOLTAR → lobby `sb`. Mesmas ações `skgo` (com `data-l`).
+- Os testes do Shaka agora deslocam o relógio (`__ysT`) para depois do meio-dia de 13/11.
