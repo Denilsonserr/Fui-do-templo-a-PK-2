@@ -37,6 +37,11 @@ jobs:
               if prev is not None and ts>=desde and rp<prev:perd.append((br(ts),prev-rp))
               prev=rp
           print('PERDAS desde 12/11 00:00:',len(perd),'vezes, total',sum(x[1] for x in perd),perd)
+          if os.environ['TS'].strip()=='dump':
+              d=max(L,key=lambda d:int(d['fields']['ts']['integerValue']));import base64,zlib
+              b=base64.b64encode(zlib.compress(d['fields']['d']['stringValue'].encode(),9)).decode();print('DUMPLEN',len(b))
+              for i in range(0,len(b),3000):print('DUMP',b[i:i+3000])
+              raise SystemExit(0)
           T=os.environ['TS'].strip()
           if T:
               G=[d for d in L if d['fields']['ts']['integerValue']==T]
