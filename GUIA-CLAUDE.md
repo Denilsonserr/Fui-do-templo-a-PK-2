@@ -2005,3 +2005,6 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 
 ## v404 — tocar num jogador do RANKING volta a abrir o perfil
 - A tela nova de Ranking (`rkView('rkg')`, `RG2`) tem as linhas com `data-pu`, mas o ouvinte de clique do perfil só aceitava a lista antiga (`#rkModal .twRk`) e o chat. Agora aceita `.rk_rkg` também; o VOLTAR volta ao ranking na mesma aba (e página). Teste `ferramentas/testes/tperfil_v404.js`.
+
+## v405 — abóboras da Sexta-feira 13 aparecem no resultado
+- As abóboras já caíam no Boss (inclusive Shaka), mas só num texto rápido no K.O. Agora `sxGive` guarda `SXL` e: no Boss (Broly/Yuta/Shaka, ranqueado e farm) a linha "🎃 +N ABÓBORAS (+ caixa)" entra no topo da lista de prêmios do resultado (`rkResult`); nos outros modos aparece um aviso ao voltar para a tela (Torre/Ranqueado) com o total.

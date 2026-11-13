@@ -4318,10 +4318,10 @@ const sxLeft=E=>{const ms=Math.max(0,E-sxNow()),d=Math.floor(ms/864e5),h=Math.fl
 const SXP={gem:100,box:500,neg:250},SXGAIN={pve:[3,7],torre:[5,10],boss:[12,25],caca:[10,20],pvp:[10,18],dsf:[8,15]};
 const sxIco=(c)=>`<img class="sxI${c?' '+c:''}" src="${SX.moeda||''}" alt="">`;
 /* ganho ao fim de cada luta (vitória mais, derrota um pouco) + 1% de CAIXA SURPRESA por vitória */
-function sxGive(won){if(!sxDropOn()||!G.p||G.gmode==='treino')return;const p=G.p[0];if(!p||p.cpu)return;const R=SXGAIN[G.gmode]||[4,8];
+let SXL=null;function sxGive(won){if(!sxDropOn()||!G.p||G.gmode==='treino')return;const p=G.p[0];if(!p||p.cpu)return;const R=SXGAIN[G.gmode]||[4,8];
   let n=won?R[0]+Math.floor(Math.random()*(R[1]-R[0]+1)):1+Math.floor(Math.random()*3);if(won&&G.gmode==='boss'&&RKBID==='shaka')n=Math.round(n*1.5);
-  rkS('sx',rkG('sx',0)+n);try{txt(p.x,p.y-330,'+'+n+' 🎃 ABÓBORAS','#ffb040')}catch(e){}
-  if(won&&Math.random()<.01){rkS('sxbox',rkG('sxbox',0)+1);setTimeout(()=>{try{banner('CAIXA SURPRESA!','#c45bff',110,'🎃 ABRA NA LOJA SEXTA-FEIRA 13')}catch(e){}},900)}}
+  rkS('sx',rkG('sx',0)+n);SXL={n,box:0,t:Date.now(),gm:G.gmode};try{txt(p.x,p.y-330,'+'+n+' 🎃 ABÓBORAS','#ffb040')}catch(e){}
+  if(won&&Math.random()<.01){rkS('sxbox',rkG('sxbox',0)+1);SXL.box=1;setTimeout(()=>{try{banner('CAIXA SURPRESA!','#c45bff',110,'🎃 ABRA NA LOJA SEXTA-FEIRA 13')}catch(e){}},900)}}
 {const _ko4=ko;ko=function(a,d){const ph=G.phase,r=_ko4.apply(this,arguments);try{if(ph==='fight'&&G.phase==='ko')sxGive(G.koWinner===0)}catch(e){}return r}}
 {const _to=timeOver;timeOver=function(){const r=_to.apply(this,arguments);try{sxGive(G.koWinner===0)}catch(e){}return r}}
 /* ABÓBORA NEGRA: bônus PESSOAL com tempo (entra como um evento só deste jogador, por cima do evento do jogo) */
@@ -4412,6 +4412,10 @@ function luvGive(C){const own=rkG('own',['goku']);for(const id of ALLC)if(CH[id]
 {const _cp13=twCupom;twCupom=async function(code,E){const C=TWCUP[twHash(String(code).toUpperCase())];const r=await _cp13.apply(this,arguments);
   if(C&&C.luv&&r&&E&&/ok/.test(E.className||'')){let R={own:0,n:0};try{R=luvGive(C)}catch(e){console.warn(e)}try{acSave(1)}catch(e){}
     E.textContent=(C.luv==='love'?'💖 MEU AMOR! ':'💗 MINHA PROTEGIDA! ')+'TODOS os '+R.own+' personagens · '+R.n+' equipamentos na 🎒 MOCHILA · título '+TWTIT[C.luv].n+(C.luv==='love'?' (+50% em tudo) · 💎 200.000 · 🎫 500 · 🔴 30.000 · 🪙 200.000 · 🎃 3.000 + 10 caixas · passe máximo':' · 💎 50.000');try{twSfx('boom')}catch(e){}}return r}}
+/* v405: abóboras aparecem na TELA DE RESULTADO do Boss (Broly, Yuta, Shaka) e num aviso nos outros modos */
+const sxLine=()=>SXL&&Date.now()-SXL.t<30000?`<span class="spd" style="--c:#ffb040"><img src="${SX.moeda||''}" alt="">🎃 +${SXL.n} ABÓBORAS${SXL.box?' · ❓ +1 CAIXA SURPRESA':''}</span>`:'';
+{const _rr5=rkResult;rkResult=function(R){const r=_rr5.apply(this,arguments);try{const h=sxLine();if(h){const C=document.querySelector(RKMS()+'.rkItems');if(C)C.insertAdjacentHTML('afterbegin',h);SXL=null}}catch(e){}return r}}
+{const _so=showScreen;showScreen=function(n){const r=_so.apply(this,arguments);try{if(SXL&&SXL.gm!=='boss'&&Date.now()-SXL.t<30000&&n!=='game'&&G.mode!=='fight'){const L=SXL;SXL=null;setTimeout(()=>{try{const t='🎃 +'+L.n+' ABÓBORAS'+(L.box?' · ❓ +1 CAIXA SURPRESA':'')+' · total '+rkFmtN(rkG('sx',0));if(showScreen.cur==='tower')twToast(t,'#ffb040');else if(showScreen.cur==='ranked')rkToast(t,'#ffb040')}catch(e){}},900)}}catch(e){}return r}}
 {const _sk=rkTwSkin;rkTwSkin=function(){const r=_sk.apply(this,arguments);try{tnSkin()}catch(e){console.warn(e)}return r}}
 {const _lv2=twLV;twLV=function(){if(TN.on&&G.gmode==='torre'){const B=G.p&&G.p[1];if(B&&B.tnBoss)return TWLV[Math.min(TWLV.length-1,3+Math.floor(TN.g/2))]}return _lv2.apply(this,arguments)}}
 try{RKTWX.fl=1;RKTWX.top=3.2}catch(e){}

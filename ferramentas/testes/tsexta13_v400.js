@@ -26,5 +26,5 @@ R.f0=await p.evaluate(()=>__pvT.sx());
 const kill=()=>p.evaluate(()=>{const G=__dbg.G,[a,o]=G.p;G.noAI=true;o.hp=5;o.inv=0;o.state='idle';__dbg.applyHit(a,o,{dmg:900,kb:0,hs:2,kind:'melee',lock:1,px:o.x,py:o.y-150})});
 await kill();await p.waitForFunction(()=>!__dbg.G.trans,null,{timeout:20000});await W(800);R.f1=await p.evaluate(()=>__pvT.sx());
 await kill();await W(1500);await p.screenshot({path:SH+'sx_div.png'});await p.waitForFunction(()=>!__dbg.G.trans,null,{timeout:20000});await W(4000);await p.screenshot({path:SH+'sx_div2.png'});R.f2=await p.evaluate(()=>__pvT.sx());
-await kill();await p.waitForSelector('#rkModal .rkRes',{timeout:60000});R.f3=await p.evaluate(()=>__pvT.sx());
+await kill();await p.waitForSelector('#rkModal .rkRes',{timeout:60000});await p.waitForTimeout(800);R.res=await p.evaluate(()=>{const c=document.querySelector('#rkChest');if(c)c.click();return 1});await p.waitForTimeout(1500);R.itens=await p.evaluate(()=>(document.querySelector('#rkModal .rkItems')||{}).innerText||'');await p.screenshot({path:SH+'sx_res.png'});R.f3=await p.evaluate(()=>__pvT.sx());
 console.log(JSON.stringify(R,null,0));console.log('ERRS',errs.slice(0,4));await b.close()})();
