@@ -1929,3 +1929,8 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - EVOLUÇÃO V2 (`skV2Ch`, `skV2Evo`, `skV2Win`): cada vitória contra o Shaka tem 0,3% (1º rank) → 3% (rank mais alto) de um item de Virgem que o jogador JÁ TEM virar V2 (não vem item novo). V2 = +35% em todos os atributos, nome "... V2", `it.v2=1`, `it.skb`=chave base, ícone novo da arte do dono (`ferramentas/cenarios/shaka/v2/`, `RQA.shk.v2`). `skSecLeft` e o conserto v292 reconhecem o V2 pelo `skb`. Chance NÃO multiplica pela sorte (número exato pedido pelo dono).
 - Efeito especial V2: ícone brilha dourado/roxo em qualquer lugar (estilo criado em tempo de execução pelo `src` dos ícones) + faíscas douradas/roxas no lutador que usa V2 (mais itens V2 = mais faíscas).
 - Teste `ferramentas/testes/tshaka_v389.js` (agora cobre passiva, timer e V2).
+
+## v391 — SHAKA num NÍVEL MAIS BAIXO (mais fácil)
+- No modal do Shaka (`skStart`), abaixo do RANQUEADO: botões NÍV. 1 … (seu rank − 1) (`.skLv`, `skGo(-1,l)` → `RKSEL=l`). `rkBossStart` agora trata o Shaka igual ao Broly: `RKSEL` abaixo do rank = MODO FARM (`RKFL`): boss daquele nível, sem XP de rank (nem perde), gemas pela metade e baú menor (lógica `FM` do `rkAfter`).
+- Drops especiais pelo nível que lutou: V2 `skV2Ch(R.farm-1)` (farm do evento usa o nível da dificuldade), item de Virgem no farm de nível 0,1% (ranqueado 0,2%).
+- Teste `ferramentas/testes/tshaka_nivel_v391.js`.

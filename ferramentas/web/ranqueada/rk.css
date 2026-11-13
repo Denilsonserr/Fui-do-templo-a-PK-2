@@ -1983,3 +1983,7 @@ img.anOn{position:relative;z-index:2}
 .skPpC button.hi{animation:skv2g 1.2s ease-in-out infinite}
 @keyframes skv2g{0%,100%{filter:drop-shadow(0 0 .25em #ffd84a) brightness(1)}50%{filter:drop-shadow(0 0 .8em #c45bff) drop-shadow(0 0 .3em #ffd84a) brightness(1.25)}}
 .skV2W .t b{color:#ffd84a}.skV2W .fl{animation:skv2g 1.2s ease-in-out infinite}
+/* v391: Shaka num nível mais baixo */
+.skLv{display:flex;flex-wrap:wrap;gap:.3em;justify-content:center}
+.skLv button{display:flex;flex-direction:column;align-items:center;min-width:4.6em;padding:.3em .4em;border-radius:.6em;border:2px solid var(--c);background:rgba(10,6,24,.9);color:#fff;cursor:pointer;touch-action:manipulation}
+.skLv b{font:900 .72em var(--f-ui);color:var(--c)}.skLv small{font:700 .6em var(--f-ui)}
