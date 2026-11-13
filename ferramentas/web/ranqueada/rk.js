@@ -3648,7 +3648,7 @@ function p3Tier(i){return i>=13?5:i>=11?4:i>=10?3:i>=7?2:i>=5?1:0}
 {const _cp11=twCupom;twCupom=async function(code,E){const C=TWCUP[twHash(String(code).toUpperCase())];const r=await _cp11.apply(this,arguments);
   if(C&&(C.red||C.rmc)&&r&&E&&/ok/.test(E.className||'')){if(C.red)rkAdd('red',C.red);let nm='';
     if(C.rmc){const own=rkG('own',['goku']),L=RK_MIT.filter(id=>CH[id]&&!own.includes(id));if(L.length){const id=L[(Math.random()*L.length)|0];own.push(id);rkS('own',own);nm=CH[id].name;setTimeout(()=>{try{rkCharWin(id,1,1)}catch(e){}},600)}else{rkAdd('gem',5000);nm='(você já tem todos os míticos: +5.000 💎)'}}
-    try{acSave(1)}catch(e){}E.textContent='🎁 '+C.nm+'! +'+rkFmtN(C.gm||0)+' 💎'+(C.red?' · +'+rkFmtN(C.red)+' 🔴 moedas vermelhas':'')+' · ✦ MÍTICO: '+nm+(C.rsk&&TWCUP._sp?' · ✦ '+TWCUP._sp+' (na 🎒 MOCHILA)':'');try{twSfx('boom')}catch(e){}}return r}}
+    try{acSave(1)}catch(e){}E.textContent='🎁 '+C.nm+'!'+(C.gm?' +'+rkFmtN(C.gm)+' 💎 ·':'')+(C.red?' +'+rkFmtN(C.red)+' 🔴 moedas vermelhas ·':'')+' ✦ MÍTICO: '+nm+(C.rsk&&TWCUP._sp?' · ✦ '+TWCUP._sp+' (na 🎒 MOCHILA)':'');try{twSfx('boom')}catch(e){}}return r}}
 TWCUP['1ilnmg2']={nm:'BAÚ MÍTICO',it:[],gm:10000,red:5000,rmc:1};
 TWCUP['1k4a4is']={nm:'TESOURO SUPREMO',it:[],gm:40000,rsk:1,rmc:1}; /* v386: código único do dono — 40.000 💎 + personagem mítico + equipamento do Shaka */
 /* ================= v374: CORREÇÃO "ZUMBI" =================
@@ -4400,6 +4400,7 @@ TWTIT.prot={n:'MINHA PROTEGIDA',i:'💗',c:'#ff8fc8',d:'Título do coração · 
 TBUF.love={dano:50,def:50,vel:50,crit:50,st:50};TBUF.prot={dano:20,def:20,vel:20,crit:20,st:20};
 const luvH=T=>`<i class="lh a">💗</i><i class="lh b">💖</i><i class="lh c">💕</i><i class="lh d">💗</i>`;
 {const _pt=pfTitH;pfTitH=function(t,n,adm){const T=TWTIT[t];if(T&&T.luv)return `<span class="pfTt luvT l${T.luv}"><i>${T.i}</i><b>${T.n}</b>${luvH(T)}</span>`;return _pt.apply(this,arguments)}}
+TWCUP['4zocj2']={nm:'CAIXA DE PERSONAGEM MÍTICO',it:[],rmc:1}; /* v408: MITICOALEATORIO (uso único) */
 TWCUP['g3ina9']={nm:'MEU AMOR 💖',it:[],gm:200000,luv:'love'};
 TWCUP['1841w3z']={nm:'MINHA PROTEGIDA 💗',it:[],gm:50000,luv:'prot'};
 function luvGive(C){const own=rkG('own',['goku']);for(const id of ALLC)if(CH[id]&&!own.includes(id))own.push(id);rkS('own',own);

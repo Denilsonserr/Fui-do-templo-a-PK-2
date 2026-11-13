@@ -2018,3 +2018,6 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - Causa: no rank alto (3 vidas) o jogo carregava na entrada da luta sk + skd + **skv (271 MB decodificado, 22 MB de download)** + vídeo divino (75 MB) → +500 MB → celular travava/fechava.
 - `divina/reduzir_v407.py`: quadros skv de 2,4x → 1,45x (99 MB / 9,8 MB) e vídeos 800×450 → 640×360. Arquivos antigos apagados do www/a.
 - Carregamento SOB DEMANDA (rk.js "v407", `skvNeed`): `skDivLd()` = false (nada divino na entrada); sprites `skv` (`loadSid`) + vídeo começam a carregar quando o Shaka ABRE OS OLHOS e pode virar divino (jogador no modo livre / com a armadura; boss com `shk3On`). Jogador: o botão só transforma com tudo pronto (`SKVOK`/`SKDOK`), senão "CARREGANDO A FORMA DIVINA...". Boss 3ª vida: se ainda não carregou, luta de olhos abertos e vira divino assim que terminar. Tudo é liberado no `startMatch` seguinte.
+
+## v408 — código MITICOALEATORIO (uso único): caixa de personagem MÍTICO aleatório
+- `TWCUP['4zocj2']={rmc:1}`: sorteia um mítico que a pessoa ainda não tem (`RK_MIT`), com a animação de personagem novo; se já tiver todos, 5.000 💎. Mensagem dos códigos `rmc` não mostra mais "+0 💎".
