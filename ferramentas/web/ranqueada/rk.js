@@ -4279,6 +4279,24 @@ try{for(const an in SPRH.skv){const L=SPRH.skv[an];if(Array.isArray(L))for(const
         ctx.drawImage(im,(x-xl)*ri,0,(w+.8)*ri,im.naturalHeight,x+dx,-S.ay+dy,w+.8,S.h)}
       return}}
   return _bd2.apply(this,arguments)}}
+/* ================= v399: PROTEÇÃO DA CONTA — um aparelho com progresso VELHO não salva mais por cima da conta.
+   Antes de salvar (e ao abrir o jogo) confere o salvamento mais novo da conta (assinatura válida). Se ele for de OUTRO aparelho
+   e mais novo que o último deste (ac_t), NÃO salva e pergunta: CARREGAR O DA CONTA ou MANTER ESTE APARELHO. ================= */
+let acConf=null;
+const acRes=d=>{try{const D=typeof d==='string'?JSON.parse(d):d,g=(k,v)=>{try{return JSON.parse(D[k])}catch(e){return v}};const rp=+g('rk_rp',0)||0;return {rp,ri:rkRank(rp),own:(g('rk_own',['goku'])||[]).length,gem:+g('rk_gem',0)||0}}catch(e){return null}};
+async function acNewer(){const k=localStorage.getItem('ac_k'),n=localStorage.getItem('ac_n');if(!k||!n)return null;const acc=await acId(n),L=await acList(acc),x=await acFind(acc,k,L);const mine=+(localStorage.getItem('ac_t')||0);return x&&x.ts>mine+1000?x:null}
+function acConfM(x){const A=acRes(x.d),B=acRes(acData()),ln=r=>r?`🏅 ${RKR[r.ri].n} · ${rkFmtN(r.rp)} XP · 👤 ${r.own} personagens · 💎 ${rkFmtN(r.gem)}`:'?';
+  acM(`<div class="twM sm"><h3>⚠️ CONTA SALVA EM OUTRO APARELHO</h3><p class="twH">A conta <b>${twEsc(localStorage.getItem('ac_n')||'')}</b> tem um salvamento MAIS NOVO feito em outro aparelho (${acT(x.ts)}). Para não perder nada, este aparelho parou de salvar.</p>
+    <p class="twH ok"><b>NA CONTA:</b> ${ln(A)}</p><p class="twH"><b>NESTE APARELHO:</b> ${ln(B)}</p><p class="twH" id="acE"></p>
+    <div class="row"><button class="btn main" id="acCL">CARREGAR O DA CONTA</button><button class="btn" id="acCK">MANTER ESTE APARELHO</button></div></div>`);
+  const B2=id=>document.getElementById(id);
+  B2('acCL').onclick=()=>{try{const D=JSON.parse(x.d);for(const kk of Object.keys(localStorage))if(/^(tw_|rk_)/.test(kk))localStorage.removeItem(kk);for(const kk in D)localStorage.setItem(kk,D[kk]);localStorage.setItem('ac_h',twHash(acData()));localStorage.setItem('ac_t',String(x.ts));acConf=null;acM(null);setTimeout(()=>location.reload(),300)}catch(e){}};
+  B2('acCK').onclick=async()=>{const e=B2('acE');if(e)e.textContent='Salvando este aparelho na conta...';localStorage.setItem('ac_t',String(x.ts));acConf=null;localStorage.removeItem('ac_h');const ok=await acSave(1);if(e)e.textContent=ok?'✔ Salvo! Agora a conta tem o progresso deste aparelho.':'Sem internet. Tenta de novo.';if(ok)setTimeout(()=>acM(null),1200)}}
+{const _as=acSave;acSave=async function(force){const k=localStorage.getItem('ac_k'),n=localStorage.getItem('ac_n');if(!k||!n||acBusy)return _as.apply(this,arguments);
+  if(acConf)return false;const d=acData();if(twHash(d)===localStorage.getItem('ac_h'))return true;if(!force&&Date.now()-acLastT<90000)return false;
+  try{const x=await acNewer();if(x){acConf=x;acConfM(x);return false}}catch(e){return false}
+  return _as.apply(this,arguments)}}
+setTimeout(async()=>{try{const x=await acNewer();if(x){acConf=x;acConfM(x)}}catch(e){}},5000);
 {const _sk=rkTwSkin;rkTwSkin=function(){const r=_sk.apply(this,arguments);try{tnSkin()}catch(e){console.warn(e)}return r}}
 {const _lv2=twLV;twLV=function(){if(TN.on&&G.gmode==='torre'){const B=G.p&&G.p[1];if(B&&B.tnBoss)return TWLV[Math.min(TWLV.length-1,3+Math.floor(TN.g/2))]}return _lv2.apply(this,arguments)}}
 try{RKTWX.fl=1;RKTWX.top=3.2}catch(e){}
