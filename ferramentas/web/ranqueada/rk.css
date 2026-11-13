@@ -1954,3 +1954,23 @@ img.anOn{position:relative;z-index:2}
 #tnUI .tnUx small{font-size:.7em;letter-spacing:.08em}
 #tnUI .tnUx.on{color:#fff;border-color:#ff3a2a;background:linear-gradient(#6a0a0a,#2a0404);box-shadow:0 0 1.2em rgba(255,40,30,.8);animation:tnSel 1.2s ease-in-out infinite}
 #tnUI .tnUx.lk{opacity:.8}
+
+/* v389: evento do SHAKA — lobby (arte do dono), escolha ranqueado/farm */
+.skSlot{border-color:#ffd84a;background:linear-gradient(90deg,#5a4206,#1a1004);box-shadow:0 0 1em rgba(255,200,60,.6)}.skSlot em{color:#fff2b0}
+.rk_sb .hs.skOff{background:rgba(0,0,0,.45);border-radius:.6em}
+.skCur{display:flex;align-items:center;justify-content:center;font:900 .78em var(--f-ui);color:#fff;text-shadow:0 1px 2px #000;white-space:nowrap;overflow:hidden}
+.skEvT{display:flex;align-items:center;justify-content:center;font:900 .95em var(--f-ui);color:#ffe08a;text-shadow:0 0 .5em rgba(255,200,60,.8),0 1px 2px #000;white-space:nowrap}
+.skRw img{width:58%;height:58%}.skRw img.pt{border-radius:.4em;object-fit:cover;filter:drop-shadow(0 0 .5em rgba(255,210,80,.9))}.skRw b{font-size:.85em}
+.rkOn.skOn{justify-content:flex-start;padding-left:.3em}.rkOn.skOn i{display:none}
+.skChI{background:transparent}
+.skPort{border-radius:.5em;overflow:hidden;pointer-events:none}.skPort img{width:100%;height:100%;object-fit:cover;object-position:50% 15%}
+.skPN{display:flex;align-items:center;justify-content:center;font:900 .7em var(--f-ui);color:#ffe9a0;text-shadow:0 1px 2px #000;pointer-events:none;white-space:nowrap;overflow:hidden}
+.skGo .shine{position:absolute;inset:0;border-radius:1em}
+.skPick{max-width:min(92vw,46em)}.skPick h3 small{display:block;font-size:.6em;color:#ffe08a}
+.skRk{display:flex;flex-direction:column;align-items:center;width:100%;padding:.7em;border-radius:.8em;border:2px solid #ffd84a;background:linear-gradient(180deg,#4a3406,#1a1004);color:#fff;cursor:pointer;box-shadow:0 0 1em rgba(255,200,60,.5);touch-action:manipulation}
+.skRk b{font:900 1.15em var(--f-ui);color:#ffe08a}.skRk small{font:700 .8em var(--f-ui);opacity:.9}
+.skDf{display:grid;grid-template-columns:repeat(5,1fr);gap:.4em}
+.skDf button{display:flex;flex-direction:column;align-items:center;gap:.15em;padding:.55em .2em;border-radius:.7em;border:2px solid var(--c);background:rgba(10,6,24,.9);color:#fff;cursor:pointer;touch-action:manipulation;box-shadow:0 0 .7em color-mix(in srgb,var(--c) 45%,transparent)}
+.skDf b{font:900 .78em var(--f-ui);color:var(--c);text-align:center}.skDf small{font:700 .66em var(--f-ui)}.skDf em{font:900 .6em var(--f-ui);font-style:normal;color:#ffd84a}
+@media (max-width:600px){.skDf{grid-template-columns:repeat(3,1fr)}}
+.skSlot b{font-size:1.6em}.skSlot em{font-size:.62em}

@@ -1,0 +1,22 @@
+// v389: evento do Shaka no Modo Boss — lobby (arte do dono), escolha ranqueado/farm, cenário Templo de Virgem com 3 estados, drops
+const {chromium}=require('playwright');const SH=process.env.SH||'/tmp/';
+(async()=>{const b=await chromium.launch();const p=await b.newPage({viewport:{width:915,height:412},deviceScaleFactor:2});const errs=[];p.on('pageerror',e=>errs.push(e.message));await p.route(/fonts\.g|firestore/,r=>r.abort());
+await p.addInitScript(()=>{if(!sessionStorage.d){sessionStorage.d=1;localStorage.clear();Object.assign(localStorage,{tw_nome:'"E"',rk_ini:'1',rk_xpv2:'1',rk_own:'["goku"]',rk_sel:'"goku"',rk_rp:'5200',rk_dia:'1',rk_gem:'0',rk_po:'0',rk_dl:JSON.stringify({d:new Date(Date.now()-3*3600e3).toISOString().slice(0,10),s:0})})}});
+await p.goto('file:///home/claude/fui-do-templo-a-pk-2/www/index.html');await p.waitForFunction(()=>!document.getElementById('goSelect').disabled,null,{timeout:120000});
+const shot=n=>p.screenshot({path:SH+'sk_'+n+'.png'}),W=ms=>p.waitForTimeout(ms);
+await p.click('#mRank');await W(500);await p.click('#rkWrap [data-a="boss"]');await W(900);await shot('broly');
+const cm=()=>p.evaluate(()=>{const M=document.getElementById('rkModal');if(M){M.hidden=true;M.innerHTML=''}});await cm();await p.click('#rkWrap .skSlot',{force:true});await W(400);await cm();await W(1200);await shot('lobby');
+await p.click('#rkWrap [data-a="start"]',{force:true});await W(600);await shot('pick');
+const fight=async(tag)=>{await p.waitForFunction(()=>__dbg.G.mode==='fight'&&__dbg.G.phase==='fight',null,{timeout:120000});await W(1500);await shot(tag+'_1');
+  const info=await p.evaluate(async()=>{const G=__dbg.G,[a,o]=G.p;G.noAI=true;const F=n=>new Promise(r=>{const f0=G.frame;const c=()=>G.frame>=f0+n?r():requestAnimationFrame(c);c()});const info={opp:o.def.id,ph:o.rkPhB,ps:o.rkPS,lv:o.rkL,s0:__pvT.shk()};await F(30);
+    o.hp=5;o.inv=0;o.state='idle';__dbg.applyHit(a,o,{dmg:900,kb:0,hs:2,kind:'melee',lock:1,px:o.x,py:o.y-150});await F(20);await new Promise(r=>{const c=()=>!G.trans?r():requestAnimationFrame(c);c()});await F(90);info.s1=__pvT.shk();return info});
+  await shot(tag+'_2');
+  const i2=await p.evaluate(async()=>{const G=__dbg.G,[a,o]=G.p;const F=n=>new Promise(r=>{const f0=G.frame;const c=()=>G.frame>=f0+n?r():requestAnimationFrame(c);c()});o.hp=o.mhp*.4;await F(120);const s2=__pvT.shk();return s2});
+  await shot(tag+'_3');
+  await p.evaluate(async()=>{const G=__dbg.G,[a,o]=G.p;o.hp=5;o.inv=0;o.state='idle';__dbg.applyHit(a,o,{dmg:900,kb:0,hs:2,kind:'melee',lock:1,px:o.x,py:o.y-150})});
+  info.s2=i2;return info};
+await p.evaluate(()=>{Math.random=()=>0.0001});
+await p.click('.skPick .skDf button[data-i="4"]');const f1=await fight('farm');await p.waitForSelector('#rkModal .rkRes',{timeout:60000});await W(900);await shot('farm_res');
+const s1=await p.evaluate(()=>({own:localStorage.rk_own,gem:localStorage.rk_gem,po:localStorage.rk_po,st:localStorage.rk_st}));
+console.log(JSON.stringify({f1,s1}));
+console.log('ERRS',errs.slice(0,5));await b.close()})();
