@@ -1954,3 +1954,6 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 ## v395 — ADM testa a FORMA DIVINA na Batalha Treino
 - `skDivTreino()`: na Batalha Treino (`G.gmode==='treino'`), quem tem o título ADM vira a forma divina logo depois de ABRIR OS OLHOS, sem os 5 itens V2 e sem precisar de 1 barra (o boneco não ataca). Fora do treino a regra continua a mesma. `skDivLd()` (no `sidsOf`) carrega os sprites `skv` para ADM sempre.
 - Gancho de teste `__pvT.treino(eu, rival)`. Teste `ferramentas/testes/tshaka_treino_v395.js`.
+
+## v396 — conserto: a "Batalha Treino" do menu é o modo `pve` (luta normal), não `treino` (boneco)
+- `skDivTreino()` agora vale em `pve` E `treino` para quem tem o título ADM. Testado pelo caminho real (botão de transformar → abrir os olhos → forma divina). Gancho novo `__pvT.trf()` (transforma o jogador 1). Teste: `GM=pve node ferramentas/testes/tshaka_treino_v395.js`.
