@@ -2021,3 +2021,6 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 
 ## v408 — código MITICOALEATORIO (uso único): caixa de personagem MÍTICO aleatório
 - `TWCUP['4zocj2']={rmc:1}`: sorteia um mítico que a pessoa ainda não tem (`RK_MIT`), com a animação de personagem novo; se já tiver todos, 5.000 💎. Mensagem dos códigos `rmc` não mostra mais "+0 💎".
+
+## v409 — Caixa Surpresa: 2% → 4% de EVOLUIR uma peça de Virgem (não dá item novo)
+- `sxBoxOpen`: chance `min(4%, 2%×lvLuck())`. Agora é EVOLUÇÃO (igual ao Boss Shaka): escolhe uma peça de Virgem que a pessoa JÁ TEM e ainda não é V2 e aplica `skV2Evo` nela. Sem peça para evoluir (não tem nenhuma, ou todas já são V2) → sorteia os outros prêmios. Peça V2 nunca repete. Teste `ferramentas/testes/tcaixa_v409.js`.
