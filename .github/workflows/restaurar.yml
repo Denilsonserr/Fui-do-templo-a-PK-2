@@ -29,6 +29,14 @@ jobs:
               try:o=json.loads(F['d']['stringValue']);own=json.loads(o.get('rk_own','[]'))
               except Exception:o={};own=[]
               print(ts,br(ts),'id',d['name'].split('/')[-1][-14:],'rp',o.get('rk_rp'),'pers',len(own),'gem',o.get('rk_gem'))
+          desde=int(datetime.datetime(2026,11,12,3).timestamp()*1000);prev=None;perd=[]
+          for d in sorted(L,key=lambda d:int(d['fields']['ts']['integerValue'])):
+              ts=int(d['fields']['ts']['integerValue'])
+              try:rp=int(json.loads(json.loads(d['fields']['d']['stringValue']).get('rk_rp','0') or 0))
+              except Exception:continue
+              if prev is not None and ts>=desde and rp<prev:perd.append((br(ts),prev-rp))
+              prev=rp
+          print('PERDAS desde 12/11 00:00:',len(perd),'vezes, total',sum(x[1] for x in perd),perd)
           T=os.environ['TS'].strip()
           if T:
               G=[d for d in L if d['fields']['ts']['integerValue']==T]
