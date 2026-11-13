@@ -2003,3 +2003,8 @@ img.anOn{position:relative;z-index:2}
 .rkA .hs.skpRk,.rkA .hs.skpDf{padding:0}
 .skpRk span{position:absolute;left:0;right:0;bottom:13%;text-align:center}
 .skpDf span{position:absolute;left:0;right:0;top:43%;display:flex;flex-direction:column;align-items:center;gap:.05em}
+/* v394: forma divina do Shaka */
+.skpH.dv{color:#ffe08a}
+#controls.skdv button{box-shadow:0 0 1.1em #ffd84a,0 0 .4em #fff3b0 inset!important;animation:skdvB 1.4s ease-in-out infinite}
+@keyframes skdvB{0%,100%{filter:brightness(1)}50%{filter:brightness(1.35) drop-shadow(0 0 .5em #ffd84a)}}
+.skDvW .t b{color:#ffd84a}.skDvW .fl{max-height:62vh;animation:skv2g 1.6s ease-in-out infinite}
