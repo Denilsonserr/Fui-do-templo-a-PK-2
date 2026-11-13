@@ -1,0 +1,45 @@
+name: Restaurar salvamento de uma conta (ferramenta)
+# Lista os salvamentos de uma conta (ts, XP de rank, personagens, gemas). Com "ts" preenchido, RESTAURA aquele salvamento:
+# cria 15 cópias idênticas (mesmo ts, dados e assinatura da senha do jogador) com IDs que ficam acima dos salvamentos atuais
+# (sv_<conta>_<agora36>_NN). O jogo, ao ENTRAR, lê os 15 IDs mais altos e pega o mais novo com assinatura válida = o restaurado.
+# Salvamentos que o jogador fizer DEPOIS têm ID maior e continuam valendo normalmente. Nada é apagado.
+on:
+  workflow_dispatch:
+    inputs:
+      nome: {description: 'nome da conta', default: 'michael'}
+      ts: {description: 'ts (ms) do salvamento a restaurar — vazio = só listar', default: ''}
+jobs:
+  r:
+    runs-on: ubuntu-latest
+    steps:
+      - name: restaurar
+        env: {NOME: '${{ inputs.nome }}', TS: '${{ inputs.ts }}'}
+        run: |
+          python3 - <<'P'
+          import json,urllib.request,os,hashlib,datetime,time
+          n=os.environ['NOME'].lower().strip();acc=hashlib.sha256(('furia|acc|'+n).encode()).hexdigest()[:24]
+          B='https://fui-do-templo-a-pk-2.denilsinend.workers.dev/fs/v1/projects/furia-do-templo/databases/(default)/documents'
+          H={'Content-Type':'application/json','User-Agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/120 Safari/537.36'}
+          s={'from':[{'collectionId':'torre'}],'where':{'fieldFilter':{'field':{'fieldPath':'sv'},'op':'EQUAL','value':{'stringValue':acc}}},'orderBy':[{'field':{'fieldPath':'__name__'},'direction':'DESCENDING'}],'limit':400}
+          L=[x['document'] for x in json.load(urllib.request.urlopen(urllib.request.Request(B+':runQuery',data=json.dumps({'structuredQuery':s}).encode(),headers=H))) if x.get('document')]
+          br=lambda ms:(datetime.datetime.utcfromtimestamp(ms/1000)-datetime.timedelta(hours=3)).strftime('%d/%m %H:%M:%S')
+          print('conta',n,acc,'salvamentos',len(L))
+          for d in sorted(L,key=lambda d:int(d['fields']['ts']['integerValue']))[-60:]:
+              F=d['fields'];ts=int(F['ts']['integerValue'])
+              try:o=json.loads(F['d']['stringValue']);own=json.loads(o.get('rk_own','[]'))
+              except Exception:o={};own=[]
+              print(ts,br(ts),'id',d['name'].split('/')[-1][-14:],'rp',o.get('rk_rp'),'pers',len(own),'gem',o.get('rk_gem'))
+          T=os.environ['TS'].strip()
+          if T:
+              G=[d for d in L if d['fields']['ts']['integerValue']==T]
+              if not G:raise SystemExit('ts não encontrado')
+              F=G[0]['fields'];now=int(time.time()*1000);b36='';x=now
+              while x:b36='0123456789abcdefghijklmnopqrstuvwxyz'[x%36]+b36;x//=36
+              ok=0
+              for i in range(15):
+                  did='sv_%s_%s_r%02d'%(acc,b36.rjust(9,'0'),i)
+                  r=urllib.request.Request(B+'/torre?documentId='+did,data=json.dumps({'fields':F}).encode(),headers=H)
+                  try:urllib.request.urlopen(r);ok+=1
+                  except Exception as e:print('erro',did,e)
+              print('RESTAURADO',T,br(int(T)),'cópias',ok)
+          P
