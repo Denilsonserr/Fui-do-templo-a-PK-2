@@ -31,7 +31,7 @@ jobs:
               except Exception as e:print(br(ts),'erro',e);continue
               own=json.loads(o.get('rk_own','[]'));hist=json.loads(o.get('rk_hist','[]'))
               ch=[(x.get('id'),x.get('r'),br(x.get('d',0)),x.get('dup',0)) for x in hist if x.get('k')=='chr']
-              print('=====',br(ts),'nome',o.get('tw_nome'),'gem',o.get('rk_gem'),'tic',o.get('rk_tic'),'pity',o.get('rk_pity'),o.get('rk_pity3'),'spins',json.loads(o.get('rk_st','{}')).get('spins') if o.get('rk_st') else '')
+              print('=====',br(ts),'nome',o.get('tw_nome'),'rp',o.get('rk_rp'),'lv',(o.get('rk_lv') or '')[:160],'gem',o.get('rk_gem'),'nchaves',len(o),'tic',o.get('rk_tic'),'pity',o.get('rk_pity'),o.get('rk_pity3'),'spins',json.loads(o.get('rk_st','{}')).get('spins') if o.get('rk_st') else '')
               print('  own',own)
               if prev is not None:
                   print('  GANHOU',[x for x in own if x not in prev],'PERDEU',[x for x in prev if x not in own])
