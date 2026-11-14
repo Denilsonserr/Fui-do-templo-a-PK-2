@@ -2059,3 +2059,9 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - Dura **metade da 1ª transformação** (`f.skDivE=G.frame+FORM_T/2`, ≈19 s). O botão TRANSFORMAR esvazia junto. Ao acabar: volta aos OLHOS ABERTOS com o tempo que sobrava (`f.skFT`), tira a classe `skdv`, texto "FORMA DIVINA ACABOU".
 - Dano ×2,6 (+160%) em vez de ×2,2. O boss Shaka (3ª vida, skP3) continua divino até o fim.
 - Teste: `ferramentas/testes/tdivino_tempo_v418.js`.
+
+## v419 — MODO TESTE do ADM + cortes azuis
+- Botão **🧪 TESTE** na tela inicial (ao lado do "Menu Principal"). Só aparece com `pfIsAdm()` (título adm + nome "Denilson ADM"); `admTBtn()` checa a cada 5 s.
+- Painel `#admT` (`admTOpen()`): seu personagem, inimigo, cenário (qualquer um) + opções salvas em `localStorage.admT`: vida infinita, energia infinita, inimigo parado (`G.noAI`), cortes azuis nos golpes. LUTAR = `gmode 'pve'` (modo livre, sem bônus, nada conta para rank). `ADMT.on` desliga ao voltar ao título.
+- Cortes azuis: artes do dono com fundo verde em `ferramentas/vfx/cortes_azuis/` → `cortar.py` (tira o verde, separa 8 cortes pequenos + 2 grandes) → www/a + `cortes.json` (embutido em `VFXC`). `vfxSlash()` no acerto do jogador (wrapper de applyHit), desenhado em `drawVfx()` (wrapper de drawFxs): aparece da cauda à ponta e some, com brilho 'lighter'. Golpe forte (dmg≥60/sp/ult) usa os cortes grandes.
+- Teste: `ferramentas/testes/tadm_teste_v419.js` (ADM=0 confere que o botão não aparece para jogador comum).
