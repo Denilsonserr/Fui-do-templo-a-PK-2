@@ -2158,3 +2158,7 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 
 ## v438 — Banner do Sung trancado para TODOS (inclusive ADM) até 15/11 08:00
 - `rkSummon` não tem mais exceção de ADM; botões de giro com cadeado (`.sjLk2`) até `SJREL`. (Tile/Biblioteca continuam visíveis para o ADM testar.)
+
+## v439 — Teste do Sung por 10 min (ADM)
+- Botão "🧪 TESTAR O SUNG POR 10 MIN" no painel TESTE (`sjTrialStart`): guarda cópia de rk_own (sem o Sung), tw_moedas; dá Sung + TANK rank C nv1 + 2.000 essência + 60.000 moedas + Sistema nv 10 (45 pontos, classe a escolher). Contador no topo. Em 10 min (`sjTrialEnd`, espera a luta acabar) volta tudo: sem Sung, sem Sistema (rk_sjs), sem essência (rk_sje), moedas como antes. Estado em localStorage `sjTrial`.
+- Teste: `ferramentas/testes/tsung_trial_v439.js`.
