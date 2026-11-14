@@ -5,9 +5,8 @@ from PIL import Image
 from scipy import ndimage as nd
 from skimage.segmentation import watershed
 SRC=os.path.join(os.path.dirname(os.path.abspath(__file__)),'poses')
-F={'01':'01_andando_espada_ombro','02':'02_andando_espada_mao','03':'03_andando_espada_mao_b','04':'04_correndo','05':'05_dash','06':'06_pulo','07':'07_corte_cima','08':'08_corte_cima_b',
-   '09':'09_combo_espada','10':'10_especiais','11':'11_chute','12':'12_rasteira','13':'13_soco','14':'14_postura_espada','15':'15_agachado_espada','16':'16_poder'}
-GRID={'01':(1,6),'02':(1,5),'03':(1,5),'04':(1,5),'05':(1,6),'06':(1,6),'07':(1,5),'08':(1,5),'09':(2,8),'10':(2,3),'11':(1,5),'12':(1,6),'13':(1,6),'14':(1,6),'15':(1,5),'16':(1,6)}
+F={'01': '01_andando_espada_ombro', '02': '02_pulo_espada_ombro', '03': '03_sacar_espada', '04': '04_guarda_espada', '05': '05_cortes_especiais', '06': '06_cortes_especiais_b', '07': '07_chute_efeito', '08': '08_chute', '09': '09_dash', '10': '10_tomando_golpe_caindo', '11': '11_correndo', '12': '12_defesa_agachado', '13': '13_correndo_espada', '14': '14_corte_cima', '15': '15_chute_b', '16': '16_rasteira', '17': '17_soco', '18': '18_pulo_espada'}
+GRID={'01': (1, 6), '02': (1, 6), '03': (1, 6), '04': (1, 6), '05': (2, 3), '06': (2, 3), '07': (1, 6), '08': (1, 6), '09': (1, 6), '10': (1, 6), '11': (1, 6), '12': (1, 6), '13': (1, 5), '14': (1, 5), '15': (1, 5), '16': (1, 6), '17': (1, 6), '18': (1, 6)}
 MODE={}
 os.makedirs('cut',exist_ok=True)
 def border_lab(bgish):

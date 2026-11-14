@@ -2078,3 +2078,7 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 
 ## v422 — Sung: pose parado
 - Parado (idle/relax/win) = folha 02 (em pé com a espada na mão, quadro 0) com respiração; andar continua a folha 01 (espada no ombro). Escolha do dono.
+
+## v423 — Sung: folhas novas do dono (estilo novo, olhos azuis)
+- `poses/` trocada inteira (01..18, nomes dizem o movimento); `referencia_manhwa.jpg` guardada. As antigas que o dono mandou de novo viraram 13..18 (reserva/complementos).
+- Escolhas (build_sung.py Y): parado = 03_5 (segurando a espada) respirando; entrada = 03 (saca a espada do ombro); andar 01; correr 11; dash 09; pulo 02; espadadas = 05/06 (cortes com efeito) + 14 (corte de cima); chutes 07/08; rasteira 16; defesa 04; defesa agachado 12; tomando golpe/caindo/nocaute = 10; combo = 14+05+07.
