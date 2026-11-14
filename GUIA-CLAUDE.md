@@ -2155,3 +2155,6 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - Tela SOMBRAS (`sjShOpen`, arte `sistema/tela_sombras.png`): slot EQUIPADA + 8 slots, sombra no pedestal, dano/vida/resistência/velocidade, custo = ESSÊNCIA DA SOMBRA (`rk_sje`, ícone `a/ca4b5f5f1fdbb0.webp` recortado da arte) + moedas douradas (`tw_moedas`). Ranks `SJRK`: C 20, B 30, A 40, S 50 níveis (S começa ×1,5). Por nível: vida +3%, dano +2%, resistência +0,8% (máx 25%), velocidade +0,6%. Custo nv→nv+1: essência 8+4·nv, moedas 300+100·nv. TANK = rank C, base 0,3 barra (era 0,4) e dano ×0,85 no nv 1.
 - Essência: cada missão do Sistema dá XP/40 (mín. 5); cada vitória com o Sung 4–8.
 - Teste: `ferramentas/testes/tsung_lanc_v437.js` (usa page.clock antes/depois do lançamento).
+
+## v438 — Banner do Sung trancado para TODOS (inclusive ADM) até 15/11 08:00
+- `rkSummon` não tem mais exceção de ADM; botões de giro com cadeado (`.sjLk2`) até `SJREL`. (Tile/Biblioteca continuam visíveis para o ADM testar.)

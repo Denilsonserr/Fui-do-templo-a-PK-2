@@ -13280,12 +13280,12 @@ function rkRollSJ(){if(!sjOwned()&&!RKMTMP.includes('sung')){const p=rkG('pitySJ
   return {k:'red',r:'comum',n:1+((Math.random()*5)|0)}}
 rkRollY=rkRollSJ;
 {const _c=rkCost;rkCost=function(n){if(RKBAN!=='mit')return _c(n);const t=Math.min(n,rkG('tic',0)|0);return {t,g:n===1?(t?0:80):(n-t)*80}}}
-{const _sm=rkSummon;rkSummon=function(n){if(RKBAN==='mit'&&!sjRel()&&!pfIsAdm()){rkSfx('clang');return rkToast('🔒 O SUNG JIN-WOO chega amanhã (15/11) às 08:00 (Brasília)!','#7fb8ff')}return _sm.apply(this,arguments)}}
+{const _sm=rkSummon;rkSummon=function(n){if(RKBAN==='mit'&&!sjRel()){rkSfx('clang');return rkToast('🔒 O SUNG JIN-WOO chega amanhã (15/11) às 08:00 (Brasília)!','#7fb8ff')}return _sm.apply(this,arguments)}}
 {const _tx=rkTaxas;rkTaxas=function(){if(RKBAN!=='mit')return _tx();rkModal(`<div class="twM"><h3>% TAXAS · INVOCAÇÃO MÍTICA · SUNG JIN-WOO</h3><table class="rkTx"><tr><th>Resultado</th><th>Chance</th></tr>
   <tr><td style="color:#7fb8ff">✦ SS SUNG JIN-WOO · Monarca das Sombras (só aqui) · garantido em 250 giros</td><td>0,4%</td></tr><tr><td>Equipamento</td><td>30%</td></tr><tr><td style="color:#ff5a5a">Moeda Vermelha (1 a 5)</td><td>69,6%</td></tr></table>
   <p class="twH">1 giro = 80 💎 · 10 giros = 800 💎 (ticket vale 1 giro). Todo giro também dá ${LVPON}. Só existe 1 Sung por jogador.<br>O Sung tem o próprio SISTEMA DO JOGADOR: nível 1 a 80 só com missões, atributos, classe e sombras.<br>O Yuta agora sai na INVOCAÇÃO ESPECIAL.</p><div class="row"><button class="btn" id="rkMX">FECHAR</button></div></div>`);$('rkMX').onclick=()=>rkModal(null)}}
 {const _gh=rkGachaH;rkGachaH=function(){const h=_gh.apply(this,arguments);if(RKBAN!=='mit')return h.replace('<em>YUTA</em>','<em>SUNG</em>');const own=sjOwned(),p=rkG('pitySJ',0),rel=sjRel();
-  return h.replace(/<div class="ytOwn"[^>]*>.*?<\/div>/,'').replace(/<div class="rkPity"[^>]*>.*?<\/div>/,'')+(own?`<div class="ytOwn" style="${rkB(420,655,860,700)}">✔ VOCÊ JÁ TEM O SUNG</div>`:'')+(!rel?`<div class="sjLock" style="${rkB(540,640,1480,688)}">🔒 CHEGA 15/11 ÀS 08:00 (BRASÍLIA)</div>`:'')+
+  return h.replace(/<div class="ytOwn"[^>]*>.*?<\/div>/,'').replace(/<div class="rkPity"[^>]*>.*?<\/div>/,'')+(own?`<div class="ytOwn" style="${rkB(420,655,860,700)}">✔ VOCÊ JÁ TEM O SUNG</div>`:'')+(!rel?`<div class="sjLock" style="${rkB(540,640,1480,688)}">🔒 CHEGA 15/11 ÀS 08:00 (BRASÍLIA)</div><div class="sjLk2" style="${rkB(540,690,985,805)}">🔒</div><div class="sjLk2" style="${rkB(1030,690,1480,805)}">🔒</div>`:'')+
   `<div class="rkPity" style="${rkB(540,812,1480,845)}">${own?'':`<span style="color:#9fd0ff">✦ Sung em <b>${250-p}</b></span> · `}🎟️ 1 ticket = 1 giro · 🟣 +pó</div>`}}
 {const _bv=rkView;rkView=function(v){const r=_bv.apply(this,arguments);if(v==='gacha'&&RKBAN==='mit'){const A=document.querySelector('#rkWrap .rkA');if(A)A.style.backgroundImage=`url(${RQA.gacha_sj})`}return r}}
 function rkMegaSJ(){return new Promise(res=>{const O=document.createElement('div');O.className='rkMega ytm sjm';O.innerHTML='<i class="rays"></i><i class="fl"></i><i class="ring"></i><div class="tx"><small>✦ SS ✦</small><b>SORTE</b><b>DIVINA!</b><span>O SUNG JIN-WOO APARECEU!</span></div>';rkHost().appendChild(O);
@@ -13340,6 +13340,7 @@ function sjShFit(){const W=document.querySelector('#sjShw .sjW');if(!W)return;co
 #sjShw .sjHint{display:flex;align-items:center;justify-content:center;font-size:.36em;color:#b9a6e8;text-align:center}
 #sjShw .sjCnt{display:flex;align-items:center;justify-content:center;gap:.3em;background:rgba(10,6,24,.75);border:1px solid #7a4cff;border-radius:1em;font-size:.6em}#sjShw .sjCnt img{height:1.6em}#sjShw .sjCnt i{font-style:normal;margin-left:.6em}
 #sjShw .sjLvUp{left:28%;top:38%;width:44%;padding:.6em;text-align:center;background:#12062aee;border:2px solid #b07cff;border-radius:.4em;box-shadow:0 0 1.5em #7a4cff;animation:sjIn .4s}#sjShw .sjLvUp b{display:block;font-size:1.3em;color:#fff}#sjShw .sjLvUp small{color:#ffe08a}
+.rk_gacha .sjLk2{display:flex;align-items:center;justify-content:center;background:rgba(5,8,20,.62);border-radius:1em;font-size:2.4em;pointer-events:none;filter:drop-shadow(0 0 .3em #000)}
 .rk_gacha .sjLock{display:flex;align-items:center;justify-content:center;background:rgba(8,12,30,.85);border:2px solid #5fb0ff;border-radius:.6em;color:#cfe8ff;font:900 1.1em var(--f-ui,sans-serif);box-shadow:0 0 1em #2a6cff}
 .rkMega.sjm .tx b{background:linear-gradient(#e8f4ff,#5fb0ff);-webkit-background-clip:text;background-clip:text}`;document.head.appendChild(st)}
 {const _sk=rkTwSkin;rkTwSkin=function(){const r=_sk.apply(this,arguments);try{tnSkin()}catch(e){console.warn(e)}return r}}
@@ -13540,7 +13541,7 @@ window.__dbg={mus:()=>[MCUR,MEL.src.split('/').pop()],stg:()=>STAGE.key,prepMatc
 })();
 </script>
 <style>#updB{position:fixed;left:50%;top:max(8px,env(safe-area-inset-top));transform:translateX(-50%);z-index:99999;padding:10px 22px;border-radius:14px;border:2px solid #fff3c0;background:linear-gradient(#ffd84a,#e08a10);color:#3a1d00;font:900 15px system-ui,sans-serif;box-shadow:0 0 18px #ffb21f;cursor:pointer;animation:updP 1s ease-in-out infinite alternate}@keyframes updP{to{transform:translateX(-50%) scale(1.05)}}</style>
-<script>(function(){const V='3dbc9376ab67';if(!/^https?:/.test(location.protocol))return;let nv=null;
+<script>(function(){const V='9287b17755af';if(!/^https?:/.test(location.protocol))return;let nv=null;
 function show(){if(document.getElementById('updB'))return;try{if(typeof G!=='undefined'&&G.mode==='fight')return}catch(e){}const b=document.createElement('button');b.id='updB';b.textContent='🔄 ATUALIZAÇÃO NOVA! Toque para atualizar';
   b.onclick=()=>{b.textContent='⏳ Atualizando...';try{acSave(1)}catch(e){}setTimeout(()=>location.reload(),900)};document.body.appendChild(b)}
 async function chk(){if(document.hidden)return;if(nv){show();return}try{const r=await fetch('versao.txt?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const t=(await r.text()).trim();if(/^[0-9a-f]{8,40}$/.test(t)&&t!==V){nv=t;show()}}catch(e){}}

@@ -10,7 +10,7 @@ async function run(b,depois,adm){const p=await b.newPage({viewport:{width:915,he
   const g0=await p.evaluate(()=>+localStorage.getItem('rk_gem'));await p.evaluate(()=>{const b=document.querySelector('.rkA [data-a="sum1"]');if(b)b.click()});await p.waitForTimeout(1500);
   r.gemas=[g0,await p.evaluate(()=>+localStorage.getItem('rk_gem'))];r.toast=await p.evaluate(()=>[...document.querySelectorAll('.rkToast,.twToast')].map(x=>x.textContent).join('|'));
   r.errs=errs.slice(0,3);await p.close();return r}
-(async()=>{const b=await chromium.launch();const A=await run(b,0,0),B=await run(b,1,0);
+(async()=>{const b=await chromium.launch();const A=await run(b,0,1),B=await run(b,1,0);
   const p=await b.newPage({viewport:{width:915,height:412},deviceScaleFactor:2});const errs=[];p.on('pageerror',e=>errs.push(e.message));await p.route(/fonts\.g|firestore|workers\.dev\/fs/,r=>r.abort());
   await p.addInitScript(()=>{if(!sessionStorage.d){sessionStorage.d=1;localStorage.clear();Object.assign(localStorage,{tw_nome:'"Denilson ADM"',tw_tit:'["adm"]',rk_ini:'1',rk_xpv2:'1',tw_moedas:'20000',rk_sje:'300',rk_sjs:JSON.stringify({cls:'necro'})})}});
   await p.goto(process.env.URL||'http://localhost:8790/');await p.waitForFunction(()=>!document.getElementById('goSelect').disabled,null,{timeout:120000});await p.waitForTimeout(1500);
