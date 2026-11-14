@@ -1,7 +1,7 @@
 # FÚRIA DO TEMPLO — GUIA DE PASSAGEM PARA OUTRA CONTA DO CLAUDE
 
-A versão atual é a v424.
-Versão do jogo neste momento: **v424** (11/11/2026).
+A versão atual é a v425.
+Versão do jogo neste momento: **v425** (11/11/2026).
 Este arquivo tem duas partes: a **Parte 1** é para o dono (Denilson) e a **Parte 2** é para o Claude da outra conta.
 
 ---
@@ -12,7 +12,7 @@ Este arquivo tem duas partes: a **Parte 1** é para o dono (Denilson) e a **Part
 2. Conecte o **GitHub** nessa conta e dê acesso ao repositório **Denilsonserr/Fui-do-templo-a-PK-2**.
 3. Comece uma conversa nova com esse repositório e mande este arquivo, ou só esta mensagem:
 
-   > Continua o meu jogo Fúria do Templo. Repositório: Denilsonserr/Fui-do-templo-a-PK-2. Lê primeiro os arquivos COMECE-AQUI.md e GUIA-CLAUDE.md inteiros e segue as regras deles. A versão atual é a v424.
+   > Continua o meu jogo Fúria do Templo. Repositório: Denilsonserr/Fui-do-templo-a-PK-2. Lê primeiro os arquivos COMECE-AQUI.md e GUIA-CLAUDE.md inteiros e segue as regras deles. A versão atual é a v425.
 
 4. Depois é só pedir as coisas do mesmo jeito de sempre.
 5. **Onde fica o jogo:**

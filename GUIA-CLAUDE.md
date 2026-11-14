@@ -2088,3 +2088,8 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - `poses/20_parado_espada_chao.png` (veio com FUNDO PRETO; original em `20_..._fundo_preto.png`, convertido por `preto_para_branco.py`): espada fincada no chão, mão no bolso, casaco ao vento = `idle2` e `relax` (longe do inimigo).
 - Patch (9y_sung.py, vgKey case 'idle'): na luta o Sung fica ~7 s na pose 1 e ~4 s na pose 2 (ciclo de 660 quadros; CPU defasado). `saca` = folha 03 guardada para depois.
 - Teste: `ferramentas/testes/tsung_parado_v424.js`.
+
+## v425 — AURA DE SOMBRA (só no modo teste do ADM)
+- Vídeo do dono `ferramentas/vfx/aura_sombra/aura_dono.mp4` = grade 6x2 animada com fundo preto. `montar.py` pega a célula (linha 2, coluna 0 = aura em volta da silhueta) ao longo do tempo, emenda o loop (mistura os últimos 8 quadros) → 1 tira webp (33 quadros) + aura.json.
+- rk.js `drawAura` (wrapper de renderFighter): atrás do jogador com 'lighter' (alpha .72) + camada fraca na frente (.2). Opção "AURA DE SOMBRA" no painel 🧪 TESTE (`ADMT.aura`). Se o dono aprovar, ligar no Sung.
+- Teste: `ferramentas/testes/taura_v425.js`.
