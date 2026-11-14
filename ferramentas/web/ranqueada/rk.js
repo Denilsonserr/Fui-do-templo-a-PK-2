@@ -4550,7 +4550,7 @@ setTimeout(admTBtn,1500);setInterval(admTBtn,5000);
    fumaça PRETA/roxa subindo (chama do Gojo pintada de escuro, desenhada normal = escurece de verdade) + borda azul/roxa brilhando (lighter)
    + poça de sombra no chão + fiapos pretos voando + faíscas roxas + rastro azul dos olhos quando corre/ataca. Nomes "mon*" (não colidir com o jogo base!). ================= */
 let MONDK=null,MONRM=null,MONP=[],MONE=[],MONS=[],MONPF=null,MONGL=null;
-const monPuff=()=>{if(MONPF)return MONPF;const c=document.createElement('canvas');c.width=c.height=64;const g=c.getContext('2d'),r=g.createRadialGradient(32,32,2,32,32,32);r.addColorStop(0,'rgba(4,1,12,.95)');r.addColorStop(.45,'rgba(14,5,34,.7)');r.addColorStop(.8,'rgba(30,12,70,.25)');r.addColorStop(1,'rgba(40,20,90,0)');g.fillStyle=r;g.fillRect(0,0,64,64);return MONPF=c};
+const monPuff=()=>{if(MONPF)return MONPF;const c=document.createElement('canvas');c.width=c.height=64;const g=c.getContext('2d'),r=g.createRadialGradient(32,32,2,32,32,32);r.addColorStop(0,'rgba(8,3,22,.88)');r.addColorStop(.45,'rgba(18,7,44,.62)');r.addColorStop(.8,'rgba(30,12,70,.25)');r.addColorStop(1,'rgba(40,20,90,0)');g.fillStyle=r;g.fillRect(0,0,64,64);return MONPF=c};
 const monGlow=()=>{if(MONGL)return MONGL;const c=document.createElement('canvas');c.width=c.height=64;const g=c.getContext('2d'),r=g.createRadialGradient(32,32,10,32,32,32);r.addColorStop(0,'rgba(0,0,0,0)');r.addColorStop(.7,'rgba(120,80,255,.55)');r.addColorStop(.85,'rgba(90,150,255,.35)');r.addColorStop(1,'rgba(0,0,0,0)');g.fillStyle=r;g.fillRect(0,0,64,64);return MONGL=c};
 function monTex(){if(MONDK)return true;const I=GJAU.img;if(!I||!I.complete||!I.naturalWidth)return false;const mk=(fn,fb)=>{const c=document.createElement('canvas');c.width=I.naturalWidth;c.height=I.naturalHeight;const g=c.getContext('2d');g.drawImage(I,0,0);
     try{const d=g.getImageData(0,0,c.width,c.height),a=d.data;for(let i=0;i<a.length;i+=4){const L=Math.max(a[i],a[i+1],a[i+2]);fn(a,i,L)}g.putImageData(d,0,0)}catch(e){g.globalCompositeOperation='source-atop';g.fillStyle=fb;g.fillRect(0,0,c.width,c.height)}return c};
@@ -4558,23 +4558,6 @@ function monTex(){if(MONDK)return true;const I=GJAU.img;if(!I||!I.complete||!I.n
   MONDK=mk((a,i,L)=>{const k=L/255;a[i]=6+k*22;a[i+1]=2+k*6;a[i+2]=14+k*40;a[i+3]=Math.min(255,a[i+3]*Math.max(0,Math.min(1,(k-.3)*1.9)))},'rgba(12,5,26,.92)');
   // borda: azul-violeta brilhante
   MONRM=mk((a,i,L)=>{a[i]=Math.min(255,L*.66);a[i+1]=Math.min(255,L*.4);a[i+2]=Math.min(255,L*1.05)},'rgba(150,100,255,.75)');return true}
-function monShape(f,sc,ph,al,edge,ch){const t=G.frame,H=(ch?285:265)*sc,K=12,L=[],R=[],up=t*(ch?.16:.11);
-  // largura: estreita nos pés, cheia no meio do corpo, fecha no ombro/cabeça; ondas grandes e lentas que SOBEM (parece chama escorrendo pra cima)
-  const prof=u=>(u<.5?58+u*58:u<.82?87-(u-.5)*125:47-(u-.82)*95)*sc;
-  for(let j=0;j<=K;j++){const u=j/K,y=f.y+2-u*H,amp=(3+u*u*22)*sc*(ch?1.3:1),wl=Math.sin(j*.9-up+ph)*amp,wr=Math.sin(j*.9-up*1.07+ph+2.4)*amp;
-    L.push([f.x-prof(u)+wl,y]);R.push([f.x+prof(u)+wr,y])}
-  const top=f.y+2-H;ctx.save();ctx.beginPath();ctx.moveTo(L[0][0],L[0][1]);
-  for(let j=1;j<=K;j++){const a=L[j-1],b=L[j];ctx.quadraticCurveTo(a[0],a[1],(a[0]+b[0])/2,(a[1]+b[1])/2)}
-  // 3 línguas de chama arredondadas no alto, balançando
-  const xl=L[K][0],xr=R[K][0],T=[[.2,.75],[.52,1.15],[.82,.85]];let px=xl,py=top;
-  for(let k=0;k<3;k++){const [fx,hk]=T[k],xm=xl+(xr-xl)*fx+Math.sin(t*.05+k*2.1+ph)*12*sc,th=(52+22*Math.sin(t*.045+k*1.9+ph))*hk*sc*(ch?1.3:1),nx=k<2?xl+(xr-xl)*(T[k][0]+T[k+1][0])/2:xr,ny=top+(k<2?8*sc:0);
-    ctx.bezierCurveTo(px,py-th*.45,xm-14*sc,top-th*.8,xm,top-th);ctx.bezierCurveTo(xm+14*sc,top-th*.8,nx,ny-th*.35,nx,ny);px=nx;py=ny}
-  for(let j=K;j>=1;j--){const a=R[j],b=R[j-1];ctx.quadraticCurveTo(a[0],a[1],(a[0]+b[0])/2,(a[1]+b[1])/2)}
-  ctx.lineTo(R[0][0],R[0][1]);ctx.quadraticCurveTo(f.x,f.y+16,L[0][0],L[0][1]);ctx.closePath();
-  const g=ctx.createLinearGradient(0,f.y,0,top-80*sc);g.addColorStop(0,'rgba(3,1,10,1)');g.addColorStop(.5,'rgba(14,5,36,.95)');g.addColorStop(.8,'rgba(34,14,82,.7)');g.addColorStop(1,'rgba(64,34,140,0)');
-  ctx.globalCompositeOperation='source-over';ctx.globalAlpha=al;ctx.fillStyle=g;ctx.fill();
-  if(edge){ctx.globalCompositeOperation='lighter';ctx.globalAlpha=al*(ch?.8:.55);ctx.lineJoin='round';ctx.shadowColor='#6a4cff';ctx.shadowBlur=16;ctx.strokeStyle='rgba(130,100,255,.6)';ctx.lineWidth=2.6;ctx.stroke();ctx.shadowBlur=0;ctx.strokeStyle='rgba(150,205,255,.4)';ctx.lineWidth=1;ctx.stroke()}
-  ctx.restore()}
 function monBehind(f){if(!monTex())return;const t=G.frame,A=GJAU,ch=f.state==='charge',P=1+.05*Math.sin(t*.13);
   ctx.save();// poça de sombra no chão
   const R=(ch?200:170)*P,gr=ctx.createRadialGradient(f.x,f.y+4,6,f.x,f.y+4,R);gr.addColorStop(0,'rgba(6,2,16,.82)');gr.addColorStop(.55,'rgba(28,10,60,.45)');gr.addColorStop(1,'rgba(40,20,90,0)');
@@ -4583,11 +4566,12 @@ function monBehind(f){if(!monTex())return;const t=G.frame,A=GJAU,ch=f.state==='c
   ctx.strokeStyle='rgba(8,3,20,.55)';ctx.lineCap='round';for(let k=0;k<5;k++){const an=k*1.26+t*.01,l=R*(.75+.25*Math.sin(t*.07+k*2));ctx.lineWidth=7-k*.6;ctx.beginPath();ctx.moveTo(f.x,f.y+4);ctx.quadraticCurveTo(f.x+Math.cos(an)*l*.5,f.y+4+Math.sin(an*1.7)*6,f.x+Math.cos(an)*l,f.y+4+Math.sin(an)*R*.12);ctx.stroke()}
   // borda brilhante bem fraca (atrás de tudo)
   const i=Math.floor(t/4)%A.n,h=(ch?400:360)*P,w=h*A.w/A.h*.8;ctx.globalCompositeOperation='lighter';ctx.globalAlpha=ch?.22:.1;ctx.drawImage(MONRM,0,i*A.h,A.w,A.h,f.x-w/2,f.y-h*.97,w,h);
-  // AURA LISA (v428): contorno de chama escura em volta do corpo, curvas suaves que ondulam e sobem; 3 camadas + borda roxa/azul brilhando
-  for(const [sc,ph,al,edge] of [[1.28,0,ch?.5:.38,0],[1.1,2.1,ch?.78:.66,1],[.92,4.2,ch?.95:.88,0]])monShape(f,sc,ph,al,edge,ch);
+  // AURA DE SOMBRA (v427, suavizada na v429): nuvenzinhas escuras saindo do contorno do corpo e subindo, mais fracas e com mais brilho roxo
+  ctx.globalCompositeOperation='source-over';for(const p of MONS){const k=p.l/p.m,al=Math.sin(Math.PI*Math.min(1,k)),r=p.r*(1+k*1.1);ctx.globalAlpha=(ch?.72:.56)*al;ctx.drawImage(monPuff(),p.x-r,p.y-r,r*2,r*2)}
+  ctx.globalCompositeOperation='lighter';for(const p of MONS)if(p.e){const k=p.l/p.m,al=Math.sin(Math.PI*Math.min(1,k)),r=p.r*(1+k*1.1);ctx.globalAlpha=.3*al;ctx.drawImage(monGlow(),p.x-r*1.1,p.y-r*1.1,r*2.2,r*2.2)}
   ctx.restore();
   // partículas: fiapos pretos + faíscas roxas
-  if(G.hitstop<=0){if(t%(ch?5:12)===0)MONP.push({x:f.x+rand(-55,55),y:f.y-rand(10,200),vx:rand(-.4,.4),vy:-rand(.9,2.2),l:0,m:rand(34,56),r:rand(7,15),k:0,a:rand(0,6.3)});
+  if(G.hitstop<=0){if(t%(ch?3:6)===0)MONP.push({x:f.x+rand(-55,55),y:f.y-rand(10,200),vx:rand(-.4,.4),vy:-rand(.9,2.2),l:0,m:rand(34,56),r:rand(7,15),k:0,a:rand(0,6.3)});
     if(t%(ch?3:9)===0)MONP.push({x:f.x+rand(-60,60),y:f.y-rand(30,240),vx:rand(-.3,.3),vy:-rand(1.2,2.6),l:0,m:rand(18,28),r:rand(1.6,2.8),k:1,a:0})}
   if(MONP.length>90)MONP.splice(0,MONP.length-90)}
 function monFront(f){const t=G.frame;ctx.save();
@@ -4597,7 +4581,7 @@ function monFront(f){const t=G.frame;ctx.save();
   if(MONE.length>1){ctx.globalCompositeOperation='lighter';ctx.lineCap='round';for(let n=1;n<MONE.length;n++){const a=MONE[n-1],b=MONE[n],k=n/MONE.length;ctx.globalAlpha=.7*k;ctx.strokeStyle='#7fd0ff';ctx.lineWidth=1+3.5*k;ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.stroke()}}
   ctx.restore()}
 function monTick(f){for(const p of MONP){p.l++;p.x+=p.vx+Math.sin((p.l+p.a*9)*.12)*.35;p.y+=p.vy}MONP=MONP.filter(p=>p.l<p.m);
-  const chg=f.state==='charge';if(false)for(let q=0;q<(chg?4:2);q++){const u=Math.random(),sd=Math.random()<.5?-1:1;MONS.push({x:f.x+sd*(26+34*Math.sin(u*3.1))*(1-u*.3)+rand(-8,8),y:f.y-6-u*250,vx:sd*rand(.1,.5)+rand(-.2,.2),vy:-rand(.9,2.1)*(chg?1.4:1),r:rand(14,24),l:0,m:rand(36,58),e:Math.random()<.25})}
+  const chg=f.state==='charge';if(G.hitstop<=0)for(let q=0;q<(chg?3:2);q++){const u=Math.random(),sd=Math.random()<.5?-1:1;MONS.push({x:f.x+sd*(26+34*Math.sin(u*3.1))*(1-u*.3)+rand(-8,8),y:f.y-6-u*250,vx:sd*rand(.1,.5)+rand(-.2,.2),vy:-rand(.9,2.1)*(chg?1.4:1),r:rand(13,22),l:0,m:rand(36,56),e:Math.random()<.3})}
   for(const p of MONS){p.l++;p.x+=p.vx+Math.sin(p.l*.1+p.r)*.4;p.y+=p.vy;p.vy*=.99}MONS=MONS.filter(p=>p.l<p.m);if(MONS.length>140)MONS.splice(0,MONS.length-140);
   const fast=Math.abs(f.vx||0)>4||f.state==='attack'||/dash|run|ytk|ytc/.test(f.state||'');
   if(fast){const hh=f.ytEyeY||262;MONE.push({x:f.x+(f.facing||1)*16,y:f.y-hh});if(MONE.length>9)MONE.shift()}else if(MONE.length)MONE.shift()}

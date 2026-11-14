@@ -2105,3 +2105,6 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 
 ## v428 — Aura do Monarca LISA (pedido do dono: "menos fumaça, mais aura")
 - `monShape`: contorno de chama escura em volta do corpo (curvas suaves, ondas lentas que sobem, 3 línguas arredondadas no alto), 3 camadas (externa fraca, do meio com borda roxa/azul brilhando com shadowBlur, interna escura). As nuvens de fumaça (MONS) foram desligadas; fiapos pretos bem menos. Poça no chão, faíscas e rastro dos olhos continuam.
+
+## v429 — Aura do Monarca: volta a sombra da v427, só um pouco mais fraca
+- O dono queria a de fumaça (v427) só "mini diminuída". monShape (v428) removida; nuvens mais claras (.88/.62), alpha .56 (carregando .72), um pouco menores, mais borda roxa (30%).
