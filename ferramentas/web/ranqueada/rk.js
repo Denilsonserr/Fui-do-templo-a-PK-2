@@ -4453,6 +4453,36 @@ function skvNeed(){if(!SKVP){SKVP=loadSid('skv').then(()=>{SKVOK=1}).catch(()=>{
 {const _u7=update;update=function(){const r=_u7.apply(this,arguments);try{if(G.mode==='fight'&&G.p)for(const f of G.p){if(!f||!isSk(f)||!f.form||f.skDiv)continue;
     if(f.cpu?(f===G.p[1]&&shk3On()):(skLivre()||skDivSet()))skvNeed();
     if(f.cpu&&f.skP3&&!f.skDiv&&SKVOK&&!G.trans){f.skDiv=1;txt(f.x,f.y-320,'FORMA DIVINA!','#fff3b0');G.flash=10;G.flashCol='#fff3c0'}}}catch(e){}return r}}
+/* ================= v417: FORMA DIVINA mais divertida — leve e escorregadia (rastro fantasma), DESVIO divino (50%), REFLEXO de dano,
+   combo mais rápido com luzes douradas o tempo todo, e AURA DIVINA (auréola + raios de luz girando atrás dele) ================= */
+const SKDC=['#fff3b0','#ffe680','#ffffff','#ffd84a'];
+/* desvio divino: 50% de chance, recarga curta, aparece atrás do inimigo deixando 2 fantasmas */
+{const _dg=skDodge;skDodge=function(a,d,h){if(!d||!d.skDiv)return _dg.apply(this,arguments);if(!isSk(d)||h.lock||d.ko||!a||a===d||G.ws||G.trans)return false;
+  if(G.frame<(d.skDg||0)||Math.random()>.5)return false;d.skDg=G.frame+30;
+  for(let i=0;i<2;i++)d.ghosts.push({key:spriteKey(d),x:d.x-d.facing*i*30,y:d.y,facing:d.facing,life:16-i*4,col:i?'#ffffff':'#ffe680'});
+  d.x=clamp(a.x-a.facing*140,40,WW-40);d.facing=a.x>d.x?1:-1;d.inv=Math.max(d.inv,14);if(d.state==='hit'||d.state==='blockstun')neutral(d);
+  txt(d.x,d.y-300,'DESVIO DIVINO!','#fff3b0');ring(d.x,d.y-150,'#fff3b0',110,10,3);ring(d.x,d.y-150,'#ffd84a',60,8,2);try{SFX.zip()}catch(e){}return true}}
+/* REFLEXO: 22% dos golpes que acertam o Shaka divino voltam (70% do dano) para quem bateu */
+{const _ah2=applyHit;applyHit=function(a,d,h){const h0=d?d.hp:0,r=_ah2.apply(this,arguments);try{if(r&&d&&d.skDiv&&!d.ko&&a&&a!==d&&!a.ko&&h&&!h.lock&&!h.skRf&&h0>d.hp&&G.frame>=(d.skRf||0)&&Math.random()<.22){
+    d.skRf=G.frame+40;const dm=Math.max(8,Math.round((h0-d.hp)*.7)),x=d.x+d.facing*50,y=d.y-170;
+    applyHit(d,a,{dmg:dm,kb:2,hs:8,px:a.x,py:a.y-150,kind:'blast',lock:1,skRf:1});
+    ring(x,y,'#ffffff',120,12,4);ring(x,y,'#ffe680',190,16,3);for(let i=0;i<10;i++){const an=Math.random()*TAU;addP({x,y,vx:Math.cos(an)*rand(3,8),vy:Math.sin(an)*rand(3,8),life:18,max:18,c:pick(SKDC),type:'glow',sz:rand(3,7),g:0})}
+    txt(d.x,d.y-330,'REFLETIDO! '+dm,'#ffffff');try{SFX.clang&&SFX.clang()}catch(e){}if(a.hp<=0)ko(d,a)}}catch(e){}return r}}
+/* rastro fantasma ao se mover + luzes douradas durante TODO o combo */
+{const _u8=update;update=function(){const r=_u8.apply(this,arguments);try{if(G.mode==='fight'&&G.p&&G.hitstop<=0)for(const f of G.p){if(!f||!f.skDiv||f.ko)continue;
+    const mv=Math.abs(f.vx||0)>3||!f.grounded||['dash','dashf','dashb','run'].includes(f.state);
+    if(mv&&G.frame%3===0)f.ghosts.push({key:spriteKey(f),x:f.x,y:f.y,facing:f.facing,life:10,col:G.frame%6?'#ffe680':'#ffffff'});
+    if(f.state==='skc'||f.state==='skk'||f.state==='attack'){if(G.frame%2===0)f.ghosts.push({key:spriteKey(f),x:f.x-f.facing*rand(10,40),y:f.y,facing:f.facing,life:9,col:G.frame%4?'#ffd84a':'#fff3b0'});
+      if(f.state==='skc'&&G.frame%3===0){const x=f.x+rand(-70,90)*f.facing,y=f.y-rand(60,260);addP({x,y,vx:0,vy:-.6,life:14,max:14,c:pick(SKDC),type:'glow',sz:rand(4,9),g:0});if(G.frame%9===0)ring(x,y,'#fff3b0',40,8,2)}}}}catch(e){}return r}}
+/* AURA DIVINA: auréola dourada atrás da cabeça + raios de luz girando + chama dourada clara (uma imagem pronta, leve no celular) */
+let SKHALO=null;function skHalo(){if(SKHALO)return SKHALO;const S=360,c=document.createElement('canvas');c.width=c.height=S;const g=c.getContext('2d'),m=S/2;
+  const gr=g.createRadialGradient(m,m,0,m,m,m);gr.addColorStop(0,'rgba(255,250,220,.55)');gr.addColorStop(.35,'rgba(255,225,120,.22)');gr.addColorStop(1,'rgba(255,210,90,0)');g.fillStyle=gr;g.fillRect(0,0,S,S);
+  g.translate(m,m);for(let i=0;i<24;i++){g.rotate(TAU/24);const L=i%2?m*.95:m*.7,w=i%2?5:9;const lg=g.createLinearGradient(0,-40,0,-L);lg.addColorStop(0,'rgba(255,245,200,.7)');lg.addColorStop(1,'rgba(255,220,110,0)');g.fillStyle=lg;g.beginPath();g.moveTo(-w,-40);g.lineTo(0,-L);g.lineTo(w,-40);g.fill()}
+  g.setTransform(1,0,0,1,0,0);g.strokeStyle='rgba(255,236,150,.95)';g.lineWidth=5;g.beginPath();g.arc(m,m,62,0,TAU);g.stroke();g.strokeStyle='rgba(255,255,255,.7)';g.lineWidth=2;g.beginPath();g.arc(m,m,70,0,TAU);g.stroke();
+  for(let i=0;i<12;i++){const an=i/12*TAU;g.fillStyle='rgba(255,246,200,.95)';g.beginPath();g.arc(m+Math.cos(an)*82,m+Math.sin(an)*82,3.2,0,TAU);g.fill()}return SKHALO=c}
+{const _sa3=skAura;skAura=function(f,k){if(!f.skDiv)return _sa3.apply(this,arguments);const t=G.frame,H=skHalo(),hy=f.y-(f.grounded?255:265)+(f.state==='crouch'?60:0),sc=f.state==='charge'?1.15:1;
+  ctx.save();ctx.globalCompositeOperation='lighter';ctx.translate(f.x-f.facing*14,hy);ctx.rotate(t*.008);ctx.globalAlpha=.8;ctx.drawImage(H,-180*sc,-180*sc,360*sc,360*sc);ctx.restore();
+  _sa3.apply(this,arguments)}}
 {const _sk=rkTwSkin;rkTwSkin=function(){const r=_sk.apply(this,arguments);try{tnSkin()}catch(e){console.warn(e)}return r}}
 {const _lv2=twLV;twLV=function(){if(TN.on&&G.gmode==='torre'){const B=G.p&&G.p[1];if(B&&B.tnBoss)return TWLV[Math.min(TWLV.length-1,3+Math.floor(TN.g/2))]}return _lv2.apply(this,arguments)}}
 try{RKTWX.fl=1;RKTWX.top=3.2}catch(e){}

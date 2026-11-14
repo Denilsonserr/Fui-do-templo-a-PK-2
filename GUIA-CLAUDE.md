@@ -2046,3 +2046,10 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 
 ## v416 — código ARMADURAVIRGEM (uso único, do dono): as 5 peças V1 da armadura de Virgem
 - Campo `skv1`: coloca na mochila as peças de `SKSEC` que a pessoa ainda não tem (nem V1 nem V2). Depois elas podem evoluir para V2 no Boss Shaka ou na Caixa Surpresa.
+
+## v417 — FORMA DIVINA mais divertida
+- Leve/escorregadia: rastro fantasma dourado/branco ao andar, correr, pular e dar dash (ghosts a cada 3 quadros); combo pronto mais rápido na divina (sk.js: `D=f.skDiv?1.9:…` no `skStep` e na animação `skc`), com fantasmas e luzes douradas durante TODO o combo/golpes.
+- DESVIO DIVINO (`skDodge` embrulhado só com `skDiv`): 50% de chance, recarga 0,5 s, aparece atrás do inimigo deixando 2 fantasmas.
+- REFLEXO (`applyHit` embrulhado): 22% dos golpes que acertam o Shaka divino voltam 70% do dano para quem bateu (recarga 40 quadros, "REFLETIDO!").
+- AURA DIVINA: auréola dourada com raios de luz girando atrás da cabeça (`skHalo`, imagem pronta em cache = leve), por baixo da chama dourada clara da v398.
+- Teste `ferramentas/testes/tdivino_jogo_v417.js` (40 golpes: ~50% desvio, ~20-30% dos acertos refletidos).

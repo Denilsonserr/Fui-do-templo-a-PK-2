@@ -12,7 +12,7 @@ function skLoad(){if(SKP)return SKP;SKU.f.forEach((p,i)=>{const im=new Image();i
 const SKK={skk:1,skc:1,skcn:1};
 const SKC=['#ffd84a','#fff3b0','#ffffff','#ffb21f'];
 function skKey(f){const t=f.st,M=!!f.form;
-  if(f.state==='skc'){const L=SPRH.sk.cmb.length;return['cmb',Math.min(L-1,Math.floor(t/(M?2.5:3.2)))]}
+  if(f.state==='skc'){const L=SPRH.sk.cmb.length;return['cmb',Math.min(L-1,Math.floor(t/(f.skDiv?1.9:M?2.5:3.2)))]}
   if(f.state==='skk')return['ki1',Math.min(7,Math.floor(t/(M?1.4:2)))];
   if(f.state==='skcn')return['roxo',Math.min(5,Math.floor(t/(M?2:3)))];
   return['idle',0]}
@@ -77,7 +77,7 @@ function skStep(f){const o=skOpp(f),t=++f.st,fw=f.facing,M=!!f.form;
   if(f.state==='skcn'){const a=f.skCa||o,HT=M?5:7;if(t===HT&&a&&!a.ko&&Math.abs(a.x-f.x)<320){const h={dmg:M?100:92,kb:7,hs:22,heavy:1,ycrit:1,px:a.x-fw*30,py:a.y-160,kind:'melee'};f.inv=Math.max(f.inv,8);
       if(applyHit(f,a,h)){skImpact(f,a,h,1);skBurst(a.x,a.y-160,1)}if(a.hp<=0)ko(f,a)}
     if(t>=(M?14:20)){f.inv=Math.max(f.inv,4);neutral(f)}return}
-  if(f.state==='skc'){const D=M?2.5:3.2,L=SPRH.sk.cmb.length,k=Math.floor(t/D),END=Math.round(L*D+6),FIN=L-3;
+  if(f.state==='skc'){const D=f.skDiv?1.9:M?2.5:3.2,L=SPRH.sk.cmb.length,k=Math.floor(t/D),END=Math.round(L*D+6),FIN=L-3;
     const HK=M?{3:30,4:32,5:32,6:34,7:34,8:36,9:36,10:38,11:40}:{3:28,4:28,5:30,6:30,7:32,8:32,9:34,10:34,11:36};
     if(!f.skHeld&&k<=3&&o&&!o.ko){const dx=o.x-f.x;if(Math.sign(dx)===fw&&Math.abs(dx)>120)f.x=clamp(f.x+fw*Math.min(Math.abs(dx)-120,M?36:28),40,WW-40)}
     if(k<=2&&G.frame%2===0)f.ghosts.push({key:spriteKey(f),x:f.x,y:f.y,facing:f.facing,life:10,col:'#ffd84a'});
