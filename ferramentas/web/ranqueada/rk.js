@@ -4409,6 +4409,7 @@ TWCUP['1d3quh2']={nm:'PASSE MÁXIMO',it:[],bpmax:1};
 TWCUP['6p8bn']={nm:'ABÓBORAS DO ADM',it:[],sx:50000}; /* v411: ADMABOBORA50K (uso único, do dono) */
 TWCUP['1i1lpet']={nm:'ABÓBORAS DO ADM',it:[],sx:30000}; /* v410: ADMABOBORA30K (uso único, do dono) */
 TWCUP['894r1m']={nm:'ABÓBORAS DA SEXTA-FEIRA 13',acc:1,it:[],sx:300};
+TWCUP['kmf551']={nm:'10.000 ABÓBORAS DA SEXTA-FEIRA 13',acc:1,it:[],sx:10000}; /* v420: ABOBORA10K — para todos, 1 vez por conta */
 TWCUP['1saiymj']={nm:'GEMAS DA SEXTA-FEIRA 13',acc:1,it:[],gm:1000};
 TWCUP['10fttsa']={nm:'CAIXA SURPRESA DA SEXTA-FEIRA 13',acc:1,it:[],sxbox:1};
 TWCUP['mxbknc']={nm:'DEVOLUÇÃO DE RANK',it:[],rp:1250};

@@ -2065,3 +2065,6 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - Painel `#admT` (`admTOpen()`): seu personagem, inimigo, cenário (qualquer um) + opções salvas em `localStorage.admT`: vida infinita, energia infinita, inimigo parado (`G.noAI`), cortes azuis nos golpes. LUTAR = `gmode 'pve'` (modo livre, sem bônus, nada conta para rank). `ADMT.on` desliga ao voltar ao título.
 - Cortes azuis: artes do dono com fundo verde em `ferramentas/vfx/cortes_azuis/` → `cortar.py` (tira o verde, separa 8 cortes pequenos + 2 grandes) → www/a + `cortes.json` (embutido em `VFXC`). `vfxSlash()` no acerto do jogador (wrapper de applyHit), desenhado em `drawVfx()` (wrapper de drawFxs): aparece da cauda à ponta e some, com brilho 'lighter'. Golpe forte (dmg≥60/sp/ult) usa os cortes grandes.
 - Teste: `ferramentas/testes/tadm_teste_v419.js` (ADM=0 confere que o botão não aparece para jogador comum).
+
+## v420 — Código ABOBORA10K
+- `TWCUP[kmf551]`: 10.000 abóboras da Sexta-feira 13, para todos, 1 vez por conta (acc:1).
