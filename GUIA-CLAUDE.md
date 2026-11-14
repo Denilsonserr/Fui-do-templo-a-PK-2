@@ -2112,3 +2112,10 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 ## v430 — Códigos V2 de Virgem (todos, 1 vez por conta)
 - `VIRGEMV2` (TWCUP 11cvxl5, skv2:rand): uma peça V2 aleatória entre as que a pessoa ainda não tem em V2. `BOTAV2SHAKA` (1fxujd1, skv2:skbot): a bota V2.
 - Se tem a peça V1 ela EVOLUI (skV2Evo, igual à Caixa); se não tem, ganha a peça já V2. V2 não repete (se já tem, avisa). Com as 5 V2 libera a forma divina (skDivWin).
+
+## v431 — Sung: TRANSFORMAÇÃO + TANK (urso de sombra)
+- Pasta `ferramentas/personagens/sung/urso/`: `poses/01..06` (invocação 2x8, soco, chute, defesa, garras 2x3, morte), `transformacao_sung.mp4` (vídeo do dono), `seg_urso.py` (recorte), `build_urso.py` (urso em RES 1.6 + vídeo 8 q/s 640x360 → build/urso.json). 9y_sung.py injeta `window.SJBA`.
+- Transformar (U): `sjTransStart` (startTransform do sj) → vídeo em tela cheia (`SJTF`, 7 ticks/quadro) → forma + `sjSummon`: o TANK sobe do chão ("ERGA-SE!"). Imagens carregam ao entrar na luta com o Sung (`prepMatch`) e saem no título.
+- TANK (`f.sjB`, bloco rk.js "v431"): fica na frente do Sung, anda junto, ataca sozinho a cada ~1-1,4 s se o inimigo está perto (soco/chute/garras; `applyHit(f,o,{...,sjB:1})`, dano 48/62). Vida = 0,75 barra (1350), barra embaixo dele. Enquanto vivo, TODO golpe no Sung vai para o urso (wrapper de applyHit) e ele defende; vida 0 → anima a morte e some ("TANK CAIU!"). Sung KO → urso some.
+- Aura azul do Sung agora aparece também na forma (.15). Rika (Yuta) desligada para o Sung.
+- Teste: `ferramentas/testes/tsung_tank_v431.js` (servidor local).
