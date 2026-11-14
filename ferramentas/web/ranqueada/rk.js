@@ -2347,7 +2347,7 @@ TWCUP['yuirz0']={nm:'ZORO E SHAKA',it:[],chrs:['zoro','shaka']};
 /* ================= v326: MENU NOVO "MODOS DE JOGO" (vídeo do dono no fundo: cabelo mexendo, dragão) =================
    Arte 1408x640 com os botões desenhados; aqui só ficam as áreas de toque, os textos (nome, rank, moedas) e os brilhos.
    Foto (em cima, moldura dourada) = PERFIL · barra roxa = nome + rank · 🎵 música · moedas: ticket, diamante, moeda da torre, vermelha · ⚙️ = código/configuração/menu principal */
-const MN2={wm:'a/94ef9d958f9ca1.webm',v:'a/5949fec92d3bbf.mp4',p:'a/58584baf8fe032.webp',W:1408,H:640} /* v333: vídeo novo com o botão PVP Ranqueada */;RKD.menu=[MN2.W,MN2.H];
+const MN2={wm:'a/cda882ff03d35a.webm',v:'a/cd0bfcdede612b.mp4',p:'a/46c6f62959eb62.webp',W:1408,H:640} /* v443: menu SOLO LEVELING (vídeo do dono, ferramentas/ranqueada_artes/v443) */;RKD.menu=[MN2.W,MN2.H];
 const mnB=(x0,y0,x1,y1)=>`left:${x0/MN2.W*100}%;top:${y0/MN2.H*100}%;width:${(x1-x0)/MN2.W*100}%;height:${(y1-y0)/MN2.H*100}%`;
 let MN2V=null;
 function mn2Vid(){if(!MN2V){const v=document.createElement('video');v.className='mn2v';v.src=(v.canPlayType&&v.canPlayType('video/webm; codecs="vp9"'))?MN2.wm:MN2.v;v.onerror=()=>{if(v.src.indexOf(MN2.v)<0){v.src=MN2.v;v.play().catch(()=>{})}};v.poster=MN2.p;v.muted=true;v.defaultMuted=true;v.loop=true;v.autoplay=true;v.playsInline=true;v.setAttribute('playsinline','');v.setAttribute('webkit-playsinline','');v.setAttribute('muted','');v.preload='auto';MN2V=v}return MN2V}
@@ -3030,7 +3030,11 @@ function dsfEnd(w){G.mode='ranked';$('controls').hidden=true;$('pauseBtn').hidde
   else{rkS('po',lvPo()+20);R.push('🟣 +20 pó')}
   rkS('dsf',o);try{acSave(1)}catch(e){}rkOpen('menu');setTimeout(()=>{const M=document.createElement('div');M.id='lvrzM';document.body.appendChild(M);const rkModal=h=>{M.innerHTML=h};rkModal(`<div class="twM ${won?'gold':''}"><h3>${won?'🏆 DESAFIO VENCIDO!':'💀 O RIVAL VENCEU'}</h3><p class="twH">${R.join(' · ')}</p><p class="twH">${won?'🔥 Sequência: '+o.str+' dia'+(o.str>1?'s':''):'Tentativas que sobraram hoje: '+o.left}</p><div class="row">${!won&&o.left>0?'<button class="btn main" id="dsfAg">⚔️ TENTAR DE NOVO</button>':''}<button class="btn" id="rkMX">FECHAR</button></div></div>`);rkSfx(won?'powerUp':'clang');M.querySelector('#rkMX').onclick=()=>M.remove();const a=M.querySelector('#dsfAg');if(a)a.onclick=()=>{M.remove();dsfStart()}},900)}
 /* botão no menu Modos de Jogo */
-{const _mh=rkMenuH;rkMenuH=function(){const o=dsfG();return _mh.apply(this,arguments)+`<button class="hs dsfB ${o.won?'ok':''}" data-a="dsf" style="${mnB(28,506,318,566)}"><b>⚔️ DESAFIO DO DIA</b><small>${o.won?'✔ vencido hoje':o.left>0?o.left+' tentativa'+(o.left>1?'s':'')+' · '+dsfToday().m.n:'volte amanhã'}</small></button>`}}
+/* v443: no lugar do DESAFIO DO DIA fica o botão PORTAIS (arte do vídeo novo) — trancado até 15/11 11:00 (Brasília) */
+const PTREL=Date.UTC(2026,10,15,14,0,0);
+{const _mh=rkMenuH;rkMenuH=function(){const op=Date.now()>=PTREL;return _mh.apply(this,arguments)+`<button class="hs mnPt ${op?'':'lk'}" data-a="portais" style="${mnB(18,508,312,588)}">${op?'':'<span class="mnPtL"><i>🔒</i><b>AMANHÃ · 11:00</b></span>'}</button>`+
+  '<div class="mnFx">'+Array.from({length:14},(_,i)=>`<i style="left:${(i*7.3+3)%98}%;animation-delay:${(i*.83)%7}s;animation-duration:${6+(i%5)}s"></i>`).join('')+'</div>'}}
+{const _a=rkAct;rkAct=function(a,b){if(a==='portais'){rkSfx(Date.now()>=PTREL?'whoosh':'clang');return rkToast(Date.now()>=PTREL?'🌀 Os PORTAIS estão abrindo... o evento chega em breve!':'🔒 O EVENTO DE PORTAIS abre amanhã (15/11) às 11:00 (Brasília)!','#c79bff')}return _a.apply(this,arguments)}}
 {const _a=rkAct;rkAct=function(a,b){if(a==='dsf'){rkSfx('whoosh');return dsfOpen()}return _a.apply(this,arguments)}}
 
 /* só para testes de equilíbrio: window.__autoP = jogador controlado pela IA combista */
@@ -4871,6 +4875,11 @@ function sjTrialTick(){const T=sjTrialGet();let c=document.getElementById('sjTrC
   if(!c){c=document.createElement('div');c.id='sjTrC';document.body.appendChild(c)}const m=Math.floor(left/60000),s2=Math.floor(left/1000)%60;c.textContent=`🧪 TESTE DO SUNG · ${m}:${String(s2).padStart(2,'0')}`}
 setInterval(sjTrialTick,1000);setTimeout(sjTrialTick,1500);
 {const st=document.createElement('style');st.textContent=`#sjTrC{position:fixed;left:50%;top:6px;transform:translateX(-50%);z-index:9999;background:#06142cdd;border:1px solid #5fb0ff;color:#cfe8ff;font:800 13px var(--f-ui,sans-serif);padding:3px 12px;border-radius:12px;box-shadow:0 0 10px #2a6cff;pointer-events:none}`;document.head.appendChild(st)}
+{const st=document.createElement('style');st.textContent=`.rk_menu .mnPt{border-radius:1.2em}.rk_menu .mnPt.lk{background:rgba(6,3,16,.58)}.rk_menu .mnPtL{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;gap:.35em;pointer-events:none}
+.rk_menu .mnPtL i{font-style:normal;font-size:1.5em;filter:drop-shadow(0 0 .3em #b07cff)}.rk_menu .mnPtL b{font:900 1em var(--f-ui,sans-serif);color:#fff;text-shadow:0 0 .4em #8a4dff,0 0 2px #000;letter-spacing:.04em}
+.rk_menu .mnFx{position:absolute;inset:0;pointer-events:none;overflow:hidden;z-index:1}.rk_menu .mnFx i{position:absolute;bottom:-4%;width:.35em;height:.35em;border-radius:50%;background:#d6b8ff;box-shadow:0 0 .5em .15em #8a4dff;opacity:0;animation:mnUp linear infinite;will-change:transform,opacity}
+@keyframes mnUp{0%{transform:translateY(0) scale(.6);opacity:0}15%{opacity:.85}100%{transform:translateY(-1100%) scale(1.1);opacity:0}}
+@media (prefers-reduced-motion:reduce){.rk_menu .mnFx{display:none}}`;document.head.appendChild(st)}
 {const _sk=rkTwSkin;rkTwSkin=function(){const r=_sk.apply(this,arguments);try{tnSkin()}catch(e){console.warn(e)}return r}}
 {const _lv2=twLV;twLV=function(){if(TN.on&&G.gmode==='torre'){const B=G.p&&G.p[1];if(B&&B.tnBoss)return TWLV[Math.min(TWLV.length-1,3+Math.floor(TN.g/2))]}return _lv2.apply(this,arguments)}}
 try{RKTWX.fl=1;RKTWX.top=3.2}catch(e){}

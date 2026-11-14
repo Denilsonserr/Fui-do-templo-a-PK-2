@@ -2176,3 +2176,9 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 ## v442 — Sombra aguenta TEMPO mínimo apanhando (contra o Shaka absoluto)
 - `SJRK.ts` [nv1, nv máx] em segundos: C 3,3→7,6 · B 4,3→9,2 · A 5,4→11,3 · S 6,5→13,4 · SS 7,5→15. A sombra perde no máximo vida/ts por segundo (`B.rate`, janela de 60 quadros), além do limite por golpe (gp). Medido com spam de golpes ×12: A nv40 11,4 s, S nv50 13,5 s.
 - Tela SOMBRAS: Resistência = "N golpes · X s". Teste: `ferramentas/testes/tsung_sombra_max_v442.js`.
+
+## v443 — Menu SOLO LEVELING + PORTAIS trancado
+- Vídeo novo do menu (dono): `ferramentas/ranqueada_artes/v443/` (`video.sh`: loop sem pulo, webm vp9 crf42 + mp4 + poster) → `MN2` (mesmo layout 1408x640, os botões continuam nos mesmos lugares).
+- DESAFIO DO DIA saiu do menu; no lugar, botão PORTAIS (`data-a="portais"`) trancado com "🔒 AMANHÃ · 11:00" até `PTREL` = 15/11 11:00 Brasília (depois só mostra "em breve" — o evento ainda vai ser feito).
+- Partículas roxas leves subindo no menu (`.mnFx`, 14 pontinhos CSS, desligam com reduced-motion).
+- Revisão: testes principais sem erro. Obs.: desde a v442 golpes INSTANTÂNEOS em sequência não matam a sombra (limite por segundo), então `tsung_sombra_v440` conta 40 — esperado.
