@@ -1,0 +1,10 @@
+// v442: sombra no nível máximo aguenta apanhando sem parar (Shaka absoluto) pelo menos: C 7 s, A 10,5 s, S 12,5 s
+const {chromium}=require('playwright');
+async function run(b,rank,lv){const p=await b.newPage({viewport:{width:915,height:412}});const errs=[];p.on('pageerror',e=>errs.push(e.message));await p.route(/fonts\.g|firestore|workers\.dev\/fs/,r=>r.abort());
+await p.addInitScript(lv=>{if(!sessionStorage.d){sessionStorage.d=1;localStorage.clear();Object.assign(localStorage,{tw_nome:'"Denilson ADM"',tw_tit:'["adm"]',rk_ini:'1',rk_xpv2:'1',rk_sjs:JSON.stringify({cls:'necro',lv:80,st:{for:120,vit:100,agi:60,per:60,int:65},shl:{tank:lv}}),admT:JSON.stringify({hp:1,en:1,noai:1,vfx:0,a:'sung',b:'shaka',s:'cupula'})})}},lv);
+await p.goto(process.env.URL||'http://localhost:8790/');await p.waitForFunction(()=>!document.getElementById('goSelect').disabled,null,{timeout:120000});await p.waitForTimeout(1500);await p.evaluate(r=>__pvT.sjRank('tank',r),rank);
+await p.click('#admTB');await p.click('#admGo');await p.waitForFunction(()=>__dbg.G.mode==='fight'&&__dbg.G.phase==='fight',null,{timeout:120000});await p.waitForFunction(()=>__pvT.sjOK(),null,{timeout:60000});
+await p.keyboard.press('u');await p.waitForFunction(()=>!__dbg.G.trans&&__dbg.G.p[0].form,null,{timeout:30000});await p.waitForTimeout(300);await p.keyboard.press('o');await p.waitForTimeout(300);await p.waitForFunction(()=>!__dbg.G.trans,null,{timeout:30000});await p.waitForTimeout(1300);
+const r=await p.evaluate(()=>new Promise(res=>{const G=__dbg.G,[a,o]=G.p;o.tdm=12;o.form=1;const f0=G.frame,hp=__pvT.sjB().mhp;const t=setInterval(()=>{const B=__pvT.sjB();if(!B||B.st==='die'||G.frame-f0>1200){clearInterval(t);res({seg:+((G.frame-f0)/60).toFixed(1),hp:Math.round(hp)})}else for(let i=0;i<3;i++)__dbg.applyHit(o,a,{dmg:120,kb:1,hs:0,px:a.x,py:a.y-150,kind:'melee'})},50)}));
+await p.close();return {rank,lv,...r,errs:errs.slice(0,2)}}
+(async()=>{const b=await chromium.launch();const out=[];for(const [r,l] of [['C',1],['C',20],['A',40],['S',50]])out.push(await run(b,r,l));console.log(JSON.stringify(out));await b.close()})();

@@ -2172,3 +2172,7 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 
 ## v441 — Sung transformado invoca a sombra sem encher a barra
 - `srReady`/`trySR` do Sung → `sjSRok(f)`: basta estar transformado, sem sombra em campo e fora da recarga de 2 s depois que a sombra some (`f.sjCD`). Não gasta ki nem a faísca.
+
+## v442 — Sombra aguenta TEMPO mínimo apanhando (contra o Shaka absoluto)
+- `SJRK.ts` [nv1, nv máx] em segundos: C 3,3→7,6 · B 4,3→9,2 · A 5,4→11,3 · S 6,5→13,4 · SS 7,5→15. A sombra perde no máximo vida/ts por segundo (`B.rate`, janela de 60 quadros), além do limite por golpe (gp). Medido com spam de golpes ×12: A nv40 11,4 s, S nv50 13,5 s.
+- Tela SOMBRAS: Resistência = "N golpes · X s". Teste: `ferramentas/testes/tsung_sombra_max_v442.js`.
