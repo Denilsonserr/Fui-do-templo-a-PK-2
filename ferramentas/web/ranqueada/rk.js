@@ -4431,6 +4431,17 @@ TWCUP['147gjni']={nm:'ARMADURA DE VIRGEM',it:[],skv1:1}; /* v416: ARMADURAVIRGEM
 {const _cp14=twCupom;twCupom=async function(code,E){const C=TWCUP[twHash(String(code).toUpperCase())];const r=await _cp14.apply(this,arguments);
   if(C&&C.skv1&&r&&E&&/ok/.test(E.className||'')){const I=twInv(),L=[];for(const k of SKSEC){const S=RKSP[k];if(I.some(x=>x&&(x.nm===S.nm||x.skb===k)))continue;I.push(Object.assign({id:'v1'+k+Date.now().toString(36)},S));L.push(S.nm)}twLS.s('tw_inv',I);try{TW.capOut=twCap()}catch(e){}try{acSave(1)}catch(e){}
     E.textContent=L.length?'🎁 ARMADURA DE VIRGEM! '+L.join(' · ')+' (na 🎒 MOCHILA)':'🎁 Você já tem todas as peças da armadura de Virgem!';try{twSfx('boom')}catch(e){}}return r}}
+TWCUP['11cvxl5']={nm:'PEÇA V2 DE VIRGEM (ALEATÓRIA)',acc:1,it:[],skv2:'rand'}; /* v430: VIRGEMV2 — todos, 1 vez por conta */
+TWCUP['1fxujd1']={nm:'BOTA V2 DE VIRGEM',acc:1,it:[],skv2:'skbot'}; /* v430: BOTAV2SHAKA — todos, 1 vez por conta */
+/* v430: dá a peça V2: se a pessoa já tem a peça V1 ela EVOLUI (igual à Caixa Surpresa); se não tem, ganha a peça já em V2. V2 não repete. */
+{const _cp15=twCupom;twCupom=async function(code,E){const C=TWCUP[twHash(String(code).toUpperCase())];const r=await _cp15.apply(this,arguments);
+  if(C&&C.skv2&&r&&E&&/ok/.test(E.className||'')){const I=twInv(),has2=k=>I.some(x=>x&&x.v2&&x.skb===k);
+    const L=C.skv2==='rand'?SKSEC.filter(k=>!has2(k)):(has2(C.skv2)?[]:[C.skv2]);
+    if(!L.length){E.textContent='✦ Você já tem '+(C.skv2==='rand'?'todas as peças V2 de Virgem!':'a BOTA V2 de Virgem!');return r}
+    const k=L[(Math.random()*L.length)|0];let it=I.find(x=>x&&!x.v2&&(x.skb===k||x.nm===RKSP[k].nm));
+    if(!it){it=Object.assign({id:'v2'+k+Date.now().toString(36)},RKSP[k]);I.push(it)}skV2Evo(it);twLS.s('tw_inv',I);try{TW.capOut=twCap()}catch(e){}try{acSave(1)}catch(e){}
+    E.textContent='✦ '+it.nm+'! (+35% em tudo, na 🎒 MOCHILA)';try{twSfx('boom')}catch(e){}try{skV2Win(it)}catch(e){}
+    try{if(!rkG('skdvok',0)&&skDivHave()){rkS('skdvok',1);setTimeout(()=>skDivWin(),2500)}}catch(e){}}return r}}
 TWCUP['g3ina9']={nm:'MEU AMOR 💖',it:[],gm:200000,luv:'love'};
 TWCUP['1841w3z']={nm:'MINHA PROTEGIDA 💗',it:[],gm:50000,luv:'prot'};
 function luvGive(C){const own=rkG('own',['goku']);for(const id of ALLC)if(CH[id]&&!own.includes(id))own.push(id);rkS('own',own);

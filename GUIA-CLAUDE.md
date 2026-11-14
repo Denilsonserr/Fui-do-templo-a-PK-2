@@ -2108,3 +2108,7 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 
 ## v429 — Aura do Monarca: volta a sombra da v427, só um pouco mais fraca
 - O dono queria a de fumaça (v427) só "mini diminuída". monShape (v428) removida; nuvens mais claras (.88/.62), alpha .56 (carregando .72), um pouco menores, mais borda roxa (30%).
+
+## v430 — Códigos V2 de Virgem (todos, 1 vez por conta)
+- `VIRGEMV2` (TWCUP 11cvxl5, skv2:rand): uma peça V2 aleatória entre as que a pessoa ainda não tem em V2. `BOTAV2SHAKA` (1fxujd1, skv2:skbot): a bota V2.
+- Se tem a peça V1 ela EVOLUI (skV2Evo, igual à Caixa); se não tem, ganha a peça já V2. V2 não repete (se já tem, avisa). Com as 5 V2 libera a forma divina (skDivWin).
