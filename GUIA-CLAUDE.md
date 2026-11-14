@@ -2102,3 +2102,6 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - Opção "AURA DO MONARCA" (`ADMT.mon`) no painel 🧪 TESTE, no jogador. Bloco rk.js "v427" (nomes `mon*`; wrappers de renderFighter e update).
 - Camadas: poça de sombra + tentáculos no chão; borda azul-violeta bem fraca (chama do Gojo tingida, lighter); FUMAÇA PRETA = nuvenzinhas escuras (sprite `monPuff`) saindo do contorno do corpo e subindo, algumas com borda roxa (`monGlow`); na frente: fiapos pretos e faíscas roxas; rastro azul dos olhos quando corre/ataca/dash. Carregando = tudo mais forte.
 - Testar via servidor (http), em file:// a tinta da textura cai na cor reserva. Teste: `ferramentas/testes/tmonarca_v427.js`.
+
+## v428 — Aura do Monarca LISA (pedido do dono: "menos fumaça, mais aura")
+- `monShape`: contorno de chama escura em volta do corpo (curvas suaves, ondas lentas que sobem, 3 línguas arredondadas no alto), 3 camadas (externa fraca, do meio com borda roxa/azul brilhando com shadowBlur, interna escura). As nuvens de fumaça (MONS) foram desligadas; fiapos pretos bem menos. Poça no chão, faíscas e rastro dos olhos continuam.
