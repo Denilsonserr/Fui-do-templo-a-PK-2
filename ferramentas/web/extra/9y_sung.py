@@ -43,4 +43,6 @@ rep("G.pick==='yuta'||G.pick==='shaka');","G.pick==='yuta'||G.pick==='shaka'||G.
 rep("isYt(f)?3.0:","isYt(f)?(f.def.sid==='sj'?2.12:3.0):")
 rep("*(a.form&&a.tfd?1+a.tfd/100:1)","*(a.form&&a.tfd?1+a.tfd/100:1)*(a.form&&a.def.sid==='sj'?1.25:1)")
 rep("*(d.form?.8:1)","*(d.form?.8:1)*(d.form&&d.def.sid==='sj'?.85:1)")
+# v437: Sung entra na lista de personagens (ALLC); o rk.js esconde/tira antes de 15/11 08:00 (sjRelChk)
+rep("'garou','yuta','shaka'];const ROS={","'garou','yuta','shaka','sung'];const ROS={")
 open(P,'w',encoding='utf8').write(s);print('sung ok',len(s))

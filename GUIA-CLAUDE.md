@@ -2147,3 +2147,11 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - Efeitos na luta (só Sung do jogador, aplicados uma vez por round no hook de update `p.sjA`): Força +0,35%/pt dano; Vitalidade -0,4%/pt dano recebido; Agilidade +0,15%/pt velocidade (máx +60%); Percepção 0,12%/pt de DESVIAR sozinho (máx 30%); Inteligência sombra +1%/pt vida, +0,8%/pt dano; MP 100+5/pt. Classes (`SJCL`): Assassino +30% dano +8% crit; Espadachim espada +25% e explosão do corte maior; Guerreiro +15%/-12%; Defensor -28%; Necromante (Monarca das Sombras) = ÚNICO que invoca sombra (sjUlt). Fadiga = 5% por luta do dia (visual).
 - Classe escolhida 1 vez (ADM troca à vontade). Inventário = sombras que tem (TANK); Sombras = equipar 1.
 - Teste: `ferramentas/testes/tsung_sistema_v436.js`.
+
+## v437 — SUNG CHEGA 15/11 08:00 + banner + tela SOMBRAS
+- `SJREL` = 15/11/2026 08:00 Brasília. Antes: tile do Sung escondido e fora do `ALLC` (`sjRelChk`, a cada 20 s), fora da Biblioteca, banner trancado ("CHEGA 15/11..."). ADM vê tudo antes.
+- INVOCAÇÃO MÍTICA = SUNG (arte do dono `sistema/banner_sung.png` → `RQA.gacha_sj`): `rkRollY` virou `rkRollSJ` (0,4%, garantido em 250 = `rk_pitySJ`, 30% equip., resto moeda vermelha); 80 💎 / 800 💎 (ticket vale 1). Sem vídeo do Yuta no giro. `rkMegaSJ` "SORTE DIVINA". Raridade mítica no código (mostrado como SS/Divino).
+- Banner do Yuta acabou: Yuta agora sai na INVOCAÇÃO ESPECIAL (pool mítico `[...RK_MIT,'yuta']`).
+- Tela SOMBRAS (`sjShOpen`, arte `sistema/tela_sombras.png`): slot EQUIPADA + 8 slots, sombra no pedestal, dano/vida/resistência/velocidade, custo = ESSÊNCIA DA SOMBRA (`rk_sje`, ícone `a/ca4b5f5f1fdbb0.webp` recortado da arte) + moedas douradas (`tw_moedas`). Ranks `SJRK`: C 20, B 30, A 40, S 50 níveis (S começa ×1,5). Por nível: vida +3%, dano +2%, resistência +0,8% (máx 25%), velocidade +0,6%. Custo nv→nv+1: essência 8+4·nv, moedas 300+100·nv. TANK = rank C, base 0,3 barra (era 0,4) e dano ×0,85 no nv 1.
+- Essência: cada missão do Sistema dá XP/40 (mín. 5); cada vitória com o Sung 4–8.
+- Teste: `ferramentas/testes/tsung_lanc_v437.js` (usa page.clock antes/depois do lançamento).
