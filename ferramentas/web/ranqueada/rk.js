@@ -4489,31 +4489,46 @@ let SKHALO=null;function skHalo(){if(SKHALO)return SKHALO;const S=360,c=document
    Escolhe personagem, inimigo e cenário (qualquer um, sem precisar ter) e luta no modo livre (gmode 'pve').
    Opções: vida infinita, energia infinita, inimigo parado, CORTES AZUIS nos golpes (artes do dono: ferramentas/vfx/cortes_azuis). ================= */
 const VFXC={"grande":[{"s":"a/581cbfaca6b183.webp","w":640,"h":283},{"s":"a/f92c3d3675d0f2.webp","w":640,"h":410}],"peq":[{"s":"a/042ae9d805ca95.webp","w":460,"h":115},{"s":"a/9fae3b4e302a8e.webp","w":460,"h":168},{"s":"a/7bd6104bb424cf.webp","w":460,"h":211},{"s":"a/6057b18ba645a3.webp","w":460,"h":197},{"s":"a/c7c5f1e2b8d3f5.webp","w":373,"h":115},{"s":"a/840860e8aaf540.webp","w":386,"h":129},{"s":"a/a1f765e763de47.webp","w":446,"h":337},{"s":"a/5a61c283b0205f.webp","w":460,"h":253}]};
-const ADMT=(()=>{try{return Object.assign({hp:1,en:1,noai:0,vfx:1,aura:0,a:'denilson',b:'goku',s:'auto'},JSON.parse(localStorage.getItem('admT')||'{}'),{on:0})}catch(e){return {hp:1,en:1,noai:0,vfx:1,a:'denilson',b:'goku',s:'auto',on:0}}})();
+const ADMT=(()=>{try{return Object.assign({hp:1,en:1,noai:0,vfx:1,a:'denilson',b:'goku',s:'auto'},JSON.parse(localStorage.getItem('admT')||'{}'),{on:0})}catch(e){return {hp:1,en:1,noai:0,vfx:1,a:'denilson',b:'goku',s:'auto',on:0}}})();
 const admSv=()=>{try{const o=Object.assign({},ADMT);delete o.on;localStorage.setItem('admT',JSON.stringify(o))}catch(e){}};
 const VFXI={};const vfxImg=e=>{let i=VFXI[e.s];if(!i){i=new Image();i.decoding='async';i.src=e.s;VFXI[e.s]=i}return i.complete&&i.naturalWidth?i:null};
 const vfxLoad=()=>{for(const e of [...VFXC.grande,...VFXC.peq])vfxImg(e)};
 let VFXL=[],VFXN=0,VFXF=-99;const VFXCV=document.createElement('canvas'),VFXG=VFXCV.getContext('2d');
-function vfxSlash(x,y,dir,big){const L=big?VFXC.grande:VFXC.peq,e=L[(VFXN++)%L.length];VFXL.push({e,x,y,dir,rot:rand(-.3,.3),w:big?620:rand(380,460),t:0,life:big?28:20});if(VFXL.length>6)VFXL.shift()}
-let VFXDC=0;function drawVfx(){VFXDC++;if(!VFXL.length)return;for(const v of VFXL){const I=vfxImg(v.e);if(!I)continue;const w=Math.round(v.w),h=Math.round(v.w*v.e.h/v.e.w);
+function vfxSlash(x,y,dir,big,o){o=o||{};const L=big?VFXC.grande:VFXC.peq,e=L[(VFXN++)%L.length];VFXL.push({e,x,y,dir,rot:rand(-.3,.3),w:(big?620:rand(380,460))*(o.sc||1),t:0,life:o.life||(big?28:20),p:!!o.p});if(VFXL.length>6)VFXL.shift()}
+/* v426: versão ROXA dos cortes (2º golpe em diante do Sung) — tinge a imagem uma vez e guarda */
+const VFXP={};function vfxPur(e,I){let c=VFXP[e.s];if(c)return c;c=document.createElement('canvas');c.width=I.naturalWidth;c.height=I.naturalHeight;const g=c.getContext('2d');g.drawImage(I,0,0);
+  try{const d=g.getImageData(0,0,c.width,c.height),a=d.data;for(let i=0;i<a.length;i+=4){const r=a[i],gg=a[i+1],b=a[i+2];a[i]=Math.min(255,r*.45+b*.62);a[i+1]=Math.min(255,gg*.42);a[i+2]=Math.min(255,b*1.02+8)}g.putImageData(d,0,0)}catch(_){g.globalCompositeOperation='source-atop';g.fillStyle='rgba(170,90,255,.7)';g.fillRect(0,0,c.width,c.height)}
+  return VFXP[e.s]=c}
+function vfxBolt(w,h,seed){let x=-w*.45,y=(seed%3-1)*h*.18;const P=[[x,y]];while(x<w*.45){x+=rand(18,38);y=Math.max(-h*.42,Math.min(h*.42,y+rand(-22,22)));P.push([x,y])}return P}
+let VFXDC=0;function drawVfx(){VFXDC++;if(!VFXL.length)return;for(const v of VFXL){const I0=vfxImg(v.e);if(!I0)continue;const I=v.p?vfxPur(v.e,I0):I0;const w=Math.round(v.w),h=Math.round(v.w*v.e.h/v.e.w);
     if(VFXCV.width<w)VFXCV.width=w;if(VFXCV.height<h)VFXCV.height=h;const g=VFXG;g.globalCompositeOperation='source-over';g.clearRect(0,0,VFXCV.width,VFXCV.height);g.drawImage(I,0,0,w,h);
     const k=v.t/v.life,hd=Math.min(1,k/.4),tl=Math.max(0,(k-.45)/.55);const G2=g.createLinearGradient(0,0,w,0),cl=x=>Math.max(0,Math.min(1,x));
     G2.addColorStop(0,'rgba(0,0,0,0)');G2.addColorStop(cl(tl*1.1),'rgba(0,0,0,0)');G2.addColorStop(cl(tl*1.1+.12),'#000');G2.addColorStop(cl(hd*1.05),'#000');G2.addColorStop(cl(hd*1.05+.06),'rgba(0,0,0,0)');G2.addColorStop(1,'rgba(0,0,0,0)');
     g.globalCompositeOperation='destination-in';g.fillStyle=G2;g.fillRect(0,0,w,h);
     ctx.save();ctx.translate(v.x,v.y);ctx.rotate(v.rot*v.dir);ctx.scale(v.dir*(1+k*.08),1+k*.08);ctx.globalAlpha=1;ctx.drawImage(VFXCV,0,0,w,h,-w/2,-h/2,w,h);
-    ctx.globalCompositeOperation='lighter';ctx.globalAlpha=.35*(1-tl);ctx.drawImage(VFXCV,0,0,w,h,-w/2,-h/2,w,h);ctx.restore()}}
+    ctx.globalCompositeOperation='lighter';ctx.globalAlpha=.35*(1-tl);ctx.drawImage(VFXCV,0,0,w,h,-w/2,-h/2,w,h);
+    if(v.p&&k<.8){if(!v.b||v.t%3===0)v.b=[vfxBolt(w*hd,h,v.t),vfxBolt(w*hd,h,v.t+1),vfxBolt(w*hd,h,v.t+2)];ctx.globalAlpha=(1-k)*.95;ctx.lineJoin='round';
+      for(const B of v.b){for(const [lw,c] of [[5,'rgba(190,120,255,.55)'],[1.8,'#ffffff']]){ctx.strokeStyle=c;ctx.lineWidth=lw;ctx.beginPath();B.forEach(([x,y],i)=>i?ctx.lineTo(x-w*(1-hd)/2,y):ctx.moveTo(x-w*(1-hd)/2,y));ctx.stroke()}}}
+    ctx.restore()}}
 {const _df=drawFxs;drawFxs=function(){const r=_df.apply(this,arguments);try{drawVfx()}catch(e){if(!window.__vfxE)console.warn("vfx",e.message);window.__vfxE=1}return r}}
-{const _ah=applyHit;applyHit=function(a,d,h){const r=_ah.apply(this,arguments);try{if(ADMT.on&&ADMT.vfx&&G.p&&a===G.p[0]&&h&&h.kind!=='beam'&&h.kind!=='proj'&&G.frame-VFXF>=4){VFXF=G.frame;const big=(h.dmg||0)>=60||a.state==='sp'||a.state==='ult';
+/* v426: SUNG — cortes azuis OFICIAIS em todo golpe de ESPADA que acerta (jogador e CPU). Do 2º golpe seguido em diante (até ~0,75 s entre eles):
+   corte ROXO com raios e mais rápido. Chutes/rasteira/joelhada: sem efeito. */
+const sjSword=a=>a.state==='ytk'||a.state==='ytc'||a.state==='ytcn'||(a.state==='attack'&&!/kick|sweep|knee/.test(a.mname||''));
+{const _ah=applyHit;applyHit=function(a,d,h){const r=_ah.apply(this,arguments);try{if(a&&d&&a!==d&&a.def&&a.def.sid==='sj'&&h&&h.kind!=='beam'&&h.kind!=='proj'&&sjSword(a)&&G.frame-(a.sjVF||-99)>=4){
+  const n=G.frame-(a.sjLast||-999)<45?(a.sjN||1)+1:1;a.sjN=n;a.sjLast=a.sjVF=G.frame;vfxLoad();const big=a.state==='ytc'||(h.dmg||0)>=70,P=n>=2;
+  vfxSlash((a.x+d.x)/2+a.facing*30,d.y-150+rand(-25,25),a.facing||1,big,P?{p:1,life:big?18:12,sc:1.05}:{life:big?24:17});
+  for(let i=0;i<(P?14:9);i++)spark(d.x,d.y-150,pick(P?['#c79bff','#8a4dff','#ffffff']:['#8fe8ff','#3d7dff','#ffffff']),1,rand(5,12));}}catch(e){}return r}}
+{const _ah=applyHit;applyHit=function(a,d,h){const r=_ah.apply(this,arguments);try{if(ADMT.on&&ADMT.vfx&&G.p&&a===G.p[0]&&a.def.sid!=='sj'&&h&&h.kind!=='beam'&&h.kind!=='proj'&&G.frame-VFXF>=4){VFXF=G.frame;const big=(h.dmg||0)>=60||a.state==='sp'||a.state==='ult';
   vfxSlash((a.x+d.x)/2+a.facing*30,d.y-150+rand(-25,25),a.facing||1,big);for(let i=0;i<10;i++)spark(d.x,d.y-150,pick(['#8fe8ff','#3d7dff','#ffffff']),1,rand(5,12))}}catch(e){}return r}}
 {const _uA=update;update=function(){const r=_uA.apply(this,arguments);try{if(ADMT.on){if(G.gmode!=='pve'&&G.mode==='fight')ADMT.on=0;else if(G.p&&G.mode==='fight'){const p=G.p[0];if(ADMT.hp&&!p.ko){const M=p.mhp||MAXHP;if(p.hp<M)p.hp=M}if(ADMT.en){p.sb=6;p.ki=100}G.noAI=!!ADMT.noai}}
   for(const v of VFXL)v.t++;VFXL=VFXL.filter(v=>v.t<v.life)}catch(e){}return r}}
-function admTOpen(){if(!pfIsAdm())return;vfxLoad();if(ADMT.aura)aurImg();let M=document.getElementById('admT');if(!M){M=document.createElement('div');M.id='admT';document.body.appendChild(M)}
+function admTOpen(){if(!pfIsAdm())return;vfxLoad();let M=document.getElementById('admT');if(!M){M=document.createElement('div');M.id='admT';document.body.appendChild(M)}
   const op=(L,v)=>L.map(([k,n])=>`<option value="${k}"${k===v?' selected':''}>${twEsc(n)}</option>`).join('');
   const CL=Object.keys(CH).map(k=>[k,CH[k].name||k]),SL=[['auto','🎲 ALEATÓRIO'],...Object.keys(STG).filter(k=>!STG[k].hid||STG[k].sel).map(k=>[k,STG[k].name||k])];
   const tg=(k,n)=>`<button class="admTg${ADMT[k]?' on':''}" data-k="${k}">${ADMT[k]?'✅':'⬜'} ${n}</button>`;
   M.innerHTML=`<div class="admP"><h3>🧪 MODO TESTE <small>só o ADM vê</small></h3>
    <label>SEU PERSONAGEM<select id="admA">${op(CL,ADMT.a)}</select></label><label>INIMIGO<select id="admB">${op(CL,ADMT.b)}</select></label><label>CENÁRIO<select id="admS">${op(SL,ADMT.s)}</select></label>
-   <div class="admTgs">${tg('hp','VIDA INFINITA')}${tg('en','ENERGIA INFINITA')}${tg('noai','INIMIGO PARADO')}${tg('vfx','CORTES AZUIS NOS GOLPES')}${tg('aura','AURA DE SOMBRA')}</div>
+   <div class="admTgs">${tg('hp','VIDA INFINITA')}${tg('en','ENERGIA INFINITA')}${tg('noai','INIMIGO PARADO')}${tg('vfx','CORTES AZUIS NOS GOLPES')}</div>
    <p class="admH">Modo livre: sem bônus de itens, todas as transformações liberadas. Nada aqui conta para rank.</p>
    <div class="admR"><button class="btn main" id="admGo">⚔️ LUTAR</button><button class="btn" id="admX">FECHAR</button></div></div>`;
   M.hidden=false;const $$=id=>document.getElementById(id);
@@ -4531,16 +4546,6 @@ setTimeout(admTBtn,1500);setInterval(admTBtn,5000);
 #admT label{display:flex;justify-content:space-between;align-items:center;gap:10px;margin:6px 0}#admT select{flex:1;max-width:60%;padding:6px;border-radius:8px;background:#261d40;color:#fff;border:1px solid #6a58a8;font:700 14px var(--f-ui,sans-serif)}
 #admT .admTgs{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin:10px 0}#admT .admTg{padding:8px;border-radius:10px;border:1px solid #6a58a8;background:#221a3a;color:#fff;font:800 12px var(--f-ui,sans-serif);text-align:left}#admT .admTg.on{border-color:#7dff9a;background:#183a2a}
 #admT .admH{font-size:11px;color:#b9b0d8;margin:4px 0 10px}#admT .admR{display:flex;gap:10px;justify-content:center}`;document.head.appendChild(st)}
-/* ================= v425: AURA DE SOMBRA (teste do ADM) — vídeo do dono (ferramentas/vfx/aura_sombra, montar.py): célula da grade ao longo do tempo,
-   fundo preto desenhado com 'lighter' (o preto some). Atrás do personagem (forte) + uma camada fraca na frente (meio transparente, envolve o corpo).
-   Só no MODO TESTE (opção "AURA DE SOMBRA"), no jogador. ================= */
-const AURS={s:'a/b7efa869365eb2.webp',n:33,fw:170,fh:251};let AURI=null;
-const aurImg=()=>{if(!AURI){AURI=new Image();AURI.decoding='async';AURI.src=AURS.s}return AURI.complete&&AURI.naturalWidth?AURI:null};
-function drawAura(f,front){const I=aurImg();if(!I)return;const H=580,W=H*AURS.fw/AURS.fh,i=Math.floor(G.frame/5)%AURS.n,fl=1+.03*Math.sin(G.frame*.21);
-  ctx.save();ctx.globalCompositeOperation='lighter';ctx.globalAlpha=front?.2:.72;ctx.translate(f.x,f.y+6);ctx.scale((f.facing||1)*fl,fl);
-  ctx.drawImage(I,i*AURS.fw,0,AURS.fw,AURS.fh,-W/2,-H,W,H);ctx.restore()}
-{const _rf=renderFighter;renderFighter=function(f,reflect){const on=!reflect&&ADMT.on&&ADMT.aura&&G.p&&f===G.p[0]&&G.mode==='fight'&&!f.hide;if(on)try{drawAura(f,0)}catch(e){}
-  const r=_rf.apply(this,arguments);if(on)try{drawAura(f,1)}catch(e){}return r}}
 {const _sk=rkTwSkin;rkTwSkin=function(){const r=_sk.apply(this,arguments);try{tnSkin()}catch(e){console.warn(e)}return r}}
 {const _lv2=twLV;twLV=function(){if(TN.on&&G.gmode==='torre'){const B=G.p&&G.p[1];if(B&&B.tnBoss)return TWLV[Math.min(TWLV.length-1,3+Math.floor(TN.g/2))]}return _lv2.apply(this,arguments)}}
 try{RKTWX.fl=1;RKTWX.top=3.2}catch(e){}

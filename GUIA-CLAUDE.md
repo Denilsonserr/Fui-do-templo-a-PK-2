@@ -2089,7 +2089,11 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - Patch (9y_sung.py, vgKey case 'idle'): na luta o Sung fica ~7 s na pose 1 e ~4 s na pose 2 (ciclo de 660 quadros; CPU defasado). `saca` = folha 03 guardada para depois.
 - Teste: `ferramentas/testes/tsung_parado_v424.js`.
 
-## v425 — AURA DE SOMBRA (só no modo teste do ADM)
-- Vídeo do dono `ferramentas/vfx/aura_sombra/aura_dono.mp4` = grade 6x2 animada com fundo preto. `montar.py` pega a célula (linha 2, coluna 0 = aura em volta da silhueta) ao longo do tempo, emenda o loop (mistura os últimos 8 quadros) → 1 tira webp (33 quadros) + aura.json.
-- rk.js `drawAura` (wrapper de renderFighter): atrás do jogador com 'lighter' (alpha .72) + camada fraca na frente (.2). Opção "AURA DE SOMBRA" no painel 🧪 TESTE (`ADMT.aura`). Se o dono aprovar, ligar no Sung.
-- Teste: `ferramentas/testes/taura_v425.js`.
+## v425 — (removida na v426) aura de sombra em vídeo no modo teste — o dono achou feia. ATENÇÃO: a v425 definia `function drawAura(f,front)` no rk.js e isso SOBRESCREVIA o drawAura do jogo base (todas as auras). Nunca reutilizar nomes de função do jogo base em blocos novos.
+
+## v426 — Sung: cortes oficiais, aura azul fraquinha, parado fixo
+- rk.js (bloco "v426: SUNG"): todo golpe de ESPADA do Sung que acerta (jogador e CPU, qualquer modo) solta um corte azul (`vfxSlash`). Do 2º golpe seguido em diante (até 45 quadros entre eles) o corte é ROXO (`vfxPur` tinge a imagem) com raios (`vfxBolt`) e mais rápido (vida 12/18 em vez de 17/24). Chutes/rasteira/joelhada (`mname` kick|sweep|knee) sem efeito. A opção "CORTES AZUIS" do teste não vale para o Sung (ele já tem os dele).
+- Chutes usam a folha 08 (sem efeito desenhado) — a 07 (com efeito) saiu de tudo, inclusive do combo.
+- Aura (9y_sung.py `sjAura`, ytAura desvia para ela): chama do Gojo (GJAU) azul bem clarinho, centralizada (não espelha), alpha .085; carregando .3 + raiozinhos azuis. Na forma não desenha (transformação ainda não existe).
+- Parado = 19_0 parado de verdade (sem a "respiração" esticada que tremia). Âncora das folhas 19/20 = meio do tronco sem a espada azul (personagem fixo; troca de pose sem pular).
+- Teste: `ferramentas/testes/tsung_cortes_v426.js`.
