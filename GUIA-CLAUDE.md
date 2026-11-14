@@ -2135,3 +2135,7 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - `sjFull()` desenha o vídeo certo (G.trans.sj; `u:1` = ultimate). `sjUlt` agora abre G.trans {sj:1,u:1}.
 - Aura azul do Sung só aparece transformado.
 - Teste: `ferramentas/testes/tsung_tank_v434.js`.
+
+## v435 — Sung transformado: +70% velocidade e bônus acima do Shaka
+- speedMul: Sung na forma 2.12 (normal 1.25; Yuta continua 3.0). Dano na forma ×1,25 extra (total ×1,81 contra ×1,45 das formas comuns como a do Shaka) e dano recebido ×0,85 extra (total ×0,68 contra ×0,8). Normal sem aura (v434).
+- PLANO do dono: Sung vai ser o mais forte do jogo só quando UPADO numa ÁRVORE de evolução no estilo do "Sistema" do anime (a definir).
