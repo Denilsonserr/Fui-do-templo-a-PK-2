@@ -2097,3 +2097,8 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - Aura (9y_sung.py `sjAura`, ytAura desvia para ela): chama do Gojo (GJAU) azul bem clarinho, centralizada (não espelha), alpha .085; carregando .3 + raiozinhos azuis. Na forma não desenha (transformação ainda não existe).
 - Parado = 19_0 parado de verdade (sem a "respiração" esticada que tremia). Âncora das folhas 19/20 = meio do tronco sem a espada azul (personagem fixo; troca de pose sem pular).
 - Teste: `ferramentas/testes/tsung_cortes_v426.js`.
+
+## v427 — AURA DO MONARCA (só no modo teste do ADM)
+- Opção "AURA DO MONARCA" (`ADMT.mon`) no painel 🧪 TESTE, no jogador. Bloco rk.js "v427" (nomes `mon*`; wrappers de renderFighter e update).
+- Camadas: poça de sombra + tentáculos no chão; borda azul-violeta bem fraca (chama do Gojo tingida, lighter); FUMAÇA PRETA = nuvenzinhas escuras (sprite `monPuff`) saindo do contorno do corpo e subindo, algumas com borda roxa (`monGlow`); na frente: fiapos pretos e faíscas roxas; rastro azul dos olhos quando corre/ataca/dash. Carregando = tudo mais forte.
+- Testar via servidor (http), em file:// a tinta da textura cai na cor reserva. Teste: `ferramentas/testes/tmonarca_v427.js`.
