@@ -2068,3 +2068,10 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 
 ## v420 — Código ABOBORA10K
 - `TWCUP[kmf551]`: 10.000 abóboras da Sexta-feira 13, para todos, 1 vez por conta (acc:1).
+
+## v421 — SUNG etapa 1 (só no MODO TESTE do ADM)
+- Pasta `ferramentas/personagens/sung/`: `poses/01..16` (folhas do dono), `referencia_frente.png`, `seg_sj.py` (recorte → work/cut), `build_sung.py ai` (Real-ESRGAN 2x + nitidez → www/a + build/sj_ai.json, ~10 min), `imgs_sung.py` (retrato/ícone/corpo inteiro com IA → build/imgs.json).
+- Patch `ferramentas/web/extra/9y_sung.py`: sid `sj`, id `sung`. Usa a lógica do espadachim do Yuta (`isYt` vale para sj; `isPro` e a lista de sids de alta resolução também incluem sj — sem isso o jogo desenhava tudo quase transparente depois do 1º golpe). Sem Rika (só na forma), transformação e ultimate = "EM BREVE".
+- NÃO está em nenhuma lista de escolha dos jogadores; aparece só no painel 🧪 TESTE (lista Object.keys(CH)). ROS.sung existe só para a tela de VS.
+- Faltam folhas: tomando golpe, caindo/nocaute, defesa (hoje usam poses parecidas) + vídeos de transformação e ultimate.
+- Teste: `ferramentas/testes/tsung_v421.js`.
