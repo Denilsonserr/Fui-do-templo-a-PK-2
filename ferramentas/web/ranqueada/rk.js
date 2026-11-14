@@ -2357,8 +2357,9 @@ rkMenuH=function(){const rp=rkG('rp',0),ri=rkRank(rp),R=RKR[ri],nm=(twLS.g('tw_n
   const Q=(a,b,d,dot)=>`<button class="hs mn2Q" data-a="${a}" style="${mnB(...b)}"><span class="sw" style="animation-delay:${d}s"></span>${dot?'<i class="dot"></i>':''}</button>`;
   const Rr=(a,b,d,dot)=>`<button class="hs mn2R" data-a="${a}" style="${mnB(...b)}"><span class="gl" style="animation-delay:${d}s"></span>${dot?'<i class="dot"></i>':''}</button>`;
   const C=(b,v)=>`<div class="mn2C" style="${mnB(...b)}">${rkFmtN(v)}</div>`;
-  return `<button class="hs mn2Av" data-a="perfil" style="${mnB(47,8,109,70)}">${ft?`<img src="${esc(ft)}" alt="">`:''}</button>
-  <button class="hs mn2Nm" data-a="perfil" style="${mnB(140,12,340,62)}"><b>${esc(nm)}</b><small>${rkEmb(ri,'sm')}<span style="color:${R.c}">${R.n}</span> · ${rkFmtN(rp)} XP</small></button>
+  const I=(src,b)=>`<img class="mn2I" src="${src}" alt="" style="${mnB(...b)}">`;
+  return `${I(RQA.coin[2],[808,6,844,42])}${I(RQA.coin[0],[950,6,986,42])}${I('a/9c6f0b0a3ed40d.webp',[1100,8,1132,40])}${I(RQA.coin[1],[1238,6,1274,42])}<button class="hs mn2Av" data-a="perfil" style="${mnB(33,5,96,68)}">${ft?`<img src="${esc(ft)}" alt="">`:''}</button>
+  <button class="hs mn2Nm" data-a="perfil" style="${mnB(118,10,350,60)}"><b>${esc(nm)}</b><small>${rkEmb(ri,'sm')}<span style="color:${R.c}">${R.n}</span> · ${rkFmtN(rp)} XP</small></button>
   <button class="hs" data-a="menuBack" style="${mnB(30,86,330,138)}"></button>
   ${L('boss','r',[20,160,328,224],0)}${L('torre','g',[20,228,328,292],.35)}${L('caca','p',[20,295,328,359],.7)}${L('gacha','b',[20,362,328,426],1.05)}${L('pvp','p',[20,430,328,494],1.4)}
   <button class="hs mn2Mu" data-a="music" style="${mnB(738,0,792,48)}"></button>
@@ -4880,6 +4881,7 @@ setInterval(sjTrialTick,1000);setTimeout(sjTrialTick,1500);
 .rk_menu .mnFx{position:absolute;inset:0;pointer-events:none;overflow:hidden;z-index:1}.rk_menu .mnFx i{position:absolute;bottom:-4%;width:.35em;height:.35em;border-radius:50%;background:#d6b8ff;box-shadow:0 0 .5em .15em #8a4dff;opacity:0;animation:mnUp linear infinite;will-change:transform,opacity}
 @keyframes mnUp{0%{transform:translateY(0) scale(.6);opacity:0}15%{opacity:.85}100%{transform:translateY(-1100%) scale(1.1);opacity:0}}
 @media (prefers-reduced-motion:reduce){.rk_menu .mnFx{display:none}}`;document.head.appendChild(st)}
+{const st=document.createElement('style');st.textContent=`.rk_menu .mn2I{position:absolute;z-index:2;object-fit:contain;pointer-events:none;filter:drop-shadow(0 0 .25em rgba(0,0,0,.8))}`;document.head.appendChild(st)}
 {const _sk=rkTwSkin;rkTwSkin=function(){const r=_sk.apply(this,arguments);try{tnSkin()}catch(e){console.warn(e)}return r}}
 {const _lv2=twLV;twLV=function(){if(TN.on&&G.gmode==='torre'){const B=G.p&&G.p[1];if(B&&B.tnBoss)return TWLV[Math.min(TWLV.length-1,3+Math.floor(TN.g/2))]}return _lv2.apply(this,arguments)}}
 try{RKTWX.fl=1;RKTWX.top=3.2}catch(e){}

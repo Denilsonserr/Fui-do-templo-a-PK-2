@@ -2185,3 +2185,6 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 
 ## v444 — Faixa vermelha de evento saiu do menu
 - `evBarTick` não mostra mais a faixa no menu (pedido do dono: menu novo bonito demais); o evento continua nas Abas de Evento (recados) com bolinha vermelha.
+
+## v445 — Menu: ícones das moedas, foto encaixada
+- Ícones por cima dos contadores do vídeo (`.mn2I`): ticket, diamante, moeda dourada (recortada da tela de sombras, a/9c6f0b0a3ed40d.webp), moeda vermelha. Foto `mn2Av` em (33,5,96,68) = dentro do anel; nome (118,10,350,60). Faixa de evento continua fora do menu (v444).
