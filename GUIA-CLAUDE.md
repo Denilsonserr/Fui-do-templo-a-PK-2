@@ -2182,3 +2182,6 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - DESAFIO DO DIA saiu do menu; no lugar, botão PORTAIS (`data-a="portais"`) trancado com "🔒 AMANHÃ · 11:00" até `PTREL` = 15/11 11:00 Brasília (depois só mostra "em breve" — o evento ainda vai ser feito).
 - Partículas roxas leves subindo no menu (`.mnFx`, 14 pontinhos CSS, desligam com reduced-motion).
 - Revisão: testes principais sem erro. Obs.: desde a v442 golpes INSTANTÂNEOS em sequência não matam a sombra (limite por segundo), então `tsung_sombra_v440` conta 40 — esperado.
+
+## v444 — Faixa vermelha de evento saiu do menu
+- `evBarTick` não mostra mais a faixa no menu (pedido do dono: menu novo bonito demais); o evento continua nas Abas de Evento (recados) com bolinha vermelha.

@@ -2846,7 +2846,7 @@ TWCUP['973bb8']={nm:'PEDIDO DE DESCULPAS',acc:1,jn:40,pk:{gem:5000,tic:20}};
 /* v341: o 2x do ADM é do TÍTULO (não é evento e não aparece em lugar nenhum): rkAdm2() multiplica gemas, sorte, drop, anel e XP de rank */
 /* v340: FAIXA DE EVENTO ATIVO em todas as telas de modo (menu, Boss, Torre, Caça, Gacha, PVP, Loja...) com o tempo que falta */
 function evBarTick(){let B=document.getElementById('evBar');const t=Date.now();let e=null;e=rkEvX();
-  let cur='';try{cur=showScreen.cur}catch(x){}const show=!!e&&cur==='ranked'&&RKV==='menu'&&!(typeof PV!=='undefined'&&PV.fight)&&![...document.querySelectorAll('#rkModal,#twModal,#acM')].some(m=>!m.hidden&&m.innerHTML.trim()&&m.offsetParent!==null);
+  let cur='';try{cur=showScreen.cur}catch(x){}const show=false&&!!e&&cur==='ranked'&&RKV==='menu'&&/* v444: faixa saiu do menu (o evento fica só nas Abas de Evento/Recados) */!(typeof PV!=='undefined'&&PV.fight)&&![...document.querySelectorAll('#rkModal,#twModal,#acM')].some(m=>!m.hidden&&m.innerHTML.trim()&&m.offsetParent!==null);
   if(!show){if(B)B.hidden=true;return}
   if(!B){B=document.createElement('div');B.id='evBar';B.innerHTML='<i class="f">🔥</i><div><b></b><u></u><span><em></em></span></div><i class="f">🔥</i>';document.body.appendChild(B)}
   const ms=e[1]-t,h=Math.floor(ms/36e5),m=Math.floor(ms%36e5/6e4),s=Math.floor(ms%6e4/1e3),tm=(h?h+'h ':'')+String(m).padStart(2,'0')+'min '+String(s).padStart(2,'0')+'s';
