@@ -6,12 +6,12 @@ from PIL import Image,ImageFilter,ImageEnhance
 AI=len(sys.argv)>1 and sys.argv[1]=='ai';T0=time.time()
 OUT='/home/claude/fui-do-templo-a-pk-2/www/a';TGT=290.0;RES=2.6
 # altura "em pé" equivalente de cada folha (px da folha)
-U={'01':690,'02':515,'03':600,'04':610,'05':390,'06':380,'07':460,'08':460,'09':490,'10':500,'11':480,'12':560,'13':540,'14':510,'15':655,'16':535,'17':575,'18':470}
-NF={t:6 for t in U};NF.update({'13':5,'14':5,'15':5})
+U={'01':690,'02':515,'03':600,'04':610,'05':390,'06':380,'07':460,'08':460,'09':490,'10':500,'11':480,'12':560,'13':540,'14':510,'15':655,'16':535,'17':575,'18':470,'19':590,'20':625}
+NF={t:6 for t in U};NF.update({'13':5,'14':5,'15':5,'19':5,'20':5})
 ROWS={t:2 if t in('05','06') else 1 for t in NF}
 def G(t,ix):return [(t,i) for i in ix]
 # v423: folhas novas do dono (estilo novo, olhos azuis). Escolha das melhores para cada movimento.
-Y={'relax':G('01',[0]*8),'gin':G('03',range(6)),'idle':[('id',i) for i in range(6)],'walk':G('01',[0,1,2,2,3,4,4,5]),'run':G('11',[0,1,2,3,3,4,5,5]),
+Y={'relax':G('20',[0,1,2,3,4,3]),'idle2':G('20',range(5)),'gin':G('19',[0]*6),'saca':G('03',range(6)),'idle':[('id',i) for i in range(6)],'walk':G('19',[0,1,2,3,4,1,2,3]),'run':G('11',[0,1,2,3,3,4,5,5]),
   'dashf':G('09',[1,2,3,4,4,5,5,5]),'dash2':G('09',[2,3,4,4,4,5,5,5]),'dashb':G('02',[0,1,1,5,5,5,5,5]),'dodge':G('02',[0,1,1,5,5,5,5,5]),
   'jab':G('05',[0,1,1,1,1,1,5,5]),'cross':G('05',[5,4,4,4,4,4,5,5]),'jab2':G('05',[0,2,2,2,2,2,5,5]),'str':G('14',[1,2,3,3,3,4,4,4]),
   'upper':G('06',[0,4,4,4,4,4,5,5]),'kick':G('08',[0,1,2,2,2,1,0,0]),'hkick':G('07',[1,3,3,3,3,4,5,5]),'sweep':G('16',[1,2,3,4,4,4,5,5]),
@@ -39,9 +39,9 @@ def anchor(a,air,lying):
     if lying:return (np.where(al)[1]).mean()
     if air:hb=al[top:top+int((bot-top)*.2)];return np.where(hb)[1].mean()
     band=al[int(top+(bot-top)*.55):int(top+(bot-top)*.75)];return np.median(np.where(band)[1]) if band.any() else a.shape[1]/2
-# respiração do "parado" (v423: em pé segurando a espada, 03_5) esticando de leve o tronco
+# respiração do "parado" (v424: em pé com a espada no ombro, 19_0 — a 'melhorzinha' do dono) esticando de leve o tronco
 def idle_img(i):
-    im=Image.open('cut/03_5.png');w,h=im.size;s=1+.012*np.sin(i/6*2*np.pi);hh=round(h*s);o=im.resize((w,hh),Image.LANCZOS);return o,hh-h
+    im=Image.open('cut/19_0.png');w,h=im.size;s=1+.012*np.sin(i/6*2*np.pi);hh=round(h*s);o=im.resize((w,hh),Image.LANCZOS);return o,hh-h
 cache={};CF=f'cache_{"ai" if AI else "fast"}.json'
 if os.path.exists(CF):
     for k_,v_ in json.load(open(CF)).items():t_,i_,a_=k_.split(',');cache[(t_,int(i_),bool(int(a_)))]=v_
@@ -49,7 +49,7 @@ def frame(t,i,air):
     key=(t,i,air)
     if key in cache:return cache[key]
     if t=='id':
-        y0,y1,x0,x1=np.load('cut/03_5.y.npy');im,dh=idle_img(i);y0-=dh;tt,ii='03',5
+        y0,y1,x0,x1=np.load('cut/19_0.y.npy');im,dh=idle_img(i);y0-=dh;tt,ii='19',0
     else:
         y0,y1,x0,x1=np.load(f'cut/{t}_{i}.y.npy');im=Image.open(f'cut/{t}_{i}.png');tt,ii=t,i
     a=np.asarray(im).astype(int);lying=(tt=='10' and ii>=3)

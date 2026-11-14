@@ -2082,3 +2082,9 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 ## v423 — Sung: folhas novas do dono (estilo novo, olhos azuis)
 - `poses/` trocada inteira (01..18, nomes dizem o movimento); `referencia_manhwa.jpg` guardada. As antigas que o dono mandou de novo viraram 13..18 (reserva/complementos).
 - Escolhas (build_sung.py Y): parado = 03_5 (segurando a espada) respirando; entrada = 03 (saca a espada do ombro); andar 01; correr 11; dash 09; pulo 02; espadadas = 05/06 (cortes com efeito) + 14 (corte de cima); chutes 07/08; rasteira 16; defesa 04; defesa agachado 12; tomando golpe/caindo/nocaute = 10; combo = 14+05+07.
+
+## v424 — Sung: parado e andando novos + troca de pose parado
+- `poses/19_parado_andando_ombro.png` (a "melhorzinha" do dono, tinha transparência com manchas → gravada sobre branco): parado (respirando, 19_0) e andar (19: 0,1,2,3,4,1,2,3).
+- `poses/20_parado_espada_chao.png` (veio com FUNDO PRETO; original em `20_..._fundo_preto.png`, convertido por `preto_para_branco.py`): espada fincada no chão, mão no bolso, casaco ao vento = `idle2` e `relax` (longe do inimigo).
+- Patch (9y_sung.py, vgKey case 'idle'): na luta o Sung fica ~7 s na pose 1 e ~4 s na pose 2 (ciclo de 660 quadros; CPU defasado). `saca` = folha 03 guardada para depois.
+- Teste: `ferramentas/testes/tsung_parado_v424.js`.

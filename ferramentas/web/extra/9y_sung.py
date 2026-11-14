@@ -24,4 +24,6 @@ rep("const ROS={","const ROS={sung:{c:'#4a6cff',d:'Espadachim das sombras (EM TE
 rep("RUSHK.ytd=RUSHK.yt;","RUSHK.ytd=RUSHK.yt;HAIR.sj=1.2;HAND.sj={};RUSHK.sj=RUSHK.yt;")
 rep("f.def.sid==='yt'||f.def.sid==='sk');","f.def.sid==='yt'||f.def.sid==='sj'||f.def.sid==='sk');")
 rep("sid==='yt'||sid==='ytd'||sid==='sk'||","sid==='yt'||sid==='ytd'||sid==='sj'||sid==='sk'||")
+# v424: parado do Sung troca de pose de vez em quando: ~7 s espada no ombro (idle) e ~4 s espada fincada no chão com o casaco ao vento (idle2)
+rep("case 'idle':{if((f.form||isGg(f)","case 'idle':{if(f.def.sid==='sj'&&SPRH.sj.idle2&&G.phase==='fight'){const T=(G.frame+(f.cpu?300:0))%660;if(T>=420){const q=[0,1,2,3,4,3,2,1];return['idle2',q[Math.floor(G.frame/9)%8]]}}if((f.form||isGg(f)")
 open(P,'w',encoding='utf8').write(s);print('sung ok',len(s))
