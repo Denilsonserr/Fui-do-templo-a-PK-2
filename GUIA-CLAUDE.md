@@ -2191,3 +2191,6 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 
 ## v446 — Moedas do topo do menu menores e encaixadas
 - Ícones `.mn2I` com 24px (ticket 28px) dentro de cada barra do desenho (barras: 801-933, 944-1084, 1091-1224, 1236-1358; y 1-41). Números `.mn2C` em .78em logo depois do ícone. Teste: `ferramentas/testes/tmoedas_v446.js`.
+
+## v447 — Aura dos anéis (estilo Soul Land)
+- `anAura` (fim do rk.js) embrulha `anGround`: atrás = brilho no chão `.auF` + coluna de luz `.auC` + fios subindo `.auS`; na frente = faíscas `.auP` + eletricidade correndo na borda dos anéis com faísca curta (`svg.auB`, pisca). Cor = anel mais forte (`AUC`), força cresce com anéis pretos/vermelhos. Na biblioteca `.lb2 .auW` scale(.6). Teste: `ferramentas/testes/taura_v447.js` (FREEZE=1 mostra todos os raios).

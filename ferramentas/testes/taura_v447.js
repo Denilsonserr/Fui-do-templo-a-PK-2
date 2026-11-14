@@ -1,0 +1,10 @@
+// v447: aura dos anéis (brilho, coluna de luz, raiozinhos, faíscas) no perfil
+const {chromium}=require('playwright');
+(async()=>{const b=await chromium.launch();const errs=[];const p=await b.newPage({viewport:{width:915,height:412},deviceScaleFactor:2});p.on('pageerror',e=>errs.push(e.message));await p.route(/fonts\.g|firestore|workers\.dev\/fs/,r=>r.abort());
+await p.addInitScript(()=>{if(!sessionStorage.d){sessionStorage.d=1;localStorage.clear();const an=[0,1,2,3,4,5,6,7].map(i=>({i:'a'+i,c:[0,0,0,1,2,3,4,4][i],g:5,s:'dano',v:10,a:0,l:20}));
+ Object.assign(localStorage,{rk_ini:'1',rk_xpv2:'1',tw_nome:'"Teste"',rk_sel:'"shaka"',rk_ped:'"shaka"',rk_own:'["goku","shaka"]',rk_an:JSON.stringify(an),rk_anEq:JSON.stringify({shaka:['a0','a1','a2','a3','a4','a5','a6','a7']}),rk_dl:JSON.stringify({d:new Date(Date.now()-3*3600e3).toISOString().slice(0,10),s:0})})}});
+await p.goto('file:///home/claude/fui-do-templo-a-pk-2/www/index.html');await p.waitForFunction(()=>!document.getElementById('goSelect').disabled,null,{timeout:120000});
+await p.click('#mRank');await p.waitForTimeout(800);await p.evaluate(()=>{const M=document.getElementById('rkModal');if(M){M.hidden=true;M.innerHTML=''};document.querySelectorAll('#lvrzM,#acM').forEach(x=>x.remove())});
+await p.evaluate(()=>{document.querySelector('#rkWrap [data-a="perfil"]').click()});await p.waitForTimeout(3000);
+if(process.env.FREEZE)await p.addStyleTag({content:'.anFt .auB g g{animation:none!important;opacity:1!important}.anFt .auP{animation-play-state:paused!important}'});for(const k of [0,1,2]){await p.screenshot({path:'/tmp/aura'+k+'.png'});await p.waitForTimeout(700)}
+console.log(await p.evaluate(()=>{const e=document.querySelectorAll('.p3Ch .auP');return e.length+' '+[...e].slice(0,4).map(x=>{const c=getComputedStyle(x);return c.opacity+'/'+c.transform+'/'+c.animationName+'/'+x.getBoundingClientRect().width}).join(' ; ')}));console.log('aura',await p.evaluate(()=>document.querySelectorAll('.anFt .auW').length),'raios',await p.evaluate(()=>document.querySelectorAll('.anFt .auB g g').length),'erros',JSON.stringify(errs));await b.close()})();

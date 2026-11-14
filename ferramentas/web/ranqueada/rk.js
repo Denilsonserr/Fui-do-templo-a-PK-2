@@ -4891,3 +4891,51 @@ try{window.__pvT={G:()=>G,ko:(a,d)=>ko(a,d),ev:()=>rkEvX(),m:()=>[rkEvG(),rkEvL(
 
 /* v446: moedas do topo do menu menores e encaixadas dentro das barras (ícone 24px, número menor) */
 {const st=document.createElement('style');st.textContent=`.rk_menu .mn2C{font-size:.78em;padding-right:.15em}.rk_menu .mn2I{filter:drop-shadow(0 0 .15em rgba(0,0,0,.9))}`;document.head.appendChild(st)}
+
+/* ================= v447: AURA DOS ANÉIS (estilo Soul Land, pedido do dono) =================
+   Atrás dos anéis: brilho no chão + coluna de luz subindo com fiozinhos de energia.
+   Na frente: raiozinhos estalando na borda dos anéis + faíscas subindo. Cor = anel mais forte; mais anéis fortes = aura mais forte. */
+const AUC=['#cfe8ff','#ffcf3a','#b347ff','#7d3cff','#ff2238'];
+function anAura(R,cx,cy,cw){if(!R||!R.length)return ['',''];
+  const top=R.reduce((m,r)=>Math.max(m,r.c|0),0),C=AUC[top]||AUC[0],C2=top===3?'#e2c8ff':top===4?'#ffd0d4':'#ffffff';
+  const W=cw*2.5,lv=Math.min(1,.45+top*.12+R.filter(r=>r.c>=3).length*.04),rnd=(i,s)=>{const x=Math.sin(i*12.9898+s*78.233)*43758.5453;return x-Math.floor(x)};
+  const st=`--c:${C};--c2:${C2};--lv:${lv.toFixed(2)}`;
+  /* fundo: brilho do chão + coluna + fios de energia subindo */
+  let b=`<i class="auW" style="left:${Math.round(cx)}px;top:${Math.round(cy)}px;${st}">`+
+    `<i class="auF" style="left:${-W*.62}px;top:${-W*.2}px;width:${W*1.24}px;height:${W*.4}px"></i>`+
+    `<i class="auC" style="left:${-W*.45}px;top:${-W*1.15}px;width:${W*.9}px;height:${W*1.18}px"></i>`;
+  const NS=8+top*2;for(let i=0;i<NS;i++){const x=(rnd(i,1)-.5)*W*.62,h=W*(.35+rnd(i,2)*.4);
+    b+=`<i class="auS" style="left:${x.toFixed(1)}px;top:${(-h).toFixed(1)}px;height:${h.toFixed(1)}px;animation-delay:${(-rnd(i,3)*3).toFixed(2)}s;animation-duration:${(2.2+rnd(i,4)*1.6).toFixed(2)}s"></i>`}
+  b+='</i>';
+  /* frente: raiozinhos na borda + faíscas */
+  let f=`<i class="auW" style="left:${Math.round(cx)}px;top:${Math.round(cy)}px;${st}">`;
+  const NP=18+top*4;for(let i=0;i<NP;i++){const a=rnd(i,5)*Math.PI*2,rr=.15+rnd(i,6)*.85,x=Math.cos(a)*W*.5*rr,y=Math.sin(a)*W*.16*rr,s=3+rnd(i,7)*4;
+    f+=`<i class="auP" style="left:${x.toFixed(1)}px;top:${y.toFixed(1)}px;width:${s.toFixed(1)}px;height:${s.toFixed(1)}px;--h:${(-W*(.25+rnd(i,8)*.45)).toFixed(0)}px;animation-delay:${(-rnd(i,9)*4).toFixed(2)}s;animation-duration:${(2.6+rnd(i,10)*2.2).toFixed(2)}s"></i>`}
+  const NB=3+Math.min(5,top+R.filter(r=>r.c>=3).length);let sv='';
+  /* eletricidade correndo em cima da borda dos anéis (arco tremido, fino) + faísca curta subindo */
+  for(let i=0;i<NB;i++){const ring=.62+rnd(i,16)*.38,a0=(i/NB+rnd(i,11)*.1)*Math.PI*2,sp=.35+rnd(i,12)*.35,n=12;let d='',ux=0,uy=0;
+    for(let k=0;k<=n;k++){const a=a0+sp*k/n,j=k===0||k===n?0:(rnd(i*31+k,13)-.5),x=Math.cos(a)*W*.5*ring+j*W*.025,y=Math.sin(a)*W*.16*ring-Math.abs(j)*W*.03;d+=(k?' L':'M')+x.toFixed(1)+','+y.toFixed(1);if(k===n>>1){ux=x;uy=y}}
+    let u=`M${ux.toFixed(1)},${uy.toFixed(1)}`,x=ux,y=uy;const L=W*(.05+rnd(i,17)*.05);for(let k=1;k<=4;k++){x+=(rnd(i*13+k,18)-.5)*L*.5;y-=L/4;u+=` L${x.toFixed(1)},${y.toFixed(1)}`}
+    const dl=(rnd(i,14)*3).toFixed(2),du=(1.6+rnd(i,15)*1.6).toFixed(2);
+    sv+=`<g style="animation-delay:${dl}s;animation-duration:${du}s"><path d="${d} ${u}" stroke="var(--c)" stroke-width="3.2" opacity=".8"/><path d="${d} ${u}" stroke="var(--c2)" stroke-width="1"/></g>`}
+  f+=`<svg class="auB" style="left:${-W*.7}px;top:${-W*.6}px;width:${W*1.4}px;height:${W*.9}px" viewBox="${-W*.7} ${-W*.6} ${W*1.4} ${W*.9}"><g fill="none" stroke-linecap="round" stroke-linejoin="round">${sv}</g></svg></i>`;
+  return [b,f]}
+{const _g=anGround;anGround=function(R,cx,cy,cw){const h=_g(R,cx,cy,cw);try{const [b,f]=anAura(R,cx,cy,cw*1.15);return b+h+f}catch(e){return h}}}
+{const st=document.createElement('style');st.textContent=`
+.anFt .auW{position:absolute;width:0;height:0;display:block;pointer-events:none;transform-origin:0 0}
+.anFt .auW>i,.anFt .auB{position:absolute;display:block}
+.anFt .auF{border-radius:50%;background:radial-gradient(ellipse at center,var(--c) 0%,color-mix(in srgb,var(--c) 45%,transparent) 32%,transparent 70%);mix-blend-mode:screen;opacity:calc(.8*var(--lv));animation:auFp 3.2s ease-in-out infinite}
+.anFt .auC{background:linear-gradient(to top,color-mix(in srgb,var(--c) 70%,transparent) 0%,color-mix(in srgb,var(--c) 25%,transparent) 45%,transparent 100%);
+ -webkit-mask-image:radial-gradient(ellipse 50% 100% at 50% 100%,#000 35%,transparent 100%);mask-image:radial-gradient(ellipse 50% 100% at 50% 100%,#000 35%,transparent 100%);
+ mix-blend-mode:screen;opacity:calc(.5*var(--lv));animation:auCp 4s ease-in-out infinite;transform-origin:50% 100%}
+.anFt .auS{width:7px;margin-left:-3.5px;border-radius:50%;background:linear-gradient(to top,transparent,var(--c2) 40%,var(--c) 70%,transparent);filter:blur(1.5px) drop-shadow(0 0 4px var(--c));mix-blend-mode:screen;opacity:0;animation:auSu 3s ease-in infinite;transform-origin:50% 100%}
+.anFt .auP{border-radius:50%;margin:-2px 0 0 -2px;background:var(--c2);box-shadow:0 0 5px 2px var(--c),0 0 12px 4px var(--c);opacity:0;animation:auPu 3.4s ease-out infinite}
+.anFt .auB{overflow:visible;filter:drop-shadow(0 0 2px var(--c)) drop-shadow(0 0 6px var(--c))}
+.anFt .auB g g{opacity:0;animation:auBz 3s steps(1) infinite}
+@keyframes auFp{0%,100%{transform:scale(.94);opacity:calc(.6*var(--lv))}50%{transform:scale(1.05);opacity:calc(.95*var(--lv))}}
+@keyframes auCp{0%,100%{transform:scaleY(.92);opacity:calc(.55*var(--lv))}50%{transform:scaleY(1.05);opacity:calc(.85*var(--lv))}}
+@keyframes auSu{0%{transform:translateY(30%) scaleY(.3);opacity:0}25%{opacity:calc(.9*var(--lv))}100%{transform:translateY(-35%) scaleY(1);opacity:0}}
+@keyframes auPu{0%{transform:translateY(0) scale(.8);opacity:0}12%{opacity:1}65%{opacity:.85}100%{transform:translateY(var(--h)) scale(.45);opacity:0}}
+@keyframes auBz{0%{opacity:0}5%{opacity:1}9%{opacity:.3}13%{opacity:1}18%{opacity:.4}22%{opacity:1}27%{opacity:0}100%{opacity:0}}
+.lb2 .auW{transform:scale(.6)}
+@media (prefers-reduced-motion:reduce){.anFt .auW *{animation:none!important}}`;document.head.appendChild(st)}
