@@ -2188,3 +2188,6 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 
 ## v445 — Menu: ícones das moedas, foto encaixada
 - Ícones por cima dos contadores do vídeo (`.mn2I`): ticket, diamante, moeda dourada (recortada da tela de sombras, a/9c6f0b0a3ed40d.webp), moeda vermelha. Foto `mn2Av` em (33,5,96,68) = dentro do anel; nome (118,10,350,60). Faixa de evento continua fora do menu (v444).
+
+## v446 — Moedas do topo do menu menores e encaixadas
+- Ícones `.mn2I` com 24px (ticket 28px) dentro de cada barra do desenho (barras: 801-933, 944-1084, 1091-1224, 1236-1358; y 1-41). Números `.mn2C` em .78em logo depois do ícone. Teste: `ferramentas/testes/tmoedas_v446.js`.
