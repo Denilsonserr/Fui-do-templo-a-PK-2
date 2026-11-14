@@ -4531,7 +4531,7 @@ const sjSword=a=>a.state==='ytk'||a.state==='ytc'||a.state==='ytcn'||(a.state===
   for(let i=0;i<(P?14:9);i++)spark(d.x,d.y-150,pick(P?['#c79bff','#8a4dff','#ffffff']:['#8fe8ff','#3d7dff','#ffffff']),1,rand(5,12));}}catch(e){}return r}}
 {const _ah=applyHit;applyHit=function(a,d,h){const r=_ah.apply(this,arguments);try{if(ADMT.on&&ADMT.vfx&&G.p&&a===G.p[0]&&a.def.sid!=='sj'&&h&&h.kind!=='beam'&&h.kind!=='proj'&&G.frame-VFXF>=4){VFXF=G.frame;const big=(h.dmg||0)>=60||a.state==='sp'||a.state==='ult';
   vfxSlash((a.x+d.x)/2+a.facing*30,d.y-150+rand(-25,25),a.facing||1,big);for(let i=0;i<10;i++)spark(d.x,d.y-150,pick(['#8fe8ff','#3d7dff','#ffffff']),1,rand(5,12))}}catch(e){}return r}}
-{const _uA=update;update=function(){const r=_uA.apply(this,arguments);try{if(ADMT.on){if(G.gmode!=='pve'&&G.mode==='fight')ADMT.on=0;else if(G.p&&G.mode==='fight'){const p=G.p[0];if(ADMT.hp&&!p.ko){const M=p.mhp||MAXHP;if(p.hp<M)p.hp=M}if(ADMT.en){p.sb=6;p.ki=100}G.noAI=!!ADMT.noai}}
+{const _uA=update;update=function(){const r=_uA.apply(this,arguments);try{if(ADMT.on){if(G.gmode!=='pve'&&G.mode==='fight')ADMT.on=0;else if(G.p&&G.mode==='fight'){const p=G.p[0];if(ADMT.hp&&!p.ko){const M=p.mhp||MAXHP;if(p.hp<M)p.hp=M}if(ADMT.en){p.sb=6;p.ki=100;if(!(p.spark>1))p.spark=3}G.noAI=!!ADMT.noai}}
   for(const v of VFXL)v.t++;VFXL=VFXL.filter(v=>v.t<v.life)}catch(e){}return r}}
 function admTOpen(){if(!pfIsAdm())return;vfxLoad();let M=document.getElementById('admT');if(!M){M=document.createElement('div');M.id='admT';document.body.appendChild(M)}
   const op=(L,v)=>L.map(([k,n])=>`<option value="${k}"${k===v?' selected':''}>${twEsc(n)}</option>`).join('');
@@ -4599,7 +4599,8 @@ function monTick(f){for(const p of MONP){p.l++;p.x+=p.vx+Math.sin((p.l+p.a*9)*.1
 {const _rf=renderFighter;renderFighter=function(f,reflect){const on=!reflect&&ADMT.on&&ADMT.mon&&G.p&&f===G.p[0]&&G.mode==='fight'&&!f.hide;if(on)try{monBehind(f)}catch(e){}
   const r=_rf.apply(this,arguments);if(on)try{monFront(f)}catch(e){}return r}}
 {const _uM=update;update=function(){const r=_uM.apply(this,arguments);try{if(ADMT.on&&ADMT.mon&&G.p&&G.mode==='fight')monTick(G.p[0]);else if(MONP.length||MONS.length){MONP=[];MONE=[];MONS=[]}}catch(e){}return r}}
-/* ================= v431: SUNG — TRANSFORMAÇÃO (vídeo do dono) + TANK, O URSO DE SOMBRA ("ERGA-SE!").
+/* v432: o TANK só aparece na ULTIMATE (transformado), é muito rápido e agressivo (corre até o inimigo, combos de 3), pouca vida (0,4 barra), aura violeta + raios + rastro.
+   ================= v431: SUNG — TRANSFORMAÇÃO (vídeo do dono) + TANK, O URSO DE SOMBRA ("ERGA-SE!").
    Transformar: vídeo em tela cheia (8 quadros/s) e o Sung entra na forma. Na hora sobe do chão o TANK (folhas do dono: ferramentas/personagens/sung/urso).
    O TANK fica na frente do Sung, anda junto, ataca o inimigo sozinho (soco, chute, garras) e TEM VIDA (barra em cima dele).
    Enquanto o TANK estiver vivo o Sung NÃO toma dano: todo golpe nele vai para o urso (que defende). Quando a vida acaba ele se desfaz em sombra. ================= */
@@ -4609,12 +4610,15 @@ function sjFree(){SJLP=null;SJOK=0;SJTF.length=0;for(const k in SJBF)delete SJBF
 function sjTransStart(f){if(G.trans&&G.trans.f!==f)return false;if(!SJOK){sjLoad();if(!f.cpu)say(f,'CARREGANDO AS SOMBRAS...');return false}
   f.sb=Math.max(0,(f.sb||0)-SB_COST);f.state='transform';f.st=0;f.vx=0;f.vy=0;f.inv=999;f.sjB=null;G.trans={f,t:0,sj:1};try{SFX.powerUp()}catch(e){}buzz(60);return true}
 function updSJT(T,f,t){if(t<SJTE)return;
-  if(t===SJTE){f.form=1;f.formT=FORM_T;f.flick=0;G.flash=14;G.flashCol='#7a5cff';G.shake=22;sjSummon(f);banner('ERGA-SE!','#9a7bff',120,'TANK, O URSO DAS SOMBRAS — ele protege o Sung até cair')}
+  if(t===SJTE){f.form=1;f.formT=FORM_T;f.flick=0;G.flash=14;G.flashCol='#7a5cff';G.shake=22;banner('MONARCA DAS SOMBRAS','#9a7bff',120,'aperte ULTIMATE para invocar o TANK')}
   if(t>=SJTE+40){G.trans=null;f.inv=20;neutral(f)}}
-const SJBHP=()=>Math.round(LAYER*.75);
+const SJBHP=()=>Math.round(LAYER*.4); /* v432: pouca vida, mas muito rápido e agressivo */
+function sjUlt(f,o){if(!f.form){if(!f.cpu)say(f,'TRANSFORME-SE PRIMEIRO');return false}if(f.sjB&&f.sjB.st!=='die'){if(!f.cpu)say(f,'O TANK JÁ ESTÁ LUTANDO');return false}
+  if(!SJOK){sjLoad();if(!f.cpu)say(f,'CARREGANDO AS SOMBRAS...');return false}f.ki=0;f.inv=Math.max(f.inv||0,30);G.flash=12;G.flashCol='#6a3cff';G.shake=20;sjSummon(f);
+  banner('ERGA-SE!','#9a7bff',110,'TANK, O URSO DAS SOMBRAS — protege o Sung até cair');buzz(80);return true}
 function sjSummon(f){const o=G.p[0]===f?G.p[1]:G.p[0],dir=o?(o.x>f.x?1:-1):(f.facing||1);f.sjB={x:f.x+dir*125,dir,hp:SJBHP(),mhp:SJBHP(),st:'rise',t:0,cd:G.frame+90,a:'rise',fl:0};
   ring(f.x+dir*125,FLOOR-10,'#6a3cff',260,24,6);for(let i=0;i<24;i++)addP({x:f.x+dir*125+rand(-120,120),y:FLOOR-rand(0,20),vx:rand(-1,1),vy:-rand(2,7),life:rand(26,44),max:44,c:pick(['#2a1060','#6a3cff','#9fd4ff']),type:'glow',sz:rand(5,12),g:-.02})}
-const SJBA_T={punch:[5,5,6,8],kick:[5,6,6,8],claw:[5,6,9],claw2:[5,6,9],block:[4,4,5,6],die:[7,7,7,8,9,12],rise:Array(16).fill(4)};
+const SJBA_T={punch:[3,3,4,6],kick:[3,4,4,6],claw:[3,4,7],claw2:[3,4,7],block:[3,3,4,5],die:[6,6,6,7,8,12],rise:Array(16).fill(3)};
 const SJBHIT={punch:2,kick:2,claw:1,claw2:1};
 function sjFr(B){const L=SJBA_T[B.a];if(!L){const i=12+((B.t>>3)%6>2?5-((B.t>>3)%6):(B.t>>3)%6);return ['rise',Math.min(15,i)]}let acc=0;for(let i=0;i<L.length;i++){acc+=L[i];if(B.t<acc)return [B.a,i]}return [B.a,L.length-1]}
 function sjDur(a){return (SJBA_T[a]||[]).reduce((x,y)=>x+y,0)}
@@ -4624,14 +4628,29 @@ function sjBTick(f){const B=f.sjB;if(!B)return;B.t++;if(B.fl>0)B.fl--;const o=G.
     if(B.t>=sjDur('die')+10)f.sjB=null;return}
   if(B.st==='rise'){if(B.t>=sjDur('rise'))B.st='idle',B.a='idle',B.t=0;return}
   if(o&&!o.ko&&B.st!=='atk')B.dir=o.x>B.x?1:-1;
-  if(B.st==='idle'){const tx=f.x+(o?(o.x>f.x?1:-1):(f.facing||1))*125;B.x+=Math.max(-6,Math.min(6,tx-B.x));
-    if(o&&!o.ko&&!G.trans&&!G.ws&&G.phase==='fight'&&Math.abs(o.x-B.x)<260&&G.frame>=B.cd){B.st='atk';B.a=pick(['punch','kick','claw','claw2']);B.t=0;B.hit=0}}
-  else if(B.st==='atk'){if(B.t<sjDur(B.a)*.7)B.x+=B.dir*2.5;const [a,i]=sjFr(B);
-    if(!B.hit&&i>=SJBHIT[B.a]){B.hit=1;if(o&&!o.ko&&Math.abs(o.x-B.x)<290&&o.y>FLOOR-320){const big=B.a==='kick';applyHit(f,o,{dmg:big?62:48,kb:big?6:3,hs:big?12:8,heavy:big?1:0,px:o.x-B.dir*30,py:o.y-150,kind:'melee',sjB:1});
+  if(B.st==='idle'){const near=o&&!o.ko&&Math.abs(o.x-f.x)<700,tx=near?o.x-B.dir*190:f.x+(o?(o.x>f.x?1:-1):(f.facing||1))*125,sp=near?13:8,dx=Math.max(-sp,Math.min(sp,tx-B.x));B.x+=dx;B.run=Math.abs(dx)>6;
+    if(o&&!o.ko&&!G.trans&&!G.ws&&G.phase==='fight'&&Math.abs(o.x-B.x)<270&&G.frame>=B.cd){B.st='atk';B.a=B.ch>0&&B.last?pick(['punch','kick','claw','claw2'].filter(x=>x!==B.last)):pick(['punch','kick','claw','claw2']);B.last=B.a;B.t=0;B.hit=0;B.run=0}}
+  else if(B.st==='atk'){if(B.t<sjDur(B.a)*.7)B.x+=B.dir*5;const [a,i]=sjFr(B);
+    if(!B.hit&&i>=SJBHIT[B.a]){B.hit=1;if(o&&!o.ko&&Math.abs(o.x-B.x)<290&&o.y>FLOOR-320){const big=B.a==='kick'||B.ch>=2;applyHit(f,o,{dmg:big?58:40,kb:big?6:1,hs:big?12:8,heavy:big?1:0,px:o.x-B.dir*30,py:o.y-150,kind:'melee',sjB:1});
       ring(o.x,o.y-150,'#7a5cff',150,14,4);for(let k=0;k<12;k++)spark(o.x,o.y-150,pick(['#6a3cff','#9fd4ff','#ffffff']),1,rand(5,12));G.shake=Math.max(G.shake,8)}}
-    if(B.t>=sjDur(B.a)+4){B.st='idle';B.a='idle';B.t=0;B.cd=G.frame+rand(55,85)|0}}
+    if(B.t>=sjDur(B.a)+2){B.st='idle';B.a='idle';B.t=0;B.ch=(B.ch||0)+1;if(B.ch>=3){B.ch=0;B.cd=G.frame+rand(24,36)|0}else B.cd=G.frame+4}}
   else if(B.st==='block'){if(B.t>=sjDur('block'))B.st='idle',B.a='idle',B.t=0}}
+function sjBolt(x,y,len,an){const P=[[x,y]];let cx=x,cy=y;const n=6;for(let k=1;k<=n;k++){cx+=Math.cos(an)*len/n+rand(-10,10);cy+=Math.sin(an)*len/n+rand(-10,10);P.push([cx,cy])}return P}
+function sjBAura(B,M,al){const t=G.frame,H=(M.h||360)*1.18,ch=B.st==='atk'||B.run;ctx.save();
+  // brilho roxo/azul em volta do urso
+  const g=ctx.createRadialGradient(B.x,FLOOR-H*.42,20,B.x,FLOOR-H*.42,H*.62);g.addColorStop(0,'rgba(90,60,255,.0)');g.addColorStop(.55,'rgba(90,60,255,'+(.2*al)+')');g.addColorStop(1,'rgba(40,120,255,0)');
+  ctx.globalCompositeOperation='lighter';ctx.fillStyle=g;ctx.fillRect(B.x-H,FLOOR-H*1.1,H*2,H*1.2);
+  // chama do Monarca (mesma textura da aura do Sung, violeta) atrás
+  try{if(monTex()){const A=GJAU,k=Math.floor(t/3)%A.n,h=H*(ch?1.12:1.02),w=h*A.w/A.h*1.15;ctx.globalAlpha=(ch?.5:.36)*al;ctx.drawImage(MONRM,0,k*A.h,A.w,A.h,B.x-w/2,FLOOR+6-h,w,h)}}catch(e){}
+  // raios
+  if(!B.bl||t%3===0){B.bl=[];const nb=ch?4:2;for(let q=0;q<nb;q++){const an=rand(0,6.28);B.bl.push(sjBolt(B.x+rand(-70,70),FLOOR-rand(60,H*.85),rand(60,ch?160:110),an))}}
+  ctx.globalAlpha=al;ctx.lineJoin='round';for(const P of B.bl){for(const [lw,c] of [[5,'rgba(120,90,255,.5)'],[1.6,'#dff1ff']]){ctx.strokeStyle=c;ctx.lineWidth=lw;ctx.beginPath();P.forEach(([x,y],j)=>j?ctx.lineTo(x,y):ctx.moveTo(x,y));ctx.stroke()}}
+  ctx.restore()}
 function sjBDraw(f){const B=f.sjB;if(!B)return;const [a,i]=sjFr(B),M=(SJU.f[a]||[])[i],I=(SJBF[a]||[])[i];if(!M||!I||!I.complete||!I.naturalWidth)return;
+  const al=B.st==='die'?Math.max(0,1-B.t/30):B.st==='rise'?Math.min(1,B.t/30):1;try{sjBAura(B,M,al)}catch(e){}
+  // rastro de sombra quando corre/ataca
+  B.tr=B.tr||[];if(G.frame%2===0){B.tr.push({x:B.x,a,i,dir:B.dir});if(B.tr.length>5)B.tr.shift()}if(!(B.run||B.st==='atk'))B.tr.length=Math.max(0,B.tr.length-1);
+  for(let n=0;n<B.tr.length-1;n++){const T=B.tr[n],M2=(SJU.f[T.a]||[])[T.i],I2=(SJBF[T.a]||[])[T.i];if(!M2||!I2||!I2.complete)continue;ctx.save();ctx.globalAlpha=.1+.06*n;ctx.translate(T.x,FLOOR+4);ctx.scale(T.dir,1);ctx.drawImage(I2,-M2.ax,-M2.ay,M2.w,M2.h);ctx.restore()}
   ctx.save();if(B.fl>0){ctx.globalCompositeOperation='source-over'}if(B.st==='die')ctx.globalAlpha=Math.max(0,1-Math.max(0,B.t-sjDur('die')+12)/14);
   ctx.translate(B.x,FLOOR+4);ctx.scale(B.dir,1);ctx.drawImage(I,-M.ax,-M.ay,M.w,M.h);
   if(B.fl>0){ctx.globalCompositeOperation='lighter';ctx.globalAlpha=B.fl/10*.6;ctx.drawImage(I,-M.ax,-M.ay,M.w,M.h)}ctx.restore();

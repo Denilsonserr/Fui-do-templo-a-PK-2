@@ -2119,3 +2119,10 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - TANK (`f.sjB`, bloco rk.js "v431"): fica na frente do Sung, anda junto, ataca sozinho a cada ~1-1,4 s se o inimigo está perto (soco/chute/garras; `applyHit(f,o,{...,sjB:1})`, dano 48/62). Vida = 0,75 barra (1350), barra embaixo dele. Enquanto vivo, TODO golpe no Sung vai para o urso (wrapper de applyHit) e ele defende; vida 0 → anima a morte e some ("TANK CAIU!"). Sung KO → urso some.
 - Aura azul do Sung agora aparece também na forma (.15). Rika (Yuta) desligada para o Sung.
 - Teste: `ferramentas/testes/tsung_tank_v431.js` (servidor local).
+
+## v432 — TANK só na ULTIMATE, rápido e agressivo
+- Transformar = só vídeo + forma ("MONARCA DAS SOMBRAS"). O TANK sai na ULTIMATE (O / botão super): `ytSuper` do sj → `sjUlt` (precisa estar transformado e com as 3 barras de ki como toda ultimate; não invoca se já tem um vivo).
+- TANK agora: vida 0,4 barra (720); corre até o inimigo (velocidade 13) se ele está a menos de 700 do Sung; combos de 3 golpes seguidos (sem repetir o mesmo), pausa curta; animações ~40%% mais rápidas; dano 40 (58 no chute/3º golpe).
+- Visual: aura violeta (MONRM do bloco v427, chama do Gojo) + brilho, RAIOS azuis em volta (mais quando corre/ataca), rastro de sombra.
+- Modo teste "energia infinita" agora mantém também a faísca da ultimate (spark).
+- Teste: `ferramentas/testes/tsung_tank_v432.js`.
