@@ -2139,3 +2139,11 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 ## v435 — Sung transformado: +70% velocidade e bônus acima do Shaka
 - speedMul: Sung na forma 2.12 (normal 1.25; Yuta continua 3.0). Dano na forma ×1,25 extra (total ×1,81 contra ×1,45 das formas comuns como a do Shaka) e dano recebido ×0,85 extra (total ×0,68 contra ×0,8). Normal sem aura (v434).
 - PLANO do dono: Sung vai ser o mais forte do jogo só quando UPADO numa ÁRVORE de evolução no estilo do "Sistema" do anime (a definir).
+
+## v436 — SISTEMA DO JOGADOR do Sung (estilo Solo Leveling)
+- Tela do dono: `ferramentas/personagens/sung/sistema/tela_sistema.png` (fundo; valores e botões posicionados por cima com `sjP(x0,y0,x1,y1)` em pixels da imagem 1672x941). Abre por: EVOLUIR do Sung na Biblioteca (`lvOpen('sung')`) e botão "📘 SISTEMA DO SUNG" no painel 🧪 TESTE.
+- Dados `rk_sjs` (`sjSys()`): lv 1–80, xp, pts (5 por nível), st {for,vit,agi,per,int} começam em 10, cls, sh (sombras), eq (equipada, 1), ms/dc (missões), cnt {w,ult}, d (diário: w,h,u,a,f).
+- Sobe SÓ com missões (`SJMS`): diárias (4), repetível (5 vitórias com o Sung), do sistema (torre TN andar 3/6/9/11, rank Prata→Deus Absoluto via rk_rkmax, vitórias 10/50/150, invocações 25/100). XP p/ próximo nível = 150+45·nível (≈154 mil no total; as missões do sistema somam ≈154 mil).
+- Efeitos na luta (só Sung do jogador, aplicados uma vez por round no hook de update `p.sjA`): Força +0,35%/pt dano; Vitalidade -0,4%/pt dano recebido; Agilidade +0,15%/pt velocidade (máx +60%); Percepção 0,12%/pt de DESVIAR sozinho (máx 30%); Inteligência sombra +1%/pt vida, +0,8%/pt dano; MP 100+5/pt. Classes (`SJCL`): Assassino +30% dano +8% crit; Espadachim espada +25% e explosão do corte maior; Guerreiro +15%/-12%; Defensor -28%; Necromante (Monarca das Sombras) = ÚNICO que invoca sombra (sjUlt). Fadiga = 5% por luta do dia (visual).
+- Classe escolhida 1 vez (ADM troca à vontade). Inventário = sombras que tem (TANK); Sombras = equipar 1.
+- Teste: `ferramentas/testes/tsung_sistema_v436.js`.
