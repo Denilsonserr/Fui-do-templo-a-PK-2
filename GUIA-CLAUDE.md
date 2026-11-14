@@ -2199,3 +2199,8 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - **Tela branca:** no fim da FORMA DIVINA o `ring()` estava com cor e raio trocados → `rgba(260)` dava erro dentro do `drawParts` (que já tinha feito `save()` e `lighter`) → o canvas ficava preso em `lighter` e tudo ia ficando branco (qualquer modo, aparecia mais na Caça). Corrigido o anel e, no fim do rk.js, `loop` agora conta os `save()` do ctx e, se um quadro der erro, desfaz os que sobraram e volta `source-over`/alpha 1. Teste: `ferramentas/testes/tcaca_divino_v448.js` (procura a tela branca e injeta uma partícula quebrada).
 - **Anel vermelho SSS** (`c:4,g:7`): `anRingSvg` próprio — vermelho mais forte, brilho maior, ~12% maior (viewBox -59), espinhos duplos, 2 luzes brancas girando e 4 raios piscando em volta. Na aura v447 (`sss`): vermelho-sangue, força máxima, +3 raios com centro branco. Teste: `SSS=1 node ferramentas/testes/taura_v447.js`.
 - **Código ADM** (`adm:1,acc:1`, hash `fge18y`): 12 anéis vermelhos SSS (2 de cada atributo, 100.000 anos). Texto só com o dono. Teste: `C1=CODIGO node ferramentas/testes/tcod_aneis_v448.js`.
+
+## v449 — Forma divina: dura igual à transformação normal e dá para usar de novo
+- Duração: `f.skDivE=G.frame+FORM_T` (antes FORM_T/2) e o botão esvazia 1 por quadro (antes ×2, por isso parecia descarregar rápido). ≈38 s.
+- Só dava 1 vez por luta: depois da transformação o vídeo divino é liberado da memória (`skDvFree(0)`) e o `skvNeed` só recarregava na 1ª vez → ficava em "CARREGANDO A FORMA DIVINA..." para sempre. Agora `skvNeed` chama `skDvLoad()` sempre que `!SKDOK`. Ainda custa 2,5 barras de energia.
+- Teste: `ferramentas/testes/tdivino_2x_v449.js` (Caça com a armadura: duração, fim e 2ª vez).
