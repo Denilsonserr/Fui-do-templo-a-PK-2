@@ -5,7 +5,7 @@ await p.addInitScript(()=>{if(!sessionStorage.d){sessionStorage.d=1;localStorage
 await p.goto('file:///home/claude/fui-do-templo-a-pk-2/www/index.html');await p.waitForFunction(()=>!document.getElementById('goSelect').disabled,null,{timeout:120000});
 await p.evaluate(()=>{__dbg.G.ssel='shk';__pvT.treino('shaka','goku','pve')});await p.waitForFunction(()=>__dbg.G.mode==='fight'&&__dbg.G.phase==='fight',null,{timeout:120000});
 await p.evaluate(()=>{__dbg.G.noAI=true;__pvT.trf()});await p.waitForFunction(()=>!__dbg.G.trans&&__dbg.G.p[0].form,null,{timeout:20000});
-for(let i=0;i<25&&!(await p.evaluate(()=>__pvT.skdv().div));i++){await p.evaluate(()=>{__dbg.G.p[0].sb=2;__pvT.dvBtn()});await p.waitForTimeout(1000)}
+for(let i=0;i<25&&!(await p.evaluate(()=>__pvT.skdv().div));i++){await p.evaluate(()=>{__dbg.G.p[0].sb=3;__pvT.dvBtn()});await p.waitForTimeout(1000)}
 await p.waitForFunction(()=>!__dbg.G.trans,null,{timeout:20000});await p.waitForTimeout(3000);await p.screenshot({path:SH+'dv_aura.png'});
 await p.evaluate(()=>{const a=__dbg.G.p[0];a.state='run';a.vx=-10*a.facing});await p.waitForTimeout(350);await p.screenshot({path:SH+'dv_rastro.png'});
 await p.evaluate(()=>{const G=__dbg.G,[a,o]=G.p;a.vx=0;a.state='idle';o.x=a.x+a.facing*200;o.hp=3600;a.spCD=0;a.buf.sp=G.frame});await p.waitForTimeout(700);await p.screenshot({path:SH+'dv_combo.png'});

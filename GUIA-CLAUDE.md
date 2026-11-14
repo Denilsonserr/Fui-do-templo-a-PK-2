@@ -2053,3 +2053,9 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - REFLEXO (`applyHit` embrulhado): 22% dos golpes que acertam o Shaka divino voltam 70% do dano para quem bateu (recarga 40 quadros, "REFLETIDO!").
 - AURA DIVINA: auréola dourada com raios de luz girando atrás da cabeça (`skHalo`, imagem pronta em cache = leve), por baixo da chama dourada clara da v398.
 - Teste `ferramentas/testes/tdivino_jogo_v417.js` (40 golpes: ~50% desvio, ~20-30% dos acertos refletidos).
+
+## v418 — Forma divina balanceada
+- Custa **2,5 barras de energia** (skDivWhy/tryCommon), antes 1.
+- Dura **metade da 1ª transformação** (`f.skDivE=G.frame+FORM_T/2`, ≈19 s). O botão TRANSFORMAR esvazia junto. Ao acabar: volta aos OLHOS ABERTOS com o tempo que sobrava (`f.skFT`), tira a classe `skdv`, texto "FORMA DIVINA ACABOU".
+- Dano ×2,6 (+160%) em vez de ×2,2. O boss Shaka (3ª vida, skP3) continua divino até o fim.
+- Teste: `ferramentas/testes/tdivino_tempo_v418.js`.

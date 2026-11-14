@@ -6,7 +6,7 @@ await p.goto('file:///home/claude/fui-do-templo-a-pk-2/www/index.html');await p.
 await p.evaluate(gm=>{__dbg.G.ssel='shk';__pvT.treino('shaka','goku',gm)},process.env.GM||'pve');await p.waitForFunction(()=>__dbg.G.mode==='fight'&&__dbg.G.phase==='fight',null,{timeout:120000});await p.waitForTimeout(800);
 await p.evaluate(()=>{__dbg.G.noAI=true;__pvT.trf()});const s0=await p.evaluate(()=>__pvT.skdv());
 await p.waitForFunction(()=>!__dbg.G.trans&&__dbg.G.p[0].form,null,{timeout:20000});await p.waitForTimeout(1500);const sMid=await p.evaluate(()=>__pvT.skdv());await p.screenshot({path:SH+'treino_olhos.png'});
-await p.evaluate(()=>{__dbg.G.p[0].sb=Math.max(1,__dbg.G.p[0].sb||0);__pvT.dvBtn()});await p.waitForTimeout(1800);await p.screenshot({path:SH+'treino_dvvideo.png'});await p.waitForFunction(()=>__pvT.skdv().div&&!__dbg.G.trans,null,{timeout:20000});await p.waitForTimeout(600);await p.screenshot({path:SH+'treino_div.png'});
+await p.evaluate(()=>{__dbg.G.p[0].sb=Math.max(3,__dbg.G.p[0].sb||0);__pvT.dvBtn()});await p.waitForTimeout(1800);await p.screenshot({path:SH+'treino_dvvideo.png'});await p.waitForFunction(()=>__pvT.skdv().div&&!__dbg.G.trans,null,{timeout:20000});await p.waitForTimeout(600);await p.screenshot({path:SH+'treino_div.png'});
 const s1=await p.evaluate(()=>__pvT.skdv());
 const st=await p.evaluate(()=>({stg:__pvT.shk().stg,tdm0:__dbg.G.p[1].tdm}));await p.evaluate(()=>{__dbg.G.p[1].hp=__dbg.G.p[1].mhp?__dbg.G.p[1].mhp*.2:700});await p.waitForTimeout(2500);await p.screenshot({path:SH+'treino_templo.png'});const st2=await p.evaluate(()=>__pvT.shk().ph);
 console.log(JSON.stringify({st,st2}));

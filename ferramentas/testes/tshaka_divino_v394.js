@@ -13,7 +13,7 @@ await p.click('#mRank');await W(500);await p.click('#rkWrap [data-a="boss"]');aw
 await p.click('#rkWrap [data-a="start"]',{force:true});await W(500);await p.click('#rkWrap [data-a="fight"]',{force:true});
 await p.waitForFunction(()=>__dbg.G.mode==='fight'&&__dbg.G.phase==='fight',null,{timeout:120000});await W(800);
 const s0=await p.evaluate(()=>{const G=__dbg.G;G.noAI=true;const [a,o]=G.p;o.hp=o.mhp;a.form=1;a.formT=2300;return __pvT.skdv()});
-await p.evaluate(()=>{const a=__dbg.G.p[0];a.sb=1;__pvT.dvBtn()});for(let i=0;i<20&&!(await p.evaluate(()=>__pvT.skdv().div||!!__dbg.G.trans));i++){await p.waitForTimeout(1000);await p.evaluate(()=>{const a=__dbg.G.p[0];a.sb=2;__pvT.dvBtn()})}await W(1800);await shot('video');const s1=await p.evaluate(()=>__pvT.skdv());
+await p.evaluate(()=>{const a=__dbg.G.p[0];a.sb=3;__pvT.dvBtn()});for(let i=0;i<20&&!(await p.evaluate(()=>__pvT.skdv().div||!!__dbg.G.trans));i++){await p.waitForTimeout(1000);await p.evaluate(()=>{const a=__dbg.G.p[0];a.sb=3;__pvT.dvBtn()})}await W(1800);await shot('video');const s1=await p.evaluate(()=>__pvT.skdv());
 await p.waitForFunction(()=>!__dbg.G.trans,null,{timeout:20000});await W(700);await shot('forma');const s2=await p.evaluate(()=>__pvT.skdv());
 await p.evaluate(()=>{const G=__dbg.G,[a,o]=G.p;a.state='run';a.vx=12*a.facing});await W(250);await shot('correndo');await p.evaluate(()=>{const a=__dbg.G.p[0];a.vx=0;a.state='idle'});
 await p.evaluate(()=>{const G=__dbg.G,[a,o]=G.p;o.x=a.x+a.facing*220;o.hp=o.mhp;a.tdm=.3;a.ki=100;__pvT.skSup()});await W(2500);await shot('ult_video');const s3=await p.evaluate(()=>__pvT.skdv());
