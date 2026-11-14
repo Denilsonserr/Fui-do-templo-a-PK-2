@@ -2162,3 +2162,10 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 ## v439 — Teste do Sung por 10 min (ADM)
 - Botão "🧪 TESTAR O SUNG POR 10 MIN" no painel TESTE (`sjTrialStart`): guarda cópia de rk_own (sem o Sung), tw_moedas; dá Sung + TANK rank C nv1 + 2.000 essência + 60.000 moedas + Sistema nv 10 (45 pontos, classe a escolher). Contador no topo. Em 10 min (`sjTrialEnd`, espera a luta acabar) volta tudo: sem Sung, sem Sistema (rk_sjs), sem essência (rk_sje), moedas como antes. Estado em localStorage `sjTrial`.
 - Teste: `ferramentas/testes/tsung_trial_v439.js`.
+
+## v440 — Sombra mais resistente, copia a força do Sung, dura 15 s
+- `SJRK` por rank: hp (barras no nv1) C .5 · B .65 · A .8 · S 1 · SS 1.2 (SS = nv máx 60, para o futuro); gp = golpes que aguenta no nv1: 10/12/14/16/18 — cada golpe na sombra tira no MÁXIMO vida_nv1/gp (`B.cap`), até ultimate; o dano normal usa power/forma/faísca/tdm do atacante × resistência.
+- Força: o golpe da sombra é `applyHit` com o Sung como atacante (força inteira dele: itens, Sistema, transformação) × (0,35 + pc), pc = 10/20/30/50/70%. Nível: +3% vida (aumenta os golpes), +2% dano, resistência, velocidade.
+- Fica 15 s (`SJBLIFE`=900 quadros; barra amarela embaixo da vida) e volta para a escuridão.
+- Tela SOMBRAS: Dano = % da força do Sung, Resistência = golpes que aguenta.
+- Teste: `ferramentas/testes/tsung_sombra_v440.js`.

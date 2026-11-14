@@ -13113,7 +13113,7 @@ function updSJT(T,f,t){if(T.u){if(t===SJUE){f.ki=0;G.flash=12;G.flashCol='#6a3cf
 const SJBHP=()=>Math.round(LAYER*.3); /* v437: base menor; cresce com o nível da sombra (tela SOMBRAS) e a Inteligência */ /* v432: pouca vida, mas muito rápido e agressivo */
 function sjUlt(f,o){if(!f.cpu){const S=sjSys();if(S.cls!=='necro'){say(f,S.cls?'SÓ O NECROMANTE INVOCA SOMBRAS':'ESCOLHA A CLASSE NO SISTEMA');return false}if(!S.eq){say(f,'EQUIPE UMA SOMBRA NO SISTEMA');return false}}if(!f.form){if(!f.cpu)say(f,'TRANSFORME-SE PRIMEIRO');return false}if(f.sjB&&f.sjB.st!=='die'){if(!f.cpu)say(f,'O TANK JÁ ESTÁ LUTANDO');return false}
   if(!SJOK){sjLoad();if(!f.cpu)say(f,'CARREGANDO AS SOMBRAS...');return false}if(G.trans)return false;f.ki=0;f.state='transform';f.st=0;f.vx=0;f.vy=0;f.inv=999;G.trans={f,t:0,sj:1,u:1};try{SFX.powerUp()}catch(e){}buzz(60);return true}
-function sjSummon(f){const o=G.p[0]===f?G.p[1]:G.p[0],dir=o?(o.x>f.x?1:-1):(f.facing||1);const iv=f.sjS||{shp:1,sdm:1,sh:{hp:1,dm:.85,res:1,spd:1}},Q=iv.sh||{hp:1,dm:.85,res:1,spd:1},HPx=Math.round(SJBHP()*iv.shp*Q.hp);f.sjB={x:f.x+dir*125,dir,hp:HPx,mhp:HPx,dm:iv.sdm*Q.dm,res:Q.res,spd:Q.spd,st:'rise',t:0,cd:G.frame+90,a:'rise',fl:0};if(!f.cpu)try{const S=sjSys();S.cnt.ult++;S.d.u=(S.d.u||0)+1;sjSave(S)}catch(e){}
+function sjSummon(f){const o=G.p[0]===f?G.p[1]:G.p[0],dir=o?(o.x>f.x?1:-1):(f.facing||1);const iv=f.sjS||{shp:1,sdm:1},Q=iv.sh||sjShSt('tank',1),HPx=Math.round(LAYER*Q.hp*iv.shp);f.sjB={x:f.x+dir*125,dir,hp:HPx,mhp:HPx,cap:LAYER*Q.hp1*iv.shp/Q.gp,life:SJBLIFE,dm:iv.sdm*Q.dm,res:Q.res,spd:Q.spd,st:'rise',t:0,cd:G.frame+90,a:'rise',fl:0};if(!f.cpu)try{const S=sjSys();S.cnt.ult++;S.d.u=(S.d.u||0)+1;sjSave(S)}catch(e){}
   ring(f.x+dir*125,FLOOR-10,'#6a3cff',260,24,6);for(let i=0;i<24;i++)addP({x:f.x+dir*125+rand(-120,120),y:FLOOR-rand(0,20),vx:rand(-1,1),vy:-rand(2,7),life:rand(26,44),max:44,c:pick(['#2a1060','#6a3cff','#9fd4ff']),type:'glow',sz:rand(5,12),g:-.02})}
 const SJBA_T={punch:[3,3,4,6],kick:[3,4,4,6],claw:[3,4,7],claw2:[3,4,7],block:[3,3,4,5],die:[6,6,6,7,8,12],rise:Array(16).fill(3)};
 const SJBHIT={punch:2,kick:2,claw:1,claw2:1};
@@ -13123,6 +13123,7 @@ function sjBTick(f){const B=f.sjB;if(!B)return;B.t++;if(B.fl>0)B.fl--;const o=G.
   if(f.ko&&B.st!=='die'){B.st='die';B.a='die';B.t=0}
   if(B.st==='die'){if(B.t===1){for(let i=0;i<30;i++)addP({x:B.x+rand(-110,110),y:FLOOR-rand(10,260),vx:rand(-2,2),vy:-rand(1,4),life:rand(30,50),max:50,c:pick(['#140630','#3a1a80','#6a3cff']),type:'glow',sz:rand(8,18),g:-.03})}
     if(B.t>=sjDur('die')+10)f.sjB=null;return}
+  if(B.life!=null&&B.st!=='rise'){B.life--;if(B.life<=0){B.st='die';B.a='die';B.t=0;txt(B.x,FLOOR-300,'A SOMBRA VOLTOU PARA A ESCURIDÃO','#c79bff');return}}
   if(B.st==='rise'){if(B.t>=sjDur('rise'))B.st='idle',B.a='idle',B.t=0;return}
   if(o&&!o.ko&&B.st!=='atk')B.dir=o.x>B.x?1:-1;
   if(B.st==='idle'){const near=o&&!o.ko&&Math.abs(o.x-f.x)<700,tx=near?o.x-B.dir*190:f.x+(o?(o.x>f.x?1:-1):(f.facing||1))*125,sp=(near?13:8)*(B.spd||1),dx=Math.max(-sp,Math.min(sp,tx-B.x));B.x+=dx;B.run=Math.abs(dx)>6;
@@ -13151,11 +13152,11 @@ function sjBDraw(f){const B=f.sjB;if(!B)return;const [a,i]=sjFr(B),M=(SJU.f[a]||
   ctx.save();if(B.fl>0){ctx.globalCompositeOperation='source-over'}if(B.st==='die')ctx.globalAlpha=Math.max(0,1-Math.max(0,B.t-sjDur('die')+12)/14);
   ctx.translate(B.x,FLOOR+4);ctx.scale(B.dir,1);ctx.drawImage(I,-M.ax,-M.ay,M.w,M.h);
   if(B.fl>0){ctx.globalCompositeOperation='lighter';ctx.globalAlpha=B.fl/10*.6;ctx.drawImage(I,-M.ax,-M.ay,M.w,M.h)}ctx.restore();
-  if(B.st!=='die'&&B.st!=='rise'){const w=130,x=B.x-w/2,y=FLOOR+22,k=Math.max(0,B.hp/B.mhp);ctx.save();ctx.fillStyle='rgba(8,4,20,.8)';ctx.fillRect(x-2,y-2,w+4,12);const g=ctx.createLinearGradient(x,0,x+w,0);g.addColorStop(0,'#6a3cff');g.addColorStop(1,'#9fd4ff');ctx.fillStyle=g;ctx.fillRect(x,y,w*k,8);
+  if(B.st!=='die'&&B.st!=='rise'){const w=130,x=B.x-w/2,y=FLOOR+22,k=Math.max(0,B.hp/B.mhp);ctx.save();ctx.fillStyle='rgba(8,4,20,.8)';ctx.fillRect(x-2,y-2,w+4,12);const g=ctx.createLinearGradient(x,0,x+w,0);g.addColorStop(0,'#6a3cff');g.addColorStop(1,'#9fd4ff');ctx.fillStyle=g;ctx.fillRect(x,y,w*k,8);if(B.life!=null){ctx.fillStyle='rgba(8,4,20,.8)';ctx.fillRect(x-2,y+10,w+4,6);ctx.fillStyle='#ffe08a';ctx.fillRect(x,y+11,w*Math.max(0,B.life/SJBLIFE),4)}
     ctx.font='900 13px var(--f-ui,sans-serif)';ctx.textAlign='center';ctx.fillStyle='#e4dcff';ctx.strokeStyle='#000';ctx.lineWidth=3;ctx.strokeText('TANK',B.x,y+24);ctx.fillText('TANK',B.x,y+24);ctx.restore()}}
 {const _rf=renderFighter;renderFighter=function(f,reflect){if(!reflect&&f&&f.sjB&&G.mode==='fight')try{sjBDraw(f)}catch(e){}return _rf.apply(this,arguments)}}
 {const _uS=update;update=function(){const r=_uS.apply(this,arguments);try{if(G.p&&G.mode==='fight'){for(const f of G.p)if(f&&f.sjB&&G.hitstop<=0)sjBTick(f)}}catch(e){console.warn(e)}return r}}
-{const _ahB=applyHit;applyHit=function(a,d,h){try{if(d&&d.sjB&&a&&a!==d&&h&&!d.ko&&d.sjB.st!=='die'){const B=d.sjB,dm=(h.dmg||0)*(a.tdm||1)*(B.res||1);B.hp-=dm;B.fl=10;
+{const _ahB=applyHit;applyHit=function(a,d,h){try{if(d&&d.sjB&&a&&a!==d&&h&&!d.ko&&d.sjB.st!=='die'){const B=d.sjB,raw=(h.dmg||0)*((a.def&&a.def.power)||1)*(a.form?1.45:1)*(a.spark>0?1.2:1)*(a.tdm||1)*(B.res||1),dm=Math.min(raw,B.cap||raw);B.hp-=dm;B.fl=10;
     if(B.st!=='atk'&&B.st!=='rise'){B.st='block';B.a='block';B.t=0}a.hasHit=true;G.hitstop=Math.max(G.hitstop||0,Math.min(6,h.hs||4));for(let k=0;k<8;k++)spark(B.x-B.dir*10,FLOOR-200,pick(['#6a3cff','#3a1a80','#9fd4ff']),1,rand(4,10));
     if(B.hp<=0){B.hp=0;B.st='die';B.a='die';B.t=0;banner('TANK CAIU!','#9a7bff',90,'agora o Sung pode ser atingido');G.shake=Math.max(G.shake,14)}return true}}catch(e){}return _ahB.apply(this,arguments)}}
 {const _pmS=prepMatch;prepMatch=function(ids){try{if((ids||[]).includes('sung'))sjLoad()}catch(e){}return _pmS.apply(this,arguments)}}
@@ -13171,14 +13172,14 @@ const SJCL={assassino:{n:'ASSASSINO',ic:'🗡️',d:'+30% de dano e +8% de crít
   guerreiro:{n:'GUERREIRO',ic:'🪓',d:'+15% de dano e recebe -12% de dano. Equilibrado.',dm:1.15,df:.88},
   defensor:{n:'DEFENSOR',ic:'🛡️',d:'Recebe -28% de dano. O mais difícil de derrubar.',df:.72},
   necro:{n:'NECROMANTE',ic:'💀',sub:'Monarca das Sombras',d:'A classe do anime: o ÚNICO que INVOCA SOMBRAS na ultimate. Inteligência deixa a sombra mais forte.',sh:1}};
-const SJSH={tank:{n:'TANK',sub:'Urso das Sombras',img:'a/0f857b8bcc9df1.webp',hp:.4,dm:1,d:'Urso de gelo das sombras. Muito rápido e agressivo; protege o Sung até cair.'}};
+const SJSH={tank:{n:'TANK',sub:'Urso das Sombras',img:'a/0f857b8bcc9df1.webp',hp:.4,dm:1,d:'Urso de gelo das sombras. Muito rápido e agressivo; protege o Sung por 15 s ou até cair.'}};
 function sjSys(){let o=rkG('sjs',null);if(!o||typeof o!=='object')o={};o=Object.assign({lv:1,xp:0,pts:0,cls:'',sh:['tank'],eq:'tank',ms:{},cnt:{w:0,ult:0},d:{},dc:{}},o);
   o.st=Object.assign({for:10,vit:10,agi:10,per:10,int:10},o.st||{});o.cnt=Object.assign({w:0,ult:0},o.cnt);const day=new Date(Date.now()-3*3600e3).toISOString().slice(0,10);
   if(o.d.day!==day){o.d={day,w:0,h:0,u:0,a:0,f:0};o.dc={}}return o}
 const sjSave=o=>rkS('sjs',o),sjNeed=lv=>150+lv*45;
 function sjAddXP(o,x){o.xp+=x;let up=0;while(o.lv<SJMX&&o.xp>=sjNeed(o.lv)){o.xp-=sjNeed(o.lv);o.lv++;o.pts+=5;up++}if(o.lv>=SJMX)o.xp=0;return up}
 const sjV=o=>{const s=o.st,C=SJCL[o.cls]||{};return {dm:(1+(s.for-10)*.0035)*(C.dm||1),df:(C.df||1)/(1+(s.vit-10)*.004),sp:1+Math.min(.6,(s.agi-10)*.0015),dg:Math.min(.3,(s.per-10)*.0012),
-  shp:1+(s.int-10)*.01,sdm:1+(s.int-10)*.008,sh:o.eq&&typeof sjShSt==='function'?sjShSt(o.eq,sjShLv(o,o.eq)):{hp:1,dm:.85,res:1,spd:1},cr:C.cr||0,sw:C.sw||1,cls:o.cls,hp:Math.round(LAYER*2*(1+(s.vit-10)*.004)),mp:100+(s.int-10)*5,fad:Math.min(100,(o.d.f||0)*5)}};
+  shp:1+(s.int-10)*.01,sdm:1+(s.int-10)*.008,sh:o.eq&&typeof sjShSt==='function'?sjShSt(o.eq,sjShLv(o,o.eq)):null,cr:C.cr||0,sw:C.sw||1,cls:o.cls,hp:Math.round(LAYER*2*(1+(s.vit-10)*.004)),mp:100+(s.int-10)*5,fad:Math.min(100,(o.d.f||0)*5)}};
 const SJMS=[
  {id:'d1',t:'d',n:'Vença 3 lutas com o Sung',g:o=>o.d.w,m:3,xp:600},{id:'d2',t:'d',n:'Acerte 200 golpes com o Sung',g:o=>o.d.h,m:200,xp:500},
  {id:'d3',t:'d',n:'Invoque sombras 2 vezes',g:o=>o.d.u,m:2,xp:400},{id:'d4',t:'d',n:'Vença 2 lutas (qualquer personagem)',g:o=>o.d.a,m:2,xp:300},
@@ -13223,7 +13224,7 @@ function sjAct(s,D){const o=sjSys();
   sjPanel(s)}
 function sjLvUp(lv,n){const T=document.createElement('div');T.className='sjLvUp';T.innerHTML=`<b>NÍVEL ${lv}!</b><small>+${n*5} pontos de atributo</small>`;document.getElementById('sjSys').appendChild(T);setTimeout(()=>T.remove(),2600)}
 function sjShCard(k,o,V,from){const S=SJSH[k];return `<div class="sjSh ${o.eq===k?'on':''}"><img src="${S.img}" alt=""><div><b>${S.n}</b><small>${S.sub}</small><p>${S.d}</p>
-  <p class="sjNum">[${S.r}] Nv ${sjShLv(o,k)}/${sjShSt(k,1).mx} · ❤️ Vida ${rkFmtN(Math.round(LAYER*.3*sjShSt(k,sjShLv(o,k)).hp*V.shp))} · ⚔️ Dano ${Math.round(40*sjShSt(k,sjShLv(o,k)).dm*V.sdm)} <em>(nível + Inteligência)</em></p>
+  <p class="sjNum">[${S.r}] Nv ${sjShLv(o,k)}/${sjShSt(k,1).mx} · ❤️ Vida ${rkFmtN(Math.round(LAYER*sjShSt(k,sjShLv(o,k)).hp*V.shp))} · 🛡️ ${sjShSt(k,sjShLv(o,k)).golpes} golpes · ⚔️ ${Math.round(sjShSt(k,sjShLv(o,k)).dm*V.sdm*100)}% da força do Sung · ⏱️ 15 s</p>
   <button class="btn ${o.eq===k?'':'main'}" data-s="eq" data-k="${k}" data-from="${from}">${o.eq===k?'TIRAR':'EQUIPAR'}</button></div></div>`}
 function sjPanel(s){const P=document.getElementById('sjPan');if(!P)return;const o=sjSys(),V=sjV(o);let h='';
   if(s==='cl'){h=`<h3>CLASSE ${o.cls&&!pfIsAdm()?'':'· escolha uma'}</h3><p class="sjSub">${o.cls?(pfIsAdm()?'ADM pode trocar à vontade para testar.':'A classe já foi escolhida.'):'Escolha com cuidado: a classe é para sempre.'}</p><div class="sjCl">${Object.keys(SJCL).map(k=>{const C=SJCL[k];return `<button class="sjCc ${o.cls===k?'on':''}" data-s="cls" data-k="${k}" ${o.cls&&o.cls!==k&&!pfIsAdm()?'disabled':''}><i>${C.ic}</i><b>${C.n}</b>${C.sub?`<small>${C.sub}</small>`:''}<p>${C.d}</p></button>`}).join('')}</div>`}
@@ -13291,10 +13292,13 @@ rkRollY=rkRollSJ;
 function rkMegaSJ(){return new Promise(res=>{const O=document.createElement('div');O.className='rkMega ytm sjm';O.innerHTML='<i class="rays"></i><i class="fl"></i><i class="ring"></i><div class="tx"><small>✦ SS ✦</small><b>SORTE</b><b>DIVINA!</b><span>O SUNG JIN-WOO APARECEU!</span></div>';rkHost().appendChild(O);
   rkSfx('boom');setTimeout(()=>rkSfx('powerUp'),400);setTimeout(()=>rkSfx('boom'),900);setTimeout(()=>rkSfx('powerUp'),1500);let d=0;const end=()=>{if(d)return;d=1;O.classList.add('out');setTimeout(()=>{O.remove();res()},400)};setTimeout(end,3400);setTimeout(()=>{O.onclick=end},900)})}
 /* ---------- SOMBRAS: evoluir ---------- */
-const SJRK={C:{mx:20,b:1,hg:.03,dg:.02,c:'#9fb4c8'},B:{mx:30,b:1.15,hg:.03,dg:.02,c:'#5fb0ff'},A:{mx:40,b:1.3,hg:.03,dg:.02,c:'#c07cff'},S:{mx:50,b:1.5,hg:.035,dg:.025,c:'#ffd84a'}};
+/* v440: sombra mais resistente e ligada à força do Sung. hp = vida em barras no nv 1; gp = quantos golpes ela aguenta no nv 1 (cada golpe tira no máximo vida/gp, até de ultimate);
+   pc = % da força do Sung que ela copia (o golpe dela usa a força inteira do Sung × (0,35+pc)); dura 15 s. */
+const SJRK={C:{mx:20,hp:.5,gp:10,pc:.1,hg:.03,dg:.02,c:'#9fb4c8'},B:{mx:30,hp:.65,gp:12,pc:.2,hg:.03,dg:.02,c:'#5fb0ff'},A:{mx:40,hp:.8,gp:14,pc:.3,hg:.03,dg:.02,c:'#c07cff'},S:{mx:50,hp:1,gp:16,pc:.5,hg:.035,dg:.025,c:'#ffd84a'},SS:{mx:60,hp:1.2,gp:18,pc:.7,hg:.035,dg:.025,c:'#ff6ad5'}};
+const SJBLIFE=900;
 SJSH.tank.r='C';
 const sjShLv=(o,k)=>Math.max(1,((o.shl||{})[k])|0||1);
-function sjShSt(k,lv){const R=SJRK[(SJSH[k]||{}).r||'C'];return {hp:R.b*(1+(lv-1)*R.hg),dm:.85*R.b*(1+(lv-1)*R.dg),res:1-Math.min(.25,(lv-1)*.008),spd:1+(lv-1)*.006,mx:R.mx}}
+function sjShSt(k,lv){const R=SJRK[(SJSH[k]||{}).r||'C'],hl=1+(lv-1)*R.hg;return {hp:R.hp*hl,hp1:R.hp,gp:R.gp,golpes:Math.round(R.gp*hl),pc:R.pc,dm:(.35+R.pc)*(1+(lv-1)*R.dg),res:1-Math.min(.25,(lv-1)*.008),spd:1+(lv-1)*.006,mx:R.mx}}
 const sjShCost=lv=>({e:8+lv*4,g:300+lv*100});
 const sjEss=()=>rkG('sje',0)|0;
 function sjShOpen(sel){let M=document.getElementById('sjShw');if(!M){M=document.createElement('div');M.id='sjShw';document.body.appendChild(M);addEventListener('resize',sjShFit)}
@@ -13313,10 +13317,10 @@ function sjShOpen(sel){let M=document.getElementById('sjShw');if(!M){M=document.
    <div class="sjPor" style="${P(1100,105,1234,233)}"><img src="${S.img}" alt=""></div>
    <div class="sjT sjNm" style="${P(1262,115,1615,165)}"><b style="color:${R.c}">[${S.r}]</b>&nbsp;${S.n}&nbsp;<small>Nv ${lv}/${mx}</small></div>
    ${[1342,1394,1446,1498,1550].map((x,i)=>i<st?`<div class="sjStar" style="${P(x-24,186,x+24,234)}">✦</div>`:'').join('')}
-   ${[[Math.round(40*T.dm*V.sdm),266],[rkFmtN(Math.round(LAYER*.3*T.hp*V.shp)),330],[Math.round((1-T.res)*100)+'%',395],[Math.round(100*T.spd),460]].map(([v,y])=>`<div class="sjT sjV" style="${P(1502,y,1620,y+45)};font-size:.85em">${v}</div>`).join('')}
+   ${[[Math.round(T.dm*V.sdm*100)+'%',266],[rkFmtN(Math.round(LAYER*T.hp*V.shp)),330],[T.golpes+' golpes',395],[Math.round(100*T.spd),460]].map(([v,y])=>`<div class="sjT sjV" style="${P(1502,y,1620,y+45)};font-size:.85em">${v}</div>`).join('')}
    ${lv<mx?`<div class="sjT sjV ${E<C.e?'no':''}" style="${P(1238,630,1343,676)};font-size:.8em">${C.e}</div><div class="sjT sjV ${Gd<C.g?'no':''}" style="${P(1497,630,1605,676)};font-size:.8em">${rkFmtN(C.g)}</div>`:''}
    <button class="sjB sjEvo ${lv>=mx?'mx':''}" data-x="up" data-k="${k}" style="${P(1135,750,1598,833)}">${lv>=mx?'<span>NÍVEL MÁXIMO</span>':''}</button>
-   <div class="sjHint" style="${P(1100,842,1630,880)}">Dano por golpe · Vida · Resistência = menos dano · Velocidade · Inteligência do Sung soma por cima</div></div>`;
+   <div class="sjHint" style="${P(1100,842,1630,880)}">Dano = % da força do Sung · Resistência = golpes que aguenta · fica 15 s em campo · Inteligência soma por cima</div></div>`;
   M.hidden=false;sjShFit();M.onclick=e=>{const b=e.target.closest('[data-x]');if(!b)return;const a=b.dataset.x,kk=b.dataset.k;
     if(a==='x'){M.hidden=true;try{sjSysOpen()}catch(_){}return}if(a==='sel')return sjShOpen(kk);
     if(a==='eq'){const O=sjSys();O.eq=O.eq===kk?'':kk;sjSave(O);return sjShOpen(kk)}
@@ -13557,7 +13561,7 @@ window.__dbg={mus:()=>[MCUR,MEL.src.split('/').pop()],stg:()=>STAGE.key,prepMatc
 })();
 </script>
 <style>#updB{position:fixed;left:50%;top:max(8px,env(safe-area-inset-top));transform:translateX(-50%);z-index:99999;padding:10px 22px;border-radius:14px;border:2px solid #fff3c0;background:linear-gradient(#ffd84a,#e08a10);color:#3a1d00;font:900 15px system-ui,sans-serif;box-shadow:0 0 18px #ffb21f;cursor:pointer;animation:updP 1s ease-in-out infinite alternate}@keyframes updP{to{transform:translateX(-50%) scale(1.05)}}</style>
-<script>(function(){const V='3e4dfb4397c3';if(!/^https?:/.test(location.protocol))return;let nv=null;
+<script>(function(){const V='fefc8e972982';if(!/^https?:/.test(location.protocol))return;let nv=null;
 function show(){if(document.getElementById('updB'))return;try{if(typeof G!=='undefined'&&G.mode==='fight')return}catch(e){}const b=document.createElement('button');b.id='updB';b.textContent='🔄 ATUALIZAÇÃO NOVA! Toque para atualizar';
   b.onclick=()=>{b.textContent='⏳ Atualizando...';try{acSave(1)}catch(e){}setTimeout(()=>location.reload(),900)};document.body.appendChild(b)}
 async function chk(){if(document.hidden)return;if(nv){show();return}try{const r=await fetch('versao.txt?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const t=(await r.text()).trim();if(/^[0-9a-f]{8,40}$/.test(t)&&t!==V){nv=t;show()}}catch(e){}}
