@@ -2075,3 +2075,6 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - NÃO está em nenhuma lista de escolha dos jogadores; aparece só no painel 🧪 TESTE (lista Object.keys(CH)). ROS.sung existe só para a tela de VS.
 - Faltam folhas: tomando golpe, caindo/nocaute, defesa (hoje usam poses parecidas) + vídeos de transformação e ultimate.
 - Teste: `ferramentas/testes/tsung_v421.js`.
+
+## v422 — Sung: pose parado
+- Parado (idle/relax/win) = folha 02 (em pé com a espada na mão, quadro 0) com respiração; andar continua a folha 01 (espada no ombro). Escolha do dono.
