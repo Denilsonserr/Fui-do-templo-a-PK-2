@@ -4604,18 +4604,21 @@ function monTick(f){for(const p of MONP){p.l++;p.x+=p.vx+Math.sin((p.l+p.a*9)*.1
    Transformar: vídeo em tela cheia (8 quadros/s) e o Sung entra na forma. Na hora sobe do chão o TANK (folhas do dono: ferramentas/personagens/sung/urso).
    O TANK fica na frente do Sung, anda junto, ataca o inimigo sozinho (soco, chute, garras) e TEM VIDA (barra em cima dele).
    Enquanto o TANK estiver vivo o Sung NÃO toma dano: todo golpe nele vai para o urso (que defende). Quando a vida acaba ele se desfaz em sombra. ================= */
-const SJU=window.SJBA||{f:{},v:[]},SJV=SJU.v||[],SJTF=[],SJTD=7,SJTE=Math.round(SJV.length*SJTD),SJBF={};let SJLP=null,SJOK=0;
-function sjLoad(){if(SJLP)return SJLP;const L=[];L.push(...skImL(SJV,SJTF));for(const k in SJU.f){SJBF[k]=[];L.push(...skImL(SJU.f[k].map(x=>x.s),SJBF[k]))}SJLP=Promise.all(L).then(()=>{SJOK=1});return SJLP}
-function sjFree(){SJLP=null;SJOK=0;SJTF.length=0;for(const k in SJBF)delete SJBF[k]}
+const SJU=window.SJBA||{f:{},v:[],t:[]},SJV=SJU.v||[],SJVT=SJU.t||[],SJTF=[],SJTF2=[],SJUD=3,SJUE=Math.round(SJV.length*SJUD),SJTD=6,SJTE=Math.round(SJVT.length*SJTD),SJBF={};let SJLP=null,SJOK=0;
+/* v434: transformação = vídeo novo do dono (SJVT, 10 q/s); ULTIMATE = vídeo do urso (SJV) tocado ACELERADO (3 ticks/quadro ≈ 2,6 s) e aí sobe o TANK */
+function sjFull(){const T=G.trans;if(T.u){if(T.t>=SJUE)return false;gkFull(SJTF,SJV.length,Math.floor(T.t/SJUD),Math.min(1,T.t/5,(SJUE-T.t)/5+.25));return true}
+  if(T.t>=SJTE)return false;gkFull(SJTF2,SJVT.length,Math.floor(T.t/SJTD),Math.min(1,T.t/6,(SJTE-T.t)/6+.25));return true}
+function sjLoad(){if(SJLP)return SJLP;const L=[];L.push(...skImL(SJV,SJTF));L.push(...skImL(SJVT,SJTF2));for(const k in SJU.f){SJBF[k]=[];L.push(...skImL(SJU.f[k].map(x=>x.s),SJBF[k]))}SJLP=Promise.all(L).then(()=>{SJOK=1});return SJLP}
+function sjFree(){SJLP=null;SJOK=0;SJTF.length=0;SJTF2.length=0;for(const k in SJBF)delete SJBF[k]}
 function sjTransStart(f){if(G.trans&&G.trans.f!==f)return false;if(!SJOK){sjLoad();if(!f.cpu)say(f,'CARREGANDO AS SOMBRAS...');return false}
   f.sb=Math.max(0,(f.sb||0)-SB_COST);f.state='transform';f.st=0;f.vx=0;f.vy=0;f.inv=999;f.sjB=null;G.trans={f,t:0,sj:1};try{SFX.powerUp()}catch(e){}buzz(60);return true}
-function updSJT(T,f,t){if(t<SJTE)return;
+function updSJT(T,f,t){if(T.u){if(t===SJUE){f.ki=0;G.flash=12;G.flashCol='#6a3cff';G.shake=20;sjSummon(f);banner('ERGA-SE!','#9a7bff',110,'TANK, O URSO DAS SOMBRAS — protege o Sung até cair');buzz(80)}if(t>=SJUE+16){G.trans=null;f.inv=20;neutral(f)}return}
+  if(t<SJTE)return;
   if(t===SJTE){f.form=1;f.formT=FORM_T;f.flick=0;G.flash=14;G.flashCol='#7a5cff';G.shake=22;banner('MONARCA DAS SOMBRAS','#9a7bff',120,'aperte ULTIMATE para invocar o TANK')}
   if(t>=SJTE+40){G.trans=null;f.inv=20;neutral(f)}}
 const SJBHP=()=>Math.round(LAYER*.4); /* v432: pouca vida, mas muito rápido e agressivo */
 function sjUlt(f,o){if(!f.form){if(!f.cpu)say(f,'TRANSFORME-SE PRIMEIRO');return false}if(f.sjB&&f.sjB.st!=='die'){if(!f.cpu)say(f,'O TANK JÁ ESTÁ LUTANDO');return false}
-  if(!SJOK){sjLoad();if(!f.cpu)say(f,'CARREGANDO AS SOMBRAS...');return false}f.ki=0;f.inv=Math.max(f.inv||0,30);G.flash=12;G.flashCol='#6a3cff';G.shake=20;sjSummon(f);
-  banner('ERGA-SE!','#9a7bff',110,'TANK, O URSO DAS SOMBRAS — protege o Sung até cair');buzz(80);return true}
+  if(!SJOK){sjLoad();if(!f.cpu)say(f,'CARREGANDO AS SOMBRAS...');return false}if(G.trans)return false;f.ki=0;f.state='transform';f.st=0;f.vx=0;f.vy=0;f.inv=999;G.trans={f,t:0,sj:1,u:1};try{SFX.powerUp()}catch(e){}buzz(60);return true}
 function sjSummon(f){const o=G.p[0]===f?G.p[1]:G.p[0],dir=o?(o.x>f.x?1:-1):(f.facing||1);f.sjB={x:f.x+dir*125,dir,hp:SJBHP(),mhp:SJBHP(),st:'rise',t:0,cd:G.frame+90,a:'rise',fl:0};
   ring(f.x+dir*125,FLOOR-10,'#6a3cff',260,24,6);for(let i=0;i<24;i++)addP({x:f.x+dir*125+rand(-120,120),y:FLOOR-rand(0,20),vx:rand(-1,1),vy:-rand(2,7),life:rand(26,44),max:44,c:pick(['#2a1060','#6a3cff','#9fd4ff']),type:'glow',sz:rand(5,12),g:-.02})}
 const SJBA_T={punch:[3,3,4,6],kick:[3,4,4,6],claw:[3,4,7],claw2:[3,4,7],block:[3,3,4,5],die:[6,6,6,7,8,12],rise:Array(16).fill(3)};

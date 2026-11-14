@@ -2129,3 +2129,9 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 
 ## v433 — Botão de SUPER para o Sung
 - O botão bSr (ultimate) estava escondido para o Sung no celular (listas de ids no startMatch/troca de personagem). 9y_sung.py adiciona sung nas 3 listas.
+
+## v434 — Sung: vídeo novo da transformação; vídeo do urso na ULTIMATE (acelerado)
+- `urso/transformacao_sung.mp4` = vídeo NOVO do dono (4,2 s, 10 q/s → urso.json `t`, 6 ticks/quadro). O vídeo do urso virou `urso/invocacao_tank.mp4` (`v`) e toca na ULTIMATE acelerado (3 ticks/quadro ≈ 2,6 s); no fim sobe o TANK.
+- `sjFull()` desenha o vídeo certo (G.trans.sj; `u:1` = ultimate). `sjUlt` agora abre G.trans {sj:1,u:1}.
+- Aura azul do Sung só aparece transformado.
+- Teste: `ferramentas/testes/tsung_tank_v434.js`.
