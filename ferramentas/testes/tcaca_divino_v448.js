@@ -1,0 +1,32 @@
+// v448: Shaka FORMA DIVINA no modo CAÇA (tela ficava toda branca)
+const {chromium}=require('playwright');const SH=process.env.SH||'/tmp/';
+(async()=>{const b=await chromium.launch();const p=await b.newPage({viewport:{width:915,height:412},deviceScaleFactor:2});const errs=[];p.on('pageerror',e=>errs.push(e.message));p.on('console',m=>{if(m.type()==='warning'||m.type()==='error')errs.push(m.text().slice(0,200))});await p.route(/fonts\.g|firestore|workers\.dev\/fs/,r=>r.abort());
+await p.addInitScript(()=>{if(!sessionStorage.d){sessionStorage.d=1;localStorage.clear();const I=['skcap','skarm','skluv','skbot','skros'].map((k,i)=>({id:'v'+i,nm:k+' V2',v2:1,skb:k,t:['cap','arm','anel','bot','esp'][i],r:'sec'}));
+  Object.assign(localStorage,{tw_nome:'"E"',rk_ini:'1',rk_xpv2:'1',rk_own:'["goku","shaka"]',rk_sel:'"shaka"',tw_inv:JSON.stringify(I),tw_eqp:JSON.stringify({cap:'v0',arm:'v1',anel:'v2',bot:'v3',esp:'v4'}),rk_dl:JSON.stringify({d:new Date(Date.now()-3*3600e3).toISOString().slice(0,10),s:0})})}});
+await p.goto('http://localhost:8790/index.html');await p.waitForFunction(()=>!document.getElementById('goSelect').disabled,null,{timeout:120000});
+await p.click('#mRank');await p.waitForTimeout(900);await p.evaluate(()=>{const M=document.getElementById('rkModal');if(M){M.hidden=true;M.innerHTML=''}});await p.click('#rkWrap [data-a="caca"]',{force:true});await p.waitForTimeout(1200);await p.click('#rkWrap [data-a="caGo"]',{force:true});
+for(let i=0;i<90;i++){await p.waitForTimeout(2000);const s=await p.evaluate(()=>[__dbg.G.mode,__dbg.G.phase]);if(s[0]==='fight'&&s[1]==='fight')break;if(i%10==0)console.log(s)}
+console.log('modo',await p.evaluate(()=>[__dbg.G.gmode,__dbg.G.p[0].def.id,__dbg.G.p[0].form]));
+await p.evaluate(()=>{__dbg.G.noAI=true;__pvT.trf()});await p.waitForFunction(()=>!__dbg.G.trans&&__dbg.G.p[0].form,null,{timeout:30000});
+for(let i=0;i<(process.env.NODV?0:25)&&!(await p.evaluate(()=>__pvT.skdv().div));i++){await p.evaluate(()=>{__dbg.G.p[0].sb=3;__pvT.dvBtn()});await p.waitForTimeout(1000)}
+await p.waitForFunction(()=>!__dbg.G.trans,null,{timeout:30000});
+const W=async()=>p.evaluate(()=>{const c=document.querySelector('canvas');const g=c.getContext('2d');const d=g.getImageData(0,0,c.width,c.height).data;let w=0,n=0;for(let i=0;i<d.length;i+=4*97){n++;if(d[i]>235&&d[i+1]>225&&d[i+2]>200)w++}const G=__dbg.G,o=G.p[1];return {fl2:[G.noAO,G.noPop,G.noBloom,G.noLit,G.p[0].skDiv?1:0,G.ws?1:0,G.p[0].form].join(''),fr:G.frame,st:G.p[0].state+'/'+o.state,br:+(w/n).toFixed(2),div:__pvT.skdv().div,ph:G.phase,tr:!!G.trans,ws:!!G.ws,fl:G.flash,blv:o.bLv,ohp:Math.round(o.hp),op:g.globalCompositeOperation,al:g.globalAlpha}});
+await p.evaluate(()=>{const P=CanvasRenderingContext2D.prototype,sv=P.save,rs=P.restore,S=[];window.__LEAK=[];
+ P.save=function(){S.push([performance.now(),new Error().stack.split('\n').slice(2,6).map(s=>s.trim().slice(0,120)).join(' | ')]);return sv.apply(this,arguments)};P.restore=function(){S.pop();return rs.apply(this,arguments)};
+ setInterval(()=>{const t=performance.now();while(S.length&&t-S[0][0]>200){const x=S.shift();if(window.__LEAK.length<5)window.__LEAK.push(x[1])}},100)});
+await p.evaluate(()=>{__dbg.G.noAI=false});const px=[];
+for(let k=0;k<30;k++){await p.waitForTimeout(1000);if(k===24)await p.evaluate(()=>{__dbg.G.parts.push({type:'ring',c:260,r:'#ffd84a',life:30,max:30,x:600,y:300,w:6})});if(k===2)await p.evaluate(()=>{const G=__dbg.G,[f,o]=G.p;f.sb=7;o.x=f.x+f.facing*220;o.hp=o.mhp;try{__pvT.skSup()}catch(e){console.warn('sup '+e.stack)}});const r=await W();px.push(r);if(r.br>.3){await p.screenshot({path:SH+'cdv_branco'+k+'.png'})}if(k%10===0)await p.screenshot({path:SH+'cdv'+k+'.png'})}
+console.log('LEAK',JSON.stringify(await p.evaluate(()=>window.__LEAK),null,1));const HK2=await p.evaluate(()=>new Promise(res=>{const P=CanvasRenderingContext2D.prototype,d=Object.getOwnPropertyDescriptor(P,'globalCompositeOperation'),out=[];let depth=0;const sv=P.save,rs=P.restore;
+ P.save=function(){depth++;return sv.apply(this,arguments)};P.restore=function(){depth--;return rs.apply(this,arguments)};
+ Object.defineProperty(P,'globalCompositeOperation',{configurable:true,get:d.get,set(v){if(depth===0&&v!=='source-over'&&out.length<6)out.push(v+' '+new Error().stack.split('\n').slice(2,5).map(s=>s.trim().slice(0,110)).join(' | '));return d.set.call(this,v)}});
+ setTimeout(()=>{Object.defineProperty(P,'globalCompositeOperation',d);P.save=sv;P.restore=rs;res(out)},150)}));console.log(JSON.stringify(HK2,null,1));
+const HK=await p.evaluate(()=>new Promise(res=>{const c=document.querySelector('canvas'),g=c.getContext('2d'),P=CanvasRenderingContext2D.prototype,out={big:[],depth:0,maxd:0};const W=c.width,H=c.height;
+ const o={save:P.save,restore:P.restore,fillRect:P.fillRect,drawImage:P.drawImage};
+ P.save=function(){out.depth++;out.maxd=Math.max(out.maxd,out.depth);return o.save.apply(this,arguments)};P.restore=function(){out.depth--;return o.restore.apply(this,arguments)};
+ const chk=(ctx,w,h,kind)=>{const m=ctx.getTransform(),sw=Math.abs(w*m.a),sh=Math.abs(h*m.d);if(ctx===g&&sw>=W*.8&&sh>=H*.8&&(ctx.globalCompositeOperation!=='source-over'||ctx.globalAlpha>.3)&&out.big.length<12)out.big.push(kind+' '+ctx.globalCompositeOperation+' a'+ctx.globalAlpha.toFixed(2)+' '+String(ctx.fillStyle).slice(0,30)+' '+(new Error().stack.split('\n').slice(2,5).map(s=>s.trim().slice(0,90)).join(' | ')))};
+ P.fillRect=function(x,y,w,h){chk(this,w,h,'fill');return o.fillRect.apply(this,arguments)};
+ P.drawImage=function(im){const a=arguments,w=a.length>=9?a[7]:a[3],h=a.length>=9?a[8]:a[4];if(w&&h)chk(this,w,h,'img '+(im&&im.src?im.src.split('/').pop():im&&im.tagName));return o.drawImage.apply(this,arguments)};
+ setTimeout(()=>{Object.assign(P,o);res(out)},120)}));console.log(JSON.stringify(HK,null,1));
+const D=await p.evaluate(()=>{const G=__dbg.G,o={};for(const k in G){const v=G[k];if(typeof v==='number'||typeof v==='boolean'||typeof v==='string')o[k]=v}const d=G.p[1];o.d={bs:d.bs,bRt:d.bRt,hp:d.hp,ko:d.ko,bLv:d.bLv};return o});console.log(JSON.stringify(D));
+const D2=await p.evaluate(()=>new Promise(r=>{let n=0;const t0=performance.now();const c=()=>{n++;if(performance.now()-t0<1000)requestAnimationFrame(c);else r(n)};requestAnimationFrame(c)}));console.log('raf/s',D2);
+console.log(JSON.stringify(px.map(x=>[x.fl2,x.fr,x.st,x.br,x.fl,x.blv,x.ohp,x.ph].join(' '))),errs.filter(e=>!/Failed to load|Fullscreen/.test(e)).slice(0,8));await b.close()})();

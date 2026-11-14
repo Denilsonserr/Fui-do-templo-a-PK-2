@@ -12741,7 +12741,7 @@ function skPurTick(f){const P=f.skPur,d=P&&P.o;if(!d||d.ko||G.phase!=='fight'){f
   ctx.restore();if(G.hitstop<=0&&t%3===0){const an=Math.random()*TAU;addP({x:cx+Math.cos(an)*160,y:cy+Math.sin(an)*160,vx:Math.cos(an)*.6,vy:Math.sin(an)*.6-.3,life:24,max:24,c:pick(SKC),type:'glow',sz:rand(2.5,5),g:0})}}}
 /* por quadro: tenta transformar, mantém a forma, combo a cada 2 s, purificação, botões brilhando */
 {const _up=update;update=function(){const r=_up.apply(this,arguments);try{if(G.mode==='fight'&&G.p)for(const f of G.p){if(!f||!isSk(f))continue;
-    skDivTry(f);if(f.skDiv&&f.skDivE&&G.frame>=f.skDivE){f.skDiv=0;f.skDivE=0;f.tdm=(f.tdm||2.6)/2.6;f.form=1;f.formT=Math.max(f.skFT||0,240);f.inv=Math.max(f.inv||0,30);txt(f.x,f.y-300,'FORMA DIVINA ACABOU','#ffe27a');ring(f.x,f.y-150,260,'#ffd84a',24,6);if(!f.cpu){const C=$('controls');if(C)C.classList.remove('skdv')}}
+    skDivTry(f);if(f.skDiv&&f.skDivE&&G.frame>=f.skDivE){f.skDiv=0;f.skDivE=0;f.tdm=(f.tdm||2.6)/2.6;f.form=1;f.formT=Math.max(f.skFT||0,240);f.inv=Math.max(f.inv||0,30);txt(f.x,f.y-300,'FORMA DIVINA ACABOU','#ffe27a');ring(f.x,f.y-150,'#ffd84a',260,24,6);if(!f.cpu){const C=$('controls');if(C)C.classList.remove('skdv')}}
     if(f.skDiv){f.form=1;f.formT=f.skDivE?Math.max(2,(f.skDivE-G.frame)*2):Math.max(f.formT||0,FORM_T*.5);if((f.spCD||0)-G.frame>120)f.spCD=G.frame+120;if(!f.cpu){const C=$('controls');if(C&&!C.classList.contains('skdv'))C.classList.add('skdv')}}
     if(f.skPur)skPurTick(f)}else{const C=$('controls');if(C&&C.classList.contains('skdv'))C.classList.remove('skdv')}}catch(e){console.warn(e)}return r}}
 /* carrega os vídeos quando o jogador entra com o Shaka e a armadura divina */
@@ -13392,8 +13392,8 @@ try{window.__pvT={G:()=>G,ko:(a,d)=>ko(a,d),ev:()=>rkEvX(),m:()=>[rkEvG(),rkEvL(
 const AUC=['#cfe8ff','#ffcf3a','#b347ff','#7d3cff','#ff2238'];
 function anAura(R,cx,cy,cw){if(!R||!R.length)return ['',''];
   const top=R.reduce((m,r)=>Math.max(m,r.c|0),0),C=AUC[top]||AUC[0],C2=top===3?'#e2c8ff':top===4?'#ffd0d4':'#ffffff';
-  const W=cw*2.5,lv=Math.min(1,.45+top*.12+R.filter(r=>r.c>=3).length*.04),rnd=(i,s)=>{const x=Math.sin(i*12.9898+s*78.233)*43758.5453;return x-Math.floor(x)};
-  const st=`--c:${C};--c2:${C2};--lv:${lv.toFixed(2)}`;
+  const sss=R.some(r=>r.c===4&&r.g===7),W=cw*2.5,lv=sss?1:Math.min(1,.45+top*.12+R.filter(r=>r.c>=3).length*.04),rnd=(i,s)=>{const x=Math.sin(i*12.9898+s*78.233)*43758.5453;return x-Math.floor(x)};
+  const st=`--c:${sss?'#ff0a22':C};--c2:${C2};--lv:${lv.toFixed(2)}`;
   /* fundo: brilho do chão + coluna + fios de energia subindo */
   let b=`<i class="auW" style="left:${Math.round(cx)}px;top:${Math.round(cy)}px;${st}">`+
     `<i class="auF" style="left:${-W*.62}px;top:${-W*.2}px;width:${W*1.24}px;height:${W*.4}px"></i>`+
@@ -13405,13 +13405,13 @@ function anAura(R,cx,cy,cw){if(!R||!R.length)return ['',''];
   let f=`<i class="auW" style="left:${Math.round(cx)}px;top:${Math.round(cy)}px;${st}">`;
   const NP=18+top*4;for(let i=0;i<NP;i++){const a=rnd(i,5)*Math.PI*2,rr=.15+rnd(i,6)*.85,x=Math.cos(a)*W*.5*rr,y=Math.sin(a)*W*.16*rr,s=3+rnd(i,7)*4;
     f+=`<i class="auP" style="left:${x.toFixed(1)}px;top:${y.toFixed(1)}px;width:${s.toFixed(1)}px;height:${s.toFixed(1)}px;--h:${(-W*(.25+rnd(i,8)*.45)).toFixed(0)}px;animation-delay:${(-rnd(i,9)*4).toFixed(2)}s;animation-duration:${(2.6+rnd(i,10)*2.2).toFixed(2)}s"></i>`}
-  const NB=3+Math.min(5,top+R.filter(r=>r.c>=3).length);let sv='';
+  const NB=3+Math.min(5,top+R.filter(r=>r.c>=3).length)+(sss?3:0);let sv='';
   /* eletricidade correndo em cima da borda dos anéis (arco tremido, fino) + faísca curta subindo */
   for(let i=0;i<NB;i++){const ring=.62+rnd(i,16)*.38,a0=(i/NB+rnd(i,11)*.1)*Math.PI*2,sp=.35+rnd(i,12)*.35,n=12;let d='',ux=0,uy=0;
     for(let k=0;k<=n;k++){const a=a0+sp*k/n,j=k===0||k===n?0:(rnd(i*31+k,13)-.5),x=Math.cos(a)*W*.5*ring+j*W*.025,y=Math.sin(a)*W*.16*ring-Math.abs(j)*W*.03;d+=(k?' L':'M')+x.toFixed(1)+','+y.toFixed(1);if(k===n>>1){ux=x;uy=y}}
     let u=`M${ux.toFixed(1)},${uy.toFixed(1)}`,x=ux,y=uy;const L=W*(.05+rnd(i,17)*.05);for(let k=1;k<=4;k++){x+=(rnd(i*13+k,18)-.5)*L*.5;y-=L/4;u+=` L${x.toFixed(1)},${y.toFixed(1)}`}
     const dl=(rnd(i,14)*3).toFixed(2),du=(1.6+rnd(i,15)*1.6).toFixed(2);
-    sv+=`<g style="animation-delay:${dl}s;animation-duration:${du}s"><path d="${d} ${u}" stroke="var(--c)" stroke-width="3.2" opacity=".8"/><path d="${d} ${u}" stroke="var(--c2)" stroke-width="1"/></g>`}
+    sv+=`<g style="animation-delay:${dl}s;animation-duration:${du}s"><path d="${d} ${u}" stroke="var(--c)" stroke-width="${sss?4.2:3.2}" opacity=".85"/><path d="${d} ${u}" stroke="${sss?'#ffffff':'var(--c2)'}" stroke-width="${sss?1.5:1}"/></g>`}
   f+=`<svg class="auB" style="left:${-W*.7}px;top:${-W*.6}px;width:${W*1.4}px;height:${W*.9}px" viewBox="${-W*.7} ${-W*.6} ${W*1.4} ${W*.9}"><g fill="none" stroke-linecap="round" stroke-linejoin="round">${sv}</g></svg></i>`;
   return [b,f]}
 {const _g=anGround;anGround=function(R,cx,cy,cw){const h=_g(R,cx,cy,cw);try{const [b,f]=anAura(R,cx,cy,cw*1.15);return b+h+f}catch(e){return h}}}
@@ -13433,6 +13433,43 @@ function anAura(R,cx,cy,cw){if(!R||!R.length)return ['',''];
 @keyframes auBz{0%{opacity:0}5%{opacity:1}9%{opacity:.3}13%{opacity:1}18%{opacity:.4}22%{opacity:1}27%{opacity:0}100%{opacity:0}}
 .lb2 .auW{transform:scale(.6)}
 @media (prefers-reduced-motion:reduce){.anFt .auW *{animation:none!important}}`;document.head.appendChild(st)}
+
+/* ================= v448: TELA BRANCA quando a FORMA DIVINA do Shaka acabava (Caça, Boss, Ranqueada)
+   O anel do fim da forma divina tinha os dados trocados → erro no desenho no meio do modo "somar luz" → o canvas ficava preso nesse modo e tudo ia ficando branco.
+   Corrigido o anel (acima) e, por segurança, se qualquer quadro der erro, o desenho volta ao normal sozinho (desfaz os save() que sobraram). ================= */
+{let SVD=0;const P=CanvasRenderingContext2D.prototype,_s=P.save,_r=P.restore;
+  P.save=function(){if(this===ctx)SVD++;return _s.apply(this,arguments)};P.restore=function(){if(this===ctx&&SVD>0)SVD--;return _r.apply(this,arguments)};
+  const _l=loop;loop=function(now){const d0=SVD,e0=LOOPE;_l(now);if(LOOPE!==e0||SVD>d0){try{let n=0;while(SVD>d0&&n++<200)ctx.restore();SVD=d0;ctx.globalCompositeOperation='source-over';ctx.globalAlpha=1;ctx.filter='none';ctx.shadowBlur=0}catch(e){}}}}
+
+/* ================= v448: ANEL VERMELHO SSS = o mais forte do jogo (pedido do dono)
+   Vermelho mais forte e mais vivo, brilho maior, ~12% maior que o vermelho normal, coroa de espinhos dupla e RAIOS correndo em volta do anel.
+   Na aura (v447): cor vermelho-sangue, aura no máximo, mais raios e com centro branco. ================= */
+{const _rs=anRingSvg;anRingSvg=function(r,k){if(!(r&&r.c===4&&r.g===7))return _rs.apply(this,arguments);
+  const N=24,dur=(36+k*5).toFixed(0),dir=k%2?-1:1,rn=(i,s)=>{const x=Math.sin(i*12.9898+s*78.233+k*3.1)*43758.5453;return x-Math.floor(x)};let sp='',bo='';
+  for(let i=0;i<N;i++){const a=i/N*360,big=i%2===0,len=big?14:7;
+    sp+=`<path d="M-3.4,0 L0,-${len} L3.4,0 L0,${big?6:3.5}Z" transform="rotate(${a}) translate(0,-48.5)" fill="#ff0012" stroke="#ffd0d0" stroke-width=".7"/>`;
+    if(big)sp+=`<path d="M-1.6,0 L0,5 L1.6,0Z" transform="rotate(${a+180/N}) translate(0,-42.6)" fill="#ff2a3a"/>`}
+  /* raios: 4 arcos tremidos em volta do anel, piscando em tempos diferentes */
+  for(let j=0;j<4;j++){const a0=(j/4+rn(j,1)*.15)*Math.PI*2,spn=.55+rn(j,2)*.4,n=14;let d='';
+    for(let q=0;q<=n;q++){const a=a0+spn*q/n,rr=47+(q===0||q===n?0:(rn(j*20+q,3)-.5)*11);d+=(q?' L':'M')+(Math.cos(a)*rr).toFixed(1)+','+(Math.sin(a)*rr).toFixed(1)}
+    const b=(rn(j,4)*2).toFixed(2),du=(1.3+rn(j,5)*1.1).toFixed(2);
+    bo+=`<g opacity="0"><path d="${d}" stroke="#ff1a30" stroke-width="3.6"/><path d="${d}" stroke="#ffffff" stroke-width="1.2"/><animate attributeName="opacity" values="0;1;.25;1;0;0" keyTimes="0;.06;.1;.15;.22;1" dur="${du}s" begin="${b}s" repeatCount="indefinite"/></g>`}
+  return `<svg viewBox="-59 -59 118 118" preserveAspectRatio="none" style="filter:drop-shadow(0 0 1.5px #fff) drop-shadow(0 0 5px #ff0018) drop-shadow(0 0 12px #ff0018)"><g>`+
+   `<circle r="47" fill="none" stroke="#ff0018" stroke-width="8" opacity=".35"/>`+
+   `<circle r="47" fill="none" stroke="#ff0012" stroke-width="4.4"/>`+
+   `<circle r="47" fill="none" stroke="#fff4f4" stroke-width="1.4"/>`+
+   `<circle r="51" fill="none" stroke="#ff0012" stroke-width="1.2"/>`+
+   `<circle r="53.5" fill="none" stroke="#ff4050" stroke-width=".6" stroke-dasharray="2 2.5" opacity=".9"/>`+
+   `<circle r="43.4" fill="none" stroke="#ff0012" stroke-width="1.5" stroke-dasharray="3 3"/>`+sp+
+   `<circle r="47" fill="none" stroke="#ffffff" stroke-width="2.4" stroke-linecap="round" stroke-dasharray="14 133.3" opacity=".95"><animateTransform attributeName="transform" type="rotate" from="0" to="${-360*dir}" dur="2.6s" repeatCount="indefinite"/></circle>`+
+   `<circle r="47" fill="none" stroke="#ffd6d6" stroke-width="2" stroke-linecap="round" stroke-dasharray="8 139.3" opacity=".8"><animateTransform attributeName="transform" type="rotate" from="180" to="${180-360*dir}" dur="3.4s" repeatCount="indefinite"/></circle>`+
+   `<g fill="none" stroke-linecap="round" stroke-linejoin="round">${bo}</g>`+
+   `<animateTransform attributeName="transform" type="rotate" from="0" to="${360*dir}" dur="${dur}s" repeatCount="indefinite"/></g></svg>`}}
+/* código do ADM: anéis vermelhos SSS (2 de cada atributo = 12) — texto só com o dono */
+TWCUP['fge18y']={nm:'ANÉIS VERMELHOS SSS (ADM)',acc:1,adm:1,it:[],anSSS:1};
+{const _cp16=twCupom;twCupom=async function(code,E){const C=TWCUP[twHash(String(code).toUpperCase())];const r=await _cp16.apply(this,arguments);
+  if(C&&C.anSSS&&r&&E&&/ok/.test(E.className||'')){let n=0;for(const S of ANS)for(let q=0;q<2;q++){anGive({i:Date.now().toString(36)+Math.random().toString(36).slice(2,6)+n,c:4,g:7,s:S[0],v:ANV[4][7],a:100000});n++}
+    try{acSave(1)}catch(e){}E.textContent='💍 '+n+' ANÉIS VERMELHOS SSS (100.000 anos) · 2 de cada atributo · estão na aba ANÉIS da Biblioteca';try{twSfx('boom')}catch(e){}}return r}}
 
 function twTrofList(){const tc=twLS.g('tw_tc',{}),run={};for(const t of TW.tr)run[t.k]=(run[t.k]||0)+1;
   twModal(`<div class="twM"><h3>🎖️ TROFÉUS</h3><div class="twTL">${Object.keys(TWTR).map(k=>{const T=TWTR[k];return `<div class="${tc[k]||run[k]?'got':''}"><i>${T.i}</i><b>${T.n}</b><span>${T.d}</span><em>+${T.p} 🏆</em><small>${run[k]?'nesta subida: '+run[k]+' · ':''}total: ${(tc[k]||0)}</small></div>`}).join('')}</div>
@@ -13625,7 +13662,7 @@ window.__dbg={mus:()=>[MCUR,MEL.src.split('/').pop()],stg:()=>STAGE.key,prepMatc
 })();
 </script>
 <style>#updB{position:fixed;left:50%;top:max(8px,env(safe-area-inset-top));transform:translateX(-50%);z-index:99999;padding:10px 22px;border-radius:14px;border:2px solid #fff3c0;background:linear-gradient(#ffd84a,#e08a10);color:#3a1d00;font:900 15px system-ui,sans-serif;box-shadow:0 0 18px #ffb21f;cursor:pointer;animation:updP 1s ease-in-out infinite alternate}@keyframes updP{to{transform:translateX(-50%) scale(1.05)}}</style>
-<script>(function(){const V='22c766c23a13';if(!/^https?:/.test(location.protocol))return;let nv=null;
+<script>(function(){const V='6e1e3d6bd97e';if(!/^https?:/.test(location.protocol))return;let nv=null;
 function show(){if(document.getElementById('updB'))return;try{if(typeof G!=='undefined'&&G.mode==='fight')return}catch(e){}const b=document.createElement('button');b.id='updB';b.textContent='🔄 ATUALIZAÇÃO NOVA! Toque para atualizar';
   b.onclick=()=>{b.textContent='⏳ Atualizando...';try{acSave(1)}catch(e){}setTimeout(()=>location.reload(),900)};document.body.appendChild(b)}
 async function chk(){if(document.hidden)return;if(nv){show();return}try{const r=await fetch('versao.txt?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const t=(await r.text()).trim();if(/^[0-9a-f]{8,40}$/.test(t)&&t!==V){nv=t;show()}}catch(e){}}

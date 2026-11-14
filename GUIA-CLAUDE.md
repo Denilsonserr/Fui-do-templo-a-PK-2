@@ -2194,3 +2194,8 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 
 ## v447 — Aura dos anéis (estilo Soul Land)
 - `anAura` (fim do rk.js) embrulha `anGround`: atrás = brilho no chão `.auF` + coluna de luz `.auC` + fios subindo `.auS`; na frente = faíscas `.auP` + eletricidade correndo na borda dos anéis com faísca curta (`svg.auB`, pisca). Cor = anel mais forte (`AUC`), força cresce com anéis pretos/vermelhos. Na biblioteca `.lb2 .auW` scale(.6). Teste: `ferramentas/testes/taura_v447.js` (FREEZE=1 mostra todos os raios).
+
+## v448 — Tela branca do Shaka divino + anel vermelho SSS + código ADM
+- **Tela branca:** no fim da FORMA DIVINA o `ring()` estava com cor e raio trocados → `rgba(260)` dava erro dentro do `drawParts` (que já tinha feito `save()` e `lighter`) → o canvas ficava preso em `lighter` e tudo ia ficando branco (qualquer modo, aparecia mais na Caça). Corrigido o anel e, no fim do rk.js, `loop` agora conta os `save()` do ctx e, se um quadro der erro, desfaz os que sobraram e volta `source-over`/alpha 1. Teste: `ferramentas/testes/tcaca_divino_v448.js` (procura a tela branca e injeta uma partícula quebrada).
+- **Anel vermelho SSS** (`c:4,g:7`): `anRingSvg` próprio — vermelho mais forte, brilho maior, ~12% maior (viewBox -59), espinhos duplos, 2 luzes brancas girando e 4 raios piscando em volta. Na aura v447 (`sss`): vermelho-sangue, força máxima, +3 raios com centro branco. Teste: `SSS=1 node ferramentas/testes/taura_v447.js`.
+- **Código ADM** (`adm:1,acc:1`, hash `fge18y`): 12 anéis vermelhos SSS (2 de cada atributo, 100.000 anos). Texto só com o dono. Teste: `C1=CODIGO node ferramentas/testes/tcod_aneis_v448.js`.
