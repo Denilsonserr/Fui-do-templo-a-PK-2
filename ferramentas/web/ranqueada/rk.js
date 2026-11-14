@@ -4612,13 +4612,14 @@ function sjLoad(){if(SJLP)return SJLP;const L=[];L.push(...skImL(SJV,SJTF));L.pu
 function sjFree(){SJLP=null;SJOK=0;SJTF.length=0;SJTF2.length=0;for(const k in SJBF)delete SJBF[k]}
 function sjTransStart(f){if(G.trans&&G.trans.f!==f)return false;if(!SJOK){sjLoad();if(!f.cpu)say(f,'CARREGANDO AS SOMBRAS...');return false}
   f.sb=Math.max(0,(f.sb||0)-SB_COST);f.state='transform';f.st=0;f.vx=0;f.vy=0;f.inv=999;f.sjB=null;G.trans={f,t:0,sj:1};try{SFX.powerUp()}catch(e){}buzz(60);return true}
-function updSJT(T,f,t){if(T.u){if(t===SJUE){f.ki=0;G.flash=12;G.flashCol='#6a3cff';G.shake=20;sjSummon(f);banner('ERGA-SE!','#9a7bff',110,'TANK, O URSO DAS SOMBRAS — protege o Sung até cair');buzz(80)}if(t>=SJUE+16){G.trans=null;f.inv=20;neutral(f)}return}
+function updSJT(T,f,t){if(T.u){if(t===SJUE){G.flash=12;G.flashCol='#6a3cff';G.shake=20;sjSummon(f);banner('ERGA-SE!','#9a7bff',110,'TANK, O URSO DAS SOMBRAS — protege o Sung até cair');buzz(80)}if(t>=SJUE+16){G.trans=null;f.inv=20;neutral(f)}return}
   if(t<SJTE)return;
   if(t===SJTE){f.form=1;f.formT=FORM_T;f.flick=0;G.flash=14;G.flashCol='#7a5cff';G.shake=22;banner('MONARCA DAS SOMBRAS','#9a7bff',120,'aperte ULTIMATE para invocar o TANK')}
   if(t>=SJTE+40){G.trans=null;f.inv=20;neutral(f)}}
 const SJBHP=()=>Math.round(LAYER*.3); /* v437: base menor; cresce com o nível da sombra (tela SOMBRAS) e a Inteligência */ /* v432: pouca vida, mas muito rápido e agressivo */
-function sjUlt(f,o){if(!f.cpu){const S=sjSys();if(S.cls!=='necro'){say(f,S.cls?'SÓ O NECROMANTE INVOCA SOMBRAS':'ESCOLHA A CLASSE NO SISTEMA');return false}if(!S.eq){say(f,'EQUIPE UMA SOMBRA NO SISTEMA');return false}}if(!f.form){if(!f.cpu)say(f,'TRANSFORME-SE PRIMEIRO');return false}if(f.sjB&&f.sjB.st!=='die'){if(!f.cpu)say(f,'O TANK JÁ ESTÁ LUTANDO');return false}
-  if(!SJOK){sjLoad();if(!f.cpu)say(f,'CARREGANDO AS SOMBRAS...');return false}if(G.trans)return false;f.ki=0;f.state='transform';f.st=0;f.vx=0;f.vy=0;f.inv=999;G.trans={f,t:0,sj:1,u:1};try{SFX.powerUp()}catch(e){}buzz(60);return true}
+function sjSRok(f){return !!f.form&&!f.sjB&&G.frame>=(f.sjCD||0)&&!G.trans}
+function sjUlt(f,o){if(G.frame<(f.sjCD||0)){if(!f.cpu)say(f,'A SOMBRA ESTÁ VOLTANDO...');return false}if(!f.cpu){const S=sjSys();if(S.cls!=='necro'){say(f,S.cls?'SÓ O NECROMANTE INVOCA SOMBRAS':'ESCOLHA A CLASSE NO SISTEMA');return false}if(!S.eq){say(f,'EQUIPE UMA SOMBRA NO SISTEMA');return false}}if(!f.form){if(!f.cpu)say(f,'TRANSFORME-SE PRIMEIRO');return false}if(f.sjB&&f.sjB.st!=='die'){if(!f.cpu)say(f,'O TANK JÁ ESTÁ LUTANDO');return false}
+  if(!SJOK){sjLoad();if(!f.cpu)say(f,'CARREGANDO AS SOMBRAS...');return false}if(G.trans)return false;f.state='transform';f.st=0;f.vx=0;f.vy=0;f.inv=999;G.trans={f,t:0,sj:1,u:1};try{SFX.powerUp()}catch(e){}buzz(60);return true}
 function sjSummon(f){const o=G.p[0]===f?G.p[1]:G.p[0],dir=o?(o.x>f.x?1:-1):(f.facing||1);const iv=f.sjS||{shp:1,sdm:1},Q=iv.sh||sjShSt('tank',1),HPx=Math.round(LAYER*Q.hp*iv.shp);f.sjB={x:f.x+dir*125,dir,hp:HPx,mhp:HPx,cap:LAYER*Q.hp1*iv.shp/Q.gp,life:SJBLIFE,dm:iv.sdm*Q.dm,res:Q.res,spd:Q.spd,st:'rise',t:0,cd:G.frame+90,a:'rise',fl:0};if(!f.cpu)try{const S=sjSys();S.cnt.ult++;S.d.u=(S.d.u||0)+1;sjSave(S)}catch(e){}
   ring(f.x+dir*125,FLOOR-10,'#6a3cff',260,24,6);for(let i=0;i<24;i++)addP({x:f.x+dir*125+rand(-120,120),y:FLOOR-rand(0,20),vx:rand(-1,1),vy:-rand(2,7),life:rand(26,44),max:44,c:pick(['#2a1060','#6a3cff','#9fd4ff']),type:'glow',sz:rand(5,12),g:-.02})}
 const SJBA_T={punch:[3,3,4,6],kick:[3,4,4,6],claw:[3,4,7],claw2:[3,4,7],block:[3,3,4,5],die:[6,6,6,7,8,12],rise:Array(16).fill(3)};
@@ -4628,7 +4629,7 @@ function sjDur(a){return (SJBA_T[a]||[]).reduce((x,y)=>x+y,0)}
 function sjBTick(f){const B=f.sjB;if(!B)return;B.t++;if(B.fl>0)B.fl--;const o=G.p[0]===f?G.p[1]:G.p[0];
   if(f.ko&&B.st!=='die'){B.st='die';B.a='die';B.t=0}
   if(B.st==='die'){if(B.t===1){for(let i=0;i<30;i++)addP({x:B.x+rand(-110,110),y:FLOOR-rand(10,260),vx:rand(-2,2),vy:-rand(1,4),life:rand(30,50),max:50,c:pick(['#140630','#3a1a80','#6a3cff']),type:'glow',sz:rand(8,18),g:-.03})}
-    if(B.t>=sjDur('die')+10)f.sjB=null;return}
+    if(B.t>=sjDur('die')+10){f.sjB=null;f.sjCD=G.frame+120}return}
   if(B.life!=null&&B.st!=='rise'){B.life--;if(B.life<=0){B.st='die';B.a='die';B.t=0;txt(B.x,FLOOR-300,'A SOMBRA VOLTOU PARA A ESCURIDÃO','#c79bff');return}}
   if(B.st==='rise'){if(B.t>=sjDur('rise'))B.st='idle',B.a='idle',B.t=0;return}
   if(o&&!o.ko&&B.st!=='atk')B.dir=o.x>B.x?1:-1;

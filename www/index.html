@@ -3313,8 +3313,8 @@ function streak(x0,y0,x1,y1,c){for(let i=0;i<6;i++){const k=i/6;addP({x:lerp(x0,
 
 /* ================= SUPER: Chuva de Espadas Sombrias ================= */
 let SRFX={},SRFACE=null;
-function srReady(f){if(!(isAyl(f)||isXw(f)||isWht(f))){if(!(f.spark>0))return false}else if((f.sb||0)<1)return false;if(isVg(f)||isGg(f)||isMd(f)||isGj(f))return !!f.form&&f.ki>=100;if(isNr(f)||isGr(f))return !!f.form&&f.ki>=100;if(isYt(f)||isSk(f))return f.ki>=100;if(isLf(f)||isRg(f))return f.ki>=100;if(isBr(f))return f.ki>=100;if(isZr(f))return !!f.form&&f.ki>=100;if(isAo(f))return !!f.form&&f.ki>=100;if(isGk(f))return !!f.form&&f.ki>=100;if(isQq(f))return f.ki>=100;if(isZyk(f))return !!f.form&&f.ki>=100;if(isZed(f))return f.form===2&&f.ki>=100;if(isXw(f))return f.form&&f.ki>=XH[whNext(f)].c;if(isAyl(f))return mgReady(f);if(isWht(f))return f.form&&f.ki>=WH[whNext(f)].c;return (f.def.sid==='den'||f.def.sid==='ark')&&f.form&&f.ki>=100}
-function trySR(f,o){if(!(isAyl(f)||isXw(f)||isWht(f))){if(!(f.spark>0)){if(!f.cpu)say(f,'ENCHA AS 3 BARRAS DE KI');return false}const r=_trySR(f,o);if(r){f.spark=0;f.kx=0}return r}if(!needBar(f))return false;const r=_trySR(f,o);if(r)f.sb=Math.max(0,(f.sb||0)-1);return r}
+function srReady(f){if(f.def.sid==='sj')return sjSRok(f);if(!(isAyl(f)||isXw(f)||isWht(f))){if(!(f.spark>0))return false}else if((f.sb||0)<1)return false;if(isVg(f)||isGg(f)||isMd(f)||isGj(f))return !!f.form&&f.ki>=100;if(isNr(f)||isGr(f))return !!f.form&&f.ki>=100;if(isYt(f)||isSk(f))return f.ki>=100;if(isLf(f)||isRg(f))return f.ki>=100;if(isBr(f))return f.ki>=100;if(isZr(f))return !!f.form&&f.ki>=100;if(isAo(f))return !!f.form&&f.ki>=100;if(isGk(f))return !!f.form&&f.ki>=100;if(isQq(f))return f.ki>=100;if(isZyk(f))return !!f.form&&f.ki>=100;if(isZed(f))return f.form===2&&f.ki>=100;if(isXw(f))return f.form&&f.ki>=XH[whNext(f)].c;if(isAyl(f))return mgReady(f);if(isWht(f))return f.form&&f.ki>=WH[whNext(f)].c;return (f.def.sid==='den'||f.def.sid==='ark')&&f.form&&f.ki>=100}
+function trySR(f,o){if(f.def.sid==='sj')return _trySR(f,o);if(!(isAyl(f)||isXw(f)||isWht(f))){if(!(f.spark>0)){if(!f.cpu)say(f,'ENCHA AS 3 BARRAS DE KI');return false}const r=_trySR(f,o);if(r){f.spark=0;f.kx=0}return r}if(!needBar(f))return false;const r=_trySR(f,o);if(r)f.sb=Math.max(0,(f.sb||0)-1);return r}
 function _trySR(f,o){if(isMd(f))return mdSuper(f,o);if(isGj(f))return gjSuper(f,o);if(isLf(f))return lfSuper(f,o);if(isRg(f))return rgSuper(f,o);if(isNr(f))return nrSuper(f,o);if(isGr(f))return grSuper(f,o);if(isYt(f))return ytSuper(f,o);if(isSk(f))return skSuper(f,o);if(isVg(f))return vgSuper(f,o,1);if(isGg(f))return ggSuper(f,o,1);if(isBr(f))return brSuper(f,o,1);if(isZr(f))return zrUlt(f,o);if(isAo(f))return aoUlt(f,o);if(isGk(f))return gkUlt(f,o);if(isQq(f))return qqUlt(f,o);if(isZyk(f))return zkUlt(f,o);if(isZed(f))return zedUlt(f,o);if(isGmg(f))return gmgUlt(f,o);if(isXw(f))return startHab(f,o);if(isAyl(f))return castMagic(f,o);if(isWht(f))return startHab(f,o);if(f.def.sid!=='den'&&f.def.sid!=='ark')return false;if(!f.form){say(f,'SÓ TRANSFORMADO!');return false}if(f.ki<100){say(f,'PRECISA DE 100 KI');return false}if(f.def.sid==='ark')startArk(f,o);else startSR(f,o);return true}
 function startSR(f,o){fvox(f,'f_fin',true);f.ki-=100;f.state='swordRain';f.st=0;f.inv=999;f.vx=0;f.vy=0;f.flying=false;
   G.sr={a:f,d:o,t:0,em:[],fall:[],bu:[],rx:o.x};SFX.superUp();buzz(60)}
@@ -13106,13 +13106,14 @@ function sjLoad(){if(SJLP)return SJLP;const L=[];L.push(...skImL(SJV,SJTF));L.pu
 function sjFree(){SJLP=null;SJOK=0;SJTF.length=0;SJTF2.length=0;for(const k in SJBF)delete SJBF[k]}
 function sjTransStart(f){if(G.trans&&G.trans.f!==f)return false;if(!SJOK){sjLoad();if(!f.cpu)say(f,'CARREGANDO AS SOMBRAS...');return false}
   f.sb=Math.max(0,(f.sb||0)-SB_COST);f.state='transform';f.st=0;f.vx=0;f.vy=0;f.inv=999;f.sjB=null;G.trans={f,t:0,sj:1};try{SFX.powerUp()}catch(e){}buzz(60);return true}
-function updSJT(T,f,t){if(T.u){if(t===SJUE){f.ki=0;G.flash=12;G.flashCol='#6a3cff';G.shake=20;sjSummon(f);banner('ERGA-SE!','#9a7bff',110,'TANK, O URSO DAS SOMBRAS — protege o Sung até cair');buzz(80)}if(t>=SJUE+16){G.trans=null;f.inv=20;neutral(f)}return}
+function updSJT(T,f,t){if(T.u){if(t===SJUE){G.flash=12;G.flashCol='#6a3cff';G.shake=20;sjSummon(f);banner('ERGA-SE!','#9a7bff',110,'TANK, O URSO DAS SOMBRAS — protege o Sung até cair');buzz(80)}if(t>=SJUE+16){G.trans=null;f.inv=20;neutral(f)}return}
   if(t<SJTE)return;
   if(t===SJTE){f.form=1;f.formT=FORM_T;f.flick=0;G.flash=14;G.flashCol='#7a5cff';G.shake=22;banner('MONARCA DAS SOMBRAS','#9a7bff',120,'aperte ULTIMATE para invocar o TANK')}
   if(t>=SJTE+40){G.trans=null;f.inv=20;neutral(f)}}
 const SJBHP=()=>Math.round(LAYER*.3); /* v437: base menor; cresce com o nível da sombra (tela SOMBRAS) e a Inteligência */ /* v432: pouca vida, mas muito rápido e agressivo */
-function sjUlt(f,o){if(!f.cpu){const S=sjSys();if(S.cls!=='necro'){say(f,S.cls?'SÓ O NECROMANTE INVOCA SOMBRAS':'ESCOLHA A CLASSE NO SISTEMA');return false}if(!S.eq){say(f,'EQUIPE UMA SOMBRA NO SISTEMA');return false}}if(!f.form){if(!f.cpu)say(f,'TRANSFORME-SE PRIMEIRO');return false}if(f.sjB&&f.sjB.st!=='die'){if(!f.cpu)say(f,'O TANK JÁ ESTÁ LUTANDO');return false}
-  if(!SJOK){sjLoad();if(!f.cpu)say(f,'CARREGANDO AS SOMBRAS...');return false}if(G.trans)return false;f.ki=0;f.state='transform';f.st=0;f.vx=0;f.vy=0;f.inv=999;G.trans={f,t:0,sj:1,u:1};try{SFX.powerUp()}catch(e){}buzz(60);return true}
+function sjSRok(f){return !!f.form&&!f.sjB&&G.frame>=(f.sjCD||0)&&!G.trans}
+function sjUlt(f,o){if(G.frame<(f.sjCD||0)){if(!f.cpu)say(f,'A SOMBRA ESTÁ VOLTANDO...');return false}if(!f.cpu){const S=sjSys();if(S.cls!=='necro'){say(f,S.cls?'SÓ O NECROMANTE INVOCA SOMBRAS':'ESCOLHA A CLASSE NO SISTEMA');return false}if(!S.eq){say(f,'EQUIPE UMA SOMBRA NO SISTEMA');return false}}if(!f.form){if(!f.cpu)say(f,'TRANSFORME-SE PRIMEIRO');return false}if(f.sjB&&f.sjB.st!=='die'){if(!f.cpu)say(f,'O TANK JÁ ESTÁ LUTANDO');return false}
+  if(!SJOK){sjLoad();if(!f.cpu)say(f,'CARREGANDO AS SOMBRAS...');return false}if(G.trans)return false;f.state='transform';f.st=0;f.vx=0;f.vy=0;f.inv=999;G.trans={f,t:0,sj:1,u:1};try{SFX.powerUp()}catch(e){}buzz(60);return true}
 function sjSummon(f){const o=G.p[0]===f?G.p[1]:G.p[0],dir=o?(o.x>f.x?1:-1):(f.facing||1);const iv=f.sjS||{shp:1,sdm:1},Q=iv.sh||sjShSt('tank',1),HPx=Math.round(LAYER*Q.hp*iv.shp);f.sjB={x:f.x+dir*125,dir,hp:HPx,mhp:HPx,cap:LAYER*Q.hp1*iv.shp/Q.gp,life:SJBLIFE,dm:iv.sdm*Q.dm,res:Q.res,spd:Q.spd,st:'rise',t:0,cd:G.frame+90,a:'rise',fl:0};if(!f.cpu)try{const S=sjSys();S.cnt.ult++;S.d.u=(S.d.u||0)+1;sjSave(S)}catch(e){}
   ring(f.x+dir*125,FLOOR-10,'#6a3cff',260,24,6);for(let i=0;i<24;i++)addP({x:f.x+dir*125+rand(-120,120),y:FLOOR-rand(0,20),vx:rand(-1,1),vy:-rand(2,7),life:rand(26,44),max:44,c:pick(['#2a1060','#6a3cff','#9fd4ff']),type:'glow',sz:rand(5,12),g:-.02})}
 const SJBA_T={punch:[3,3,4,6],kick:[3,4,4,6],claw:[3,4,7],claw2:[3,4,7],block:[3,3,4,5],die:[6,6,6,7,8,12],rise:Array(16).fill(3)};
@@ -13122,7 +13123,7 @@ function sjDur(a){return (SJBA_T[a]||[]).reduce((x,y)=>x+y,0)}
 function sjBTick(f){const B=f.sjB;if(!B)return;B.t++;if(B.fl>0)B.fl--;const o=G.p[0]===f?G.p[1]:G.p[0];
   if(f.ko&&B.st!=='die'){B.st='die';B.a='die';B.t=0}
   if(B.st==='die'){if(B.t===1){for(let i=0;i<30;i++)addP({x:B.x+rand(-110,110),y:FLOOR-rand(10,260),vx:rand(-2,2),vy:-rand(1,4),life:rand(30,50),max:50,c:pick(['#140630','#3a1a80','#6a3cff']),type:'glow',sz:rand(8,18),g:-.03})}
-    if(B.t>=sjDur('die')+10)f.sjB=null;return}
+    if(B.t>=sjDur('die')+10){f.sjB=null;f.sjCD=G.frame+120}return}
   if(B.life!=null&&B.st!=='rise'){B.life--;if(B.life<=0){B.st='die';B.a='die';B.t=0;txt(B.x,FLOOR-300,'A SOMBRA VOLTOU PARA A ESCURIDÃO','#c79bff');return}}
   if(B.st==='rise'){if(B.t>=sjDur('rise'))B.st='idle',B.a='idle',B.t=0;return}
   if(o&&!o.ko&&B.st!=='atk')B.dir=o.x>B.x?1:-1;
@@ -13561,7 +13562,7 @@ window.__dbg={mus:()=>[MCUR,MEL.src.split('/').pop()],stg:()=>STAGE.key,prepMatc
 })();
 </script>
 <style>#updB{position:fixed;left:50%;top:max(8px,env(safe-area-inset-top));transform:translateX(-50%);z-index:99999;padding:10px 22px;border-radius:14px;border:2px solid #fff3c0;background:linear-gradient(#ffd84a,#e08a10);color:#3a1d00;font:900 15px system-ui,sans-serif;box-shadow:0 0 18px #ffb21f;cursor:pointer;animation:updP 1s ease-in-out infinite alternate}@keyframes updP{to{transform:translateX(-50%) scale(1.05)}}</style>
-<script>(function(){const V='fefc8e972982';if(!/^https?:/.test(location.protocol))return;let nv=null;
+<script>(function(){const V='1e8a65986a4f';if(!/^https?:/.test(location.protocol))return;let nv=null;
 function show(){if(document.getElementById('updB'))return;try{if(typeof G!=='undefined'&&G.mode==='fight')return}catch(e){}const b=document.createElement('button');b.id='updB';b.textContent='🔄 ATUALIZAÇÃO NOVA! Toque para atualizar';
   b.onclick=()=>{b.textContent='⏳ Atualizando...';try{acSave(1)}catch(e){}setTimeout(()=>location.reload(),900)};document.body.appendChild(b)}
 async function chk(){if(document.hidden)return;if(nv){show();return}try{const r=await fetch('versao.txt?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const t=(await r.text()).trim();if(/^[0-9a-f]{8,40}$/.test(t)&&t!==V){nv=t;show()}}catch(e){}}

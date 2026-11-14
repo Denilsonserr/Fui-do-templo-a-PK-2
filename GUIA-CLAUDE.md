@@ -2169,3 +2169,6 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - Fica 15 s (`SJBLIFE`=900 quadros; barra amarela embaixo da vida) e volta para a escuridão.
 - Tela SOMBRAS: Dano = % da força do Sung, Resistência = golpes que aguenta.
 - Teste: `ferramentas/testes/tsung_sombra_v440.js`.
+
+## v441 — Sung transformado invoca a sombra sem encher a barra
+- `srReady`/`trySR` do Sung → `sjSRok(f)`: basta estar transformado, sem sombra em campo e fora da recarga de 2 s depois que a sombra some (`f.sjCD`). Não gasta ki nem a faísca.

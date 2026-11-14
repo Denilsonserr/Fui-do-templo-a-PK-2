@@ -45,4 +45,7 @@ rep("*(a.form&&a.tfd?1+a.tfd/100:1)","*(a.form&&a.tfd?1+a.tfd/100:1)*(a.form&&a.
 rep("*(d.form?.8:1)","*(d.form?.8:1)*(d.form&&d.def.sid==='sj'?.85:1)")
 # v437: Sung entra na lista de personagens (ALLC); o rk.js esconde/tira antes de 15/11 08:00 (sjRelChk)
 rep("'garou','yuta','shaka'];const ROS={","'garou','yuta','shaka','sung'];const ROS={")
+# v441: transformado já pode invocar a sombra (não precisa encher as 3 barras / faísca)
+rep("function srReady(f){","function srReady(f){if(f.def.sid==='sj')return sjSRok(f);")
+rep("function trySR(f,o){","function trySR(f,o){if(f.def.sid==='sj')return _trySR(f,o);")
 open(P,'w',encoding='utf8').write(s);print('sung ok',len(s))
