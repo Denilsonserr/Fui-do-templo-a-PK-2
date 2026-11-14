@@ -36,4 +36,7 @@ rep("  if(G.trans&&isYt(G.trans.f)&&G.trans.t<YTVE){","  if(G.trans&&G.trans.sj&
 rep("function ytRika(f,o){","function ytRika(f,o){if(f.def.sid==='sj')return;")
 rep("const t=G.frame,ch=f.state==='charge',P=sjBlue(),A=GJAU;if(f.form)return;","const t=G.frame,ch=f.state==='charge',fm=!!f.form,P=sjBlue(),A=GJAU;")
 rep("ctx.globalAlpha=ch?.3:.085","ctx.globalAlpha=ch?.3:fm?.15:.085")
+# v433: botão de SUPER (ultimate) aparece também para o Sung (invoca o TANK)
+rep("'garou','yuta','shaka'].","'garou','yuta','shaka','sung'].",2)
+rep("G.pick==='yuta'||G.pick==='shaka');","G.pick==='yuta'||G.pick==='shaka'||G.pick==='sung');")
 open(P,'w',encoding='utf8').write(s);print('sung ok',len(s))

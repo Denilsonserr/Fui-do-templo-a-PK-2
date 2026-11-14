@@ -2126,3 +2126,6 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - Visual: aura violeta (MONRM do bloco v427, chama do Gojo) + brilho, RAIOS azuis em volta (mais quando corre/ataca), rastro de sombra.
 - Modo teste "energia infinita" agora mantém também a faísca da ultimate (spark).
 - Teste: `ferramentas/testes/tsung_tank_v432.js`.
+
+## v433 — Botão de SUPER para o Sung
+- O botão bSr (ultimate) estava escondido para o Sung no celular (listas de ids no startMatch/troca de personagem). 9y_sung.py adiciona sung nas 3 listas.
