@@ -5509,3 +5509,22 @@ function sjShBonus(f){try{if(f.cpu)return {dm:1,hp:1};const q=twEqOn(),n=sjSetFu
 {const _ds=drawSprite;drawSprite=function(f,key,x,y,facing,e,mode){if(!(isSJ(f)&&f.form&&key&&mode!=='sil'))return _ds.apply(this,arguments);
   let S=null,o=null;try{const arr=SPRH[ssid(f)][key[0]];S=arr&&arr[Math.min(arr.length-1,key[1])];if(S&&S.img){const src=(S.imgF&&key[0][0]!=='f')?S.imgF:S.img,t=sjPurp(src);if(t){o={img:S.img,imgF:S.imgF,b:S.b};S.img=t;if(S.imgF)S.imgF=t;S.b=undefined}}}catch(err){}
   try{return _ds.apply(this,arguments)}finally{if(S&&o){S.img=o.img;S.imgF=o.imgF;S.b=o.b}}}}
+
+/* ================= v462: TÍTULO numerado dos 10 primeiros que pegarem o SUNG — bônus de dano COM o Sung, decrescente
+   Nº1 +30% · Nº2 +25% (os dois acima do Shaka, +20%) · Nº3 +20% · Nº4 +18 · Nº5 +16 · Nº6 +14 · Nº7 +12 · Nº8 +10 · Nº9 +8 · Nº10 +6
+   Servidor: torre/sjtit_N (documentId fixo; 409 = já tem dono). Pendente sem internet: rk_sjtp. Vale no Boss, Torre, Caça e Portais. ================= */
+const SJTB=[0,30,25,20,18,16,14,12,10,8,6];
+for(let n=1;n<=10;n++)TWTIT['sj'+n]={n:'MONARCA Nº'+n,i:'👑',c:n===1?'#e9d4ff':n<=3?'#c79bff':'#9a5cff',d:'Um dos 10 primeiros do servidor a pegar o Sung · +'+SJTB[n]+'% de dano com o Sung',hid:1,sjt:n};
+async function sjTitClaim(show){if(twTits().some(k=>/^sj\d+$/.test(k))){rkS('sjtp',0);return}rkS('sjtp',1);const nm=String(twLS.g('tw_nome','')||'?').slice(0,16),IV=v=>({integerValue:String(v)});
+  for(let n=1;n<=10;n++){let r;try{r=await twFetchT(TWURL+'/torre?documentId=sjtit_'+n+'&key='+TWFB.apiKey,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({fields:{nome:{stringValue:nm},andar:IV(0),tempo:IV(0),uid:{stringValue:twUid()},sjt:{stringValue:String(n)},v:IV(462)}})})}catch(e){return}
+    if(r.ok){rkS('sjtp',0);const L=twTits();L.push('sj'+n);twLS.s('tw_tit',L);twLS.s('tw_titOn','sj'+n);try{twTitSync()}catch(e){}try{acSave(1)}catch(e){}if(show)await sjTitWin(n);return}
+    if(r.status!==409&&r.status!==403)return}
+  rkS('sjtp',0)}
+function sjTitWin(n){return new Promise(res=>{const O=document.createElement('div');O.className='rkWin end sjTw';O.innerHTML=`<i class="sjFm a"></i><i class="sjFm b"></i><i class="sjFm c"></i><div class="t"><b>✦ VOCÊ É O Nº ${n} DO SERVIDOR! ✦</b><span>TÍTULO DO MONARCA</span></div><div class="ytTw">${pfTitH('sj'+n,'',false)}</div><i class="rays"></i><i class="sjHalo"></i><div class="t2">Um dos 10 primeiros a pegar o Sung · +${SJTB[n]}% de dano quando você luta com o Sung</div>`;rkHost().appendChild(O);rkSfx('boom');setTimeout(()=>rkSfx('powerUp'),300);setTimeout(()=>{O.onclick=()=>{O.remove();res()}},600)})}
+{const _op=rkOpen;rkOpen=function(v){const r=_op.apply(this,arguments);if(rkG('sjtp',0)&&rkG('own',[]).includes('sung'))setTimeout(()=>sjTitClaim(1),3200);return r}}
+/* ao pegar o Sung no gacha, já tenta o título (depois do vídeo/carta) */
+{const _mg=rkMegaSJ;rkMegaSJ=function(){const r=_mg.apply(this,arguments);try{if(!twTits().some(k=>/^sj\d+$/.test(k))){rkS('sjtp',1);Promise.resolve(r).then(()=>setTimeout(()=>sjTitClaim(1),1200))}}catch(e){}return r}}
+{const _pt=pfTitH;pfTitH=function(t,n,adm){const T=TWTIT[t];if(T&&T.sjt){const k=T.sjt===1?1:T.sjt===2?2:T.sjt<=4?3:T.sjt<=7?4:5;return `<span class="pfTt sjt s${k}"><i class="smk"></i><i class="smk s2"></i><i class="ic">👑</i><b>MONARCA</b><em>Nº ${T.sjt}</em>${k<=3?'<i class="sjs sa">✦</i><i class="sjs sb">✦</i><i class="sjs sc">✦</i>':''}</span>`}return _pt.apply(this,arguments)}}
+const sjTitN=()=>{const k=twTits().find(k=>/^sj\d+$/.test(k));return k?+k.slice(2):0};
+{const _ra=rkApply;rkApply=function(){_ra.apply(this,arguments);try{const tw=typeof TW!=='undefined'&&TW.on&&G.gmode==='torre';if(!G.p||!(tw||G.gmode==='boss'||G.gmode==='caca'))return;const p=G.p[0],n=sjTitN();if(n&&isSJ(p))p.tdm=(p.tdm||1)+SJTB[n]/100}catch(e){}}}
+window.__sjt={win:n=>{rkOpen();setTimeout(()=>sjTitWin(n),700)},tit:t=>pfTitH(t,'',false),claim:sjTitClaim};

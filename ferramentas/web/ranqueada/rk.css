@@ -2051,3 +2051,24 @@ img.anOn{position:relative;z-index:2}
 .p3Ch.pfF img{filter:drop-shadow(0 0 .8em rgba(255,216,74,.6))}.pfFm{position:absolute}.pfFm.ro button{flex:0 1 auto;padding:.25em .8em}
 .p3Ch~.pfFm button,.pfFm button{font-size:.62em;padding:.35em .2em}
 .lbPd~.pfFm button,.rkA .pfFm button{font-size:.66em}
+/* v462: título do MONARCA (Sung) — roxo com fumaça preta subindo */
+.pfTt.sjt{border-color:transparent;background:linear-gradient(90deg,#1a0630,#050008) padding-box,conic-gradient(from var(--ua,0deg),#e9d4ff,#8a3cff,#14001f,#b47bff,#e9d4ff) border-box;animation:rkUq 2.4s linear infinite;position:relative;overflow:visible;isolation:isolate}
+.pfTt.sjt b{color:#efe2ff;text-shadow:0 0 .35em #a060ff,0 .08em .25em #000,0 0 .9em #000}
+.pfTt.sjt em{font:900 1.1em var(--f-display,var(--f-ui));font-style:normal;color:#fff;text-shadow:0 0 .4em #b47bff,0 0 1em #7a2cff,0 .1em .3em #000;margin-left:.2em}
+.pfTt.sjt .ic{font-style:normal;filter:drop-shadow(0 0 .3em #a060ff) drop-shadow(0 .1em .2em #000)}
+.pfTt.sjt .smk{position:absolute;left:8%;right:8%;top:-60%;height:120%;z-index:-1;pointer-events:none;border-radius:50%;background:radial-gradient(ellipse at 30% 70%,rgba(0,0,0,.95),transparent 60%),radial-gradient(ellipse at 70% 60%,rgba(10,0,20,.9),transparent 50%);filter:blur(.35em);animation:sjSmkT 2.6s ease-in-out infinite}
+.pfTt.sjt .smk.s2{left:25%;right:-5%;top:-40%;animation-delay:1.3s;animation-duration:3.1s}
+@keyframes sjSmkT{0%{transform:translateY(25%) scale(.8);opacity:0}35%{opacity:.95}100%{transform:translateY(-45%) scale(1.25);opacity:0}}
+.pfTt.sjt .sjs{position:absolute;font-style:normal;color:#f3e8ff;font-size:.9em;text-shadow:0 0 .4em #fff,0 0 .8em #a060ff;animation:pfTw 1.6s ease-in-out infinite;opacity:0}
+.pfTt.sjt .sjs.sa{left:1.6em;top:-.1em}.pfTt.sjt .sjs.sb{left:5.4em;bottom:-.1em;animation-delay:.5s}.pfTt.sjt .sjs.sc{right:.4em;top:.1em;animation-delay:1s}
+.pfTt.sjt.s1{box-shadow:0 0 1.2em #c79bff,0 0 2.6em #7a2cff,0 .3em 1.4em #000;animation-duration:1.2s}
+.pfTt.sjt.s1 b{background:linear-gradient(90deg,#8a3cff,#ffffff,#c79bff,#ffffff,#8a3cff);background-size:250% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:admT 1.5s linear infinite;text-shadow:none;filter:drop-shadow(0 0 .3em #a060ff) drop-shadow(0 .08em .15em #000)}
+.pfTt.sjt.s2{box-shadow:0 0 1em #b47bff,0 0 2.1em #6a1cff,0 .3em 1.2em #000;animation-duration:1.6s}
+.pfTt.sjt.s3{box-shadow:0 0 .8em #a060ff,0 .25em 1em #000}.pfTt.sjt.s4{box-shadow:0 0 .5em #8a3cff,0 .2em .8em #000;animation-duration:3s}.pfTt.sjt.s5{box-shadow:0 0 .35em #7a2cff,0 .2em .6em #000;animation:none}
+.rkWin.sjTw{background:radial-gradient(circle,#2a0a4a 0,#14001f 45%,#000 80%)}.rkWin.sjTw .t b{color:#f3e8ff;text-shadow:0 0 1vh #a060ff,0 0 2.5vh #7a2cff,0 .4vh 1vh #000}.rkWin.sjTw .t span,.rkWin.sjTw .t2{color:#d9c2ff;text-shadow:0 0 1vh #000,0 0 2vh #7a2cff}
+.rkWin.sjTw .rays{background:repeating-conic-gradient(rgba(170,110,255,.45) 0 6deg,transparent 6deg 20deg)}
+.rkWin.sjTw .sjHalo{position:absolute;left:50%;top:50%;width:70vh;height:70vh;transform:translate(-50%,-50%);border-radius:50%;background:radial-gradient(circle,rgba(180,120,255,.65),rgba(60,0,110,.35) 45%,transparent 68%);animation:skCdA 1.6s ease-in-out infinite;pointer-events:none}
+.rkWin.sjTw .ytTw{font-size:1.5em;position:relative;z-index:2}
+.rkWin.sjTw .sjFm{position:absolute;bottom:-10vh;width:60vh;height:60vh;border-radius:50%;pointer-events:none;background:radial-gradient(circle,rgba(0,0,0,.95),rgba(15,0,30,.6) 45%,transparent 70%);filter:blur(2vh);animation:sjSmkW 4s ease-in-out infinite;z-index:0}
+.rkWin.sjTw .sjFm.a{left:-15vh}.rkWin.sjTw .sjFm.b{right:-15vh;animation-delay:1.3s}.rkWin.sjTw .sjFm.c{left:35%;animation-delay:2.6s;width:45vh;height:45vh}
+@keyframes sjSmkW{0%{transform:translateY(20vh) scale(.7);opacity:0}40%{opacity:1}100%{transform:translateY(-60vh) scale(1.4);opacity:0}}
