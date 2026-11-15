@@ -134,7 +134,7 @@ function rkRbH(){const xp=rkG('rp',0),ri=rkRank(xp),lv=RKSEL==null?ri:RKSEL,B=RK
   <button class="hs" data-a="fight" style="${rkB2(1185,758,1645,872)}"><span class="shine"></span></button>`}
 function rkRbSel(d,i){const ri=rkLvl();let v=RKSEL==null?ri:RKSEL;v=i!=null?i:Math.max(0,Math.min(RKTOP,v+d));RKSEL=v;rkView('rb')}
 /* ---------- EQUIPAR: personagem no meio com os espaços equipados em volta + itens da mochila ---------- */
-const RKSLOT=[['esp','🗡️','ESPADA'],['cap','⛑️','CAPACETE'],['anel','💍','ANEL'],['arm','🛡️','ARMADURA'],['bot','🥾','BOTAS'],['poc','🧪','POÇÃO']];
+const RKSLOT=[['esp','🗡️','ESPADA'],['cap','⛑️','CAPACETE'],['anel','💍','ANEL'],['col','📿','COLAR'],['arm','🛡️','ARMADURA'],['bot','🥾','BOTAS'],['poc','🧪','POÇÃO']]; /* v468: + COLAR */
 /* pilhas: itens iguais ocupam 1 espaço (até 99 por espaço) */
 const twStKey=x=>x.k==='poc'?'p|'+(x.pk||'')+'|'+x.r+'|'+x.v:[x.t,x.r,x.v,x.crit||0,x.dmg||0,x.vel||0,x.nm||'',x.ps?x.ps.r+x.ps.i:''].join('|');
 function twStacks(){const M=new Map();for(const x of twBagItems()){const k=twStKey(x);if(!M.has(k))M.set(k,[]);M.get(k).push(x)}const out=[];for(const [k,L] of M)for(let i=0;i<L.length;i+=99){const g=L.slice(i,i+99);out.push(Object.assign({},g[0],{key:k+'#'+i,ids:g.map(y=>y.id),n:g.length}))}return out}
@@ -149,8 +149,8 @@ function rkEquip(f,sk){f=f||'all';const sel=showScreen.cur==='tower'&&TW.pick?TW
   const tot=`⚔️ +${twEqB('dano')}% · 🛡️ +${twEqB('vida')}% · 💨 +${twEqB('vel')}% · 💥 +${Math.round(eqCrit())}% · ⚡ +${twEqB('trf')}%${eqFdmg()?' · 🔥 +'+Math.round(eqFdmg())+'%':''} · <b class="eqGr">🍀 Sorte +${rkEqSt()} · 🎁 Drop +${Math.round(eqDrop())}%</b>${on?' · 🧪 poção ativa':''}${rkG('pk_cura',null)?' · <b class="eqGr">💚 Cura '+rkG('pk_cura').v+'% pronta</b>':''}${rkG('pk_drop',null)?' · <b class="eqGr">🎁 Poção de drop +'+rkG('pk_drop').v+'% pronta</b>':''}`;
   const pr=x=>TWSELL[x.r]||100;
   const det=X?`<div class="eqD${X.uniq?' uniq':''}${rkYC(X)}" style="--c:${rkItC(X)}"><img src="${rkItIc(X)}" alt=""><div><span style="color:${rkItC(X)}">${X.uniq?'✦ ÚNICA ✦':(TWEQR.find(q=>q.k===X.r)||TWEQR[0]).n}${X.n>1?' · x'+X.n:''}</span><b>${rkItNm(X)} +${rkItV(X)}%</b><em>${rkItEf(X)}</em></div><div class="eqDb">${X.k==='poc'?`<button class="btn main" data-d="beber" ${(X.pk?rkG('pk_'+X.pk,null):on)?'disabled':''}>${(X.pk?rkG('pk_'+X.pk,null):on)?'JÁ TEM UMA ATIVA':'🧪 BEBER'}</button><button class="btn" data-d="del">DESCARTAR 1</button>`:`<button class="btn main" data-d="eq">EQUIPAR</button>${X.uniq?'<em class="eqUq">item único · não pode vender</em>':''}${rkIsY(X)&&!X.uniq?'<em class="eqUq">item secreto · não pode vender</em>':''}<button class="btn sell" data-d="sell" ${X.uniq||rkIsY(X)?'hidden':''}>VENDER 1 · 🪙 ${pr(X)}</button>${X.n>1&&!rkIsY(X)?`<button class="btn sell" data-d="sellAll">VENDER ${X.n} · 🪙 ${pr(X)*X.n}</button>`:''}`}</div></div>`:'<p class="twH eqT">Toque num item para ver e equipar / vender. Itens iguais ficam juntos no mesmo espaço (até 99).</p>';
-  rkModal(`<div class="twM rkEq"><h3>🎒 MOCHILA E EQUIPAMENTOS <small>${SA.length}/${TWBAG} espaços · 🪙 ${rkFmtN(twCoins())}</small></h3><div class="eqW"><div class="eqP"><div class="col">${RKSLOT.slice(0,3).map(slot).join('')}</div><div class="chr"><img src="${fullSrc(sel)}" alt=""><b>${CH[sel]?CH[sel].name:''}</b><small>🌱 Semente dos Deuses: ${rkSenzu()}</small></div><div class="col">${RKSLOT.slice(3).map(slot).join('')}</div></div>
-    <div class="eqR"><div class="seg twTab">${[['all','TUDO'],['esp','🗡️'],['cap','⛑️'],['anel','💍'],['arm','🛡️'],['bot','🥾'],['poc','🧪']].map(([k,t])=>`<button data-f="${k}" aria-pressed="${f===k}">${t}</button>`).join('')}</div>
+  rkModal(`<div class="twM rkEq"><h3>🎒 MOCHILA E EQUIPAMENTOS <small>${SA.length}/${TWBAG} espaços · 🪙 ${rkFmtN(twCoins())}</small></h3><div class="eqW"><div class="eqP"><div class="col">${RKSLOT.slice(0,4).map(slot).join('')}</div><div class="chr"><img src="${fullSrc(sel)}" alt=""><b>${CH[sel]?CH[sel].name:''}</b><small>🌱 Semente dos Deuses: ${rkSenzu()}</small></div><div class="col">${RKSLOT.slice(4).map(slot).join('')}</div></div>
+    <div class="eqR"><div class="seg twTab">${[['all','TUDO'],['esp','🗡️'],['cap','⛑️'],['anel','💍'],['col','📿'],['arm','🛡️'],['bot','🥾'],['poc','🧪']].map(([k,t])=>`<button data-f="${k}" aria-pressed="${f===k}">${t}</button>`).join('')}</div>
     <div class="eqG">${L.length?L.map(x=>`<button class="eqI ${X&&X.key===x.key?'sel':''}${x.uniq?' uniq':''}${rkYC(x)}" data-k="${x.key}" style="--c:${rkItC(x)}"><img src="${rkItIc(x)}" alt=""><b>+${rkItV(x)}%</b>${x.n>1?`<i class="eqN">x${x.n}</i>`:''}<span>${rkItNm(x)}</span></button>`).join(''):'<p class="twH">Nada aqui. Ganhe equipamentos no Boss, na Torre e no Gacha!</p>'}</div>${det}</div></div>
     <p class="twH eqT">${tot} · Toque num espaço equipado para tirar.</p><div class="row"><button class="btn" id="rkMX">FECHAR</button></div></div>`);
   const MS=RKMS(),re=k=>rkEquip(f,k);$('rkMX').onclick=()=>{rkModal(null);if(showScreen.cur==='tower')twRender()};document.querySelectorAll(MS+'.twTab button').forEach(b=>b.onclick=()=>rkEquip(b.dataset.f));
@@ -833,7 +833,7 @@ const eqChar=()=>{try{if(typeof TW!=='undefined'&&TW.on&&TW.pick)return TW.pick;
 const skSetFull=()=>{const o=twEqOn();return ['cap','arm','esp','bot','anel'].every(k=>o[k]&&o[k].sk)};
 const sjSetFull=()=>{const o=twEqOn();return ['cap','arm','esp','bot','anel'].every(k=>o[k]&&o[k].sj)};
 const eqNf=it=>it&&it.yt&&eqChar()!=='yuta'?.5:it&&it.sk?(eqChar()!=='shaka'?.5:skSetFull()?1.1:1):it&&it.sj?(it.nm==='MANOPLA DO MONARCA'?(eqChar()!=='sung'?1:sjSetFull()?1.6:1.5):eqChar()!=='sung'?.5:sjSetFull()?1.6:1.5):1; /* v466: Manopla vale 100% em todos; v461: +50% no Sung (set completo +60%) */
-twEqOn=function(){const I=twInv(),Q=twEqp(),o={};for(const k of ['esp','arm','bot','cap','anel']){const it=I.find(x=>x.id===Q[k]);if(it)o[k]=it}return o};
+twEqOn=function(){const I=twInv(),Q=twEqp(),o={};for(const k of ['esp','arm','bot','cap','anel','col']){const it=I.find(x=>x.id===Q[k]);if(it)o[k]=it}return o};
 const EQMAIN={esp:'dano',arm:'vida',bot:'vel',cap:'trf',anel:'st'};
 twEqB=st=>{const o=twEqOn();let v=0;for(const k in o){const it=o[k],n=eqNf(it);if(EQMAIN[k]===st)v+=(it.v||0)*n;if(st==='vel'&&it.vel)v+=it.vel*n;if(st==='dano'&&it.dmg)v+=it.dmg*n;if(st==='vida'&&it.def)v+=it.def*n;if(st==='trf'&&it.trf)v+=it.trf*n}return Math.round(v*10)/10};
 const eqCrit=()=>{const o=twEqOn();let c=0;for(const k in o)c+=(o[k].crit||0)*eqNf(o[k]);return c};
@@ -2386,9 +2386,9 @@ const LBX=[1235,1350,1465,1580,1693],LBY=[200,323,448,573];
 const lbSel=()=>{const o=rkG('own',['goku']),s=rkG('sel','goku');return o.includes(s)?s:(o[0]||'goku')};
 const lbC=r=>(TWEQR.find(R=>R.k===r)||TWEQR[0]).c;
 const lbEsc=s=>twEsc(String(s==null?'':s));
-const LBSLN={esp:'ESPADA',cap:'CAPACETE',anel:'ANEL / LUVAS',arm:'ARMADURA',bot:'BOTAS',poc:'POÇÃO'};
+const LBSLN={esp:'ESPADA',cap:'CAPACETE',anel:'ANEL / LUVAS',arm:'ARMADURA',bot:'BOTAS',poc:'POÇÃO',col:'COLAR'};
 const LBSLC=[['esp',320,225],['arm',320,337],['bot',320,450],['cap',726,225],['anel',726,337],['poc',726,450]];
-const LBSLE=[['cap',322,227],['arm',322,330],['anel',322,428],['bot',322,522],['esp',728,227],['poc',728,330],['x1',728,428],['x2',728,522]];
+const LBSLE=[['cap',322,227],['arm',322,330],['anel',322,428],['bot',322,522],['col',728,227],['esp',728,330],['poc',728,428],['x2',728,522]]; /* v468: COLAR no desenho do colar (em cima), espada e poção descem */
 function lbEqOf(k){if(k==='poc'){const o=twPocOn();return o?Object.assign({t:'poc'},o):null}const Q=twEqp();return Q[k]?twInv().find(y=>y.id===Q[k])||null:null}
 function lbSlot(k,x,y,w,h){if(k[0]==='x')return `<button class="hs lbSl lk" data-a="lbSl" data-s="${k}" style="${lbB(x,y,x+w,y+h)}"><span class="lbSn">🔒 EM BREVE</span></button>`;
   const it=lbEqOf(k);return `<button class="hs lbSl ${it?'on':''}" data-a="lbSl" data-s="${k}" style="${lbB(x,y,x+w,y+h)};${it?'--c:'+rkItC(it):''}">${it?`<img src="${rkItIc(it)}" alt=""><b>+${rkItV(it)}%</b>`:''}<span class="lbSn">${LBSLN[k]}</span></button>`}
@@ -5177,7 +5177,7 @@ Object.assign(RKSP,{
   sjarm:{t:'arm',r:'sec',v:0,dmg:55,def:40,crit:40,nm:'MANTO DO MONARCA',img:SJIT.sjarm,sj:1,ysec:1},
   sjesp:{t:'esp',r:'sec',v:0,dmg:70,crit:45,vel:20,nm:'ADAGAS DO MONARCA',img:SJIT.sjesp,sj:1,ysec:1},
   sjbot:{t:'bot',r:'sec',v:50,vel:40,dmg:30,nm:'BOTAS DO MONARCA',img:SJIT.sjbot,sj:1,ysec:1},
-  sjcol:{t:'anel',r:'sec',v:0,dmg:40,vel:50,st:60,nm:'COLAR DAS SOMBRAS',img:SJIT.sjcol,sj:1,ysec:1},
+  sjcol:{t:'col',r:'sec',v:0,dmg:40,vel:50,st:60,nm:'COLAR DAS SOMBRAS',img:SJIT.sjcol,sj:1,ysec:1},
   sjane:{t:'anel',r:'sec',v:0,dmg:50,crit:50,drop:30,nm:'ANEL DO MONARCA',img:SJIT.sjane,sj:1,ysec:1},
   sjman:{t:'anel',r:'sec',v:0,dmg:75,def:50,crit:55,vel:40,nm:'MANOPLA DO MONARCA',img:SJIT.sjman,sj:1,ysec:1,uniq:1,bpx:1},
   pvida:{t:'poc',r:'mit',pk:'vida',v:100,nm:'POÇÃO DA VIDA NOVA',img:SJIT.pvida,pot:1},
@@ -5657,3 +5657,7 @@ try{const I=twInv();let ch=0;for(const it of I){if(it&&it.nm==='MANOPLA DO MONAR
 
 /* v467: quem tem título de ADMINISTRADOR testa os Portais antes de abrir (o horário dos portais começa 3h antes só para ele; às 12:00 volta ao de todo mundo) */
 {const _pn=ptNow;ptNow=function(){const t=Date.now();if(t<PTREL&&twIsAdm()){if(PT0===PTREL){PT0=t-3*36e5;PTC={i:0,t:PT0}}}else if(PT0!==PTREL){PT0=PTREL;PTC={i:0,t:PT0}}return _pn.apply(this,arguments)}}
+
+/* v468: espaço próprio do COLAR (colar e anel juntos). Colares velhos (tipo anel) passam para 'col'; se estava no espaço do anel, vai para o do colar. */
+try{const I=twInv(),Q=twEqp();let ch=0;for(const it of I){if(it&&it.nm==='COLAR DAS SOMBRAS'&&it.t!=='col'){it.t='col';ch=1;if(Q.anel===it.id){delete Q.anel;if(!Q.col)Q.col=it.id}}}if(ch){twLS.s('tw_inv',I);twLS.s('tw_eqp',Q)}}catch(e){}
+{const st=document.createElement('style');st.textContent='.rkEq .eqP .col .eqS{width:4.7em!important;height:4.7em!important;margin-bottom:.75em}.rkEq .eqP .col{gap:.3em!important}.rkEq .eqP .col .eqS img{max-width:62%;max-height:62%}';document.head.appendChild(st)}
