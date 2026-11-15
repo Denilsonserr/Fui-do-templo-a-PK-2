@@ -89,3 +89,11 @@ Este arquivo tem duas partes: a **Parte 1** é para o dono (Denilson) e a **Part
 - Rodar `importar.yml` depois das 05:00 de 11/11 e contar para o dono quantas contas e ranks voltaram.
 - O dono pode mandar: mais bestas (3 antes de novos modos), regras do modo Soul Land, mais personagens.
 - O histórico completo, versão por versão, está em `GUIA-CLAUDE.md`.
+
+## v461 — Sung pronto pro lançamento
+- Forma: um pouco abaixo do Shaka (vel 1.78, dano ×.97, dano recebido ×1.03); golpes ~2.3× mais rápidos; espada/brilho ROXOS (sjPurp troca só os pixels azuis) + raios roxos.
+- Passivas: 1º golpe sofrido bloqueado (pose espada no chão); a cada 3 acertos teleporta pra trás + TAPA DO MONARCA; ≤50% vida = sobrevivência (+20% dano/vel); <20% = modo sangue (+10% vida, 1×/round).
+- Sistema até nv 100 (SJMX); anéis do Sung = min(7, nv/10).
+- TANK mais agressivo (alcance 330, defende ×.55, contra-ataca). Sombras +25% dano e +30% velocidade.
+- Itens do Monarca: valores das peças do Shaka; no Sung +50% (set completo +60%), nos outros 50%. Sombra ganha METADE do bônus (25%/30% dos valores) × nível da sombra (nv1 30% … máx 100%). Ícones novos com rachaduras vermelhas (personagens/sung/itens/rachaduras.py) + brilho vermelho pulsando.
+- Testes: tsung_passivas_v461.js, tsung_itens_v461.js.

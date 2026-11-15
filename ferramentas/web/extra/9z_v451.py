@@ -10,5 +10,5 @@ open(P,'w',encoding='utf8').write(s);print('v451 ok')
 # v451: Sung ataca mais rápido (quadros de golpe): normal .5 → .7, transformado 1.3 → 1.75 (Yuta continua igual)
 s=open(P,encoding='utf8').read()
 a="(f.yacc||0)+(f.form?1.3:.5)";assert s.count(a)==1
-s=s.replace(a,"(f.yacc||0)+(f.mname==='sjrg'?.25:f.def.sid==='sj'?(f.form?1.75:.7):(f.form?1.3:.5))")  # v456: a lança tem ritmo próprio
+s=s.replace(a,"(f.yacc||0)+(f.mname==='sjrg'?.25:f.def.sid==='sj'?(f.form?2.3:.7):(f.form?1.3:.5))")  # v456: a lança tem ritmo próprio
 open(P,'w',encoding='utf8').write(s);print('v451 sung ok')
