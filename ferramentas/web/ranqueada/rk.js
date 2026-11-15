@@ -6057,3 +6057,34 @@ acConfM=function(x){const A=acRes(x.d),ln=r=>r?`🏅 ${RKR[r.ri].n} · 💎 ${rk
 setInterval(async()=>{try{if(acConf||document.hidden||!localStorage.getItem('ac_k'))return;const x=await acNewer();if(x){acConf=x;acConfM(x)}}catch(e){}},60000);
 {let last=null;setInterval(()=>{try{if(!localStorage.getItem('ac_k'))return;const g=rkG('gem',0)|0,t=rkG('tic',0)|0;if(last&&(g<last[0]||t<last[1])&&!acConf){localStorage.removeItem('ac_h');acSave(1)}last=[g,t]}catch(e){}},4000)}
 window.__ac={save:f=>acSave(f),add:(k,n)=>rkAdd(k,n)};
+
+/* ================= v485: NÃO PERDER PROGRESSO trocando de aparelho
+   1) Salva sozinho a cada 30 s quando algo mudou (antes: a cada 5 min) + ao minimizar/fechar.
+   2) Ao voltar para o jogo (tela visível) confere na hora se a conta tem save mais novo de outro aparelho.
+   3) CÓPIA DE SEGURANÇA: antes de um aparelho trocar o progresso dele pelo da conta, ele envia uma cópia (documento bk_) para o servidor.
+      Na tela da CONTA: "📦 RECUPERAR PROGRESSO" lista as cópias (até 3 dias) com 💎/rank/personagens e o jogador mesmo restaura. ================= */
+setInterval(()=>{try{if(!localStorage.getItem('ac_k')||acConf||document.hidden)return;if(twHash(acData())!==localStorage.getItem('ac_h'))acSave(1)}catch(e){}},30000);
+document.addEventListener('visibilitychange',async()=>{if(document.hidden)return;try{if(acConf||!localStorage.getItem('ac_k'))return;const x=await acNewer();if(x){acConf=x;acConfM(x)}}catch(e){}});
+let ACBKH='';async function acBackup(why){try{const k=localStorage.getItem('ac_k'),n=localStorage.getItem('ac_n');if(!k||!n)return false;const d=acData(),hh=twHash(d);if(hh===ACBKH)return true;ACBKH=hh;const acc=await acId(n),ts=Date.now(),sg=await acSig(k,acc+'|'+ts+'|'+d),IV=v=>({integerValue:String(v)});
+  const f={nome:{stringValue:n.slice(0,16)},andar:IV(0),tempo:IV(0),bk:{stringValue:acc},ts:IV(ts),d:{stringValue:d},sg:{stringValue:sg},why:{stringValue:String(why||'')},v:IV(485)};
+  const r=await twFetchT(TWURL+'/torre?documentId=bk_'+acc+'_'+ts.toString(36).padStart(9,'0')+'&key='+TWFB.apiKey,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({fields:f})});return r.ok}catch(e){return false}}
+async function acBkList(){const k=localStorage.getItem('ac_k'),n=localStorage.getItem('ac_n');if(!k||!n)return [];const acc=await acId(n);
+  const body={structuredQuery:{from:[{collectionId:'torre'}],where:{fieldFilter:{field:{fieldPath:'bk'},op:'EQUAL',value:{stringValue:acc}}},orderBy:[{field:{fieldPath:'__name__'},direction:'DESCENDING'}],limit:10}};
+  const r=await twFetchT(TWURL+':runQuery?key='+TWFB.apiKey,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});if(!r.ok)throw new Error('net');
+  const L=(await r.json()).filter(x=>x.document).map(x=>{const f=x.document.fields||{};return {ts:+((f.ts||{}).integerValue||0),d:(f.d||{}).stringValue||'',sg:(f.sg||{}).stringValue||''}}).filter(x=>Date.now()-x.ts<3*864e5);
+  const ok=[];for(const x of L)if(x.sg===await acSig(k,acc+'|'+x.ts+'|'+x.d))ok.push(x);return ok}
+/* antes de carregar o da conta, manda a cópia deste aparelho */
+{const _cm=acConfM;acConfM=function(x){let sent=0;const p=acBackup('trocou de aparelho').then(ok=>{sent=1});const r=_cm.apply(this,arguments);
+  const b=document.getElementById('acCL');if(b){const go=b.onclick;b.onclick=async()=>{try{await Promise.race([p,new Promise(r=>setTimeout(r,4000))])}catch(e){}go()}}return r}}
+async function acBkOpen(){acM(`<div class="twM sm"><h3>📦 RECUPERAR PROGRESSO</h3><p class="twH">Procurando as cópias de segurança desta conta...</p></div>`);let L=[];try{L=await acBkList()}catch(e){acM(`<div class="twM sm"><h3>📦 RECUPERAR PROGRESSO</h3><p class="twH err">Precisa de internet.</p><div class="row"><button class="btn" id="acBX">FECHAR</button></div></div>`);document.getElementById('acBX').onclick=()=>acM(null);return}
+  const cur=acRes(acData()),ln=r=>r?`🏅 ${RKR[r.ri].n} · 💎 ${rkFmtN(r.gem)} · 👤 ${r.own}`:'?';
+  acM(`<div class="twM sm"><h3>📦 RECUPERAR PROGRESSO</h3><p class="twH">Quando um aparelho atrasado precisa carregar a conta, ele guarda uma cópia do que tinha. Se você perdeu coisas trocando de aparelho, escolha a cópia certa.</p>
+   <p class="twH ok"><b>AGORA:</b> ${ln(cur)}</p>${L.length?L.map((x,i)=>`<div class="row" style="justify-content:space-between;align-items:center;gap:.6em;margin:.3em 0"><span class="twH" style="margin:0">🕒 ${acT(x.ts)} · ${ln(acRes(x.d))}</span><button class="btn main" data-i="${i}">USAR</button></div>`).join(''):'<p class="twH">Nenhuma cópia nos últimos 3 dias.</p>'}
+   <p class="twH">⚠️ Usar uma cópia TROCA o progresso atual da conta por ela.</p><div class="row"><button class="btn" id="acBX">FECHAR</button></div></div>`);
+  document.getElementById('acBX').onclick=()=>acM(null);
+  document.querySelectorAll('#acM button[data-i]').forEach(b=>b.onclick=async()=>{const x=L[+b.dataset.i];if(!confirmBk(b))return;await acBackup('antes de recuperar');const D=JSON.parse(x.d);for(const kk of Object.keys(localStorage))if(/^(tw_|rk_)/.test(kk))localStorage.removeItem(kk);for(const kk in D)localStorage.setItem(kk,D[kk]);
+    localStorage.setItem('ac_t',String(Date.now()));localStorage.removeItem('ac_h');acConf=null;b.textContent='SALVANDO...';await acSave(1);acM(`<div class="twM sm"><h3>✔ PROGRESSO RECUPERADO</h3><p class="twH">Recarregando o jogo...</p></div>`);setTimeout(()=>location.reload(),900)})}
+function confirmBk(b){if(b.dataset.ok)return true;b.dataset.ok=1;b.textContent='CONFIRMAR?';setTimeout(()=>{delete b.dataset.ok;b.textContent='USAR'},3500);return false}
+{const _ao=acOpen;acOpen=function(tab){const r=_ao.apply(this,arguments);try{if(localStorage.getItem('ac_k')&&(tab||'ok')==='ok'){const M=document.getElementById('acM');if(M&&!M.querySelector('#acBk')){const b=document.createElement('button');b.id='acBk';b.className='btn';b.textContent='📦 RECUPERAR PROGRESSO';
+  b.style.cssText='position:absolute;left:50%;bottom:3%;transform:translateX(-50%);z-index:5;font-size:1.6vh';b.onclick=()=>acBkOpen();(M.querySelector('.arP,.twM')||M).appendChild(b)}}}catch(e){}return r}}
+window.__bk={list:acBkList,send:acBackup,open:acBkOpen};

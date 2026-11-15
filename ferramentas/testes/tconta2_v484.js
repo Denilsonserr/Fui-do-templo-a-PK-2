@@ -13,4 +13,9 @@ await A.waitForTimeout(1500);const sa=await A.evaluate(async()=>{__ac.add('gem',
 /* B (PC atrasado, ainda com 10000) tenta salvar */
 await B.waitForTimeout(1500);const sb=await B.evaluate(async()=>{__ac.add('gem',5);localStorage.removeItem('ac_h');return await __ac.save(1)});await B.waitForTimeout(7000);
 const gb=await B.evaluate(()=>localStorage.rk_gem).catch(e=>'?');
-console.log(JSON.stringify({criou:k[0],celularSalvou:sa,pcSalvou:sb,gemasPCDepois:gb}),E.slice(0,3));await b.close()})();
+await B.waitForFunction(()=>!document.getElementById('goSelect').disabled,null,{timeout:120000}).catch(()=>{});
+const bk=await B.evaluate(async()=>{const L=await __bk.list();return L.map(x=>JSON.parse(x.d).rk_gem)});
+await B.evaluate(()=>__bk.open());await B.waitForTimeout(2500);await B.screenshot({path:'/tmp/bk.png'});
+await B.evaluate(()=>{const b=document.querySelector('#acM button[data-i]');b.click();b.click()});await B.waitForTimeout(6000);
+const gr=await B.evaluate(()=>localStorage.rk_gem).catch(e=>'?');
+console.log(JSON.stringify({criou:k[0],celularSalvou:sa,pcSalvou:sb,gemasPCDepois:gb,copias:bk,depoisDeRecuperar:gr}),E.slice(0,3));await b.close()})();
