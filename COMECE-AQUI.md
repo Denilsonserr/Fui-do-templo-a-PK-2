@@ -109,3 +109,4 @@ Este arquivo tem duas partes: a **Parte 1** é para o dono (Denilson) e a **Part
 - Reset 1× por jogador (rk_rs463): quem tinha o Sung perde Sung, peças do Monarca (menos a Manopla do passe) e título MONARCA Nº; recebe 80 💎 × giros do banner do Sung no histórico desde 09:00 (mín. 1.600). Aviso ao abrir o menu (rk_rs463m).
 - Títulos do servidor recomeçam: documentId agora é torre/sjtit2_N. Histórico passa a guardar o banner (campo b).
 - Teste: tsung_reset_v463.js.
+- v463c: quem tem CONTA e foi resetado recebe tickets e diamantes de volta como estavam no último save antes das 09:00 (rota nova do worker /fs/sv-antes?acc=&t= ; assinatura conferida no jogo com acFind). Nunca tira: fica o maior valor (agora × save antigo). 1 vez (rk_rs463b). Teste: tsung_reset_save_v463.js (usa o worker de verdade no servidor local).

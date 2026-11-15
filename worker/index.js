@@ -126,6 +126,10 @@ export default {async fetch(req,env){const url=new URL(req.url),p=url.pathname;
       return new Response(html,{headers:{'Content-Type':'text/html; charset=utf-8',...CORS}})}
     if(p==='/fs-admin/estado')return await modEstado(db,url);
     if(p==='/fs-admin/mod'&&req.method==='POST')return await modPost(db,req);
+    /* v463: último save da conta ANTES de um horário (para devolver tickets/diamantes como estavam antes do Sung). O jogo confere a assinatura. */
+    if(p==='/fs/sv-antes'){const acc=String(url.searchParams.get('acc')||'');const t=+url.searchParams.get('t')||0;if(!/^[\w-]{4,80}$/.test(acc)||!t)return ERR(400,'INVALID_ARGUMENT','acc/t');
+      const lo='sv_'+acc+'_',hi=lo+t.toString(36).padStart(9,'0');const r=await db.prepare('SELECT id,ct,f FROM docs WHERE id>=? AND id<? ORDER BY id DESC LIMIT 1').bind(lo,hi).first();
+      if(!r)return J({nada:1});let f={};try{f=JSON.parse(r.f)}catch(e){}const v=k=>f[k]&&(f[k].stringValue??f[k].integerValue);return J({ts:+v('ts')||0,d:v('d')||'',sg:v('sg')||''})}
     if(p==='/fs-admin/reads')return J(RD);
     if(p==='/fs-admin/count'){const c=await db.prepare('SELECT COUNT(*) n FROM docs').first();return J(c)}
     const m=p.match(/^\/fs\/v1\/(projects\/[^/]+\/databases\/\(default\)\/documents)(.*)$/)||p.match(/^\/fs\/v1\/(projects\/[^/]+\/databases\/%28default%29\/documents)(.*)$/);if(!m)return ERR(404,'NOT_FOUND','rota');

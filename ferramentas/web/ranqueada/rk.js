@@ -5560,6 +5560,20 @@ rkRollY=function(){
   const NM=SJSEC.map(k=>RKSP[k].nm),I=twInv(),Q=twEqp(),rm=I.filter(x=>x&&NM.includes(x.nm));if(rm.length){const ids=rm.map(x=>x.id);twLS.s('tw_inv',I.filter(x=>!ids.includes(x.id)));for(const t in Q)if(ids.includes(Q[t]))delete Q[t];twLS.s('tw_eqp',Q)}
   const L=twTits();if(L.some(k=>/^sj\d+$/.test(k))){twLS.s('tw_tit',L.filter(k=>!/^sj\d+$/.test(k)));if(/^sj\d+$/.test(String(twLS.g('tw_titOn','')||'')))twLS.s('tw_titOn',null);try{twTitSync()}catch(e){}}rkS('sjtp',0);
   rkAdd('gem',gem);try{acSave(1)}catch(e){}
-  rkS('rs463m',gem)}catch(e){}})();
+  rkS('rs463m',gem);rkS('rs463g',gem)}catch(e){}})();
 {const _o=rkOpen;rkOpen=function(){const r=_o.apply(this,arguments);const gem=rkG('rs463m',0)|0;if(gem){rkS('rs463m',0);setTimeout(()=>{try{rkModal(`<div class="twM"><h3>🔄 O SUNG FOI RESETADO</h3><p class="twH">O Sung estava saindo fácil demais, então ele foi tirado de todo mundo que pegou, para todos tentarem de novo de forma justa. Agora ele vem entre 190 e 210 giros (a sorte não conta).</p><p class="twH">Você recebeu de volta <b>💎 ${rkFmtN(gem)}</b>. As peças do Monarca e o título MONARCA Nº também recomeçaram: os 10 primeiros a pegar o Sung de novo ganham o título.</p><div class="row"><button class="btn main" id="rkMX">OK</button></div></div>`);$('rkMX').onclick=()=>rkModal(null)}catch(e){}},1200)}return r}}
 window.__sjg={roll:()=>rkRollY(),tg:()=>[SJTGF(),SJTGI()]};
+
+/* v463c: quem tem CONTA e foi resetado: tickets e diamantes voltam como estavam no último save ANTES das 09:00 (se for mais do que tem agora).
+   Nunca tira nada: fica o maior valor entre agora (já com a devolução pelo histórico) e o save antigo. 1 vez (rk_rs463b). */
+const RS463T=Date.UTC(2026,10,15,12,0,0);
+async function rs463b(){try{if(rkG('rs463b',0))return;const k=localStorage.getItem('ac_k'),n=localStorage.getItem('ac_n');if(!k||!n)return;
+  const foi=(rkG('rs463g',0)|0)>0||(rkG('rs463m',0)|0)>0||rkG('hist',[]).some(x=>x&&x.id==='sung');if(!foi){rkS('rs463b',1);return}
+  const acc=await acId(n),r=await twFetchT(new URL(TWURL).origin+'/fs/sv-antes?acc='+encodeURIComponent(acc)+'&t='+RS463T);if(!r.ok)return;const x=await r.json();
+  if(x.nada){rkS('rs463b',1);return}if(!x.d||!(await acFind(acc,k,[x])))return;
+  const O=JSON.parse(x.d),num=s=>{try{return +JSON.parse(s)||0}catch(e){return 0}},g0=num(O.rk_gem),t0=num(O.rk_tic),g1=rkG('gem',0)|0,t1=rkG('tic',0)|0;
+  const dg=Math.max(0,g0-g1),dt=Math.max(0,t0-t1);if(dg)rkAdd('gem',dg);if(dt)rkAdd('tic',dt);rkS('rs463b',1);try{acSave(1)}catch(e){}
+  if(dg||dt){const tx=`Seus diamantes e tickets voltaram como estavam antes das 09:00 (${new Date(x.ts).toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'})}): ${dg?'💎 +'+rkFmtN(dg):''}${dg&&dt?' · ':''}${dt?'🎫 +'+dt:''}`;
+    try{if(showScreen.cur==='ranked'){rkModal(`<div class="twM"><h3>🔄 DEVOLUÇÃO COMPLETA</h3><p class="twH">${tx}</p><div class="row"><button class="btn main" id="rkMX">OK</button></div></div>`);$('rkMX').onclick=()=>rkModal(null)}else rkS('rs463bm',tx)}catch(e){}}}catch(e){}}
+setTimeout(rs463b,5000);window.__rs463={u:()=>TWURL+"/torre?key="+TWFB.apiKey,run:rs463b,sig:(k,s)=>acSig(k,s),id:n=>acId(n)};
+{const _o=rkOpen;rkOpen=function(){const r=_o.apply(this,arguments);const tx=rkG('rs463bm','');if(tx){rkS('rs463bm','');setTimeout(()=>{try{rkModal(`<div class="twM"><h3>🔄 DEVOLUÇÃO COMPLETA</h3><p class="twH">${tx}</p><div class="row"><button class="btn main" id="rkMX">OK</button></div></div>`);$('rkMX').onclick=()=>rkModal(null)}catch(e){}},2600)}return r}}
