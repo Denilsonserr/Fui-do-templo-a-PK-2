@@ -103,3 +103,9 @@ Este arquivo tem duas partes: a **Parte 1** é para o dono (Denilson) e a **Part
 - Bônus de dano lutando com o Sung (Boss, Torre, Caça, Portais): Nº1 +30, Nº2 +25, Nº3 +20, Nº4 +18 … Nº10 +6 (SJTB). Nº1 e Nº2 acima do Shaka (+20).
 - Visual: borda roxa girando, fumaça preta subindo, Nº1 com texto brilhando; janela própria (sjTitWin). Cuidado: classes .a/.b/.c são globais (anel dourado) — usei .sa/.sb/.sc.
 - Teste: tsung_titulo_v462.js.
+
+## v463 — Gacha do Sung mais difícil + RESET do Sung
+- Sung sem chance aleatória (sorte não conta): número secreto por jogador entre 190 e 210 giros (rk_sjTg). Peças do Monarca: cada uma entre 170 e 300 (rk_sjTgI).
+- Reset 1× por jogador (rk_rs463): quem tinha o Sung perde Sung, peças do Monarca (menos a Manopla do passe) e título MONARCA Nº; recebe 80 💎 × giros do banner do Sung no histórico desde 09:00 (mín. 1.600). Aviso ao abrir o menu (rk_rs463m).
+- Títulos do servidor recomeçam: documentId agora é torre/sjtit2_N. Histórico passa a guardar o banner (campo b).
+- Teste: tsung_reset_v463.js.

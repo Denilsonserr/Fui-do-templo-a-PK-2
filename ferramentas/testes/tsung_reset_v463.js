@@ -1,0 +1,12 @@
+// v463: reset do Sung (devolve diamantes pelo histórico, tira Sung/peças/título) + Sung entre 190-210 giros, peças 170-300
+const {chromium}=require('playwright');
+(async()=>{const b=await chromium.launch();const E=[];
+const pg=async(init)=>{const p=await b.newPage({viewport:{width:915,height:412}});p.on('pageerror',e=>E.push(e.message));await p.route(/fonts\.g|firestore|workers\.dev\/fs/,r=>r.abort());await p.addInitScript(init);await p.goto('http://localhost:8790/index.html');await p.waitForFunction(()=>!document.getElementById('goSelect').disabled,null,{timeout:120000});await p.waitForTimeout(800);return p};
+const p=await pg(()=>{if(sessionStorage.d)return;sessionStorage.d=1;localStorage.clear();const t=Date.parse('2026-11-15T12:10:00Z');const H=[];for(let i=0;i<35;i++)H.push({k:i==3?'chr':'red',id:i==3?'sung':undefined,r:'comum',n:2,d:t+i});
+ Object.assign(localStorage,{tw_nome:'"V"',rk_ini:'1',rk_xpv2:'1',rk_own:'["goku","sung"]',rk_sel:'"sung"',rk_gem:'100',rk_hist:JSON.stringify(H),tw_tit:'["sj1","adm"]',tw_titOn:'"sj1"',
+ tw_inv:JSON.stringify([{id:'a1',nm:'ELMO DO MONARCA',sj:1,t:'cap'},{id:'a2',nm:'MANOPLA DO MONARCA',sj:1,t:'anel'},{id:'a3',nm:'X',t:'bot'}]),tw_eqp:'{"cap":"a1","anel":"a2"}'})});
+const R=await p.evaluate(()=>({own:localStorage.rk_own,sel:localStorage.rk_sel,gem:localStorage.rk_gem,tit:localStorage.tw_tit,titOn:localStorage.tw_titOn,inv:JSON.parse(localStorage.tw_inv).map(x=>x.nm).join(','),eqp:localStorage.tw_eqp,msg:localStorage.rk_rs463m}));
+await p.reload();await p.waitForTimeout(3000);const R2=await p.evaluate(()=>localStorage.rk_gem);
+const q=await pg(()=>{if(sessionStorage.d)return;sessionStorage.d=1;localStorage.clear();Object.assign(localStorage,{tw_nome:'"V"',rk_ini:'1',rk_xpv2:'1'})});
+const S=await q.evaluate(()=>{const out={sung:0,pecas:[]};for(let i=1;i<=1200;i++){const r=__sjg.roll();if(r.k==='chr'){out.sung=i;const o=JSON.parse(localStorage.rk_own||'["goku"]');o.push('sung');localStorage.rk_own=JSON.stringify(o)}if(r.k==='sp'&&r.r==='sec'){out.pecas.push(i);const I=JSON.parse(localStorage.tw_inv||'[]');I.push({id:'p'+i,nm:{sjcap:'ELMO DO MONARCA',sjarm:'MANTO DO MONARCA',sjesp:'ADAGAS DO MONARCA',sjbot:'BOTAS DO MONARCA',sjcol:'COLAR DO MONARCA',sjane:'ANEL DO MONARCA'}[r.s]||r.s});localStorage.tw_inv=JSON.stringify(I)}}return out});
+console.log(JSON.stringify({reset:R,depoisDeRecarregar:R2,giros:S}),E.slice(0,3));await b.close()})();

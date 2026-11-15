@@ -5516,7 +5516,7 @@ function sjShBonus(f){try{if(f.cpu)return {dm:1,hp:1};const q=twEqOn(),n=sjSetFu
 const SJTB=[0,30,25,20,18,16,14,12,10,8,6];
 for(let n=1;n<=10;n++)TWTIT['sj'+n]={n:'MONARCA Nº'+n,i:'👑',c:n===1?'#e9d4ff':n<=3?'#c79bff':'#9a5cff',d:'Um dos 10 primeiros do servidor a pegar o Sung · +'+SJTB[n]+'% de dano com o Sung',hid:1,sjt:n};
 async function sjTitClaim(show){if(twTits().some(k=>/^sj\d+$/.test(k))){rkS('sjtp',0);return}rkS('sjtp',1);const nm=String(twLS.g('tw_nome','')||'?').slice(0,16),IV=v=>({integerValue:String(v)});
-  for(let n=1;n<=10;n++){let r;try{r=await twFetchT(TWURL+'/torre?documentId=sjtit_'+n+'&key='+TWFB.apiKey,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({fields:{nome:{stringValue:nm},andar:IV(0),tempo:IV(0),uid:{stringValue:twUid()},sjt:{stringValue:String(n)},v:IV(462)}})})}catch(e){return}
+  for(let n=1;n<=10;n++){let r;try{r=await twFetchT(TWURL+'/torre?documentId=sjtit2_'+n+'&key='+TWFB.apiKey,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({fields:{nome:{stringValue:nm},andar:IV(0),tempo:IV(0),uid:{stringValue:twUid()},sjt:{stringValue:String(n)},v:IV(462)}})})}catch(e){return}
     if(r.ok){rkS('sjtp',0);const L=twTits();L.push('sj'+n);twLS.s('tw_tit',L);twLS.s('tw_titOn','sj'+n);try{twTitSync()}catch(e){}try{acSave(1)}catch(e){}if(show)await sjTitWin(n);return}
     if(r.status!==409&&r.status!==403)return}
   rkS('sjtp',0)}
@@ -5528,3 +5528,38 @@ function sjTitWin(n){return new Promise(res=>{const O=document.createElement('di
 const sjTitN=()=>{const k=twTits().find(k=>/^sj\d+$/.test(k));return k?+k.slice(2):0};
 {const _ra=rkApply;rkApply=function(){_ra.apply(this,arguments);try{const tw=typeof TW!=='undefined'&&TW.on&&G.gmode==='torre';if(!G.p||!(tw||G.gmode==='boss'||G.gmode==='caca'))return;const p=G.p[0],n=sjTitN();if(n&&isSJ(p))p.tdm=(p.tdm||1)+SJTB[n]/100}catch(e){}}}
 window.__sjt={win:n=>{rkOpen();setTimeout(()=>sjTitWin(n),700)},tit:t=>pfTitH(t,'',false),claim:sjTitClaim};
+
+/* ================= v463: GACHA DO SUNG MAIS DIFÍCIL + RESET (pedido do dono, 15/11 09:06)
+   SUNG: sem chance aleatória (sorte não conta). Cada jogador tem um número secreto entre 190 e 210 giros (rk_sjTg) e o Sung vem exatamente nele.
+   PEÇAS DO MONARCA: cada peça também tem número secreto entre 170 e 300 giros (rk_sjTgI), garantia em 300.
+   RESET (1 vez por jogador, rk_rs463): quem tinha o Sung perde o Sung, as peças do Monarca (menos a Manopla do passe) e o título MONARCA Nº;
+   recebe de volta 80 💎 por giro do banner do Sung contado no histórico desde as 09:00 (mínimo 1.600 💎). Títulos no servidor recomeçam (sjtit2_N). ================= */
+const SJTGF=()=>{let t=rkG('sjTg',0)|0;if(!t){t=190+((Math.random()*21)|0);rkS('sjTg',t)}return t};
+const SJTGI=()=>{let t=rkG('sjTgI',0)|0;if(!t){t=170+((Math.random()*131)|0);rkS('sjTgI',t)}return t};
+const SJBANK=x=>x&&((x.k==='chr'&&x.id==='sung')||(x.k==='sp'&&(SJSEC.includes(x.s)||x.s==='pvida'||x.s==='psomb'))||x.k==='red'||x.k==='eq');
+rkRollY=function(){
+  if(!sjOwned()&&!RKMTMP.includes('sung')){const p=rkG('pitySJ',0)+1;if(p>=SJTGF()){rkS('pitySJ',0);rkS('sjTg',0);RKMTMP.push('sung');return {k:'chr',r:'mit',id:'sung'}}rkS('pitySJ',p)}
+  {const L=sjSecLeft().filter(k=>!RKMTMP.includes(k));if(L.length){const p=rkG('pitySJI',0)+1;if(p>=Math.min(300,SJTGI())){rkS('pitySJI',0);rkS('sjTgI',0);const s=L[(Math.random()*L.length)|0];RKMTMP.push(s);return {k:'sp',r:'sec',s}}rkS('pitySJI',p)}}
+  {const q=Math.random()*100;if(q<1.5)return {k:'sp',r:'mit',s:'pvida'};if(q<3)return {k:'sp',r:'mit',s:'psomb'}}
+  let r=Math.random()*100;if(r<30){let q=Math.random()*100,R='comum';for(const [k,w] of RKEQW){if((q-=w)<0){R=k;break}}return {k:'eq',r:R,E:TWEQ[(Math.random()*TWEQ.length)|0]}}
+  return {k:'red',r:'comum',n:1+((Math.random()*5)|0)}};
+/* contador do banner na tela: "Sung em até X giros" (o número exato é secreto) */
+{const _gh=rkGachaH;rkGachaH=function(){let h=_gh.apply(this,arguments);if(RKBAN!=='mit')return h;const p=rkG('pitySJ',0),pi=rkG('pitySJI',0);
+  return h.replace(/✦ Sung em <b>\d+<\/b>/,`✦ Sung em até <b>${Math.max(1,210-p)}</b>`).replace('🎟️ 1 ticket = 1 giro',`✦ peça do Monarca em até <b>${Math.max(1,300-pi)}</b>`)}}
+{const _tx=rkTaxas;rkTaxas=function(){if(RKBAN!=='mit')return _tx();rkModal(`<div class="twM"><h3>% TAXAS · INVOCAÇÃO MÍTICA · SUNG JIN-WOO</h3><table class="rkTx"><tr><th>Resultado</th><th>Quando</th></tr>
+  <tr><td style="color:#7fb8ff">✦ SS SUNG JIN-WOO · Monarca das Sombras</td><td>entre 190 e 210 giros (a sorte não conta)</td></tr>
+  <tr><td style="color:#b48cff">✦ Peça do MONARCA (elmo, manto, adagas, botas, colar, anel)</td><td>cada peça entre 170 e 300 giros</td></tr>
+  <tr><td>🧪 Poção de Vida / Cálice da Sombra</td><td>1,5% cada</td></tr><tr><td>Equipamento</td><td>30%</td></tr><tr><td style="color:#ff5a5a">Moeda Vermelha (1 a 5)</td><td>o resto</td></tr></table>
+  <p class="twH">1 giro = 80 💎 · 10 giros = 800 💎 (ticket vale 1 giro). Só existe 1 Sung por jogador. A contagem não zera se você sair.</p><div class="row"><button class="btn" id="rkMX">FECHAR</button></div></div>`);$('rkMX').onclick=()=>rkModal(null)}}
+/* histórico passa a marcar o banner */
+{const _sm=rkSummon;rkSummon=function(n){const b=RKBAN,h0=rkG('hist',[]).length?rkG('hist',[])[0].d:0;const r=_sm.apply(this,arguments);try{const H=rkG('hist',[]);let ch=0;for(const x of H){if(x.d<=h0)break;if(x.b==null){x.b=b;ch=1}}if(ch)rkS('hist',H)}catch(e){}return r}}
+/* ---------- RESET 1 vez ---------- */
+(function(){try{if(rkG('rs463',0))return;rkS('rs463',1);const own=rkG('own',['goku']);if(!own.includes('sung'))return;
+  const H=rkG('hist',[]);let n=0;for(const x of H){if(x.d>=SJREL&&SJBANK(x))n++}const gem=Math.max(20,n)*80;
+  rkS('own',own.filter(k=>k!=='sung'));if(rkG('sel','goku')==='sung')rkS('sel','goku');rkS('pitySJ',0);rkS('pitySJI',0);rkS('sjTg',0);rkS('sjTgI',0);
+  const NM=SJSEC.map(k=>RKSP[k].nm),I=twInv(),Q=twEqp(),rm=I.filter(x=>x&&NM.includes(x.nm));if(rm.length){const ids=rm.map(x=>x.id);twLS.s('tw_inv',I.filter(x=>!ids.includes(x.id)));for(const t in Q)if(ids.includes(Q[t]))delete Q[t];twLS.s('tw_eqp',Q)}
+  const L=twTits();if(L.some(k=>/^sj\d+$/.test(k))){twLS.s('tw_tit',L.filter(k=>!/^sj\d+$/.test(k)));if(/^sj\d+$/.test(String(twLS.g('tw_titOn','')||'')))twLS.s('tw_titOn',null);try{twTitSync()}catch(e){}}rkS('sjtp',0);
+  rkAdd('gem',gem);try{acSave(1)}catch(e){}
+  rkS('rs463m',gem)}catch(e){}})();
+{const _o=rkOpen;rkOpen=function(){const r=_o.apply(this,arguments);const gem=rkG('rs463m',0)|0;if(gem){rkS('rs463m',0);setTimeout(()=>{try{rkModal(`<div class="twM"><h3>🔄 O SUNG FOI RESETADO</h3><p class="twH">O Sung estava saindo fácil demais, então ele foi tirado de todo mundo que pegou, para todos tentarem de novo de forma justa. Agora ele vem entre 190 e 210 giros (a sorte não conta).</p><p class="twH">Você recebeu de volta <b>💎 ${rkFmtN(gem)}</b>. As peças do Monarca e o título MONARCA Nº também recomeçaram: os 10 primeiros a pegar o Sung de novo ganham o título.</p><div class="row"><button class="btn main" id="rkMX">OK</button></div></div>`);$('rkMX').onclick=()=>rkModal(null)}catch(e){}},1200)}return r}}
+window.__sjg={roll:()=>rkRollY(),tg:()=>[SJTGF(),SJTGI()]};
