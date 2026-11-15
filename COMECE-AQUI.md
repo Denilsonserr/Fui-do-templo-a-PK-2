@@ -137,3 +137,10 @@ Este arquivo tem duas partes: a **Parte 1** é para o dono (Denilson) e a **Part
 - Tela "ERGA-SE!" (pnShWin) com EQUIPAR AGORA. Sung SEM sombra do urso até vencer o Urso (sjSys filtra 'tank' sem rk_urso).
 - IGRIS sombra (SJSH.igris, rank A): igsTick/igsDraw — aura do Monarca, combo longo, crítico 35%, teleporta atrás de quem ataca o Sung e derruba, segura especial (metade do dano).
 - Testes: tportal_npc_v472.js, tigris_sombra_v472.js.
+
+## v473 — correções do portal + Igris OP + fim no Igris + portais desenhados
+- BUG golpe infinito no fim da sala: o inimigo "parado" (hyIdle) era um NPC novo e continuava atacando invisível → bsStep só usa pnStep se !f.hyIdle (e ele volta a ficar na frente, então o jogador anda de frente).
+- Igris chefe: recorte do golpe refeito (cortar.py com ONLY=ig_golpe e filtro de pedaços do vizinho; quadros 4,5,13 tirados), menor (sc .78), muito rápido, AUTO COMBO em sequência, PASSIVAS (banner na entrada): armadura −30%, lâmina fantasma (projétil a cada 3 combos), passo sombrio (teleporte), contra-golpe 20%, fúria <50%.
+- Dungeon NÃO é infinita: Urso na sala 5, IGRIS na 10 → matou o Igris = baú + chance da sombra → fim do portal ("PORTAL CONCLUÍDO"), espera o próximo.
+- Portais do dono (E…S) em ferramentas/portais (recebido/portais_ranks.png, cortar_portais.py → portais_rank.json = PTRI): tela VERSUS e, durante a procura, os próximos portais aparecem na tela "EM BREVE".
+- Teste: tportal_v473.js.

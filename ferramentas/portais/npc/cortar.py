@@ -36,7 +36,11 @@ def splits(prof,n,lo,hi):
     sc=seg+np.abs(np.arange(a,b)-t)*.02*prof.max()/max(1,W/n);cuts.append(a+int(np.argmin(sc)))
   cuts.append(hi);return cuts
 out={};ref={}
+ONLY=os.environ.get('ONLY','').split(',') if os.environ.get('ONLY') else None
+# v473: depois de recortar ig_golpe, tirar os quadros 4,5,13 (cortes ruins) — ver commit
+OLD=json.load(open(os.path.join(D,'npc.json'))) if ONLY else {}
 for nm,(nr,nc) in FL.items():
+  if ONLY and nm not in ONLY and not nm.endswith('_anda'):continue
   im=Image.open(os.path.join(D,'recebido',nm+'.png')).convert('RGB');a=np.array(im);A=alpha(a,nm.startswith('ig'));H,W=A.shape
   rp=(A>40).sum(1)
   if nr==1:rows=[(0,H)]
@@ -51,7 +55,14 @@ for nm,(nr,nc) in FL.items():
       # remove pedacinhos soltos pequenos (respingos do vizinho)
       lab,n=ndimage.label(ndimage.binary_dilation(m,iterations=3));
       if n>1:
-        sz=ndimage.sum(m,lab,range(1,n+1));keep=[j+1 for j,s in enumerate(sz) if s>=max(400,sz.max()*.02)];msk=np.isin(lab,keep);blk=np.where(msk,blk,0);m=blk>40
+        sz=ndimage.sum(m,lab,range(1,n+1));keep=[j+1 for j,s in enumerate(sz) if s>=max(400,sz.max()*.02)]
+        if nm in EQ:
+          big=int(np.argmax(sz))+1;wc=m.shape[1];keep2=[]
+          for j in keep:
+            xs_=np.where(lab==j)[1];edge_=xs_.min()<=2 or xs_.max()>=wc-3
+            if j==big or not edge_:keep2.append(j)
+          keep=keep2
+        msk=np.isin(lab,keep);blk=np.where(msk,blk,0);m=blk>40
       ys,xs2=np.where(m)
       if len(ys)==0:continue
       by0,by1,bx0,bx1=ys.min(),ys.max()+1,xs2.min(),xs2.max()+1
@@ -60,8 +71,9 @@ for nm,(nr,nc) in FL.items():
       hh=by1-by0;band=m[by0+int(hh*.35):by0+int(hh*.7),bx0:bx1];cx=(np.where(band)[1].mean() if band.any() else (bx1-bx0)/2)
       fr.append((rgba,cx,hh))
   out[nm]=fr
-J={}
+J=dict(OLD)
 for nm,fr in out.items():
+  if ONLY and nm not in ONLY:continue
   ch=nm.split('_')[0]
   # cada folha foi desenhada num tamanho: usa a altura do 1º quadro × quanto essa pose é da altura em pé
   POSE={'dem_golpe':.80,'dem_soco':.86,'dem_corre':.74,'esq_golpe':.84,'esq_soco':.80,'esq_chute':.92,'esq_corre':.70,'ig_corre':.80,'igs_pulo':.62,'ig_morte':.95}
