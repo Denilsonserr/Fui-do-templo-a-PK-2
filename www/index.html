@@ -2579,6 +2579,8 @@ img.anOn{position:relative;z-index:2}
 .rkWin.sjTw .sjFm{position:absolute;bottom:-10vh;width:60vh;height:60vh;border-radius:50%;pointer-events:none;background:radial-gradient(circle,rgba(0,0,0,.95),rgba(15,0,30,.6) 45%,transparent 70%);filter:blur(2vh);animation:sjSmkW 4s ease-in-out infinite;z-index:0}
 .rkWin.sjTw .sjFm.a{left:-15vh}.rkWin.sjTw .sjFm.b{right:-15vh;animation-delay:1.3s}.rkWin.sjTw .sjFm.c{left:35%;animation-delay:2.6s;width:45vh;height:45vh}
 @keyframes sjSmkW{0%{transform:translateY(20vh) scale(.7);opacity:0}40%{opacity:1}100%{transform:translateY(-60vh) scale(1.4);opacity:0}}
+/* v487: girar passiva x1 / x5 / x10 / x20 */
+.psAct button{font-size:1.15em}.psAct button.x10{background:linear-gradient(#c45a1a,#5a1a0a);box-shadow:0 0 1em #ff8a3a}.psAct button.x20{background:linear-gradient(#c49a1a,#5a3a0a);box-shadow:0 0 1.2em #ffd84a}
 
 .twBag .bgw{display:flex;gap:1em;justify-content:center;align-items:flex-start;margin:.4em 0}
 .twBag .bgc{flex:1;max-width:16em;display:flex;flex-direction:column;gap:.4em;max-height:52vh;overflow:auto;padding:.2em}
@@ -9756,7 +9758,7 @@ function psH(){const o=psG(),L=psList(),np=Math.max(1,Math.ceil(L.length/9));PS.
   <div class="psSlot nw" style="${rkB2(1059,346,1190,481)}">${pend&&!PS.anim?psGemH(pend):'<span>nova<br>passiva</span>'}</div>
   <div class="psLbl" style="${rkB2(995,492,1250,572)}">${pend&&!PS.anim?`<b class="nm">NOVA</b>${psTxtH(pend)}`:'<small>A passiva sorteada aparece aqui</small>'}</div>
   <div class="psJn" style="${rkB2(512,778,610,848)}"><img src="${RQA.jn}" alt=""><b>${o.jn|0}</b></div>
-  <div class="psAct" style="${rkB2(640,770,1040,856)}">${pend&&!PS.anim?(o.pendL&&o.pendL.length>1?`<button data-p="pick" class="ok">📋 ESCOLHER (${o.pendL.length})</button><button data-p="keep">✖ MANTER ANTIGA</button>`:`<button data-p="apply" class="ok">✔ APLICAR NOVA</button><button data-p="keep">✖ MANTER ANTIGA</button>`):`<button data-p="spin" class="go" ${!t||(o.jn|0)<1||PS.anim?'disabled':''}>💠 GIRAR x1</button><button data-p="spin5" class="go x5" ${!t||(o.jn|0)<2||PS.anim?'disabled':''}>💠 GIRAR x${Math.min(5,Math.max(2,o.jn|0))}</button>`}</div>
+  <div class="psAct" style="${rkB2(585,770,1052,856)}">${pend&&!PS.anim?(o.pendL&&o.pendL.length>1?`<button data-p="pick" class="ok">📋 ESCOLHER (${o.pendL.length})</button><button data-p="keep">✖ MANTER ANTIGA</button>`:`<button data-p="apply" class="ok">✔ APLICAR NOVA</button><button data-p="keep">✖ MANTER ANTIGA</button>`):`<button data-p="spin" class="go" ${!t||(o.jn|0)<1||PS.anim?'disabled':''}>💠 x1</button>${[[5,2],[10,6],[20,11]].map(([N,m])=>`<button data-p="spin${N}" class="go x5 x${N}" ${!t||(o.jn|0)<m||PS.anim?'disabled':''}>x${Math.min(N,Math.max(m,o.jn|0))}</button>`).join('')}`}</div>
   <div class="psPity" style="${rkB2(1060,774,1186,852)}"><span>Lendária+ em <b>${Math.max(1,50-(o.pl|0))}</b></span><span>Mítica+ em <b>${Math.max(1,200-(o.pm|0))}</b></span><span>Divina+ em <b>${Math.max(1,1000-(o.pd|0))}</b></span></div>
   <button class="psInfo" data-p="info" style="${rkB2(1590,600,1640,642)}">?</button>
   <div class="psSum" style="${rkB2(30,880,1660,930)}">Total ${t&&t.k==='ch'?'de '+twEsc(t.nm):'do personagem em uso'}: 💥 +${S.cd}% crítico · 🛡️ +${S.def}% defesa · ⚡ +${S.spd}% vel. de ataque · 💚 ${String(S.reg).replace('.',',')}%/5s · 🎁 +${S.drop}% drop · 🍀 +${S.st}% sorte</div>`}
@@ -11379,8 +11381,8 @@ function psPick(){const o=psG(),L=o.pendL||[];if(!o.pend||L.length<2)return;cons
   document.querySelectorAll('#rkModal .psPkI').forEach(b=>b.onclick=()=>{const o2=psG(),x=(o2.pendL||[])[+b.dataset.i];if(!x||!o2.pend)return rkModal(null);o2.pend={tg:o2.pend.tg,r:x.r,i:x.i};psS(o2);rkModal(null);psAct('apply')})}
 {const _pa=psAct;psAct=function(a,b){
   if(a==='pick'){if(PS.anim||PS.busy)return;return psPick()}
-  if(a==='spin5'){if(PS.anim||PS.busy)return;const o=psG(),t=psTarget();if(!t||o.pend)return;const n=Math.min(5,o.jn|0);if(n<2){rkSfx('clang');return rkToast('Precisa de pelo menos 2 Joias Negras','#ff8080')}PS.busy=1;
-    const L=[];for(let k=0;k<n;k++)L.push(psRoll(o));const best=L.reduce((m,x)=>psRI(x.r)>psRI(m.r)?x:m,L[0]);o.jn=(o.jn|0)-n;o.pend={tg:{k:t.k,id:t.id},r:best.r,i:best.i};o.pendL=L.map(x=>({r:x.r,i:x.i}));psS(o);
+  const sN=/^spin(5|10|20)$/.exec(a);if(sN){if(PS.anim||PS.busy)return;const o=psG(),t=psTarget();if(!t||o.pend)return;const n=Math.min(+sN[1],o.jn|0);/* v487: x5, x10 e x20 */if(n<2){rkSfx('clang');return rkToast('Precisa de pelo menos 2 Joias Negras','#ff8080')}PS.busy=1;
+    const L=[];for(let k=0;k<n;k++)L.push(psRoll(o));L.sort((x,y)=>psRI(y.r)-psRI(x.r));const best=L.reduce((m,x)=>psRI(x.r)>psRI(m.r)?x:m,L[0]);o.jn=(o.jn|0)-n;o.pend={tg:{k:t.k,id:t.id},r:best.r,i:best.i};o.pendL=L.map(x=>({r:x.r,i:x.i}));psS(o);
     PS.anim=1;rkView('ps');psAnim(best.r,()=>{PS.anim=0;PS.busy=0;rkView('ps');rkSfx(psRI(best.r)>=3?'boom':'powerUp');psPick()});return}
   return _pa.apply(this,arguments)}}
 {const _po=psOpen;psOpen=function(){const r=_po.apply(this,arguments);try{const o=psG();if(o.pend&&o.pendL&&o.pendL.length>1)setTimeout(psPick,400)}catch(e){}return r}}
@@ -14610,6 +14612,12 @@ TWCUP['slolnn']={nm:'CAÇADOR DE BUG',it:[],bugRw:1};
   try{if(C&&C.bugRw&&E&&/\bok\b/.test(E.className)){rkAdd('gem',10000);const s=ANS[(Math.random()*ANS.length)|0][0];anGive({i:Date.now().toString(36)+Math.random().toString(36).slice(2,6),c:4,g:7,s,v:ANV[4][7],a:100000});try{acSave(1)}catch(e){}
     E.textContent='🐞 Obrigado por avisar do bug! +10.000 💎 e 💍 ANEL VERMELHO SSS ('+anSt(s)[1]+')!';try{rkSfx('boom')}catch(e){}}}catch(e){}return r}}
 
+/* v487: código do ADM (texto só com o dono): 1.000 de CADA Pedra das Almas (comum … divina) — dá para evoluir uns 50 anéis dourados até o nível 60 */
+TWCUP['nwnyuf']={nm:'PEDRAS DAS ALMAS · 1.000 DE CADA',it:[],adm:1,pdAll:1};
+{const _cp=twCupom;twCupom=async function(code,E){const C=TWCUP[twHash(String(code).toUpperCase())];const r=await _cp.apply(this,arguments);
+  try{if(C&&C.pdAll&&E&&/\bok\b/.test(E.className)){for(let t=0;t<PDN.length;t++)pdAdd(t,1000);try{acSave(1)}catch(e){}E.textContent='✅ +1.000 de cada PEDRA DAS ALMAS ('+PDN.join(', ')+')! Agora é só evoluir os anéis.';try{rkSfx('boom')}catch(e){}}}catch(e){}return r}}
+try{window.__ps={open:()=>psOpen(),g:()=>psG()}}catch(e){}
+
 function twTrofList(){const tc=twLS.g('tw_tc',{}),run={};for(const t of TW.tr)run[t.k]=(run[t.k]||0)+1;
   twModal(`<div class="twM"><h3>🎖️ TROFÉUS</h3><div class="twTL">${Object.keys(TWTR).map(k=>{const T=TWTR[k];return `<div class="${tc[k]||run[k]?'got':''}"><i>${T.i}</i><b>${T.n}</b><span>${T.d}</span><em>+${T.p} 🏆</em><small>${run[k]?'nesta subida: '+run[k]+' · ':''}total: ${(tc[k]||0)}</small></div>`}).join('')}</div>
     <p class="twH">Cada troféu soma pontos 🏆 no ranking. Quem sobe mais andares fica na frente; empate = mais troféus, depois menos tempo.</p><div class="row"><button class="btn" id="twTx">FECHAR</button></div></div>`);
@@ -14801,7 +14809,7 @@ window.__dbg={mus:()=>[MCUR,MEL.src.split('/').pop()],stg:()=>STAGE.key,prepMatc
 })();
 </script>
 <style>#updB{position:fixed;left:50%;top:max(8px,env(safe-area-inset-top));transform:translateX(-50%);z-index:99999;padding:10px 22px;border-radius:14px;border:2px solid #fff3c0;background:linear-gradient(#ffd84a,#e08a10);color:#3a1d00;font:900 15px system-ui,sans-serif;box-shadow:0 0 18px #ffb21f;cursor:pointer;animation:updP 1s ease-in-out infinite alternate}@keyframes updP{to{transform:translateX(-50%) scale(1.05)}}</style>
-<script>(function(){const V='22ad3bf1f4cc';if(!/^https?:/.test(location.protocol))return;let nv=null;
+<script>(function(){const V='a2e65d0f031b';if(!/^https?:/.test(location.protocol))return;let nv=null;
 function show(){if(document.getElementById('updB'))return;try{if(typeof G!=='undefined'&&G.mode==='fight')return}catch(e){}const b=document.createElement('button');b.id='updB';b.textContent='🔄 ATUALIZAÇÃO NOVA! Toque para atualizar';
   b.onclick=()=>{b.textContent='⏳ Atualizando...';try{acSave(1)}catch(e){}setTimeout(()=>location.reload(),900)};document.body.appendChild(b)}
 async function chk(){if(document.hidden)return;if(nv){show();return}try{const r=await fetch('versao.txt?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const t=(await r.text()).trim();if(/^[0-9a-f]{8,40}$/.test(t)&&t!==V){nv=t;show()}}catch(e){}}

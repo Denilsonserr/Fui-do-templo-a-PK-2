@@ -2072,3 +2072,5 @@ img.anOn{position:relative;z-index:2}
 .rkWin.sjTw .sjFm{position:absolute;bottom:-10vh;width:60vh;height:60vh;border-radius:50%;pointer-events:none;background:radial-gradient(circle,rgba(0,0,0,.95),rgba(15,0,30,.6) 45%,transparent 70%);filter:blur(2vh);animation:sjSmkW 4s ease-in-out infinite;z-index:0}
 .rkWin.sjTw .sjFm.a{left:-15vh}.rkWin.sjTw .sjFm.b{right:-15vh;animation-delay:1.3s}.rkWin.sjTw .sjFm.c{left:35%;animation-delay:2.6s;width:45vh;height:45vh}
 @keyframes sjSmkW{0%{transform:translateY(20vh) scale(.7);opacity:0}40%{opacity:1}100%{transform:translateY(-60vh) scale(1.4);opacity:0}}
+/* v487: girar passiva x1 / x5 / x10 / x20 */
+.psAct button{font-size:1.15em}.psAct button.x10{background:linear-gradient(#c45a1a,#5a1a0a);box-shadow:0 0 1em #ff8a3a}.psAct button.x20{background:linear-gradient(#c49a1a,#5a3a0a);box-shadow:0 0 1.2em #ffd84a}

@@ -1241,7 +1241,7 @@ function psH(){const o=psG(),L=psList(),np=Math.max(1,Math.ceil(L.length/9));PS.
   <div class="psSlot nw" style="${rkB2(1059,346,1190,481)}">${pend&&!PS.anim?psGemH(pend):'<span>nova<br>passiva</span>'}</div>
   <div class="psLbl" style="${rkB2(995,492,1250,572)}">${pend&&!PS.anim?`<b class="nm">NOVA</b>${psTxtH(pend)}`:'<small>A passiva sorteada aparece aqui</small>'}</div>
   <div class="psJn" style="${rkB2(512,778,610,848)}"><img src="${RQA.jn}" alt=""><b>${o.jn|0}</b></div>
-  <div class="psAct" style="${rkB2(640,770,1040,856)}">${pend&&!PS.anim?(o.pendL&&o.pendL.length>1?`<button data-p="pick" class="ok">📋 ESCOLHER (${o.pendL.length})</button><button data-p="keep">✖ MANTER ANTIGA</button>`:`<button data-p="apply" class="ok">✔ APLICAR NOVA</button><button data-p="keep">✖ MANTER ANTIGA</button>`):`<button data-p="spin" class="go" ${!t||(o.jn|0)<1||PS.anim?'disabled':''}>💠 GIRAR x1</button><button data-p="spin5" class="go x5" ${!t||(o.jn|0)<2||PS.anim?'disabled':''}>💠 GIRAR x${Math.min(5,Math.max(2,o.jn|0))}</button>`}</div>
+  <div class="psAct" style="${rkB2(585,770,1052,856)}">${pend&&!PS.anim?(o.pendL&&o.pendL.length>1?`<button data-p="pick" class="ok">📋 ESCOLHER (${o.pendL.length})</button><button data-p="keep">✖ MANTER ANTIGA</button>`:`<button data-p="apply" class="ok">✔ APLICAR NOVA</button><button data-p="keep">✖ MANTER ANTIGA</button>`):`<button data-p="spin" class="go" ${!t||(o.jn|0)<1||PS.anim?'disabled':''}>💠 x1</button>${[[5,2],[10,6],[20,11]].map(([N,m])=>`<button data-p="spin${N}" class="go x5 x${N}" ${!t||(o.jn|0)<m||PS.anim?'disabled':''}>x${Math.min(N,Math.max(m,o.jn|0))}</button>`).join('')}`}</div>
   <div class="psPity" style="${rkB2(1060,774,1186,852)}"><span>Lendária+ em <b>${Math.max(1,50-(o.pl|0))}</b></span><span>Mítica+ em <b>${Math.max(1,200-(o.pm|0))}</b></span><span>Divina+ em <b>${Math.max(1,1000-(o.pd|0))}</b></span></div>
   <button class="psInfo" data-p="info" style="${rkB2(1590,600,1640,642)}">?</button>
   <div class="psSum" style="${rkB2(30,880,1660,930)}">Total ${t&&t.k==='ch'?'de '+twEsc(t.nm):'do personagem em uso'}: 💥 +${S.cd}% crítico · 🛡️ +${S.def}% defesa · ⚡ +${S.spd}% vel. de ataque · 💚 ${String(S.reg).replace('.',',')}%/5s · 🎁 +${S.drop}% drop · 🍀 +${S.st}% sorte</div>`}
@@ -2864,8 +2864,8 @@ function psPick(){const o=psG(),L=o.pendL||[];if(!o.pend||L.length<2)return;cons
   document.querySelectorAll('#rkModal .psPkI').forEach(b=>b.onclick=()=>{const o2=psG(),x=(o2.pendL||[])[+b.dataset.i];if(!x||!o2.pend)return rkModal(null);o2.pend={tg:o2.pend.tg,r:x.r,i:x.i};psS(o2);rkModal(null);psAct('apply')})}
 {const _pa=psAct;psAct=function(a,b){
   if(a==='pick'){if(PS.anim||PS.busy)return;return psPick()}
-  if(a==='spin5'){if(PS.anim||PS.busy)return;const o=psG(),t=psTarget();if(!t||o.pend)return;const n=Math.min(5,o.jn|0);if(n<2){rkSfx('clang');return rkToast('Precisa de pelo menos 2 Joias Negras','#ff8080')}PS.busy=1;
-    const L=[];for(let k=0;k<n;k++)L.push(psRoll(o));const best=L.reduce((m,x)=>psRI(x.r)>psRI(m.r)?x:m,L[0]);o.jn=(o.jn|0)-n;o.pend={tg:{k:t.k,id:t.id},r:best.r,i:best.i};o.pendL=L.map(x=>({r:x.r,i:x.i}));psS(o);
+  const sN=/^spin(5|10|20)$/.exec(a);if(sN){if(PS.anim||PS.busy)return;const o=psG(),t=psTarget();if(!t||o.pend)return;const n=Math.min(+sN[1],o.jn|0);/* v487: x5, x10 e x20 */if(n<2){rkSfx('clang');return rkToast('Precisa de pelo menos 2 Joias Negras','#ff8080')}PS.busy=1;
+    const L=[];for(let k=0;k<n;k++)L.push(psRoll(o));L.sort((x,y)=>psRI(y.r)-psRI(x.r));const best=L.reduce((m,x)=>psRI(x.r)>psRI(m.r)?x:m,L[0]);o.jn=(o.jn|0)-n;o.pend={tg:{k:t.k,id:t.id},r:best.r,i:best.i};o.pendL=L.map(x=>({r:x.r,i:x.i}));psS(o);
     PS.anim=1;rkView('ps');psAnim(best.r,()=>{PS.anim=0;PS.busy=0;rkView('ps');rkSfx(psRI(best.r)>=3?'boom':'powerUp');psPick()});return}
   return _pa.apply(this,arguments)}}
 {const _po=psOpen;psOpen=function(){const r=_po.apply(this,arguments);try{const o=psG();if(o.pend&&o.pendL&&o.pendL.length>1)setTimeout(psPick,400)}catch(e){}return r}}
@@ -6094,3 +6094,9 @@ TWCUP['slolnn']={nm:'CAÇADOR DE BUG',it:[],bugRw:1};
 {const _cp=twCupom;twCupom=async function(code,E){const C=TWCUP[twHash(String(code).toUpperCase())];const r=await _cp.apply(this,arguments);
   try{if(C&&C.bugRw&&E&&/\bok\b/.test(E.className)){rkAdd('gem',10000);const s=ANS[(Math.random()*ANS.length)|0][0];anGive({i:Date.now().toString(36)+Math.random().toString(36).slice(2,6),c:4,g:7,s,v:ANV[4][7],a:100000});try{acSave(1)}catch(e){}
     E.textContent='🐞 Obrigado por avisar do bug! +10.000 💎 e 💍 ANEL VERMELHO SSS ('+anSt(s)[1]+')!';try{rkSfx('boom')}catch(e){}}}catch(e){}return r}}
+
+/* v487: código do ADM (texto só com o dono): 1.000 de CADA Pedra das Almas (comum … divina) — dá para evoluir uns 50 anéis dourados até o nível 60 */
+TWCUP['nwnyuf']={nm:'PEDRAS DAS ALMAS · 1.000 DE CADA',it:[],adm:1,pdAll:1};
+{const _cp=twCupom;twCupom=async function(code,E){const C=TWCUP[twHash(String(code).toUpperCase())];const r=await _cp.apply(this,arguments);
+  try{if(C&&C.pdAll&&E&&/\bok\b/.test(E.className)){for(let t=0;t<PDN.length;t++)pdAdd(t,1000);try{acSave(1)}catch(e){}E.textContent='✅ +1.000 de cada PEDRA DAS ALMAS ('+PDN.join(', ')+')! Agora é só evoluir os anéis.';try{rkSfx('boom')}catch(e){}}}catch(e){}return r}}
+try{window.__ps={open:()=>psOpen(),g:()=>psG()}}catch(e){}
