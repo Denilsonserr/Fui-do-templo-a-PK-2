@@ -2218,3 +2218,8 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 
 ## v452 — Espinhos das Sombras desligados
 - O dono não gostou. `SJSPON=0` no bloco v451 (aura do Monarca e ataque mais rápido continuam).
+
+## v453 — Sung: LANÇA DAS SOMBRAS (ataque de longe) — só no MODO TESTE do ADM
+- Vídeo do dono `ferramentas/personagens/sung/ataque_longe/ataque_longe_dono.mp4` (lança de energia azul/roxa com 2 anéis, fundo verde). `recortar.py`: 12 quadros (1,0–2,0 s, 12 q/s) → chroma key com borda suave + tira o verde vazado → webp 640×213 (`SJRGF`, ~660 KB, carrega só quando o Sung do jogador entra numa luta no modo teste).
+- Bloco rk.js "v453": `groundControl` (wrapper) — SOCO (auto combo) com o inimigo a mais de 400 e `ADMT.on` → `startMove(f,'jab')` e 5 quadros depois `sjRgFire`: a lança nasce na espada (cresce em 4 quadros), voa a 58/quadro com rastro (fantasmas) e linhas de velocidade; acerto (`applyHit` kind proj, dano 110, kb 16, hs 16) → clarão, tela treme, 3 anéis em pé explodindo, elipse no chão, 10 raios, faíscas (`SJRI`). Recarga 72 quadros (`f.sjRgCD`). Perto = combo normal. Para liberar fora do teste: `SJRGON`.
+- Teste: `ferramentas/testes/tsung_lanca_v453.js`.
