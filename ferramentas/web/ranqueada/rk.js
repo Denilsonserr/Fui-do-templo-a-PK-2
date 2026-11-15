@@ -3034,7 +3034,7 @@ function dsfEnd(w){G.mode='ranked';$('controls').hidden=true;$('pauseBtn').hidde
 /* botão no menu Modos de Jogo */
 /* v443: no lugar do DESAFIO DO DIA fica o botão PORTAIS (arte do vídeo novo) — trancado até 15/11 11:00 (Brasília) */
 const PTREL=Date.UTC(2026,10,15,15,0,0); /* v465: 12:00 Brasília */
-{const _mh=rkMenuH;rkMenuH=function(){const op=Date.now()>=PTREL;return _mh.apply(this,arguments)+`<button class="hs mnPt ${op?'':'lk'}" data-a="portais" style="${mnB(18,508,312,588)}">${op?'':'<span class="mnPtL"><i>🔒</i><b>HOJE · 12:00</b></span>'}</button>`+
+{const _mh=rkMenuH;rkMenuH=function(){const op=Date.now()>=PTREL||twIsAdm();return _mh.apply(this,arguments)+`<button class="hs mnPt ${op?'':'lk'}" data-a="portais" style="${mnB(18,508,312,588)}">${op?'':'<span class="mnPtL"><i>🔒</i><b>HOJE · 12:00</b></span>'}</button>`+
   '<div class="mnFx">'+Array.from({length:14},(_,i)=>`<i style="left:${(i*7.3+3)%98}%;animation-delay:${(i*.83)%7}s;animation-duration:${6+(i%5)}s"></i>`).join('')+'</div>'}}
 {const _a=rkAct;rkAct=function(a,b){if(a==='portais'){rkSfx(Date.now()>=PTREL?'whoosh':'clang');return rkToast(Date.now()>=PTREL?'🌀 Os PORTAIS estão abrindo... o evento chega em breve!':'🔒 O EVENTO DE PORTAIS abre amanhã (15/11) às 12:00 (Brasília)!','#c79bff')}return _a.apply(this,arguments)}}
 {const _a=rkAct;rkAct=function(a,b){if(a==='dsf'){rkSfx('whoosh');return dsfOpen()}return _a.apply(this,arguments)}}
@@ -5294,7 +5294,7 @@ const PTRK=[
  {k:'B',w:10,m:1.12,sh:14,it:5.5,gem:18,mo:600,c:'#4a7dff',an:[5,20,40,28,7],eq:['epica','lend'],sj:.2,pv:3},
  {k:'A',w:6,m:1.45,sh:18,it:7,gem:25,mo:900,c:'#b06bff',an:[0,10,30,40,20],eq:['lend','mit'],sj:.5,pv:4},
  {k:'S',w:3,m:1.95,sh:25,it:9,gem:35,mo:1400,c:'#ff3b4a',an:[0,0,20,40,40],eq:['mit','mit','sec'],sj:1.3,pv:6}];
-const PT0=PTREL,PTOPEN=6e5;
+let PT0=PTREL;const PTOPEN=6e5;
 const ptRnd=(i,s)=>{const x=Math.sin(i*127.1+s*311.7+13.37)*43758.5453;return x-Math.floor(x)};
 let PTC={i:0,t:PT0};
 /* fase agora: {st:'lock'|'busca'|'aberto', ini, fim, i, L:[portais]} */
@@ -5326,7 +5326,7 @@ function ptOn(){clearInterval(rkView.iv);const N0=ptNow();PTLST=N0.st+N0.i;rkVie
 {const _rv=rkView;rkView=function(v){if(v!=='pt')return _rv.apply(this,arguments);RKV=v;const W=$('rkWrap');if(!W)return;clearInterval(rkView.iv);rkModal(null);
   W.innerHTML=`<div class="rkA rk_pt" data-w="1672" data-h="941" data-full="1" style="background-image:url(${PTA.tela})">${ptH()}<div id="rkToast"></div></div>`;rkFit();W.querySelectorAll('[data-a]').forEach(b=>b.onclick=e=>{e.stopPropagation();rkAct(b.dataset.a,b)});ptOn()}}
 {const _a=rkAct;rkAct=function(a,b){
-  if(a==='portais'){if(Date.now()<PTREL){rkSfx('clang');return rkToast('🔒 O modo PORTAIS abre hoje (15/11) às 12:00 (Brasília)!','#c79bff')}rkSfx('whoosh');PTS.sel=0;return rkView('pt')}
+  if(a==='portais'){if(Date.now()<PTREL&&!twIsAdm()){rkSfx('clang');return rkToast('🔒 O modo PORTAIS abre hoje (15/11) às 12:00 (Brasília)!','#c79bff')}rkSfx('whoosh');PTS.sel=0;return rkView('pt')}
   if(a==='ptSel'){const N=ptNow(),i=+b.dataset.i;if(!(N.L||[])[i])return;PTS.sel=i;rkSfx('whoosh');return rkView('pt')}
   if(a==='ptHome'||a==='ptBack')return rkView('menu');if(a==='ptTab')return;
   if(a==='ptShop'){rkSfx('clang');return rkToast('🔒 LOJA DOS PORTAIS · em breve!','#c79bff')}
@@ -5654,3 +5654,6 @@ window.__cup=(c,E)=>twCupom(c,E);
 Object.assign(RKSP.sjman,{dmg:100,def:70,crit:70,vel:60,st:50});
 try{const I=twInv();let ch=0;for(const it of I){if(it&&it.nm==='MANOPLA DO MONARCA'){for(const f of ['dmg','def','crit','vel','st'])if(it[f]!==RKSP.sjman[f]){it[f]=RKSP.sjman[f];ch=1}}}if(ch)twLS.s('tw_inv',I)}catch(e){}
 {const st=document.createElement('style');const u=String(RKSP.sjman.img||'').split('/').pop();if(u)st.textContent=`img[src$="${u}"]{animation:sjGoldG 1.6s ease-in-out infinite!important;border-radius:.3em}@keyframes sjGoldG{0%,100%{filter:drop-shadow(0 0 .3em #ffd84a) drop-shadow(0 0 .7em rgba(255,200,60,.7))}50%{filter:drop-shadow(0 0 .55em #fff3b0) drop-shadow(0 0 1.3em rgba(255,190,40,1))}}`;document.head.appendChild(st)}
+
+/* v467: quem tem título de ADMINISTRADOR testa os Portais antes de abrir (o horário dos portais começa 3h antes só para ele; às 12:00 volta ao de todo mundo) */
+{const _pn=ptNow;ptNow=function(){const t=Date.now();if(t<PTREL&&twIsAdm()){if(PT0===PTREL){PT0=t-3*36e5;PTC={i:0,t:PT0}}}else if(PT0!==PTREL){PT0=PTREL;PTC={i:0,t:PT0}}return _pn.apply(this,arguments)}}
