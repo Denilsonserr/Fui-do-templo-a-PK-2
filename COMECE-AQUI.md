@@ -144,3 +144,11 @@ Este arquivo tem duas partes: a **Parte 1** é para o dono (Denilson) e a **Part
 - Dungeon NÃO é infinita: Urso na sala 5, IGRIS na 10 → matou o Igris = baú + chance da sombra → fim do portal ("PORTAL CONCLUÍDO"), espera o próximo.
 - Portais do dono (E…S) em ferramentas/portais (recebido/portais_ranks.png, cortar_portais.py → portais_rank.json = PTRI): tela VERSUS e, durante a procura, os próximos portais aparecem na tela "EM BREVE".
 - Teste: tportal_v473.js.
+
+## v474 — NPCs batendo de verdade + rank S demora + sem anel + sem pulo ao atravessar
+- BUG GRANDE: os golpes em sequência (seq) dos NPCs não tinham alcance (A.rg) → caixa NaN → nunca acertavam. Agora rg padrão 340 (pesado 380). Contador PNST (__pn.st) mostra tentativas/acertos.
+- Demônio/Ceifador: mais rápidos, combos em sequência, armadura (62%+8%/nível de não parar ao apanhar), revidam no meio do apanho, resistência ~1 s depois de atordoar.
+- Rank: vida ×1,3 E … ×3,6 S (chefe A/S ×1,6), dano ×0,55 E … ×1,45 S (PTHP/PTDM); mais monstros por sala e mais vivos ao mesmo tempo.
+- Dungeon sem anel (só o futuro anel de 1 milhão de anos). Recompensa "ANÉIS" virou "PÓ E 💎".
+- Atravessando para a próxima sala (HY.gate) o analógico não faz pular (updFighter com inp.up=false).
+- Igris rank S mata um Sung sem itens parado em ~4 s. Teste: tportal_v474.js.
