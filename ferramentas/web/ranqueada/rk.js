@@ -3034,7 +3034,7 @@ function dsfEnd(w){G.mode='ranked';$('controls').hidden=true;$('pauseBtn').hidde
 /* botão no menu Modos de Jogo */
 /* v443: no lugar do DESAFIO DO DIA fica o botão PORTAIS (arte do vídeo novo) — trancado até 15/11 11:00 (Brasília) */
 const PTREL=Date.UTC(2026,10,15,14,0,0);
-{const _mh=rkMenuH;rkMenuH=function(){const op=Date.now()>=PTREL;return _mh.apply(this,arguments)+`<button class="hs mnPt ${op?'':'lk'}" data-a="portais" style="${mnB(18,508,312,588)}">${op?'':'<span class="mnPtL"><i>🔒</i><b>AMANHÃ · 11:00</b></span>'}</button>`+
+{const _mh=rkMenuH;rkMenuH=function(){const op=Date.now()>=PTREL;return _mh.apply(this,arguments)+`<button class="hs mnPt ${op?'':'lk'}" data-a="portais" style="${mnB(18,508,312,588)}">${op?'':'<span class="mnPtL"><i>🔒</i><b>HOJE · 11:00</b></span>'}</button>`+
   '<div class="mnFx">'+Array.from({length:14},(_,i)=>`<i style="left:${(i*7.3+3)%98}%;animation-delay:${(i*.83)%7}s;animation-duration:${6+(i%5)}s"></i>`).join('')+'</div>'}}
 {const _a=rkAct;rkAct=function(a,b){if(a==='portais'){rkSfx(Date.now()>=PTREL?'whoosh':'clang');return rkToast(Date.now()>=PTREL?'🌀 Os PORTAIS estão abrindo... o evento chega em breve!':'🔒 O EVENTO DE PORTAIS abre amanhã (15/11) às 11:00 (Brasília)!','#c79bff')}return _a.apply(this,arguments)}}
 {const _a=rkAct;rkAct=function(a,b){if(a==='dsf'){rkSfx('whoosh');return dsfOpen()}return _a.apply(this,arguments)}}
@@ -5280,3 +5280,164 @@ bpH=function(){const o=bpG(),L=bpLv(o),p0=BP.pg*10,xpIn=(o.xp|0)-L*BPS.xpL,end=M
 .rk_bp .bp2Bt{display:flex;align-items:center;justify-content:center;gap:.6em}.rk_bp .bp2Bt button{font:900 .6em var(--f-ui);color:#fff;padding:.45em .9em;border-radius:.7em;border:2px solid #b48cff;background:linear-gradient(#3a1a6a,#1a0a30);box-shadow:0 0 .5em rgba(160,100,255,.5)}
 .rk_bp .bp2Bt span{font:800 .5em var(--f-ui);color:#d8c4ff;text-shadow:0 1px 2px #000}
 .rk_bp .rkMusB,.rk_bp .rkCodB,.rk_bp .rkAcB{display:none!important}.rk_bp .bp2Bk{font:900 1.2em var(--f-ui);color:#fff;background:rgba(20,8,40,.7);border:2px solid #b48cff;border-radius:.6em}`;document.head.appendChild(st)}
+
+/* ================= v460: MODO PORTAIS (artes do dono: ferramentas/portais) — libera 15/11 11:00 (PTREL)
+   PORTAIS IGUAIS PARA TODOS (horário calculado, sem servidor): procurando 5–10 min → ABERTOS 10 min (3 a 5 portais, rank E D C B A S).
+   Rank S é raro (≈ a cada 2–3 h). Cada portal: 1 entrada por jogador. Dentro: DUNGEON INFINITA (motor da Hidra, HY.pt):
+   salas com monstros (lobos/clones), a cada 5 salas um CHEFE (Hidra), cenários do dono em ordem. Morreu = fim; recorde e ranking (Caçadores).
+   O rank muda a força dos monstros e as TAXAS DE DROP das SOMBRAS (essência da sombra, por enquanto) e dos ITENS. ================= */
+const PTA={"tela": "a/e35504be17edd3.webp", "cartas": ["a/470a51e586a5dd.webp", "a/6f530734dd38f8.webp", "a/6462f87d6c12e3.webp", "a/8a612e71a3c949.webp", "a/a81e6275baa127.webp", "a/8dda3efa5b0c9d.webp"], "mapas": ["a/ef149a93778bcb.webp", "a/713b16631dae1c.webp", "a/54a2871f6d7001.webp", "a/2ae75b993cf511.webp", "a/4fa763c58c0c50.webp"]};
+const PTRK=[
+ {k:'E',w:36,m:.5,sh:6,it:2,gem:6,mo:150,c:'#cfd8ff',an:[55,35,10,0,0],eq:['comum','rara'],sj:0,pv:1},
+ {k:'D',w:27,m:.68,sh:8,it:3,gem:9,mo:250,c:'#7fb0ff',an:[35,40,20,5,0],eq:['rara','epica'],sj:0,pv:1.5},
+ {k:'C',w:18,m:.88,sh:11,it:4,gem:13,mo:400,c:'#5fe8ff',an:[15,35,35,13,2],eq:['epica','epica','lend'],sj:0,pv:2},
+ {k:'B',w:10,m:1.12,sh:14,it:5.5,gem:18,mo:600,c:'#4a7dff',an:[5,20,40,28,7],eq:['epica','lend'],sj:.2,pv:3},
+ {k:'A',w:6,m:1.45,sh:18,it:7,gem:25,mo:900,c:'#b06bff',an:[0,10,30,40,20],eq:['lend','mit'],sj:.5,pv:4},
+ {k:'S',w:3,m:1.95,sh:25,it:9,gem:35,mo:1400,c:'#ff3b4a',an:[0,0,20,40,40],eq:['mit','mit','sec'],sj:1.3,pv:6}];
+const PT0=PTREL,PTOPEN=6e5;
+const ptRnd=(i,s)=>{const x=Math.sin(i*127.1+s*311.7+13.37)*43758.5453;return x-Math.floor(x)};
+let PTC={i:0,t:PT0};
+/* fase agora: {st:'lock'|'busca'|'aberto', ini, fim, i, L:[portais]} */
+function ptNow(now){now=now||Date.now();if(now<PT0)return {st:'lock',fim:PT0};if(now<PTC.t){PTC={i:0,t:PT0}}
+  let {i,t}=PTC;for(let n=0;n<200000;n++){const s=(5+Math.floor(ptRnd(i,1)*6))*6e4;if(now<t+s)return {st:'busca',ini:t,fim:t+s,i};if(now<t+s+PTOPEN){PTC={i,t};return {st:'aberto',ini:t+s,fim:t+s+PTOPEN,i,L:ptList(i)}}t+=s+PTOPEN;i++;PTC={i,t}}return {st:'busca',fim:now+6e4,i}}
+function ptList(i){const n=3+Math.floor(ptRnd(i,2)*3),L=[];const T=PTRK.reduce((a,r)=>a+r.w,0);for(let j=0;j<n;j++){let q=ptRnd(i,10+j)*T,r=0;for(let k=0;k<PTRK.length;k++){if((q-=PTRK[k].w)<0){r=k;break}}L.push({id:i+'_'+j,r})}return L.sort((a,b)=>a.r-b.r)}
+const ptIn=()=>rkG('ptin',[]),ptLog=()=>rkG('ptlog',{runs:0,best:null,ess:0,gem:0,mo:0,po:0,eq:0,an:0,pot:0,sj:[],rec:[]});
+const ptTm=ms=>{ms=Math.max(0,ms);const m=Math.floor(ms/6e4),s=Math.floor(ms%6e4/1e3);return (m>=60?Math.floor(m/60)+'h '+String(m%60).padStart(2,'0'):m)+':'+String(s).padStart(2,'0')};
+/* ---------- tela ---------- */
+let PTS={sel:0};
+const PTSL=[[262,190,530,612],[545,190,813,612],[829,190,1091,612],[1105,190,1367,612],[1383,190,1650,612]];
+function ptRw(r){const R=PTRK[r],ring=ANC[r>=4?4:r>=3?3:r>=1?2:1];return [
+  [SJESS,'SOMBRAS',R.sh+'% por monstro (essência da sombra)'],[twIco('esp',R.eq[R.eq.length-1]),'ITENS',R.it+'% por monstro · até '+rkRarN(R.eq[R.eq.length-1])],
+  [bp2Ring(r>=4?4:r>=3?3:2,r>=5?6:r>=4?5:4,1),'ANÉIS','baú de cada sala · até '+ring[0]],[R.sj?RKSP.sjcap.img:RKSP.pvida.img,R.sj?'MONARCA':'POÇÕES',R.sj?R.sj+'% por baú: peça do Monarca':R.pv+'% por baú: poção nova']]}
+function ptH(){const N=ptNow(),L=N.L||[],IN=ptIn(),sel=L[PTS.sel]?PTS.sel:0,P=L[sel],R=P?PTRK[P.r]:null,lg=ptLog();
+  const slot=(b,j)=>{const p=L[j];return `<button class="ptSl${p?'':' vz'}${p&&j===sel?' on':''}${p&&IN.includes(p.id)?' ja':''}" data-a="ptSel" data-i="${j}" style="${rkB2(...b)};--c:${p?PTRK[p.r].c:'#555'}">${p?`<img src="${PTA.cartas[p.r]}" alt="">${IN.includes(p.id)?'<em>✔ JÁ ENTROU</em>':''}`:`<i>${N.st==='lock'?'🔒':'?'}</i>`}</button>`};
+  return `<button class="hs ptMn" data-a="ptHome" style="${rkB2(18,168,232,228)}"></button><button class="hs ptMn" data-a="ptHunt" style="${rkB2(18,243,232,303)}"></button><button class="hs ptMn" data-a="ptInv" style="${rkB2(18,318,232,378)}"></button><button class="hs ptMn lk" data-a="ptShop" style="${rkB2(18,393,232,453)}"><span>🔒</span></button><button class="hs ptMn" data-a="ptTab" style="${rkB2(6,468,244,528)}"></button>
+  <div class="ptCo" style="${rkB2(1036,22,1182,60)}">${rkFmtN(twLS.g('tw_moedas',0)|0)}</div><div class="ptCo" style="${rkB2(1272,22,1404,60)}">${rkFmtN(rkG('gem',0))}</div><div class="ptCo" style="${rkB2(1505,22,1648,60)}">${rkFmtN(rkG('tic',0))}</div>
+  ${PTSL.map(slot).join('')}
+  <div class="ptTm" id="ptTm" style="${rkB2(560,614,1360,646)}">${ptTmTx(N)}</div>
+  <div class="ptDf" style="${rkB2(632,714,792,752)}">${R?`<b style="color:${R.c}">RANK ${R.k}</b>`:'—'}</div>
+  <div class="ptDs" style="${rkB2(436,758,790,806)}">${R?`Monstros ×${R.m.toLocaleString('pt-BR')} · ${['Fácil','Normal','Médio','Difícil','Muito difícil','Extremo'][P.r]} · infinito, um chefe a cada 5 salas`:N.st==='lock'?'Os portais abrem às 11:00 (Brasília)':'Espere os portais aparecerem'}</div>
+  ${R?ptRw(P.r).map((x,i)=>`<button class="ptRw" data-a="ptRwI" data-i="${i}" style="${rkB2(1055+i*89,728,1129+i*89,806)}"><img src="${x[0]}" alt=""><small>${x[1]}</small></button>`).join(''):''}
+  <div class="ptRec" style="${rkB2(250,850,1200,905)}">${lg.best?`🏆 Seu recorde: <b>SALA ${lg.best.sala}</b> no RANK ${PTRK[lg.best.r].k} · ${rkFmtN(lg.best.pts)} pontos`:'Entre num portal e veja até que sala você chega!'}</div>
+  <button class="hs" data-a="ptBack" style="${rkB2(20,848,330,912)}"></button><button class="hs ptGo${P&&!IN.includes(P.id)?'':' off'}" data-a="ptGo" style="${rkB2(1225,845,1652,915)}"></button>`}
+function ptTmTx(N){const now=Date.now();if(N.st==='lock')return '🔒 OS PORTAIS ABREM EM <b>'+ptTm(N.fim-now)+'</b>';if(N.st==='busca')return '🔎 PROCURANDO PORTAIS... aparecem em <b>'+ptTm(N.fim-now)+'</b>';return '🌀 PORTAIS ABERTOS · fecham em <b>'+ptTm(N.fim-now)+'</b>'+(N.L.some(p=>p.r===5)?' · <b style="color:#ff5a6a">⚠ PORTAL RANK S!</b>':'')}
+let PTLST='';
+function ptOn(){clearInterval(rkView.iv);const N0=ptNow();PTLST=N0.st+N0.i;rkView.iv=setInterval(()=>{if(RKV!=='pt'){clearInterval(rkView.iv);return}const N=ptNow();if(N.st+N.i!==PTLST){PTLST=N.st+N.i;PTS.sel=0;return rkView('pt')}const e=document.getElementById('ptTm');if(e)e.innerHTML=ptTmTx(N)},1000)}
+{const _rv=rkView;rkView=function(v){if(v!=='pt')return _rv.apply(this,arguments);RKV=v;const W=$('rkWrap');if(!W)return;clearInterval(rkView.iv);rkModal(null);
+  W.innerHTML=`<div class="rkA rk_pt" data-w="1672" data-h="941" data-full="1" style="background-image:url(${PTA.tela})">${ptH()}<div id="rkToast"></div></div>`;rkFit();W.querySelectorAll('[data-a]').forEach(b=>b.onclick=e=>{e.stopPropagation();rkAct(b.dataset.a,b)});ptOn()}}
+{const _a=rkAct;rkAct=function(a,b){
+  if(a==='portais'){if(Date.now()<PTREL){rkSfx('clang');return rkToast('🔒 O modo PORTAIS abre hoje (15/11) às 11:00 (Brasília)!','#c79bff')}rkSfx('whoosh');PTS.sel=0;return rkView('pt')}
+  if(a==='ptSel'){const N=ptNow(),i=+b.dataset.i;if(!(N.L||[])[i])return;PTS.sel=i;rkSfx('whoosh');return rkView('pt')}
+  if(a==='ptHome'||a==='ptBack')return rkView('menu');if(a==='ptTab')return;
+  if(a==='ptShop'){rkSfx('clang');return rkToast('🔒 LOJA DOS PORTAIS · em breve!','#c79bff')}
+  if(a==='ptRwI'){const N=ptNow(),P=(N.L||[])[PTS.sel];if(!P)return;const x=ptRw(P.r)[+b.dataset.i];return rkToast(x[1]+': '+x[2],PTRK[P.r].c)}
+  if(a==='ptHunt')return ptRank();if(a==='ptInv')return ptInvM();
+  if(a==='ptGo'){const N=ptNow(),P=(N.L||[])[PTS.sel];if(!P){rkSfx('clang');return rkToast(N.st==='lock'?'🔒 Ainda não abriu':'🔎 Nenhum portal aberto agora — espere a contagem','#c79bff')}
+    if(ptIn().includes(P.id)){rkSfx('clang');return rkToast('Você já entrou nesse portal. Espere os próximos!','#c79bff')}
+    const L=ptIn();L.push(P.id);rkS('ptin',L.slice(-40));return ptStart(P)}
+  return _a.apply(this,arguments)}}
+/* ---------- cenários ---------- */
+const PTK=['pt1','pt2','pt3','pt4','pt5'];
+try{PTK.forEach((k,i)=>{STG[k]=Object.assign({},STG.flo,{name:['TERRAS GELADAS','FORTALEZA DE GELO','CAVERNA DE CRISTAL','ABISMO CONGELADO','TRONO DO MONARCA DE GELO'][i],src:PTA.mapas[i],src0:PTA.mapas[i],dn:0,hid:1,_ld:null,img:new Image(),far:null,near:null});try{LT[k]=LT.gelo||LT.flo}catch(e){}})}catch(e){}
+function ptStg(k){const S=STG[k];const go=()=>{try{setStage(k)}catch(e){}};if(S&&S.img&&S.img.naturalWidth)go();else stageLoad(k).then(go);const i=PTK.indexOf(k);stageLoad(PTK[(i+1)%5])}
+/* ---------- começar ---------- */
+let PTR=null;
+function ptStart(P){rkInit();if(!SPR_OK)return;const sel=rkG('sel','goku');fsTry();
+  CA={on:1};HY={on:1,pt:1,st:0,lv:0,kills:0,mobs:[],dead:[],items:[],gate:0,spawnT:60,loot:{gem:0,jn:0,po:0,cr:[0,0,0,0,0],an:[]},chests:0,t0:Date.now(),busy:0};
+  PTR={r:P.r,id:P.id,room:1,pts:0,kills:0,loot:{ess:0,gem:0,mo:0,po:0,eq:[],an:[],pot:0,sj:[]}};
+  G.pick=sel;G.opp='goku';G.gmode='caca';RKB.diff0=G.diff;G.diff=3;G.nextStg='pt1';bsPre();try{for(const k in HYR)if(Array.isArray(HYR[k])&&k!=='mapas')for(const q of HYR[k])bsImg(q[0])}catch(e){}
+  const PM=Promise.all([prepMatch([G.pick,G.opp],'pt1'),stageLoad('pt2')]);showVS(()=>PM.then(()=>{vsLoadEnd();startMatch()}),PM)}
+{const _sv=showVS;showVS=function(cb,PM){const r=_sv.apply(this,arguments);if(HY.on&&HY.pt&&PTR){try{$('vs2').src=PTA.cartas[PTR.r];$('vsn2').textContent='PORTAL RANK '+PTRK[PTR.r].k}catch(e){}}return r}}
+{const _rg=rkBossGo;rkBossGo=function(){const r=_rg.apply(this,arguments);if(HY.on&&HY.pt&&PTR){const R=PTRK[PTR.r];banner('PORTAL RANK '+R.k,R.c,120,'SALA 1 · '+STG.pt1.name+' · mate os monstros')}return r}}
+/* sala: o que nasce */
+function ptRoom(n){if(n%5===0)return {boss:1,lv:Math.min(HYMAX,n/5),need:1,cap:0,sp:9999,k:['lobo']};return {need:Math.min(22,5+Math.floor(n*.9)),cap:Math.min(6,2+Math.floor(n/3)),sp:Math.max(32,72-n*3),k:n<=3?['lobo']:n<=8?['lobo','lobo','clone']:['clone','lobo','clone']}}
+/* força: rank × sala */
+{const _hs=hySetup;hySetup=function(f,kind,lv){const r=_hs.apply(this,arguments);if(HY.on&&HY.pt&&PTR){const R=PTRK[PTR.r],n=PTR.room,ka=R.m*(1+.11*(n-1)),kh=Math.sqrt(R.m)*(1+.07*(n-1))*(kind==='hidra'?.6:1);
+  f.hyAtk*=ka;f.hyDef*=Math.sqrt(R.m)*(1+.05*(n-1));f.mhp=Math.max(LAYER*.6,Math.round(f.mhp*kh/ (LAYER/10))*(LAYER/10));f.tdm=Math.pow(f.hyAtk/150,.3);f.bDf=1/(1+f.hyDef/900);f.tdf=f.bDf;f.hp=f.hpLag=f.mhp;
+  if(kind==='hidra')f.def=Object.assign({},f.def,{name:'CHEFE DO PORTAL · SALA '+n,cn:'RANK '+R.k})}return r}}
+hyNeed=(function(_n){return function(){if(HY.pt&&PTR)return ptRoom(PTR.room).need;return _n.apply(this,arguments)}})(hyNeed);
+/* a cada quadro */
+{const _t=hyTick;hyTick=function(){if(!HY.pt)return _t.apply(this,arguments);if(!HY.on||!G.p||G.mode!=='fight')return;const p=G.p[0];if(G.timer<60)G.timer=99;try{hyItemsTick(p)}catch(e){}
+  if(HY.gate&&p.x>WW-170&&G.phase==='fight')hyNext();if(HY.gate){const I=p.inp||{};if(I.right&&!I.left)HY.dir=1;else if(I.left&&!I.right)HY.dir=-1}
+  for(const d of HY.dead){d.hyDT=(d.hyDT||0)+1;try{bsStep(d,p)}catch(e){}}HY.dead=HY.dead.filter(d=>d.hyDT<70);
+  if(G.phase!=='fight'||G.paused||HY.busy)return;for(const m of HY.mobs){if(m.ko)continue;try{updFighter(m,p)}catch(e){}}try{hyHitMobs(p)}catch(e){}
+  const Rm=ptRoom(PTR.room);if(!HY.gate&&!Rm.boss){const alive=HY.mobs.filter(m=>!m.ko).length,left=Rm.need-HY.kills-1-alive;if(alive<Rm.cap&&left>0&&--HY.spawnT<=0){ptSpawn(Rm);HY.spawnT=Rm.sp}}}}
+function ptSpawn(Rm){const p=G.p[0],side=Math.random()<.5?-1:1;let x=p.x+side*(520+Math.random()*200);if(x<120||x>WW-120)x=p.x-side*(520+Math.random()*200);x=clamp(x,100,WW-100);
+  const m=hyMk(Rm.k[(Math.random()*Rm.k.length)|0],x);m.facing=m.x<p.x?1:-1;m.inv=30;HY.mobs.push(m);try{ring(m.x,m.y-120,PTRK[PTR.r].c,140,16,5);dust(m.x,FLOOR,12)}catch(e){}}
+/* matou: pontos + drops de SOMBRA e ITEM pela taxa do rank */
+{const _k=hyKill;hyKill=function(d){if(HY.pt&&PTR){const R=PTRK[PTR.r];PTR.kills++;PTR.pts+=(5+PTR.r*3)*(d.hyK==='hidra'?20:1)+PTR.room;const b=d.hyK==='hidra'?4:1,lk=(()=>{try{return Math.min(2,lvLuck())}catch(e){return 1}})();
+    if(Math.random()*100<R.sh*b*lk)hyDrop('ess',d.x,{n:(1+PTR.r)*(1+((Math.random()*3)|0))*(d.hyK==='hidra'?3:1)},rand(-4,4),-10);
+    if(Math.random()*100<R.it*b*lk){const r=R.eq[(Math.random()*R.eq.length)|0];hyDrop('eq',d.x,{E:TWEQ[(Math.random()*TWEQ.length)|0],r},rand(-4,4),-12)}}return _k.apply(this,arguments)}}
+/* sala limpa → baú + seguir; chefe a cada 5 */
+{const _c=hyClear;hyClear=function(){if(!HY.pt||!PTR)return _c.apply(this,arguments);if(HY.gate||HY.busy)return;const p=G.p[0],n=PTR.room,bs=n%5===0;PTR.pts+=40*(PTR.r+1)*(bs?3:1);
+  banner(bs?'CHEFE DERROTADO!':'SALA '+n+' LIMPA!','#ffd84a',90,'🎁 BAÚ NO CHÃO · ➡ SIGA PARA A SALA '+(n+1));hyDrop('bau',clamp(p.x+220,160,WW-260),{tier:Math.min(6,PTR.r+(bs?2:0))});
+  for(const m of HY.mobs){m.ko=true;HY.dead.push(m)}HY.mobs=[];const o=G.p[1];o.hyIdle=1;o.inv=99999;o.def=Object.assign({},o.def,{name:'➡ SALA '+(n+1)});HY.gate=1}}
+{const _n=hyNext;hyNext=function(){if(!HY.pt||!PTR)return _n.apply(this,arguments);const p=G.p[0];hyCollectAll();HY.gate=0;HY.busy=1;HY.kills=0;
+  hyFade(()=>{HY.busy=0;PTR.room++;HY.kills=0;HY.spawnT=40;HY.items=[];const n=PTR.room,Rm=ptRoom(n),k=PTK[(n-1)%5];ptStg(k);p.x=180;p.y=FLOOR;p.vx=0;p.facing=1;const R=PTRK[PTR.r];
+    if(Rm.boss){HY.lv=Rm.lv;G.p[1]=hyMk('hidra',900,Rm.lv);G.p[1].bEye=60;banner('CHEFE DO PORTAL!','#ff4dff',130,'SALA '+n+' · RANK '+R.k);G.shake=24;try{SFX.boom()}catch(e){}}
+    else{G.p[1]=hyMk(Rm.k[0],720);banner('SALA '+n,R.c,90,STG[k].name+' · '+Rm.need+' monstros')}},300)}}
+/* baú do portal */
+HYIC.ess=()=>SJESS;HYIC.mo=()=>RQA.coin[2];HYIC.eq=o=>twIco(o.E.k,o.r);HYIC.sjp=o=>RKSP[o.s].img;HYIC.pot=o=>RKSP[o.s].img;
+Object.assign(HYGL,{ess:'#9a7bff',mo:'#ffd84a',eq:'#ffffff',sjp:'#b48cff',pot:'#ff8aa0'});
+{const _co=hyChestOpen;hyChestOpen=function(tier,at,ng){if(!HY.pt||!PTR)return _co.apply(this,arguments);const R=PTRK[PTR.r],n=PTR.room,it=[],T=[];const add=(k,o,tx)=>{T.push(tx);if(at!=null)it.push(Object.assign({k},o));else hyGrant(Object.assign({k},o))};
+  const g=R.gem+Math.floor(n/3);add('gem',{n:g},'💎 +'+g);const mo=Math.round(R.mo*(1+n*.08));add('mo',{n:mo},'🪙 +'+rkFmtN(mo));const po=60+PTR.r*40+n*10;add('po',{n:po},'🟣 +'+po);
+  if(Math.random()*100<R.sh*3){const e=(2+PTR.r*2)*(1+((Math.random()*3)|0));add('ess',{n:e},'🌑 +'+e)}
+  {let q=Math.random()*100,c=0;for(let i=0;i<5;i++){if((q-=R.an[i])<0){c=i;break}}const r=anRoll(c,Math.min(10,3+PTR.r+Math.floor(n/5)));if(c===4){r.a=hyRedAge();r.hy=1}add('an',{r},'💍 '+ANC[c][0])}
+  if(Math.random()*100<R.it*3){const r=R.eq[(Math.random()*R.eq.length)|0];add('eq',{E:TWEQ[(Math.random()*TWEQ.length)|0],r},'⚔️ '+rkRarN(r))}
+  if(Math.random()*100<R.pv*(n%5===0?2:1)){const s=Math.random()<.5?'pvida':'psomb';add('pot',{s},'🧪 '+RKSP[s].nm)}
+  if(R.sj&&Math.random()*100<R.sj*(n%5===0?2:1)){const L=sjSecLeft();if(L.length){const s=L[(Math.random()*L.length)|0];add('sjp',{s},'✦ '+RKSP[s].nm)}}
+  HY.chests++;hyBox(T);if(at!=null)it.forEach((o,i)=>{const a=(i/it.length)*Math.PI-Math.PI;hyDrop(o.k,at,o,Math.cos(a)*(6+Math.random()*5),-12-Math.random()*6)});return T}}
+{const _gr=hyGrant;hyGrant=function(it){if(!['ess','mo','eq','sjp','pot'].includes(it.k))return _gr.apply(this,arguments);const p=G.p&&G.p[0],L=PTR?PTR.loot:{eq:[],sj:[]};let tx='',c=HYGL[it.k];
+  if(it.k==='ess'){rkS('sje',(rkG('sje',0)|0)+it.n);L.ess+=it.n;tx='🌑 +'+it.n+' ESSÊNCIA DA SOMBRA'}
+  else if(it.k==='mo'){try{twAddCoins(it.n)}catch(e){twLS.s('tw_moedas',(twLS.g('tw_moedas',0)|0)+it.n)}L.mo+=it.n;tx='🪙 +'+rkFmtN(it.n)}
+  else if(it.k==='eq'){const RR=TWEQR.find(q=>q.k===it.r)||TWEQR[0];twAddItem(it.E,RR);L.eq.push(it.r);tx='⚔️ '+it.E.n+' '+RR.n;c=RR.c}
+  else if(it.k==='pot'){sjAddPot(it.s,1);L.pot++;tx='🧪 '+RKSP[it.s].nm}
+  else if(it.k==='sjp'){if(sjSecLeft().includes(it.s)){rkGiveSp(it.s);L.sj.push(it.s);tx='✦ '+RKSP[it.s].nm;try{banner('✦ '+RKSP[it.s].nm+' ✦','#b48cff',120,'peça do MONARCA!');SFX.boom()}catch(e){}}else{rkAdd('gem',300);tx='💎 +300'}}
+  if(it.k!=='sjp'&&PTR&&it.k==='eq'&&['mit','sec'].includes(it.r))try{banner('⚔️ ITEM '+rkRarN(it.r)+'!','#ffd84a',80,it.E.n)}catch(e){}
+  if(p&&tx&&HY.on)try{txt(p.x,p.y-300,tx,c);rkSfx('powerUp')}catch(e){}}}
+{const _hg=hyGrant;hyGrant=function(it){const r=_hg.apply(this,arguments);try{if(PTR&&HY.pt){if(it.k==='gem')PTR.loot.gem+=it.n;if(it.k==='po')PTR.loot.po+=it.n;if(it.k==='an')PTR.loot.an.push(it.r)}}catch(e){}return r}}
+/* ---------- fim: morreu → resultado, recorde, ranking, inventário ---------- */
+{const _e=hyEnd;hyEnd=function(won){if(!HY.pt||!PTR)return _e.apply(this,arguments);hyCollectAll();const R=PTRK[PTR.r],X=PTR,secs=Math.round((Date.now()-HY.t0)/1000);
+  G.mode='ranked';$('controls').hidden=true;$('pauseBtn').hidden=true;try{$('pcHud').hidden=true}catch(e){}try{rainSound(0)}catch(e){}G.paused=false;G.diff=RKB.diff0;G.gmode='pve';CA.on=0;HY.on=0;HY.pt=0;HY.mobs=[];HY.dead=[];
+  const sala=X.room,L=X.loot,lg=ptLog();lg.runs++;lg.ess+=L.ess;lg.gem+=L.gem;lg.mo+=L.mo;lg.po+=L.po;lg.eq+=L.eq.length;lg.an+=L.an.length;lg.pot+=L.pot;lg.sj=lg.sj.concat(L.sj);
+  const nb=!lg.best||X.pts>lg.best.pts;if(nb)lg.best={sala,pts:X.pts,r:X.r};lg.rec.unshift({d:Date.now(),r:X.r,sala,pts:X.pts,k:X.kills,ess:L.ess,eq:L.eq.length,an:L.an.length,sj:L.sj.length,pot:L.pot});lg.rec=lg.rec.slice(0,30);rkS('ptlog',lg);try{acSave(1)}catch(e){}
+  if(nb)ptPost(lg.best);PTR=null;
+  rkOpen('pt');setTimeout(()=>{const M=document.createElement('div');M.id='lvrzM';document.body.appendChild(M);
+    M.innerHTML=`<div class="twM ptEnd" style="--c:${R.c}"><h3>🌀 PORTAL RANK ${R.k} · VOCÊ CAIU NA SALA ${sala}</h3><p class="twH">${X.kills} monstros · ${Math.floor(secs/60)}min ${secs%60}s · <b>${rkFmtN(X.pts)} pontos</b>${nb?' · 🏆 NOVO RECORDE!':''}</p>
+    <p class="twH">🌑 ${L.ess} essência da sombra · 💎 ${L.gem} · 🪙 ${rkFmtN(L.mo)} · 🟣 ${L.po} pó · ⚔️ ${L.eq.length} itens · 💍 ${L.an.length} anéis${L.pot?' · 🧪 '+L.pot+' poções':''}${L.sj.length?' · ✦ '+L.sj.map(k=>RKSP[k].nm).join(', '):''}</p>
+    <div class="row"><button class="btn main" id="ptX">OK</button></div></div>`;M.querySelector('#ptX').onclick=()=>M.remove()},900)}}
+/* ---------- CAÇADORES (ranking online) ---------- */
+async function ptPost(b){try{const IV=v=>({integerValue:String(v|0)}),SV=v=>({stringValue:String(v)});const id='ptr_'+String(twUid()).replace(/[^\w-]/g,'').slice(0,40)+'_'+Date.now().toString(36);
+  await twFetchT(TWURL+'/torre?documentId='+id+'&key='+TWFB.apiKey,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({fields:{ptp:IV(b.pts),pts:IV(b.sala),ptr:IV(b.r),uid:SV(twUid()),nome:SV(String(twLS.g('tw_nome','')||'?').slice(0,16)),char:SV(rkG('sel','goku'))}})})}catch(e){}}
+async function ptRank(){rkModal(`<div class="twM ptRk"><h3>👥 CAÇADORES · RANKING DOS PORTAIS</h3><p class="twH">Carregando...</p><div class="row"><button class="btn" id="rkMX">FECHAR</button></div></div>`);$('rkMX').onclick=()=>rkModal(null);
+  let L=[];try{const body={structuredQuery:{from:[{collectionId:'torre'}],orderBy:[{field:{fieldPath:'ptp'},direction:'DESCENDING'}],limit:300}};const r=await twFetchT(TWURL+':runQuery?key='+TWFB.apiKey,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});const j=await r.json(),M={};
+    for(const x of (Array.isArray(j)?j:[])){const F=x&&x.document&&x.document.fields;if(!F||!F.ptp)continue;const e={};for(const k in F){const v=F[k];e[k]=v.stringValue!=null?v.stringValue:v.integerValue!=null?+v.integerValue:v.doubleValue}const k=e.uid||e.nome;if(!M[k]||M[k].ptp<e.ptp)M[k]=e}L=Object.values(M).sort((a,b)=>b.ptp-a.ptp).slice(0,50)}catch(e){}
+  if(RKV!=='pt')return;const me=twUid();rkModal(`<div class="twM ptRk"><h3>👥 CAÇADORES · RANKING DOS PORTAIS</h3><p class="twH">O melhor resultado de cada caçador (pontos = monstros + salas, mais no rank alto).</p>
+   <div class="ptRkL">${L.length?L.map((e,i)=>`<div class="${e.uid===me?'me':''}"><b>${i<3?['🥇','🥈','🥉'][i]:i+1+'º'}</b><img src="${IMG[e.char]?IMG[e.char].src:''}" alt=""><span>${twEsc(e.nome||'?')}</span><em style="color:${(PTRK[e.ptr|0]||PTRK[0]).c}">RANK ${(PTRK[e.ptr|0]||PTRK[0]).k} · SALA ${e.pts|0}</em><i>${rkFmtN(e.ptp|0)}</i></div>`).join(''):'<p class="twH">Ninguém no ranking ainda. Seja o primeiro!</p>'}</div>
+   <div class="row"><button class="btn" id="rkMX">FECHAR</button></div></div>`);$('rkMX').onclick=()=>rkModal(null)}
+/* ---------- INVENTÁRIO (tudo que pegou nos portais) ---------- */
+function ptInvM(){const g=ptLog();rkModal(`<div class="twM ptInv"><h3>🎒 INVENTÁRIO DOS PORTAIS</h3><p class="twH">Tudo que você pegou nos portais (${g.runs} entrada${g.runs===1?'':'s'}).</p>
+  <div class="ptInvG">${[[SJESS,'ESSÊNCIA DA SOMBRA',g.ess],[RQA.coin[0],'DIAMANTES',g.gem],[RQA.coin[2],'MOEDAS',g.mo],[RQA.lvi.po[2],'PÓ',g.po],[twIco('esp','lend'),'ITENS',g.eq],[bp2Ring(4,5,1),'ANÉIS',g.an],[RKSP.pvida.img,'POÇÕES',g.pot],[RKSP.sjcap.img,'PEÇAS DO MONARCA',g.sj.length]].map(([im,n,v])=>`<div><img src="${im}" alt=""><b>${rkFmtN(v|0)}</b><small>${n}</small></div>`).join('')}</div>
+  ${g.sj.length?`<p class="twH">✦ ${g.sj.map(k=>RKSP[k].nm).join(' · ')}</p>`:''}
+  <h4 class="ptH4">ÚLTIMAS ENTRADAS</h4><div class="ptRec2">${g.rec.length?g.rec.map(e=>`<div><b style="color:${PTRK[e.r].c}">RANK ${PTRK[e.r].k}</b><span>sala ${e.sala} · ${rkFmtN(e.pts)} pts · 🌑 ${e.ess} · ⚔️ ${e.eq} · 💍 ${e.an}${e.sj?' · ✦ '+e.sj:''}</span><small>${new Date(e.d).toLocaleString('pt-BR').slice(0,17)}</small></div>`).join(''):'<p class="twH">Nenhuma ainda.</p>'}</div>
+  <div class="row"><button class="btn" id="rkMX">FECHAR</button></div></div>`);$('rkMX').onclick=()=>rkModal(null)}
+{const st=document.createElement('style');st.textContent=`
+.rk_pt .ptMn.lk span{position:absolute;right:6%;top:50%;transform:translateY(-50%);font-size:1.2em}
+.rk_pt .ptCo{display:flex;align-items:center;justify-content:flex-end;padding-right:.4em;font:900 1.15em var(--f-ui);color:#fff;text-shadow:0 1px 2px #000}
+.rk_pt .ptSl{position:absolute;display:flex;align-items:center;justify-content:center;background:transparent;border:0;padding:0;cursor:pointer}
+.rk_pt .ptSl img{height:96%;max-width:96%;object-fit:contain;border-radius:.4em;transition:transform .2s}
+.rk_pt .ptSl.on img{transform:scale(1.04);filter:drop-shadow(0 0 .5em var(--c)) drop-shadow(0 0 1.2em var(--c));animation:ptPul 1.4s ease-in-out infinite}
+@keyframes ptPul{0%,100%{filter:drop-shadow(0 0 .4em var(--c)) drop-shadow(0 0 1em var(--c))}50%{filter:drop-shadow(0 0 .8em var(--c)) drop-shadow(0 0 1.8em var(--c))}}
+.rk_pt .ptSl.ja img{filter:grayscale(.85) brightness(.55)}.rk_pt .ptSl em{position:absolute;bottom:12%;font:900 .95em var(--f-ui);font-style:normal;color:#7dff9a;background:rgba(0,0,0,.7);padding:.2em .6em;border-radius:.5em}
+.rk_pt .ptSl.vz i{font:900 3.6em var(--f-ui);font-style:normal;color:rgba(200,170,255,.25);animation:ptQ 2s ease-in-out infinite}@keyframes ptQ{50%{color:rgba(200,170,255,.55)}}
+.rk_pt .ptTm{display:flex;align-items:center;justify-content:center;font:800 1.05em var(--f-ui);color:#e8dcff;text-shadow:0 1px 3px #000;gap:.3em}.rk_pt .ptTm b{color:#fff}
+.rk_pt .ptDf{display:flex;align-items:center;padding-left:.3em;font:900 1.2em var(--f-ui)}.rk_pt .ptDs{font:700 .82em var(--f-ui);color:#d8c4ff;padding:.4em .5em;line-height:1.25}
+.rk_pt .ptRw{position:absolute;background:transparent;border:0;padding:0;display:flex;flex-direction:column;align-items:center;justify-content:center}.rk_pt .ptRw img{width:72%;height:62%;object-fit:contain}.rk_pt .ptRw small{font:800 .62em var(--f-ui);color:#fff;text-shadow:0 1px 2px #000}
+.rk_pt .ptRec{display:flex;align-items:center;justify-content:center;font:700 .9em var(--f-ui);color:#d8c4ff;text-shadow:0 1px 2px #000}.rk_pt .ptRec b{color:#fff}
+.rk_pt .ptGo.off{filter:grayscale(1) brightness(.6)}.rk_pt .ptGo:not(.off){animation:ptGoG 1.2s ease-in-out infinite;border-radius:1em}@keyframes ptGoG{50%{box-shadow:0 0 1.2em #b06bff,inset 0 0 1em rgba(176,107,255,.4)}}
+.ptRkL{max-height:55vh;overflow:auto;display:flex;flex-direction:column;gap:4px}.ptRkL>div{display:grid;grid-template-columns:2.4em 2.2em 1fr auto auto;align-items:center;gap:8px;padding:4px 8px;border-radius:10px;background:rgba(255,255,255,.05)}.ptRkL>div.me{background:rgba(176,107,255,.25)}
+.ptRkL img{width:2em;height:2em;border-radius:50%;object-fit:cover;object-position:top}.ptRkL em{font-style:normal;font-size:.8em}.ptRkL i{font-style:normal;font-weight:900;color:#ffd84a}
+.ptInvG{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:8px 0}.ptInvG>div{display:flex;flex-direction:column;align-items:center;background:rgba(255,255,255,.05);border-radius:10px;padding:6px}.ptInvG img{width:3em;height:3em;object-fit:contain}.ptInvG b{font-size:1.1em}.ptInvG small{font-size:.7em;color:#cbb8ee}
+.ptH4{margin:6px 0 4px;color:#d8c4ff}.ptRec2{max-height:28vh;overflow:auto;display:flex;flex-direction:column;gap:3px}.ptRec2>div{display:grid;grid-template-columns:auto 1fr auto;gap:8px;font-size:.85em;padding:3px 6px;border-radius:8px;background:rgba(255,255,255,.04)}.ptRec2 small{color:#a99cc8}
+.twM.ptEnd{border-color:var(--c)!important;box-shadow:0 0 30px var(--c)}`;document.head.appendChild(st)}
+try{window.__pt={now:ptNow,list:ptList,start:ptStart,R:()=>PTR,HY:()=>HY,log:ptLog,next:()=>hyNext(),clear:()=>hyClear()}}catch(e){} /* ganchos de teste dos portais */
