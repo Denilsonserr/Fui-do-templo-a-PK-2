@@ -6042,3 +6042,18 @@ TWCUP['18cu6rr']={nm:'TODOS OS ANÉIS DOURADOS SP + 50.000 JOIAS (ADM)',acc:1,ad
 (function(){try{if(rkG('rws2',0))return;rkS('rws2',1);rkS('rwc2',[]);rkS('rwc',[])}catch(e){}})();
 {const _o=rkOpen;rkOpen=function(){const r=_o.apply(this,arguments);setTimeout(()=>{try{if(rkRwPend()&&G.mode!=='fight'){const n=(()=>{const c=rkG('rwc2',[]),ri=rkRank(rkG('rp',0));let k=0;for(let i=1;i<=ri;i++)if(!c.includes(i))k++;return k})();rkToast('🎁 Você tem '+n+' recompensa'+(n>1?'s':'')+' de RANK para pegar! Toque em RECOMPENSAS','#ffd84a')}}catch(e){}},4200);return r}}
 window.__rw={open:()=>rkRewards(),claim:i=>rkRwClaim(i)};
+
+/* ================= v484: CONTA EM 2 APARELHOS (bug de duplicar gemas: PC e celular abertos ao mesmo tempo)
+   O botão "MANTER ESTE APARELHO" deixava o aparelho atrasado gravar por cima da conta (gemas já gastas no outro voltavam).
+   Agora: se a conta tem um salvamento mais novo de outro aparelho, este aparelho NÃO salva e carrega o da conta (sem opção de manter).
+   Além disso confere a cada 60 s (antes era só na hora de salvar), e salva logo depois de gastar gemas/tickets. ================= */
+acConfM=function(x){const A=acRes(x.d),ln=r=>r?`🏅 ${RKR[r.ri].n} · 💎 ${rkFmtN(r.gem)} · 👤 ${r.own} personagens`:'?';
+  try{G.paused=true}catch(e){}
+  acM(`<div class="twM sm"><h3>⚠️ CONTA USADA EM OUTRO APARELHO</h3><p class="twH">A conta <b>${twEsc(localStorage.getItem('ac_n')||'')}</b> foi salva em outro aparelho (${acT(x.ts)}). Para ninguém perder nem duplicar nada, este aparelho vai carregar o progresso da conta.</p>
+    <p class="twH ok"><b>NA CONTA:</b> ${ln(A)}</p><p class="twH">Dica: jogue em um aparelho por vez. Ao trocar, feche o jogo no outro.</p>
+    <div class="row"><button class="btn main" id="acCL">CARREGAR (<span id="acCd">5</span>)</button></div></div>`);
+  const go=()=>{try{const D=JSON.parse(x.d);for(const kk of Object.keys(localStorage))if(/^(tw_|rk_)/.test(kk))localStorage.removeItem(kk);for(const kk in D)localStorage.setItem(kk,D[kk]);localStorage.setItem('ac_h',twHash(acData()));localStorage.setItem('ac_t',String(x.ts));acConf=null;acM(null);setTimeout(()=>location.reload(),300)}catch(e){}};
+  const b=document.getElementById('acCL');if(b)b.onclick=go;let n=5;const iv=setInterval(()=>{n--;const c=document.getElementById('acCd');if(c)c.textContent=n;if(n<=0){clearInterval(iv);go()}},1000)};
+setInterval(async()=>{try{if(acConf||document.hidden||!localStorage.getItem('ac_k'))return;const x=await acNewer();if(x){acConf=x;acConfM(x)}}catch(e){}},60000);
+{let last=null;setInterval(()=>{try{if(!localStorage.getItem('ac_k'))return;const g=rkG('gem',0)|0,t=rkG('tic',0)|0;if(last&&(g<last[0]||t<last[1])&&!acConf){localStorage.removeItem('ac_h');acSave(1)}last=[g,t]}catch(e){}},4000)}
+window.__ac={save:f=>acSave(f),add:(k,n)=>rkAdd(k,n)};

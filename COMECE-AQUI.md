@@ -172,3 +172,4 @@ Este arquivo tem duas partes: a **Parte 1** é para o dono (Denilson) e a **Part
 - v481: 3º código do PASSE 2X (hash edzhx5, texto só com o dono).
 - v482: código ADM (hash 18cu6rr, texto só com o dono): 6 anéis DOURADOS SP (1 de cada atributo, 10 milhões de anos, passivas esq/cmb/vamp/fur) + 50.000 joias negras (rk_ps.jn).
 - v483: recompensas de RANK por temporada: a lista do que já foi pego (rwc2/rwc) era da T1 e travava a T2 → zera 1× (rk_rws2); aviso ao abrir o menu se tem prêmio de rank pendente. Teste: trank_rw_v483.js.
+- v484: CONTA EM 2 APARELHOS (duplicava gemas): sem botão 'MANTER ESTE APARELHO' — se a conta tem save mais novo, este aparelho não salva e carrega o da conta (contagem de 5 s). Confere a cada 60 s e salva logo após gastar gemas/tickets. Teste: tconta2_v484.js.
