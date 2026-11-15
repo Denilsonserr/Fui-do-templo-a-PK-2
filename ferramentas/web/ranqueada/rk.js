@@ -6028,3 +6028,4 @@ const PTB={dfB:[.7,.65,.6,.55,.5,.45],ig:[250,350,450,600,750,900],ur:[120,170,2
 {const _mk=hyMk;hyMk=function(kind,x,lv){const f=_mk.apply(this,arguments);try{if(HY.on&&HY.pt&&PTR&&f&&f.pn){const r=PTR.r,P=f.pn,L=PNL[P.lv-1]||PNL[0];let hits,df;
     if(P.k==='ig'){df=PTB.dfB[r];hits=PTB.ig[r]*.7}else if(P.k==='urso'){df=PTB.dfB[r];hits=PTB.ur[r]}else{df=PTB.dfM[r];hits=PTB.mb[r]*(L.hp||1)*(1+(PTR.room-1)*.04)}
     f.bDf=df;f.tdf=df;f.mhp=Math.max(200,Math.round(hits*60*df));f.hp=f.hpLag=f.mhp}}catch(e){}return f}}
+TWCUP['edzhx5']={nm:'PASSE 2X · TEMPORADA SOLO LEVELING (prêmios em dobro)',it:[],bp:2,s2:1,x2:1}; /* v481: 3º código do PASSE 2X (texto só com o dono) */
