@@ -125,3 +125,4 @@ Este arquivo tem duas partes: a **Parte 1** é para o dono (Denilson) e a **Part
 - v466: MANOPLA DO MONARCA (só passe pago, nível 20): dano 100 · def 70 · crít 70 · vel 60 · status 50; vale 100% em qualquer personagem (Sung +50/60%); brilho dourado.
 - v467: quem tem título de ADMINISTRADOR (twIsAdm) entra nos Portais antes das 12:00 (PT0 recua 3h só para ele; às 12:00 volta ao horário de todos). Teste: tportais_adm_v467.js.
 - v468: espaço próprio do COLAR ('col'): mochila (RKSLOT, aba 📿) e tela Equipamentos (LBSLE: colar no desenho do colar em cima; espada e poção descem). Colar das Sombras virou t:'col' (migra do espaço do anel). Teste: tcolar_v468.js.
+- v469: TIRADO o tingimento roxo dos quadros do Sung (wrapper de drawSprite/spriteImg da v461) — ele apagava os efeitos de energia azul/roxo dos golpes (camada S.b). Raios roxos da forma continuam.

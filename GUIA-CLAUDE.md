@@ -2266,4 +2266,4 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - **Drops por rank** (`PTRK`): SOMBRA = essência da sombra (`sh`% por monstro, ×4 chefe; também no baú) — quando o dono mandar a sombra nova, trocar aqui; ITEM = equipamento (`it`% por monstro, raridades `eq`); baú de cada sala: 💎, moedas de ouro, pó, anel (cores `an`), poção nova (`pv`%), peça do Monarca (`sj`% só B/A/S).
 - Fim (morreu): resumo, recorde (`ptlog.best`), ranking (posta só quando bate o recorde), volta para a tela dos portais.
 - Ganchos de teste `window.__pt` (now, list, start, R, HY, log, next, clear). Teste `ferramentas/testes/tportais_v460.js`.
-- v461: passivas do Sung (applyHit/update/spriteKey), roxo via wrapper de drawSprite (spriteImg não é usado no desenho!), sjShBonus = bônus dos itens na sombra.
+- v461: passivas do Sung (applyHit/update/spriteKey). NÃO mexer na imagem dos quadros do Sung (S.b = efeitos de energia; v469 desfez o roxo), sjShBonus = bônus dos itens na sombra.

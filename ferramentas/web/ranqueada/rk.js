@@ -5457,7 +5457,7 @@ function sjPurp(im){if(!im||!im.naturalWidth&&!im.width)return null;if(im._sjp)r
   for(let i=0;i<A.length;i+=4){if(A[i+3]<8)continue;const r=A[i],gg=A[i+1],bb=A[i+2],mx=Math.max(r,gg,bb),mn=Math.min(r,gg,bb),dl=mx-mn;if(dl<40||bb<gg*.9||bb<r+30)continue;
     const L=(mx+mn)/2,k=Math.min(1,(dl-40)/60);A[i]=Math.round(r+(Math.min(255,L*.55+dl*.95)-r)*k);A[i+1]=Math.round(gg+(Math.max(0,L*.45-dl*.25)-gg)*k);A[i+2]=Math.round(bb+(Math.min(255,mx*1.02)-bb)*k)}
   g.putImageData(D,0,0);im._sjp=c;return c}catch(e){return null}}
-{const _si=spriteImg;spriteImg=function(f,key){const r=_si.apply(this,arguments);try{if(r&&isSJ(f)&&f.form){const t=sjPurp(r.im);if(t)return {S:r.S,im:t}}}catch(e){}return r}}
+/* v469: tingimento roxo dos quadros do Sung desligado (os efeitos de energia originais voltam) */
 {const _rf=renderFighter;renderFighter=function(f,reflect){const r=_rf.apply(this,arguments);if(!reflect&&isSJ(f)&&f.form&&SJATK.test(f.state||'')&&G.mode==='fight')try{
   const d=f.facing||1;ctx.save();ctx.globalCompositeOperation='lighter';ctx.lineCap='round';ctx.lineJoin='round';const n=G.frame%2?2:3;
   for(let k=0;k<n;k++){const x0=f.x+d*rand(20,70),y0=f.y-rand(120,230),an=(d>0?0:Math.PI)+rand(-.9,.9),P=sjBolt(x0,y0,rand(70,150),an);ctx.strokeStyle='rgba(160,90,255,.85)';ctx.lineWidth=4;ctx.shadowColor='#a060ff';ctx.shadowBlur=12;ctx.beginPath();P.forEach((q,i)=>i?ctx.lineTo(q[0],q[1]):ctx.moveTo(q[0],q[1]));ctx.stroke();ctx.shadowBlur=0;ctx.strokeStyle='#f0e4ff';ctx.lineWidth=1.4;ctx.stroke()}
@@ -5505,10 +5505,7 @@ function sjShBonus(f){try{if(f.cpu)return {dm:1,hp:1};const q=twEqOn(),n=sjSetFu
 {const st=document.createElement('style');const sel=Object.values(SJRCH).map(u=>`img[src$="${u.split('/').pop()}"]`).join(',');
   st.textContent=`${sel}{animation:sjRedG 1.8s ease-in-out infinite;border-radius:.3em}@keyframes sjRedG{0%,100%{filter:drop-shadow(0 0 .25em #ff2a3a) drop-shadow(0 0 .6em rgba(255,40,60,.6))}50%{filter:drop-shadow(0 0 .45em #ff5a6a) drop-shadow(0 0 1.1em rgba(255,40,60,.9))}}`;document.head.appendChild(st)}
 
-/* v461 (3): o desenho real passa por drawSprite (não por spriteImg) → troca a imagem pela versão roxa enquanto o Sung está transformado */
-{const _ds=drawSprite;drawSprite=function(f,key,x,y,facing,e,mode){if(!(isSJ(f)&&f.form&&key&&mode!=='sil'))return _ds.apply(this,arguments);
-  let S=null,o=null;try{const arr=SPRH[ssid(f)][key[0]];S=arr&&arr[Math.min(arr.length-1,key[1])];if(S&&S.img){const src=(S.imgF&&key[0][0]!=='f')?S.imgF:S.img,t=sjPurp(src);if(t){o={img:S.img,imgF:S.imgF,b:S.b};S.img=t;if(S.imgF)S.imgF=t;S.b=undefined}}}catch(err){}
-  try{return _ds.apply(this,arguments)}finally{if(S&&o){S.img=o.img;S.imgF=o.imgF;S.b=o.b}}}}
+/* v469: a troca para roxo dos quadros do Sung foi TIRADA — ela apagava os efeitos de energia azul/roxo dos golpes (camada S.b). */
 
 /* ================= v462: TÍTULO numerado dos 10 primeiros que pegarem o SUNG — bônus de dano COM o Sung, decrescente
    Nº1 +30% · Nº2 +25% (os dois acima do Shaka, +20%) · Nº3 +20% · Nº4 +18 · Nº5 +16 · Nº6 +14 · Nº7 +12 · Nº8 +10 · Nº9 +8 · Nº10 +6
