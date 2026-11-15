@@ -78,6 +78,13 @@ export default {async fetch(req,env){const url=new URL(req.url),p=url.pathname;
       return J({jogadores:await q("SELECT COUNT(DISTINCT s) n FROM kv WHERE k='uid'"),contas:await q("SELECT COUNT(DISTINCT s) n FROM kv WHERE k='sv'"),
         online:await q("SELECT COUNT(DISTINCT u.s) n FROM kv o JOIN kv u ON u.id=o.id AND u.k='uid' WHERE o.k='on' AND o.s IN (?,?)",'p'+b,'p'+(b-1)),
         hoje:await q("SELECT COUNT(DISTINCT u.s) n FROM kv u JOIN docs d ON d.id=u.id WHERE u.k='uid' AND d.ct>?",Date.now()-864e5),docs:await q('SELECT COUNT(*) n FROM docs')})}
+    if(p==='/fs-admin/erros'){/* v450: erros que os celulares dos jogadores mandaram (errRep), agrupados — sem nome nem aparelho do jogador */
+      const h=Math.min(720,Math.max(1,+url.searchParams.get('h')||48));const rs=(await db.prepare("SELECT ct,f FROM docs WHERE id LIKE 'er\\_%' ESCAPE '\\' AND ct>? ORDER BY ct DESC LIMIT 2000").bind(Date.now()-h*36e5).all()).results||[];
+      const G={};for(const r of rs){let f={};try{f=JSON.parse(r.f)}catch(e){}const v=k=>f[k]&&(f[k].stringValue??f[k].integerValue)||'';const m=String(v('m')).slice(0,200);const g=G[m]||(G[m]={m,n:0,ult:0,modos:{},onde:v('w'),st:String(v('st')).slice(0,600)});g.n++;g.ult=Math.max(g.ult,r.ct);const mo=v('modo');g.modos[mo]=(g.modos[mo]||0)+1}
+      const L=Object.values(G).sort((a,b)=>b.n-a.n),e=s=>String(s).replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
+      const html=`<!doctype html><meta charset=utf-8><meta name=viewport content="width=device-width"><title>Erros</title><body style="font:14px sans-serif;background:#111;color:#eee;padding:8px"><h3>Erros das últimas ${h} horas: ${rs.length} (${L.length} tipos)</h3>`+
+        L.map(g=>`<div style="border:1px solid #444;margin:6px 0;padding:6px"><b>${g.n}×</b> ${e(g.m)}<br><small>último: ${new Date(g.ult-3*36e5).toISOString().slice(5,16).replace('T',' ')} · onde: ${e(g.onde)} · modos: ${e(Object.entries(g.modos).map(x=>x[0]+' '+x[1]).join(', '))}</small><pre style="white-space:pre-wrap;font-size:11px;color:#aaa">${e(g.st)}</pre></div>`).join('')+'</body>';
+      return new Response(html,{headers:{'Content-Type':'text/html; charset=utf-8',...CORS}})}
     if(p==='/fs-admin/reads')return J(RD);
     if(p==='/fs-admin/count'){const c=await db.prepare('SELECT COUNT(*) n FROM docs').first();return J(c)}
     const m=p.match(/^\/fs\/v1\/(projects\/[^/]+\/databases\/\(default\)\/documents)(.*)$/)||p.match(/^\/fs\/v1\/(projects\/[^/]+\/databases\/%28default%29\/documents)(.*)$/);if(!m)return ERR(404,'NOT_FOUND','rota');
