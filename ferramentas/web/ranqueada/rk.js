@@ -6116,3 +6116,41 @@ const sjCanSum=o=>o.cls==='necro'&&!!o.eq;
 for(const M of SJMS){if(M.id!=='d3'&&M.id[0]!=='u')continue;const g0=M.g,n0=M.n,nw=M.id==='d3'?'Vença '+M.m+' lutas com o Sung':'Vença '+M.m+' lutas com o Sung (sem invocar)';
   M.g=o=>sjCanSum(o)?g0(o):M.id==='d3'?(o.d.w|0):((o.cnt.ult|0)+(o.cnt.w|0));Object.defineProperty(M,'n',{get(){try{return sjCanSum(sjSys())?n0:nw}catch(e){return n0}},configurable:true})}
 try{window.__mis={ms:()=>{sjSysOpen();sjPanel('ms');return [...document.querySelectorAll('#sjPan .sjMs')].map(x=>x.innerText.replace(/\s+/g,' ')).join(' || ')},bp:()=>bpG(),sj:()=>sjSys(),cnt:g=>tnMisCount(g),fin:w=>{TN.on=1;tnFinish(w,false)},tn:()=>TN}}catch(e){}
+
+/* ================= v489: TORNEIO "THE BEST" (pedido do dono 15/11 19:09) — 1 HORA, 15/11 20:00 → 21:00 (Brasília) na TORRE
+   Ranking só do evento: mais andares, depois MENOR TEMPO (torre igual para todos durante o torneio). Prêmios entregues sozinhos depois do fim:
+   🥇 ANEL DOURADO nota S + 10.000 💎 + título THE BEST (arte do dono, arco-íris)
+   🥈 ANEL VERMELHO SSS + 5.000 💎 · 🥉 ANEL VERMELHO SS + 3.000 💎
+   Título THE BEST (equipado): +30% dano · +20% crítico · +20% sorte · +20% drop · +10% de chance de anel na Caça. ================= */
+const TBIMG='a/2290d71fcbd1a1.webp',TBID='ev20261115tb';
+Object.assign(TWEV,{id:TBID,nome:'🏆 TORNEIO THE BEST',fast:1,flat:1,lives:2,ini:Date.parse('2026-11-15T20:00:00-03:00'),fim:Date.parse('2026-11-15T21:00:00-03:00'),part:0,
+  prem:[{pos:1,gem:10000,tb:[5,5],tit:'best'},{pos:2,gem:5000,tb:[4,7]},{pos:3,gem:3000,tb:[4,6]}]});
+if(window.__twEvT){TWEV.ini=Date.now()+window.__twEvT[0];TWEV.fim=Date.now()+window.__twEvT[1]}
+TWTIT.best={n:'THE BEST',i:'👑',c:'#ff7ad9',d:'Campeão do Torneio THE BEST · +30% dano · +20% crítico · +20% sorte · +20% drop · +10% anéis na Caça',hid:1};
+const tbOn=()=>{try{return twTitOn()==='best'&&twTits().includes('best')}catch(e){return false}};
+const tbAnNm=x=>x?'ANEL '+ANC[x[0]][0]+' '+ANG[x[1]]:'';
+{const _n=evPrzNm;evPrzNm=function(P){if(P&&P.tb)return '💍 '+tbAnNm(P.tb)+' + '+rkFmtN(P.gem)+' 💎'+(P.tit?' + 👑 TÍTULO THE BEST':'');return _n.apply(this,arguments)}}
+{const _i=evPrzImg;evPrzImg=function(P){if(P&&P.tb)return P.tit?TBIMG:RQA.anel2[P.tb[0]];return _i.apply(this,arguments)}}
+{const _e=evTor;evTor=function(){const r=_e.apply(this,arguments);if(r&&TWEV.id===TBID){r.t='TORNEIO THE BEST';const h=r.h;r.h=()=>h().replace(/<b>Todo mundo que participar ganha 0 💎<\/b>\. /,'').replace(/ ⚠️ O <b>CHEFE FINAL tem \d+ vidas<\/b> durante o torneio\./,'')}return r}}
+/* entrega do anel e do título (as gemas a base já entrega) */
+function tbGive(pos){if(TWEV.id!==TBID||rkG('tbg_'+TBID,0))return;const P=TWEV.prem[pos-1];if(!P)return;rkS('tbg_'+TBID,pos);
+  try{const [c,g]=P.tb,S=ANS.map(x=>x[0]),s=S[(Math.random()*S.length)|0],id=Date.now().toString(36)+Math.random().toString(36).slice(2,6);
+    if(c===5){const a=5e6,k=.8+.6*Math.log10(a/1e6);anGive({i:id,c:5,g,s,s2:S.filter(x=>x!==s)[(Math.random()*(S.length-1))|0],a,v:Math.round(ANV[5][g]*k*10)/10})}
+    else anGive({i:id,c,g,s,v:ANV[c][g],a:100000})}catch(e){}
+  if(P.tit){try{twGiveTit(P.tit);twLS.s('tw_titOn',P.tit);twTitSync()}catch(e){}}try{acSave(1)}catch(e){}}
+{const _w=twEvWin;twEvWin=function(pos,it){try{tbGive(pos)}catch(e){}return _w.apply(this,arguments)}}
+/* título: arte do dono no mesmo tamanho do título ADM, com brilho arco-íris */
+{const _pt=pfTitH;pfTitH=function(t,n,adm){if(t==='best')return `<span class="pfTb"><i class="rb"></i><img src="${TBIMG}" alt="THE BEST"><i class="sw"></i><i class="sp a">✦</i><i class="sp b">✦</i><i class="sp c">✦</i></span>`;return _pt.apply(this,arguments)}}
+{const st=document.createElement('style');st.textContent=`
+.pfTb{position:relative;display:inline-flex;align-items:center;justify-content:center;height:92%;min-width:88%;isolation:isolate;overflow:visible}
+.pfTb img{position:relative;height:195%;max-width:none;margin:-2em 0;object-fit:contain;z-index:1;animation:tbHue 4s linear infinite,tbPu 1.6s ease-in-out infinite}
+.pfTb .rb{position:absolute;left:50%;top:50%;width:110%;height:70%;transform:translate(-50%,-50%);z-index:0;border-radius:2em;background:conic-gradient(from var(--ua,0deg),#ff004c,#ff9a00,#fff200,#36ff6b,#00e0ff,#4a5cff,#c34bff,#ff004c);filter:blur(1.1em);opacity:.45;animation:rkUq 2s linear infinite}
+.pfTb .sw{position:absolute;left:50%;top:50%;width:var(--tbw,100%);height:175%;transform:translate(-50%,-50%);z-index:2;pointer-events:none;background:linear-gradient(105deg,transparent 35%,rgba(255,255,255,.55) 50%,transparent 65%);background-size:250% 100%;mix-blend-mode:overlay;animation:tbSw 2.4s linear infinite;-webkit-mask:url(${TBIMG}) center/contain no-repeat;mask:url(${TBIMG}) center/contain no-repeat}
+.pfTb .sp{position:absolute;z-index:3;font-style:normal;color:#fff;text-shadow:0 0 .4em #fff,0 0 .8em #ff7ad9;animation:pfTw 1.5s ease-in-out infinite;opacity:0}.pfTb .sp.a{left:8%;top:-10%}.pfTb .sp.b{right:12%;bottom:-12%;animation-delay:.5s}.pfTb .sp.c{right:3%;top:-8%;animation-delay:1s}
+@keyframes tbHue{0%{filter:drop-shadow(0 0 .25em #ff004c) hue-rotate(0deg)}50%{filter:drop-shadow(0 0 .45em #00e0ff) hue-rotate(25deg)}100%{filter:drop-shadow(0 0 .25em #ff004c) hue-rotate(0deg)}}
+@keyframes tbPu{50%{transform:scale(1.04)}}@keyframes tbSw{0%{background-position:150% 0}100%{background-position:-50% 0}}`;document.head.appendChild(st)}
+/* bônus do título (Boss, Torre, Caça e Portais) */
+{const _ra=rkApply;rkApply=function(){_ra.apply(this,arguments);try{const tw=typeof TW!=='undefined'&&TW.on&&G.gmode==='torre';if(!G.p||!(tw||G.gmode==='boss'||G.gmode==='caca')||!tbOn())return;const p=G.p[0];p.tdm=(p.tdm||1)+.3;p.tcr=(p.tcr||0)+20}catch(e){}}}
+{const _ps=psSum;psSum=function(id){const o=_ps.apply(this,arguments);if(id)return o;try{if(tbOn()){o.st+=20;o.drop+=20}}catch(e){}return o}}
+{const _dl=anDropLobo;anDropLobo=function(L){const r=_dl.apply(this,arguments);if(r||!tbOn()||Math.random()>=.1)return r;return _dl.apply(this,arguments)}}
+try{window.__tb={give:p=>tbGive(p),on:tbOn,ev:()=>TWEV,nm:P=>evPrzNm(P),tit:(t,a)=>pfTitH(t||'best','',a),sum:()=>psSum()}}catch(e){}
