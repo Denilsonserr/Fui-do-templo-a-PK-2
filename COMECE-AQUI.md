@@ -122,3 +122,4 @@ Este arquivo tem duas partes: a **Parte 1** é para o dono (Denilson) e a **Part
 - PTREL = 15/11 12:00 Brasília (15:00Z).
 - Códigos (1× por aparelho/conta): 26vofv = 1.000–5.000 💎 · 1l10mju = anel rank S PRETO ou VERMELHO · 4brzfl = PASSE PAGO · nupno9 = PASSE 2X (premium + todos os prêmios em dobro, menos a Caixa V2 de Virgem; o.x2 no rk_bp, selo ⚡ PASSE 2X).
 - Teste: C1..C4=<códigos> node ferramentas/testes/tcodigos_v465.js.
+- v466: MANOPLA DO MONARCA (só passe pago, nível 20): dano 100 · def 70 · crít 70 · vel 60 · status 50; vale 100% em qualquer personagem (Sung +50/60%); brilho dourado.

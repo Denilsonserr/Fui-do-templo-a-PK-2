@@ -12,5 +12,5 @@ R.anel=await go(b,async(p,cod)=>[await cod(C2),await p.evaluate(()=>JSON.parse(l
 R.pago=await go(b,async(p,cod)=>[await cod(C3),await p.evaluate(()=>JSON.parse(localStorage.rk_bp).own)]);
 R.x2=await go(b,async(p,cod,clr)=>{const t=await cod(C4);const g0=+await p.evaluate(()=>localStorage.rk_gem);await p.evaluate(()=>__pvT.rv('bp'));await p.waitForTimeout(800);
   const g=await p.evaluate(async()=>{const o=JSON.parse(localStorage.rk_bp);return o.own+'/'+o.x2});await p.evaluate(()=>document.querySelector('[data-b="all"]').click());await p.waitForTimeout(7000);await clr();
-  return [t,g,g0,await p.evaluate(()=>({gem:+localStorage.rk_gem,inv:JSON.parse(localStorage.tw_inv||'[]').filter(x=>x.v2).length+' peças V2',aneis:JSON.parse(localStorage.rk_an||'[]').length}))]});
+  return [t,g,g0,await p.evaluate(()=>({gem:+localStorage.rk_gem,inv:JSON.parse(localStorage.tw_inv||'[]').filter(x=>x.v2).length+' peças V2',aneis:JSON.parse(localStorage.rk_an||'[]').length,man:JSON.stringify(JSON.parse(localStorage.tw_inv||'[]').filter(x=>x.nm==='MANOPLA DO MONARCA').map(x=>[x.dmg,x.def,x.crit,x.vel,x.st]))}))]});
 console.log(JSON.stringify(R,null,1));await b.close()})();

@@ -9347,7 +9347,7 @@ const RKRN=['comum','rara','epica','lend','mit'],RKRNM=['COMUM','RARO','ÉPICO',
 const eqChar=()=>{try{if(typeof TW!=='undefined'&&TW.on&&TW.pick)return TW.pick;if(G.gmode==='boss'&&G.pick)return G.pick}catch(e){}return rkG('sel','goku')};
 const skSetFull=()=>{const o=twEqOn();return ['cap','arm','esp','bot','anel'].every(k=>o[k]&&o[k].sk)};
 const sjSetFull=()=>{const o=twEqOn();return ['cap','arm','esp','bot','anel'].every(k=>o[k]&&o[k].sj)};
-const eqNf=it=>it&&it.yt&&eqChar()!=='yuta'?.5:it&&it.sk?(eqChar()!=='shaka'?.5:skSetFull()?1.1:1):it&&it.sj?(eqChar()!=='sung'?.5:sjSetFull()?1.6:1.5):1; /* v461: +50% no Sung (set completo +60%) */
+const eqNf=it=>it&&it.yt&&eqChar()!=='yuta'?.5:it&&it.sk?(eqChar()!=='shaka'?.5:skSetFull()?1.1:1):it&&it.sj?(it.nm==='MANOPLA DO MONARCA'?(eqChar()!=='sung'?1:sjSetFull()?1.6:1.5):eqChar()!=='sung'?.5:sjSetFull()?1.6:1.5):1; /* v466: Manopla vale 100% em todos; v461: +50% no Sung (set completo +60%) */
 twEqOn=function(){const I=twInv(),Q=twEqp(),o={};for(const k of ['esp','arm','bot','cap','anel']){const it=I.find(x=>x.id===Q[k]);if(it)o[k]=it}return o};
 const EQMAIN={esp:'dano',arm:'vida',bot:'vel',cap:'trf',anel:'st'};
 twEqB=st=>{const o=twEqOn();let v=0;for(const k in o){const it=o[k],n=eqNf(it);if(EQMAIN[k]===st)v+=(it.v||0)*n;if(st==='vel'&&it.vel)v+=it.vel*n;if(st==='dano'&&it.dmg)v+=it.dmg*n;if(st==='vida'&&it.def)v+=it.def*n;if(st==='trf'&&it.trf)v+=it.trf*n}return Math.round(v*10)/10};
@@ -9877,7 +9877,7 @@ const CBK=[['dano','⚔️ Dano','%'],['def','🛡️ Defesa','%'],['crit','🎯
 const CBS=[['an','ANÉIS'],['nv','NÍVEL'],['eq','EQUIP.'],['tit','TÍTULO'],['ps','PASSIVA'],['rk','RANK'],['adm','ADM']];
 function cbAll(id){const Z=()=>Object.fromEntries(CBK.map(k=>[k[0],0])),S={};for(const [k] of CBS)S[k]=Z();
   try{const L=lvBonus(id);for(const k of ['dano','crit','vel','st','cd','ls','uv'])S.nv[k]=+L[k]||0}catch(e){}
-  try{const q=twEqOn();for(const t in q){const it=q[t],n=it.yt&&id!=='yuta'?.5:it.sk?(id!=='shaka'?.5:skSetFull()?1.1:1):it.sj?(id!=='sung'?.5:sjSetFull()?1.6:1.5):1,m=EQMAIN[t];if(m==='dano')S.eq.dano+=(it.v||0)*n;if(m==='vida')S.eq.def+=(it.v||0)*n;if(m==='vel')S.eq.vel+=(it.v||0)*n;if(m==='trf')S.eq.trf+=(it.v||0)*n;
+  try{const q=twEqOn();for(const t in q){const it=q[t],n=it.yt&&id!=='yuta'?.5:it.sk?(id!=='shaka'?.5:skSetFull()?1.1:1):it.sj?(it.nm==='MANOPLA DO MONARCA'?(id!=='sung'?1:sjSetFull()?1.6:1.5):id!=='sung'?.5:sjSetFull()?1.6:1.5):1,m=EQMAIN[t];if(m==='dano')S.eq.dano+=(it.v||0)*n;if(m==='vida')S.eq.def+=(it.v||0)*n;if(m==='vel')S.eq.vel+=(it.v||0)*n;if(m==='trf')S.eq.trf+=(it.v||0)*n;
     S.eq.dano+=(it.dmg||0)*n;S.eq.def+=(it.def||0)*n;S.eq.vel+=(it.vel||0)*n;S.eq.trf+=(it.trf||0)*n;S.eq.crit+=(it.crit||0)*n;S.eq.st+=(it.st||0)*n;S.eq.fdmg+=(it.fdmg||0)*n;S.eq.drop+=(it.drop||0)*n}}catch(e){}
   try{const B=tbOf(twTitOn());for(const k of ['dano','def','vel','crit','st'])S.tit[k]=B[k]||0}catch(e){}
   try{const P=psSum(id);S.ps.cd=P.cd;S.ps.def=P.def;S.ps.spd=P.spd;S.ps.reg=P.reg;S.ps.drop=P.drop;S.ps.st=P.st}catch(e){}
@@ -14163,6 +14163,12 @@ TWCUP['nupno9']={nm:'PASSE 2X · TEMPORADA SOLO LEVELING (prêmios em dobro)',it
     try{acSave(1)}catch(e){}setTimeout(()=>rkToast('⚡ PASSE 2X · nível '+(i+1)+' em dobro!'+(msg.length?' · '+msg.join(' · '):''),'#ffd84a'),900)}}catch(e){}return ok}}
 {const _bh=bpH;bpH=function(){const h=_bh.apply(this,arguments);return bpG().x2?h+'<div style="position:absolute;right:2%;top:2%;z-index:9;padding:.4em 1em;border-radius:1em;font:900 1.1em var(--f-ui);color:#1a1000;background:linear-gradient(90deg,#ffd84a,#fff3b0,#ffd84a);box-shadow:0 0 1em #ffd84a">⚡ PASSE 2X</div>':h}}
 window.__cup=(c,E)=>twCupom(c,E);
+/* ================= v466: MANOPLA DO MONARCA (dourada, só no PASSE PAGO, nível 20) — mais forte que qualquer peça V2 de Virgem
+   V2 mais forte (Luvas V2) ≈ dano 61 · vel 95 · status 101 (soma 257). Manopla: dano 100 · defesa 70 · crítico 70 · vel 60 · status 50 (soma 350).
+   Vale 100% em QUALQUER personagem (as outras peças do Monarca valem 50% fora do Sung); no Sung +50% (set completo +60%). ================= */
+Object.assign(RKSP.sjman,{dmg:100,def:70,crit:70,vel:60,st:50});
+try{const I=twInv();let ch=0;for(const it of I){if(it&&it.nm==='MANOPLA DO MONARCA'){for(const f of ['dmg','def','crit','vel','st'])if(it[f]!==RKSP.sjman[f]){it[f]=RKSP.sjman[f];ch=1}}}if(ch)twLS.s('tw_inv',I)}catch(e){}
+{const st=document.createElement('style');const u=String(RKSP.sjman.img||'').split('/').pop();if(u)st.textContent=`img[src$="${u}"]{animation:sjGoldG 1.6s ease-in-out infinite!important;border-radius:.3em}@keyframes sjGoldG{0%,100%{filter:drop-shadow(0 0 .3em #ffd84a) drop-shadow(0 0 .7em rgba(255,200,60,.7))}50%{filter:drop-shadow(0 0 .55em #fff3b0) drop-shadow(0 0 1.3em rgba(255,190,40,1))}}`;document.head.appendChild(st)}
 
 function twTrofList(){const tc=twLS.g('tw_tc',{}),run={};for(const t of TW.tr)run[t.k]=(run[t.k]||0)+1;
   twModal(`<div class="twM"><h3>🎖️ TROFÉUS</h3><div class="twTL">${Object.keys(TWTR).map(k=>{const T=TWTR[k];return `<div class="${tc[k]||run[k]?'got':''}"><i>${T.i}</i><b>${T.n}</b><span>${T.d}</span><em>+${T.p} 🏆</em><small>${run[k]?'nesta subida: '+run[k]+' · ':''}total: ${(tc[k]||0)}</small></div>`}).join('')}</div>
@@ -14355,7 +14361,7 @@ window.__dbg={mus:()=>[MCUR,MEL.src.split('/').pop()],stg:()=>STAGE.key,prepMatc
 })();
 </script>
 <style>#updB{position:fixed;left:50%;top:max(8px,env(safe-area-inset-top));transform:translateX(-50%);z-index:99999;padding:10px 22px;border-radius:14px;border:2px solid #fff3c0;background:linear-gradient(#ffd84a,#e08a10);color:#3a1d00;font:900 15px system-ui,sans-serif;box-shadow:0 0 18px #ffb21f;cursor:pointer;animation:updP 1s ease-in-out infinite alternate}@keyframes updP{to{transform:translateX(-50%) scale(1.05)}}</style>
-<script>(function(){const V='e622b9a9712f';if(!/^https?:/.test(location.protocol))return;let nv=null;
+<script>(function(){const V='a36fdb8ed326';if(!/^https?:/.test(location.protocol))return;let nv=null;
 function show(){if(document.getElementById('updB'))return;try{if(typeof G!=='undefined'&&G.mode==='fight')return}catch(e){}const b=document.createElement('button');b.id='updB';b.textContent='🔄 ATUALIZAÇÃO NOVA! Toque para atualizar';
   b.onclick=()=>{b.textContent='⏳ Atualizando...';try{acSave(1)}catch(e){}setTimeout(()=>location.reload(),900)};document.body.appendChild(b)}
 async function chk(){if(document.hidden)return;if(nv){show();return}try{const r=await fetch('versao.txt?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const t=(await r.text()).trim();if(/^[0-9a-f]{8,40}$/.test(t)&&t!==V){nv=t;show()}}catch(e){}}
