@@ -6088,3 +6088,9 @@ function confirmBk(b){if(b.dataset.ok)return true;b.dataset.ok=1;b.textContent='
 {const _ao=acOpen;acOpen=function(tab){const r=_ao.apply(this,arguments);try{if(localStorage.getItem('ac_k')&&(tab||'ok')==='ok'){const M=document.getElementById('acM');if(M&&!M.querySelector('#acBk')){const b=document.createElement('button');b.id='acBk';b.className='btn';b.textContent='📦 RECUPERAR PROGRESSO';
   b.style.cssText='position:absolute;left:50%;bottom:3%;transform:translateX(-50%);z-index:5;font-size:1.6vh';b.onclick=()=>acBkOpen();(M.querySelector('.arP,.twM')||M).appendChild(b)}}}catch(e){}return r}}
 window.__bk={list:acBkList,send:acBackup,open:acBkOpen};
+
+/* v486: prêmio de quem achou o bug das 2 contas (texto só com o dono): 10.000 💎 + 1 ANEL VERMELHO SSS · USO ÚNICO NO JOGO INTEIRO (1 pessoa) */
+TWCUP['slolnn']={nm:'CAÇADOR DE BUG',it:[],bugRw:1};
+{const _cp=twCupom;twCupom=async function(code,E){const C=TWCUP[twHash(String(code).toUpperCase())];const r=await _cp.apply(this,arguments);
+  try{if(C&&C.bugRw&&E&&/\bok\b/.test(E.className)){rkAdd('gem',10000);const s=ANS[(Math.random()*ANS.length)|0][0];anGive({i:Date.now().toString(36)+Math.random().toString(36).slice(2,6),c:4,g:7,s,v:ANV[4][7],a:100000});try{acSave(1)}catch(e){}
+    E.textContent='🐞 Obrigado por avisar do bug! +10.000 💎 e 💍 ANEL VERMELHO SSS ('+anSt(s)[1]+')!';try{rkSfx('boom')}catch(e){}}}catch(e){}return r}}
