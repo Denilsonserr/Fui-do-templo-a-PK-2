@@ -127,3 +127,4 @@ Este arquivo tem duas partes: a **Parte 1** é para o dono (Denilson) e a **Part
 - v468: espaço próprio do COLAR ('col'): mochila (RKSLOT, aba 📿) e tela Equipamentos (LBSLE: colar no desenho do colar em cima; espada e poção descem). Colar das Sombras virou t:'col' (migra do espaço do anel). Teste: tcolar_v468.js.
 - v469: TIRADO o tingimento roxo dos quadros do Sung (wrapper de drawSprite/spriteImg da v461) — ele apagava os efeitos de energia azul/roxo dos golpes (camada S.b). Raios roxos da forma continuam.
 - v470: Sung — combo Dança das Sombras com 11 golpes + finalizador forte (extra/9z_v470.py); combo a cada 2 s; +15% de dano (sem a sombra); DASH teleporta atrás do inimigo e atordoa 0,5 s (recarga 1 s); a passiva do tapa a cada 3 golpes não conta/interrompe mais o combo (era isso que cortava o combo em ~5 golpes). Teste: tsung_v470.js.
+- v471: 2º código do PASSE 2X (hash swnp7u, texto só com o dono).

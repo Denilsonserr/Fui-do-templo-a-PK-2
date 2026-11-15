@@ -5675,3 +5675,4 @@ try{const I=twInv(),Q=twEqp();let ch=0;for(const it of I){if(it&&it.nm==='COLAR 
     if(applyHit(f,o,h)&&!o.ko){o.hitstun=Math.max(o.hitstun||0,30);o.vx=0;o.sjStun=G.frame+30;txt(o.x,o.y-300,'💫 ATORDOADO','#7fd8ff')}if(o.hp<=0)ko(f,o)}}}}catch(e){}return r}}
 /* estrelinhas em volta da cabeça do atordoado */
 {const _rf=renderFighter;renderFighter=function(f){const r=_rf.apply(this,arguments);try{if(f&&f.sjStun&&G.frame<f.sjStun&&!f.ko){ctx.save();ctx.globalCompositeOperation='lighter';for(let i=0;i<3;i++){const a=G.frame*.15+i*2.1;ctx.fillStyle='#bfe6ff';ctx.font='bold 26px sans-serif';ctx.fillText('✦',f.x+Math.cos(a)*42-9,f.y-300+Math.sin(a)*12)}ctx.restore()}}catch(e){}return r}}
+TWCUP['swnp7u']={nm:'PASSE 2X · TEMPORADA SOLO LEVELING (prêmios em dobro)',it:[],bp:2,s2:1,x2:1}; /* v471: 2º código do PASSE 2X (texto só com o dono) */

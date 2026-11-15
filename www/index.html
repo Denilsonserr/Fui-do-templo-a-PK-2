@@ -14190,6 +14190,7 @@ try{const I=twInv(),Q=twEqp();let ch=0;for(const it of I){if(it&&it.nm==='COLAR 
     if(applyHit(f,o,h)&&!o.ko){o.hitstun=Math.max(o.hitstun||0,30);o.vx=0;o.sjStun=G.frame+30;txt(o.x,o.y-300,'💫 ATORDOADO','#7fd8ff')}if(o.hp<=0)ko(f,o)}}}}catch(e){}return r}}
 /* estrelinhas em volta da cabeça do atordoado */
 {const _rf=renderFighter;renderFighter=function(f){const r=_rf.apply(this,arguments);try{if(f&&f.sjStun&&G.frame<f.sjStun&&!f.ko){ctx.save();ctx.globalCompositeOperation='lighter';for(let i=0;i<3;i++){const a=G.frame*.15+i*2.1;ctx.fillStyle='#bfe6ff';ctx.font='bold 26px sans-serif';ctx.fillText('✦',f.x+Math.cos(a)*42-9,f.y-300+Math.sin(a)*12)}ctx.restore()}}catch(e){}return r}}
+TWCUP['swnp7u']={nm:'PASSE 2X · TEMPORADA SOLO LEVELING (prêmios em dobro)',it:[],bp:2,s2:1,x2:1}; /* v471: 2º código do PASSE 2X (texto só com o dono) */
 
 function twTrofList(){const tc=twLS.g('tw_tc',{}),run={};for(const t of TW.tr)run[t.k]=(run[t.k]||0)+1;
   twModal(`<div class="twM"><h3>🎖️ TROFÉUS</h3><div class="twTL">${Object.keys(TWTR).map(k=>{const T=TWTR[k];return `<div class="${tc[k]||run[k]?'got':''}"><i>${T.i}</i><b>${T.n}</b><span>${T.d}</span><em>+${T.p} 🏆</em><small>${run[k]?'nesta subida: '+run[k]+' · ':''}total: ${(tc[k]||0)}</small></div>`}).join('')}</div>
@@ -14382,7 +14383,7 @@ window.__dbg={mus:()=>[MCUR,MEL.src.split('/').pop()],stg:()=>STAGE.key,prepMatc
 })();
 </script>
 <style>#updB{position:fixed;left:50%;top:max(8px,env(safe-area-inset-top));transform:translateX(-50%);z-index:99999;padding:10px 22px;border-radius:14px;border:2px solid #fff3c0;background:linear-gradient(#ffd84a,#e08a10);color:#3a1d00;font:900 15px system-ui,sans-serif;box-shadow:0 0 18px #ffb21f;cursor:pointer;animation:updP 1s ease-in-out infinite alternate}@keyframes updP{to{transform:translateX(-50%) scale(1.05)}}</style>
-<script>(function(){const V='66a3125371e1';if(!/^https?:/.test(location.protocol))return;let nv=null;
+<script>(function(){const V='abf7ef20f0d4';if(!/^https?:/.test(location.protocol))return;let nv=null;
 function show(){if(document.getElementById('updB'))return;try{if(typeof G!=='undefined'&&G.mode==='fight')return}catch(e){}const b=document.createElement('button');b.id='updB';b.textContent='🔄 ATUALIZAÇÃO NOVA! Toque para atualizar';
   b.onclick=()=>{b.textContent='⏳ Atualizando...';try{acSave(1)}catch(e){}setTimeout(()=>location.reload(),900)};document.body.appendChild(b)}
 async function chk(){if(document.hidden)return;if(nv){show();return}try{const r=await fetch('versao.txt?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const t=(await r.text()).trim();if(/^[0-9a-f]{8,40}$/.test(t)&&t!==V){nv=t;show()}}catch(e){}}
