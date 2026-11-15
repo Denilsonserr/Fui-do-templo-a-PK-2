@@ -168,3 +168,4 @@ Este arquivo tem duas partes: a **Parte 1** é para o dono (Denilson) e a **Part
 - Fim da T1 (t1Reward, 1×, rk_s2rw): lê o ranking antigo (campo rp, docs antes de T2INI) → títulos brilhantes T1: CAMPEÃO (1º, 15.000 💎 + 20 🎫) · VICE (2º, 10.000) · 3º LUGAR (7.500) · TOP 10 (4.000 + 10 🎫) · GUERREIRO (todo mundo que jogou, 1.500 + 5 🎫). Janela "FIM DA TEMPORADA 1".
 - Eventos: 3x EM TUDO (RKEVX: XP, gemas, sorte, drop, anel) · EVENTO DO PASSE (BPEV e2: missões extras + 3x XP) · 2x SOMBRA (essência ×2 e chance da sombra do Igris ×2).
 - Teste: ttemporada2_v479.js.
+- v480: BUG Igris "não descia": vida/defesa vinham da Hidra × rank (dano ficava em 9-17%, Igris S com 684 mil = ~140 mil golpes). Agora fixo por rank (PTB): Igris E 250 … S 900 golpes básicos, Urso 120…430 por vida, monstros 10…38 × aura. Sung Sistema 100 sem itens: em 20 s o Igris E perde 83% e o S 23%. Teste: tportal_vida_v480.js. (Obs.: nos testes não use vida 1e9 no jogador — o HUD trava.)

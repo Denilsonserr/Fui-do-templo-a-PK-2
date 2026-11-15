@@ -14535,6 +14535,15 @@ function t1Win(){const x=rkG('s2msg',null);if(!x)return;rkS('s2msg',null);const 
 {const _o=rkOpen;rkOpen=function(){const r=_o.apply(this,arguments);setTimeout(async()=>{try{await t1Reward()}catch(e){}try{t1Win()}catch(e){}},3000);return r}}
 window.__t2={rw:t1Reward,win:t1Win,tit:k=>pfTitH(k,'',false)};
 
+/* ================= v480: VIDA E DEFESA DOS MONSTROS DO PORTAL CORRIGIDAS (Igris "não descia a vida")
+   Antes: defesa da Hidra × rank deixava o dano em 9-17% e o Igris com até 684 mil de vida (rank S = ~140 mil golpes!).
+   Agora vida/defesa fixas por rank, contadas em "golpes básicos" (soco de 60 de dano, sem itens):
+   IGRIS E 250 · D 350 · C 450 · B 600 · A 750 · S 900 golpes · URSO 120…430 por vida (3 vidas) · monstros 10…38 (× aura). Com itens/Sistema cai bem mais rápido. ================= */
+const PTB={dfB:[.7,.65,.6,.55,.5,.45],ig:[250,350,450,600,750,900],ur:[120,170,220,290,360,430],dfM:[.85,.8,.75,.7,.65,.6],mb:[10,14,18,24,30,38]};
+{const _mk=hyMk;hyMk=function(kind,x,lv){const f=_mk.apply(this,arguments);try{if(HY.on&&HY.pt&&PTR&&f&&f.pn){const r=PTR.r,P=f.pn,L=PNL[P.lv-1]||PNL[0];let hits,df;
+    if(P.k==='ig'){df=PTB.dfB[r];hits=PTB.ig[r]*.7}else if(P.k==='urso'){df=PTB.dfB[r];hits=PTB.ur[r]}else{df=PTB.dfM[r];hits=PTB.mb[r]*(L.hp||1)*(1+(PTR.room-1)*.04)}
+    f.bDf=df;f.tdf=df;f.mhp=Math.max(200,Math.round(hits*60*df));f.hp=f.hpLag=f.mhp}}catch(e){}return f}}
+
 function twTrofList(){const tc=twLS.g('tw_tc',{}),run={};for(const t of TW.tr)run[t.k]=(run[t.k]||0)+1;
   twModal(`<div class="twM"><h3>🎖️ TROFÉUS</h3><div class="twTL">${Object.keys(TWTR).map(k=>{const T=TWTR[k];return `<div class="${tc[k]||run[k]?'got':''}"><i>${T.i}</i><b>${T.n}</b><span>${T.d}</span><em>+${T.p} 🏆</em><small>${run[k]?'nesta subida: '+run[k]+' · ':''}total: ${(tc[k]||0)}</small></div>`}).join('')}</div>
     <p class="twH">Cada troféu soma pontos 🏆 no ranking. Quem sobe mais andares fica na frente; empate = mais troféus, depois menos tempo.</p><div class="row"><button class="btn" id="twTx">FECHAR</button></div></div>`);
@@ -14726,7 +14735,7 @@ window.__dbg={mus:()=>[MCUR,MEL.src.split('/').pop()],stg:()=>STAGE.key,prepMatc
 })();
 </script>
 <style>#updB{position:fixed;left:50%;top:max(8px,env(safe-area-inset-top));transform:translateX(-50%);z-index:99999;padding:10px 22px;border-radius:14px;border:2px solid #fff3c0;background:linear-gradient(#ffd84a,#e08a10);color:#3a1d00;font:900 15px system-ui,sans-serif;box-shadow:0 0 18px #ffb21f;cursor:pointer;animation:updP 1s ease-in-out infinite alternate}@keyframes updP{to{transform:translateX(-50%) scale(1.05)}}</style>
-<script>(function(){const V='2989fcd52fb4';if(!/^https?:/.test(location.protocol))return;let nv=null;
+<script>(function(){const V='9ba2119aeac8';if(!/^https?:/.test(location.protocol))return;let nv=null;
 function show(){if(document.getElementById('updB'))return;try{if(typeof G!=='undefined'&&G.mode==='fight')return}catch(e){}const b=document.createElement('button');b.id='updB';b.textContent='🔄 ATUALIZAÇÃO NOVA! Toque para atualizar';
   b.onclick=()=>{b.textContent='⏳ Atualizando...';try{acSave(1)}catch(e){}setTimeout(()=>location.reload(),900)};document.body.appendChild(b)}
 async function chk(){if(document.hidden)return;if(nv){show();return}try{const r=await fetch('versao.txt?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const t=(await r.text()).trim();if(/^[0-9a-f]{8,40}$/.test(t)&&t!==V){nv=t;show()}}catch(e){}}

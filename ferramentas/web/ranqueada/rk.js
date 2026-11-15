@@ -6019,3 +6019,12 @@ function t1Win(){const x=rkG('s2msg',null);if(!x)return;rkS('s2msg',null);const 
   document.body.appendChild(W);try{rkSfx('boom');setTimeout(()=>rkSfx('powerUp'),400)}catch(e){}W.querySelector('#t1X').onclick=()=>W.remove()}
 {const _o=rkOpen;rkOpen=function(){const r=_o.apply(this,arguments);setTimeout(async()=>{try{await t1Reward()}catch(e){}try{t1Win()}catch(e){}},3000);return r}}
 window.__t2={rw:t1Reward,win:t1Win,tit:k=>pfTitH(k,'',false)};
+
+/* ================= v480: VIDA E DEFESA DOS MONSTROS DO PORTAL CORRIGIDAS (Igris "não descia a vida")
+   Antes: defesa da Hidra × rank deixava o dano em 9-17% e o Igris com até 684 mil de vida (rank S = ~140 mil golpes!).
+   Agora vida/defesa fixas por rank, contadas em "golpes básicos" (soco de 60 de dano, sem itens):
+   IGRIS E 250 · D 350 · C 450 · B 600 · A 750 · S 900 golpes · URSO 120…430 por vida (3 vidas) · monstros 10…38 (× aura). Com itens/Sistema cai bem mais rápido. ================= */
+const PTB={dfB:[.7,.65,.6,.55,.5,.45],ig:[250,350,450,600,750,900],ur:[120,170,220,290,360,430],dfM:[.85,.8,.75,.7,.65,.6],mb:[10,14,18,24,30,38]};
+{const _mk=hyMk;hyMk=function(kind,x,lv){const f=_mk.apply(this,arguments);try{if(HY.on&&HY.pt&&PTR&&f&&f.pn){const r=PTR.r,P=f.pn,L=PNL[P.lv-1]||PNL[0];let hits,df;
+    if(P.k==='ig'){df=PTB.dfB[r];hits=PTB.ig[r]*.7}else if(P.k==='urso'){df=PTB.dfB[r];hits=PTB.ur[r]}else{df=PTB.dfM[r];hits=PTB.mb[r]*(L.hp||1)*(1+(PTR.room-1)*.04)}
+    f.bDf=df;f.tdf=df;f.mhp=Math.max(200,Math.round(hits*60*df));f.hp=f.hpLag=f.mhp}}catch(e){}return f}}
