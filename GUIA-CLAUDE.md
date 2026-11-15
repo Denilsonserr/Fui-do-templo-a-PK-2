@@ -2247,3 +2247,13 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - `sjVid(src)`: tela preta com vídeo, "toque para pular", 9 s no máximo; se o celular bloquear som, toca mudo.
 - Pegou o Sung: tela do personagem `.rkWin.sjw` (fundo roxo, raios roxos, brilho roxo pulsando no corpo, fumaça preta subindo `sjSmk`), carta `.crC.sjc` com brilho roxo e fumaça (depois de revelada), "SORTE DIVINA" roxo com fumaça.
 - Teste: `ferramentas/testes/tsung_gacha_v458.js` (pity 249 → sai o Sung).
+
+## v459 — TEMPORADA SOLO LEVELING: set do Monarca, poções novas, carta do Sung e PASSE NOVO
+- Artes do dono: `ferramentas/personagens/sung/itens/` (folha_set, folha_extra, carta_sung; `cortar.py` → `itens.json` = `SJIT`) e `ferramentas/ranqueada_artes/passe_s2/passe_solo_leveling.png` (1847×851).
+- **Set do Monarca** (`RKSP.sj*`, `sj:1`, secreto): ELMO (cap), MANTO (arm), ADAGAS (esp), BOTAS (bot), COLAR e ANEL (os dois no lugar do anel). `eqNf`/`cbAll`: 100% no Sung, +10% com 5 peças `sj` vestidas (`sjSetFull`), 50% nos outros. **MANOPLA DO MONARCA** (`sjman`, anel, a mais forte) só no passe.
+- **Gacha do Sung** (`rkRollY` novo): Sung 0,4% (pity 250) · peça do Monarca 0,3% (pity 200 `rk_pitySJI`, nunca repete `sjSecLeft`) · Poção da Vida Nova 1,5% · Poção das Sombras 1,5% · equipamento · moeda vermelha. Poções saem como `k:'sp'` (`RKSP.pvida/psomb`, `pot:1`) e o `rkGiveSp` manda para a lista de poções (`sjAddPot`).
+- **Poções**: beber guarda `rk_pk_vida` / `rk_pk_somb`; no começo da luta (`rkExtra`: Boss/Torre/Caça/Desafio/Versus) arma `p.rkVN` (wrapper do `ko`: na 1ª vez que a vida acaba volta com 100%, banner VIDA NOVA) e `p.sjSB` (wrapper do `sjSummon`: TANK vida/dano ×1,5).
+- **Carta do Sung**: `CRT.chr.sung` (gacha e álbum).
+- **PASSE TEMPORADA 2** (`BPS.n=2`, termina 15/12/2026 23:59): `RQA.passe` novo, `RKD.bp=[1847,851]`, `bpH` novo (2 trilhas: GRÁTIS `BPF` e PREMIUM `BPP`/`cp`, `own>=2`), `bp2Claim`/`bp2Give` com prêmios novos: `po` pó, `pv`/`ps` poções, `sk1` caixa V1 de Virgem, `sk2` caixa V2 (evolui/ganha peça V2), `sjb` caixa do Monarca, `man` manopla, `yt` Yuta (tendo → 3000 💎), `anr:[cor,nota]` anel certo, `anb:[cor,nota mín]` caixa de anel. Totais: grátis 10.000 💎, premium 30.000 💎 (+ repetidos).
+- Código PREMIUM (`TWCUP['zkyfn9']`, `s2:1`, texto só com o dono). Os códigos da temporada 1 (`bp:1/2`) e o baú do evento NÃO liberam mais (`BP2K` no `bpUnlock`).
+- Testes: `tpasse_s2_v459.js` (C1=código), `tpocoes_v459.js`, `tsung_set_v459.js`, `tsung_gacha_v458.js`.

@@ -8651,7 +8651,7 @@ function rkEquip(f,sk){f=f||'all';const sel=showScreen.cur==='tower'&&TW.pick?TW
   document.querySelectorAll(MS+'.eqI').forEach(b=>b.onclick=()=>{rkSfx('whoosh');re(b.dataset.k)});
   document.querySelectorAll(MS+'.eqD button[data-d]').forEach(b=>b.onclick=()=>{const d=b.dataset.d,id=X.ids[0];
     if(d==='eq'){const Q=twEqp();if(rkLock(twInv().find(y=>y.id===Q[X.t]))&&!rkLock(X)){rkSfx('clang');rkToast('🌑 Item OBSCURO fica sempre equipado','#c46bff');return}Q[X.t]=id;twLS.s('tw_eqp',Q);TW.capOut=twCap();rkSfx('clang');return re(null)}
-    if(d==='beber'&&X.pk){if(rkG('pk_'+X.pk,null))return;twLS.s('tw_poc',twPocs().filter(y=>y.id!==id));rkS('pk_'+X.pk,{r:X.r,v:X.v});rkSfx('powerUp');rkToast(X.pk==='cura'?'💚 POÇÃO DE CURA BEBIDA! Cura '+X.v+'% quando a vida ficar baixa na próxima luta':'🎁 POÇÃO DE DROP BEBIDA! +'+X.v+'% de drop na próxima luta','#7dff9a');return re(null)}
+    if(d==='beber'&&X.pk){if(rkG('pk_'+X.pk,null))return;twLS.s('tw_poc',twPocs().filter(y=>y.id!==id));rkS('pk_'+X.pk,{r:X.r,v:X.v});rkSfx('powerUp');rkToast(X.pk==='vida'?'❤️‍🔥 POÇÃO DA VIDA NOVA BEBIDA! Na próxima luta, se a vida acabar você volta com 100%':X.pk==='somb'?'🌑 POÇÃO DAS SOMBRAS BEBIDA! Na próxima luta a sombra do Sung fica +'+X.v+'% mais forte e resistente':X.pk==='cura'?'💚 POÇÃO DE CURA BEBIDA! Cura '+X.v+'% quando a vida ficar baixa na próxima luta':'🎁 POÇÃO DE DROP BEBIDA! +'+X.v+'% de drop na próxima luta','#7dff9a');return re(null)}
     if(d==='beber'){if(twPocOn())return;twLS.s('tw_poc',twPocs().filter(y=>y.id!==id));twLS.s('tw_pocOn',{id,r:X.r,v:X.v});rkSfx('powerUp');rkToast('🧪 POÇÃO BEBIDA! Vale na próxima luta','#7dff9a');return re(null)}
     if(d==='del'){twLS.s('tw_poc',twPocs().filter(y=>y.id!==id));rkSfx('boom');return re(X.n>1?X.key:null)}
     if(d==='sell'||d==='sellAll'){if(rkIsY(X)||X.uniq)return;if(!b.dataset.ok){b.dataset.ok=1;b.textContent='CONFIRMAR? 🪙 '+(d==='sell'?pr(X):pr(X)*X.n);return}const ids=new Set(d==='sell'?[id]:X.ids);twLS.s('tw_inv',twInv().filter(y=>!ids.has(y.id)));twAddCoins(pr(X)*ids.size);rkSfx('powerUp');rkToast('🪙 +'+pr(X)*ids.size+' moedas!','#ffd84a');return re(d==='sell'&&X.n>1?X.key:null)}});
@@ -9325,7 +9325,8 @@ const RKRN=['comum','rara','epica','lend','mit'],RKRNM=['COMUM','RARO','ÉPICO',
 /* ---------- equipamento: ANEL + bônus extras + itens do Yuta valem 50% em outros personagens ---------- */
 const eqChar=()=>{try{if(typeof TW!=='undefined'&&TW.on&&TW.pick)return TW.pick;if(G.gmode==='boss'&&G.pick)return G.pick}catch(e){}return rkG('sel','goku')};
 const skSetFull=()=>{const o=twEqOn();return ['cap','arm','esp','bot','anel'].every(k=>o[k]&&o[k].sk)};
-const eqNf=it=>it&&it.yt&&eqChar()!=='yuta'?.5:it&&it.sk?(eqChar()!=='shaka'?.5:skSetFull()?1.1:1):1;
+const sjSetFull=()=>{const o=twEqOn();return ['cap','arm','esp','bot','anel'].every(k=>o[k]&&o[k].sj)};
+const eqNf=it=>it&&it.yt&&eqChar()!=='yuta'?.5:it&&it.sk?(eqChar()!=='shaka'?.5:skSetFull()?1.1:1):it&&it.sj?(eqChar()!=='sung'?.5:sjSetFull()?1.1:1):1;
 twEqOn=function(){const I=twInv(),Q=twEqp(),o={};for(const k of ['esp','arm','bot','cap','anel']){const it=I.find(x=>x.id===Q[k]);if(it)o[k]=it}return o};
 const EQMAIN={esp:'dano',arm:'vida',bot:'vel',cap:'trf',anel:'st'};
 twEqB=st=>{const o=twEqOn();let v=0;for(const k in o){const it=o[k],n=eqNf(it);if(EQMAIN[k]===st)v+=(it.v||0)*n;if(st==='vel'&&it.vel)v+=it.vel*n;if(st==='dano'&&it.dmg)v+=it.dmg*n;if(st==='vida'&&it.def)v+=it.def*n;if(st==='trf'&&it.trf)v+=it.trf*n}return Math.round(v*10)/10};
@@ -9656,7 +9657,7 @@ window.__rk={lvSorte,lvLuck,lvBonus,lvOf,rkExtra,twEqB:s=>twEqB(s)};
    Anel de drop: +X% de drop enquanto equipado (soma com Rika e com a poção). */
 const RKPR=['comum','rara','epica','lend','mit','sec'],RKPKV={cura:[3,15,20,45,75,100],drop:[3,15,20,45,75,100]},RKANV=[5,7,10,15,20,35];
 const rkPkI=r=>Math.max(0,RKPR.indexOf(r)),rkRarN=r=>(TWEQR.find(q=>q.k===r)||TWEQR[0]).n;
-const rkPkTxt=x=>(x.pk==='cura'?'Cura '+x.v+'% da vida quando ela ficar abaixo de 35% (1 vez)':'Drop +'+x.v+'% (itens, anéis, poções, tickets, pó, cristais)')+' · uso único, vale na próxima luta';
+const rkPkTxt=x=>x.pk==='vida'?'VIDA NOVA: quando sua vida acabar, volta com 100% da vida (1 vez) · uso único, vale na próxima luta':x.pk==='somb'?'SOMBRAS: a sombra do Sung (TANK) tem +'+x.v+'% de dano e de vida · uso único, vale na próxima luta':(x.pk==='cura'?'Cura '+x.v+'% da vida quando ela ficar abaixo de 35% (1 vez)':'Drop +'+x.v+'% (itens, anéis, poções, tickets, pó, cristais)')+' · uso único, vale na próxima luta';
 function rkPoRoll(){const pk=Math.random()<.5?'cura':'drop';let R=twPoRoll();let k=R.k;if(Math.random()<.01*rkDropF())k='sec';return {k,pk,v:RKPKV[pk][rkPkI(k)]}}
 function rkRingRoll(){let r=twEqRoll().k;if(Math.random()<.01*rkDropF())r='sec';return r}
 twAddPoc=function(R){const L=twPocs();L.push(Object.assign({id:Date.now().toString(36)+Math.random().toString(36).slice(2,6),r:R.k,v:R.v},R.pk?{pk:R.pk}:{}));twLS.s('tw_poc',L);TW.capOut=twCap()};
@@ -9855,7 +9856,7 @@ const CBK=[['dano','⚔️ Dano','%'],['def','🛡️ Defesa','%'],['crit','🎯
 const CBS=[['an','ANÉIS'],['nv','NÍVEL'],['eq','EQUIP.'],['tit','TÍTULO'],['ps','PASSIVA'],['rk','RANK'],['adm','ADM']];
 function cbAll(id){const Z=()=>Object.fromEntries(CBK.map(k=>[k[0],0])),S={};for(const [k] of CBS)S[k]=Z();
   try{const L=lvBonus(id);for(const k of ['dano','crit','vel','st','cd','ls','uv'])S.nv[k]=+L[k]||0}catch(e){}
-  try{const q=twEqOn();for(const t in q){const it=q[t],n=it.yt&&id!=='yuta'?.5:it.sk?(id!=='shaka'?.5:skSetFull()?1.1:1):1,m=EQMAIN[t];if(m==='dano')S.eq.dano+=(it.v||0)*n;if(m==='vida')S.eq.def+=(it.v||0)*n;if(m==='vel')S.eq.vel+=(it.v||0)*n;if(m==='trf')S.eq.trf+=(it.v||0)*n;
+  try{const q=twEqOn();for(const t in q){const it=q[t],n=it.yt&&id!=='yuta'?.5:it.sk?(id!=='shaka'?.5:skSetFull()?1.1:1):it.sj?(id!=='sung'?.5:sjSetFull()?1.1:1):1,m=EQMAIN[t];if(m==='dano')S.eq.dano+=(it.v||0)*n;if(m==='vida')S.eq.def+=(it.v||0)*n;if(m==='vel')S.eq.vel+=(it.v||0)*n;if(m==='trf')S.eq.trf+=(it.v||0)*n;
     S.eq.dano+=(it.dmg||0)*n;S.eq.def+=(it.def||0)*n;S.eq.vel+=(it.vel||0)*n;S.eq.trf+=(it.trf||0)*n;S.eq.crit+=(it.crit||0)*n;S.eq.st+=(it.st||0)*n;S.eq.fdmg+=(it.fdmg||0)*n;S.eq.drop+=(it.drop||0)*n}}catch(e){}
   try{const B=tbOf(twTitOn());for(const k of ['dano','def','vel','crit','st'])S.tit[k]=B[k]||0}catch(e){}
   try{const P=psSum(id);S.ps.cd=P.cd;S.ps.def=P.def;S.ps.spd=P.spd;S.ps.reg=P.reg;S.ps.drop=P.drop;S.ps.st=P.st}catch(e){}
@@ -13659,6 +13660,121 @@ function sjSmk(n){let h='<div class="sjSm">';for(let i=0;i<n;i++){const x=(i/n*1
 .crC.sjc:not(.rv) .sjSm{display:none}.crC.sjc:not(.rv){animation:none}.crC.sjc{box-shadow:0 0 1.2em #9a5cff,0 0 2.6em rgba(90,30,200,.8)!important;animation:sjGc 1.4s ease-in-out infinite}.crC.sjc .sjSm{border-radius:inherit}.crC.sjc .sjSm i{bottom:-30%}
 @keyframes sjGc{0%,100%{box-shadow:0 0 1em #9a5cff,0 0 2.2em rgba(90,30,200,.7)}50%{box-shadow:0 0 1.8em #d0b8ff,0 0 3.6em rgba(120,50,255,.9)}}`;document.head.appendChild(st)}
 
+/* ================= v459: TEMPORADA SOLO LEVELING — SET DO MONARCA, POÇÕES NOVAS, CARTA DO SUNG e PASSE NOVO (artes do dono)
+   ferramentas/personagens/sung/itens (cortar.py → itens.json) e ferramentas/ranqueada_artes/passe_s2. ================= */
+const SJIT={"sjcap": "a/c87fadc57f3bdc.webp", "sjarm": "a/7d49bbc0cf7a5b.webp", "sjesp": "a/51993971ccfa7c.webp", "sjbot": "a/2426784d47682f.webp", "sjcol": "a/a276e8c1a5d596.webp", "sjane": "a/78b0607aaea31c.webp", "sjman": "a/0582457768fae2.webp", "pvida": "a/43c33c426ed604.webp", "psomb": "a/357cd44e5dd69c.webp", "carta": "a/0b17c8ded00218.webp", "passe": "a/5f648d32a6f017.webp"};
+CRT.chr.sung=SJIT.carta;
+/* --- SET DO MONARCA (secreto, igual aos itens do Shaka: 100% no Sung, 50% nos outros, +10% com 5 peças do Monarca vestidas).
+   Só existem 5 lugares: o COLAR e o ANEL vão no lugar do anel (escolha um), a MANOPLA (exclusiva do passe) também. --- */
+Object.assign(RKSP,{
+  sjcap:{t:'cap',r:'sec',v:0,def:80,crit:55,st:25,nm:'ELMO DO MONARCA',img:SJIT.sjcap,sj:1,ysec:1},
+  sjarm:{t:'arm',r:'sec',v:0,dmg:55,def:40,crit:40,nm:'MANTO DO MONARCA',img:SJIT.sjarm,sj:1,ysec:1},
+  sjesp:{t:'esp',r:'sec',v:0,dmg:70,crit:45,vel:20,nm:'ADAGAS DO MONARCA',img:SJIT.sjesp,sj:1,ysec:1},
+  sjbot:{t:'bot',r:'sec',v:50,vel:40,dmg:30,nm:'BOTAS DO MONARCA',img:SJIT.sjbot,sj:1,ysec:1},
+  sjcol:{t:'anel',r:'sec',v:0,dmg:40,vel:50,st:60,nm:'COLAR DAS SOMBRAS',img:SJIT.sjcol,sj:1,ysec:1},
+  sjane:{t:'anel',r:'sec',v:0,dmg:50,crit:50,drop:30,nm:'ANEL DO MONARCA',img:SJIT.sjane,sj:1,ysec:1},
+  sjman:{t:'anel',r:'sec',v:0,dmg:75,def:50,crit:55,vel:40,nm:'MANOPLA DO MONARCA',img:SJIT.sjman,sj:1,ysec:1,uniq:1,bpx:1},
+  pvida:{t:'poc',r:'mit',pk:'vida',v:100,nm:'POÇÃO DA VIDA NOVA',img:SJIT.pvida,pot:1},
+  psomb:{t:'poc',r:'mit',pk:'somb',v:50,nm:'POÇÃO DAS SOMBRAS',img:SJIT.psomb,pot:1}});
+const SJSEC=['sjcap','sjarm','sjesp','sjbot','sjcol','sjane'];
+const sjSecLeft=()=>{const I=twInv();return SJSEC.filter(k=>!I.some(x=>x&&x.nm===RKSP[k].nm))};
+/* poções: vão para a lista de poções (beber = vale na próxima luta) */
+function sjAddPot(k,n){const S=RKSP[k];for(let i=0;i<(n||1);i++)twAddPoc({k:'sec',pk:S.pk,v:S.v});const L=twPocs();for(let i=L.length-(n||1);i<L.length;i++)if(L[i]){L[i].nm=S.nm;L[i].img=S.img;L[i].r='mit'}twLS.s('tw_poc',L)}
+{const _gs=rkGiveSp;rkGiveSp=function(k){const S=RKSP[k];if(S&&S.pot){sjAddPot(k,1);return Object.assign({},S)}return _gs.apply(this,arguments)}}
+/* começo da luta: arma as poções novas */
+{const _ex=rkExtra;rkExtra=function(){const r=_ex.apply(this,arguments);try{if(!G.p)return r;const torre=typeof TW!=='undefined'&&TW.on&&G.gmode==='torre',boss=['boss','caca','dsf','pve'].includes(G.gmode);if(!torre&&!boss)return r;const p=G.p[0];
+  const v=rkG('pk_vida',null),s2=rkG('pk_somb',null);p.rkVN=v?1:0;p.sjSB=s2?s2.v:0;if(v)rkS('pk_vida',null);if(s2)rkS('pk_somb',null);
+  if(v||s2)setTimeout(()=>{try{txt(p.x,p.y-380,(v?'❤️‍🔥 VIDA NOVA PRONTA':'')+(v&&s2?' · ':'')+(s2?'🌑 SOMBRA +'+s2.v+'%':''),'#d8b4ff')}catch(e){}},2600)}catch(e){}return r}}
+{const _ko=ko;ko=function(a,d){try{if(G.phase==='fight'&&G.p&&d===G.p[0]&&d.rkVN&&!d.ko){d.rkVN=0;d.hp=d.hpLag=d.mhp||MAXHP;d.inv=Math.max(d.inv||0,90);d.state='idle';d.st=0;d.vx=0;d.hitstun=0;
+  banner('VIDA NOVA!','#ff4a6a',110,'a poção te trouxe de volta com 100% da vida');G.flash=12;G.flashCol='#ffd0e0';try{ring(d.x,d.y-150,'#ff6a8a',220,30,8);SFX.powerUp()}catch(e){}return}}catch(e){}return _ko.apply(this,arguments)}}
+{const _ss=sjSummon;sjSummon=function(f){const r=_ss.apply(this,arguments);try{const B=f.sjB;if(B&&f.sjSB){const k=1+f.sjSB/100;B.hp*=k;B.mhp*=k;if(B.cap)B.cap*=k;if(B.rate)B.rate*=k;B.dm=(B.dm||1)*k;B.sbP=1}}catch(e){}return r}}
+/* --- GACHA DO SUNG: peças do Monarca (secretas, nunca repetem, garantidas em 200) e as 2 poções --- */
+rkRollY=function(){
+  if(!sjOwned()&&!RKMTMP.includes('sung')){const p=rkG('pitySJ',0)+1;if(p>=250||Math.random()*100<.4){rkS('pitySJ',0);RKMTMP.push('sung');return {k:'chr',r:'mit',id:'sung'}}rkS('pitySJ',p)}
+  {const L=sjSecLeft().filter(k=>!RKMTMP.includes(k));if(L.length){const p=rkG('pitySJI',0)+1;if(p>=200||Math.random()*100<.3){rkS('pitySJI',0);const s=L[(Math.random()*L.length)|0];RKMTMP.push(s);return {k:'sp',r:'sec',s}}rkS('pitySJI',p)}}
+  {const q=Math.random()*100;if(q<1.5)return {k:'sp',r:'mit',s:'pvida'};if(q<3)return {k:'sp',r:'mit',s:'psomb'}}
+  let r=Math.random()*100;if(r<30){let q=Math.random()*100,R='comum';for(const [k,w] of RKEQW){if((q-=w)<0){R=k;break}}return {k:'eq',r:R,E:TWEQ[(Math.random()*TWEQ.length)|0]}}
+  return {k:'red',r:'comum',n:1+((Math.random()*5)|0)}};
+{const _tx=rkTaxas;rkTaxas=function(){if(RKBAN!=='mit')return _tx();rkModal(`<div class="twM"><h3>% TAXAS · INVOCAÇÃO MÍTICA · SUNG JIN-WOO</h3><table class="rkTx"><tr><th>Resultado</th><th>Chance</th></tr>
+  <tr><td style="color:#b48cff">✦ SS SUNG JIN-WOO · Monarca das Sombras (só aqui) · garantido em 250 giros</td><td>0,4%</td></tr>
+  <tr><td style="color:#d8c4ff">✦ SECRETO: Elmo, Manto, Adagas, Botas, Colar ou Anel do Monarca · garantido em 200 giros · nunca repetido</td><td>0,3%</td></tr>
+  <tr><td style="color:#ff8aa0">Poção da Vida Nova (volta com 100% da vida)</td><td>1,5%</td></tr><tr><td style="color:#9fd0ff">Poção das Sombras (sombra +50% dano e vida)</td><td>1,5%</td></tr>
+  <tr><td>Equipamento</td><td>~29%</td></tr><tr><td style="color:#ff5a5a">Moeda Vermelha (1 a 5)</td><td>~67%</td></tr></table>
+  <p class="twH">1 giro = 80 💎 · 10 giros = 800 💎 (ticket vale 1 giro). Todo giro também dá ${LVPON}. Só existe 1 Sung por jogador.<br>Itens do Monarca: 100% no Sung (+10% com 5 peças), 50% nos outros. Colar e Anel vão no lugar do anel. A MANOPLA DO MONARCA só sai no Passe.</p><div class="row"><button class="btn" id="rkMX">FECHAR</button></div></div>`);$('rkMX').onclick=()=>rkModal(null)}}
+
+/* ================= v459: PASSE DE BATALHA · TEMPORADA SOLO LEVELING (substitui o da Temporada 1)
+   Arte do dono 1847×851 (RQA.passe). 20 níveis (2 páginas de 10), 2 trilhas: GRÁTIS e PREMIUM (só com o CÓDIGO novo; os códigos da temporada 1 não liberam mais).
+   Prêmios novos: caixa V1/V2 de Virgem, caixa do Monarca (peça aleatória), YUTA, MANOPLA DO MONARCA (exclusiva), anéis vermelhos/pretos de nota certa ou caixa (nota mínima), poções novas, pó. ================= */
+RQA.passe=SJIT.passe;RKD.bp=[1847,851];
+BPS.n=2;BPS.fim=Date.UTC(2026,11,16,2,59,59);
+BPF.length=0;BPF.push(
+ [{g:300},{po:200}],[{r:300}],[{j:2}],[{pc:'epica'},{g:300}],[{sk1:1}],[{g:500},{t:3}],[{pv:1}],[{anr:[4,5]}],[{g:1000},{r:500},{po:300}],[{sjb:1}],
+ [{g:800},{j:3}],[{ps:1}],[{anr:[3,5]}],[{g:1000},{r:600}],[{sk1:1}],[{anb:[4,4]}],[{g:1500},{t:5}],[{sk2:1}],[{g:2000},{j:5},{po:500}],[{ch:'mit'},{g:2600}]);
+BPP.length=0;BPP.push(
+ [{g:1000},{t:5}],[{r:800},{po:500}],[{j:4},{g:1200}],[{pv:1},{pc:'mit'}],[{sjb:1},{g:1500}],[{anr:[3,6]}],[{g:2000},{r:1000}],[{sk2:1}],[{ps:2},{pd:'mit'}],[{yt:1},{g:2000}],
+ [{g:2500},{j:6}],[{anr:[4,6]}],[{sjb:1},{r:1500}],[{g:3000},{t:10}],[{pv:2},{po:1000}],[{sk2:1},{g:2500}],[{anr:[3,7]},{g:3000}],[{anb:[4,7]}],[{g:4000},{j:10},{r:2000}],[{man:1},{g:7300}]);
+TWCUP['zkyfn9']={nm:'PASSE PREMIUM · TEMPORADA SOLO LEVELING',it:[],bp:2,s2:1}; /* texto só com o dono */
+let BP2K=0;{const _u=bpUnlock;bpUnlock=function(t){if(!BP2K)return;return _u.apply(this,arguments)}}
+{const _cp=twCupom;twCupom=async function(code){const C=TWCUP[twHash(String(code).toUpperCase())];BP2K=C&&C.s2?1:0;try{return await _cp.apply(this,arguments)}finally{BP2K=0}}}
+/* ícones e textos */
+const ANGC=g=>ANG[g],bp2Ring=(c,g,box)=>{const col=ANC[c][1],sv='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><radialGradient id="g"><stop offset="0" stop-color="'+col+'" stop-opacity=".55"/><stop offset="1" stop-color="'+col+'" stop-opacity="0"/></radialGradient></defs><circle cx="50" cy="50" r="48" fill="url(#g)"/><circle cx="50" cy="50" r="30" fill="none" stroke="'+col+'" stroke-width="9"/><circle cx="50" cy="50" r="30" fill="none" stroke="#fff" stroke-width="2" opacity=".8"/>'+(box?'<text x="50" y="58" font-size="26" text-anchor="middle" fill="#fff" font-family="sans-serif" font-weight="900">?</text>':'<text x="50" y="59" font-size="'+(ANG[g].length>2?20:26)+'" text-anchor="middle" fill="#fff" font-family="sans-serif" font-weight="900" stroke="#000" stroke-width="1">'+ANG[g]+'</text>')+'</svg>';return 'data:image/svg+xml;utf8,'+encodeURIComponent(sv)};
+{const _bi=bpIco;bpIco=function(x){if(x.po)return [RQA.lvi.po[2],rkFmtN(x.po)+' PÓ'];if(x.sk1)return [RKSP.skcap.img,'CAIXA V1 DE VIRGEM'];if(x.sk2)return [(typeof SKV2!=='undefined'&&SKV2.skarm)||RKSP.skarm.img,'CAIXA V2 DE VIRGEM'];
+  if(x.sjb)return [RKSP.sjcap.img,'CAIXA DO MONARCA'];if(x.man)return [RKSP.sjman.img,'MANOPLA DO MONARCA'];if(x.yt)return [fullSrc('yuta'),'YUTA'];if(x.pv)return [RKSP.pvida.img,(x.pv>1?x.pv+'× ':'')+'POÇÃO VIDA NOVA'];if(x.ps)return [RKSP.psomb.img,(x.ps>1?x.ps+'× ':'')+'POÇÃO DAS SOMBRAS'];
+  if(x.anr)return [bp2Ring(x.anr[0],x.anr[1]),'ANEL '+ANC[x.anr[0]][0]+' '+ANG[x.anr[1]]];if(x.anb)return [bp2Ring(x.anb[0],x.anb[1],1),'CAIXA ANEL '+ANC[x.anb[0]][0]+' '+ANG[x.anb[1]]+(x.anb[1]<7?'+':'')];return _bi.apply(this,arguments)}}
+const bp2Rare=L=>L.some(x=>x.ch||x.yt||x.man||x.sk2||x.sjb||(x.anr&&x.anr[1]>=6)||(x.anb&&x.anb[1]>=7));
+/* entrega dos prêmios novos */
+function bp2Give(x,msg){
+  if(x.po){rkS('po',lvPo()+x.po)}
+  if(x.pv)sjAddPot('pvida',x.pv);if(x.ps)sjAddPot('psomb',x.ps);
+  if(x.sk1){const L=skSecLeft();if(L.length){const k=L[(Math.random()*L.length)|0];rkGiveSp(k);msg.push('✦ '+RKSP[k].nm)}else{rkAdd('gem',2000);msg.push('já tem as 5 peças de Virgem: +2000 💎')}}
+  if(x.sk2){const I=twInv(),has2=k=>I.some(y=>y&&y.v2&&y.skb===k),L=SKSEC.filter(k=>!has2(k));if(L.length){const k=L[(Math.random()*L.length)|0];let it=I.find(y=>y&&!y.v2&&(y.skb===k||y.nm===RKSP[k].nm));if(!it){it=Object.assign({id:'v2'+k+Date.now().toString(36)},RKSP[k]);I.push(it)}skV2Evo(it);twLS.s('tw_inv',I);try{TW.capOut=twCap()}catch(e){}msg.push('✦ '+it.nm);setTimeout(()=>{try{skV2Win(it)}catch(e){}},600);try{if(!rkG('skdvok',0)&&skDivHave()){rkS('skdvok',1);setTimeout(()=>skDivWin(),3200)}}catch(e){}}else{rkAdd('gem',4000);msg.push('já tem as 5 peças V2: +4000 💎')}}
+  if(x.sjb){const L=sjSecLeft();if(L.length){const k=L[(Math.random()*L.length)|0];rkGiveSp(k);msg.push('✦ '+RKSP[k].nm)}else{rkAdd('gem',2500);msg.push('já tem o set do Monarca: +2500 💎')}}
+  if(x.man){const I=twInv();if(!I.some(y=>y&&y.nm===RKSP.sjman.nm)){rkGiveSp('sjman');msg.push('✦ MANOPLA DO MONARCA (exclusiva)')}else{rkAdd('gem',3000);msg.push('+3000 💎')}}
+  if(x.yt){const own=rkG('own',['goku']);if(!own.includes('yuta')){own.push('yuta');rkS('own',own);msg.push('✦ YUTA liberado!')}else{rkAdd('gem',3000);msg.push('já tem o Yuta: +3000 💎')}}
+  if(x.anr){const [c,g]=x.anr,s=ANS[(Math.random()*ANS.length)|0][0];anGive({i:Date.now().toString(36)+Math.random().toString(36).slice(2,6),c,g,s,v:ANV[c][g],a:c===4?100000:c===3?50000+((Math.random()*25001)|0):0});msg.push('💍 ANEL '+ANC[c][0]+' '+ANG[g]+' ('+anSt(s)[1]+')')}
+  if(x.anb){const [c,g0]=x.anb,W=ANW.slice(g0),T=W.reduce((a,b)=>a+b,0);let q=Math.random()*T,g=g0;for(let i=0;i<W.length;i++){if((q-=W[i])<0){g=g0+i;break}}const s=ANS[(Math.random()*ANS.length)|0][0];anGive({i:Date.now().toString(36)+Math.random().toString(36).slice(2,6),c,g,s,v:ANV[c][g],a:c===4?100000:0});msg.push('💍 ANEL '+ANC[c][0]+' '+ANG[g]+'!')}}
+async function bp2Claim(r,i,quiet){const o=bpG(),C=r==='f'?'cf':'cp';if(o[C].includes(i)||i>=bpLv(o))return 0;if(r==='p'&&o.own<2)return 0;const T=(r==='f'?BPF:BPP)[i];
+  const o2=bpG();if(o2[C].includes(i))return 0;o2[C].push(i);bpS(o2);const msg=[];
+  for(const x of T){if(x.g)rkAdd('gem',x.g);if(x.r)rkAdd('red',x.r);if(x.t)rkAdd('tic',x.t);if(x.j)psAddJn(x.j);if(x.pc||x.pd){const pk=x.pc?'cura':'drop',k=x.pc||x.pd;twAddPoc({k,pk,v:RKPKV[pk][rkPkI(k)]})}
+    if(x.ch==='mit'){const own=rkG('own',['goku']),P=[...RK_MIT,'yuta'].filter(id=>CH[id]&&!own.includes(id));if(P.length){const id=P[(Math.random()*P.length)|0];own.push(id);rkS('own',own);msg.push('✦ '+CH[id].name+' liberado!')}else{rkAdd('gem',3000);msg.push('Você já tem todos: +3000 💎')}}
+    try{bp2Give(x,msg)}catch(e){}}
+  try{acSave(1)}catch(e){}rkSfx('powerUp');if(bp2Rare(T))setTimeout(()=>rkSfx('boom'),250);
+  if(!quiet||msg.length)rkToast('🎁 Nível '+(i+1)+': '+T.map(x=>bpIco(x)[1]).join(' + ')+(msg.length?' · '+msg.join(' · '):''),'#d8b4ff');return 1}
+bpPend=function(){try{const o=bpG(),L=bpLv(o);for(let i=0;i<L;i++){if(!o.cf.includes(i))return true;if(o.own>=2&&!o.cp.includes(i))return true}
+  return BPMD.some(m=>(o.d[m[2]]|0)>=m[3]&&!o.dc.includes(m[0]))||BPMS.some(m=>(o.c[m[2]]|0)>=m[3]&&!o.sc.includes(m[0]))}catch(e){return false}};
+const bp2B=(x0,y0,x1,y1)=>`left:${x0/18.47}%;top:${y0/8.51}%;width:${(x1-x0)/18.47}%;height:${(y1-y0)/8.51}%`;
+const BP2X=[[283,425],[441,582],[599,738],[754,893],[909,1047],[1063,1200],[1216,1354],[1369,1507],[1522,1658],[1674,1794]];
+function bp2Card(L,i,got,ok,lock,row){const [im,tx]=bpIco(L[0]),ex=L.slice(1).map(x=>bpIco(x)[1]).join(' + ');const st=got?'got':!ok?'far':lock?'lock':'can';
+  return `<button class="bpC bp2C ${row} ${st}${bp2Rare(L)?' rare':''}" data-b="${st==='can'?'claim':'info'}" data-r="${row}" data-i="${i}"><img src="${im}" alt=""><b>${tx}</b>${ex?`<small>+ ${ex}</small>`:''}${got?'<i class="ck">✔</i>':st==='can'?'<i class="go">PEGAR</i>':''}${row==='p'&&lock?'<i class="lk">🔒</i>':''}</button>`}
+bpH=function(){const o=bpG(),L=bpLv(o),p0=BP.pg*10,xpIn=(o.xp|0)-L*BPS.xpL,end=Math.max(0,BPS.fim-Date.now()),dd=Math.floor(end/864e5),hh=Math.floor(end%864e5/36e5),own=o.own>=2;
+  const mis=BPMD.some(m=>(o.d[m[2]]|0)>=m[3]&&!o.dc.includes(m[0]))||BPMS.some(m=>(o.c[m[2]]|0)>=m[3]&&!o.sc.includes(m[0]));
+  return `<button class="hs bpBk bp2Bk" data-b="back" style="${bp2B(10,10,120,80)}">⬅</button>
+  <div class="bp2Lv" style="${bp2B(470,105,620,205)}"><b>${L}</b><small>/20</small></div>
+  <div class="bp2Bar" style="${bp2B(692,163,1476,196)}"><s style="width:${L>=20?100:xpIn/BPS.xpL*100}%"></s><span>${L>=20?'NÍVEL MÁXIMO!':'NÍVEL '+(L+1)+' · '+xpIn+' / '+BPS.xpL+' XP'}</span></div>
+  <div class="bp2Tm" style="${bp2B(692,200,1476,226)}">${bpOn2()?'⏳ termina em '+dd+'d '+hh+'h':'TEMPORADA ENCERRADA'}</div>
+  <button class="hs bp2Mi" data-b="mis" style="${bp2B(1537,143,1802,210)}">${mis?'<i class="dot"></i>':''}</button>
+  <div class="bp2Pm ${own?'on':''}" style="${bp2B(78,705,252,760)}">${own?'✔ LIBERADO':'🔒 SÓ COM CÓDIGO'}</div>
+  ${BP2X.map(([a,b],j)=>{const i=p0+j;return `<div class="bpCell" style="${bp2B(a,285,b,440)}">${bp2Card(BPF[i],i,o.cf.includes(i),i<L,false,'f')}</div><div class="bpCell" style="${bp2B(a,530,b,690)}">${bp2Card(BPP[i],i,o.cp.includes(i),i<L,!own,'p')}</div><div class="bp2Mk ${i<L?'on':''}" style="${bp2B((a+b)/2-26,463,(a+b)/2+26,500)}">${i+1}</div>`}).join('')}
+  <button class="hs bpAr" data-b="pg" style="${bp2B(0,430,50,520)}"></button><button class="hs bpAr" data-b="pg" style="${bp2B(1797,430,1847,520)}"></button>
+  <div class="bp2Bt" style="${bp2B(520,775,1340,835)}"><button data-b="code">🎟️ CÓDIGO DO PREMIUM</button><button data-b="all">✔ PEGAR TUDO</button><span>Página ${BP.pg+1}/2 · níveis ${p0+1}–${p0+10}</span></div>`};
+{const _ba=bpAct;bpAct=async function(a,b){if(a==='tr')return;
+  if(a==='info'){const o=bpG(),r=b.dataset.r,i=+b.dataset.i,L=(r==='f'?BPF:BPP)[i],lk=r==='p'&&o.own<2;return rkToast(`Nível ${i+1}: `+L.map(x=>bpIco(x)[1]).join(' + ')+(i>=bpLv(o)?' · faça as MISSÕES para chegar':'')+(lk?' · 🔒 PREMIUM: libera com o código':''),'#d8b4ff')}
+  if(a==='claim'||a==='all'){if(BP.busy)return;BP.busy=1;try{if(a==='claim')await bp2Claim(b.dataset.r,+b.dataset.i);else{const o=bpG(),L=bpLv(o);let n=0;for(let i=0;i<L;i++)for(const r of ['f','p'])n+=await bp2Claim(r,i,1);rkToast(n?'✔ '+n+' prêmio(s) pegos!':'Nada para pegar agora.','#7dff9a')}}finally{BP.busy=0}if(RKV==='bp')rkView('bp');return}
+  return _ba.apply(this,arguments)}}
+{const st=document.createElement('style');st.textContent=`
+.rk_bp .bp2Lv{display:flex;align-items:baseline;justify-content:center;gap:.1em;color:#fff;text-shadow:0 0 .4em #b48cff,0 2px 3px #000}.rk_bp .bp2Lv b{font:900 2.1em var(--f-display,var(--f-ui))}.rk_bp .bp2Lv small{font:800 .8em var(--f-ui)}
+.rk_bp .bp2Bar{border-radius:1em;overflow:hidden;position:absolute}.rk_bp .bp2Bar s{position:absolute;left:0;top:0;bottom:0;background:linear-gradient(90deg,#5a2cff,#b48cff,#9fe0ff);box-shadow:0 0 .6em #9a5cff;border-radius:1em}
+.rk_bp .bp2Bar span{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font:900 .7em var(--f-ui);color:#fff;text-shadow:0 1px 2px #000}
+.rk_bp .bp2Tm{font:800 .55em var(--f-ui);color:#d8c4ff;text-align:center;text-shadow:0 1px 2px #000}
+.rk_bp .bp2Mi .dot{position:absolute;top:-.2em;right:-.2em;width:.8em;height:.8em;border-radius:50%;background:#ff3b4a;box-shadow:0 0 .4em #ff3b4a}
+.rk_bp .bp2Pm{display:flex;align-items:center;justify-content:center;font:900 .55em var(--f-ui);color:#ffe9a0;text-shadow:0 1px 2px #000;background:rgba(20,8,30,.6);border-radius:.6em}.rk_bp .bp2Pm.on{color:#7dff9a}
+.rk_bp .bp2Mk{display:flex;align-items:center;justify-content:center;font:900 .55em var(--f-ui);color:#9fb0d0;text-shadow:0 1px 2px #000}.rk_bp .bp2Mk.on{color:#fff;text-shadow:0 0 .4em #7fd0ff}
+.rk_bp .bp2C img{width:58%;height:50%;border-radius:.3em}.rk_bp .bp2C b{font-size:.5em}.rk_bp .bp2C small{font-size:.4em}
+.rk_bp .bp2C .lk{position:absolute;top:.2em;right:.2em;font-style:normal;font-size:.7em}
+.rk_bp .bp2Bt{display:flex;align-items:center;justify-content:center;gap:.6em}.rk_bp .bp2Bt button{font:900 .6em var(--f-ui);color:#fff;padding:.45em .9em;border-radius:.7em;border:2px solid #b48cff;background:linear-gradient(#3a1a6a,#1a0a30);box-shadow:0 0 .5em rgba(160,100,255,.5)}
+.rk_bp .bp2Bt span{font:800 .5em var(--f-ui);color:#d8c4ff;text-shadow:0 1px 2px #000}
+.rk_bp .rkMusB,.rk_bp .rkCodB,.rk_bp .rkAcB{display:none!important}.rk_bp .bp2Bk{font:900 1.2em var(--f-ui);color:#fff;background:rgba(20,8,40,.7);border:2px solid #b48cff;border-radius:.6em}`;document.head.appendChild(st)}
+
 function twTrofList(){const tc=twLS.g('tw_tc',{}),run={};for(const t of TW.tr)run[t.k]=(run[t.k]||0)+1;
   twModal(`<div class="twM"><h3>🎖️ TROFÉUS</h3><div class="twTL">${Object.keys(TWTR).map(k=>{const T=TWTR[k];return `<div class="${tc[k]||run[k]?'got':''}"><i>${T.i}</i><b>${T.n}</b><span>${T.d}</span><em>+${T.p} 🏆</em><small>${run[k]?'nesta subida: '+run[k]+' · ':''}total: ${(tc[k]||0)}</small></div>`}).join('')}</div>
     <p class="twH">Cada troféu soma pontos 🏆 no ranking. Quem sobe mais andares fica na frente; empate = mais troféus, depois menos tempo.</p><div class="row"><button class="btn" id="twTx">FECHAR</button></div></div>`);
@@ -13850,7 +13966,7 @@ window.__dbg={mus:()=>[MCUR,MEL.src.split('/').pop()],stg:()=>STAGE.key,prepMatc
 })();
 </script>
 <style>#updB{position:fixed;left:50%;top:max(8px,env(safe-area-inset-top));transform:translateX(-50%);z-index:99999;padding:10px 22px;border-radius:14px;border:2px solid #fff3c0;background:linear-gradient(#ffd84a,#e08a10);color:#3a1d00;font:900 15px system-ui,sans-serif;box-shadow:0 0 18px #ffb21f;cursor:pointer;animation:updP 1s ease-in-out infinite alternate}@keyframes updP{to{transform:translateX(-50%) scale(1.05)}}</style>
-<script>(function(){const V='2b6064f751da';if(!/^https?:/.test(location.protocol))return;let nv=null;
+<script>(function(){const V='a22eb20f55e3';if(!/^https?:/.test(location.protocol))return;let nv=null;
 function show(){if(document.getElementById('updB'))return;try{if(typeof G!=='undefined'&&G.mode==='fight')return}catch(e){}const b=document.createElement('button');b.id='updB';b.textContent='🔄 ATUALIZAÇÃO NOVA! Toque para atualizar';
   b.onclick=()=>{b.textContent='⏳ Atualizando...';try{acSave(1)}catch(e){}setTimeout(()=>location.reload(),900)};document.body.appendChild(b)}
 async function chk(){if(document.hidden)return;if(nv){show();return}try{const r=await fetch('versao.txt?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const t=(await r.text()).trim();if(/^[0-9a-f]{8,40}$/.test(t)&&t!==V){nv=t;show()}}catch(e){}}
