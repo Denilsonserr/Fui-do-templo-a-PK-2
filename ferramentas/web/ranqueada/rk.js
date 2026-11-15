@@ -6168,7 +6168,6 @@ function tbFixRun(sel){const P=TWC.filter(x=>CH[x]&&x!==sel).sort((a,b)=>tbH(a)-
 {const _st=tnStart;tnStart=function(g0){if(!tnEvLive()){rkS('tnev','');return _st.apply(this,arguments)}const ux=TNUX,rk=TNRISK,fi=tnFight;TNUX=1;TNRISK=1;rkS('tnev',TBID);tnFight=()=>{};
   try{_st.call(this,0)}finally{TNUX=ux;TNRISK=rk;tnFight=fi}try{tbFixRun(TW.pick)}catch(e){}tnSave();return tnFight()}}
 {const _fi=tnFight;tnFight=function(){const ev=rkG('tnev','')===TBID&&tnEvLive();if(ev){TN.ux=1;const rk=TNRISK;TNRISK=1;try{return _fi.apply(this,arguments)}finally{TNRISK=rk}}return _fi.apply(this,arguments)}}
-{const _tf=tnFinish;tnFinish=function(){const r=_tf.apply(this,arguments);try{if(!TN.on)setTimeout(()=>rkS('tnev',''),3000)}catch(e){}return r}}
 {const _sd=twSend;twSend=async function(rec,nome){const id=TWEV.id;const bad=tnEvLive()&&rkG('tnev','')!==TBID;if(bad)TWEV.id='fora_'+id;try{return await _sd.apply(this,arguments)}finally{TWEV.id=id}}}
 {const _ra=rkApply;rkApply=function(){const r=_ra.apply(this,arguments);try{if(TN.on&&G.gmode==='torre'&&G.p&&rkG('tnev','')===TBID){const p=G.p[0];
   p.tdm=1;p.tsp=1;p.tdf=1;p.tcr=5;p.tsb=1;p.tcd=0;p.tfd=0;p.pspd=0;p.preg=0;p.tki=1;p.tls=0;p.rkCura=0;p.sjA=1;p.sjS=null;p.sjSB=0;p.mhp=TW.bars*LAYER;p.hp=p.hpLag=Math.max(1,Math.min(p.mhp,Math.round(TW.hpv)))}}catch(e){}return r}}

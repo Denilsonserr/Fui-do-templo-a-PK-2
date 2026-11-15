@@ -14685,7 +14685,6 @@ function tbFixRun(sel){const P=TWC.filter(x=>CH[x]&&x!==sel).sort((a,b)=>tbH(a)-
 {const _st=tnStart;tnStart=function(g0){if(!tnEvLive()){rkS('tnev','');return _st.apply(this,arguments)}const ux=TNUX,rk=TNRISK,fi=tnFight;TNUX=1;TNRISK=1;rkS('tnev',TBID);tnFight=()=>{};
   try{_st.call(this,0)}finally{TNUX=ux;TNRISK=rk;tnFight=fi}try{tbFixRun(TW.pick)}catch(e){}tnSave();return tnFight()}}
 {const _fi=tnFight;tnFight=function(){const ev=rkG('tnev','')===TBID&&tnEvLive();if(ev){TN.ux=1;const rk=TNRISK;TNRISK=1;try{return _fi.apply(this,arguments)}finally{TNRISK=rk}}return _fi.apply(this,arguments)}}
-{const _tf=tnFinish;tnFinish=function(){const r=_tf.apply(this,arguments);try{if(!TN.on)setTimeout(()=>rkS('tnev',''),3000)}catch(e){}return r}}
 {const _sd=twSend;twSend=async function(rec,nome){const id=TWEV.id;const bad=tnEvLive()&&rkG('tnev','')!==TBID;if(bad)TWEV.id='fora_'+id;try{return await _sd.apply(this,arguments)}finally{TWEV.id=id}}}
 {const _ra=rkApply;rkApply=function(){const r=_ra.apply(this,arguments);try{if(TN.on&&G.gmode==='torre'&&G.p&&rkG('tnev','')===TBID){const p=G.p[0];
   p.tdm=1;p.tsp=1;p.tdf=1;p.tcr=5;p.tsb=1;p.tcd=0;p.tfd=0;p.pspd=0;p.preg=0;p.tki=1;p.tls=0;p.rkCura=0;p.sjA=1;p.sjS=null;p.sjSB=0;p.mhp=TW.bars*LAYER;p.hp=p.hpLag=Math.max(1,Math.min(p.mhp,Math.round(TW.hpv)))}}catch(e){}return r}}
@@ -14882,7 +14881,7 @@ window.__dbg={mus:()=>[MCUR,MEL.src.split('/').pop()],stg:()=>STAGE.key,prepMatc
 })();
 </script>
 <style>#updB{position:fixed;left:50%;top:max(8px,env(safe-area-inset-top));transform:translateX(-50%);z-index:99999;padding:10px 22px;border-radius:14px;border:2px solid #fff3c0;background:linear-gradient(#ffd84a,#e08a10);color:#3a1d00;font:900 15px system-ui,sans-serif;box-shadow:0 0 18px #ffb21f;cursor:pointer;animation:updP 1s ease-in-out infinite alternate}@keyframes updP{to{transform:translateX(-50%) scale(1.05)}}</style>
-<script>(function(){const V='9eae3ac08640';if(!/^https?:/.test(location.protocol))return;let nv=null;
+<script>(function(){const V='4ce6affe67d8';if(!/^https?:/.test(location.protocol))return;let nv=null;
 function show(){if(document.getElementById('updB'))return;try{if(typeof G!=='undefined'&&G.mode==='fight')return}catch(e){}const b=document.createElement('button');b.id='updB';b.textContent='🔄 ATUALIZAÇÃO NOVA! Toque para atualizar';
   b.onclick=()=>{b.textContent='⏳ Atualizando...';try{acSave(1)}catch(e){}setTimeout(()=>location.reload(),900)};document.body.appendChild(b)}
 async function chk(){if(document.hidden)return;if(nv){show();return}try{const r=await fetch('versao.txt?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const t=(await r.text()).trim();if(/^[0-9a-f]{8,40}$/.test(t)&&t!==V){nv=t;show()}}catch(e){}}

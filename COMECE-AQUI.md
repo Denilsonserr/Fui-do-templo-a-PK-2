@@ -179,3 +179,4 @@ Este arquivo tem duas partes: a **Parte 1** é para o dono (Denilson) e a **Part
 - v488: missões — Torre nova agora conta no passe (andares, lutas, completar torre) e no Sistema do Sung (vitórias); 'Invoque sombras' vira 'Vença lutas com o Sung' para quem não é Necromante ou está sem sombra.
 - v489: TORNEIO THE BEST na Torre (15/11 20:00–21:00): 1º anel dourado S + 10.000 💎 + título THE BEST (arte do dono, arco-íris, +30% dano/+20% crit/+20% sorte/+20% drop/+10% anel na Caça); 2º vermelho SSS + 5.000; 3º vermelho SS + 3.000.
 - v490: Torneio THE BEST recomeça 20:30–21:30 (ranking novo) e é igual para todos: andar 1, ULTRA (sem bônus nenhum), risco normal, mesmos bosses/cenários; só conta subida começada no torneio.
+- v491: Torre no torneio — depois de cair e começar de novo, a subida nova voltava para o andar 1 ao passar de andar (marca do torneio era apagada 3 s depois do fim). Corrigido; teste ttorre_fluxo_v491 sobe os 11 andares.
