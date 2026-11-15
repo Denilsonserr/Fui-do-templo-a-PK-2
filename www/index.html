@@ -13504,9 +13504,16 @@ function sjSpDraw(S){const k=S.t,up=k<12?k/12:k<22?1:1-(k-22)/12,x=S.x,y=FLOOR+4
    ao acertar: congela, tela treme, clarão azul, anéis explodindo, raios e faíscas, inimigo voa longe. Recarga 1,2 s. Perto = auto combo normal. ================= */
 const SJRGF=["a/e27126e1a16a79.webp", "a/dceeab646ae5c0.webp", "a/880c8155a3cfe3.webp", "a/64baf4fbe11752.webp", "a/e35f59796215fa.webp", "a/bd3bd056c6e502.webp", "a/d9bddbd3581b2f.webp", "a/3306bd6c4d9af8.webp", "a/f91a84aa62c13c.webp", "a/d2913d40edd852.webp", "a/95775f1c43be3d.webp", "a/42fe4734a696d2.webp"],SJRGW=640,SJRGH=213,SJRGON=()=>ADMT.on;let SJRGI=null,SJRG=[],SJRI=[];
 function sjRgLoad(){if(SJRGI)return;SJRGI=SJRGF.map(u=>{const i=new Image();i.decoding='async';i.src=u;return i})}
-function sjRgOk(f,o){return SJRGON()&&f&&o&&f.def&&f.def.sid==='sj'&&!f.cpu&&!f.ko&&!o.ko&&G.phase==='fight'&&!G.trans&&!G.ws&&Math.abs(o.x-f.x)>400&&G.frame>=(f.sjRgCD||0)&&!f.inp.down}
-{const _gc=groundControl;groundControl=function(f,o){try{if(bufd(f,'punch')&&sjRgOk(f,o)&&/^(idle|walk|run|crouch)$/.test(f.state||'')){use(f,'punch');sjRgLoad();f.facing=o.x>f.x?1:-1;
-    f.sjRgCD=G.frame+72;f.sjRgT=G.frame;startMove(f,'jab');return}}catch(e){}return _gc.apply(this,arguments)}}
+function sjRgOk(f,o){return SJRGON()&&f&&o&&f.def&&f.def.sid==='sj'&&!f.cpu&&!f.ko&&!o.ko&&G.phase==='fight'&&!G.trans&&!G.ws&&G.frame>=(f.sjRgCD||0)}
+/* v454: saiu do soco → agora é o botão KI (o "foguinho", o mesmo do ataque de longe do Goku), qualquer distância, recarga 7 s.
+   Na recarga o botão KI faz o que fazia antes. O botão mostra a recarga (escurece e enche de volta). */
+const SJRGCD=()=>Math.round(420*(G.spd||1)); /* 7 s de verdade (o jogo roda G.spd quadros a mais) */
+{const _gc=groundControl;groundControl=function(f,o){try{if(bufd(f,'kiTap')&&sjRgOk(f,o)&&/^(idle|walk|run|crouch|charge)$/.test(f.state||'')){use(f,'kiTap');sjRgLoad();f.facing=o.x>f.x?1:-1;
+    f.sjRgCD=G.frame+SJRGCD();f.sjRgT=G.frame;startMove(f,'jab');return}}catch(e){}return _gc.apply(this,arguments)}}
+{let last=-1;const _u=update;update=function(){const r=_u.apply(this,arguments);try{if(G.frame%6)return r;const B=$('bKi'),f=G.p&&G.p[0],on=!!(B&&f&&G.mode==='fight'&&SJRGON()&&f.def&&f.def.sid==='sj');
+  const k=on?Math.max(0,Math.min(1,((f.sjRgCD||0)-G.frame)/SJRGCD())):0,v=on?Math.round(k*100):-1;if(v!==last&&B){last=v;B.classList.toggle('sjRgB',on);let O=B.querySelector('.sjCdO');if(!O){O=document.createElement('i');O.className='sjCdO';B.appendChild(O)}O.hidden=!(on&&k>0);if(on&&k>0){O.style.background=`conic-gradient(rgba(5,3,15,.78) ${(k*100).toFixed(0)}%,rgba(5,3,15,.15) 0)`;O.textContent=Math.ceil(((f.sjRgCD||0)-G.frame)/60/(G.spd||1))}}}catch(e){}return r}}
+{const st=document.createElement('style');st.textContent=`#bKi.sjRgB{box-shadow:0 0 .7em #8a5cff,0 0 1.4em rgba(120,200,255,.6)!important}
+#bKi .sjCdO{position:absolute;inset:6%;border-radius:50%;pointer-events:none;display:flex;align-items:center;justify-content:center;color:#fff;font:900 1.25em var(--f-ui,sans-serif);text-shadow:0 0 .3em #8a5cff,0 0 .15em #000;z-index:3}#bKi .sjCdO[hidden]{display:none}`;document.head.appendChild(st)}
 function sjRgFire(f){const d=f.facing||1;SJRG.push({a:f,x:f.x+d*70,y:f.y-160,d,t:0,tr:[]});
   try{ring(f.x+d*80,f.y-160,'#bfe6ff',70,14,6);ring(f.x+d*80,f.y-160,'#8a5cff',120,18,4)}catch(e){}G.shake=Math.max(G.shake||0,8);G.flash=Math.max(G.flash||0,4);G.flashCol='#a8dcff';try{SFX.whoosh()}catch(e){}}
 {const _u=update;update=function(){const r=_u.apply(this,arguments);try{
@@ -13733,7 +13740,7 @@ window.__dbg={mus:()=>[MCUR,MEL.src.split('/').pop()],stg:()=>STAGE.key,prepMatc
 })();
 </script>
 <style>#updB{position:fixed;left:50%;top:max(8px,env(safe-area-inset-top));transform:translateX(-50%);z-index:99999;padding:10px 22px;border-radius:14px;border:2px solid #fff3c0;background:linear-gradient(#ffd84a,#e08a10);color:#3a1d00;font:900 15px system-ui,sans-serif;box-shadow:0 0 18px #ffb21f;cursor:pointer;animation:updP 1s ease-in-out infinite alternate}@keyframes updP{to{transform:translateX(-50%) scale(1.05)}}</style>
-<script>(function(){const V='d5564be5f8c6';if(!/^https?:/.test(location.protocol))return;let nv=null;
+<script>(function(){const V='94b86665fbbf';if(!/^https?:/.test(location.protocol))return;let nv=null;
 function show(){if(document.getElementById('updB'))return;try{if(typeof G!=='undefined'&&G.mode==='fight')return}catch(e){}const b=document.createElement('button');b.id='updB';b.textContent='🔄 ATUALIZAÇÃO NOVA! Toque para atualizar';
   b.onclick=()=>{b.textContent='⏳ Atualizando...';try{acSave(1)}catch(e){}setTimeout(()=>location.reload(),900)};document.body.appendChild(b)}
 async function chk(){if(document.hidden)return;if(nv){show();return}try{const r=await fetch('versao.txt?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const t=(await r.text()).trim();if(/^[0-9a-f]{8,40}$/.test(t)&&t!==V){nv=t;show()}}catch(e){}}
