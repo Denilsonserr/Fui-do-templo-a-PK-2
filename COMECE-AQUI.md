@@ -128,3 +128,12 @@ Este arquivo tem duas partes: a **Parte 1** é para o dono (Denilson) e a **Part
 - v469: TIRADO o tingimento roxo dos quadros do Sung (wrapper de drawSprite/spriteImg da v461) — ele apagava os efeitos de energia azul/roxo dos golpes (camada S.b). Raios roxos da forma continuam.
 - v470: Sung — combo Dança das Sombras com 11 golpes + finalizador forte (extra/9z_v470.py); combo a cada 2 s; +15% de dano (sem a sombra); DASH teleporta atrás do inimigo e atordoa 0,5 s (recarga 1 s); a passiva do tapa a cada 3 golpes não conta/interrompe mais o combo (era isso que cortava o combo em ~5 golpes). Teste: tsung_v470.js.
 - v471: 2º código do PASSE 2X (hash swnp7u, texto só com o dono).
+
+## v472 — Dungeon dos Portais: NPCs do dono, chefes Urso e Igris, sombras
+- Artes: ferramentas/portais/npc (recebido/, cortar.py → npc.json; refs.py → retratos). Cada folha é normalizada pela altura do 1º quadro (tabela POSE).
+- Motor novo "pn" (pnInit/pnStep/pnDraw, por cima do bs dos lobos): DEMÔNIO DE CHAMA e CEIFADOR, cores roxo/vermelho/branco (PNV), AURA de nível BRANCA<AZUL<PRETA<VERMELHA (PNL: dano/vida/velocidade). Batem sem parar, kb ≤ 2 (não empurram). Até 2 LOBOS SOMBRIOS por sala (pretos, sem combo).
+- Morreu → cai PÓ e às vezes 💎 (mais no rank alto). Sala comum SEM baú; baú só no chefe (+ chance de peça do Monarca 0,3% E … 3% S).
+- Chefes: sala 5/15/25… URSO DAS SOMBRAS (3 vidas, renasce com a animação de erguer); 1ª vitória com Sung = sombra TANK rank C (rk_urso). Sala 10/20… IGRIS (forte/rápido, não trava apanhando); sombra IGRIS rank A por chance: E .2 · D .5 · C 1 · B 2 · A 3,5 · S 5 %.
+- Tela "ERGA-SE!" (pnShWin) com EQUIPAR AGORA. Sung SEM sombra do urso até vencer o Urso (sjSys filtra 'tank' sem rk_urso).
+- IGRIS sombra (SJSH.igris, rank A): igsTick/igsDraw — aura do Monarca, combo longo, crítico 35%, teleporta atrás de quem ataca o Sung e derruba, segura especial (metade do dano).
+- Testes: tportal_npc_v472.js, tigris_sombra_v472.js.
