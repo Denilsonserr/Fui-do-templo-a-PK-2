@@ -170,3 +170,4 @@ Este arquivo tem duas partes: a **Parte 1** é para o dono (Denilson) e a **Part
 - Teste: ttemporada2_v479.js.
 - v480: BUG Igris "não descia": vida/defesa vinham da Hidra × rank (dano ficava em 9-17%, Igris S com 684 mil = ~140 mil golpes). Agora fixo por rank (PTB): Igris E 250 … S 900 golpes básicos, Urso 120…430 por vida, monstros 10…38 × aura. Sung Sistema 100 sem itens: em 20 s o Igris E perde 83% e o S 23%. Teste: tportal_vida_v480.js. (Obs.: nos testes não use vida 1e9 no jogador — o HUD trava.)
 - v481: 3º código do PASSE 2X (hash edzhx5, texto só com o dono).
+- v482: código ADM (hash 18cu6rr, texto só com o dono): 6 anéis DOURADOS SP (1 de cada atributo, 10 milhões de anos, passivas esq/cmb/vamp/fur) + 50.000 joias negras (rk_ps.jn).

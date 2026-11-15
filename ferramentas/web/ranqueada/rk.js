@@ -6029,3 +6029,10 @@ const PTB={dfB:[.7,.65,.6,.55,.5,.45],ig:[250,350,450,600,750,900],ur:[120,170,2
     if(P.k==='ig'){df=PTB.dfB[r];hits=PTB.ig[r]*.7}else if(P.k==='urso'){df=PTB.dfB[r];hits=PTB.ur[r]}else{df=PTB.dfM[r];hits=PTB.mb[r]*(L.hp||1)*(1+(PTR.room-1)*.04)}
     f.bDf=df;f.tdf=df;f.mhp=Math.max(200,Math.round(hits*60*df));f.hp=f.hpLag=f.mhp}}catch(e){}return f}}
 TWCUP['edzhx5']={nm:'PASSE 2X · TEMPORADA SOLO LEVELING (prêmios em dobro)',it:[],bp:2,s2:1,x2:1}; /* v481: 3º código do PASSE 2X (texto só com o dono) */
+
+/* v482: código do ADM (texto só com o dono): 6 ANÉIS DOURADOS SP (um de cada atributo, 10 milhões de anos, passivas variadas) + 50.000 JOIAS NEGRAS (pedras de passiva) */
+TWCUP['18cu6rr']={nm:'TODOS OS ANÉIS DOURADOS SP + 50.000 JOIAS (ADM)',acc:1,adm:1,it:[],anSPall:1};
+{const _cp=twCupom;twCupom=async function(code,E){const C=TWCUP[twHash(String(code).toUpperCase())];const r=await _cp.apply(this,arguments);
+  try{if(C&&C.anSPall&&E&&/\bok\b/.test(E.className)){const S=ANS.map(x=>x[0]),P=['esq','cmb','vamp','fur','cmb','esq'],a=1e7,k=.8+.6*Math.log10(a/1e6);
+    S.forEach((s,i)=>{const s2=S[(i+1)%S.length];anGive({i:Date.now().toString(36)+i+Math.random().toString(36).slice(2,6),c:5,g:8,s,s2,a,p:P[i%P.length],v:Math.round(ANV[5][8]*k*10)/10})});
+    psAddJn(50000);try{acSave(1)}catch(e){}E.textContent='✅ Você ganhou: 💍 6 ANÉIS DOURADOS SP (10.000.000 anos) + 💠 50.000 JOIAS NEGRAS!';try{rkSfx('boom')}catch(e){}}}catch(e){}return r}}
