@@ -6122,8 +6122,8 @@ try{window.__mis={ms:()=>{sjSysOpen();sjPanel('ms');return [...document.querySel
    🥇 ANEL DOURADO nota S + 10.000 💎 + título THE BEST (arte do dono, arco-íris)
    🥈 ANEL VERMELHO SSS + 5.000 💎 · 🥉 ANEL VERMELHO SS + 3.000 💎
    Título THE BEST (equipado): +30% dano · +20% crítico · +20% sorte · +20% drop · +10% de chance de anel na Caça. ================= */
-const TBIMG='a/2290d71fcbd1a1.webp',TBID='ev20261115tb';
-Object.assign(TWEV,{id:TBID,nome:'🏆 TORNEIO THE BEST',fast:1,flat:1,lives:2,ini:Date.parse('2026-11-15T20:00:00-03:00'),fim:Date.parse('2026-11-15T21:00:00-03:00'),part:0,
+const TBIMG='a/2290d71fcbd1a1.webp',TBID='ev20261115tb2'; /* v490: recomeçou às 20:30 (id novo = ranking do zero) */
+Object.assign(TWEV,{id:TBID,nome:'🏆 TORNEIO THE BEST',fast:1,flat:1,lives:2,ini:Date.parse('2026-11-15T20:30:00-03:00'),fim:Date.parse('2026-11-15T21:30:00-03:00'),part:0,
   prem:[{pos:1,gem:10000,tb:[5,5],tit:'best'},{pos:2,gem:5000,tb:[4,7]},{pos:3,gem:3000,tb:[4,6]}]});
 if(window.__twEvT){TWEV.ini=Date.now()+window.__twEvT[0];TWEV.fim=Date.now()+window.__twEvT[1]}
 TWTIT.best={n:'THE BEST',i:'👑',c:'#ff7ad9',d:'Campeão do Torneio THE BEST · +30% dano · +20% crítico · +20% sorte · +20% drop · +10% anéis na Caça',hid:1};
@@ -6154,3 +6154,22 @@ function tbGive(pos){if(TWEV.id!==TBID||rkG('tbg_'+TBID,0))return;const P=TWEV.p
 {const _ps=psSum;psSum=function(id){const o=_ps.apply(this,arguments);if(id)return o;try{if(tbOn()){o.st+=20;o.drop+=20}}catch(e){}return o}}
 {const _dl=anDropLobo;anDropLobo=function(L){const r=_dl.apply(this,arguments);if(r||!tbOn()||Math.random()>=.1)return r;return _dl.apply(this,arguments)}}
 try{window.__tb={give:p=>tbGive(p),on:tbOn,ev:()=>TWEV,nm:P=>evPrzNm(P),tit:(t,a)=>pfTitH(t||'best','',a),sum:()=>psSum()}}catch(e){}
+
+/* ================= v490: TORNEIO THE BEST recomeça 20:30 → 21:30 e fica IGUAL PARA TODOS (pedido do dono 15/11 20:06)
+   Durante o torneio, toda subida da Torre: começa no ANDAR 1 (Principal), modo ULTRA (força pura: sem equipamento, anel, joia/passiva, título,
+   poção, bônus de rank, nível/constelação, Sistema do Sung e ADM → todo mundo com o mesmo dano/defesa/velocidade/crítico), risco NORMAL,
+   inimigos iguais para todos. Só conta no ranking do torneio a subida que COMEÇOU durante o torneio (rk_tnev). ================= */
+const tnEvLive=()=>{try{return TWEV.id===TBID&&twEvSt()==='ao vivo'}catch(e){return false}};
+{const _go=tnGo;tnGo=function(){try{if(tnEvLive()&&tnRun()&&rkG('tnev','')!==TBID){rkS('tnrun',null);twToast('🏆 TORNEIO: a subida antiga foi encerrada — começando do ANDAR 1, igual para todos','#ffd84a')}}catch(e){}return _go.apply(this,arguments)}}
+/* bosses e cenários na MESMA ORDEM para todo mundo (sorteio fixo do torneio) */
+const tbH=x=>{let h=0x811c9dc5;for(const c of TBID+x){h^=c.charCodeAt(0);h=Math.imul(h,0x01000193)>>>0}return h};
+function tbFixRun(sel){const P=TWC.filter(x=>CH[x]&&x!==sel).sort((a,b)=>tbH(a)-tbH(b)),B=[];for(let i=0;B.length<TNT;i++)B.push(P[i%P.length]);
+  const K=Object.keys(STG).filter(k=>!STG[k].hid).sort((a,b)=>tbH(a)-tbH(b)),S=[];for(let i=0;S.length<TNT;i++)S.push(K[i%Math.max(1,K.length)]||'cupula');TN.bosses=B;TN.stg=S}
+{const _st=tnStart;tnStart=function(g0){if(!tnEvLive()){rkS('tnev','');return _st.apply(this,arguments)}const ux=TNUX,rk=TNRISK,fi=tnFight;TNUX=1;TNRISK=1;rkS('tnev',TBID);tnFight=()=>{};
+  try{_st.call(this,0)}finally{TNUX=ux;TNRISK=rk;tnFight=fi}try{tbFixRun(TW.pick)}catch(e){}tnSave();return tnFight()}}
+{const _fi=tnFight;tnFight=function(){const ev=rkG('tnev','')===TBID&&tnEvLive();if(ev){TN.ux=1;const rk=TNRISK;TNRISK=1;try{return _fi.apply(this,arguments)}finally{TNRISK=rk}}return _fi.apply(this,arguments)}}
+{const _tf=tnFinish;tnFinish=function(){const r=_tf.apply(this,arguments);try{if(!TN.on)setTimeout(()=>rkS('tnev',''),3000)}catch(e){}return r}}
+{const _sd=twSend;twSend=async function(rec,nome){const id=TWEV.id;const bad=tnEvLive()&&rkG('tnev','')!==TBID;if(bad)TWEV.id='fora_'+id;try{return await _sd.apply(this,arguments)}finally{TWEV.id=id}}}
+{const _ra=rkApply;rkApply=function(){const r=_ra.apply(this,arguments);try{if(TN.on&&G.gmode==='torre'&&G.p&&rkG('tnev','')===TBID){const p=G.p[0];
+  p.tdm=1;p.tsp=1;p.tdf=1;p.tcr=5;p.tsb=1;p.tcd=0;p.tfd=0;p.pspd=0;p.preg=0;p.tki=1;p.tls=0;p.rkCura=0;p.sjA=1;p.sjS=null;p.sjSB=0;p.mhp=TW.bars*LAYER;p.hp=p.hpLag=Math.max(1,Math.min(p.mhp,Math.round(TW.hpv)))}}catch(e){}return r}}
+try{window.__tb2={bs:()=>TN.bosses.join(','),live:tnEvLive,flag:()=>rkG('tnev',''),go:()=>tnGo(),G:()=>G,TN:()=>TN,TW:()=>TW}}catch(e){}
