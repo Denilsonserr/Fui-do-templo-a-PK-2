@@ -1,0 +1,9 @@
+// v483: jogador da T1 com tudo pego (rwc2 cheio), subiu na T2 até OURO → as recompensas BRONZE/PRATA/OURO ficam liberadas e dá para pegar
+const {chromium}=require('playwright');(async()=>{const b=await chromium.launch();const p=await b.newPage({viewport:{width:915,height:412}});const E=[];p.on('pageerror',e=>E.push(e.message));await p.route(/fonts\.g|firestore/,r=>r.abort());
+await p.addInitScript(()=>{if(!sessionStorage.d){sessionStorage.d=1;localStorage.clear();Object.assign(localStorage,{tw_nome:'"V"',rk_ini:'1',rk_xpv2:'1',rk_dia:'1',rk_lvrz:'1',rk_rs463:'1',rk_rs464:'1',rk_rs464b:'1',rk_s2:'1',rk_s2rw:'1',rk_rp:'6000',rk_gem:'0',rk_rwc2:'[1,2,3,4,5,6,7]',rk_rwc:'[1,2,3,4,5,6,7]',rk_dl:JSON.stringify({d:new Date(Date.now()-3*3600e3).toISOString().slice(0,10),s:0})})}});
+await p.goto('http://localhost:8790/index.html');await p.waitForFunction(()=>!document.getElementById('goSelect').disabled,null,{timeout:120000});await p.click('#mRank');await p.waitForTimeout(5000);
+const a=await p.evaluate(()=>({pend:document.querySelector('[data-a="rewards"] .dot,.dot')!=null,rwc2:localStorage.rk_rwc2}));
+await p.evaluate(()=>{const M=document.getElementById('rkModal');if(M){M.hidden=true;M.innerHTML=''}});const er=await p.evaluate(()=>{try{__rw.open();return 'ok'}catch(e){return e.message}});console.log('open',er);await p.waitForTimeout(800);
+await p.screenshot({path:'/tmp/rw.png'});const btns=await p.evaluate(()=>document.getElementById('rkModal').innerHTML.length+' '+document.getElementById('rkModal').hidden+' '+[...document.querySelectorAll('.arBtn[data-i], .rkRw button')].map(b=>b.dataset.i).join(','));
+await p.evaluate(()=>{const b=document.querySelector('.arBtn[data-i], .rkRw button');b&&b.click()});await p.waitForTimeout(3000);
+console.log(JSON.stringify({a,botoes:btns,gem:await p.evaluate(()=>localStorage.rk_gem),rwc2:await p.evaluate(()=>localStorage.rk_rwc2)}),E.slice(0,3));await b.close()})();

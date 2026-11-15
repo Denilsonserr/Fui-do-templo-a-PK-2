@@ -6036,3 +6036,9 @@ TWCUP['18cu6rr']={nm:'TODOS OS ANÉIS DOURADOS SP + 50.000 JOIAS (ADM)',acc:1,ad
   try{if(C&&C.anSPall&&E&&/\bok\b/.test(E.className)){const S=ANS.map(x=>x[0]),P=['esq','cmb','vamp','fur','cmb','esq'],a=1e7,k=.8+.6*Math.log10(a/1e6);
     S.forEach((s,i)=>{const s2=S[(i+1)%S.length];anGive({i:Date.now().toString(36)+i+Math.random().toString(36).slice(2,6),c:5,g:8,s,s2,a,p:P[i%P.length],v:Math.round(ANV[5][8]*k*10)/10})});
     psAddJn(50000);try{acSave(1)}catch(e){}E.textContent='✅ Você ganhou: 💍 6 ANÉIS DOURADOS SP (10.000.000 anos) + 💠 50.000 JOIAS NEGRAS!';try{rkSfx('boom')}catch(e){}}}catch(e){}return r}}
+
+/* v483: RECOMPENSAS DE RANK da TEMPORADA 2 — a lista do que já foi pego (rwc2/rwc) era da Temporada 1, então quem subiu de novo não conseguia pegar.
+   Agora cada temporada tem a sua lista: zera 1 vez (rk_rws2). Quem já subiu na T2 vê os prêmios liberados e ganha um aviso ao abrir o menu. */
+(function(){try{if(rkG('rws2',0))return;rkS('rws2',1);rkS('rwc2',[]);rkS('rwc',[])}catch(e){}})();
+{const _o=rkOpen;rkOpen=function(){const r=_o.apply(this,arguments);setTimeout(()=>{try{if(rkRwPend()&&G.mode!=='fight'){const n=(()=>{const c=rkG('rwc2',[]),ri=rkRank(rkG('rp',0));let k=0;for(let i=1;i<=ri;i++)if(!c.includes(i))k++;return k})();rkToast('🎁 Você tem '+n+' recompensa'+(n>1?'s':'')+' de RANK para pegar! Toque em RECOMPENSAS','#ffd84a')}}catch(e){}},4200);return r}}
+window.__rw={open:()=>rkRewards(),claim:i=>rkRwClaim(i)};
