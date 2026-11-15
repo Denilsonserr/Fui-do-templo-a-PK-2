@@ -5530,7 +5530,7 @@ const sjTitN=()=>{const k=twTits().find(k=>/^sj\d+$/.test(k));return k?+k.slice(
 window.__sjt={win:n=>{rkOpen();setTimeout(()=>sjTitWin(n),700)},tit:t=>pfTitH(t,'',false),claim:sjTitClaim};
 
 /* ================= v463: GACHA DO SUNG MAIS DIFÍCIL + RESET (pedido do dono, 15/11 09:06)
-   SUNG: sem chance aleatória (sorte não conta). Cada jogador tem um número secreto entre 190 e 210 giros (rk_sjTg) e o Sung vem exatamente nele.
+   SUNG: chance bem baixa de 0,03% por giro (sorte não conta). Cada jogador tem um número secreto entre 190 e 210 giros (rk_sjTg) e o Sung vem exatamente nele.
    PEÇAS DO MONARCA: cada peça também tem número secreto entre 170 e 300 giros (rk_sjTgI), garantia em 300.
    RESET (1 vez por jogador, rk_rs463): quem tinha o Sung perde o Sung, as peças do Monarca (menos a Manopla do passe) e o título MONARCA Nº;
    recebe de volta 80 💎 por giro do banner do Sung contado no histórico desde as 09:00 (mínimo 1.600 💎). Títulos no servidor recomeçam (sjtit2_N). ================= */
@@ -5538,8 +5538,8 @@ const SJTGF=()=>{let t=rkG('sjTg',0)|0;if(!t){t=190+((Math.random()*21)|0);rkS('
 const SJTGI=()=>{let t=rkG('sjTgI',0)|0;if(!t){t=170+((Math.random()*131)|0);rkS('sjTgI',t)}return t};
 const SJBANK=x=>x&&((x.k==='chr'&&x.id==='sung')||(x.k==='sp'&&(SJSEC.includes(x.s)||x.s==='pvida'||x.s==='psomb'))||x.k==='red'||x.k==='eq');
 rkRollY=function(){
-  if(!sjOwned()&&!RKMTMP.includes('sung')){const p=rkG('pitySJ',0)+1;if(p>=SJTGF()){rkS('pitySJ',0);rkS('sjTg',0);RKMTMP.push('sung');return {k:'chr',r:'mit',id:'sung'}}rkS('pitySJ',p)}
-  {const L=sjSecLeft().filter(k=>!RKMTMP.includes(k));if(L.length){const p=rkG('pitySJI',0)+1;if(p>=Math.min(300,SJTGI())){rkS('pitySJI',0);rkS('sjTgI',0);const s=L[(Math.random()*L.length)|0];RKMTMP.push(s);return {k:'sp',r:'sec',s}}rkS('pitySJI',p)}}
+  if(!sjOwned()&&!RKMTMP.includes('sung')){const p=rkG('pitySJ',0)+1;if(p>=SJTGF()||Math.random()*100<.03){rkS('pitySJ',0);rkS('sjTg',0);RKMTMP.push('sung');return {k:'chr',r:'mit',id:'sung'}}rkS('pitySJ',p)}
+  {const L=sjSecLeft().filter(k=>!RKMTMP.includes(k));if(L.length){const p=rkG('pitySJI',0)+1;if(p>=Math.min(300,SJTGI())||Math.random()*100<.03){rkS('pitySJI',0);rkS('sjTgI',0);const s=L[(Math.random()*L.length)|0];RKMTMP.push(s);return {k:'sp',r:'sec',s}}rkS('pitySJI',p)}}
   {const q=Math.random()*100;if(q<1.5)return {k:'sp',r:'mit',s:'pvida'};if(q<3)return {k:'sp',r:'mit',s:'psomb'}}
   let r=Math.random()*100;if(r<30){let q=Math.random()*100,R='comum';for(const [k,w] of RKEQW){if((q-=w)<0){R=k;break}}return {k:'eq',r:R,E:TWEQ[(Math.random()*TWEQ.length)|0]}}
   return {k:'red',r:'comum',n:1+((Math.random()*5)|0)}};
@@ -5547,8 +5547,8 @@ rkRollY=function(){
 {const _gh=rkGachaH;rkGachaH=function(){let h=_gh.apply(this,arguments);if(RKBAN!=='mit')return h;const p=rkG('pitySJ',0),pi=rkG('pitySJI',0);
   return h.replace(/✦ Sung em <b>\d+<\/b>/,`✦ Sung em até <b>${Math.max(1,210-p)}</b>`).replace('🎟️ 1 ticket = 1 giro',`✦ peça do Monarca em até <b>${Math.max(1,300-pi)}</b>`)}}
 {const _tx=rkTaxas;rkTaxas=function(){if(RKBAN!=='mit')return _tx();rkModal(`<div class="twM"><h3>% TAXAS · INVOCAÇÃO MÍTICA · SUNG JIN-WOO</h3><table class="rkTx"><tr><th>Resultado</th><th>Quando</th></tr>
-  <tr><td style="color:#7fb8ff">✦ SS SUNG JIN-WOO · Monarca das Sombras</td><td>entre 190 e 210 giros (a sorte não conta)</td></tr>
-  <tr><td style="color:#b48cff">✦ Peça do MONARCA (elmo, manto, adagas, botas, colar, anel)</td><td>cada peça entre 170 e 300 giros</td></tr>
+  <tr><td style="color:#7fb8ff">✦ SS SUNG JIN-WOO · Monarca das Sombras</td><td>0,03% por giro · garantido entre 190 e 210 giros (a sorte não conta)</td></tr>
+  <tr><td style="color:#b48cff">✦ Peça do MONARCA (elmo, manto, adagas, botas, colar, anel)</td><td>0,03% por giro · cada peça garantida entre 170 e 300 giros</td></tr>
   <tr><td>🧪 Poção de Vida / Cálice da Sombra</td><td>1,5% cada</td></tr><tr><td>Equipamento</td><td>30%</td></tr><tr><td style="color:#ff5a5a">Moeda Vermelha (1 a 5)</td><td>o resto</td></tr></table>
   <p class="twH">1 giro = 80 💎 · 10 giros = 800 💎 (ticket vale 1 giro). Só existe 1 Sung por jogador. A contagem não zera se você sair.</p><div class="row"><button class="btn" id="rkMX">FECHAR</button></div></div>`);$('rkMX').onclick=()=>rkModal(null)}}
 /* histórico passa a marcar o banner */
