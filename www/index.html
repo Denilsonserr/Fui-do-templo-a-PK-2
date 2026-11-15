@@ -14435,19 +14435,12 @@ function anGold(lvBonus){let q=Math.random()*100,g=0;for(let i=0;i<9;i++){if((q-
   const r={i:Date.now().toString(36)+Math.random().toString(36).slice(2,6),c:5,g,s,s2,a,v:Math.round(ANV[5][g]*k*10)/10};
   if(g===8){const P=Object.keys(ANGP);r.p=P[(Math.random()*P.length)|0]}return r}
 {const _s=anSum;anSum=function(id){const o=_s.apply(this,arguments);try{const L=anL();for(const i of anEq(id)){if(!i)continue;const r=L.find(x=>x.i===i);if(r&&r.c===5&&r.s2&&o[r.s2]!=null)o[r.s2]=Math.round((o[r.s2]+anV(r)*.5)*10)/10}}catch(e){}return o}}
-/* desenho: mandala dourada */
-{const _rs=anRingSvg;anRingSvg=function(r,k){if(!(r&&r.c===5))return _rs.apply(this,arguments);const top=r.g>=7,sp=r.g===8,N=top?32:24,dur=(30+k*5).toFixed(0),dir=k%2?-1:1;let s='',rays='';
-  for(let i=0;i<N;i++){const a=i/N*360,big=i%2===0;s+=`<g transform="rotate(${a})"><path d="M0,-49 L${big?3.2:2},-${big?58:54} L0,-${big?66:59} L-${big?3.2:2},-${big?58:54}Z" fill="#fff3b0" stroke="#ffb000" stroke-width=".5"/><circle cy="-40" r="${big?2.2:1.4}" fill="#fff8d8"/><path d="M0,-12 L0,-44" stroke="rgba(255,240,190,.55)" stroke-width="${big?1.4:.8}"/></g>`}
-  if(top)for(let i=0;i<8;i++){const a=i*45+(k*7);rays+=`<path d="M0,-50 L2.6,-${sp?78:72} L0,-${sp?92:84} L-2.6,-${sp?78:72}Z" transform="rotate(${a})" fill="#fffbe8" opacity=".9"><animate attributeName="opacity" values=".25;1;.25" dur="${(1.4+i*.17).toFixed(2)}s" repeatCount="indefinite"/></path>`}
-  const glow=top?`drop-shadow(0 0 3px #fff6c0) drop-shadow(0 0 ${sp?14:10}px #ffb000) drop-shadow(0 0 ${sp?26:18}px rgba(255,190,40,.9))`:`drop-shadow(0 0 2px #fff6c0) drop-shadow(0 0 7px #ffb000)`;
-  return `<svg viewBox="-96 -96 192 192" preserveAspectRatio="none" style="filter:${glow}"><defs><radialGradient id="anG5${k}"><stop offset="0" stop-color="#3a0004"/><stop offset=".18" stop-color="#ff1a2a"/><stop offset=".7" stop-color="#ff3a3a" stop-opacity=".75"/><stop offset="1" stop-color="#ff7a3a" stop-opacity="0"/></radialGradient></defs><g>`+
-    `<circle r="46" fill="url(#anG5${k})" opacity=".55"/>${rays}<circle r="49" fill="none" stroke="#ffb000" stroke-width="5" opacity=".35"/><circle r="49" fill="none" stroke="#ffe27a" stroke-width="3"/><circle r="49" fill="none" stroke="#fffbe8" stroke-width="1.1"/>`+
-    `<circle r="34" fill="none" stroke="#ffe9a8" stroke-width="1" stroke-dasharray="2.4 2.6" opacity=".9"/><circle r="22" fill="none" stroke="#fff3c8" stroke-width=".8" opacity=".7"/>${s}`+
-    `<animateTransform attributeName="transform" type="rotate" from="0" to="${360*dir}" dur="${dur}s" repeatCount="indefinite"/></g></svg>`}}
-/* aura do chão: raios vermelhos + raios dourados por cima */
-{const _au=anAura;anAura=function(R,cx,cy,cw){if(!R||!R.some(r=>r&&r.c===5))return _au.apply(this,arguments);
-  const red=_au(R.map(r=>r.c===5?Object.assign({},r,{c:4}):r),cx,cy,cw),top=R.some(r=>r.c===5&&r.g>=7),gold=_au(R.filter(r=>r.c===5).map(r=>Object.assign({},r,{c:4,g:top?7:r.g})),cx,cy,cw*(top?1.12:1));
-  const g=x=>x.replace(/--c:#ff0a22|--c:#ff2238/g,'--c:#ffc400').replace(/--c2:#ffd0d4/g,'--c2:#fff6c0').replace(/#ffffff"/g,'#fffbe8"');return [red[0]+g(gold[0]),red[1]+g(gold[1])]}}
+/* v477: anel dourado = MESMO desenho/efeitos do anel vermelho, só que dourado (SSS e SP usam o desenho do SSS vermelho, dourado) */
+const ANGOLD=x=>x.replace(/#ff0a1e|#ff0012|#ff0018|#ff1a30|#ff2a3a|#ff4050|#ff3b4a|#ff0a22|#ff2238/gi,'#ffc400').replace(/#ffb0b0|#ffd0d0|#fff2f2|#fff4f4/gi,'#fff3b0').replace(/rgba\(255,\s*0,\s*(18|24|30),/g,'rgba(255,196,0,').replace(/rgba\(255,\s*(10|20|30|40|58),\s*(30|40|48|58|60|74),/g,'rgba(255,196,0,');
+{const _rs=anRingSvg;anRingSvg=function(r,k){if(!(r&&r.c===5))return _rs.apply(this,arguments);const P4=ANRP[4];ANRP[4]=ANRP[5];try{return ANGOLD(_rs.call(this,Object.assign({},r,{c:4,g:Math.min(7,r.g)}),k))}finally{ANRP[4]=P4}}}
+/* aura do chão: a do anel vermelho, só que DOURADA (sem vermelho junto) */
+{const _au=anAura;anAura=function(R,cx,cy,cw){if(!R||!R.some(r=>r&&r.c===5))return _au.apply(this,arguments);const A=_au(R.map(r=>r.c===5?Object.assign({},r,{c:4,g:Math.min(7,r.g)}):r),cx,cy,cw);
+  const g=x=>ANGOLD(x).replace(/--c2:#ffd0d4/g,'--c2:#fff6c0');return [g(A[0]),g(A[1])]}}
 /* passivas do SP na luta */
 {const _ra=rkApply;rkApply=function(){_ra.apply(this,arguments);try{const p=G.p&&G.p[0];if(!p)return;const id=(p.def&&p.def.id)||rkG('sel','goku'),L=anL();p.anGP=[];for(const i of anEq(id)){if(!i)continue;const r=L.find(x=>x.i===i);if(r&&r.c===5&&r.g===8&&r.p&&!p.anGP.includes(r.p))p.anGP.push(r.p)}}catch(e){}}}
 {const _ah=applyHit;applyHit=function(a,d,h){try{
@@ -14463,8 +14456,8 @@ function anGold(lvBonus){let q=Math.random()*100,g=0;for(let i=0;i<9;i++){if((q-
     if(Math.random()*100<ch){const r=anGold();if(at!=null)hyDrop('an',at,{r},rand(-5,5),-18);else hyGrant({k:'an',r});
       setTimeout(()=>{try{banner('💍 ANEL DOURADO · '+anAge(r).toUpperCase(),'#ffd84a',150,'NOTA '+ANG[r.g]+(r.p?' · ✦ '+ANGP[r.p][0]:''));SFX.boom();G.flash=10;G.flashCol='#ffd84a'}catch(e){}},400)}}}catch(e){}return T}}
 window.__ang={roll:anGold,svg:(r,k)=>anRingSvg(r,k||0)};
-/* ícone do anel dourado (a referência do dono, sem o fundo preto) */
-try{if(RQA.anel2&&RQA.anel2.length<6)RQA.anel2.push('a/b01b0d496f9795.webp')}catch(e){}
+/* ícone do anel dourado */
+try{if(RQA.anel2){RQA.anel2[5]='a/4ed53f66c18b34.webp'}}catch(e){} /* v477: ícone = o anel vermelho pintado de dourado */
 
 /* v476: código do ADM (texto só com o dono): 1 ANEL DOURADO SSS de SORTE (5 milhões de anos) para testar */
 TWCUP['1tr2s9s']={nm:'ANEL DOURADO SSS · SORTE (ADM)',acc:1,adm:1,it:[],anG7:1};
@@ -14664,7 +14657,7 @@ window.__dbg={mus:()=>[MCUR,MEL.src.split('/').pop()],stg:()=>STAGE.key,prepMatc
 })();
 </script>
 <style>#updB{position:fixed;left:50%;top:max(8px,env(safe-area-inset-top));transform:translateX(-50%);z-index:99999;padding:10px 22px;border-radius:14px;border:2px solid #fff3c0;background:linear-gradient(#ffd84a,#e08a10);color:#3a1d00;font:900 15px system-ui,sans-serif;box-shadow:0 0 18px #ffb21f;cursor:pointer;animation:updP 1s ease-in-out infinite alternate}@keyframes updP{to{transform:translateX(-50%) scale(1.05)}}</style>
-<script>(function(){const V='3247b3ff61e8';if(!/^https?:/.test(location.protocol))return;let nv=null;
+<script>(function(){const V='bbb02d209476';if(!/^https?:/.test(location.protocol))return;let nv=null;
 function show(){if(document.getElementById('updB'))return;try{if(typeof G!=='undefined'&&G.mode==='fight')return}catch(e){}const b=document.createElement('button');b.id='updB';b.textContent='🔄 ATUALIZAÇÃO NOVA! Toque para atualizar';
   b.onclick=()=>{b.textContent='⏳ Atualizando...';try{acSave(1)}catch(e){}setTimeout(()=>location.reload(),900)};document.body.appendChild(b)}
 async function chk(){if(document.hidden)return;if(nv){show();return}try{const r=await fetch('versao.txt?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const t=(await r.text()).trim();if(/^[0-9a-f]{8,40}$/.test(t)&&t!==V){nv=t;show()}}catch(e){}}
