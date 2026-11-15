@@ -159,3 +159,4 @@ Este arquivo tem duas partes: a **Parte 1** é para o dono (Denilson) e a **Part
 - Passiva só no SP (r.p): esquiva 15% · combo+ (golpes extras dourados, 40% por acerto, auto combo 11→~15/16) · vampiro 5% · fúria +25% abaixo de 50%.
 - Visual: mandala dourada com centro vermelho; SSS/SP com raios dourados piscando e brilho maior; aura do chão = raios vermelhos + dourados.
 - Drop SÓ no baú do chefe do Portal: Igris E .35 · D .6 · C 1 · B 1,5 · A 2,5 · S 4 % (Urso: metade). Teste: tanel_dourado_v475.js.
+- v476: código ADM (hash 1tr2s9s, texto só com o dono): 1 anel DOURADO SSS de Sorte, 5 milhões de anos (só título ADM, 1 por conta).
