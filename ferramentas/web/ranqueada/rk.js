@@ -5950,3 +5950,9 @@ TWCUP['1tr2s9s']={nm:'ANEL DOURADO SSS · SORTE (ADM)',acc:1,adm:1,it:[],anG7:1}
   try{if(C&&C.anG7&&E&&/\bok\b/.test(E.className)){const g=7,a=5e6,k=.8+.6*Math.log10(a/1e6),S=ANS.map(x=>x[0]).filter(x=>x!=='st');
     anGive({i:Date.now().toString(36)+Math.random().toString(36).slice(2,6),c:5,g,s:'st',s2:S[(Math.random()*S.length)|0],a,v:Math.round(ANV[5][g]*k*10)/10});try{acSave(1)}catch(e){}
     E.textContent='✅ Você ganhou: 💍 ANEL DOURADO SSS · 🍀 Sorte · 5.000.000 anos!';try{rkSfx('boom')}catch(e){}}}catch(e){}return r}}
+
+/* v478: código do ADM (texto só com o dono): Sung no NÍVEL MÁXIMO do Sistema (100) com todos os pontos ganhos (5 por nível) para distribuir */
+TWCUP['qaceh2']={nm:'SUNG NÍVEL MÁXIMO (ADM)',acc:1,adm:1,it:[],sjMax:1};
+{const _cp=twCupom;twCupom=async function(code,E){const C=TWCUP[twHash(String(code).toUpperCase())];const r=await _cp.apply(this,arguments);
+  try{if(C&&C.sjMax&&E&&/\bok\b/.test(E.className)){const o=sjSys(),add=Math.max(0,SJMX-o.lv);o.lv=SJMX;o.xp=0;o.pts=(o.pts|0)+add*5;sjSave(o);const own=rkG('own',['goku']);if(!own.includes('sung')){own.push('sung');rkS('own',own)}try{acSave(1)}catch(e){}
+    E.textContent='✅ SUNG no NÍVEL '+SJMX+'! +'+add*5+' pontos para distribuir no SISTEMA.';try{rkSfx('powerUp')}catch(e){}}}catch(e){}return r}}

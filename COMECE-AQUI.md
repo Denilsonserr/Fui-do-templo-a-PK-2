@@ -161,3 +161,4 @@ Este arquivo tem duas partes: a **Parte 1** é para o dono (Denilson) e a **Part
 - Drop SÓ no baú do chefe do Portal: Igris E .35 · D .6 · C 1 · B 1,5 · A 2,5 · S 4 % (Urso: metade). Teste: tanel_dourado_v475.js.
 - v476: código ADM (hash 1tr2s9s, texto só com o dono): 1 anel DOURADO SSS de Sorte, 5 milhões de anos (só título ADM, 1 por conta).
 - v477: anel dourado com o MESMO desenho/efeitos do vermelho, só em dourado (ANGOLD troca as cores do SVG e da aura; ícone = anel vermelho pintado de dourado a/4ed53f66c18b34). Sem a mandala da referência e sem vermelho junto.
+- v478: código ADM (hash qaceh2, texto só com o dono): Sung no nível 100 do Sistema + 5 pontos por nível que faltava (só título ADM, 1 por conta).
