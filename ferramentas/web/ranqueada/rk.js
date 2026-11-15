@@ -3033,10 +3033,10 @@ function dsfEnd(w){G.mode='ranked';$('controls').hidden=true;$('pauseBtn').hidde
   rkS('dsf',o);try{acSave(1)}catch(e){}rkOpen('menu');setTimeout(()=>{const M=document.createElement('div');M.id='lvrzM';document.body.appendChild(M);const rkModal=h=>{M.innerHTML=h};rkModal(`<div class="twM ${won?'gold':''}"><h3>${won?'🏆 DESAFIO VENCIDO!':'💀 O RIVAL VENCEU'}</h3><p class="twH">${R.join(' · ')}</p><p class="twH">${won?'🔥 Sequência: '+o.str+' dia'+(o.str>1?'s':''):'Tentativas que sobraram hoje: '+o.left}</p><div class="row">${!won&&o.left>0?'<button class="btn main" id="dsfAg">⚔️ TENTAR DE NOVO</button>':''}<button class="btn" id="rkMX">FECHAR</button></div></div>`);rkSfx(won?'powerUp':'clang');M.querySelector('#rkMX').onclick=()=>M.remove();const a=M.querySelector('#dsfAg');if(a)a.onclick=()=>{M.remove();dsfStart()}},900)}
 /* botão no menu Modos de Jogo */
 /* v443: no lugar do DESAFIO DO DIA fica o botão PORTAIS (arte do vídeo novo) — trancado até 15/11 11:00 (Brasília) */
-const PTREL=Date.UTC(2026,10,15,14,0,0);
-{const _mh=rkMenuH;rkMenuH=function(){const op=Date.now()>=PTREL;return _mh.apply(this,arguments)+`<button class="hs mnPt ${op?'':'lk'}" data-a="portais" style="${mnB(18,508,312,588)}">${op?'':'<span class="mnPtL"><i>🔒</i><b>HOJE · 11:00</b></span>'}</button>`+
+const PTREL=Date.UTC(2026,10,15,15,0,0); /* v465: 12:00 Brasília */
+{const _mh=rkMenuH;rkMenuH=function(){const op=Date.now()>=PTREL;return _mh.apply(this,arguments)+`<button class="hs mnPt ${op?'':'lk'}" data-a="portais" style="${mnB(18,508,312,588)}">${op?'':'<span class="mnPtL"><i>🔒</i><b>HOJE · 12:00</b></span>'}</button>`+
   '<div class="mnFx">'+Array.from({length:14},(_,i)=>`<i style="left:${(i*7.3+3)%98}%;animation-delay:${(i*.83)%7}s;animation-duration:${6+(i%5)}s"></i>`).join('')+'</div>'}}
-{const _a=rkAct;rkAct=function(a,b){if(a==='portais'){rkSfx(Date.now()>=PTREL?'whoosh':'clang');return rkToast(Date.now()>=PTREL?'🌀 Os PORTAIS estão abrindo... o evento chega em breve!':'🔒 O EVENTO DE PORTAIS abre amanhã (15/11) às 11:00 (Brasília)!','#c79bff')}return _a.apply(this,arguments)}}
+{const _a=rkAct;rkAct=function(a,b){if(a==='portais'){rkSfx(Date.now()>=PTREL?'whoosh':'clang');return rkToast(Date.now()>=PTREL?'🌀 Os PORTAIS estão abrindo... o evento chega em breve!':'🔒 O EVENTO DE PORTAIS abre amanhã (15/11) às 12:00 (Brasília)!','#c79bff')}return _a.apply(this,arguments)}}
 {const _a=rkAct;rkAct=function(a,b){if(a==='dsf'){rkSfx('whoosh');return dsfOpen()}return _a.apply(this,arguments)}}
 
 /* só para testes de equilíbrio: window.__autoP = jogador controlado pela IA combista */
@@ -5326,7 +5326,7 @@ function ptOn(){clearInterval(rkView.iv);const N0=ptNow();PTLST=N0.st+N0.i;rkVie
 {const _rv=rkView;rkView=function(v){if(v!=='pt')return _rv.apply(this,arguments);RKV=v;const W=$('rkWrap');if(!W)return;clearInterval(rkView.iv);rkModal(null);
   W.innerHTML=`<div class="rkA rk_pt" data-w="1672" data-h="941" data-full="1" style="background-image:url(${PTA.tela})">${ptH()}<div id="rkToast"></div></div>`;rkFit();W.querySelectorAll('[data-a]').forEach(b=>b.onclick=e=>{e.stopPropagation();rkAct(b.dataset.a,b)});ptOn()}}
 {const _a=rkAct;rkAct=function(a,b){
-  if(a==='portais'){if(Date.now()<PTREL){rkSfx('clang');return rkToast('🔒 O modo PORTAIS abre hoje (15/11) às 11:00 (Brasília)!','#c79bff')}rkSfx('whoosh');PTS.sel=0;return rkView('pt')}
+  if(a==='portais'){if(Date.now()<PTREL){rkSfx('clang');return rkToast('🔒 O modo PORTAIS abre hoje (15/11) às 12:00 (Brasília)!','#c79bff')}rkSfx('whoosh');PTS.sel=0;return rkView('pt')}
   if(a==='ptSel'){const N=ptNow(),i=+b.dataset.i;if(!(N.L||[])[i])return;PTS.sel=i;rkSfx('whoosh');return rkView('pt')}
   if(a==='ptHome'||a==='ptBack')return rkView('menu');if(a==='ptTab')return;
   if(a==='ptShop'){rkSfx('clang');return rkToast('🔒 LOJA DOS PORTAIS · em breve!','#c79bff')}
@@ -5624,3 +5624,27 @@ rkRollY=function(){
     if(!e){e=document.createElement('div');e.id='sjCdT';T.appendChild(e)}if(d>0){const s=Math.ceil(d/1000),h=Math.floor(s/3600),m=Math.floor(s%3600/60),ss=s%60;e.className='';e.innerHTML=`👑 SUNG JIN-WOO LIBERA EM <b>${h?h+'h ':''}${String(m).padStart(2,'0')}m ${String(ss).padStart(2,'0')}s</b>`}else{e.className='ok';e.innerHTML='👑 SUNG JIN-WOO <b>LIBERADO!</b> GIRE AGORA'}};
   tick();setInterval(tick,1000)}
 window.__rs464={run:rs464b,roll:()=>rkRollY()};
+
+/* ================= v465: códigos da atualização dos PORTAIS (textos só com o dono)
+   • 26vofv: 1.000 a 5.000 💎 aleatório (1× por aparelho)   • 1l10mju: caixa de ANEL rank S, PRETO ou VERMELHO (1× por aparelho)
+   • 4brzfl: PASSE PAGO (premium) da temporada Solo Leveling   • nupno9: PASSE 2X = premium + todos os prêmios em dobro (menos a Caixa V2 de Virgem) ================= */
+TWCUP['26vofv']={nm:'ATUALIZAÇÃO DOS PORTAIS · 1.000 a 5.000 💎',it:[],dia:2,gr:1};
+TWCUP['1l10mju']={nm:'CAIXA DE ANEL RANK S (PRETO OU VERMELHO)',it:[],dia:2,anS:1};
+TWCUP['4brzfl']={nm:'PASSE PAGO · TEMPORADA SOLO LEVELING',it:[],bp:2,s2:1};
+TWCUP['nupno9']={nm:'PASSE 2X · TEMPORADA SOLO LEVELING (prêmios em dobro)',it:[],bp:2,s2:1,x2:1};
+{const _cp=twCupom;twCupom=async function(code,E){const C=TWCUP[twHash(String(code).toUpperCase())];const r=await _cp.apply(this,arguments);
+  try{if(C&&(C.gr||C.anS||C.x2)&&E&&/\bok\b/.test(E.className)){
+    if(C.gr){const g=1000+Math.round(Math.random()*40)*100;rkAdd('gem',g);E.textContent='✅ Código usado! Você ganhou 💎 '+rkFmtN(g)+'!'}
+    if(C.anS){const c=Math.random()<.5?3:4,s=ANS[(Math.random()*ANS.length)|0][0];anGive({i:Date.now().toString(36)+Math.random().toString(36).slice(2,6),c,g:5,s,v:ANV[c][5],a:c===4?100000:50000+((Math.random()*25001)|0)});
+      E.textContent='✅ Código usado! Saiu: 💍 ANEL '+ANC[c][0]+' S ('+anSt(s)[1]+')!';try{rkSfx('boom')}catch(e){}}
+    if(C.x2){const o=bpG();o.own=2;o.x2=1;bpS(o);E.textContent='✅ PASSE 2X liberado! Todos os prêmios do passe vêm em dobro (menos a Caixa V2 de Virgem).'}
+    try{acSave(1)}catch(e){}}}catch(e){}return r}}
+/* passe 2X: cada prêmio é entregue de novo (sem a Caixa V2 de Virgem) */
+{const _bc=bp2Claim;bp2Claim=async function(r,i,quiet){const o=bpG(),C=r==='f'?'cf':'cp',ja=o[C].includes(i);const ok=await _bc.apply(this,arguments);
+  try{if(ok&&!ja&&bpG().x2){const T=(r==='f'?BPF:BPP)[i],msg=[];for(const x0 of T){const x=Object.assign({},x0);delete x.sk2;if(!Object.keys(x).length)continue;
+      if(x.g)rkAdd('gem',x.g);if(x.r)rkAdd('red',x.r);if(x.t)rkAdd('tic',x.t);if(x.j)psAddJn(x.j);if(x.pc||x.pd){const pk=x.pc?'cura':'drop',k=x.pc||x.pd;twAddPoc({k,pk,v:RKPKV[pk][rkPkI(k)]})}
+      if(x.ch==='mit'){const own=rkG('own',['goku']),P=[...RK_MIT,'yuta'].filter(id=>CH[id]&&!own.includes(id));if(P.length){const id=P[(Math.random()*P.length)|0];own.push(id);rkS('own',own);msg.push('✦ '+CH[id].name+' liberado!')}else{rkAdd('gem',3000);msg.push('+3000 💎')}}
+      try{bp2Give(x,msg)}catch(e){}}
+    try{acSave(1)}catch(e){}setTimeout(()=>rkToast('⚡ PASSE 2X · nível '+(i+1)+' em dobro!'+(msg.length?' · '+msg.join(' · '):''),'#ffd84a'),900)}}catch(e){}return ok}}
+{const _bh=bpH;bpH=function(){const h=_bh.apply(this,arguments);return bpG().x2?h+'<div style="position:absolute;right:2%;top:2%;z-index:9;padding:.4em 1em;border-radius:1em;font:900 1.1em var(--f-ui);color:#1a1000;background:linear-gradient(90deg,#ffd84a,#fff3b0,#ffd84a);box-shadow:0 0 1em #ffd84a">⚡ PASSE 2X</div>':h}}
+window.__cup=(c,E)=>twCupom(c,E);
