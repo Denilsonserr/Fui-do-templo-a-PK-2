@@ -13479,10 +13479,10 @@ TWCUP['fge18y']={nm:'ANÉIS VERMELHOS SSS (ADM)',acc:1,adm:1,it:[],anSSS:1};
    - Ataque mais rápido: os quadros de golpe andam mais (9z_v451.py: normal .5→.7, transformado 1.3→1.75).
    - ESPINHOS DAS SOMBRAS: transformado, a cada 4 golpes corpo a corpo que acertam, espinhos de sombra saem do chão embaixo do inimigo
      (dano pequeno + levanta um pouco), com brilho roxo. Não conta golpes da sombra (TANK) nem dos próprios espinhos. ================= */
-let SJSP=[];
+let SJSP=[];const SJSPON=0; /* v452: o dono não gostou dos espinhos → desligados (1 = liga de novo) */
 {const _ah=applyHit;applyHit=function(a,d,h){const h0=d?d.hp:0,r=_ah.apply(this,arguments);
   try{if(a&&d&&a!==d&&a.def&&a.def.sid==='sj'&&a.form&&h&&!h.sjB&&!h.sjS&&h.kind!=='beam'&&h.kind!=='proj'&&d.hp<h0&&!d.ko&&G.mode==='fight'){
-    a.sjHc=(a.sjHc||0)+1;if(a.sjHc>=4){a.sjHc=0;SJSP.push({a,d,x:d.x,t:0,hit:0});try{SFX.whoosh&&SFX.whoosh()}catch(e){}}}}catch(e){}return r}}
+    a.sjHc=(a.sjHc||0)+1;if(SJSPON&&a.sjHc>=4){a.sjHc=0;SJSP.push({a,d,x:d.x,t:0,hit:0});try{SFX.whoosh&&SFX.whoosh()}catch(e){}}}}catch(e){}return r}}
 {const _u=update;update=function(){const r=_u.apply(this,arguments);try{if(SJSP.length){if(!G.p||G.mode!=='fight'){SJSP=[];return r}
   for(const S of SJSP){if(G.hitstop>0&&S.t>0)continue;S.t++;if(S.t<10)S.x+=(S.d.x-S.x)*.35;
     if(S.t===12&&!S.hit&&!S.d.ko&&!S.a.ko&&Math.abs(S.d.x-S.x)<110&&S.d.y>FLOOR-160){S.hit=1;try{applyHit(S.a,S.d,{dmg:34,kb:2,hs:9,heavy:0,px:S.d.x,py:S.d.y-90,kind:'melee',sjS:1});S.d.vy=Math.min(S.d.vy||0,-7)}catch(e){}G.shake=Math.max(G.shake||0,7)}}
@@ -13689,7 +13689,7 @@ window.__dbg={mus:()=>[MCUR,MEL.src.split('/').pop()],stg:()=>STAGE.key,prepMatc
 })();
 </script>
 <style>#updB{position:fixed;left:50%;top:max(8px,env(safe-area-inset-top));transform:translateX(-50%);z-index:99999;padding:10px 22px;border-radius:14px;border:2px solid #fff3c0;background:linear-gradient(#ffd84a,#e08a10);color:#3a1d00;font:900 15px system-ui,sans-serif;box-shadow:0 0 18px #ffb21f;cursor:pointer;animation:updP 1s ease-in-out infinite alternate}@keyframes updP{to{transform:translateX(-50%) scale(1.05)}}</style>
-<script>(function(){const V='b1e48f5792c1';if(!/^https?:/.test(location.protocol))return;let nv=null;
+<script>(function(){const V='6f921d91dfac';if(!/^https?:/.test(location.protocol))return;let nv=null;
 function show(){if(document.getElementById('updB'))return;try{if(typeof G!=='undefined'&&G.mode==='fight')return}catch(e){}const b=document.createElement('button');b.id='updB';b.textContent='🔄 ATUALIZAÇÃO NOVA! Toque para atualizar';
   b.onclick=()=>{b.textContent='⏳ Atualizando...';try{acSave(1)}catch(e){}setTimeout(()=>location.reload(),900)};document.body.appendChild(b)}
 async function chk(){if(document.hidden)return;if(nv){show();return}try{const r=await fetch('versao.txt?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const t=(await r.text()).trim();if(/^[0-9a-f]{8,40}$/.test(t)&&t!==V){nv=t;show()}}catch(e){}}

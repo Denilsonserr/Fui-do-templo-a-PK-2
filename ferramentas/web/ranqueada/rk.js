@@ -4985,10 +4985,10 @@ TWCUP['fge18y']={nm:'ANÉIS VERMELHOS SSS (ADM)',acc:1,adm:1,it:[],anSSS:1};
    - Ataque mais rápido: os quadros de golpe andam mais (9z_v451.py: normal .5→.7, transformado 1.3→1.75).
    - ESPINHOS DAS SOMBRAS: transformado, a cada 4 golpes corpo a corpo que acertam, espinhos de sombra saem do chão embaixo do inimigo
      (dano pequeno + levanta um pouco), com brilho roxo. Não conta golpes da sombra (TANK) nem dos próprios espinhos. ================= */
-let SJSP=[];
+let SJSP=[];const SJSPON=0; /* v452: o dono não gostou dos espinhos → desligados (1 = liga de novo) */
 {const _ah=applyHit;applyHit=function(a,d,h){const h0=d?d.hp:0,r=_ah.apply(this,arguments);
   try{if(a&&d&&a!==d&&a.def&&a.def.sid==='sj'&&a.form&&h&&!h.sjB&&!h.sjS&&h.kind!=='beam'&&h.kind!=='proj'&&d.hp<h0&&!d.ko&&G.mode==='fight'){
-    a.sjHc=(a.sjHc||0)+1;if(a.sjHc>=4){a.sjHc=0;SJSP.push({a,d,x:d.x,t:0,hit:0});try{SFX.whoosh&&SFX.whoosh()}catch(e){}}}}catch(e){}return r}}
+    a.sjHc=(a.sjHc||0)+1;if(SJSPON&&a.sjHc>=4){a.sjHc=0;SJSP.push({a,d,x:d.x,t:0,hit:0});try{SFX.whoosh&&SFX.whoosh()}catch(e){}}}}catch(e){}return r}}
 {const _u=update;update=function(){const r=_u.apply(this,arguments);try{if(SJSP.length){if(!G.p||G.mode!=='fight'){SJSP=[];return r}
   for(const S of SJSP){if(G.hitstop>0&&S.t>0)continue;S.t++;if(S.t<10)S.x+=(S.d.x-S.x)*.35;
     if(S.t===12&&!S.hit&&!S.d.ko&&!S.a.ko&&Math.abs(S.d.x-S.x)<110&&S.d.y>FLOOR-160){S.hit=1;try{applyHit(S.a,S.d,{dmg:34,kb:2,hs:9,heavy:0,px:S.d.x,py:S.d.y-90,kind:'melee',sjS:1});S.d.vy=Math.min(S.d.vy||0,-7)}catch(e){}G.shake=Math.max(G.shake||0,7)}}

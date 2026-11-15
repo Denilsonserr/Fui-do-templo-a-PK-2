@@ -2215,3 +2215,6 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - Aura do Monarca (v427/v429) agora aparece SOZINHA no Sung TRANSFORMADO, de qualquer lado (`monWho`). Opção do ADM continua.
 - Sung ataca mais rápido: quadros de golpe (`yacc`) normal .5→.7, transformado 1,3→1,75 (9z_v451.py).
 - ESPINHOS DAS SOMBRAS: Sung transformado, a cada 4 golpes corpo a corpo que acertam (`a.sjHc`), espinhos pretos com brilho roxo saem do chão embaixo do inimigo (12 quadros), dano 34 e levanta um pouco (`SJSP`, `h.sjS`). Teste `tsung_v451.js`.
+
+## v452 — Espinhos das Sombras desligados
+- O dono não gostou. `SJSPON=0` no bloco v451 (aura do Monarca e ataque mais rápido continuam).
