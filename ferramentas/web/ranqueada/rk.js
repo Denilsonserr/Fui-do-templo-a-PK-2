@@ -4788,7 +4788,7 @@ let SJHN=0;
 /* ================= v437: SUNG CHEGA NO JOGO 15/11 08:00 (Brasília) — banner da INVOCAÇÃO MÍTICA = SUNG JIN-WOO (arte do dono), 80 💎 / 800 💎, garantido em 250.
    O banner do Yuta acabou: o Yuta agora sai na INVOCAÇÃO ESPECIAL (junto com os outros míticos). Antes da hora o banner fica trancado.
    SOMBRAS: tela do dono pra EVOLUIR a sombra com ESSÊNCIA DA SOMBRA (pó roxo, nova) + moedas douradas. Rank C até nv 20, B 30, A 40, S 50. ================= */
-const SJREL=Date.UTC(2026,10,15,11,0,0),sjRel=()=>Date.now()>=SJREL,SJESS='a/ca4b5f5f1fdbb0.webp';RQA.gacha_sj='a/1c6bed6565bcf6.webp';
+const SJREL=Date.UTC(2026,10,15,12,0,0) /* v457: 15/11 09:00 Brasília (era 08:00) */,sjRel=()=>Date.now()>=SJREL,SJESS='a/ca4b5f5f1fdbb0.webp';RQA.gacha_sj='a/1c6bed6565bcf6.webp';
 function sjRelChk(){try{const on=sjRel()||pfIsAdm(),t=document.querySelector('#roster .tile[data-c="sung"]');if(t)t.hidden=!on;const i=ALLC.indexOf('sung');if(on&&i<0)ALLC.push('sung');if(!on&&i>=0)ALLC.splice(i,1)}catch(e){}}
 setTimeout(sjRelChk,800);setInterval(sjRelChk,20000);
 const sjOwned=()=>rkG('own',[]).includes('sung');
@@ -4797,12 +4797,12 @@ function rkRollSJ(){if(!sjOwned()&&!RKMTMP.includes('sung')){const p=rkG('pitySJ
   return {k:'red',r:'comum',n:1+((Math.random()*5)|0)}}
 rkRollY=rkRollSJ;
 {const _c=rkCost;rkCost=function(n){if(RKBAN!=='mit')return _c(n);const t=Math.min(n,rkG('tic',0)|0);return {t,g:n===1?(t?0:80):(n-t)*80}}}
-{const _sm=rkSummon;rkSummon=function(n){if(RKBAN==='mit'&&!sjRel()){rkSfx('clang');return rkToast('🔒 O SUNG JIN-WOO chega amanhã (15/11) às 08:00 (Brasília)!','#7fb8ff')}return _sm.apply(this,arguments)}}
+{const _sm=rkSummon;rkSummon=function(n){if(RKBAN==='mit'&&!sjRel()){rkSfx('clang');return rkToast('🔒 O SUNG JIN-WOO chega hoje (15/11) às 09:00 (Brasília)!','#7fb8ff')}return _sm.apply(this,arguments)}}
 {const _tx=rkTaxas;rkTaxas=function(){if(RKBAN!=='mit')return _tx();rkModal(`<div class="twM"><h3>% TAXAS · INVOCAÇÃO MÍTICA · SUNG JIN-WOO</h3><table class="rkTx"><tr><th>Resultado</th><th>Chance</th></tr>
   <tr><td style="color:#7fb8ff">✦ SS SUNG JIN-WOO · Monarca das Sombras (só aqui) · garantido em 250 giros</td><td>0,4%</td></tr><tr><td>Equipamento</td><td>30%</td></tr><tr><td style="color:#ff5a5a">Moeda Vermelha (1 a 5)</td><td>69,6%</td></tr></table>
   <p class="twH">1 giro = 80 💎 · 10 giros = 800 💎 (ticket vale 1 giro). Todo giro também dá ${LVPON}. Só existe 1 Sung por jogador.<br>O Sung tem o próprio SISTEMA DO JOGADOR: nível 1 a 80 só com missões, atributos, classe e sombras.<br>O Yuta agora sai na INVOCAÇÃO ESPECIAL.</p><div class="row"><button class="btn" id="rkMX">FECHAR</button></div></div>`);$('rkMX').onclick=()=>rkModal(null)}}
 {const _gh=rkGachaH;rkGachaH=function(){const h=_gh.apply(this,arguments);if(RKBAN!=='mit')return h.replace('<em>YUTA</em>','<em>SUNG</em>');const own=sjOwned(),p=rkG('pitySJ',0),rel=sjRel();
-  return h.replace(/<div class="ytOwn"[^>]*>.*?<\/div>/,'').replace(/<div class="rkPity"[^>]*>.*?<\/div>/,'')+(own?`<div class="ytOwn" style="${rkB(420,655,860,700)}">✔ VOCÊ JÁ TEM O SUNG</div>`:'')+(!rel?`<div class="sjLock" style="${rkB(540,640,1480,688)}">🔒 CHEGA 15/11 ÀS 08:00 (BRASÍLIA)</div><div class="sjLk2" style="${rkB(540,690,985,805)}">🔒</div><div class="sjLk2" style="${rkB(1030,690,1480,805)}">🔒</div>`:'')+
+  return h.replace(/<div class="ytOwn"[^>]*>.*?<\/div>/,'').replace(/<div class="rkPity"[^>]*>.*?<\/div>/,'')+(own?`<div class="ytOwn" style="${rkB(420,655,860,700)}">✔ VOCÊ JÁ TEM O SUNG</div>`:'')+(!rel?`<div class="sjLock" style="${rkB(540,640,1480,688)}">🔒 CHEGA 15/11 ÀS 09:00 (BRASÍLIA)</div><div class="sjLk2" style="${rkB(540,690,985,805)}">🔒</div><div class="sjLk2" style="${rkB(1030,690,1480,805)}">🔒</div>`:'')+
   `<div class="rkPity" style="${rkB(540,812,1480,845)}">${own?'':`<span style="color:#9fd0ff">✦ Sung em <b>${250-p}</b></span> · `}🎟️ 1 ticket = 1 giro · 🟣 +pó</div>`}}
 {const _bv=rkView;rkView=function(v){const r=_bv.apply(this,arguments);if(v==='gacha'&&RKBAN==='mit'){const A=document.querySelector('#rkWrap .rkA');if(A)A.style.backgroundImage=`url(${RQA.gacha_sj})`}return r}}
 function rkMegaSJ(){return new Promise(res=>{const O=document.createElement('div');O.className='rkMega ytm sjm';O.innerHTML='<i class="rays"></i><i class="fl"></i><i class="ring"></i><div class="tx"><small>✦ SS ✦</small><b>SORTE</b><b>DIVINA!</b><span>O SUNG JIN-WOO APARECEU!</span></div>';rkHost().appendChild(O);

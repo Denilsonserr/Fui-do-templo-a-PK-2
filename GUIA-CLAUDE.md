@@ -2238,3 +2238,6 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - `SJRGON=()=>true`: Sung do jogador, botão KI (bolinha de 15), recarga 7 s, em qualquer luta.
 - Golpe novo `MOVES.sjrg` (su 12, ac 2, rc 15, sem hitbox): wrapper do `spriteKey` usa a folha `str` do Sung — 0-4 levanta a espada e corta em arco (luz azul juntando na lâmina com faíscas sendo puxadas, wrapper do renderFighter), 5 = ESTOCADA: a lança sai da ponta da espada (x+120, y-135), ele recua (vx -7) com poeira, 6-7 fica esticado. `yacc` do sjrg = .25 (não acelera com a forma, para ver o movimento) em 9z_v451.py.
 - Teste: `ferramentas/testes/tsung_lanca_v456.js`.
+
+## v457 — Gacha do Sung libera às 09:00 (era 08:00)
+- `SJREL` = 15/11/2026 09:00 Brasília (12:00 UTC); textos do cadeado e do aviso trocados. Teste `tsung_lanc_v457.js` (08:50 trancado, 09:02 gira).
