@@ -6437,14 +6437,14 @@ function ytStep(f){const o=ytOpp(f),t=++f.st,fw=f.facing,M=!!f.form;
       if(applyHit(f,a,h)){ytImpact(f,a,h,k===3);if(k===3)ytBurst(a.x,a.y-160,1)}if(a.hp<=0)ko(f,a)}
     if(t>=END){ytBurst(f.x,f.y-160,0);f.ytH=-1;neutral(f)}return}
   if(f.state==='ytc'){const D=M?3:4,L=SPRH[ssid(f)][f.ytCK||'cmb'].length,k=Math.floor(t/D),END=L*D+6,FIN=L-2;
-    const HK=f.ytCK==='cmb1'?{4:30,5:32,7:34,8:34,9:36,10:36,11:38}:M?{1:28,2:30,3:30,4:32,5:34,6:34,8:36,9:38,10:40}:{2:26,3:26,4:28,5:28,6:30,7:30,8:32,9:32,10:34,11:36,12:36};
+    const HK=f.def.sid==='sj'?(M?{1:34,2:35,3:36,4:37,5:38,6:39,7:40,8:41,9:42,10:44,11:46}:{1:30,2:31,3:32,4:33,5:34,6:35,7:36,8:37,9:38,10:40,11:42}):f.ytCK==='cmb1'?{4:30,5:32,7:34,8:34,9:36,10:36,11:38}:M?{1:28,2:30,3:30,4:32,5:34,6:34,8:36,9:38,10:40}:{2:26,3:26,4:28,5:28,6:30,7:30,8:32,9:32,10:34,11:36,12:36};
     if(!f.ytHeld&&k<=5&&o&&!o.ko){const dx=o.x-f.x;if(Math.sign(dx)===fw&&Math.abs(dx)>120)f.x=clamp(f.x+fw*Math.min(Math.abs(dx)-120,M?32:24),40,WW-40)}
     if(!f.ytHeld&&k>=1&&k<=7&&o&&!o.ko&&Math.abs(o.x-f.x)<330&&Math.abs(o.y-f.y)<240&&(o.inv<=0||o.state==='blockstun')){f.ytHeld=true;fzTag(f,f.ytCK==='cmb1'?'Rika: Fúria Amaldiçoada!':M?'Yuta & Rika!':f.def.sid==='sj'?'Dança das Sombras!':'Dança da Espada!')}
     if(f.ytCK!=='cmb'||M){if(k===7&&f.ytCK==='cmb'&&f.ytKk!==7)ytBurst(f.x+fw*60,f.y-170,0);if(f.ytCK==='cmb1'&&k===3&&f.ytKk!==3)ytBurst(f.x,f.y-120,1)}
     if(f.ytHeld&&o){const lift=k>=FIN-3&&k<FIN?Math.min(80,(t-(FIN-3)*D)*5):0;o.state='rushed';o.st=0;o.vx=0;o.vy=0;o.flying=false;o.grounded=lift<=0;o.move=null;o.x=clamp(f.x+fw*(f.ytCK==='cmb1'?170:135),40,WW-40);o.y=FLOOR-lift;
       if(k!==f.ytKk){f.ytKk=k;
         if(HK[k]){const h={dmg:HK[k],kb:0,hs:5,px:o.x-fw*30,py:o.y-rand(130,200),kind:'melee',lock:1};applyHit(f,o,h);ytImpact(f,o,h);G.hitstop=Math.max(G.hitstop,3);G.shake=Math.max(G.shake,4);if(o.hp<=0){ko(f,o);f.ytHeld=false}}
-        if(k===FIN&&f.ytHeld){o.y=FLOOR;o.grounded=true;const h={dmg:M?150:120,kb:0,hs:22,heavy:1,px:o.x-fw*10,py:o.y-150,kind:'melee',lock:1};applyHit(f,o,h);f.ytHeld=false;
+        if(k===FIN&&f.ytHeld){o.y=FLOOR;o.grounded=true;const h={dmg:f.def.sid==='sj'?(M?190:150):M?150:120,kb:0,hs:22,heavy:1,px:o.x-fw*10,py:o.y-150,kind:'melee',lock:1};applyHit(f,o,h);f.ytHeld=false;
           o.state='airhit';o.vx=fw*13;o.vy=-7;o.grounded=false;o.bounced=false;if(!f.finDone&&f.combo>=3)comboFinish(f,o,h);ytBurst(o.x,o.y-150,1);if(o.hp<=0)ko(f,o)}}}
     else if(k!==f.ytKk)f.ytKk=k;
     if(t>=END){f.ytHeld=false;neutral(f)}return}}
@@ -13986,11 +13986,12 @@ function sjPurp(im){if(!im||!im.naturalWidth&&!im.width)return null;if(im._sjp)r
   const h0=d?d.hp:0;let hh=h;try{if(isSJ(a)&&a.sjSurv&&h&&!h.sjB)hh=Object.assign({},h,{dmg:(h.dmg||0)*1.2})}catch(e){}
   const r=_ah.call(this,a,d,hh);
   try{/* a cada 3 golpes: teleporte + tapão */
-    if(isSJ(a)&&d&&d!==a&&h&&!h.sjB&&!h.sjS&&!h.sjTp&&!h.sjRg&&d.hp<h0&&!d.ko&&G.phase==='fight'){a.sjC3=(a.sjC3||0)+1;if(a.sjC3>=3&&G.frame>=(a.sjTpCD||0)){a.sjC3=0;a.sjTpCD=G.frame+90;a.sjTpT=G.frame+8;a.sjTpO=d}}}catch(e){}
+    if(isSJ(a)&&d&&d!==a&&h&&!h.sjB&&!h.sjS&&!h.sjTp&&!h.sjRg&&!h.lock&&!h.sjDs&&a.state!=='ytc'&&a.state!=='ytr'&&d.hp<h0&&!d.ko&&G.phase==='fight'){a.sjC3=(a.sjC3||0)+1;if(a.sjC3>=3&&G.frame>=(a.sjTpCD||0)){a.sjC3=0;a.sjTpCD=G.frame+90;a.sjTpT=G.frame+8;a.sjTpO=d}}}catch(e){}
   return r}}
 {const _sk=spriteKey;spriteKey=function(f){if(isSJ(f)&&f.sjGT&&G.frame<f.sjGT&&!f.rushKey&&SPRH.sj&&SPRH.sj.idle2)return ['idle2',2];return _sk.apply(this,arguments)}}
 {const _u=update;update=function(){const r=_u.apply(this,arguments);try{if(G.p&&G.mode==='fight'&&G.phase==='fight')for(const f of G.p){if(!isSJ(f)||f.ko)continue;const M=f.mhp||MAXHP,o=G.p.find(q=>q&&q!==f);
     /* teleporte + tapão */
+    if(f.sjTpT&&(f.state==='ytc'||f.state==='ytr'||(f.sjTpO&&f.sjTpO.state==='rushed')))f.sjTpT=G.frame+8; /* v470: não interrompe o combo */
     if(f.sjTpT&&G.frame>=f.sjTpT&&G.hitstop<=0){const d=f.sjTpO;f.sjTpT=0;if(d&&!d.ko&&o===d&&!G.trans&&!G.ws){try{f.ghosts.push({key:spriteKey(f),x:f.x,y:f.y,facing:f.facing,life:16,col:'#9a5cff'})}catch(e){}try{ring(f.x,f.y-150,'#6a3cff',120,12,5)}catch(e){}
       const side=f.x<d.x?1:-1,nx=clamp(d.x+side*120,50,WW-50);f.x=nx;f.y=d.y>FLOOR-5?FLOOR:f.y;f.facing=d.x>f.x?1:-1;try{neutral(f)}catch(e){}
       try{ring(f.x,f.y-150,'#b48cff',160,14,6);for(let k=0;k<16;k++)spark(f.x,f.y-150,pick(['#6a3cff','#b48cff','#ffffff']),1,rand(5,12))}catch(e){}
@@ -14173,6 +14174,22 @@ try{const I=twInv();let ch=0;for(const it of I){if(it&&it.nm==='MANOPLA DO MONAR
 /* v468: espaço próprio do COLAR (colar e anel juntos). Colares velhos (tipo anel) passam para 'col'; se estava no espaço do anel, vai para o do colar. */
 try{const I=twInv(),Q=twEqp();let ch=0;for(const it of I){if(it&&it.nm==='COLAR DAS SOMBRAS'&&it.t!=='col'){it.t='col';ch=1;if(Q.anel===it.id){delete Q.anel;if(!Q.col)Q.col=it.id}}}if(ch){twLS.s('tw_inv',I);twLS.s('tw_eqp',Q)}}catch(e){}
 {const st=document.createElement('style');st.textContent='.rkEq .eqP .col .eqS{width:4.7em!important;height:4.7em!important;margin-bottom:.75em}.rkEq .eqP .col{gap:.3em!important}.rkEq .eqP .col .eqS img{max-width:62%;max-height:62%}';document.head.appendChild(st)}
+
+/* ================= v470: SUNG mais forte (pedido do dono 11:22)
+   • combo (Dança das Sombras) com 11 golpes — ferramentas/web/extra/9z_v470.py   • combo a cada 2 s (os outros 3 s)
+   • +15% de dano em tudo que o Sung bate (a sombra não conta)
+   • DASH: teletransporta para TRÁS do inimigo e deixa ele atordoado ~0,5 s (recarga 1 s) ================= */
+{const _ah=applyHit;applyHit=function(a,d,h){try{if(isSJ(a)&&d&&d!==a&&h&&!h.sjB&&!h.sjS&&!h.sjX15){h=Object.assign({},h,{dmg:(h.dmg||0)*1.15,sjX15:1})}}catch(e){}return _ah.call(this,a,d,h)}}
+{const _u=update;update=function(){const r=_u.apply(this,arguments);try{if(G.mode==='fight'&&G.p)for(const f of G.p){if(!isSJ(f)||f.ko)continue;
+  if((f.spCD||0)-G.frame>120)f.spCD=G.frame+120;
+  const st=f.state,ds=st==='vdash'||st==='dash'||st==='vbdash',was=f.sjPS;f.sjPS=st;
+  if(ds&&was!==st&&G.phase==='fight'&&!G.trans&&G.frame>=(f.sjDsCD||0)){const o=ytOpp(f);if(o&&!o.ko&&!o.hide&&Math.abs(o.x-f.x)<720&&o.state!=='rushed'){
+    f.sjDsCD=G.frame+60;const ox=f.x,oy=f.y,side=f.x<o.x?1:-1;f.x=clamp(o.x+side*105,40,WW-40);f.y=o.y;f.facing=f.x<o.x?1:-1;f.vx=0;
+    try{streak(ox,oy-120,f.x,f.y-120,'#7fb8ff');ghostBurst(f)}catch(e){}try{ring(f.x,f.y-150,'#7fb8ff',120,12,4);SFX.zip()}catch(e){}
+    neutral(f);const h={dmg:22,kb:0,hs:8,px:o.x,py:o.y-160,kind:'melee',sjDs:1};
+    if(applyHit(f,o,h)&&!o.ko){o.hitstun=Math.max(o.hitstun||0,30);o.vx=0;o.sjStun=G.frame+30;txt(o.x,o.y-300,'💫 ATORDOADO','#7fd8ff')}if(o.hp<=0)ko(f,o)}}}}catch(e){}return r}}
+/* estrelinhas em volta da cabeça do atordoado */
+{const _rf=renderFighter;renderFighter=function(f){const r=_rf.apply(this,arguments);try{if(f&&f.sjStun&&G.frame<f.sjStun&&!f.ko){ctx.save();ctx.globalCompositeOperation='lighter';for(let i=0;i<3;i++){const a=G.frame*.15+i*2.1;ctx.fillStyle='#bfe6ff';ctx.font='bold 26px sans-serif';ctx.fillText('✦',f.x+Math.cos(a)*42-9,f.y-300+Math.sin(a)*12)}ctx.restore()}}catch(e){}return r}}
 
 function twTrofList(){const tc=twLS.g('tw_tc',{}),run={};for(const t of TW.tr)run[t.k]=(run[t.k]||0)+1;
   twModal(`<div class="twM"><h3>🎖️ TROFÉUS</h3><div class="twTL">${Object.keys(TWTR).map(k=>{const T=TWTR[k];return `<div class="${tc[k]||run[k]?'got':''}"><i>${T.i}</i><b>${T.n}</b><span>${T.d}</span><em>+${T.p} 🏆</em><small>${run[k]?'nesta subida: '+run[k]+' · ':''}total: ${(tc[k]||0)}</small></div>`}).join('')}</div>
@@ -14365,7 +14382,7 @@ window.__dbg={mus:()=>[MCUR,MEL.src.split('/').pop()],stg:()=>STAGE.key,prepMatc
 })();
 </script>
 <style>#updB{position:fixed;left:50%;top:max(8px,env(safe-area-inset-top));transform:translateX(-50%);z-index:99999;padding:10px 22px;border-radius:14px;border:2px solid #fff3c0;background:linear-gradient(#ffd84a,#e08a10);color:#3a1d00;font:900 15px system-ui,sans-serif;box-shadow:0 0 18px #ffb21f;cursor:pointer;animation:updP 1s ease-in-out infinite alternate}@keyframes updP{to{transform:translateX(-50%) scale(1.05)}}</style>
-<script>(function(){const V='46761a1d5170';if(!/^https?:/.test(location.protocol))return;let nv=null;
+<script>(function(){const V='66a3125371e1';if(!/^https?:/.test(location.protocol))return;let nv=null;
 function show(){if(document.getElementById('updB'))return;try{if(typeof G!=='undefined'&&G.mode==='fight')return}catch(e){}const b=document.createElement('button');b.id='updB';b.textContent='🔄 ATUALIZAÇÃO NOVA! Toque para atualizar';
   b.onclick=()=>{b.textContent='⏳ Atualizando...';try{acSave(1)}catch(e){}setTimeout(()=>location.reload(),900)};document.body.appendChild(b)}
 async function chk(){if(document.hidden)return;if(nv){show();return}try{const r=await fetch('versao.txt?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const t=(await r.text()).trim();if(/^[0-9a-f]{8,40}$/.test(t)&&t!==V){nv=t;show()}}catch(e){}}

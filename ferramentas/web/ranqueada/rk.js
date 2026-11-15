@@ -5471,11 +5471,12 @@ function sjPurp(im){if(!im||!im.naturalWidth&&!im.width)return null;if(im._sjp)r
   const h0=d?d.hp:0;let hh=h;try{if(isSJ(a)&&a.sjSurv&&h&&!h.sjB)hh=Object.assign({},h,{dmg:(h.dmg||0)*1.2})}catch(e){}
   const r=_ah.call(this,a,d,hh);
   try{/* a cada 3 golpes: teleporte + tapão */
-    if(isSJ(a)&&d&&d!==a&&h&&!h.sjB&&!h.sjS&&!h.sjTp&&!h.sjRg&&d.hp<h0&&!d.ko&&G.phase==='fight'){a.sjC3=(a.sjC3||0)+1;if(a.sjC3>=3&&G.frame>=(a.sjTpCD||0)){a.sjC3=0;a.sjTpCD=G.frame+90;a.sjTpT=G.frame+8;a.sjTpO=d}}}catch(e){}
+    if(isSJ(a)&&d&&d!==a&&h&&!h.sjB&&!h.sjS&&!h.sjTp&&!h.sjRg&&!h.lock&&!h.sjDs&&a.state!=='ytc'&&a.state!=='ytr'&&d.hp<h0&&!d.ko&&G.phase==='fight'){a.sjC3=(a.sjC3||0)+1;if(a.sjC3>=3&&G.frame>=(a.sjTpCD||0)){a.sjC3=0;a.sjTpCD=G.frame+90;a.sjTpT=G.frame+8;a.sjTpO=d}}}catch(e){}
   return r}}
 {const _sk=spriteKey;spriteKey=function(f){if(isSJ(f)&&f.sjGT&&G.frame<f.sjGT&&!f.rushKey&&SPRH.sj&&SPRH.sj.idle2)return ['idle2',2];return _sk.apply(this,arguments)}}
 {const _u=update;update=function(){const r=_u.apply(this,arguments);try{if(G.p&&G.mode==='fight'&&G.phase==='fight')for(const f of G.p){if(!isSJ(f)||f.ko)continue;const M=f.mhp||MAXHP,o=G.p.find(q=>q&&q!==f);
     /* teleporte + tapão */
+    if(f.sjTpT&&(f.state==='ytc'||f.state==='ytr'||(f.sjTpO&&f.sjTpO.state==='rushed')))f.sjTpT=G.frame+8; /* v470: não interrompe o combo */
     if(f.sjTpT&&G.frame>=f.sjTpT&&G.hitstop<=0){const d=f.sjTpO;f.sjTpT=0;if(d&&!d.ko&&o===d&&!G.trans&&!G.ws){try{f.ghosts.push({key:spriteKey(f),x:f.x,y:f.y,facing:f.facing,life:16,col:'#9a5cff'})}catch(e){}try{ring(f.x,f.y-150,'#6a3cff',120,12,5)}catch(e){}
       const side=f.x<d.x?1:-1,nx=clamp(d.x+side*120,50,WW-50);f.x=nx;f.y=d.y>FLOOR-5?FLOOR:f.y;f.facing=d.x>f.x?1:-1;try{neutral(f)}catch(e){}
       try{ring(f.x,f.y-150,'#b48cff',160,14,6);for(let k=0;k<16;k++)spark(f.x,f.y-150,pick(['#6a3cff','#b48cff','#ffffff']),1,rand(5,12))}catch(e){}
@@ -5658,3 +5659,19 @@ try{const I=twInv();let ch=0;for(const it of I){if(it&&it.nm==='MANOPLA DO MONAR
 /* v468: espaço próprio do COLAR (colar e anel juntos). Colares velhos (tipo anel) passam para 'col'; se estava no espaço do anel, vai para o do colar. */
 try{const I=twInv(),Q=twEqp();let ch=0;for(const it of I){if(it&&it.nm==='COLAR DAS SOMBRAS'&&it.t!=='col'){it.t='col';ch=1;if(Q.anel===it.id){delete Q.anel;if(!Q.col)Q.col=it.id}}}if(ch){twLS.s('tw_inv',I);twLS.s('tw_eqp',Q)}}catch(e){}
 {const st=document.createElement('style');st.textContent='.rkEq .eqP .col .eqS{width:4.7em!important;height:4.7em!important;margin-bottom:.75em}.rkEq .eqP .col{gap:.3em!important}.rkEq .eqP .col .eqS img{max-width:62%;max-height:62%}';document.head.appendChild(st)}
+
+/* ================= v470: SUNG mais forte (pedido do dono 11:22)
+   • combo (Dança das Sombras) com 11 golpes — ferramentas/web/extra/9z_v470.py   • combo a cada 2 s (os outros 3 s)
+   • +15% de dano em tudo que o Sung bate (a sombra não conta)
+   • DASH: teletransporta para TRÁS do inimigo e deixa ele atordoado ~0,5 s (recarga 1 s) ================= */
+{const _ah=applyHit;applyHit=function(a,d,h){try{if(isSJ(a)&&d&&d!==a&&h&&!h.sjB&&!h.sjS&&!h.sjX15){h=Object.assign({},h,{dmg:(h.dmg||0)*1.15,sjX15:1})}}catch(e){}return _ah.call(this,a,d,h)}}
+{const _u=update;update=function(){const r=_u.apply(this,arguments);try{if(G.mode==='fight'&&G.p)for(const f of G.p){if(!isSJ(f)||f.ko)continue;
+  if((f.spCD||0)-G.frame>120)f.spCD=G.frame+120;
+  const st=f.state,ds=st==='vdash'||st==='dash'||st==='vbdash',was=f.sjPS;f.sjPS=st;
+  if(ds&&was!==st&&G.phase==='fight'&&!G.trans&&G.frame>=(f.sjDsCD||0)){const o=ytOpp(f);if(o&&!o.ko&&!o.hide&&Math.abs(o.x-f.x)<720&&o.state!=='rushed'){
+    f.sjDsCD=G.frame+60;const ox=f.x,oy=f.y,side=f.x<o.x?1:-1;f.x=clamp(o.x+side*105,40,WW-40);f.y=o.y;f.facing=f.x<o.x?1:-1;f.vx=0;
+    try{streak(ox,oy-120,f.x,f.y-120,'#7fb8ff');ghostBurst(f)}catch(e){}try{ring(f.x,f.y-150,'#7fb8ff',120,12,4);SFX.zip()}catch(e){}
+    neutral(f);const h={dmg:22,kb:0,hs:8,px:o.x,py:o.y-160,kind:'melee',sjDs:1};
+    if(applyHit(f,o,h)&&!o.ko){o.hitstun=Math.max(o.hitstun||0,30);o.vx=0;o.sjStun=G.frame+30;txt(o.x,o.y-300,'💫 ATORDOADO','#7fd8ff')}if(o.hp<=0)ko(f,o)}}}}catch(e){}return r}}
+/* estrelinhas em volta da cabeça do atordoado */
+{const _rf=renderFighter;renderFighter=function(f){const r=_rf.apply(this,arguments);try{if(f&&f.sjStun&&G.frame<f.sjStun&&!f.ko){ctx.save();ctx.globalCompositeOperation='lighter';for(let i=0;i<3;i++){const a=G.frame*.15+i*2.1;ctx.fillStyle='#bfe6ff';ctx.font='bold 26px sans-serif';ctx.fillText('✦',f.x+Math.cos(a)*42-9,f.y-300+Math.sin(a)*12)}ctx.restore()}}catch(e){}return r}}
