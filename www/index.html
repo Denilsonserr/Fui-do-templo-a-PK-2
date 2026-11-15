@@ -13304,7 +13304,7 @@ let SJHN=0;
 /* ================= v437: SUNG CHEGA NO JOGO 15/11 08:00 (Brasília) — banner da INVOCAÇÃO MÍTICA = SUNG JIN-WOO (arte do dono), 80 💎 / 800 💎, garantido em 250.
    O banner do Yuta acabou: o Yuta agora sai na INVOCAÇÃO ESPECIAL (junto com os outros míticos). Antes da hora o banner fica trancado.
    SOMBRAS: tela do dono pra EVOLUIR a sombra com ESSÊNCIA DA SOMBRA (pó roxo, nova) + moedas douradas. Rank C até nv 20, B 30, A 40, S 50. ================= */
-const SJREL=Date.UTC(2026,10,15,12,0,0) /* v457: 15/11 09:00 Brasília (era 08:00) */,sjRel=()=>Date.now()>=SJREL,SJESS='a/ca4b5f5f1fdbb0.webp';RQA.gacha_sj='a/1c6bed6565bcf6.webp';
+const SJREL=Date.UTC(2026,10,15,14,0,0) /* v464: 15/11 11:00 Brasília (volta no tempo; era 09:00) */,sjRel=()=>Date.now()>=SJREL,SJESS='a/ca4b5f5f1fdbb0.webp';RQA.gacha_sj='a/1c6bed6565bcf6.webp';
 function sjRelChk(){try{const on=sjRel()||pfIsAdm(),t=document.querySelector('#roster .tile[data-c="sung"]');if(t)t.hidden=!on;const i=ALLC.indexOf('sung');if(on&&i<0)ALLC.push('sung');if(!on&&i>=0)ALLC.splice(i,1)}catch(e){}}
 setTimeout(sjRelChk,800);setInterval(sjRelChk,20000);
 const sjOwned=()=>rkG('own',[]).includes('sung');
@@ -13313,7 +13313,7 @@ function rkRollSJ(){if(!sjOwned()&&!RKMTMP.includes('sung')){const p=rkG('pitySJ
   return {k:'red',r:'comum',n:1+((Math.random()*5)|0)}}
 rkRollY=rkRollSJ;
 {const _c=rkCost;rkCost=function(n){if(RKBAN!=='mit')return _c(n);const t=Math.min(n,rkG('tic',0)|0);return {t,g:n===1?(t?0:80):(n-t)*80}}}
-{const _sm=rkSummon;rkSummon=function(n){if(RKBAN==='mit'&&!sjRel()){rkSfx('clang');return rkToast('🔒 O SUNG JIN-WOO chega hoje (15/11) às 09:00 (Brasília)!','#7fb8ff')}return _sm.apply(this,arguments)}}
+{const _sm=rkSummon;rkSummon=function(n){if(RKBAN==='mit'&&!sjRel()){rkSfx('clang');return rkToast('🔒 O SUNG JIN-WOO chega hoje (15/11) às 11:00 (Brasília)!','#7fb8ff')}return _sm.apply(this,arguments)}}
 {const _tx=rkTaxas;rkTaxas=function(){if(RKBAN!=='mit')return _tx();rkModal(`<div class="twM"><h3>% TAXAS · INVOCAÇÃO MÍTICA · SUNG JIN-WOO</h3><table class="rkTx"><tr><th>Resultado</th><th>Chance</th></tr>
   <tr><td style="color:#7fb8ff">✦ SS SUNG JIN-WOO · Monarca das Sombras (só aqui) · garantido em 250 giros</td><td>0,4%</td></tr><tr><td>Equipamento</td><td>30%</td></tr><tr><td style="color:#ff5a5a">Moeda Vermelha (1 a 5)</td><td>69,6%</td></tr></table>
   <p class="twH">1 giro = 80 💎 · 10 giros = 800 💎 (ticket vale 1 giro). Todo giro também dá ${LVPON}. Só existe 1 Sung por jogador.<br>O Sung tem o próprio SISTEMA DO JOGADOR: nível 1 a 80 só com missões, atributos, classe e sombras.<br>O Yuta agora sai na INVOCAÇÃO ESPECIAL.</p><div class="row"><button class="btn" id="rkMX">FECHAR</button></div></div>`);$('rkMX').onclick=()=>rkModal(null)}}
@@ -14031,7 +14031,7 @@ function sjShBonus(f){try{if(f.cpu)return {dm:1,hp:1};const q=twEqOn(),n=sjSetFu
 const SJTB=[0,30,25,20,18,16,14,12,10,8,6];
 for(let n=1;n<=10;n++)TWTIT['sj'+n]={n:'MONARCA Nº'+n,i:'👑',c:n===1?'#e9d4ff':n<=3?'#c79bff':'#9a5cff',d:'Um dos 10 primeiros do servidor a pegar o Sung · +'+SJTB[n]+'% de dano com o Sung',hid:1,sjt:n};
 async function sjTitClaim(show){if(twTits().some(k=>/^sj\d+$/.test(k))){rkS('sjtp',0);return}rkS('sjtp',1);const nm=String(twLS.g('tw_nome','')||'?').slice(0,16),IV=v=>({integerValue:String(v)});
-  for(let n=1;n<=10;n++){let r;try{r=await twFetchT(TWURL+'/torre?documentId=sjtit2_'+n+'&key='+TWFB.apiKey,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({fields:{nome:{stringValue:nm},andar:IV(0),tempo:IV(0),uid:{stringValue:twUid()},sjt:{stringValue:String(n)},v:IV(462)}})})}catch(e){return}
+  for(let n=1;n<=10;n++){let r;try{r=await twFetchT(TWURL+'/torre?documentId=sjtit3_'+n+'&key='+TWFB.apiKey,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({fields:{nome:{stringValue:nm},andar:IV(0),tempo:IV(0),uid:{stringValue:twUid()},sjt:{stringValue:String(n)},v:IV(462)}})})}catch(e){return}
     if(r.ok){rkS('sjtp',0);const L=twTits();L.push('sj'+n);twLS.s('tw_tit',L);twLS.s('tw_titOn','sj'+n);try{twTitSync()}catch(e){}try{acSave(1)}catch(e){}if(show)await sjTitWin(n);return}
     if(r.status!==409&&r.status!==403)return}
   rkS('sjtp',0)}
@@ -14070,7 +14070,7 @@ rkRollY=function(){
 {const _sm=rkSummon;rkSummon=function(n){const b=RKBAN,h0=rkG('hist',[]).length?rkG('hist',[])[0].d:0;const r=_sm.apply(this,arguments);try{const H=rkG('hist',[]);let ch=0;for(const x of H){if(x.d<=h0)break;if(x.b==null){x.b=b;ch=1}}if(ch)rkS('hist',H)}catch(e){}return r}}
 /* ---------- RESET 1 vez ---------- */
 (function(){try{if(rkG('rs463',0))return;rkS('rs463',1);const own=rkG('own',['goku']);if(!own.includes('sung'))return;
-  const H=rkG('hist',[]);let n=0;for(const x of H){if(x.d>=SJREL&&SJBANK(x))n++}const gem=Math.max(20,n)*80;
+  const H=rkG('hist',[]);let n=0;for(const x of H){if(x.d>=Date.UTC(2026,10,15,12,0,0)&&SJBANK(x))n++}const gem=Math.max(20,n)*80;
   rkS('own',own.filter(k=>k!=='sung'));if(rkG('sel','goku')==='sung')rkS('sel','goku');rkS('pitySJ',0);rkS('pitySJI',0);rkS('sjTg',0);rkS('sjTgI',0);
   const NM=SJSEC.map(k=>RKSP[k].nm),I=twInv(),Q=twEqp(),rm=I.filter(x=>x&&NM.includes(x.nm));if(rm.length){const ids=rm.map(x=>x.id);twLS.s('tw_inv',I.filter(x=>!ids.includes(x.id)));for(const t in Q)if(ids.includes(Q[t]))delete Q[t];twLS.s('tw_eqp',Q)}
   const L=twTits();if(L.some(k=>/^sj\d+$/.test(k))){twLS.s('tw_tit',L.filter(k=>!/^sj\d+$/.test(k)));if(/^sj\d+$/.test(String(twLS.g('tw_titOn','')||'')))twLS.s('tw_titOn',null);try{twTitSync()}catch(e){}}rkS('sjtp',0);
@@ -14090,8 +14090,55 @@ async function rs463b(){try{if(rkG('rs463b',0))return;const k=localStorage.getIt
   const dg=Math.max(0,g0-g1),dt=Math.max(0,t0-t1);if(dg)rkAdd('gem',dg);if(dt)rkAdd('tic',dt);rkS('rs463b',1);try{acSave(1)}catch(e){}
   if(dg||dt){const tx=`Seus diamantes e tickets voltaram como estavam antes das 09:00 (${new Date(x.ts).toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'})}): ${dg?'💎 +'+rkFmtN(dg):''}${dg&&dt?' · ':''}${dt?'🎫 +'+dt:''}`;
     try{if(showScreen.cur==='ranked'){rkModal(`<div class="twM"><h3>🔄 DEVOLUÇÃO COMPLETA</h3><p class="twH">${tx}</p><div class="row"><button class="btn main" id="rkMX">OK</button></div></div>`);$('rkMX').onclick=()=>rkModal(null)}else rkS('rs463bm',tx)}catch(e){}}}catch(e){}}
-setTimeout(rs463b,5000);window.__rs463={u:()=>TWURL+"/torre?key="+TWFB.apiKey,run:rs463b,sig:(k,s)=>acSig(k,s),id:n=>acId(n)};
+/* v464: substituído pelo rs464 */window.__rs463={u:()=>TWURL+"/torre?key="+TWFB.apiKey,run:rs463b,sig:(k,s)=>acSig(k,s),id:n=>acId(n)};
 {const _o=rkOpen;rkOpen=function(){const r=_o.apply(this,arguments);const tx=rkG('rs463bm','');if(tx){rkS('rs463bm','');setTimeout(()=>{try{rkModal(`<div class="twM"><h3>🔄 DEVOLUÇÃO COMPLETA</h3><p class="twH">${tx}</p><div class="row"><button class="btn main" id="rkMX">OK</button></div></div>`);$('rkMX').onclick=()=>rkModal(null)}catch(e){}},2600)}return r}}
+
+/* ================= v464: VOLTA NO TEMPO (pedido do dono 15/11 10:48) — antes de liberar o Sung
+   1× por jogador (rk_rs464): tira o Sung, as peças do Monarca (menos a Manopla do passe) e o título MONARCA Nº de todo mundo; zera contadores do banner.
+   COM CONTA: busca o último save antes das 09:00 → tickets e diamantes = maior entre o save e (agora − devoluções antigas); personagens = os do save (rk_rs464b).
+   SEM CONTA: +80 💎 por giro do banner do Sung no histórico desde a v463 (campo b='mit').
+   GACHA: Sung garantido em 250; chance escondida só depois de 100 giros (0,2% subindo depois de 150 → a maioria pega entre 160 e 200). Peças: 0,3% por giro, garantia em 200.
+   Libera às 11:00 (SJREL) com contagem na tela de início. Títulos no servidor: sjtit3_N. ================= */
+(function(){try{if(rkG('rs464',0))return;rkS('rs464',1);rkS('rs463b',1);
+  const own=rkG('own',['goku']);if(own.includes('sung')){rkS('own',own.filter(k=>k!=='sung'));if(rkG('sel','goku')==='sung')rkS('sel','goku')}
+  for(const k of ['pitySJ','pitySJI','sjTg','sjTgI','sjtp'])rkS(k,0);
+  const NM=SJSEC.map(k=>RKSP[k].nm),I=twInv(),Q=twEqp(),rm=I.filter(x=>x&&NM.includes(x.nm));if(rm.length){const ids=rm.map(x=>x.id);twLS.s('tw_inv',I.filter(x=>!ids.includes(x.id)));for(const t in Q)if(ids.includes(Q[t]))delete Q[t];twLS.s('tw_eqp',Q)}
+  const L=twTits();if(L.some(k=>/^sj\d+$/.test(k))){twLS.s('tw_tit',L.filter(k=>!/^sj\d+$/.test(k)));if(/^sj\d+$/.test(String(twLS.g('tw_titOn','')||'')))twLS.s('tw_titOn',null);try{twTitSync()}catch(e){}}
+  if(!localStorage.getItem('ac_k')){const n=rkG('hist',[]).filter(x=>x&&x.b==='mit').length;if(n){rkAdd('gem',n*80);rkS('rs464m','Você recebeu de volta 💎 '+rkFmtN(n*80)+' dos giros no banner do Sung.')}rkS('rs464b',1)}
+  try{acSave(1)}catch(e){}}catch(e){}})();
+async function rs464b(){try{if(rkG('rs464b',0))return;const k=localStorage.getItem('ac_k'),n=localStorage.getItem('ac_n');if(!k||!n){rkS('rs464b',1);return}
+  const acc=await acId(n),r=await twFetchT(new URL(TWURL).origin+'/fs/sv-antes?acc='+encodeURIComponent(acc)+'&t='+Date.UTC(2026,10,15,12,0,0));if(!r.ok)return;const x=await r.json();
+  if(x.nada){const m=rkG('hist',[]).filter(q=>q&&q.b==='mit').length;if(m){rkAdd('gem',m*80);rkS('rs464m','Você recebeu de volta 💎 '+rkFmtN(m*80)+' dos giros no banner do Sung.')}rkS('rs464b',1);return}
+  if(!x.d||!(await acFind(acc,k,[x])))return;const O=JSON.parse(x.d),num=s=>{try{return +JSON.parse(s)||0}catch(e){return 0}};
+  const g0=num(O.rk_gem),t0=num(O.rk_tic),old=(rkG('rs463g',0)|0),g1=Math.max(0,(rkG('gem',0)|0)-old),t1=rkG('tic',0)|0,G1=Math.max(g0,g1),T1=Math.max(t0,t1);
+  rkS('gem',G1);rkS('tic',T1);let o2=null;try{o2=JSON.parse(O.rk_own||'null')}catch(e){}if(Array.isArray(o2)&&o2.length){o2=o2.filter(k=>k!=='sung');if(!o2.includes('goku'))o2.unshift('goku');rkS('own',o2);if(!o2.includes(rkG('sel','goku')))rkS('sel','goku')}
+  rkS('rs464b',1);try{acSave(1)}catch(e){}
+  rkS('rs464m',`O jogo voltou no tempo para antes do Sung (seu save das ${new Date(x.ts).toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'})}): 💎 ${rkFmtN(G1)} · 🎫 ${T1}, e os personagens que você tinha.`)}catch(e){}}
+setTimeout(rs464b,4000);
+{const _o=rkOpen;rkOpen=function(){const r=_o.apply(this,arguments);const tx=rkG('rs464m','');if(tx){rkS('rs464m','');setTimeout(()=>{try{rkModal(`<div class="twM"><h3>⏪ VOLTAMOS NO TEMPO</h3><p class="twH">O Sung foi resetado para todos tentarem de novo de forma justa. ${tx}</p><p class="twH">O título MONARCA Nº recomeçou. O banner do Sung abre hoje às <b>11:00</b>.</p><div class="row"><button class="btn main" id="rkMX">OK</button></div></div>`);$('rkMX').onclick=()=>rkModal(null)}catch(e){}},2600)}return r}}
+/* gacha novo */
+rkRollY=function(){
+  if(!sjOwned()&&!RKMTMP.includes('sung')){const p=rkG('pitySJ',0)+1;const h=p<=100?0:p<=150?.002:.002+(p-150)*.00093;
+    if(p>=250||Math.random()<h){rkS('pitySJ',0);RKMTMP.push('sung');return {k:'chr',r:'mit',id:'sung'}}rkS('pitySJ',p)}
+  {const L=sjSecLeft().filter(k=>!RKMTMP.includes(k));if(L.length){const p=rkG('pitySJI',0)+1;if(p>=200||Math.random()*100<.3){rkS('pitySJI',0);const s=L[(Math.random()*L.length)|0];RKMTMP.push(s);return {k:'sp',r:'sec',s}}rkS('pitySJI',p)}}
+  {const q=Math.random()*100;if(q<1.5)return {k:'sp',r:'mit',s:'pvida'};if(q<3)return {k:'sp',r:'mit',s:'psomb'}}
+  let r=Math.random()*100;if(r<30){let q=Math.random()*100,R='comum';for(const [k,w] of RKEQW){if((q-=w)<0){R=k;break}}return {k:'eq',r:R,E:TWEQ[(Math.random()*TWEQ.length)|0]}}
+  return {k:'red',r:'comum',n:1+((Math.random()*5)|0)}};
+{const _gh=rkGachaH;rkGachaH=function(){let h=_gh.apply(this,arguments);if(RKBAN!=='mit')return h;const p=rkG('pitySJ',0),pi=rkG('pitySJI',0);
+  return h.replace(/✦ Sung em até <b>\d+<\/b>/,`✦ Sung garantido em <b>${Math.max(1,250-p)}</b>`).replace(/✦ peça do Monarca em até <b>\d+<\/b>/,`✦ peça do Monarca garantida em <b>${Math.max(1,200-pi)}</b>`)}}
+{const _tx=rkTaxas;rkTaxas=function(){if(RKBAN!=='mit')return _tx();rkModal(`<div class="twM"><h3>% TAXAS · INVOCAÇÃO MÍTICA · SUNG JIN-WOO</h3><table class="rkTx"><tr><th>Resultado</th><th>Chance</th></tr>
+  <tr><td style="color:#7fb8ff">✦ SS SUNG JIN-WOO · Monarca das Sombras</td><td>0,2% · garantido em 250 giros</td></tr>
+  <tr><td style="color:#b48cff">✦ Peça do MONARCA (elmo, manto, adagas, botas, colar, anel)</td><td>0,3% · cada peça garantida em 200 giros</td></tr>
+  <tr><td>🧪 Poção de Vida / Cálice da Sombra</td><td>1,5% cada</td></tr><tr><td>Equipamento</td><td>30%</td></tr><tr><td style="color:#ff5a5a">Moeda Vermelha (1 a 5)</td><td>o resto</td></tr></table>
+  <p class="twH">1 giro = 80 💎 · 10 giros = 800 💎 (ticket vale 1 giro). A sorte não conta. Só existe 1 Sung por jogador. A contagem não zera se você sair.</p><div class="row"><button class="btn" id="rkMX">FECHAR</button></div></div>`);$('rkMX').onclick=()=>rkModal(null)}}
+/* contagem na tela de início */
+{const st=document.createElement('style');st.textContent=`#sjCdT{position:absolute;left:50%;top:1.2vh;transform:translateX(-50%);z-index:30;pointer-events:none;padding:.7vh 2.4vh;border-radius:2vh;font:900 2.6vh var(--f-ui,sans-serif);color:#f1e6ff;white-space:nowrap;
+  background:linear-gradient(90deg,rgba(30,8,60,.92),rgba(8,0,20,.92));border:.25vh solid #9a5cff;box-shadow:0 0 2vh rgba(154,92,255,.75),0 .4vh 1.2vh #000;text-shadow:0 0 1vh #a060ff,0 .2vh .4vh #000}
+  #sjCdT b{font-size:1.25em;color:#fff;letter-spacing:.05em;margin-left:.3em;font-variant-numeric:tabular-nums}#sjCdT.ok{border-color:#7fffb0;box-shadow:0 0 2.4vh rgba(127,255,176,.8),0 .4vh 1.2vh #000;animation:pfTw 1.2s ease-in-out infinite}`;document.head.appendChild(st);
+  const tick=()=>{const T=document.getElementById('title');if(!T)return;let e=document.getElementById('sjCdT');const d=SJREL-Date.now();if(d<-3600e3){if(e)e.remove();return}
+    if(!e){e=document.createElement('div');e.id='sjCdT';T.appendChild(e)}if(d>0){const s=Math.ceil(d/1000),h=Math.floor(s/3600),m=Math.floor(s%3600/60),ss=s%60;e.className='';e.innerHTML=`👑 SUNG JIN-WOO LIBERA EM <b>${h?h+'h ':''}${String(m).padStart(2,'0')}m ${String(ss).padStart(2,'0')}s</b>`}else{e.className='ok';e.innerHTML='👑 SUNG JIN-WOO <b>LIBERADO!</b> GIRE AGORA'}};
+  tick();setInterval(tick,1000)}
+window.__rs464={run:rs464b,roll:()=>rkRollY()};
 
 function twTrofList(){const tc=twLS.g('tw_tc',{}),run={};for(const t of TW.tr)run[t.k]=(run[t.k]||0)+1;
   twModal(`<div class="twM"><h3>🎖️ TROFÉUS</h3><div class="twTL">${Object.keys(TWTR).map(k=>{const T=TWTR[k];return `<div class="${tc[k]||run[k]?'got':''}"><i>${T.i}</i><b>${T.n}</b><span>${T.d}</span><em>+${T.p} 🏆</em><small>${run[k]?'nesta subida: '+run[k]+' · ':''}total: ${(tc[k]||0)}</small></div>`}).join('')}</div>
@@ -14284,7 +14331,7 @@ window.__dbg={mus:()=>[MCUR,MEL.src.split('/').pop()],stg:()=>STAGE.key,prepMatc
 })();
 </script>
 <style>#updB{position:fixed;left:50%;top:max(8px,env(safe-area-inset-top));transform:translateX(-50%);z-index:99999;padding:10px 22px;border-radius:14px;border:2px solid #fff3c0;background:linear-gradient(#ffd84a,#e08a10);color:#3a1d00;font:900 15px system-ui,sans-serif;box-shadow:0 0 18px #ffb21f;cursor:pointer;animation:updP 1s ease-in-out infinite alternate}@keyframes updP{to{transform:translateX(-50%) scale(1.05)}}</style>
-<script>(function(){const V='16f76b1a90dd';if(!/^https?:/.test(location.protocol))return;let nv=null;
+<script>(function(){const V='e19d4d6e0495';if(!/^https?:/.test(location.protocol))return;let nv=null;
 function show(){if(document.getElementById('updB'))return;try{if(typeof G!=='undefined'&&G.mode==='fight')return}catch(e){}const b=document.createElement('button');b.id='updB';b.textContent='🔄 ATUALIZAÇÃO NOVA! Toque para atualizar';
   b.onclick=()=>{b.textContent='⏳ Atualizando...';try{acSave(1)}catch(e){}setTimeout(()=>location.reload(),900)};document.body.appendChild(b)}
 async function chk(){if(document.hidden)return;if(nv){show();return}try{const r=await fetch('versao.txt?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const t=(await r.text()).trim();if(/^[0-9a-f]{8,40}$/.test(t)&&t!==V){nv=t;show()}}catch(e){}}

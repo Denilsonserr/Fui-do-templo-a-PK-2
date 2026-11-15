@@ -110,3 +110,10 @@ Este arquivo tem duas partes: a **Parte 1** é para o dono (Denilson) e a **Part
 - Títulos do servidor recomeçam: documentId agora é torre/sjtit2_N. Histórico passa a guardar o banner (campo b).
 - Teste: tsung_reset_v463.js.
 - v463c: quem tem CONTA e foi resetado recebe tickets e diamantes de volta como estavam no último save antes das 09:00 (rota nova do worker /fs/sv-antes?acc=&t= ; assinatura conferida no jogo com acFind). Nunca tira: fica o maior valor (agora × save antigo). 1 vez (rk_rs463b). Teste: tsung_reset_save_v463.js (usa o worker de verdade no servidor local).
+
+## v464 — VOLTA NO TEMPO antes do Sung (15/11 10:48)
+- 1× por jogador (rk_rs464): tira Sung, peças do Monarca (menos Manopla) e título MONARCA Nº; zera contadores. Títulos no servidor: sjtit3_N.
+- Com conta (rk_rs464b, assíncrono): último save antes das 09:00 (/fs/sv-antes) → 💎 e 🎫 = maior entre o save e (agora − devolução antiga rk_rs463g); personagens = os do save.
+- Sem conta: +80 💎 por giro do histórico com b='mit'. Aviso "VOLTAMOS NO TEMPO" ao abrir o menu (rk_rs464m).
+- Gacha: Sung garantido em 250; escondido: 0 até 100 giros, 0,2% de 101-150, depois sobe +0,093%/giro (mediana ~183, metade entre 168 e 200). Peças: 0,3%, garantia 200.
+- SJREL = 11:00 Brasília (14:00Z). Contagem no topo da tela de início (#sjCdT). Teste: tsung_volta_v464.js.

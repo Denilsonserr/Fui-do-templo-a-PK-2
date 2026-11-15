@@ -1,0 +1,15 @@
+// v464: volta no tempo — conta (save antes das 09:00 no worker de verdade) e sem conta (histórico b='mit'); gacha novo; contagem na tela de início
+const {chromium}=require('playwright');
+(async()=>{const b=await chromium.launch();const E=[];const pg=async(init)=>{const p=await b.newPage({viewport:{width:915,height:412}});p.on('pageerror',e=>E.push(e.message));await p.route(/fonts\.g|firestore/,r=>r.abort());await p.addInitScript(init);await p.goto('http://localhost:8790/index.html');await p.waitForFunction(()=>!document.getElementById('goSelect').disabled,null,{timeout:120000});return p};
+// COM CONTA: já passou pelo reset v463 (rs463g=1600), pegou o Sung de novo, gastou tudo
+const p=await pg(()=>{if(sessionStorage.d)return;sessionStorage.d=1;localStorage.clear();Object.assign(localStorage,{tw_nome:'"V"',rk_ini:'1',rk_xpv2:'1',rk_rs463:'1',rk_rs463g:'1600',rk_own:'["goku","sung","yuta"]',rk_sel:'"sung"',rk_gem:'1700',rk_tic:'0',tw_tit:'["sj2"]',tw_titOn:'"sj2"',ac_k:'k'+Math.random(),ac_n:'t'+Math.random().toString(36).slice(2,7)})});
+const ok=await p.evaluate(async()=>{const k=localStorage.ac_k,n=localStorage.ac_n,acc=await __rs463.id(n);const put=async(ts,d)=>{const sg=await __rs463.sig(k,acc+'|'+ts+'|'+d);const IV=v=>({integerValue:String(v)});return (await fetch(__rs463.u()+'&documentId=sv_'+acc+'_'+ts.toString(36).padStart(9,'0'),{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({fields:{sv:{stringValue:acc},ts:IV(ts),d:{stringValue:d},sg:{stringValue:sg},nome:{stringValue:n},andar:IV(0),tempo:IV(0)}})})).status};
+  return [await put(Date.UTC(2026,10,15,11,48),JSON.stringify({rk_gem:'12000',rk_tic:'15',rk_own:'["goku","naruto"]'})),await put(Date.UTC(2026,10,15,12,30),JSON.stringify({rk_gem:'5',rk_tic:'0'}))]});
+await p.evaluate(()=>{localStorage.rk_rs464b='0';return __rs464.run()});await p.waitForTimeout(800);
+const A=await p.evaluate(()=>({gem:localStorage.rk_gem,tic:localStorage.rk_tic,own:localStorage.rk_own,sel:localStorage.rk_sel,tit:localStorage.tw_tit,msg:localStorage.rk_rs464m}));
+await p.screenshot({path:'/tmp/sjcd.png'});
+// SEM CONTA: 25 giros no banner do Sung depois da v463
+const q=await pg(()=>{if(sessionStorage.d)return;sessionStorage.d=1;localStorage.clear();const H=[];for(let i=0;i<25;i++)H.push({k:'red',r:'comum',n:1,d:Date.now()-i*1000,b:'mit'});H.push({k:'red',r:'comum',n:1,d:Date.now(),b:'yt'});Object.assign(localStorage,{tw_nome:'"V"',rk_ini:'1',rk_xpv2:'1',rk_rs463:'1',rk_own:'["goku","sung"]',rk_gem:'100',rk_hist:JSON.stringify(H)})});
+const B=await q.evaluate(()=>({gem:localStorage.rk_gem,own:localStorage.rk_own}));
+const D=await q.evaluate(()=>{const R=[],P=[];for(let t=0;t<2000;t++){localStorage.rk_own='["goku"]';localStorage.rk_pitySJ='0';for(let i=1;i<=260;i++){const r=__rs464.roll();if(r.k==='chr'){R.push(i);break}}}R.sort((a,b)=>a-b);const pc=k=>R[Math.floor(R.length*k)];return {min:R[0],p10:pc(.1),p25:pc(.25),med:pc(.5),p75:pc(.75),p90:pc(.9),em250:R.filter(x=>x===250).length/R.length}});
+console.log(JSON.stringify({gravou:ok,conta:A,semConta:B,giros:D}),E.slice(0,3));await b.close()})();
