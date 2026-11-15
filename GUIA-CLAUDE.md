@@ -2204,3 +2204,8 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - Duração: `f.skDivE=G.frame+FORM_T` (antes FORM_T/2) e o botão esvazia 1 por quadro (antes ×2, por isso parecia descarregar rápido). ≈38 s.
 - Só dava 1 vez por luta: depois da transformação o vídeo divino é liberado da memória (`skDvFree(0)`) e o `skvNeed` só recarregava na 1ª vez → ficava em "CARREGANDO A FORMA DIVINA..." para sempre. Agora `skvNeed` chama `skDvLoad()` sempre que `!SKDOK`. Ainda custa 2,5 barras de energia.
 - Teste: `ferramentas/testes/tdivino_2x_v449.js` (Caça com a armadura: duração, fim e 2ª vez).
+
+## v450 — Varredura de bugs + lista de erros dos jogadores
+- `worker/index.js` rota **/fs-admin/erros** (`?h=48` horas, máx 720): página com os erros que os celulares mandaram (`errRep` → docs `er_*`), agrupados por mensagem, com quantas vezes, último horário (Brasília), onde e modos. Não mostra nome nem aparelho.
+- Testes novos: `tvarredura_v450.js` (os 26 personagens IA x IA com transformação e super: 0 erros), `ttelas_v450.js` (todas as telas do Ranqueado), `tmodos_v450.js` (Torre/Caça ok; Boss/PVP não passam da intro no navegador de teste por causa de mídia, não é bug do jogo).
+- Corrigido: filtro da Biblioteca (`rkLibFilt` e filtro de equipamentos) dava erro quando a aba não tinha o botão de filtro.

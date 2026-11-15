@@ -424,7 +424,7 @@ function rkLibShow(x){RKL.cur=x;const P=$('rkPed'),I=$('rkInfo'),U=$('rkUse');if
   U.hidden=!(x.k==='chr'&&x.has&&rkG('sel','goku')!==x.id)&&!(x.k==='col'&&x.tit&&x.has);U.textContent=x.k==='chr'?'USAR NA RANQUEADA':twTitOn()===x.tit?'TÍTULO EM USO':'USAR TÍTULO'}
 function rkLibTab(t){if(t==='an'&&RKL.tab==='chr'&&RKL.cur&&RKL.cur.has)AN.ch=RKL.cur.id;RKL.tab=t;RKL.pg=0;RKL.cur=null;rkView('lib')}
 function rkLibPage(d){RKL.pg=Math.max(0,RKL.pg+d);rkLibGrid()}
-function rkLibFilt(){RKL.f=(RKL.f+1)%3;RKL.pg=0;$('rkFl').textContent=['TODOS','TENHO','FALTA'][RKL.f];rkLibGrid()}
+function rkLibFilt(){RKL.f=(RKL.f+1)%3;RKL.pg=0;const F=$('rkFl');if(F)F.textContent=['TODOS','TENHO','FALTA'][RKL.f];rkLibGrid()} /* v450: sem erro se a aba não tem o filtro */
 function rkLibUse(){const x=RKL.cur;if(!x)return;if(x.k==='chr'){rkS('sel',x.id);rkSfx('powerUp');rkToast('✔ '+CH[x.id].name+' vai lutar na ranqueada','#7dff9a')}else if(x.tit){twLS.s('tw_titOn',x.tit);try{twTitSync()}catch(e){}rkToast('✔ Título em uso','#7dff9a')}const y=rkLibItems().find(z=>z.id===x.id)||x;rkLibShow(y);rkLibGrid()}
 /* ---------------- RANKING / RECOMPENSAS / CONQUISTAS / MINHA POSIÇÃO ---------------- */
 async function rkOQ(field,dir,lim){const body={structuredQuery:{from:[{collectionId:'torre'}],orderBy:[{field:{fieldPath:field},direction:dir}],limit:lim}};
@@ -2484,7 +2484,7 @@ function lbAct(a,b){const t=RKL.tab;
       if(w===id)return anPut(id,E.indexOf(r.i),null);if(!n){rkSfx('clang');return rkToast('🔒 A 1ª vaga abre no nível 10 do personagem','#d9b3ff')}const free=E.slice(0,n).indexOf(null);if(free<0){rkSfx('clang');return rkToast('Todas as '+n+' vagas estão ocupadas: toque num anel do círculo para tirar','#ffb0b0')}if(w)anPut(w,anEq(w).indexOf(r.i),null,1);return anPut(id,free,r.i)}}
   return null}
 {const _a=rkAct;rkAct=function(a,b){if(RKV==='lib'&&/^lb/.test(a)){rkSfx('whoosh');return lbAct(a,b)}
-  if(RKV==='lib'&&a==='filt'&&RKL.tab==='eq'){const L=[null,'esp','cap','anel','arm','bot'];LB2.ef=L[(L.indexOf(LB2.ef)+1)%L.length];RKL.pg=0;$('rkFl').textContent=LB2.ef?LBSLN[LB2.ef].split(' ')[0]:'TUDO';rkSfx('whoosh');return rkLibGrid()}
+  if(RKV==='lib'&&a==='filt'&&RKL.tab==='eq'){const L=[null,'esp','cap','anel','arm','bot'];LB2.ef=L[(L.indexOf(LB2.ef)+1)%L.length];RKL.pg=0;if($('rkFl'))$('rkFl').textContent=LB2.ef?LBSLN[LB2.ef].split(' ')[0]:'TUDO';rkSfx('whoosh');return rkLibGrid()}
   return _a.apply(this,arguments)}}
 {const _a=rkAct;rkAct=function(a,b){if(RKV==='lib'&&a==='anSlot'&&RKL.tab==='an'){const i=+b.dataset.i,id=AN.ch,E=anEq(id),r=AN.sel&&anL().find(z=>z.i===AN.sel);
     if(r&&!E[i]&&i<anSlots(id)){const w=anWho(r);if(w)anPut(w,anEq(w).indexOf(r.i),null,1);return anPut(id,i,r.i)}}return _a.apply(this,arguments)}}
