@@ -3317,17 +3317,19 @@ const mnRK=r=>[r.c,r.g,r.s,anLvl(r),r.a||0].join('|');
    No lobby (tela do Ranqueado, fora da luta, inclusive no giro do Shaka) tocam SÓ as 3 músicas do evento, nas partes mais fortes
    (cortes com fade: Lost Canvas inteira, Pelo Mundo 0:28–2:16, Laços de Flor 3:06–4:04 até o fim, v366). Quando uma acaba entra a próxima. Não dá para trocar.
    As músicas completas estão no MUS (18, 19, 20): rádio do Ranqueado e música da luta. EVMUS=0 desliga o evento. */
-const EVMUS=1,EVMS=[[18,'a/636a17e61ad5f8.mp3','LOST CANVAS – ABERTURA'],[19,'a/bdf54fec7a8981.mp3','PELO MUNDO'],[20,'a/1e36ad6d822ca1.mp3','LAÇOS DE FLOR']];let EVMI=-1;
+/* v451: agora o lobby (menu principal, giro do Sung e as outras telas fora da luta) toca as 3 músicas de SOLO LEVELING mandadas pelo dono, inteiras, uma depois da outra.
+   As do Saint Seiya continuam no MUS (18–20) para a rádio e as lutas. */
+const EVMUS=1,EVMS=[[21,'a/70487c63a0bfec.mp3','LEveL – ABERTURA'],[22,'a/28e97e8ccc453a.mp3','DARK ARIA LV.2 (PT-BR)'],[23,'a/f9907cd6d1a33f.mp3','DARK ARIA LV.2']];let EVMI=-1;
 function evMusOn(){return EVMUS&&showScreen.cur==='ranked'&&G.mode!=='fight'}
 function evMusPlay(next){if(!EVMUS||!MUS[EVMS[0][0]])return;const i=next&&EVMI>=0?(EVMI+1)%EVMS.length:EVMI>=0?EVMI:(Math.random()*EVMS.length)|0;const nw=i!==EVMI||!MEL.src.endsWith(EVMS[i][1]);EVMI=i;
-  const [mi,src,nm]=EVMS[i];MCUR=mi;MEL.loop=false;if(nw){MEL.src=src;try{MEL.currentTime=0}catch(e){}try{rkToast('🎶 EVENTO SAINT SEIYA · '+nm,'#ffd84a')}catch(e){}}
+  const [mi,src,nm]=EVMS[i];MCUR=mi;MEL.loop=false;if(nw){MEL.src=src;try{MEL.currentTime=0}catch(e){}try{rkToast('🎶 SOLO LEVELING · '+nm,'#9a7bff')}catch(e){}}
   if(AU.on&&!document.hidden){const p=MEL.play();if(p&&p.catch)p.catch(()=>{})}}
 MEL.addEventListener('ended',()=>{if(EVMI>=0&&evMusOn())evMusPlay(1)});
 {const _o=rkOpen;rkOpen=function(){const r=_o.apply(this,arguments);try{if(EVMUS)evMusPlay()}catch(e){}return r}}
 /* luta: volta ao normal (música em loop escolhida na rádio / aleatória) */
 {const _mp=musPick;musPick=function(){MEL.loop=true;if(EVMI>=0){EVMI=-1;MCUR=-1;try{MEL.pause();MEL.removeAttribute('src')}catch(e){}}if(G.gmode!=='torre'&&rkG('mus','auto')!=='auto')return rkMusPlay();return _mp.apply(this,arguments)}}
 /* rádio: no lobby continua o evento; a escolha vale para as LUTAS */
-{const _rm=rkMusic;rkMusic=function(){const r=_rm.apply(this,arguments);if(!EVMUS)return r;try{const M=document.querySelector(RKMS()+'.rkMu');if(M){M.insertAdjacentHTML('beforebegin','<p class="twH evMuN">🎶 <b>EVENTO SAINT SEIYA</b>: no lobby tocam só as 3 músicas do evento. A música que você escolher aqui toca nas suas <b>LUTAS</b>.</p>');
+{const _rm=rkMusic;rkMusic=function(){const r=_rm.apply(this,arguments);if(!EVMUS)return r;try{const M=document.querySelector(RKMS()+'.rkMu');if(M){M.insertAdjacentHTML('beforebegin','<p class="twH evMuN">🎶 <b>SOLO LEVELING</b>: no menu e no giro tocam as 3 músicas do Sung. Nas <b>LUTAS</b> toca a que você escolher aqui (ou ALEATÓRIA).</p>');
   M.querySelectorAll('button').forEach(b=>b.onclick=()=>{rkS('mus',b.dataset.m);rkSfx('whoosh');rkMusic()})}}catch(e){}return r}}
 /* ================= v368: PERFIL NOVO (artes do dono) + BATALHAS + ÁLBUM DE CARTAS + COLEÇÃO =================
    Artes 1847×851 (ferramentas/ranqueada_artes/perfil_v368). Coordenadas em pixels da arte com rkB3.
@@ -4601,9 +4603,11 @@ function monTick(f){for(const p of MONP){p.l++;p.x+=p.vx+Math.sin((p.l+p.a*9)*.1
   for(const p of MONS){p.l++;p.x+=p.vx+Math.sin(p.l*.1+p.r)*.4;p.y+=p.vy;p.vy*=.99}MONS=MONS.filter(p=>p.l<p.m);if(MONS.length>140)MONS.splice(0,MONS.length-140);
   const fast=Math.abs(f.vx||0)>4||f.state==='attack'||/dash|run|ytk|ytc/.test(f.state||'');
   if(fast){const hh=f.ytEyeY||262;MONE.push({x:f.x+(f.facing||1)*16,y:f.y-hh});if(MONE.length>9)MONE.shift()}else if(MONE.length)MONE.shift()}
-{const _rf=renderFighter;renderFighter=function(f,reflect){const on=!reflect&&ADMT.on&&ADMT.mon&&G.p&&f===G.p[0]&&G.mode==='fight'&&!f.hide;if(on)try{monBehind(f)}catch(e){}
+/* v451: a aura do Monarca agora aparece SOZINHA no Sung TRANSFORMADO (de qualquer lado). No modo teste do ADM continua a opção de pôr no jogador. */
+function monWho(){if(!G.p||G.mode!=='fight')return null;if(ADMT.on&&ADMT.mon)return G.p[0];return G.p.find(f=>f&&f.def&&f.def.sid==='sj'&&f.form&&!f.hide)||null}
+{const _rf=renderFighter;renderFighter=function(f,reflect){const on=!reflect&&!f.hide&&f===monWho();if(on)try{monBehind(f)}catch(e){}
   const r=_rf.apply(this,arguments);if(on)try{monFront(f)}catch(e){}return r}}
-{const _uM=update;update=function(){const r=_uM.apply(this,arguments);try{if(ADMT.on&&ADMT.mon&&G.p&&G.mode==='fight')monTick(G.p[0]);else if(MONP.length||MONS.length){MONP=[];MONE=[];MONS=[]}}catch(e){}return r}}
+{const _uM=update;update=function(){const r=_uM.apply(this,arguments);try{const mw=monWho();if(mw)monTick(mw);else if(MONP.length||MONS.length){MONP=[];MONE=[];MONS=[]}}catch(e){}return r}}
 /* v432: o TANK só aparece na ULTIMATE (transformado), é muito rápido e agressivo (corre até o inimigo, combos de 3), pouca vida (0,4 barra), aura violeta + raios + rastro.
    ================= v431: SUNG — TRANSFORMAÇÃO (vídeo do dono) + TANK, O URSO DE SOMBRA ("ERGA-SE!").
    Transformar: vídeo em tela cheia (8 quadros/s) e o Sung entra na forma. Na hora sobe do chão o TANK (folhas do dono: ferramentas/personagens/sung/urso).
@@ -4976,3 +4980,26 @@ TWCUP['fge18y']={nm:'ANÉIS VERMELHOS SSS (ADM)',acc:1,adm:1,it:[],anSSS:1};
 {const _cp16=twCupom;twCupom=async function(code,E){const C=TWCUP[twHash(String(code).toUpperCase())];const r=await _cp16.apply(this,arguments);
   if(C&&C.anSSS&&r&&E&&/ok/.test(E.className||'')){let n=0;for(const S of ANS)for(let q=0;q<2;q++){anGive({i:Date.now().toString(36)+Math.random().toString(36).slice(2,6)+n,c:4,g:7,s:S[0],v:ANV[4][7],a:100000});n++}
     try{acSave(1)}catch(e){}E.textContent='💍 '+n+' ANÉIS VERMELHOS SSS (100.000 anos) · 2 de cada atributo · estão na aba ANÉIS da Biblioteca';try{twSfx('boom')}catch(e){}}return r}}
+
+/* ================= v451: SUNG mais divertido (pedido do dono)
+   - Ataque mais rápido: os quadros de golpe andam mais (9z_v451.py: normal .5→.7, transformado 1.3→1.75).
+   - ESPINHOS DAS SOMBRAS: transformado, a cada 4 golpes corpo a corpo que acertam, espinhos de sombra saem do chão embaixo do inimigo
+     (dano pequeno + levanta um pouco), com brilho roxo. Não conta golpes da sombra (TANK) nem dos próprios espinhos. ================= */
+let SJSP=[];
+{const _ah=applyHit;applyHit=function(a,d,h){const h0=d?d.hp:0,r=_ah.apply(this,arguments);
+  try{if(a&&d&&a!==d&&a.def&&a.def.sid==='sj'&&a.form&&h&&!h.sjB&&!h.sjS&&h.kind!=='beam'&&h.kind!=='proj'&&d.hp<h0&&!d.ko&&G.mode==='fight'){
+    a.sjHc=(a.sjHc||0)+1;if(a.sjHc>=4){a.sjHc=0;SJSP.push({a,d,x:d.x,t:0,hit:0});try{SFX.whoosh&&SFX.whoosh()}catch(e){}}}}catch(e){}return r}}
+{const _u=update;update=function(){const r=_u.apply(this,arguments);try{if(SJSP.length){if(!G.p||G.mode!=='fight'){SJSP=[];return r}
+  for(const S of SJSP){if(G.hitstop>0&&S.t>0)continue;S.t++;if(S.t<10)S.x+=(S.d.x-S.x)*.35;
+    if(S.t===12&&!S.hit&&!S.d.ko&&!S.a.ko&&Math.abs(S.d.x-S.x)<110&&S.d.y>FLOOR-160){S.hit=1;try{applyHit(S.a,S.d,{dmg:34,kb:2,hs:9,heavy:0,px:S.d.x,py:S.d.y-90,kind:'melee',sjS:1});S.d.vy=Math.min(S.d.vy||0,-7)}catch(e){}G.shake=Math.max(G.shake||0,7)}}
+  SJSP=SJSP.filter(S=>S.t<34)}}catch(e){SJSP=[]}return r}}
+function sjSpDraw(S){const k=S.t,up=k<12?k/12:k<22?1:1-(k-22)/12,x=S.x,y=FLOOR+4;if(up<=0)return;ctx.save();
+  /* aviso no chão */
+  const gr=ctx.createRadialGradient(x,y,4,x,y,120);gr.addColorStop(0,'rgba(10,3,26,.85)');gr.addColorStop(.6,'rgba(60,20,130,.35)');gr.addColorStop(1,'rgba(60,20,130,0)');ctx.fillStyle=gr;ctx.beginPath();ctx.ellipse(x,y,120,22,0,0,7);ctx.fill();
+  if(k>=8){const h=Math.min(1,(k-8)/5)*up;const sp=[[-62,.55],[-36,.8],[-14,1.15],[8,1],[30,.75],[54,.6],[-80,.35],[74,.4]];
+    for(const [dx,sz] of sp){const H=190*sz*h,W=13*sz;ctx.fillStyle='#07020f';ctx.beginPath();ctx.moveTo(x+dx-W,y);ctx.quadraticCurveTo(x+dx-W*.3,y-H*.5,x+dx+W*.15,y-H);ctx.quadraticCurveTo(x+dx+W*.35,y-H*.45,x+dx+W,y);ctx.closePath();ctx.fill()}
+    ctx.globalCompositeOperation='lighter';ctx.shadowColor='#8a5cff';ctx.shadowBlur=14;ctx.strokeStyle='rgba(150,110,255,'+(.85*h)+')';ctx.lineWidth=2;
+    for(const [dx,sz] of sp){const H=190*sz*h,W=13*sz;ctx.beginPath();ctx.moveTo(x+dx-W,y);ctx.quadraticCurveTo(x+dx-W*.3,y-H*.5,x+dx+W*.15,y-H);ctx.stroke()}
+    if(k>=12&&k<16){ctx.globalAlpha=1-(k-12)/4;ctx.fillStyle='#b48cff';ctx.beginPath();ctx.ellipse(x,y-60,90,70,0,0,7);ctx.globalAlpha*=.25;ctx.fill()}}
+  ctx.restore()}
+{const _rf=renderFighter;renderFighter=function(f,reflect){const r=_rf.apply(this,arguments);if(!reflect&&SJSP.length)try{for(const S of SJSP)if(S.d===f)sjSpDraw(S)}catch(e){}return r}}

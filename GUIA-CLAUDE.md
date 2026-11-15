@@ -2209,3 +2209,9 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - `worker/index.js` rota **/fs-admin/erros** (`?h=48` horas, máx 720): página com os erros que os celulares mandaram (`errRep` → docs `er_*`), agrupados por mensagem, com quantas vezes, último horário (Brasília), onde e modos. Não mostra nome nem aparelho.
 - Testes novos: `tvarredura_v450.js` (os 26 personagens IA x IA com transformação e super: 0 erros), `ttelas_v450.js` (todas as telas do Ranqueado), `tmodos_v450.js` (Torre/Caça ok; Boss/PVP não passam da intro no navegador de teste por causa de mídia, não é bug do jogo).
 - Corrigido: filtro da Biblioteca (`rkLibFilt` e filtro de equipamentos) dava erro quando a aba não tinha o botão de filtro.
+
+## v451 — Músicas de Solo Leveling + Sung mais divertido
+- 3 músicas do dono (m4a → mp3 112k, loudnorm -15,5): LEveL abertura `a/70487c63a0bfec.mp3`, Dark Aria Lv.2 PT-BR `a/28e97e8ccc453a.mp3`, Dark Aria Lv.2 `a/f9907cd6d1a33f.mp3`. `extra/9z_v451.py` põe no `MUS` (21, 22, 23) + botões `#msel`. Lobby (menu principal, giro do Sung, telas do Ranqueado): `EVMS` agora toca só essas 3 inteiras, uma depois da outra (aviso "🎶 SOLO LEVELING"). Lutas: rádio 🎵 (aleatória = todas do MUS, ou escolher). Saint Seiya continua no MUS 18–20. Teste `tmusica_v451.js`.
+- Aura do Monarca (v427/v429) agora aparece SOZINHA no Sung TRANSFORMADO, de qualquer lado (`monWho`). Opção do ADM continua.
+- Sung ataca mais rápido: quadros de golpe (`yacc`) normal .5→.7, transformado 1,3→1,75 (9z_v451.py).
+- ESPINHOS DAS SOMBRAS: Sung transformado, a cada 4 golpes corpo a corpo que acertam (`a.sjHc`), espinhos pretos com brilho roxo saem do chão embaixo do inimigo (12 quadros), dano 34 e levanta um pouco (`SJSP`, `h.sjS`). Teste `tsung_v451.js`.
