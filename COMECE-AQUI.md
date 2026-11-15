@@ -152,3 +152,10 @@ Este arquivo tem duas partes: a **Parte 1** é para o dono (Denilson) e a **Part
 - Dungeon sem anel (só o futuro anel de 1 milhão de anos). Recompensa "ANÉIS" virou "PÓ E 💎".
 - Atravessando para a próxima sala (HY.gate) o analógico não faz pular (updFighter com inp.up=false).
 - Igris rank S mata um Sung sem itens parado em ~4 s. Teste: tportal_v474.js.
+
+## v475 — ANEL DOURADO (1 milhão a 10 milhões de anos)
+- Cor nova c=5 (ANC/ANV/ANMX/ANRP/AUC/ANFL + ícone RQA.anel2[5] = referência do dono em ferramentas/aneis). Nota nova "SP" (g=8). Valores = dobro do vermelho, com bônus pela idade, + 1 atributo extra (r.s2, metade do valor).
+- Notas (anGold): E 34 · D 26 · C 18 · B 11 · A 6 · S 3,2 · SS 1,2 · SSS 0,45 · SP 0,05 %.
+- Passiva só no SP (r.p): esquiva 15% · combo+ (golpes extras dourados, 40% por acerto, auto combo 11→~15/16) · vampiro 5% · fúria +25% abaixo de 50%.
+- Visual: mandala dourada com centro vermelho; SSS/SP com raios dourados piscando e brilho maior; aura do chão = raios vermelhos + dourados.
+- Drop SÓ no baú do chefe do Portal: Igris E .35 · D .6 · C 1 · B 1,5 · A 2,5 · S 4 % (Urso: metade). Teste: tanel_dourado_v475.js.

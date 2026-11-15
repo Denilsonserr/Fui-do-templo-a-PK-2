@@ -8586,7 +8586,7 @@ function rkAct(a,b){rkSfx('whoosh');
     case 'ranking':return rkRanking();case 'rewards':return rkRewards();case 'ach':return rkAch();case 'pos':return rkPos();
     case 'start':if(!RKSRV)rkSrvLoad();if(RKBID==='shaka')return skStart();return rkView(RKBID==='yuta'?'yrb':'rb');case 'skgo':return skGo(b.dataset.i,b.dataset.l);case 'bsel':if(b.dataset.b==='yuta'&&!ysOn())return rkToast('⏳ O evento do Yuta acabou','#cfd6ea');if(b.dataset.b==='shaka'&&!skOn())return rkToast(skAntes()?'⏳ O boss SHAKA libera hoje ao MEIO-DIA (12:00)!':'⏳ O evento do Shaka acabou','#ffd84a');RKBID=b.dataset.b;RKYD=null;RKSRV=null;try{localStorage.setItem('rk_bsel',RKBID)}catch(e){}return rkView(RKBID==='yuta'?'yb':RKBID==='shaka'?'sb':'boss');case 'ytab':YS.tab=b.dataset.t;return rkView('yrb');case 'ydif':YS.d=+b.dataset.i;return rkView('yrb');case 'yfight':return ysFight();case 'equip':return rkEquip();case 'music':return rkMusic();case 'code':return rkCode();case 'torre':return rkTorre();case 'conta':return acOpen();case 'fight':RKYD=null;return rkBossStart();case 'lvp':return rkRbSel(-1);case 'lvn':return rkRbSel(1);case 'lvc':return rkRbSel(0,+b.dataset.i);case 'sel':return rkView('lib');case 'hist':return rkHist();case 'taxas':return rkTaxas();case 'pool':return rkTaxas();
     case 'sum1':return rkSummon(1);case 'sum10':return rkSummon(10);case 'chat':return rkChatSend();
-    case 'buy':return rkBuy(+b.dataset.i);case 'tab':return rkLibTab(b.dataset.t);case 'anSlot':return anSlot(+b.dataset.i);case 'anUp':AN.pg=Math.max(0,AN.pg-1);return anGrid();case 'anDn':AN.pg++;return anGrid();case 'anFilt':AN.f=(AN.f+1)%6;AN.pg=0;$('anFl').textContent=ANFL[AN.f];return anGrid();case 'up':return rkLibPage(-1);case 'down':return rkLibPage(1);case 'filt':return rkLibFilt();case 'libUse':return rkLibUse();
+    case 'buy':return rkBuy(+b.dataset.i);case 'tab':return rkLibTab(b.dataset.t);case 'anSlot':return anSlot(+b.dataset.i);case 'anUp':AN.pg=Math.max(0,AN.pg-1);return anGrid();case 'anDn':AN.pg++;return anGrid();case 'anFilt':AN.f=(AN.f+1)%ANFL.length;AN.pg=0;$('anFl').textContent=ANFL[AN.f];return anGrid();case 'up':return rkLibPage(-1);case 'down':return rkLibPage(1);case 'filt':return rkLibFilt();case 'libUse':return rkLibUse();
     case 'boxinfo':return rkToast(b.dataset.t,'#bfe8ff');
     case 'ban':RKBAN=b.dataset.b;try{localStorage.setItem('rk_ban',RKBAN)}catch(e){}return rkView('gacha');case 'evo':return lvOpen(RKL.cur&&RKL.cur.id);case 'lvUp':return lvUp();case 'lvX':return lvX();case 'lvNode':return lvNode(+b.dataset.r,+b.dataset.c);case 'lvInfo':return lvInfo()}}
 /* ---------------- MENU DO RANQUEADO ---------------- */
@@ -10324,9 +10324,9 @@ const ANFL=['TODOS','BRANCO','AMARELO','ROXO','PRETO','VERMELHO'];
 const AN={pg:0,f:0,q:'',ch:null,sel:null};
 const anL=()=>rkG('an',[]),anEqAll=()=>rkG('anEq',{}),anEq=id=>{const e=(anEqAll()[id]||[]).slice(0,8);while(e.length<8)e.push(null);return e};
 const anSlots=id=>id==='sung'?Math.min(7,Math.floor(sjSys().lv/10)):Math.min(8,Math.floor(lvOf(id).lv/10)); /* v461: Sung = até 7 anéis (igual ao Shaka), pelo nível do SISTEMA */
-const anAge=r=>r.c===3||(r.c===4&&r.a)?(r.a||25000).toLocaleString('pt-BR')+' anos':ANC[r.c][2];
+const anAge=r=>r.c===5?(r.a||1e6).toLocaleString('pt-BR')+' anos':r.c===3||(r.c===4&&r.a)?(r.a||25000).toLocaleString('pt-BR')+' anos':ANC[r.c][2];
 const anSt=k=>ANS.find(x=>x[0]===k)||ANS[0];
-const anTxt=r=>{const S=anSt(r.s);return S[1]+' +'+anV(r)+S[2]};
+const anTxt=r=>{const S=anSt(r.s);let t=S[1]+' +'+anV(r)+S[2];if(r.c===5&&typeof ANGP!=='undefined'){if(r.s2){const S2=anSt(r.s2);t+=' · '+S2[1]+' +'+Math.round(anV(r)*5)/10+S2[2]}if(r.p&&ANGP[r.p])t+=' · ✦ '+ANGP[r.p][0]+': '+ANGP[r.p][1]}return t}; /* v475: dourado */
 function anSum(id){const o={dano:0,crit:0,vel:0,st:0,drop:0,uv:0};const L=anL(),E=anEq(id);for(const i of E){if(!i)continue;const r=L.find(x=>x.i===i);if(r)o[r.s]+=anV(r)}for(const k in o)o[k]=Math.round(o[k]*10)/10;return o}
 function anWho(r){const A=anEqAll();for(const id in A)if((A[id]||[]).includes(r.i))return id;return null}
 /* sorteio de um anel */
@@ -14420,6 +14420,52 @@ const PTHP=[1.3,1.6,2,2.5,3,3.6],PTDM=[.55,.7,.85,1,1.2,1.45];
 {const _pr=ptRoom;ptRoom=function(n){const R=_pr.apply(this,arguments);if(!R.boss&&PTR){R.cap=Math.min(7,R.cap+1+(PTR.r>=4?1:0));R.need=Math.min(26,R.need+PTR.r);R.sp=Math.max(26,R.sp-8)}return R}}
 {const _uf=updFighter;updFighter=function(f){if(HY.on&&HY.pt&&HY.gate&&G.p&&f===G.p[0]&&f.inp&&f.grounded){const u=f.inp.up;f.inp.up=false;try{return _uf.apply(this,arguments)}finally{f.inp.up=u}}return _uf.apply(this,arguments)}}
 
+/* ================= v475: ANEL DOURADO · 1 MILHÃO a 10 MILHÕES DE ANOS (referência do dono: mandala dourada, centro vermelho)
+   Cor nova c=5 (acima do vermelho): valores = DOBRO do vermelho + 1 ATRIBUTO EXTRA (metade do valor). Notas E…SSS normais + "SP" (g=8, acima do SSS).
+   Só o SP traz PASSIVA: 💨 ESQUIVA (15%) · 🌀 COMBO+ (golpes extras dourados: o auto combo de 11 vira ~15-16) · 🩸 VAMPIRO (5% do dano vira vida) · 🔥 FÚRIA (+25% de dano com menos de 50% de vida).
+   Drop SÓ na dungeon dos Portais (baú do chefe), bem raro; SSS e SP super difíceis. Visual: mandala dourada; SSS/SP brilho e raios dourados bem maiores.
+   Na aura do chão: raios vermelhos do anel normal + raios DOURADOS. ================= */
+ANC.push(['DOURADO','#ffd84a','1 milhão a 10 milhões de anos']);ANG.push('SP');ANFL.push('DOURADO');
+ANV.push([50,70,100,130,170,220,300,400,600]);ANMX.push(60);ANRP.push({m:'#ffc400',h:'#fff6c0',g:'#ffb000'});AUC.push('#ffd84a');
+const ANGW5=[34,26,18,11,6,3.2,1.2,.45,.05]; /* % das notas do dourado: SSS 0,45% · SP 0,05% */
+const ANGP={esq:['💨 Esquiva','15% de chance de desviar de qualquer golpe'],cmb:['🌀 Combo+','golpes extras dourados (auto combo 11 → 15/16)'],vamp:['🩸 Vampiro','5% do dano vira vida'],fur:['🔥 Fúria','+25% de dano com menos de 50% de vida']};
+function anGold(lvBonus){let q=Math.random()*100,g=0;for(let i=0;i<9;i++){if((q-=ANGW5[i])<0){g=i;break}}if(q>=0)g=0;
+  const S=ANS.map(x=>x[0]),s=S[(Math.random()*S.length)|0],s2=S.filter(x=>x!==s)[(Math.random()*(S.length-1))|0];
+  const a=Math.round(1e6*Math.pow(10,Math.pow(Math.random(),1.8))/1e4)*1e4,k=.8+.6*Math.log10(a/1e6);
+  const r={i:Date.now().toString(36)+Math.random().toString(36).slice(2,6),c:5,g,s,s2,a,v:Math.round(ANV[5][g]*k*10)/10};
+  if(g===8){const P=Object.keys(ANGP);r.p=P[(Math.random()*P.length)|0]}return r}
+{const _s=anSum;anSum=function(id){const o=_s.apply(this,arguments);try{const L=anL();for(const i of anEq(id)){if(!i)continue;const r=L.find(x=>x.i===i);if(r&&r.c===5&&r.s2&&o[r.s2]!=null)o[r.s2]=Math.round((o[r.s2]+anV(r)*.5)*10)/10}}catch(e){}return o}}
+/* desenho: mandala dourada */
+{const _rs=anRingSvg;anRingSvg=function(r,k){if(!(r&&r.c===5))return _rs.apply(this,arguments);const top=r.g>=7,sp=r.g===8,N=top?32:24,dur=(30+k*5).toFixed(0),dir=k%2?-1:1;let s='',rays='';
+  for(let i=0;i<N;i++){const a=i/N*360,big=i%2===0;s+=`<g transform="rotate(${a})"><path d="M0,-49 L${big?3.2:2},-${big?58:54} L0,-${big?66:59} L-${big?3.2:2},-${big?58:54}Z" fill="#fff3b0" stroke="#ffb000" stroke-width=".5"/><circle cy="-40" r="${big?2.2:1.4}" fill="#fff8d8"/><path d="M0,-12 L0,-44" stroke="rgba(255,240,190,.55)" stroke-width="${big?1.4:.8}"/></g>`}
+  if(top)for(let i=0;i<8;i++){const a=i*45+(k*7);rays+=`<path d="M0,-50 L2.6,-${sp?78:72} L0,-${sp?92:84} L-2.6,-${sp?78:72}Z" transform="rotate(${a})" fill="#fffbe8" opacity=".9"><animate attributeName="opacity" values=".25;1;.25" dur="${(1.4+i*.17).toFixed(2)}s" repeatCount="indefinite"/></path>`}
+  const glow=top?`drop-shadow(0 0 3px #fff6c0) drop-shadow(0 0 ${sp?14:10}px #ffb000) drop-shadow(0 0 ${sp?26:18}px rgba(255,190,40,.9))`:`drop-shadow(0 0 2px #fff6c0) drop-shadow(0 0 7px #ffb000)`;
+  return `<svg viewBox="-96 -96 192 192" preserveAspectRatio="none" style="filter:${glow}"><defs><radialGradient id="anG5${k}"><stop offset="0" stop-color="#3a0004"/><stop offset=".18" stop-color="#ff1a2a"/><stop offset=".7" stop-color="#ff3a3a" stop-opacity=".75"/><stop offset="1" stop-color="#ff7a3a" stop-opacity="0"/></radialGradient></defs><g>`+
+    `<circle r="46" fill="url(#anG5${k})" opacity=".55"/>${rays}<circle r="49" fill="none" stroke="#ffb000" stroke-width="5" opacity=".35"/><circle r="49" fill="none" stroke="#ffe27a" stroke-width="3"/><circle r="49" fill="none" stroke="#fffbe8" stroke-width="1.1"/>`+
+    `<circle r="34" fill="none" stroke="#ffe9a8" stroke-width="1" stroke-dasharray="2.4 2.6" opacity=".9"/><circle r="22" fill="none" stroke="#fff3c8" stroke-width=".8" opacity=".7"/>${s}`+
+    `<animateTransform attributeName="transform" type="rotate" from="0" to="${360*dir}" dur="${dur}s" repeatCount="indefinite"/></g></svg>`}}
+/* aura do chão: raios vermelhos + raios dourados por cima */
+{const _au=anAura;anAura=function(R,cx,cy,cw){if(!R||!R.some(r=>r&&r.c===5))return _au.apply(this,arguments);
+  const red=_au(R.map(r=>r.c===5?Object.assign({},r,{c:4}):r),cx,cy,cw),top=R.some(r=>r.c===5&&r.g>=7),gold=_au(R.filter(r=>r.c===5).map(r=>Object.assign({},r,{c:4,g:top?7:r.g})),cx,cy,cw*(top?1.12:1));
+  const g=x=>x.replace(/--c:#ff0a22|--c:#ff2238/g,'--c:#ffc400').replace(/--c2:#ffd0d4/g,'--c2:#fff6c0').replace(/#ffffff"/g,'#fffbe8"');return [red[0]+g(gold[0]),red[1]+g(gold[1])]}}
+/* passivas do SP na luta */
+{const _ra=rkApply;rkApply=function(){_ra.apply(this,arguments);try{const p=G.p&&G.p[0];if(!p)return;const id=(p.def&&p.def.id)||rkG('sel','goku'),L=anL();p.anGP=[];for(const i of anEq(id)){if(!i)continue;const r=L.find(x=>x.i===i);if(r&&r.c===5&&r.g===8&&r.p&&!p.anGP.includes(r.p))p.anGP.push(r.p)}}catch(e){}}}
+{const _ah=applyHit;applyHit=function(a,d,h){try{
+    if(d&&d.anGP&&d.anGP.includes('esq')&&a&&a!==d&&h&&!h.lock&&Math.random()<.15&&!d.ko){txt(d.x,d.y-300,'💨 ESQUIVA!','#ffd84a');try{d.ghosts.push({key:spriteKey(d),x:d.x,y:d.y,facing:d.facing,life:12,col:'#ffd84a'})}catch(e){}return false}
+    if(a&&a.anGP&&a.anGP.length&&a!==d&&h){if(a.anGP.includes('fur')&&a.hp<(a.mhp||MAXHP)*.5)h=Object.assign({},h,{dmg:(h.dmg||0)*1.25})
+      const h0=d?d.hp:0,r=_ah.call(this,a,d,h);
+      if(r&&d){if(a.anGP.includes('vamp')){const dd=Math.max(0,h0-d.hp);a.hp=Math.min(a.mhp||MAXHP,a.hp+dd*.05)}
+        if(a.anGP.includes('cmb')&&!h.anEcho&&h.kind!=='beam'&&Math.random()<.4)(a.anEQ=a.anEQ||[]).push({t:G.frame+4,d,h:Object.assign({},h,{dmg:(h.dmg||0)*.6,kb:0,launch:0,anEcho:1,lock:1})})}
+      return r}}catch(e){}return _ah.apply(this,arguments)}}
+{const _u=update;update=function(){const r=_u.apply(this,arguments);try{const p=G.p&&G.p[0];if(p&&p.anEQ&&p.anEQ.length&&G.hitstop<=0){const Q=p.anEQ;p.anEQ=[];for(const q of Q){if(G.frame<q.t){p.anEQ.push(q);continue}if(q.d&&!q.d.ko&&!p.ko){applyHit(p,q.d,q.h);try{ring(q.d.x,q.d.y-150,'#ffd84a',90,10,3);spark(q.d.x,q.d.y-150,'#fff6c0',1,8)}catch(e){}}}}}catch(e){}return r}}
+/* drop: baú do CHEFE do portal (Urso e Igris) */
+{const _co=hyChestOpen;hyChestOpen=function(tier,at,ng){const T=_co.apply(this,arguments);try{if(HY.pt&&PTR&&PTR.room%5===0){const ch=[.35,.6,1,1.5,2.5,4][PTR.r]*(PTR.room%10===0?1:.5);
+    if(Math.random()*100<ch){const r=anGold();if(at!=null)hyDrop('an',at,{r},rand(-5,5),-18);else hyGrant({k:'an',r});
+      setTimeout(()=>{try{banner('💍 ANEL DOURADO · '+anAge(r).toUpperCase(),'#ffd84a',150,'NOTA '+ANG[r.g]+(r.p?' · ✦ '+ANGP[r.p][0]:''));SFX.boom();G.flash=10;G.flashCol='#ffd84a'}catch(e){}},400)}}}catch(e){}return T}}
+window.__ang={roll:anGold,svg:(r,k)=>anRingSvg(r,k||0)};
+/* ícone do anel dourado (a referência do dono, sem o fundo preto) */
+try{if(RQA.anel2&&RQA.anel2.length<6)RQA.anel2.push('a/b01b0d496f9795.webp')}catch(e){}
+
 function twTrofList(){const tc=twLS.g('tw_tc',{}),run={};for(const t of TW.tr)run[t.k]=(run[t.k]||0)+1;
   twModal(`<div class="twM"><h3>🎖️ TROFÉUS</h3><div class="twTL">${Object.keys(TWTR).map(k=>{const T=TWTR[k];return `<div class="${tc[k]||run[k]?'got':''}"><i>${T.i}</i><b>${T.n}</b><span>${T.d}</span><em>+${T.p} 🏆</em><small>${run[k]?'nesta subida: '+run[k]+' · ':''}total: ${(tc[k]||0)}</small></div>`}).join('')}</div>
     <p class="twH">Cada troféu soma pontos 🏆 no ranking. Quem sobe mais andares fica na frente; empate = mais troféus, depois menos tempo.</p><div class="row"><button class="btn" id="twTx">FECHAR</button></div></div>`);
@@ -14611,7 +14657,7 @@ window.__dbg={mus:()=>[MCUR,MEL.src.split('/').pop()],stg:()=>STAGE.key,prepMatc
 })();
 </script>
 <style>#updB{position:fixed;left:50%;top:max(8px,env(safe-area-inset-top));transform:translateX(-50%);z-index:99999;padding:10px 22px;border-radius:14px;border:2px solid #fff3c0;background:linear-gradient(#ffd84a,#e08a10);color:#3a1d00;font:900 15px system-ui,sans-serif;box-shadow:0 0 18px #ffb21f;cursor:pointer;animation:updP 1s ease-in-out infinite alternate}@keyframes updP{to{transform:translateX(-50%) scale(1.05)}}</style>
-<script>(function(){const V='4d823fd1eebc';if(!/^https?:/.test(location.protocol))return;let nv=null;
+<script>(function(){const V='3a30f05c6530';if(!/^https?:/.test(location.protocol))return;let nv=null;
 function show(){if(document.getElementById('updB'))return;try{if(typeof G!=='undefined'&&G.mode==='fight')return}catch(e){}const b=document.createElement('button');b.id='updB';b.textContent='🔄 ATUALIZAÇÃO NOVA! Toque para atualizar';
   b.onclick=()=>{b.textContent='⏳ Atualizando...';try{acSave(1)}catch(e){}setTimeout(()=>location.reload(),900)};document.body.appendChild(b)}
 async function chk(){if(document.hidden)return;if(nv){show();return}try{const r=await fetch('versao.txt?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const t=(await r.text()).trim();if(/^[0-9a-f]{8,40}$/.test(t)&&t!==V){nv=t;show()}}catch(e){}}
