@@ -2241,3 +2241,9 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 
 ## v457 — Gacha do Sung libera às 09:00 (era 08:00)
 - `SJREL` = 15/11/2026 09:00 Brasília (12:00 UTC); textos do cadeado e do aviso trocados. Teste `tsung_lanc_v457.js` (08:50 trancado, 09:02 gira).
+
+## v458 — Gacha do Sung com os vídeos do dono
+- `ferramentas/personagens/sung/gacha/LEIA.txt`: vídeos 4K do dono → 1280×720 30 q/s. GIRO `a/bc72a6c10a320d.mp4` (rkPlayVid quando `RKBAN==='mit'`, COM SOM; a música do lobby pausa e volta), PEGOU `a/5417bd5abdac93.mp4` (`rkMegaSJ` toca o vídeo antes do "SORTE DIVINA").
+- `sjVid(src)`: tela preta com vídeo, "toque para pular", 9 s no máximo; se o celular bloquear som, toca mudo.
+- Pegou o Sung: tela do personagem `.rkWin.sjw` (fundo roxo, raios roxos, brilho roxo pulsando no corpo, fumaça preta subindo `sjSmk`), carta `.crC.sjc` com brilho roxo e fumaça (depois de revelada), "SORTE DIVINA" roxo com fumaça.
+- Teste: `ferramentas/testes/tsung_gacha_v458.js` (pity 249 → sai o Sung).
