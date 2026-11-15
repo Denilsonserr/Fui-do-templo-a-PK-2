@@ -176,3 +176,4 @@ Este arquivo tem duas partes: a **Parte 1** é para o dono (Denilson) e a **Part
 - v485: não perder progresso trocando de aparelho: salva a cada 30 s se mudou; confere save mais novo ao voltar para o jogo; antes de carregar o da conta o aparelho manda CÓPIA (doc bk_, 1 por estado); na CONTA botão '📦 RECUPERAR PROGRESSO' lista cópias de até 3 dias e restaura (o jogador mesmo). Teste: tconta2_v484.js.
 - v486: código de uso ÚNICO no jogo inteiro (hash slolnn, texto só com o dono): 10.000 💎 + anel vermelho SSS (atributo aleatório) para quem avisou do bug das 2 contas.
 - v487: girar passiva x1 / x5 / x10 / x20 (lista de escolha ordenada da melhor p/ pior); código ADM (hash nwnyuf, texto só com o dono): 1.000 de cada Pedra das Almas.
+- v488: missões — Torre nova agora conta no passe (andares, lutas, completar torre) e no Sistema do Sung (vitórias); 'Invoque sombras' vira 'Vença lutas com o Sung' para quem não é Necromante ou está sem sombra.

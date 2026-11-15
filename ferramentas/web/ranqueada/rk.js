@@ -6100,3 +6100,19 @@ TWCUP['nwnyuf']={nm:'PEDRAS DAS ALMAS · 1.000 DE CADA',it:[],adm:1,pdAll:1};
 {const _cp=twCupom;twCupom=async function(code,E){const C=TWCUP[twHash(String(code).toUpperCase())];const r=await _cp.apply(this,arguments);
   try{if(C&&C.pdAll&&E&&/\bok\b/.test(E.className)){for(let t=0;t<PDN.length;t++)pdAdd(t,1000);try{acSave(1)}catch(e){}E.textContent='✅ +1.000 de cada PEDRA DAS ALMAS ('+PDN.join(', ')+')! Agora é só evoluir os anéis.';try{rkSfx('boom')}catch(e){}}}catch(e){}return r}}
 try{window.__ps={open:()=>psOpen(),g:()=>psG()}}catch(e){}
+
+/* ================= v488: MISSÕES BUGADAS (pedido do dono 15/11 18:08)
+   1) PASSE: a TORRE NOVA (v375) não passava pelo contador antigo → "Vença X andares", "Complete a Torre" e "Jogue X lutas" (na Torre) nunca subiam.
+      Agora cada andar vencido conta (andares + lutas) e terminar a Torre conta "Complete a Torre". Cada andar conta 1 vez só.
+   2) SISTEMA DO SUNG: "Invoque sombras" era impossível para quem não é NECROMANTE (ou está sem sombra equipada). Para esses, vira "Vença lutas com o Sung".
+      Andar da Torre vencido com o Sung também conta "Vença lutas com o Sung" e "Vença lutas (qualquer personagem)". ================= */
+function tnMisCount(g){try{if(!TN||TN.mc===g)return;TN.mc=g;bpAdd('fights',1);bpAdd('floor',1);
+  const o=sjSys(),p=G.p&&G.p[0];o.d.a=(o.d.a||0)+1;if(p&&p.def&&p.def.id==='sung'){o.d.w=(o.d.w||0)+1;o.cnt.w++;const es=4+((Math.random()*5)|0);rkS('sje',(rkG('sje',0)|0)+es)}sjSave(o)}catch(e){}}
+{const _fe=tnFloorEnd;tnFloorEnd=function(){const was=TN.done,g=TN.g;const r=_fe.apply(this,arguments);if(!was&&TN.done)tnMisCount(g);return r}}
+{const _ff=tnForceFloor;tnForceFloor=function(){const g=TN.g;if(g<TNT-1)tnMisCount(g);return _ff.apply(this,arguments)}}
+{const _tf=tnFinish;tnFinish=function(won,quit){const on=TN.on,g=TN.g;if(on&&won){tnMisCount(g);try{bpAdd('tower',1)}catch(e){}}return _tf.apply(this,arguments)}}
+/* "Invoque sombras": só o NECROMANTE com sombra equipada consegue invocar. Para as outras classes (ou sem sombra) a missão vira "Vença lutas com o Sung". */
+const sjCanSum=o=>o.cls==='necro'&&!!o.eq;
+for(const M of SJMS){if(M.id!=='d3'&&M.id[0]!=='u')continue;const g0=M.g,n0=M.n,nw=M.id==='d3'?'Vença '+M.m+' lutas com o Sung':'Vença '+M.m+' lutas com o Sung (sem invocar)';
+  M.g=o=>sjCanSum(o)?g0(o):M.id==='d3'?(o.d.w|0):((o.cnt.ult|0)+(o.cnt.w|0));Object.defineProperty(M,'n',{get(){try{return sjCanSum(sjSys())?n0:nw}catch(e){return n0}},configurable:true})}
+try{window.__mis={ms:()=>{sjSysOpen();sjPanel('ms');return [...document.querySelectorAll('#sjPan .sjMs')].map(x=>x.innerText.replace(/\s+/g,' ')).join(' || ')},bp:()=>bpG(),sj:()=>sjSys(),cnt:g=>tnMisCount(g),fin:w=>{TN.on=1;tnFinish(w,false)},tn:()=>TN}}catch(e){}
