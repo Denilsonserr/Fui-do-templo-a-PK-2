@@ -162,3 +162,9 @@ Este arquivo tem duas partes: a **Parte 1** é para o dono (Denilson) e a **Part
 - v476: código ADM (hash 1tr2s9s, texto só com o dono): 1 anel DOURADO SSS de Sorte, 5 milhões de anos (só título ADM, 1 por conta).
 - v477: anel dourado com o MESMO desenho/efeitos do vermelho, só em dourado (ANGOLD troca as cores do SVG e da aura; ícone = anel vermelho pintado de dourado a/4ed53f66c18b34). Sem a mandala da referência e sem vermelho junto.
 - v478: código ADM (hash qaceh2, texto só com o dono): Sung no nível 100 do Sistema + 5 pontos por nível que faltava (só título ADM, 1 por conta).
+
+## v479 — TEMPORADA 2 da Ranqueada + eventos (15/11 14:15 → 17/11 23:59)
+- Ranqueada do zero: rk_rp → 0 (antigo em rk_rpS1, 1× por aparelho, rk_s2). Ranking do servidor da T2 usa campos rp2/dmg2/tw2/t1w2 (rkOQ/rkSend novos); TEMP.id=2.
+- Fim da T1 (t1Reward, 1×, rk_s2rw): lê o ranking antigo (campo rp, docs antes de T2INI) → títulos brilhantes T1: CAMPEÃO (1º, 15.000 💎 + 20 🎫) · VICE (2º, 10.000) · 3º LUGAR (7.500) · TOP 10 (4.000 + 10 🎫) · GUERREIRO (todo mundo que jogou, 1.500 + 5 🎫). Janela "FIM DA TEMPORADA 1".
+- Eventos: 3x EM TUDO (RKEVX: XP, gemas, sorte, drop, anel) · EVENTO DO PASSE (BPEV e2: missões extras + 3x XP) · 2x SOMBRA (essência ×2 e chance da sombra do Igris ×2).
+- Teste: ttemporada2_v479.js.
