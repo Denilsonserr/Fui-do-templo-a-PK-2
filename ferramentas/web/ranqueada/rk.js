@@ -5008,23 +5008,23 @@ function sjSpDraw(S){const k=S.t,up=k<12?k/12:k<22?1:1-(k-22)/12,x=S.x,y=FLOOR+4
    Botão de SOCO (auto combo): se o inimigo está LONGE (> 400), o Sung dá o 1º corte e a espada solta a lança de energia
    (quadros recortados do vídeo do dono: ferramentas/personagens/sung/ataque_longe). Ela cruza a tela muito rápido com rastro e linhas de velocidade;
    ao acertar: congela, tela treme, clarão azul, anéis explodindo, raios e faíscas, inimigo voa longe. Recarga 1,2 s. Perto = auto combo normal. ================= */
-const SJRGF=["a/e27126e1a16a79.webp", "a/dceeab646ae5c0.webp", "a/880c8155a3cfe3.webp", "a/64baf4fbe11752.webp", "a/e35f59796215fa.webp", "a/bd3bd056c6e502.webp", "a/d9bddbd3581b2f.webp", "a/3306bd6c4d9af8.webp", "a/f91a84aa62c13c.webp", "a/d2913d40edd852.webp", "a/95775f1c43be3d.webp", "a/42fe4734a696d2.webp"],SJRGW=640,SJRGH=213,SJRGON=()=>ADMT.on;let SJRGI=null,SJRG=[],SJRI=[];
+const SJRGF=["a/e27126e1a16a79.webp", "a/dceeab646ae5c0.webp", "a/880c8155a3cfe3.webp", "a/64baf4fbe11752.webp", "a/e35f59796215fa.webp", "a/bd3bd056c6e502.webp", "a/d9bddbd3581b2f.webp", "a/3306bd6c4d9af8.webp", "a/f91a84aa62c13c.webp", "a/d2913d40edd852.webp", "a/95775f1c43be3d.webp", "a/42fe4734a696d2.webp"],SJRGW=640,SJRGH=213,SJRGON=()=>true; /* v456: liberado para todos (era só modo teste) */let SJRGI=null,SJRG=[],SJRI=[];
 function sjRgLoad(){if(SJRGI)return;SJRGI=SJRGF.map(u=>{const i=new Image();i.decoding='async';i.src=u;return i})}
 function sjRgOk(f,o){return SJRGON()&&f&&o&&f.def&&f.def.sid==='sj'&&!f.cpu&&!f.ko&&!o.ko&&G.phase==='fight'&&!G.trans&&!G.ws&&G.frame>=(f.sjRgCD||0)}
 /* v454: saiu do soco → agora é o botão KI (o "foguinho", o mesmo do ataque de longe do Goku), qualquer distância, recarga 7 s.
    Na recarga o botão KI faz o que fazia antes. O botão mostra a recarga (escurece e enche de volta). */
 const SJRGCD=()=>Math.round(420*(G.spd||1)); /* 7 s de verdade (o jogo roda G.spd quadros a mais) */
 {const _gc=groundControl;groundControl=function(f,o){try{if(bufd(f,'kiTap')&&sjRgOk(f,o)&&/^(idle|walk|run|crouch|charge)$/.test(f.state||'')){use(f,'kiTap');sjRgLoad();f.facing=o.x>f.x?1:-1;
-    f.sjRgCD=G.frame+SJRGCD();f.sjRgT=G.frame;startMove(f,'jab');return}}catch(e){}return _gc.apply(this,arguments)}}
+    f.sjRgCD=G.frame+SJRGCD();f.sjRgF=0;startMove(f,'sjrg');return}}catch(e){}return _gc.apply(this,arguments)}}
 {let last=-1;const _u=update;update=function(){const r=_u.apply(this,arguments);try{if(G.frame%6)return r;const B=$('bKi'),f=G.p&&G.p[0],on=!!(B&&f&&G.mode==='fight'&&SJRGON()&&f.def&&f.def.sid==='sj');
   const k=on?Math.max(0,Math.min(1,((f.sjRgCD||0)-G.frame)/SJRGCD())):0,v=on?Math.round(k*100):-1;if(v!==last&&B){last=v;B.classList.toggle('sjRgB',on);let O=B.querySelector('.sjCdO');if(!O){O=document.createElement('i');O.className='sjCdO';B.appendChild(O)}O.hidden=!(on&&k>0);if(on&&k>0){O.style.background=`conic-gradient(rgba(5,3,15,.78) ${(k*100).toFixed(0)}%,rgba(5,3,15,.15) 0)`;O.textContent=Math.ceil(((f.sjRgCD||0)-G.frame)/60/(G.spd||1))}}}catch(e){}return r}}
 {const st=document.createElement('style');st.textContent=`#bKi.sjRgB{box-shadow:0 0 .7em #8a5cff,0 0 1.4em rgba(120,200,255,.6)!important}
 #bKi .sjCdO{position:absolute;inset:6%;border-radius:50%;pointer-events:none;display:flex;align-items:center;justify-content:center;color:#fff;font:900 1.25em var(--f-ui,sans-serif);text-shadow:0 0 .3em #8a5cff,0 0 .15em #000;z-index:3}#bKi .sjCdO[hidden]{display:none}`;document.head.appendChild(st)}
-function sjRgFire(f){const d=f.facing||1;SJRG.push({a:f,x:f.x+d*70,y:f.y-160,d,t:0,tr:[]});
-  try{ring(f.x+d*80,f.y-160,'#bfe6ff',70,14,6);ring(f.x+d*80,f.y-160,'#8a5cff',120,18,4)}catch(e){}G.shake=Math.max(G.shake||0,8);G.flash=Math.max(G.flash||0,4);G.flashCol='#a8dcff';try{SFX.whoosh()}catch(e){}}
+function sjRgFire(f){const d=f.facing||1;SJRG.push({a:f,x:f.x+d*120,y:f.y-135,d,t:0,tr:[]});f.vx=-d*7;try{dust(f.x-d*30,f.y,7)}catch(e){}
+  try{ring(f.x+d*130,f.y-135,'#bfe6ff',70,14,6);ring(f.x+d*130,f.y-135,'#8a5cff',120,18,4)}catch(e){}G.shake=Math.max(G.shake||0,8);G.flash=Math.max(G.flash||0,4);G.flashCol='#a8dcff';try{SFX.whoosh()}catch(e){}}
 {const _u=update;update=function(){const r=_u.apply(this,arguments);try{
   if(!G.p||G.mode!=='fight'){if(SJRG.length||SJRI.length){SJRG=[];SJRI=[]}return r}
-  for(const f of G.p)if(f&&f.sjRgT&&G.frame-f.sjRgT>=5){f.sjRgT=0;if(f.state==='attack'&&!f.ko)sjRgFire(f)}
+  for(const f of G.p)if(f&&f.state==='attack'&&f.mname==='sjrg'&&!f.ko&&!f.sjRgF&&f.mf>=MOVES.sjrg.su){f.sjRgF=1;sjRgFire(f)}
   if(G.hitstop<=0){for(const P of SJRG){P.t++;P.tr.unshift(P.x);if(P.tr.length>6)P.tr.pop();const sp=P.t<3?30:58;P.x+=P.d*sp;
     const o=G.p.find(q=>q&&q!==P.a);if(o&&!o.ko&&!P.hit){const front=P.x+P.d*40;if(Math.abs(o.x-front)<70+sp*.6&&P.y>o.y-320&&P.y<o.y+30){P.hit=1;
       try{applyHit(P.a,o,{dmg:110,kb:16,hs:16,heavy:1,px:o.x-P.d*20,py:P.y,kind:'proj',sjRg:1})}catch(e){}
@@ -5120,3 +5120,17 @@ document.addEventListener('click',e=>{const b=e.target.closest&&e.target.closest
 #modP .modL{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:6px 0;border-top:1px solid #3a2230}#modP .modL .btn{width:auto;padding:6px 10px}#modP .modL small{color:#d7b0b8}
 #modP .modR{display:flex;gap:10px;justify-content:center;margin-top:6px}
 .modPfB{position:absolute;z-index:5;border-radius:10px;border:2px solid #ff5050;background:rgba(60,8,12,.85);color:#fff;font:900 clamp(10px,1.4vw,16px) var(--f-ui,sans-serif)}`;document.head.appendChild(st)}
+
+/* ================= v456: LANÇA DAS SOMBRAS para TODOS (botão KI, o da bolinha de 15) + animação própria encaixada:
+   golpe "sjrg" com a folha "str" do Sung: levanta a espada (carregando luz azul na lâmina) → corte em arco → ESTOCADA — a lança sai
+   exatamente na estocada, ele recua um pouco com poeira e fica na pose esticada enquanto ela voa. Não acerta corpo a corpo (só a lança). ================= */
+MOVES.sjrg={su:12,ac:2,rc:15,dmg:0,hb:[0,-99999,1,1],kb:0,hs:0,cat:'punch'};
+{const _sk=spriteKey;spriteKey=function(f){if(f&&f.state==='attack'&&f.mname==='sjrg'&&!f.rushKey){const m=MOVES.sjrg,mf=f.mf|0;
+    if(mf<m.su)return['str',[0,0,1,1,1,2,2,3,3,4,4,4][Math.min(11,mf)]];if(mf<m.su+m.ac)return['str',5];return['str',mf<m.su+m.ac+5?6:7]}return _sk.apply(this,arguments)}}
+{const _rf=renderFighter;renderFighter=function(f,reflect){const r=_rf.apply(this,arguments);if(!reflect&&f&&f.state==='attack'&&f.mname==='sjrg'&&(f.mf|0)<MOVES.sjrg.su+2)try{
+  const k=Math.min(1,(f.mf||0)/MOVES.sjrg.su),d=f.facing||1,x=f.x+d*(30+90*k),y=f.y-200+70*k,R=24+46*k;ctx.save();ctx.globalCompositeOperation='lighter';
+  const g=ctx.createRadialGradient(x,y,2,x,y,R);g.addColorStop(0,'rgba(255,255,255,'+(.5+.5*k)+')');g.addColorStop(.35,'rgba(120,200,255,'+(.45+.4*k)+')');g.addColorStop(1,'rgba(110,70,255,0)');ctx.fillStyle=g;ctx.beginPath();ctx.arc(x,y,R,0,7);ctx.fill();
+  /* faíscas sendo puxadas para a lâmina */
+  ctx.strokeStyle='rgba(170,220,255,.8)';ctx.lineWidth=1.6;for(let i=0;i<6;i++){const an=i*1.05+G.frame*.3,l=(1-((G.frame*3+i*7)%20)/20)*80;ctx.beginPath();ctx.moveTo(x+Math.cos(an)*l,y+Math.sin(an)*l);ctx.lineTo(x+Math.cos(an)*(l+12),y+Math.sin(an)*(l+12));ctx.stroke()}
+  ctx.restore()}catch(e){}return r}}
+{const _sm=startMatch;startMatch=function(){const r=_sm.apply(this,arguments);try{if(G.p&&G.p.some(f=>f&&f.def&&f.def.sid==='sj'&&!f.cpu))sjRgLoad()}catch(e){}return r}}
