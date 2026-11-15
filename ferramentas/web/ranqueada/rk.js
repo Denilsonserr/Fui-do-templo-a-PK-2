@@ -5054,3 +5054,69 @@ function sjRiDraw(I){const k=I.t/26,e=1-Math.pow(1-k,3);ctx.save();ctx.globalCom
 {const _rf=renderFighter;renderFighter=function(f,reflect){const r=_rf.apply(this,arguments);if(!reflect&&(SJRG.length||SJRI.length))try{
   for(const P of SJRG)if(P.a===f)sjRgDraw(P);for(const I of SJRI)if(I.o===f)sjRiDraw(I)}catch(e){}return r}}
 {const _sm=startMatch;startMatch=function(){const r=_sm.apply(this,arguments);try{SJRG=[];SJRI=[];if(SJRGON()&&G.p&&G.p.some(f=>f&&f.def&&f.def.sid==='sj'&&!f.cpu))sjRgLoad()}catch(e){}return r}}
+
+/* ================= v455: MODERAÇÃO DO DONO — BANIR (com tempo) e FECHAR O JOGO (manutenção)
+   Servidor: worker /fs-admin/estado e /fs-admin/mod (senha de ADM guardada no servidor, criada na 1ª vez).
+   O jogo pergunta ao abrir, a cada 3 min e ao voltar para o app. Banido/fechado = tela por cima de tudo (se estiver numa luta, espera ela acabar).
+   O ADM (título) nunca é barrado. Painel: botão 🛡️ MODERAÇÃO no 🧪 MODO TESTE e 🚫 BANIR no perfil de outro jogador. ================= */
+const MODURL=((/^https?:$/.test(location.protocol)&&!/github\.io$/.test(location.host)&&!/localhost:8765/.test(location.host))?location.origin:'https://fui-do-templo-a-pk-2.denilsinend.workers.dev')+'/fs-admin/';
+const MODT=[['1 HORA',36e5],['6 HORAS',6*36e5],['1 DIA',864e5],['3 DIAS',3*864e5],['7 DIAS',7*864e5],['30 DIAS',30*864e5],['PARA SEMPRE',0]];
+let MODST=null,MODPU=null;
+const modDt=t=>new Date(t).toLocaleString('pt-BR',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'}).replace(',',' às');
+async function modCheck(){try{if(pfIsAdm()){modShow(null);return}const n=localStorage.getItem('ac_n');let a='';try{if(n)a=await acId(n)}catch(e){}
+  const r=await fetch(MODURL+'estado?u='+encodeURIComponent(twUid())+'&a='+encodeURIComponent(a),{cache:'no-store'});if(!r.ok)return;const j=await r.json();
+  MODST=j.b&&(j.b.ate===0||j.b.ate>Date.now())?{t:'ban',...j.b}:j.f?{t:'fech',...j.f}:null;modShow(MODST)}catch(e){}}
+function modShow(S){let O=document.getElementById('modO');if(!S){if(O)O.remove();return}
+  if(typeof G!=='undefined'&&G.mode==='fight'){setTimeout(()=>modShow(MODST),2000);return}
+  if(!O){O=document.createElement('div');O.id='modO';document.body.appendChild(O)}try{MEL.pause()}catch(e){}
+  O.innerHTML=S.t==='ban'?`<div class="modB"><i>🚫</i><h2>VOCÊ FOI BANIDO</h2><p>${S.ate?'Volta a jogar em <b>'+modDt(S.ate)+'</b>':'<b>Para sempre.</b>'}</p>${S.mot?`<p class="m">Motivo: ${twEsc(S.mot)}</p>`:''}<button class="btn" id="modR">CONFERIR DE NOVO</button></div>`
+   :`<div class="modB f"><i>🔒</i><h2>JOGO EM MANUTENÇÃO</h2><p>${S.msg?twEsc(S.msg):'O jogo está fechado agora. Volte mais tarde!'}</p><button class="btn main" id="modR">TENTAR DE NOVO</button></div>`;
+  O.querySelector('#modR').onclick=()=>modCheck()}
+setTimeout(modCheck,2500);setInterval(modCheck,180000);document.addEventListener('visibilitychange',()=>{if(!document.hidden)modCheck()});
+/* ---------- painel do ADM ---------- */
+async function modApi(o){const r=await fetch(MODURL+'mod',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(Object.assign({s:localStorage.getItem('mod_s')||''},o))});let j={};try{j=await r.json()}catch(e){}return j}
+async function modOpen(pre){if(!pfIsAdm())return;if(pre)MODPU=pre;let M=document.getElementById('modP');if(!M){M=document.createElement('div');M.id='modP';document.body.appendChild(M)}
+  M.innerHTML='<div class="modW"><h3>🛡️ MODERAÇÃO</h3><p class="modH">Carregando...</p></div>';M.hidden=false;
+  let j={};try{j=await modApi({op:'ver'})}catch(e){j={ok:0,e:'Sem internet.'}}
+  const W=M.querySelector('.modW');
+  if(!j.ok&&(j.e==='sem_senha'||/Senha errada/.test(j.e||''))){const nova=j.e==='sem_senha';
+    W.innerHTML=`<h3>🛡️ MODERAÇÃO</h3><p class="modH">${nova?'Crie a sua <b>senha de ADM</b> (pelo menos 6 letras/números). Ela fica guardada no servidor e só quem souber pode banir ou fechar o jogo. <b>Não conte para ninguém.</b>':'Digite a sua senha de ADM.'}</p>
+      <input id="modS" type="password" placeholder="senha" autocomplete="off"><div class="modR"><button class="btn main" id="modSok">${nova?'CRIAR SENHA':'ENTRAR'}</button><button class="btn" id="modX">FECHAR</button></div>`;
+    W.querySelector('#modX').onclick=()=>{M.hidden=true};W.querySelector('#modSok').onclick=async()=>{const v=W.querySelector('#modS').value.trim();if(nova){const r=await modApi({op:'senha',nova:v});if(!r.ok)return rkToast('❌ '+(r.e||'erro'),'#ff8080')}localStorage.setItem('mod_s',v);modOpen()};return}
+  if(!j.ok){W.innerHTML=`<h3>🛡️ MODERAÇÃO</h3><p class="modH">❌ ${twEsc(j.e||'erro')}</p><div class="modR"><button class="btn" id="modX">FECHAR</button></div>`;W.querySelector('#modX').onclick=()=>{M.hidden=true};return}
+  const F=j.fechado,P=MODPU||{};
+  W.innerHTML=`<h3>🛡️ MODERAÇÃO <small>só o ADM vê</small></h3>
+   <div class="modSec"><b>JOGO: ${F?'🔴 FECHADO':'🟢 ABERTO'}</b>${F?`<p class="modH">Mensagem: ${twEsc(F.msg||'(sem mensagem)')}</p><button class="btn main" id="modAb">🔓 ABRIR O JOGO</button>`:
+     `<input id="modMsg" maxlength="160" placeholder="mensagem para os jogadores (ex.: Volto às 18h)"><button class="btn" id="modFe" style="border-color:#ff6060">🔒 FECHAR O JOGO</button><p class="modH">Você continua jogando normal. Quem estiver numa luta sai quando ela acabar.</p>`}</div>
+   <div class="modSec"><b>🚫 BANIR JOGADOR</b>${P.nome?`<p class="modH">Jogador: <b>${twEsc(P.nome)}</b> · ID ${twEsc(P.id||'')}</p>`:''}
+     <input id="modId" inputmode="numeric" placeholder="ID do jogador (aparece no perfil dele)" value="${twEsc(P.id||'')}">
+     <div class="modTs">${MODT.map(([n,ms],i)=>`<button class="modT${i===2?' on':''}" data-ms="${ms}">${n}</button>`).join('')}</div>
+     <input id="modMot" maxlength="120" placeholder="motivo (ele vai ver)"><button class="btn main" id="modBan" style="border-color:#ff6060">🚫 BANIR</button></div>
+   <div class="modSec"><b>BANIDOS AGORA (${j.bans.length})</b>${j.bans.length?j.bans.map(b=>`<div class="modL"><span><b>${twEsc(b.nome||'?')}</b> · ID ${b.id}<br><small>${b.ate?'até '+modDt(b.ate):'para sempre'}${b.mot?' · '+twEsc(b.mot):''}</small></span><button class="btn" data-g="${b.g}">DESBANIR</button></div>`).join(''):'<p class="modH">Ninguém banido.</p>'}</div>
+   <div class="modR"><button class="btn" id="modNs">🔑 TROCAR SENHA</button><button class="btn" id="modX">FECHAR</button></div>`;
+  const q=s=>W.querySelector(s);q('#modX').onclick=()=>{M.hidden=true;MODPU=null};
+  W.querySelectorAll('.modT').forEach(b=>b.onclick=()=>{W.querySelectorAll('.modT').forEach(x=>x.classList.toggle('on',x===b))});
+  if(q('#modFe'))q('#modFe').onclick=async()=>{const r=await modApi({op:'fechar',msg:q('#modMsg').value.trim()});rkToast(r.ok?'🔒 Jogo FECHADO para os jogadores':'❌ '+(r.e||'erro'),r.ok?'#ffd84a':'#ff8080');modOpen()};
+  if(q('#modAb'))q('#modAb').onclick=async()=>{const r=await modApi({op:'abrir'});rkToast(r.ok?'🔓 Jogo ABERTO de novo':'❌ '+(r.e||'erro'),r.ok?'#7dff9a':'#ff8080');modOpen()};
+  q('#modBan').onclick=async()=>{const id=q('#modId').value.replace(/\D/g,''),ms=+(W.querySelector('.modT.on')||{dataset:{ms:864e5}}).dataset.ms;if(!id&&!P.u)return rkToast('Digite o ID do jogador','#ff8080');
+    if(id==='10000001')return rkToast('Esse é você 😅','#ff8080');const o={op:'ban',ate:ms,mot:q('#modMot').value.trim()};if(P.u&&(!id||id===P.id)){o.u=P.u;o.nome=P.nome}else o.id=id;
+    const r=await modApi(o);rkToast(r.ok?'🚫 '+(r.nome||'Jogador')+' banido '+(r.ate?'até '+modDt(r.ate):'para sempre'):'❌ '+(r.e||'erro'),r.ok?'#ffd84a':'#ff8080');if(r.ok)MODPU=null;modOpen()};
+  W.querySelectorAll('[data-g]').forEach(b=>b.onclick=async()=>{const r=await modApi({op:'desban',g:b.dataset.g});rkToast(r.ok?'✔ Desbanido':'❌ '+(r.e||'erro'),r.ok?'#7dff9a':'#ff8080');modOpen()});
+  q('#modNs').onclick=async()=>{const v=prompt('Senha NOVA de ADM (pelo menos 6):');if(!v)return;const r=await modApi({op:'senha',nova:v.trim()});if(r.ok)localStorage.setItem('mod_s',v.trim());rkToast(r.ok?'🔑 Senha trocada':'❌ '+(r.e||'erro'),r.ok?'#7dff9a':'#ff8080')}}
+/* botão no MODO TESTE */
+{const _ao=admTOpen;admTOpen=function(){const r=_ao.apply(this,arguments);try{const M=document.getElementById('admT'),R=M&&M.querySelector('.admR');if(R&&!M.querySelector('#admMod')){R.insertAdjacentHTML('beforebegin','<button class="btn" id="admMod" style="width:100%;margin:2px 0 8px;border-color:#ff6060">🛡️ MODERAÇÃO (banir jogador / fechar o jogo)</button>');M.querySelector('#admMod').onclick=()=>{M.hidden=true;modOpen()}}}catch(e){}return r}}
+/* botão BANIR no perfil de outro jogador (só ADM) */
+{const _ph=pfH;pfH=function(){const h=_ph.apply(this,arguments);try{if(PFO&&pfIsAdm()){const D=pfCur(),u=D.uid,n=D.nome||'';if(u&&String(n).toLowerCase()!==String(TWADMN).toLowerCase())return h+`<button class="modPfB" data-u="${twEsc(u)}" data-n="${twEsc(n)}" data-i="${p3Id(u,n)}" style="${rkB3(1250,8,1500,58)}">🚫 BANIR</button>`}}catch(e){}return h}}
+document.addEventListener('click',e=>{const b=e.target.closest&&e.target.closest('.modPfB');if(!b)return;e.stopPropagation();modOpen({u:b.dataset.u,nome:b.dataset.n,id:b.dataset.i})},true);
+{const st=document.createElement('style');st.textContent=`#modO{position:fixed;inset:0;z-index:99999;background:radial-gradient(circle at 50% 40%,#2a0d18,#07040c 70%);display:flex;align-items:center;justify-content:center;color:#fff;font:700 15px var(--f-ui,sans-serif);text-align:center}
+#modO .modB{max-width:min(520px,90vw);padding:22px;border:2px solid #ff4a4a;border-radius:18px;background:rgba(20,8,14,.85);box-shadow:0 0 40px rgba(255,60,60,.35)}#modO .modB.f{border-color:#ffd84a;box-shadow:0 0 40px rgba(255,216,74,.3)}
+#modO i{font-style:normal;font-size:46px;display:block}#modO h2{margin:6px 0 10px;font-size:24px;color:#ff6a6a}#modO .f h2{color:#ffd84a}#modO p{margin:6px 0}#modO .m{color:#ffb0b0}#modO .btn{margin-top:12px}
+#modP{position:fixed;inset:0;z-index:9500;background:rgba(5,3,12,.8);display:flex;align-items:center;justify-content:center}#modP[hidden]{display:none}
+#modP .modW{width:min(600px,95vw);max-height:94vh;overflow:auto;background:linear-gradient(#22121c,#0d0a18);border:2px solid #ff6060;border-radius:16px;padding:12px 14px;color:#fff;font:700 14px var(--f-ui,sans-serif)}
+#modP h3{margin:0 0 8px;color:#ff8a8a;font-size:19px}#modP h3 small{font-size:11px;color:#c9a0a0;margin-left:6px}#modP .modH{font-size:12px;color:#d7c6d0;margin:4px 0}
+#modP input{width:100%;box-sizing:border-box;margin:5px 0;padding:8px;border-radius:8px;border:1px solid #7a4a5a;background:#2a1822;color:#fff;font:700 14px var(--f-ui,sans-serif)}
+#modP .modSec{border:1px solid #4a2a3a;border-radius:12px;padding:8px;margin:8px 0;background:rgba(255,255,255,.03)}#modP .modSec .btn{width:100%}
+#modP .modTs{display:flex;flex-wrap:wrap;gap:5px;margin:4px 0}#modP .modT{flex:1 1 30%;padding:7px 4px;border-radius:9px;border:1px solid #7a4a5a;background:#2a1822;color:#fff;font:800 12px var(--f-ui,sans-serif)}#modP .modT.on{border-color:#ffd84a;background:#4a3010;color:#ffd84a}
+#modP .modL{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:6px 0;border-top:1px solid #3a2230}#modP .modL .btn{width:auto;padding:6px 10px}#modP .modL small{color:#d7b0b8}
+#modP .modR{display:flex;gap:10px;justify-content:center;margin-top:6px}
+.modPfB{position:absolute;z-index:5;border-radius:10px;border:2px solid #ff5050;background:rgba(60,8,12,.85);color:#fff;font:900 clamp(10px,1.4vw,16px) var(--f-ui,sans-serif)}`;document.head.appendChild(st)}

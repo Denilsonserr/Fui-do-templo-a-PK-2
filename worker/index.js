@@ -16,7 +16,46 @@ async function init(db){if(READY)return;await db.batch([
   db.prepare('CREATE INDEX IF NOT EXISTS kv_n ON kv(k,n)'),
   db.prepare('CREATE INDEX IF NOT EXISTS kv_id ON kv(id)'),
   db.prepare('CREATE INDEX IF NOT EXISTS kv_idk ON kv(id,k)'),
-  db.prepare('CREATE TABLE IF NOT EXISTS uso(dia TEXT PRIMARY KEY, req INTEGER NOT NULL DEFAULT 0, rows INTEGER NOT NULL DEFAULT 0)')]);READY=true}
+  db.prepare('CREATE TABLE IF NOT EXISTS uso(dia TEXT PRIMARY KEY, req INTEGER NOT NULL DEFAULT 0, rows INTEGER NOT NULL DEFAULT 0)'),
+  db.prepare('CREATE TABLE IF NOT EXISTS adm(k TEXT PRIMARY KEY, v TEXT)'),
+  db.prepare('CREATE TABLE IF NOT EXISTS bans(k TEXT PRIMARY KEY, g TEXT NOT NULL, ate INTEGER NOT NULL, mot TEXT, nome TEXT, ct INTEGER NOT NULL)')]);READY=true}
+/* v455: MODERAÇÃO do dono — banir jogador por um tempo e FECHAR o jogo (manutenção).
+   GET  /fs-admin/estado?u=<uid do aparelho>&a=<id da conta>  → {f:{msg}|null, b:{ate,mot}|null}  (o jogo pergunta ao abrir e a cada 3 min)
+   POST /fs-admin/mod {s:senha, op, ...}  op: senha (1ª vez cria; depois troca com a atual) · ver · fechar {msg} · abrir · ban {id|u, nome, ate(ms, 0 = para sempre), mot} · desban {g}
+   Ban = chaves u:<uid> e a:<conta> do mesmo grupo g. Se o banido abrir com outra conta no aparelho (ou a conta em outro aparelho), a chave nova entra no grupo. */
+const twHashW=s=>{let h=0x811c9dc5;for(const c of s){h^=c.charCodeAt(0);h=Math.imul(h,0x01000193)>>>0}return h.toString(36)};
+const p3IdW=u=>{const h=parseInt(String(twHashW(String(u||'?'))).slice(0,7),36)||7;return String(10000002+h%89999990)};
+const MODF={t:0,v:null},MODE={n:0,t:0};
+async function modCfg(db,k){const r=await db.prepare('SELECT v FROM adm WHERE k=?').bind(k).first();return r?r.v:null}
+async function modSet(db,k,v){await db.prepare('INSERT INTO adm(k,v) VALUES(?,?) ON CONFLICT(k) DO UPDATE SET v=excluded.v').bind(k,v).run()}
+async function modFech(db){if(Date.now()-MODF.t<20000)return MODF.v;const v=await modCfg(db,'fechado');MODF.t=Date.now();MODF.v=v?JSON.parse(v):null;return MODF.v}
+async function modEstado(db,url){const u=String(url.searchParams.get('u')||'').slice(0,80),a=String(url.searchParams.get('a')||'').slice(0,80),now=Date.now();
+  const ks=[u&&'u:'+u,a&&'a:'+a].filter(Boolean);let b=null;
+  if(ks.length){const rs=(await db.prepare(`SELECT k,g,ate,mot,nome FROM bans WHERE k IN (${ks.map(()=>'?').join(',')})`).bind(...ks).all()).results||[];
+    const at=rs.find(r=>r.ate===0||r.ate>now);if(at){b={ate:at.ate,mot:at.mot||''};for(const k of ks)if(!rs.some(r=>r.k===k))await db.prepare('INSERT OR IGNORE INTO bans(k,g,ate,mot,nome,ct) VALUES(?,?,?,?,?,?)').bind(k,at.g,at.ate,at.mot,at.nome,now).run()}}
+  return J({f:await modFech(db),b})}
+async function modPost(db,req){const B=await req.json().catch(()=>({}));const op=String(B.op||'');
+  if(MODE.n>=8&&Date.now()-MODE.t<600000)return J({ok:0,e:'Muitas senhas erradas. Espere 10 minutos.'},429);
+  const h=await modCfg(db,'senha'),hs=async x=>sha('furia|adm|'+String(x||''));
+  if(op==='senha'&&!h){const n=String(B.nova||'');if(n.length<6)return J({ok:0,e:'A senha precisa ter pelo menos 6 letras/números.'});await modSet(db,'senha',await hs(n));return J({ok:1,criada:1})}
+  if(!h)return J({ok:0,e:'sem_senha'});
+  if(await hs(B.s)!==h){if(Date.now()-MODE.t>600000)MODE.n=0;MODE.n++;MODE.t=Date.now();return J({ok:0,e:'Senha errada.'},403)}
+  MODE.n=0;const now=Date.now();
+  if(op==='senha'){const n=String(B.nova||'');if(n.length<6)return J({ok:0,e:'A senha nova precisa ter pelo menos 6 letras/números.'});await modSet(db,'senha',await hs(n));return J({ok:1})}
+  if(op==='fechar'){const v={msg:String(B.msg||'').slice(0,160),t:now};await modSet(db,'fechado',JSON.stringify(v));MODF.t=0;return J({ok:1})}
+  if(op==='abrir'){await db.prepare("DELETE FROM adm WHERE k='fechado'").run();MODF.t=0;return J({ok:1})}
+  if(op==='ban'){let u=String(B.u||'').slice(0,80);const id=String(B.id||'').replace(/\D/g,'');
+    if(!u&&id){const rs=(await db.prepare("SELECT DISTINCT s FROM kv WHERE k='uid'").all()).results||[];const m=rs.filter(r=>p3IdW(r.s)===id);if(!m.length)return J({ok:0,e:'Nenhum jogador com o ID '+id+'.'});u=m[0].s}
+    if(!u)return J({ok:0,e:'Falta o ID do jogador.'});let nome=String(B.nome||'').slice(0,24);
+    if(!nome){const r=await db.prepare("SELECT d.f FROM kv u JOIN docs d ON d.id=u.id WHERE u.k='uid' AND u.s=? ORDER BY d.ct DESC LIMIT 1").bind(u).first();try{const f=JSON.parse(r.f);nome=(f.nome&&f.nome.stringValue)||''}catch(e){}}
+    const ate=+B.ate>0?now+Math.min(+B.ate,3650*864e5):0,g='g'+now.toString(36);
+    await db.prepare('DELETE FROM bans WHERE g IN (SELECT g FROM bans WHERE k=?)').bind('u:'+u).run();
+    await db.prepare('INSERT INTO bans(k,g,ate,mot,nome,ct) VALUES(?,?,?,?,?,?)').bind('u:'+u,g,ate,String(B.mot||'').slice(0,120),nome,now).run();return J({ok:1,id:p3IdW(u),nome,ate})}
+  if(op==='desban'){await db.prepare('DELETE FROM bans WHERE g=?').bind(String(B.g||'')).run();return J({ok:1})}
+  if(op==='ver'||op==='senha'){const rs=(await db.prepare('SELECT k,g,ate,mot,nome,ct FROM bans ORDER BY ct DESC LIMIT 400').all()).results||[];const G={};
+    for(const r of rs){if(r.ate&&r.ate<=now)continue;const x=G[r.g]||(G[r.g]={g:r.g,ate:r.ate,mot:r.mot,nome:r.nome,ct:r.ct,id:'',n:0});x.n++;if(r.k.startsWith('u:')&&(!x.id||r.ct<=x.idt)){x.id=p3IdW(r.k.slice(2));x.idt=r.ct}x.ct=Math.min(x.ct,r.ct)}
+    return J({ok:1,fechado:await modFech(db),bans:Object.values(G).sort((a,b)=>b.ct-a.ct)})}
+  return J({ok:0,e:'op'})}
 /* 11/11: TRAVA DE GASTO (plano pago US$5/mês inclui 10 milhões de pedidos e 25 bilhões de linhas lidas por mês).
    O servidor conta pedidos e linhas lidas por dia (tabela uso) e, se chegar perto do incluído, PARA de responder (429)
    até o dia/mês virar — assim a conta nunca passa dos US$5. Limites com folga: */
@@ -85,6 +124,8 @@ export default {async fetch(req,env){const url=new URL(req.url),p=url.pathname;
       const html=`<!doctype html><meta charset=utf-8><meta name=viewport content="width=device-width"><title>Erros</title><body style="font:14px sans-serif;background:#111;color:#eee;padding:8px"><h3>Erros das últimas ${h} horas: ${rs.length} (${L.length} tipos)</h3>`+
         L.map(g=>`<div style="border:1px solid #444;margin:6px 0;padding:6px"><b>${g.n}×</b> ${e(g.m)}<br><small>último: ${new Date(g.ult-3*36e5).toISOString().slice(5,16).replace('T',' ')} · onde: ${e(g.onde)} · modos: ${e(Object.entries(g.modos).map(x=>x[0]+' '+x[1]).join(', '))}</small><pre style="white-space:pre-wrap;font-size:11px;color:#aaa">${e(g.st)}</pre></div>`).join('')+'</body>';
       return new Response(html,{headers:{'Content-Type':'text/html; charset=utf-8',...CORS}})}
+    if(p==='/fs-admin/estado')return await modEstado(db,url);
+    if(p==='/fs-admin/mod'&&req.method==='POST')return await modPost(db,req);
     if(p==='/fs-admin/reads')return J(RD);
     if(p==='/fs-admin/count'){const c=await db.prepare('SELECT COUNT(*) n FROM docs').first();return J(c)}
     const m=p.match(/^\/fs\/v1\/(projects\/[^/]+\/databases\/\(default\)\/documents)(.*)$/)||p.match(/^\/fs\/v1\/(projects\/[^/]+\/databases\/%28default%29\/documents)(.*)$/);if(!m)return ERR(404,'NOT_FOUND','rota');
