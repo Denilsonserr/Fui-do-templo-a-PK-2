@@ -6174,7 +6174,7 @@ function tbFixRun(sel){const P=TWC.filter(x=>CH[x]&&x!==sel).sort((a,b)=>tbH(a)-
 try{window.__tb2={bs:()=>TN.bosses.join(','),live:tnEvLive,flag:()=>rkG('tnev',''),go:()=>tnGo(),G:()=>G,TN:()=>TN,TW:()=>TW}}catch(e){}
 
 /* v492: código do ADM (texto só com o dono): 1 ANEL DOURADO nota S (5.000.000 anos, 2 atributos sorteados) · uso único */
-TWCUP['1yvb5ld']={nm:'ANEL DOURADO S (ADM)',it:[],adm:1,anGS:1};
+TWCUP['1yvb5ld']={nm:'ANEL DOURADO S',it:[],anGS:1}; /* v493: vale para qualquer jogador (1 pessoa só) */
 {const _cp=twCupom;twCupom=async function(code,E){const C=TWCUP[twHash(String(code).toUpperCase())];const r=await _cp.apply(this,arguments);
   try{if(C&&C.anGS&&E&&/\bok\b/.test(E.className)){const g=5,a=5e6,k=.8+.6*Math.log10(a/1e6),S=ANS.map(x=>x[0]),s=S[(Math.random()*S.length)|0],s2=S.filter(x=>x!==s)[(Math.random()*(S.length-1))|0];
     anGive({i:Date.now().toString(36)+Math.random().toString(36).slice(2,6),c:5,g,s,s2,a,v:Math.round(ANV[5][g]*k*10)/10});try{acSave(1)}catch(e){}
