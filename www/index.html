@@ -13404,6 +13404,16 @@ setInterval(sjTrialTick,1000);setTimeout(sjTrialTick,1500);
 @keyframes mnUp{0%{transform:translateY(0) scale(.6);opacity:0}15%{opacity:.85}100%{transform:translateY(-1100%) scale(1.1);opacity:0}}
 @media (prefers-reduced-motion:reduce){.rk_menu .mnFx{display:none}}`;document.head.appendChild(st)}
 {const st=document.createElement('style');st.textContent=`.rk_menu .mn2I{position:absolute;z-index:2;object-fit:contain;pointer-events:none;filter:drop-shadow(0 0 .25em rgba(0,0,0,.8))}`;document.head.appendChild(st)}
+/* ================= v494: EVENTO DOS PORTAIS — RANK S GARANTIDO A CADA 30 MIN + 2x SORTE DO IGRIS (16/11 até 23:59 Brasília).
+   O 1º ciclo de portais que abre em cada meia hora (:00 e :30) tem um portal RANK S garantido (igual para todos: usa a mesma hora global).
+   Chance da sombra Igris dobrada durante o evento. ================= */
+const PTSE=[Date.UTC(2026,10,16,11,0),Date.UTC(2026,10,17,3,0)],ptSEv=t=>{t=t||Date.now();return t>=PTSE[0]&&t<PTSE[1]},PTGS={};
+{const _pn=ptNow;ptNow=function(now){const N=_pn.apply(this,arguments);try{if(N&&N.i!=null&&(N.st==='busca'||N.st==='aberto')){const ini=N.st==='aberto'?N.ini:N.fim,s_i=(5+Math.floor(ptRnd(N.i,1)*6))*6e4,prev=ini-s_i-PTOPEN;
+  PTGS[N.i]=ptSEv(ini)&&Math.floor(ini/18e5)>Math.floor(prev/18e5);if(N.L&&PTGS[N.i])N.L=ptList(N.i)}}catch(e){}return N}}
+{const _pl=ptList;ptList=function(i){const L=_pl.apply(this,arguments);try{if(PTGS[i]&&!L.some(p=>p.r===5)){L[L.length-1]={id:i+'_s',r:5,ev:1};L.sort((a,b)=>a.r-b.r)}}catch(e){}return L}}
+{const _ph2=ptH;ptH=function(){let h=_ph2.apply(this,arguments);try{if(ptSEv()){const N=ptNow(),g=N.i!=null&&PTGS[N.i];const nx=Math.ceil(Date.now()/18e5)*18e5,mm=Math.max(0,Math.ceil((nx-Date.now())/6e4));
+  h+=`<div class="ptSEv">🔴 EVENTO: PORTAL RANK S GARANTIDO A CADA 30 MIN · 2x SORTE DO IGRIS${g?` · <b>${N.st==='aberto'?'O RANK S ESTÁ ABERTO AGORA!':'ESTE CICLO TEM RANK S!'}</b>`:` · próximo em ~${mm} min`}</div>`}}catch(e){}return h}}
+{const st=document.createElement('style');st.textContent=`.ptSEv{position:absolute;left:22%;right:22%;top:9.5%;z-index:5;text-align:center;padding:.25em .6em;border-radius:1em;background:linear-gradient(90deg,#3a0610e8,#6a0a1ce8,#3a0610e8);border:1px solid #ff3b4a;color:#ffd6db;font:900 1.25em var(--f-ui,sans-serif);letter-spacing:.03em;box-shadow:0 0 .8em #ff3b4a88;pointer-events:none}.ptSEv b{color:#fff36a;text-shadow:0 0 .4em #ffb400}`;document.head.appendChild(st)}
 {const _sk=rkTwSkin;rkTwSkin=function(){const r=_sk.apply(this,arguments);try{tnSkin()}catch(e){console.warn(e)}return r}}
 {const _lv2=twLV;twLV=function(){if(TN.on&&G.gmode==='torre'){const B=G.p&&G.p[1];if(B&&B.tnBoss)return TWLV[Math.min(TWLV.length-1,3+Math.floor(TN.g/2))]}return _lv2.apply(this,arguments)}}
 try{RKTWX.fl=1;RKTWX.top=3.2}catch(e){}
@@ -14301,7 +14311,7 @@ let PTNB=0;{const _hd=hyDrop;hyDrop=function(k){if(PTNB&&k==='bau')return {};ret
 function pnBossReward(d){const r=PTR.r;
   if(d.pn.k==='urso'){if(rkG('urso',0))return;if(!sjOwned()){banner('URSO DAS SOMBRAS DERROTADO','#9a7bff',90,'só o SUNG consegue extrair a sombra dele');return}
     rkS('urso',1);const o=sjSys();if(!o.sh.includes('tank'))o.sh.unshift('tank');if(!o.eq)o.eq='tank';sjSave(o);try{acSave(1)}catch(e){}setTimeout(()=>pnShWin('tank'),1400);return}
-  if(d.pn.k==='ig'){const o=sjSys();if(o.sh.includes('igris'))return;const ch=[.2,.5,1,2,3.5,5][r];
+  if(d.pn.k==='ig'){const o=sjSys();if(o.sh.includes('igris'))return;const ch=[.2,.5,1,2,3.5,5][r]*(typeof ptSEv==='function'&&ptSEv()?2:1);
     if(Math.random()*100<ch){if(!sjOwned()){banner('A SOMBRA DE IGRIS SE MEXEU...','#ff3b4a',110,'mas só o SUNG pode extrair sombras');return}o.sh.push('igris');sjSave(o);rkS('sjIg',1);try{acSave(1)}catch(e){}setTimeout(()=>pnShWin('igris'),1400)}
     else banner('IGRIS FOI DERROTADO!','#ff3b4a',100,'a sombra não respondeu ('+String(ch).replace('.',',')+'% de chance no rank '+PTRK[r].k+')')}}
 function pnShWin(k){const S=SJSH[k];if(!S)return;const was=G.paused;G.paused=true;const M=document.createElement('div');M.id='pnSh';M.innerHTML=`<i class="sm a"></i><i class="sm b"></i><i class="sm c"></i><div class="ar">ERGA-SE!</div><div class="im"><img src="${S.img}" alt=""></div>
@@ -14888,7 +14898,7 @@ window.__dbg={mus:()=>[MCUR,MEL.src.split('/').pop()],stg:()=>STAGE.key,prepMatc
 })();
 </script>
 <style>#updB{position:fixed;left:50%;top:max(8px,env(safe-area-inset-top));transform:translateX(-50%);z-index:99999;padding:10px 22px;border-radius:14px;border:2px solid #fff3c0;background:linear-gradient(#ffd84a,#e08a10);color:#3a1d00;font:900 15px system-ui,sans-serif;box-shadow:0 0 18px #ffb21f;cursor:pointer;animation:updP 1s ease-in-out infinite alternate}@keyframes updP{to{transform:translateX(-50%) scale(1.05)}}</style>
-<script>(function(){const V='a377fddd2a5e';if(!/^https?:/.test(location.protocol))return;let nv=null;
+<script>(function(){const V='5884540c9af8';if(!/^https?:/.test(location.protocol))return;let nv=null;
 function show(){if(document.getElementById('updB'))return;try{if(typeof G!=='undefined'&&G.mode==='fight')return}catch(e){}const b=document.createElement('button');b.id='updB';b.textContent='🔄 ATUALIZAÇÃO NOVA! Toque para atualizar';
   b.onclick=()=>{b.textContent='⏳ Atualizando...';try{acSave(1)}catch(e){}setTimeout(()=>location.reload(),900)};document.body.appendChild(b)}
 async function chk(){if(document.hidden)return;if(nv){show();return}try{const r=await fetch('versao.txt?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const t=(await r.text()).trim();if(/^[0-9a-f]{8,40}$/.test(t)&&t!==V){nv=t;show()}}catch(e){}}

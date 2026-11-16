@@ -2267,3 +2267,7 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - Fim (morreu): resumo, recorde (`ptlog.best`), ranking (posta só quando bate o recorde), volta para a tela dos portais.
 - Ganchos de teste `window.__pt` (now, list, start, R, HY, log, next, clear). Teste `ferramentas/testes/tportais_v460.js`.
 - v461: passivas do Sung (applyHit/update/spriteKey). NÃO mexer na imagem dos quadros do Sung (S.b = efeitos de energia; v469 desfez o roxo), sjShBonus = bônus dos itens na sombra.
+
+## v494 — Evento dos Portais: RANK S garantido a cada 30 min + 2x sorte do Igris
+- `PTSE` = 16/11 08:00 → 17/11 00:00 (Brasília). O 1º ciclo que abre em cada meia hora (:00/:30) tem um portal S garantido (`PTGS[i]`, wrappers de ptNow/ptList; global, igual para todos). Medido: S abre a cada 15–39 min (fora do evento ~2 em 21 ciclos). Igris: chance da sombra ×2. Faixa vermelha na tela dos Portais com "próximo em ~N min".
+- Teste: `ferramentas/testes/tportal_s_v494.js`.
