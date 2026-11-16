@@ -2283,3 +2283,8 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 
 ## v497 — Códigos: PASSE2XSOLO1, PASSE2XSOLO2 (passe 2X, uso único cada) e SOMBRAIGRIS (sombra Igris, uso único)
 - `igr:1` (wrapper de twCupom): põe `igris` em `rk_sjs.sh`; se já tem, recusa sem gastar. Sem o Sung fica guardada.
+
+## v498 — LEILÃO no Mercado Negro (16/11 18:50–19:20 Brasília)
+- Bloco rk.js "v498": `LEI0/LEI1`, lotes `LEIL` (5 peças V2 de Virgem 20.000 cada, anel dourado SS 20.000, dourado S 10.000, vermelho SSS 5.000; anéis no nível máx. `l:ANMX[c]`, dourados 10 milhões de anos). Botão "⚖️ LEILÃO" no Mercado Negro (`mnH` wrapper, aparece de 6 h antes até 1 h depois).
+- Lance = doc `lei_*` {lei:"1",lot,lv,t}. Mínimo inicial do lote ou maior lance +500. 💎 ficam presos na hora (`rk_leiE`); `leiSettle` (abrir o jogo e a cada 45 s): coberto → devolve; fim (+8 s) → vencedor recebe o item (`leiGive`), perdedor recebe de volta; ADM (twIsAdm) recebe a soma dos lances vencedores 1 vez (`rk_leiPaid`). Lances com t > fim são ignorados.
+- Teste: `ferramentas/testes/tleilao_v498.js` (Firestore simulado).
