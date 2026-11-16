@@ -4941,7 +4941,7 @@ function leiGive(L){if(L.k){const I=twInv();let it=I.find(x=>x&&!x.v2&&(x.skb===
 async function leiSettle(){if(Date.now()<LEI0)return;const B=await leiLoad(),E=leiEsc(),me=twUid(),end=Date.now()>=LEI1+8000;let ch=0,msg=[];
   for(const id in E){const e=E[id],top=B[id];if(!e||!e.v)continue;const lost=top&&top.uid!==me&&top.lv>e.v;
     if(lost||(end&&(!top||top.uid!==me))){rkAdd('gem',e.v);msg.push('💎 +'+rkFmtN(e.v)+' devolvidos (lance coberto)');delete E[id];ch=1}
-    else if(end&&top&&top.uid===me&&!e.ok){const L=LEIL.find(q=>q.id===id);if(L){leiGive(L);msg.push('🏆 VOCÊ GANHOU NO LEILÃO: '+leiNm(L))}e.ok=1;e.v=0;ch=1}}
+    else if(end&&top&&top.uid===me&&!e.ok){e.ok=1;e.v=0;ch=1}} /* v500: o item agora vem pela MENSAGEM de resgate (leiClaim) */
   if(ch){rkS('leiE',E);try{acSave(1)}catch(e){}msg.forEach((m,i)=>setTimeout(()=>{try{rkToast(m,'#ffd84a')}catch(_){}},400+i*1800))}
   if(end&&twIsAdm()&&!rkG('leiPaid',0)){const tot=Object.values(B).reduce((a,b)=>a+b.lv,0);rkS('leiPaid',1);if(tot>0){rkAdd('gem',tot);try{acSave(1)}catch(e){}setTimeout(()=>rkToast('⚖️ LEILÃO: +'+rkFmtN(tot)+' 💎 arrecadados na sua conta!','#7dff9a'),600)}}}
 setTimeout(()=>{leiSettle().catch(()=>{})},6000);setInterval(()=>{const t=Date.now();if(t>=LEI0&&t<LEI1+30*6e4)leiSettle().catch(()=>{})},45000);
@@ -4982,6 +4982,21 @@ const rkTmS=ms=>{const s=Math.max(0,Math.floor(ms/1000)),h=Math.floor(s/3600),m=
 #leiM .leiG{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:8px}#leiM .leiC{background:#24180a;border:1px solid #6a5420;border-radius:10px;padding:7px}#leiM .leiC.me{border-color:#7dff9a;box-shadow:0 0 10px #7dff9a55}
 #leiM .leiC b{display:block;color:#ffe08a;font-size:13px}#leiM .leiC small{color:#a8936a}#leiM .leiC p{margin:4px 0}#leiM .leiC em{font-style:normal;color:#7dff9a;font-weight:900}#leiM .leiMy{color:#9fd0ff}
 #leiM .leiBt{display:flex;flex-wrap:wrap;gap:4px}#leiM .leiIn{display:flex;gap:4px;margin-top:5px}#leiM .leiIn input{flex:1;min-width:0;background:#120c04;border:1px solid #8a6a20;border-radius:6px;color:#fff;font:800 13px var(--f-ui,sans-serif);padding:5px 7px}#leiM .leiIn .btn{font-size:11px;padding:4px 8px}#leiM .leiWin{color:#7dff9a;font-weight:900}#leiM .btn:disabled{opacity:.5}#leiM .leiBt .btn{font-size:11px;padding:4px 8px}#leiM .row{display:flex;gap:10px;align-items:center;justify-content:center;margin-top:8px}#leiM .leiGem{color:#9fd0ff}`;document.head.appendChild(st)}
+/* ================= v500: LEILÃO — entrega por MENSAGEM. Vencedores (lista tirada dos lances no servidor, ferramenta .github/workflows/leilao.yml):
+   ao abrir o jogo aparece "VOCÊ GANHOU NO LEILÃO" com RESGATAR; cada item 1 vez por aparelho/conta (rk_leiR). Os 💎 já tinham saído na hora do lance. ================= */
+const LEIW={gs:['mwc8atkrgg4fns2f','Honrado',10000],gss:['mwc8atkrgg4fns2f','Honrado',48000],rsss:['mwc8atkrgg4fns2f','Honrado',182500],v2skarm:['mwc8atkrgg4fns2f','Honrado',32500],
+  v2skbot:['mwc8atkrgg4fns2f','Honrado',20000],v2skcap:['mwc8atkrgg4fns2f','Honrado',20500],v2skluv:['mw9apulbiy7r7kgz','van hohenheim',31000],v2skros:['mwc8atkrgg4fns2f','Honrado',25000]};
+function leiMine(){const u=twUid(),n=String(twLS.g('tw_nome','')||'').trim().toLowerCase(),R=rkG('leiR',{})||{};return Object.keys(LEIW).filter(k=>!R[k]&&(LEIW[k][0]===u||LEIW[k][1].toLowerCase()===n))}
+function leiClaim(){const L=leiMine();if(!L.length||document.getElementById('leiCl'))return;const M=document.createElement('div');M.id='leiCl';document.body.appendChild(M);
+  M.innerHTML=`<div class="leiP"><h3>📩 MENSAGEM DO ADM · LEILÃO</h3><p class="leiS on">🏆 PARABÉNS! VOCÊ GANHOU NO LEILÃO DO MERCADO NEGRO</p><p class="leiH">Os diamantes já tinham saído na hora do lance. Toque em RESGATAR para receber seus itens:</p>
+   <div class="leiG">${L.map(k=>{const Lt=LEIL.find(q=>q.id===k);return `<div class="leiC me"><b>${leiNm(Lt)}</b><p>Seu lance vencedor: <em>${rkFmtN(LEIW[k][2])} 💎</em></p></div>`}).join('')}</div>
+   <div class="row"><button class="btn main" id="leiClY">🎁 RESGATAR ${L.length>1?'TUDO ('+L.length+')':''}</button></div></div>`;
+  document.getElementById('leiClY').onclick=()=>{const R=rkG('leiR',{})||{};const got=[];for(const k of leiMine()){const Lt=LEIL.find(q=>q.id===k);if(!Lt)continue;try{leiGive(Lt);R[k]=1;got.push(leiNm(Lt))}catch(e){}}
+    rkS('leiR',R);try{acSave(1)}catch(e){}try{rkSfx('boom')}catch(e){}M.remove();rkToast('🎁 Resgatado: '+got.join(' · '),'#7dff9a')}}
+setTimeout(leiClaim,7000);setInterval(leiClaim,60000);
+{const st=document.createElement('style');st.textContent=`#leiCl{position:fixed;inset:0;z-index:9250;background:rgba(4,2,10,.82);display:flex;align-items:center;justify-content:center}#leiCl .leiP{width:min(760px,94vw);max-height:92vh;overflow:auto;background:linear-gradient(#1c1206,#0b0703);border:2px solid #ffd84a;border-radius:14px;padding:12px 16px;color:#fff;font:700 13px var(--f-ui,sans-serif);box-shadow:0 0 30px #ffb40077}
+#leiCl h3{margin:0;color:#ffd84a;font-size:21px}#leiCl .leiS{color:#7dff9a;font-weight:900;margin:6px 0}#leiCl .leiH{color:#cbb88a;font-size:12px;margin:0 0 8px}#leiCl .leiG{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:8px}
+#leiCl .leiC{background:#24180a;border:1px solid #7dff9a;border-radius:10px;padding:7px}#leiCl .leiC b{color:#ffe08a}#leiCl .leiC p{margin:4px 0}#leiCl em{font-style:normal;color:#7dff9a}#leiCl .row{display:flex;justify-content:center;margin-top:10px}`;document.head.appendChild(st)}
 {const _sk=rkTwSkin;rkTwSkin=function(){const r=_sk.apply(this,arguments);try{tnSkin()}catch(e){console.warn(e)}return r}}
 {const _lv2=twLV;twLV=function(){if(TN.on&&G.gmode==='torre'){const B=G.p&&G.p[1];if(B&&B.tnBoss)return TWLV[Math.min(TWLV.length-1,3+Math.floor(TN.g/2))]}return _lv2.apply(this,arguments)}}
 try{RKTWX.fl=1;RKTWX.top=3.2}catch(e){}

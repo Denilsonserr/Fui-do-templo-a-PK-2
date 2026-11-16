@@ -2292,3 +2292,7 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 ## v499 — Leilão: tela não pula, lance mais fácil, +20 min (até 19:40)
 - `LEI1=LEI0+50 min`. `leiDraw` monta a tela 1 vez; a cada 1 s só troca textos; cada cartão só é refeito quando o maior lance/lance preso daquele item muda (`LEISIG`), e não enquanto a pessoa digita. Antes refazia tudo a cada 1 s → rolagem voltava ao topo e o toque no botão se perdia.
 - "OUTRO" (prompt, não funciona bem no celular) → campo de número + DAR LANCE no cartão. Botão desliga enquanto envia. Depois do lance o cartão já mostra o novo valor.
+
+## v500 — Leilão: itens por MENSAGEM de resgate
+- Vencedores tirados dos lances no servidor (`.github/workflows/leilao.yml`): Honrado (anéis dourado S e SS, vermelho SSS, elmo/armadura/botas/rosário V2), van hohenheim (luvas V2). `LEIW` (uid + nome como reserva). Ao abrir o jogo: "📩 MENSAGEM DO ADM · LEILÃO" com RESGATAR (`leiClaim`, 1 vez por item, `rk_leiR`). `leiSettle` não entrega mais item (só devolve 💎 de quem foi coberto e paga o ADM).
+- Teste: `ferramentas/testes/tleilao_resgate_v500.js`.
