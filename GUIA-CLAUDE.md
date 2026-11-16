@@ -2271,3 +2271,7 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 ## v494 — Evento dos Portais: RANK S garantido a cada 30 min + 2x sorte do Igris
 - `PTSE` = 16/11 08:00 → 17/11 00:00 (Brasília). O 1º ciclo que abre em cada meia hora (:00/:30) tem um portal S garantido (`PTGS[i]`, wrappers de ptNow/ptList; global, igual para todos). Medido: S abre a cada 15–39 min (fora do evento ~2 em 21 ciclos). Igris: chance da sombra ×2. Faixa vermelha na tela dos Portais com "próximo em ~N min".
 - Teste: `ferramentas/testes/tportal_s_v494.js`.
+
+## v495 — Resetar atributos do Sistema do Sung
+- Botão "↺ RESETAR" ao lado de ATRIBUTOS (`data-s="rs"`): devolve todos os pontos gastos (atributos voltam a 10). 1º reset grátis (`o.rsN`), depois 500 💎. Confirmação própria (`#sjRsM`, z 9300, acima do Sistema).
+- Teste: `ferramentas/testes/tsung_reset_v495.js`.
