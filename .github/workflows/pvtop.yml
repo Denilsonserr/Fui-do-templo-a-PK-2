@@ -1,0 +1,26 @@
+name: PVP — lista o top da temporada (ferramenta)
+on: workflow_dispatch
+jobs:
+  r:
+    runs-on: ubuntu-latest
+    steps:
+      - name: top
+        run: |
+          python3 - <<'P'
+          import json,urllib.request
+          B='https://fui-do-templo-a-pk-2.denilsinend.workers.dev/fs/v1/projects/furia-do-templo/databases/(default)/documents'
+          H={'Content-Type':'application/json','User-Agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/120 Safari/537.36'}
+          s={'from':[{'collectionId':'torre'}],'where':{'fieldFilter':{'field':{'fieldPath':'pvk'},'op':'EQUAL','value':{'stringValue':'m202611r1'}}},'limit':1000}
+          L=[x['document'] for x in json.load(urllib.request.urlopen(urllib.request.Request(B+':runQuery',data=json.dumps({'structuredQuery':s}).encode(),headers=H))) if x.get('document')]
+          g=lambda F,k:(F.get(k) or {}).get('stringValue',(F.get(k) or {}).get('integerValue'))
+          M={}
+          for d in L:
+            F=d['fields'];a=g(F,'pva');i=d['name'].split('/')[-1]
+            if not a or (a in M and M[a][0]>i):continue
+            try:D=json.loads(g(F,'d') or '{}')
+            except Exception:D={}
+            M[a]=(i,a,g(F,'uid'),g(F,'nome'),min(8,int(D.get('t') or 0)),int(D.get('dv') or 0),int(D.get('st') or 0),D.get('w'),D.get('l'))
+          R=sorted(M.values(),key=lambda r:-(r[4]*1e6+r[5]*1e3+r[6]))
+          for r in R[:15]:print('PV',r)
+          print('TOTAL',len(R))
+          P
