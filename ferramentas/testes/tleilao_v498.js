@@ -1,4 +1,4 @@
-// v498: leilão do Mercado Negro — lances (💎 presos), cobrir lance devolve, fim entrega item ao vencedor e soma ao ADM. Firestore simulado na memória.
+// v498/v499 (tela não pula, campo de valor): leilão do Mercado Negro — lances (💎 presos), cobrir lance devolve, fim entrega item ao vencedor e soma ao ADM. Firestore simulado na memória.
 const {chromium}=require('playwright');const SH=process.env.SH||'/tmp/';
 const DB=[];
 async function setup(p){await p.route(/fonts\.g/,r=>r.abort());await p.route(/\/fs\/v1\//,async r=>{const u=r.request().url(),m=r.request().method();
@@ -14,8 +14,10 @@ const gem=p=>p.evaluate(()=>+localStorage.getItem('rk_gem'));
   await A.evaluate(()=>__pvT.leiBid('gs',10000));const a1=await gem(A);
   await B.evaluate(()=>__pvT.leiBid('gs',12000));await B.evaluate(()=>__pvT.leiBid('v2skbot',20000));const b1=await gem(B);
   await A.evaluate(()=>__pvT.leiSet());const a2=await gem(A);
-  await A.evaluate(()=>__pvT.rkO('mn'));await A.waitForTimeout(1500);await A.evaluate(()=>document.querySelector('.leiBtn').click());await A.waitForTimeout(1500);await A.screenshot({path:SH+'leilao.png'});
-  await A.clock.setFixedTime(Date.UTC(2026,10,16,22,21));await B.clock.setFixedTime(Date.UTC(2026,10,16,22,21));
+  await A.evaluate(()=>__pvT.rkO('mn'));await A.waitForTimeout(1500);await A.evaluate(()=>document.querySelector('.leiBtn').click());await A.waitForTimeout(1500);await A.evaluate(()=>{const P=document.querySelector('#leiM .leiP');P.scrollTop=200});await A.waitForTimeout(3200);const rola=await A.evaluate(()=>document.querySelector('#leiM .leiP').scrollTop);
+  await A.fill('input[data-li="rsss"]','7000');await A.click('[data-lb="rsss"][data-v="in"]');await A.waitForTimeout(1500);const outro=await A.evaluate(()=>({lote:__pvT.lei().E.rsss,txt:document.getElementById('leiC_rsss').innerText.slice(0,80)}));
+  await A.screenshot({path:SH+'leilao.png'});
+  await A.clock.setFixedTime(Date.UTC(2026,10,16,22,41));await B.clock.setFixedTime(Date.UTC(2026,10,16,22,41));
   await B.evaluate(()=>__pvT.leiSet());await B.waitForTimeout(500);const bInv=await B.evaluate(()=>({an:JSON.parse(localStorage.getItem('rk_an')||'[]').map(r=>[r.c,r.g,r.l]),v2:JSON.parse(localStorage.getItem('tw_inv')||'[]').filter(x=>x.v2).map(x=>x.nm),gem:+localStorage.getItem('rk_gem')}));
-  const D=await mk(b,'Denilson ADM',1,Date.UTC(2026,10,16,22,21));await D.evaluate(()=>__pvT.leiSet());await D.waitForTimeout(800);const adm=await gem(D);
-  console.log(JSON.stringify({ana:{depoisDoLance:a1,depoisDeCoberta:a2},beto:{depoisDosLances:b1,fim:bInv},admGemas:adm,lances:DB.length}),[...A.E,...B.E,...D.E].slice(0,3));await b.close()})();
+  const D=await mk(b,'Denilson ADM',1,Date.UTC(2026,10,16,22,41));await D.evaluate(()=>__pvT.leiSet());await D.waitForTimeout(800);const adm=await gem(D);
+  console.log(JSON.stringify({rolagemFicou:rola,outro,ana:{depoisDoLance:a1,depoisDeCoberta:a2},beto:{depoisDosLances:b1,fim:bInv},admGemas:adm,lances:DB.length}),[...A.E,...B.E,...D.E].slice(0,3));await b.close()})();
