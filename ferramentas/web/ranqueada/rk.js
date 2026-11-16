@@ -6172,3 +6172,10 @@ function tbFixRun(sel){const P=TWC.filter(x=>CH[x]&&x!==sel).sort((a,b)=>tbH(a)-
 {const _ra=rkApply;rkApply=function(){const r=_ra.apply(this,arguments);try{if(TN.on&&G.gmode==='torre'&&G.p&&rkG('tnev','')===TBID){const p=G.p[0];
   p.tdm=1;p.tsp=1;p.tdf=1;p.tcr=5;p.tsb=1;p.tcd=0;p.tfd=0;p.pspd=0;p.preg=0;p.tki=1;p.tls=0;p.rkCura=0;p.sjA=1;p.sjS=null;p.sjSB=0;p.mhp=TW.bars*LAYER;p.hp=p.hpLag=Math.max(1,Math.min(p.mhp,Math.round(TW.hpv)))}}catch(e){}return r}}
 try{window.__tb2={bs:()=>TN.bosses.join(','),live:tnEvLive,flag:()=>rkG('tnev',''),go:()=>tnGo(),G:()=>G,TN:()=>TN,TW:()=>TW}}catch(e){}
+
+/* v492: código do ADM (texto só com o dono): 1 ANEL DOURADO nota S (5.000.000 anos, 2 atributos sorteados) · uso único */
+TWCUP['1yvb5ld']={nm:'ANEL DOURADO S (ADM)',it:[],adm:1,anGS:1};
+{const _cp=twCupom;twCupom=async function(code,E){const C=TWCUP[twHash(String(code).toUpperCase())];const r=await _cp.apply(this,arguments);
+  try{if(C&&C.anGS&&E&&/\bok\b/.test(E.className)){const g=5,a=5e6,k=.8+.6*Math.log10(a/1e6),S=ANS.map(x=>x[0]),s=S[(Math.random()*S.length)|0],s2=S.filter(x=>x!==s)[(Math.random()*(S.length-1))|0];
+    anGive({i:Date.now().toString(36)+Math.random().toString(36).slice(2,6),c:5,g,s,s2,a,v:Math.round(ANV[5][g]*k*10)/10});try{acSave(1)}catch(e){}
+    E.textContent='✅ Você ganhou: 💍 ANEL DOURADO S · '+anSt(s)[1]+' + '+anSt(s2)[1]+' · 5.000.000 anos!';try{rkSfx('boom')}catch(e){}}}catch(e){}return r}}

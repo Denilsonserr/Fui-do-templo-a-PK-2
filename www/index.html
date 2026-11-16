@@ -14690,6 +14690,13 @@ function tbFixRun(sel){const P=TWC.filter(x=>CH[x]&&x!==sel).sort((a,b)=>tbH(a)-
   p.tdm=1;p.tsp=1;p.tdf=1;p.tcr=5;p.tsb=1;p.tcd=0;p.tfd=0;p.pspd=0;p.preg=0;p.tki=1;p.tls=0;p.rkCura=0;p.sjA=1;p.sjS=null;p.sjSB=0;p.mhp=TW.bars*LAYER;p.hp=p.hpLag=Math.max(1,Math.min(p.mhp,Math.round(TW.hpv)))}}catch(e){}return r}}
 try{window.__tb2={bs:()=>TN.bosses.join(','),live:tnEvLive,flag:()=>rkG('tnev',''),go:()=>tnGo(),G:()=>G,TN:()=>TN,TW:()=>TW}}catch(e){}
 
+/* v492: código do ADM (texto só com o dono): 1 ANEL DOURADO nota S (5.000.000 anos, 2 atributos sorteados) · uso único */
+TWCUP['1yvb5ld']={nm:'ANEL DOURADO S (ADM)',it:[],adm:1,anGS:1};
+{const _cp=twCupom;twCupom=async function(code,E){const C=TWCUP[twHash(String(code).toUpperCase())];const r=await _cp.apply(this,arguments);
+  try{if(C&&C.anGS&&E&&/\bok\b/.test(E.className)){const g=5,a=5e6,k=.8+.6*Math.log10(a/1e6),S=ANS.map(x=>x[0]),s=S[(Math.random()*S.length)|0],s2=S.filter(x=>x!==s)[(Math.random()*(S.length-1))|0];
+    anGive({i:Date.now().toString(36)+Math.random().toString(36).slice(2,6),c:5,g,s,s2,a,v:Math.round(ANV[5][g]*k*10)/10});try{acSave(1)}catch(e){}
+    E.textContent='✅ Você ganhou: 💍 ANEL DOURADO S · '+anSt(s)[1]+' + '+anSt(s2)[1]+' · 5.000.000 anos!';try{rkSfx('boom')}catch(e){}}}catch(e){}return r}}
+
 function twTrofList(){const tc=twLS.g('tw_tc',{}),run={};for(const t of TW.tr)run[t.k]=(run[t.k]||0)+1;
   twModal(`<div class="twM"><h3>🎖️ TROFÉUS</h3><div class="twTL">${Object.keys(TWTR).map(k=>{const T=TWTR[k];return `<div class="${tc[k]||run[k]?'got':''}"><i>${T.i}</i><b>${T.n}</b><span>${T.d}</span><em>+${T.p} 🏆</em><small>${run[k]?'nesta subida: '+run[k]+' · ':''}total: ${(tc[k]||0)}</small></div>`}).join('')}</div>
     <p class="twH">Cada troféu soma pontos 🏆 no ranking. Quem sobe mais andares fica na frente; empate = mais troféus, depois menos tempo.</p><div class="row"><button class="btn" id="twTx">FECHAR</button></div></div>`);
@@ -14881,7 +14888,7 @@ window.__dbg={mus:()=>[MCUR,MEL.src.split('/').pop()],stg:()=>STAGE.key,prepMatc
 })();
 </script>
 <style>#updB{position:fixed;left:50%;top:max(8px,env(safe-area-inset-top));transform:translateX(-50%);z-index:99999;padding:10px 22px;border-radius:14px;border:2px solid #fff3c0;background:linear-gradient(#ffd84a,#e08a10);color:#3a1d00;font:900 15px system-ui,sans-serif;box-shadow:0 0 18px #ffb21f;cursor:pointer;animation:updP 1s ease-in-out infinite alternate}@keyframes updP{to{transform:translateX(-50%) scale(1.05)}}</style>
-<script>(function(){const V='4ce6affe67d8';if(!/^https?:/.test(location.protocol))return;let nv=null;
+<script>(function(){const V='6c22780be221';if(!/^https?:/.test(location.protocol))return;let nv=null;
 function show(){if(document.getElementById('updB'))return;try{if(typeof G!=='undefined'&&G.mode==='fight')return}catch(e){}const b=document.createElement('button');b.id='updB';b.textContent='🔄 ATUALIZAÇÃO NOVA! Toque para atualizar';
   b.onclick=()=>{b.textContent='⏳ Atualizando...';try{acSave(1)}catch(e){}setTimeout(()=>location.reload(),900)};document.body.appendChild(b)}
 async function chk(){if(document.hidden)return;if(nv){show();return}try{const r=await fetch('versao.txt?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const t=(await r.text()).trim();if(/^[0-9a-f]{8,40}$/.test(t)&&t!==V){nv=t;show()}}catch(e){}}
