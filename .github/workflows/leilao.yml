@@ -1,0 +1,23 @@
+name: Leilão — lista os lances (ferramenta)
+on: workflow_dispatch
+jobs:
+  r:
+    runs-on: ubuntu-latest
+    steps:
+      - name: lances
+        run: |
+          python3 - <<'P'
+          import json,urllib.request,datetime
+          B='https://fui-do-templo-a-pk-2.denilsinend.workers.dev/fs/v1/projects/furia-do-templo/databases/(default)/documents'
+          H={'Content-Type':'application/json','User-Agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/120 Safari/537.36'}
+          s={'from':[{'collectionId':'torre'}],'where':{'fieldFilter':{'field':{'fieldPath':'lei'},'op':'EQUAL','value':{'stringValue':'1'}}},'limit':3000}
+          L=[x['document'] for x in json.load(urllib.request.urlopen(urllib.request.Request(B+':runQuery',data=json.dumps({'structuredQuery':s}).encode(),headers=H))) if x.get('document')]
+          g=lambda F,k:(F.get(k) or {}).get('stringValue',(F.get(k) or {}).get('integerValue'))
+          R=[]
+          for d in L:
+            F=d['fields'];R.append((g(F,'lot'),int(g(F,'lv') or 0),g(F,'uid'),g(F,'nome'),int(g(F,'t') or 0),d.get('createTime')))
+          R.sort(key=lambda r:(r[0],-r[1],r[4]))
+          br=lambda ms:(datetime.datetime.utcfromtimestamp(ms/1000)-datetime.timedelta(hours=3)).strftime('%H:%M:%S')
+          for r in R:print('LANCE',r[0],r[1],r[2],r[3],br(r[4]),r[5])
+          print('TOTAL',len(R))
+          P
