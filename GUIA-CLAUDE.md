@@ -2280,3 +2280,6 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - Bloco rk.js "v496" (wrapper de update, só com HY.on): andando/correndo no chão vira para onde vai (o jogo virava para G.p[1], que no SIGA → é o "monstro parado" `hyIdle` colado no jogador). Com inimigo de verdade a menos de 240 atrás, andando (não correndo) continua virado para ele.
 - Troca de sala (`PTR.room`/`HY.st` mudou): y=FLOOR, sem voo/pulo/queda, `neutral`, 40 quadros de invencível.
 - Teste: `ferramentas/testes/tportal_anda_v496.js`.
+
+## v497 — Códigos: PASSE2XSOLO1, PASSE2XSOLO2 (passe 2X, uso único cada) e SOMBRAIGRIS (sombra Igris, uso único)
+- `igr:1` (wrapper de twCupom): põe `igris` em `rk_sjs.sh`; se já tem, recusa sem gastar. Sem o Sung fica guardada.

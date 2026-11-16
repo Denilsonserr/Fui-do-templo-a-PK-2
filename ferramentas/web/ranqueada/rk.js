@@ -6061,6 +6061,12 @@ const PTB={dfB:[.7,.65,.6,.55,.5,.45],ig:[250,350,450,600,750,900],ur:[120,170,2
 {const _mk=hyMk;hyMk=function(kind,x,lv){const f=_mk.apply(this,arguments);try{if(HY.on&&HY.pt&&PTR&&f&&f.pn){const r=PTR.r,P=f.pn,L=PNL[P.lv-1]||PNL[0];let hits,df;
     if(P.k==='ig'){df=PTB.dfB[r];hits=PTB.ig[r]*.7}else if(P.k==='urso'){df=PTB.dfB[r];hits=PTB.ur[r]}else{df=PTB.dfM[r];hits=PTB.mb[r]*(L.hp||1)*(1+(PTR.room-1)*.04)}
     f.bDf=df;f.tdf=df;f.mhp=Math.max(200,Math.round(hits*60*df));f.hp=f.hpLag=f.mhp}}catch(e){}return f}}
+TWCUP['m6tcvl']={nm:'PASSE 2X · TEMPORADA SOLO LEVELING (prêmios em dobro)',it:[],bp:2,s2:1,x2:1}; /* v497: PASSE2XSOLO1 (uso único) */
+TWCUP['lcujso']={nm:'PASSE 2X · TEMPORADA SOLO LEVELING (prêmios em dobro)',it:[],bp:2,s2:1,x2:1}; /* v497: PASSE2XSOLO2 (uso único) */
+TWCUP['dj31xx']={nm:'SOMBRA IGRIS',it:[],igr:1}; /* v497: SOMBRAIGRIS (uso único) — sombra Igris rank A no inventário do Sung */
+{const _cpI=twCupom;twCupom=async function(code,E){const C=TWCUP[twHash(String(code).toUpperCase())];if(C&&C.igr){const o0=sjSys();if(o0.sh.includes('igris')){if(E){E.className='twH bad';E.textContent='Você já tem a sombra IGRIS!'}return false}}
+  const r=await _cpI.apply(this,arguments);if(C&&C.igr&&r!==false&&E&&/ok/.test(E.className||'')){const o=sjSys();if(!o.sh.includes('igris')){o.sh.push('igris');sjSave(o);rkS('sjIg',1);try{acSave(1)}catch(e){}}
+    E.textContent='⚔️ SOMBRA IGRIS! Equipe no SISTEMA do Sung → SOMBRAS'+(sjOwned()?'':' (ela fica guardada até você ter o Sung)');try{setTimeout(()=>pnShWin('igris'),600)}catch(e){}}return r}}
 TWCUP['edzhx5']={nm:'PASSE 2X · TEMPORADA SOLO LEVELING (prêmios em dobro)',it:[],bp:2,s2:1,x2:1}; /* v481: 3º código do PASSE 2X (texto só com o dono) */
 
 /* v482: código do ADM (texto só com o dono): 6 ANÉIS DOURADOS SP (um de cada atributo, 10 milhões de anos, passivas variadas) + 50.000 JOIAS NEGRAS (pedras de passiva) */

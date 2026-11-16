@@ -14578,6 +14578,12 @@ const PTB={dfB:[.7,.65,.6,.55,.5,.45],ig:[250,350,450,600,750,900],ur:[120,170,2
 {const _mk=hyMk;hyMk=function(kind,x,lv){const f=_mk.apply(this,arguments);try{if(HY.on&&HY.pt&&PTR&&f&&f.pn){const r=PTR.r,P=f.pn,L=PNL[P.lv-1]||PNL[0];let hits,df;
     if(P.k==='ig'){df=PTB.dfB[r];hits=PTB.ig[r]*.7}else if(P.k==='urso'){df=PTB.dfB[r];hits=PTB.ur[r]}else{df=PTB.dfM[r];hits=PTB.mb[r]*(L.hp||1)*(1+(PTR.room-1)*.04)}
     f.bDf=df;f.tdf=df;f.mhp=Math.max(200,Math.round(hits*60*df));f.hp=f.hpLag=f.mhp}}catch(e){}return f}}
+TWCUP['m6tcvl']={nm:'PASSE 2X · TEMPORADA SOLO LEVELING (prêmios em dobro)',it:[],bp:2,s2:1,x2:1}; /* v497: PASSE2XSOLO1 (uso único) */
+TWCUP['lcujso']={nm:'PASSE 2X · TEMPORADA SOLO LEVELING (prêmios em dobro)',it:[],bp:2,s2:1,x2:1}; /* v497: PASSE2XSOLO2 (uso único) */
+TWCUP['dj31xx']={nm:'SOMBRA IGRIS',it:[],igr:1}; /* v497: SOMBRAIGRIS (uso único) — sombra Igris rank A no inventário do Sung */
+{const _cpI=twCupom;twCupom=async function(code,E){const C=TWCUP[twHash(String(code).toUpperCase())];if(C&&C.igr){const o0=sjSys();if(o0.sh.includes('igris')){if(E){E.className='twH bad';E.textContent='Você já tem a sombra IGRIS!'}return false}}
+  const r=await _cpI.apply(this,arguments);if(C&&C.igr&&r!==false&&E&&/ok/.test(E.className||'')){const o=sjSys();if(!o.sh.includes('igris')){o.sh.push('igris');sjSave(o);rkS('sjIg',1);try{acSave(1)}catch(e){}}
+    E.textContent='⚔️ SOMBRA IGRIS! Equipe no SISTEMA do Sung → SOMBRAS'+(sjOwned()?'':' (ela fica guardada até você ter o Sung)');try{setTimeout(()=>pnShWin('igris'),600)}catch(e){}}return r}}
 TWCUP['edzhx5']={nm:'PASSE 2X · TEMPORADA SOLO LEVELING (prêmios em dobro)',it:[],bp:2,s2:1,x2:1}; /* v481: 3º código do PASSE 2X (texto só com o dono) */
 
 /* v482: código do ADM (texto só com o dono): 6 ANÉIS DOURADOS SP (um de cada atributo, 10 milhões de anos, passivas variadas) + 50.000 JOIAS NEGRAS (pedras de passiva) */
@@ -14921,7 +14927,7 @@ window.__dbg={mus:()=>[MCUR,MEL.src.split('/').pop()],stg:()=>STAGE.key,prepMatc
 })();
 </script>
 <style>#updB{position:fixed;left:50%;top:max(8px,env(safe-area-inset-top));transform:translateX(-50%);z-index:99999;padding:10px 22px;border-radius:14px;border:2px solid #fff3c0;background:linear-gradient(#ffd84a,#e08a10);color:#3a1d00;font:900 15px system-ui,sans-serif;box-shadow:0 0 18px #ffb21f;cursor:pointer;animation:updP 1s ease-in-out infinite alternate}@keyframes updP{to{transform:translateX(-50%) scale(1.05)}}</style>
-<script>(function(){const V='1f55d30710cb';if(!/^https?:/.test(location.protocol))return;let nv=null;
+<script>(function(){const V='1bcaafbeddba';if(!/^https?:/.test(location.protocol))return;let nv=null;
 function show(){if(document.getElementById('updB'))return;try{if(typeof G!=='undefined'&&G.mode==='fight')return}catch(e){}const b=document.createElement('button');b.id='updB';b.textContent='🔄 ATUALIZAÇÃO NOVA! Toque para atualizar';
   b.onclick=()=>{b.textContent='⏳ Atualizando...';try{acSave(1)}catch(e){}setTimeout(()=>location.reload(),900)};document.body.appendChild(b)}
 async function chk(){if(document.hidden)return;if(nv){show();return}try{const r=await fetch('versao.txt?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const t=(await r.text()).trim();if(/^[0-9a-f]{8,40}$/.test(t)&&t!==V){nv=t;show()}}catch(e){}}
