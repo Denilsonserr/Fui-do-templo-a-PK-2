@@ -2275,3 +2275,8 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 ## v495 — Resetar atributos do Sistema do Sung
 - Botão "↺ RESETAR" ao lado de ATRIBUTOS (`data-s="rs"`): devolve todos os pontos gastos (atributos voltam a 10). 1º reset grátis (`o.rsN`), depois 500 💎. Confirmação própria (`#sjRsM`, z 9300, acima do Sistema).
 - Teste: `ferramentas/testes/tsung_reset_v495.js`.
+
+## v496 — Portais/Caça: não anda de costas, não flutua ao trocar de sala
+- Bloco rk.js "v496" (wrapper de update, só com HY.on): andando/correndo no chão vira para onde vai (o jogo virava para G.p[1], que no SIGA → é o "monstro parado" `hyIdle` colado no jogador). Com inimigo de verdade a menos de 240 atrás, andando (não correndo) continua virado para ele.
+- Troca de sala (`PTR.room`/`HY.st` mudou): y=FLOOR, sem voo/pulo/queda, `neutral`, 40 quadros de invencível.
+- Teste: `ferramentas/testes/tportal_anda_v496.js`.

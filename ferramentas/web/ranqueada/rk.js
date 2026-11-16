@@ -4908,6 +4908,18 @@ const PTSE=[Date.UTC(2026,10,16,11,0),Date.UTC(2026,10,17,3,0)],ptSEv=t=>{t=t||D
 {const _ph2=ptH;ptH=function(){let h=_ph2.apply(this,arguments);try{if(ptSEv()){const N=ptNow(),g=N.i!=null&&PTGS[N.i];const nx=Math.ceil(Date.now()/18e5)*18e5,mm=Math.max(0,Math.ceil((nx-Date.now())/6e4));
   h+=`<div class="ptSEv">🔴 EVENTO: PORTAL RANK S GARANTIDO A CADA 30 MIN · 2x SORTE DO IGRIS${g?` · <b>${N.st==='aberto'?'O RANK S ESTÁ ABERTO AGORA!':'ESTE CICLO TEM RANK S!'}</b>`:` · próximo em ~${mm} min`}</div>`}}catch(e){}return h}}
 {const st=document.createElement('style');st.textContent=`.ptSEv{position:absolute;left:22%;right:22%;top:9.5%;z-index:5;text-align:center;padding:.25em .6em;border-radius:1em;background:linear-gradient(90deg,#3a0610e8,#6a0a1ce8,#3a0610e8);border:1px solid #ff3b4a;color:#ffd6db;font:900 1.25em var(--f-ui,sans-serif);letter-spacing:.03em;box-shadow:0 0 .8em #ff3b4a88;pointer-events:none}.ptSEv b{color:#fff36a;text-shadow:0 0 .4em #ffb400}`;document.head.appendChild(st)}
+/* ================= v496: PORTAIS / CAÇA (motor da Hidra) — personagem não anda mais de costas e não fica flutuando ao trocar de sala.
+   1) Andando/correndo no chão: vira para o lado em que está indo (o jogo virava sempre para o "monstro principal", que na hora do SIGA → fica parado
+      perto do jogador, então andava de costas). Com inimigo de verdade bem perto na frente, continua virado para ele.
+   2) Troca de sala/fase: zera pulo, voo, queda e estados presos (fica em pé no chão). ================= */
+let HYRM=null;
+{const _uF=update;update=function(){const r=_uF.apply(this,arguments);try{if(typeof HY!=='undefined'&&HY.on&&G.p&&G.mode==='fight'){const p=G.p[0];if(!p||p.ko)return r;
+    const room=(typeof PTR!=='undefined'&&PTR&&HY.pt?'p'+PTR.room:'h'+HY.st);
+    if(HYRM!==room){const first=HYRM===null;HYRM=room;if(!first){p.y=FLOOR;p.vy=0;p.vx=0;p.grounded=true;p.flying=false;p.hide=0;p.inv=Math.max(p.inv||0,40);p.hitstun=0;
+      if(!/^(transform|ytk|ytc|ytcn)$/.test(p.state||''))neutral(p)}}
+    if(p.grounded&&(p.state==='walk'||p.state==='run'||p.state==='idle')&&Math.abs(p.vx||0)>.5){const d=p.vx>0?1:-1;
+      const foes=[G.p[1],...((HY.mobs)||[])].filter(o=>o&&!o.ko&&!o.hyIdle&&o!==p);const near=foes.some(o=>Math.abs(o.x-p.x)<240&&(o.x-p.x)*d<0);
+      if(!near||p.state==='run')p.facing=d}}else HYRM=null}catch(e){}return r}}
 {const _sk=rkTwSkin;rkTwSkin=function(){const r=_sk.apply(this,arguments);try{tnSkin()}catch(e){console.warn(e)}return r}}
 {const _lv2=twLV;twLV=function(){if(TN.on&&G.gmode==='torre'){const B=G.p&&G.p[1];if(B&&B.tnBoss)return TWLV[Math.min(TWLV.length-1,3+Math.floor(TN.g/2))]}return _lv2.apply(this,arguments)}}
 try{RKTWX.fl=1;RKTWX.top=3.2}catch(e){}
