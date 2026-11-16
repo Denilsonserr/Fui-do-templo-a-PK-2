@@ -1,0 +1,20 @@
+// v501: reset do PVP (r2) + títulos de campeão da temporada 1 com bônus no PVP
+const {chromium}=require('playwright');const SH='/home/claude/fui-do-templo-a-pk-2/ferramentas/testes/shots/t501_';
+(async()=>{const b=await chromium.launch();const errs=[];let ok=1;const chk=(c,m)=>{console.log((c?'OK  ':'FALHA ')+m);if(!c)ok=0};
+const run=async(acc,fn)=>{const p=await b.newPage({viewport:{width:915,height:412},deviceScaleFactor:2});p.on('pageerror',e=>errs.push(acc+': '+e.message));await p.route(/fonts\.g/,r=>r.abort());
+  await p.route(/\/fs\/v1\//,r=>r.fulfill({status:200,contentType:'application/json',body:/:runQuery/.test(r.request().url())?'[]':'{}'}));
+  await p.addInitScript(a=>{if(!sessionStorage.d){sessionStorage.d=1;localStorage.clear();Object.assign(localStorage,{rk_ini:'1',rk_xpv2:'1',rk_dia:'1',rk_lvrz:'1',rk_gf362:'1',rk_pvupv:'352',rk_own:'["goku","shaka"]',rk_ped:'"shaka"',ac_n:a,ac_k:'k',tw_nome:JSON.stringify(a),tw_uid:'"u_'+a+'"',tw_tit:'["rk3"]',tw_titOn:'"rk3"'})}},acc);
+  await p.goto('http://localhost:8790/index.html');await p.waitForFunction(()=>!document.getElementById('goSelect').disabled,null,{timeout:120000});await p.click('#mRank');await p.waitForTimeout(3000);
+  await p.evaluate(()=>{document.querySelectorAll('#lvrzM').forEach(x=>x.remove());try{rkModal(null)}catch(e){}});await fn(p);await p.close()};
+const S=JSON.parse;
+await run('breno',async p=>{const r=await p.evaluate(()=>({pl:__pvT.pvc.pl(),mon:__pvT.pvc.mon(),tit:localStorage.tw_tit,on:localStorage.tw_titOn}));
+  chk(r.mon.endsWith('r2'),'temporada do PVP resetada: '+r.mon);chk(r.pl===1,'Breno = 1º');chk(S(r.tit).includes('pvc1')&&S(r.on)==='pvc1','título pvc1 dado e em uso');
+  const f=await p.evaluate(()=>{const G=__pvT.G();G.gmode='pvp';const mk=()=>({def:__pvT.ch('shaka'),tdm:1,tdf:1,tsp:1,hp:100});G.p=[mk(),mk()];__pvT.pvc.pvF({my:{},opp:{acc:'16db0p4',team:[{ch:'shaka',s:{}}]}});__pvT.pvc.ap();const a=G.p.map(x=>[x.tdm,x.tdf,x.tsp,x.tcr]);__pvT.pvc.ap();const c=G.p.map(x=>[x.tdm,x.tdf,x.tsp,x.tcr]);G.gmode='boss';return {a,c}});
+  console.log(JSON.stringify(f));chk(Math.abs(f.a[0][0]-1.2)<1e-6&&f.a[0][3]===20,'eu (Breno) +20% dano/vel/def e +20 crítico');chk(Math.abs(f.a[1][0]-1.1*1.05)<1e-6&&f.a[1][3]===5,'sombra rival Fred +5% (em cima do +10% normal da sombra)');chk(JSON.stringify(f.a[0])===JSON.stringify(f.c[0]),'meu bônus não acumula se aplicar 2x');
+  await p.evaluate(()=>{const d=document.createElement('div');d.id='tt';d.style.cssText='position:fixed;inset:0;z-index:99999;background:#12052a;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:40px;font-size:22px';
+    d.innerHTML=`<div style="height:90px">${__pvT.pvc.h('pvc1',1)}</div><div style="height:60px;display:flex;gap:30px">${__pvT.pvc.h('pvc2',1)}${__pvT.pvc.h('pvc3',1)}</div><div style="color:#fff">lista: Breno ${__pvT.pvc.h('pvc1').replace('class="tpl ','class="tpl sm ')}</div>`;document.body.appendChild(d)});
+  for(const t of [300,900])await p.waitForTimeout(t),await p.screenshot({path:SH+'placas'+t+'.png'})});
+await run('vini_junior10',async p=>{const r=await p.evaluate(()=>[__pvT.pvc.pl(),localStorage.tw_titOn]);chk(r[0]===2&&S(r[1])==='pvc2','Vini = 2º com pvc2')});
+await run('fred',async p=>{const r=await p.evaluate(()=>[__pvT.pvc.pl(),localStorage.tw_titOn]);chk(r[0]===3&&S(r[1])==='pvc3','Fred = 3º com pvc3')});
+await run('outro',async p=>{const r=await p.evaluate(()=>{const G=__pvT.G();G.gmode='pvp';G.p=[{def:__pvT.ch('shaka'),tdm:1,tdf:1,tsp:1},{def:__pvT.ch('shaka'),tdm:1,tdf:1,tsp:1}];__pvT.pvc.pvF({my:{},opp:{acc:'zz',team:[{ch:'shaka',s:{}}]}});__pvT.pvc.ap();const x=G.p[0].pvcB;G.gmode='boss';return [__pvT.pvc.pl(),localStorage.tw_tit,x]});chk(r[0]===0&&!/pvc/.test(r[1])&&!r[2],'jogador comum sem título nem bônus')});
+chk(!errs.length,'sem erros '+errs.join(' | '));console.log(ok?'TUDO OK':'TEM FALHA');await b.close()})();

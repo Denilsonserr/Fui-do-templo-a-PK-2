@@ -2296,3 +2296,10 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 ## v500 — Leilão: itens por MENSAGEM de resgate
 - Vencedores tirados dos lances no servidor (`.github/workflows/leilao.yml`): Honrado (anéis dourado S e SS, vermelho SSS, elmo/armadura/botas/rosário V2), van hohenheim (luvas V2). `LEIW` (uid + nome como reserva). Ao abrir o jogo: "📩 MENSAGEM DO ADM · LEILÃO" com RESGATAR (`leiClaim`, 1 vez por item, `rk_leiR`). `leiSettle` não entrega mais item (só devolve 💎 de quem foi coberto e paga o ADM).
 - Teste: `ferramentas/testes/tleilao_resgate_v500.js`.
+
+## v501 — reset do PVP + campeões da Temporada 1
+- **Reset**: `PVRZ=2` (temporada do PVP agora é `m202611r2`; todo mundo volta ao zero).
+- **Top 3 antes do reset** (workflow `.github/workflows/pvtop.yml`, lista o top de um `pvk`): 1º Breno (`pvAcc` `1twinyn`), 2º Vini_junior10 (`10jasju`), 3º Fred (`16db0p4`). Tabela `PVCH`, bônus `PVCB=[0,.2,.1,.05]`.
+- **Títulos fixos** `pvc1` CAMPEÃO SUPREMO DO PVP, `pvc2` VICE-CAMPEÃO DO PVP, `pvc3` 3º LUGAR DO PVP (placas top1/2/3_pvp). `pvcGrant()` dá e coloca em uso uma vez (ao abrir o jogo e o Ranqueado). Não são `dyn`, então o `tplSync` não tira.
+- **Bônus só no PVP** (wrapper do `rkApply` com `G.gmode==='pvp'`): `pvcBuff` multiplica dano/velocidade, divide dano recebido e soma crítico (+20/+10/+5). Vale para mim e para a sombra do rival campeão (`PV.fight.opp.acc`). Guarda `_pvcV` para não acumular.
+- **Brilho do Top 1** (`.tpl.pvk` em rk.css): raios vermelho-dourados girando no emblema, chama, ondas, coroa 👑 flutuando, brasas subindo, relâmpagos. Teste `tpvp_campeao_v501.js`.
