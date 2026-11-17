@@ -11,12 +11,12 @@ jobs:
         env: {NOME: '${{ github.event.inputs.nome }}'}
         run: |
           python3 - <<'P'
-          import json,urllib.request,os
+          import json,urllib.request,os,hashlib
           B='https://fui-do-templo-a-pk-2.denilsinend.workers.dev/fs/v1/projects/furia-do-templo/databases/(default)/documents'
           H={'Content-Type':'application/json','User-Agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/120 Safari/537.36'}
           n=os.environ['NOME']
-          for nm in {n,n.lower(),n.title()}:
-            s={'from':[{'collectionId':'torre'}],'where':{'fieldFilter':{'field':{'fieldPath':'nome'},'op':'EQUAL','value':{'stringValue':nm}}},'limit':500}
+          for nm in [hashlib.sha256(('furia|acc|'+n.lower().strip()).encode()).hexdigest()[:24]]:
+            s={'from':[{'collectionId':'torre'}],'where':{'fieldFilter':{'field':{'fieldPath':'sv'},'op':'EQUAL','value':{'stringValue':nm}}},'limit':500}
             L=[x['document'] for x in json.load(urllib.request.urlopen(urllib.request.Request(B+':runQuery',data=json.dumps({'structuredQuery':s}).encode(),headers=H))) if x.get('document')]
             S=[d for d in L if 'sv' in d['fields']]
             print('NOME',repr(nm),'docs',len(L),'saves',len(S))
