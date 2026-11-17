@@ -2354,3 +2354,6 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - Ranking da Torre (`extra/9z_v513.py`): `TWBUG` = 17/11 01:00 UTC. Subidas depois disso com `v<202` e tempo < 300 s ficam `old` (não contam no TEMPO; troféus continuam). Envio novo manda `v:202`.
 - Código `TWCUP['15phs85']` (texto só com o dono) = 10.000 💎, uso ÚNICO, para quem mostrou o bug. A mensagem do `pk` agora esconde o que for 0.
 - Testes `tvel_cap_v513.js`, `tcod_bug10k_v513.js`. Ferramenta `.github/workflows/torretop.yml` (top da Torre de uma semana).
+
+## v514 — código anel SP sorte + dano
+- `TWCUP['3ha3hj']` (texto só com o dono) = 1 Anel Dourado SP nível 60, 10 milhões de anos: 🍀Sorte +840 · ⚔️Dano +420% · 🔥Fúria. Uso ÚNICO. Teste `tcod_anelsp_v514.js`.
