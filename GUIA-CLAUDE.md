@@ -2339,3 +2339,8 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - No fim do rk.js (depois do `hyEnd` do portal, senão o wrapper não roda). Cada entrada soma pontos de drop: anel DOURADO por nota `PTDG=[5,8,12,20,30,50,90,160,400]` (E..SP), anéis de outra cor `(g+1)*(c+1)`, item secreto 80, mítico 30, peça do Monarca 200. Total da conta em `rk_ptdr` {sc, g[9] contagem dos dourados, it, sj}. Ele vai para o servidor em doc `ptd_*` (`pdp`, `dsp` = nº de SP, `dtx` resumo) a cada entrada que dropou algo.
 - Tela: botão **💍 MELHORES DROPS** no ranking dos Caçadores (`ptDropRank`). Ordena por nº de Anéis Dourados SP e depois por pontos; quem tem SP fica com a linha dourada.
 - `PTD_FIX`: **Honrado** fixo com 4× DOURADO SP (1.600 pts), pedido do dono. O que ele pegar de verdade soma por cima. Teste `tportal_drops_v510.js`.
+
+## v511 — drops de verdade + anéis dourados de código contam
+- Pedido do dono: no ranking de drops cada um aparece com o que dropou de verdade, e os anéis DOURADOS que ele deu por código contam como se tivessem saído do portal.
+- `ptdBackfill()` (uma vez por conta, `rk_ptdbf`): conta os anéis dourados (c=5) que a pessoa já tem (eles só saem do portal, de código ou do leilão) e manda para o ranking. Depois disso, o wrapper do `anGive` soma todo anel dourado recebido FORA do portal (código) e manda; os do portal continuam somando no fim da entrada (`hyEnd`).
+- Honrado (`PTD_FIX`) agora é o mínimo garantido (4 SP): se os dados reais dele forem maiores, mostra os reais (não soma por cima). Teste `tportal_drops_v511.js`.

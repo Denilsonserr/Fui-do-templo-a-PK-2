@@ -14933,14 +14933,20 @@ async function ptDropRank(){rkModal(`<div class="twM ptRk"><h3>💍 MELHORES DRO
   const M={};for(const f of PTD_FIX)M[f.uid]=Object.assign({},f);
   try{const body={structuredQuery:{from:[{collectionId:'torre'}],orderBy:[{field:{fieldPath:'pdp'},direction:'DESCENDING'}],limit:300}};const r=await twFetchT(TWURL+':runQuery?key='+TWFB.apiKey,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});const j=await r.json();
     for(const x of (Array.isArray(j)?j:[])){const F=x&&x.document&&x.document.fields;if(!F||!F.pdp)continue;const e={};for(const k in F){const v=F[k];e[k]=v.stringValue!=null?v.stringValue:v.integerValue!=null?+v.integerValue:v.doubleValue}
-      const k=e.uid||e.nome,fx=PTD_FIX.find(f=>f.uid===k);if(fx){const t=M[k];if(e.pdp>t.pdp)M[k]=Object.assign(e,{pdp:e.pdp+fx.pdp,dsp:(e.dsp|0)+fx.dsp,dtx:e.dtx})}else if(!M[k]||M[k].pdp<e.pdp)M[k]=e}}catch(e){}
+      const k=e.uid||e.nome,t=M[k];if(!t||(e.dsp|0)>(t.dsp|0)||((e.dsp|0)===(t.dsp|0)&&e.pdp>t.pdp))M[k]=e}}catch(e){}
   const L=Object.values(M).sort((a,b)=>(b.dsp|0)-(a.dsp|0)||b.pdp-a.pdp).slice(0,50);if(RKV!=='pt'&&!document.querySelector('.ptRk'))return;const me=twUid();
   rkModal(`<div class="twM ptRk ptDr"><h3>💍 MELHORES DROPS DOS PORTAIS</h3><p class="twH">Quem tirou os anéis mais raros nos portais (primeiro os Anéis Dourados SP, depois os pontos de drop).</p>
    <div class="ptRkL">${L.map((e,i)=>`<div class="${e.uid===me?'me':''}${(e.dsp|0)>0?' sp':''}"><b>${i<3?['🥇','🥈','🥉'][i]:i+1+'º'}</b><img src="${IMG[e.char]?IMG[e.char].src:''}" alt=""><span>${twEsc(e.nome||'?')}</span><em>${(e.dsp|0)>0?'<img class="ptDrI" src="'+(RQA.anel2[5]||bp2Ring(5,8,1))+'" alt="">':''}${twEsc(e.dtx||'')}</em><i>${rkFmtN(e.pdp|0)}</i></div>`).join('')}</div>
    <div class="row"><button class="btn" id="ptDrB">🏆 RANKING DE PONTOS</button><button class="btn" id="rkMX">FECHAR</button></div></div>`);$('rkMX').onclick=()=>rkModal(null);$('ptDrB').onclick=()=>ptRank()}
 {const _r=ptRank;ptRank=async function(){const r=await _r.apply(this,arguments);try{const row=document.querySelector('.ptRk .row');if(row&&!row.querySelector('#ptDrA')){const b=document.createElement('button');b.className='btn main';b.id='ptDrA';b.textContent='💍 MELHORES DROPS';b.onclick=()=>ptDropRank();row.insertBefore(b,row.firstChild)}}catch(e){}return r}}
 {const st=document.createElement('style');st.textContent='.ptDr .ptRkL>div.sp{background:linear-gradient(90deg,rgba(255,216,74,.22),rgba(255,140,30,.08));box-shadow:inset 0 0 0 1px rgba(255,216,74,.6),0 0 .8em rgba(255,200,60,.25)}.ptDr .ptRkL em{display:flex;align-items:center;gap:.3em;color:#ffd84a}.ptDr .ptRkL em .ptDrI{width:1.7em;height:auto;filter:drop-shadow(0 0 .3em #ffd84a)}';document.head.appendChild(st)}
-try{Object.assign(window.__pvT||{},{ptd:()=>ptdG(),ptdr:()=>ptDropRank(),ptk:()=>ptRank(),view:v=>rkView(v)})}catch(e){}
+/* v511: drops de verdade de cada um + anéis DOURADOS de código contam como drop do portal.
+   1ª vez: conta os anéis dourados que a pessoa já tem (só saem do portal ou de código). Depois: todo anel dourado recebido fora do portal (código) soma na hora; os do portal somam no fim da entrada. */
+function ptdAddRing(r,post){if(!r||(r.c|0)!==5)return;const o=ptdG(),g=Math.min(8,r.g|0);o.g[g]++;o.sc+=PTDG[g];rkS('ptdr',o);if(post){clearTimeout(ptdAddRing.t);ptdAddRing.t=setTimeout(()=>ptdPost(ptdG()),1500)}}
+function ptdBackfill(){try{if(rkG('ptdbf',0))return;const o=ptdG();for(const r of anL())if(r&&(r.c|0)===5){const g=Math.min(8,r.g|0);o.g[g]++;o.sc+=PTDG[g]}rkS('ptdr',o);rkS('ptdbf',1);if(o.sc>0)ptdPost(o)}catch(e){}}
+{const _g=anGive;anGive=function(r){const x=_g.apply(this,arguments);try{if(rkG('ptdbf',0)&&!(HY&&HY.pt))ptdAddRing(r,1)}catch(e){}return x}}
+setTimeout(ptdBackfill,6000);
+try{Object.assign(window.__pvT||{},{ptd:()=>ptdG(),ptbf:()=>ptdBackfill(),ptdr:()=>ptDropRank(),ptk:()=>ptRank(),view:v=>rkView(v)})}catch(e){}
 
 function twTrofList(){const tc=twLS.g('tw_tc',{}),run={};for(const t of TW.tr)run[t.k]=(run[t.k]||0)+1;
   twModal(`<div class="twM"><h3>🎖️ TROFÉUS</h3><div class="twTL">${Object.keys(TWTR).map(k=>{const T=TWTR[k];return `<div class="${tc[k]||run[k]?'got':''}"><i>${T.i}</i><b>${T.n}</b><span>${T.d}</span><em>+${T.p} 🏆</em><small>${run[k]?'nesta subida: '+run[k]+' · ':''}total: ${(tc[k]||0)}</small></div>`}).join('')}</div>
@@ -15133,7 +15139,7 @@ window.__dbg={mus:()=>[MCUR,MEL.src.split('/').pop()],stg:()=>STAGE.key,prepMatc
 })();
 </script>
 <style>#updB{position:fixed;left:50%;top:max(8px,env(safe-area-inset-top));transform:translateX(-50%);z-index:99999;padding:10px 22px;border-radius:14px;border:2px solid #fff3c0;background:linear-gradient(#ffd84a,#e08a10);color:#3a1d00;font:900 15px system-ui,sans-serif;box-shadow:0 0 18px #ffb21f;cursor:pointer;animation:updP 1s ease-in-out infinite alternate}@keyframes updP{to{transform:translateX(-50%) scale(1.05)}}</style>
-<script>(function(){const V='1903d4a43a3a';if(!/^https?:/.test(location.protocol))return;let nv=null;
+<script>(function(){const V='bd89c53ef9c8';if(!/^https?:/.test(location.protocol))return;let nv=null;
 function show(){if(document.getElementById('updB'))return;try{if(typeof G!=='undefined'&&G.mode==='fight')return}catch(e){}const b=document.createElement('button');b.id='updB';b.textContent='🔄 ATUALIZAÇÃO NOVA! Toque para atualizar';
   b.onclick=()=>{b.textContent='⏳ Atualizando...';try{acSave(1)}catch(e){}setTimeout(()=>location.reload(),900)};document.body.appendChild(b)}
 async function chk(){if(document.hidden)return;if(nv){show();return}try{const r=await fetch('versao.txt?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const t=(await r.text()).trim();if(/^[0-9a-f]{8,40}$/.test(t)&&t!==V){nv=t;show()}}catch(e){}}

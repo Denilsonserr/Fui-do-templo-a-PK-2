@@ -6385,11 +6385,17 @@ async function ptDropRank(){rkModal(`<div class="twM ptRk"><h3>💍 MELHORES DRO
   const M={};for(const f of PTD_FIX)M[f.uid]=Object.assign({},f);
   try{const body={structuredQuery:{from:[{collectionId:'torre'}],orderBy:[{field:{fieldPath:'pdp'},direction:'DESCENDING'}],limit:300}};const r=await twFetchT(TWURL+':runQuery?key='+TWFB.apiKey,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});const j=await r.json();
     for(const x of (Array.isArray(j)?j:[])){const F=x&&x.document&&x.document.fields;if(!F||!F.pdp)continue;const e={};for(const k in F){const v=F[k];e[k]=v.stringValue!=null?v.stringValue:v.integerValue!=null?+v.integerValue:v.doubleValue}
-      const k=e.uid||e.nome,fx=PTD_FIX.find(f=>f.uid===k);if(fx){const t=M[k];if(e.pdp>t.pdp)M[k]=Object.assign(e,{pdp:e.pdp+fx.pdp,dsp:(e.dsp|0)+fx.dsp,dtx:e.dtx})}else if(!M[k]||M[k].pdp<e.pdp)M[k]=e}}catch(e){}
+      const k=e.uid||e.nome,t=M[k];if(!t||(e.dsp|0)>(t.dsp|0)||((e.dsp|0)===(t.dsp|0)&&e.pdp>t.pdp))M[k]=e}}catch(e){}
   const L=Object.values(M).sort((a,b)=>(b.dsp|0)-(a.dsp|0)||b.pdp-a.pdp).slice(0,50);if(RKV!=='pt'&&!document.querySelector('.ptRk'))return;const me=twUid();
   rkModal(`<div class="twM ptRk ptDr"><h3>💍 MELHORES DROPS DOS PORTAIS</h3><p class="twH">Quem tirou os anéis mais raros nos portais (primeiro os Anéis Dourados SP, depois os pontos de drop).</p>
    <div class="ptRkL">${L.map((e,i)=>`<div class="${e.uid===me?'me':''}${(e.dsp|0)>0?' sp':''}"><b>${i<3?['🥇','🥈','🥉'][i]:i+1+'º'}</b><img src="${IMG[e.char]?IMG[e.char].src:''}" alt=""><span>${twEsc(e.nome||'?')}</span><em>${(e.dsp|0)>0?'<img class="ptDrI" src="'+(RQA.anel2[5]||bp2Ring(5,8,1))+'" alt="">':''}${twEsc(e.dtx||'')}</em><i>${rkFmtN(e.pdp|0)}</i></div>`).join('')}</div>
    <div class="row"><button class="btn" id="ptDrB">🏆 RANKING DE PONTOS</button><button class="btn" id="rkMX">FECHAR</button></div></div>`);$('rkMX').onclick=()=>rkModal(null);$('ptDrB').onclick=()=>ptRank()}
 {const _r=ptRank;ptRank=async function(){const r=await _r.apply(this,arguments);try{const row=document.querySelector('.ptRk .row');if(row&&!row.querySelector('#ptDrA')){const b=document.createElement('button');b.className='btn main';b.id='ptDrA';b.textContent='💍 MELHORES DROPS';b.onclick=()=>ptDropRank();row.insertBefore(b,row.firstChild)}}catch(e){}return r}}
 {const st=document.createElement('style');st.textContent='.ptDr .ptRkL>div.sp{background:linear-gradient(90deg,rgba(255,216,74,.22),rgba(255,140,30,.08));box-shadow:inset 0 0 0 1px rgba(255,216,74,.6),0 0 .8em rgba(255,200,60,.25)}.ptDr .ptRkL em{display:flex;align-items:center;gap:.3em;color:#ffd84a}.ptDr .ptRkL em .ptDrI{width:1.7em;height:auto;filter:drop-shadow(0 0 .3em #ffd84a)}';document.head.appendChild(st)}
-try{Object.assign(window.__pvT||{},{ptd:()=>ptdG(),ptdr:()=>ptDropRank(),ptk:()=>ptRank(),view:v=>rkView(v)})}catch(e){}
+/* v511: drops de verdade de cada um + anéis DOURADOS de código contam como drop do portal.
+   1ª vez: conta os anéis dourados que a pessoa já tem (só saem do portal ou de código). Depois: todo anel dourado recebido fora do portal (código) soma na hora; os do portal somam no fim da entrada. */
+function ptdAddRing(r,post){if(!r||(r.c|0)!==5)return;const o=ptdG(),g=Math.min(8,r.g|0);o.g[g]++;o.sc+=PTDG[g];rkS('ptdr',o);if(post){clearTimeout(ptdAddRing.t);ptdAddRing.t=setTimeout(()=>ptdPost(ptdG()),1500)}}
+function ptdBackfill(){try{if(rkG('ptdbf',0))return;const o=ptdG();for(const r of anL())if(r&&(r.c|0)===5){const g=Math.min(8,r.g|0);o.g[g]++;o.sc+=PTDG[g]}rkS('ptdr',o);rkS('ptdbf',1);if(o.sc>0)ptdPost(o)}catch(e){}}
+{const _g=anGive;anGive=function(r){const x=_g.apply(this,arguments);try{if(rkG('ptdbf',0)&&!(HY&&HY.pt))ptdAddRing(r,1)}catch(e){}return x}}
+setTimeout(ptdBackfill,6000);
+try{Object.assign(window.__pvT||{},{ptd:()=>ptdG(),ptbf:()=>ptdBackfill(),ptdr:()=>ptDropRank(),ptk:()=>ptRank(),view:v=>rkView(v)})}catch(e){}
