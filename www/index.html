@@ -8144,7 +8144,7 @@ const TWA={"naruto": "a/16a4f369e7d7d9.webp", "rengoku": "a/0ee2d1e3db459f.webp"
 const TWC=['naruto','rengoku','luffy','gojo','madara','aokiji','goku','gogeta','zoro'];
 const TWN=7;
 const TWFB={apiKey:'AIzaSyDXTjvRMcKtJ5vq2vl-F2B_w2M-7hd_QY0',projectId:'furia-do-templo'};
-const TWCUT=Date.parse('2026-11-07T22:50:00Z');/* recordes antes disso: tempo zerado (não conta) */
+const TWCUT=Date.parse('2026-11-07T22:50:00Z');const TWBUG=Date.parse('2026-11-17T01:00:00Z');/* v513: tempos do bug da velocidade *//* recordes antes disso: tempo zerado (não conta) */
 const FSO=(/^https?:$/.test(location.protocol)&&!/github\.io$/.test(location.host))?location.origin:'https://fui-do-templo-a-pk-2.denilsinend.workers.dev';
 const TWURL=FSO+'/fs/v1/projects/'+TWFB.projectId+'/databases/(default)/documents';
 /* janelas pretas da torre (pixels da arte 1671x941): andar 1 embaixo → andar 7 (chefe) em cima */
@@ -8389,14 +8389,14 @@ async function twSubmit(rec){if(TW.sent)return;const I=$('twName'),S=$('twSendS'
   catch(e){TW.sent=false;const S2=$('twSendS'),B=$('twSendB');if(B)B.disabled=false;if(S2){S2.textContent='Sem internet — tente de novo';S2.className='err'}}}
 function twFetchT(url,o,ms){const c=new AbortController(),t=setTimeout(()=>c.abort(),ms||9000);return fetch(url,Object.assign({signal:c.signal},o)).finally(()=>clearTimeout(t))}
 async function twSend(rec,nome){const I=v=>({integerValue:String(Math.max(0,Math.round(v)))});
-  const f={nome:{stringValue:nome},andar:I(rec.andar),tempo:I(rec.tempo),trof:I(rec.trof),pontos:I(twPts(rec)),char:{stringValue:rec.char},v:I(201),nomeL:{stringValue:nome.toLowerCase()},uid:{stringValue:twUid()},tit:{stringValue:twTitOn()},sem:{stringValue:twWkKey(Date.now())}};if(twEvSt()==='ao vivo')f.ev={stringValue:TWEV.id};
+  const f={nome:{stringValue:nome},andar:I(rec.andar),tempo:I(rec.tempo),trof:I(rec.trof),pontos:I(twPts(rec)),char:{stringValue:rec.char},v:I(202),nomeL:{stringValue:nome.toLowerCase()},uid:{stringValue:twUid()},tit:{stringValue:twTitOn()},sem:{stringValue:twWkKey(Date.now())}};if(twEvSt()==='ao vivo')f.ev={stringValue:TWEV.id};
   const r=await twFetchT(TWURL+'/torre?key='+TWFB.apiKey,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({fields:f})});if(!r.ok)throw new Error('http '+r.status)}
 async function twFetch(){if(twFetch.c&&Date.now()-twFetch.t<30000)return twFetch.c;await twTitMap();
   const body={structuredQuery:{from:[{collectionId:'torre'}],orderBy:[{field:{fieldPath:'pontos'},direction:'DESCENDING'}],limit:150}};
   const r=await twFetchT(TWURL+':runQuery?key='+TWFB.apiKey,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});if(!r.ok)throw new Error('http '+r.status);
   const j=await r.json(),out=[];
   for(const x of (Array.isArray(j)?j:[])){const F=x&&x.document&&x.document.fields;if(!F||F.claim)continue;const g=k=>F[k]?(F[k].stringValue!=null?F[k].stringValue:F[k].integerValue!=null?F[k].integerValue:F[k].doubleValue):undefined;
-    const ct=Date.parse(x.document.createTime||'')||0,old=ct<TWCUT||(+g('v')||0)<180;if(g('tit')!=null)twTmPut(g('nome'),g('tit'),ct);
+    const ct=Date.parse(x.document.createTime||'')||0,old=ct<TWCUT||(+g('v')||0)<180||(ct>=TWBUG&&(+g('v')||0)<202&&(+g('tempo')||0)<300);if(g('tit')!=null)twTmPut(g('nome'),g('tit'),ct);
     out.push({nome:twAl(String(g('nome')||'?').slice(0,16)),andar:+g('andar')||0,tempo:+g('tempo')||0,old,trof:+g('trof')||0,char:String(g('char')||''),uid:String(g('uid')||'')})}
   twFetch.c=out;twFetch.t=Date.now();return out}
 /* rank do TEMPO: mais andares e menos tempo (recordes antigos não entram); rank dos TROFÉUS: mais troféus, depois mais andares */
@@ -11390,7 +11390,7 @@ const rkEvA=()=>{const e=rkEvX();return ((e&&e[4]&&e[4].anel)||1)*rkAdm2()};
 {const _dl=anDropLobo;anDropLobo=function(L){const m=rkEvA();if(m<=1)return _dl.apply(this,arguments);for(let i=0;i<m;i++){const r=_dl.apply(this,arguments);if(r)return r}return null}}
 /* código com vários prêmios: jn pelo código normal + pk:{gem,tic} entregue depois que o servidor aceitou */
 {const _cp7=twCupom;twCupom=async function(code,E){const C=TWCUP[twHash(String(code).toUpperCase())];const r=await _cp7.apply(this,arguments);
-  if(C&&C.pk&&r&&E&&/ok/.test(E.className||'')){if(C.pk.gem)rkAdd('gem',C.pk.gem);if(C.pk.tic)rkAdd('tic',C.pk.tic);try{acSave(1)}catch(e){}E.textContent='🎁 '+C.nm+'! +'+rkFmtN(C.pk.gem||0)+' 💎 · +'+(C.jn||0)+' 💠 giros de passiva · +'+(C.pk.tic||0)+' 🎫 tickets'}return r}}
+  if(C&&C.pk&&r&&E&&/ok/.test(E.className||'')){if(C.pk.gem)rkAdd('gem',C.pk.gem);if(C.pk.tic)rkAdd('tic',C.pk.tic);try{acSave(1)}catch(e){}E.textContent='🎁 '+C.nm+'! '+[C.pk.gem?'+'+rkFmtN(C.pk.gem)+' 💎':'',C.jn?'+'+C.jn+' 💠 giros de passiva':'',C.pk.tic?'+'+C.pk.tic+' 🎫 tickets':''].filter(Boolean).join(' · ')}return r}}
 TWCUP['973bb8']={nm:'PEDIDO DE DESCULPAS',acc:1,jn:40,pk:{gem:5000,tic:20}};
 
 /* v341: o 2x do ADM é do TÍTULO (não é evento e não aparece em lugar nenhum): rkAdm2() multiplica gemas, sorte, drop, anel e XP de rank */
@@ -14753,6 +14753,7 @@ TWCUP['1210w7v']={nm:'💍 ANEL DOURADO SS · nível máximo',it:[],rg:[5,6]}; /
 {const _cpR=twCupom;twCupom=async function(code,E){const C=TWCUP[twHash(String(code).toUpperCase())];const r=await _cpR.apply(this,arguments);
   if(C&&C.rg&&r!==false&&E&&/ok/.test(E.className||'')){leiGive({ring:C.rg});try{acSave(1)}catch(e){}E.textContent='💍 ANEL DOURADO SS no nível máximo! Veja em ANÉIS DA ALMA.'}return r}}
 /* v504: DOISANEISSP (uso único) = 2 anéis dourados SP nível 60, 10 milhões de anos: Velocidade+Sorte+Vampiro e Sorte+Drop+Fúria */
+TWCUP['15phs85']={nm:'OBRIGADO POR AVISAR DO BUG',it:[],uni:1,pk:{gem:10000}}; /* v513: CACABUG10K (uso único) — prêmio para quem mostrou o bug */
 TWCUP['m3kone']={nm:'💍 2 ANÉIS DOURADOS SP + 10.000 💎 + 40 giros',it:[],jn:40,uni:1,pk:{gem:10000},rgsp:[['dano','crit','fur'],['crit','dano','cmb']],msg:'✅ Você ganhou 💍 2 ANÉIS DOURADOS SP no nível máximo (⚔️ Dano e 🎯 Crítico) + 10.000 💎 + 40 💠 giros de passiva!'}; /* v507: ANEISSPDANOCRIT (uso único) */
 TWCUP['hslefw']={nm:'💍 ANEL DOURADO SP + 5.000 💎',it:[],uni:1,pk:{gem:5000},rgsp:[['vel','st','vamp']],msg:'✅ Você ganhou 💍 ANEL DOURADO SP no nível máximo (💨 Velocidade + 🍀 Sorte + 🩸 Vampiro) + 5.000 💎!'}; /* v508: ANELSPVAMPIRO (uso único) */
 TWCUP['1r6v1xg']={nm:'💍 2 ANÉIS DOURADOS SP (velocidade) + 10.000 💎 + 40 giros',it:[],jn:40,uni:1,pk:{gem:10000},rgsp:[['uv','drop','fur'],['vel','uv','esq']],msg:'✅ Você ganhou 💍 2 ANÉIS DOURADOS SP no nível máximo (✨ Vel. Ultimate + 🎁 Drop · 💨 Velocidade + ✨ Vel. Ultimate) + 10.000 💎 + 40 💠 giros de passiva!'}; /* v509: ANEISSPVELOZ (uso único) */
@@ -14949,6 +14950,14 @@ function ptdBackfill(){try{if(rkG('ptdbf',0))return;const o=ptdG();for(const r o
 setTimeout(ptdBackfill,6000);
 try{Object.assign(window.__pvT||{},{ptd:()=>ptdG(),ptbf:()=>ptdBackfill(),ptdr:()=>ptDropRank(),ptk:()=>ptRank(),view:v=>rkView(v)})}catch(e){}
 
+/* ================= v513: BUG DA VELOCIDADE (tela tremendo, bichos morrendo muito rápido) =================
+   Anel Dourado SP de VELOCIDADE (+840%) somava direto no p.tsp: a animação rodava 9× mais rápido (a tela tremia de tanto golpe)
+   e os bichos da Torre/Caça/Portal morriam em segundos, o que farmava o ranking de TEMPO. Agora, em TODA luta:
+   velocidade final no máximo ×2,5 (+150%) e carga do KI/ultimate no máximo ×3. Os anéis continuam mostrando o valor deles. */
+const SPDCAP=2.5,KICAP=3;
+{const _u=update;update=function(){try{if(G.p)for(const f of G.p){if(!f)continue;if(f.tsp>SPDCAP)f.tsp=SPDCAP;if(f.tki>KICAP)f.tki=KICAP}}catch(e){}return _u.apply(this,arguments)}}
+{const _ra=rkApply;rkApply=function(){const r=_ra.apply(this,arguments);try{if(G.p)for(const f of G.p){if(!f)continue;if(f.tsp>SPDCAP)f.tsp=SPDCAP;if(f.tki>KICAP)f.tki=KICAP}}catch(e){}return r}}
+
 function twTrofList(){const tc=twLS.g('tw_tc',{}),run={};for(const t of TW.tr)run[t.k]=(run[t.k]||0)+1;
   twModal(`<div class="twM"><h3>🎖️ TROFÉUS</h3><div class="twTL">${Object.keys(TWTR).map(k=>{const T=TWTR[k];return `<div class="${tc[k]||run[k]?'got':''}"><i>${T.i}</i><b>${T.n}</b><span>${T.d}</span><em>+${T.p} 🏆</em><small>${run[k]?'nesta subida: '+run[k]+' · ':''}total: ${(tc[k]||0)}</small></div>`}).join('')}</div>
     <p class="twH">Cada troféu soma pontos 🏆 no ranking. Quem sobe mais andares fica na frente; empate = mais troféus, depois menos tempo.</p><div class="row"><button class="btn" id="twTx">FECHAR</button></div></div>`);
@@ -15140,7 +15149,7 @@ window.__dbg={mus:()=>[MCUR,MEL.src.split('/').pop()],stg:()=>STAGE.key,prepMatc
 })();
 </script>
 <style>#updB{position:fixed;left:50%;top:max(8px,env(safe-area-inset-top));transform:translateX(-50%);z-index:99999;padding:10px 22px;border-radius:14px;border:2px solid #fff3c0;background:linear-gradient(#ffd84a,#e08a10);color:#3a1d00;font:900 15px system-ui,sans-serif;box-shadow:0 0 18px #ffb21f;cursor:pointer;animation:updP 1s ease-in-out infinite alternate}@keyframes updP{to{transform:translateX(-50%) scale(1.05)}}</style>
-<script>(function(){const V='afe4ec81ad5f';if(!/^https?:/.test(location.protocol))return;let nv=null;
+<script>(function(){const V='4971885a3cb0';if(!/^https?:/.test(location.protocol))return;let nv=null;
 function show(){if(document.getElementById('updB'))return;try{if(typeof G!=='undefined'&&G.mode==='fight')return}catch(e){}const b=document.createElement('button');b.id='updB';b.textContent='🔄 ATUALIZAÇÃO NOVA! Toque para atualizar';
   b.onclick=()=>{b.textContent='⏳ Atualizando...';try{acSave(1)}catch(e){}setTimeout(()=>location.reload(),900)};document.body.appendChild(b)}
 async function chk(){if(document.hidden)return;if(nv){show();return}try{const r=await fetch('versao.txt?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const t=(await r.text()).trim();if(/^[0-9a-f]{8,40}$/.test(t)&&t!==V){nv=t;show()}}catch(e){}}

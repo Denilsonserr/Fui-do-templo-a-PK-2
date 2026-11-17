@@ -2347,3 +2347,10 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 
 ## v512 — código 2 anéis SP crítico + pedras
 - `TWCUP['kbjg5r']` (texto só com o dono) = 2 Anéis Dourados SP nível 60: 🎯Crítico+⚔️Dano+🔥Fúria e ✨Vel. Ultimate+🎯Crítico+🌀Combo+, mais 5.000 💎 e 50 Joias Negras (pedras de passiva, `jn`). Uso ÚNICO. Conta no ranking de drops (v511). Teste `tcod_aneissp_v512.js`.
+
+## v513 — BUG DA VELOCIDADE (tela tremendo, bichos morrendo rápido) + código do aviso
+- Causa: os anéis (`anSum`) somam direto em `p.tsp`/`p.tki` na Torre, no Boss e na Caça. Anel Dourado SP de VELOCIDADE = +840% → lutador ~9× (dois anéis ~17×): animação acelerada (tela tremendo) e bichos mortos em segundos. O tempo da Torre é em quadros (`TN.fr/60`), então o ranking de TEMPO foi farmado (Breno, Vini_junior10, Stark: 11 andares em 53–109 s; antes, 360–500 s).
+- Conserto (fim do rk.js): `SPDCAP=2.5` e `KICAP=3`. Os wrappers do `update` (todo quadro) e do `rkApply` limitam `f.tsp` e `f.tki` de todos os lutadores. Anel/tela continuam mostrando o valor cheio.
+- Ranking da Torre (`extra/9z_v513.py`): `TWBUG` = 17/11 01:00 UTC. Subidas depois disso com `v<202` e tempo < 300 s ficam `old` (não contam no TEMPO; troféus continuam). Envio novo manda `v:202`.
+- Código `TWCUP['15phs85']` (texto só com o dono) = 10.000 💎, uso ÚNICO, para quem mostrou o bug. A mensagem do `pk` agora esconde o que for 0.
+- Testes `tvel_cap_v513.js`, `tcod_bug10k_v513.js`. Ferramenta `.github/workflows/torretop.yml` (top da Torre de uma semana).

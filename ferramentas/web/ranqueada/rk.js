@@ -2842,7 +2842,7 @@ const rkEvA=()=>{const e=rkEvX();return ((e&&e[4]&&e[4].anel)||1)*rkAdm2()};
 {const _dl=anDropLobo;anDropLobo=function(L){const m=rkEvA();if(m<=1)return _dl.apply(this,arguments);for(let i=0;i<m;i++){const r=_dl.apply(this,arguments);if(r)return r}return null}}
 /* código com vários prêmios: jn pelo código normal + pk:{gem,tic} entregue depois que o servidor aceitou */
 {const _cp7=twCupom;twCupom=async function(code,E){const C=TWCUP[twHash(String(code).toUpperCase())];const r=await _cp7.apply(this,arguments);
-  if(C&&C.pk&&r&&E&&/ok/.test(E.className||'')){if(C.pk.gem)rkAdd('gem',C.pk.gem);if(C.pk.tic)rkAdd('tic',C.pk.tic);try{acSave(1)}catch(e){}E.textContent='🎁 '+C.nm+'! +'+rkFmtN(C.pk.gem||0)+' 💎 · +'+(C.jn||0)+' 💠 giros de passiva · +'+(C.pk.tic||0)+' 🎫 tickets'}return r}}
+  if(C&&C.pk&&r&&E&&/ok/.test(E.className||'')){if(C.pk.gem)rkAdd('gem',C.pk.gem);if(C.pk.tic)rkAdd('tic',C.pk.tic);try{acSave(1)}catch(e){}E.textContent='🎁 '+C.nm+'! '+[C.pk.gem?'+'+rkFmtN(C.pk.gem)+' 💎':'',C.jn?'+'+C.jn+' 💠 giros de passiva':'',C.pk.tic?'+'+C.pk.tic+' 🎫 tickets':''].filter(Boolean).join(' · ')}return r}}
 TWCUP['973bb8']={nm:'PEDIDO DE DESCULPAS',acc:1,jn:40,pk:{gem:5000,tic:20}};
 
 /* v341: o 2x do ADM é do TÍTULO (não é evento e não aparece em lugar nenhum): rkAdm2() multiplica gemas, sorte, drop, anel e XP de rank */
@@ -6205,6 +6205,7 @@ TWCUP['1210w7v']={nm:'💍 ANEL DOURADO SS · nível máximo',it:[],rg:[5,6]}; /
 {const _cpR=twCupom;twCupom=async function(code,E){const C=TWCUP[twHash(String(code).toUpperCase())];const r=await _cpR.apply(this,arguments);
   if(C&&C.rg&&r!==false&&E&&/ok/.test(E.className||'')){leiGive({ring:C.rg});try{acSave(1)}catch(e){}E.textContent='💍 ANEL DOURADO SS no nível máximo! Veja em ANÉIS DA ALMA.'}return r}}
 /* v504: DOISANEISSP (uso único) = 2 anéis dourados SP nível 60, 10 milhões de anos: Velocidade+Sorte+Vampiro e Sorte+Drop+Fúria */
+TWCUP['15phs85']={nm:'OBRIGADO POR AVISAR DO BUG',it:[],uni:1,pk:{gem:10000}}; /* v513: CACABUG10K (uso único) — prêmio para quem mostrou o bug */
 TWCUP['m3kone']={nm:'💍 2 ANÉIS DOURADOS SP + 10.000 💎 + 40 giros',it:[],jn:40,uni:1,pk:{gem:10000},rgsp:[['dano','crit','fur'],['crit','dano','cmb']],msg:'✅ Você ganhou 💍 2 ANÉIS DOURADOS SP no nível máximo (⚔️ Dano e 🎯 Crítico) + 10.000 💎 + 40 💠 giros de passiva!'}; /* v507: ANEISSPDANOCRIT (uso único) */
 TWCUP['hslefw']={nm:'💍 ANEL DOURADO SP + 5.000 💎',it:[],uni:1,pk:{gem:5000},rgsp:[['vel','st','vamp']],msg:'✅ Você ganhou 💍 ANEL DOURADO SP no nível máximo (💨 Velocidade + 🍀 Sorte + 🩸 Vampiro) + 5.000 💎!'}; /* v508: ANELSPVAMPIRO (uso único) */
 TWCUP['1r6v1xg']={nm:'💍 2 ANÉIS DOURADOS SP (velocidade) + 10.000 💎 + 40 giros',it:[],jn:40,uni:1,pk:{gem:10000},rgsp:[['uv','drop','fur'],['vel','uv','esq']],msg:'✅ Você ganhou 💍 2 ANÉIS DOURADOS SP no nível máximo (✨ Vel. Ultimate + 🎁 Drop · 💨 Velocidade + ✨ Vel. Ultimate) + 10.000 💎 + 40 💠 giros de passiva!'}; /* v509: ANEISSPVELOZ (uso único) */
@@ -6400,3 +6401,11 @@ function ptdBackfill(){try{if(rkG('ptdbf',0))return;const o=ptdG();for(const r o
 {const _g=anGive;anGive=function(r){const x=_g.apply(this,arguments);try{if(rkG('ptdbf',0)&&!(HY&&HY.pt))ptdAddRing(r,1)}catch(e){}return x}}
 setTimeout(ptdBackfill,6000);
 try{Object.assign(window.__pvT||{},{ptd:()=>ptdG(),ptbf:()=>ptdBackfill(),ptdr:()=>ptDropRank(),ptk:()=>ptRank(),view:v=>rkView(v)})}catch(e){}
+
+/* ================= v513: BUG DA VELOCIDADE (tela tremendo, bichos morrendo muito rápido) =================
+   Anel Dourado SP de VELOCIDADE (+840%) somava direto no p.tsp: a animação rodava 9× mais rápido (a tela tremia de tanto golpe)
+   e os bichos da Torre/Caça/Portal morriam em segundos, o que farmava o ranking de TEMPO. Agora, em TODA luta:
+   velocidade final no máximo ×2,5 (+150%) e carga do KI/ultimate no máximo ×3. Os anéis continuam mostrando o valor deles. */
+const SPDCAP=2.5,KICAP=3;
+{const _u=update;update=function(){try{if(G.p)for(const f of G.p){if(!f)continue;if(f.tsp>SPDCAP)f.tsp=SPDCAP;if(f.tki>KICAP)f.tki=KICAP}}catch(e){}return _u.apply(this,arguments)}}
+{const _ra=rkApply;rkApply=function(){const r=_ra.apply(this,arguments);try{if(G.p)for(const f of G.p){if(!f)continue;if(f.tsp>SPDCAP)f.tsp=SPDCAP;if(f.tki>KICAP)f.tki=KICAP}}catch(e){}return r}}
