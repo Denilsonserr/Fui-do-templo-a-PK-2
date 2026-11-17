@@ -2311,3 +2311,6 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 
 ## v503 — código do anel dourado SS
 - `TWCUP['1210w7v']` (texto só com o dono) = 💍 Anel Dourado SS no nível máximo (60), uso ÚNICO (1 pessoa). Campo novo `rg:[cor,grau]` → wrapper `_cpR` chama `leiGive({ring})` depois que o servidor aceita. Teste `tcod_anelss_v503.js` (Firestore falso). Debug: `__pvT.cup`, `__pvT.anL`.
+
+## v504 — código dos 2 anéis dourados SP
+- `TWCUP['1c1t2p1']` (texto só com o dono) = 2 Anéis Dourados SP nível 60, 10 milhões de anos, iguais aos prints do dono: Velocidade+Sorte+🩸Vampiro e Sorte+Drop+🔥Fúria. Uso ÚNICO. Campo `rgsp:[[s,s2,passiva],...]`, wrapper `_cpS`. Teste `tcod_aneissp_v504.js`.

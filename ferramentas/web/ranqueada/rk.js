@@ -6187,6 +6187,12 @@ TWCUP['dj31xx']={nm:'SOMBRA IGRIS',it:[],igr:1}; /* v497: SOMBRAIGRIS (uso únic
 TWCUP['1210w7v']={nm:'💍 ANEL DOURADO SS · nível máximo',it:[],rg:[5,6]}; /* v503: ANELSSDOURADO (uso único) */
 {const _cpR=twCupom;twCupom=async function(code,E){const C=TWCUP[twHash(String(code).toUpperCase())];const r=await _cpR.apply(this,arguments);
   if(C&&C.rg&&r!==false&&E&&/ok/.test(E.className||'')){leiGive({ring:C.rg});try{acSave(1)}catch(e){}E.textContent='💍 ANEL DOURADO SS no nível máximo! Veja em ANÉIS DA ALMA.'}return r}}
+/* v504: DOISANEISSP (uso único) = 2 anéis dourados SP nível 60, 10 milhões de anos: Velocidade+Sorte+Vampiro e Sorte+Drop+Fúria */
+TWCUP['1c1t2p1']={nm:'💍 2 ANÉIS DOURADOS SP · nível máximo',it:[],rgsp:[['vel','st','vamp'],['st','drop','fur']]};
+{const _cpS=twCupom;twCupom=async function(code,E){const C=TWCUP[twHash(String(code).toUpperCase())];const r=await _cpS.apply(this,arguments);
+  try{if(C&&C.rgsp&&r!==false&&E&&/\bok\b/.test(E.className||'')){const a=1e7,k=.8+.6*Math.log10(a/1e6);
+    C.rgsp.forEach(([s,s2,p],i)=>anGive({i:Date.now().toString(36)+'sp'+i+Math.random().toString(36).slice(2,6),c:5,g:8,s,s2,a,p,v:Math.round(ANV[5][8]*k*10)/10,l:ANMX[5]}));
+    try{acSave(1)}catch(e){}E.textContent='✅ Você ganhou 💍 2 ANÉIS DOURADOS SP no nível máximo! Veja em ANÉIS DA ALMA.';try{rkSfx('boom')}catch(e){}}}catch(e){}return r}}
 TWCUP['edzhx5']={nm:'PASSE 2X · TEMPORADA SOLO LEVELING (prêmios em dobro)',it:[],bp:2,s2:1,x2:1}; /* v481: 3º código do PASSE 2X (texto só com o dono) */
 
 /* v482: código do ADM (texto só com o dono): 6 ANÉIS DOURADOS SP (um de cada atributo, 10 milhões de anos, passivas variadas) + 50.000 JOIAS NEGRAS (pedras de passiva) */
