@@ -2357,3 +2357,6 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 
 ## v514 — código anel SP sorte + dano
 - `TWCUP['3ha3hj']` (texto só com o dono) = 1 Anel Dourado SP nível 60, 10 milhões de anos: 🍀Sorte +840 · ⚔️Dano +420% · 🔥Fúria. Uso ÚNICO. Teste `tcod_anelsp_v514.js`.
+
+## v515 — código 2 anéis SP dano
+- `TWCUP['u2sha3']` (texto só com o dono) = 2 Anéis Dourados SP nível 60: ⚔️Dano+🎯Crítico+🔥Fúria e ⚔️Dano+🎁Drop+🌀Combo+. Uso ÚNICO. Teste `tcod_aneissp_v515.js`.
