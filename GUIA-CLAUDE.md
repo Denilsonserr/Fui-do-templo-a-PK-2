@@ -2314,3 +2314,8 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 
 ## v504 — código dos 2 anéis dourados SP
 - `TWCUP['1c1t2p1']` (texto só com o dono) = 2 Anéis Dourados SP nível 60, 10 milhões de anos, iguais aos prints do dono: Velocidade+Sorte+🩸Vampiro e Sorte+Drop+🔥Fúria. Uso ÚNICO. Campo `rgsp:[[s,s2,passiva],...]`, wrapper `_cpS`. Teste `tcod_aneissp_v504.js`.
+
+## v505 — peças V2 de Virgem compradas no Mercado Negro
+- Bug: `mnClean` (item de outro jogador) jogava fora `sk`/`v2`/`skb`. A peça aparecia como V2 (nome e imagem), mas não contava no `skDivSet`, e a 2ª transformação do Shaka não funcionava (caso do van hohenheim: elmo, armadura, rosário e botas V2 comprados no Mercado).
+- Conserto: `skFixIt(it)` reconhece a peça pela imagem `SKV2[k]` ou pelo nome `SKDN[k]+' V2'` (V1 pela `RKSP[k]`) e devolve `sk`/`v2`/`skb`. Roda no `mnClean` (compras novas) e no `skFixInv()` ao abrir o jogo e o Ranqueado (compras antigas). Teste `tsk_mercado_v505.js`.
+- Ferramenta: `.github/workflows/conta.yml` mostra as peças e o equipamento do último save de uma conta (`/fs/sv-antes`).
