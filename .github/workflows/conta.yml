@@ -17,7 +17,11 @@ jobs:
           n=os.environ['NOME']
           for nm in [hashlib.sha256(('furia|acc|'+n.lower().strip()).encode()).hexdigest()[:24]]:
             s={'from':[{'collectionId':'torre'}],'where':{'fieldFilter':{'field':{'fieldPath':'sv'},'op':'EQUAL','value':{'stringValue':nm}}},'limit':500}
-            L=[x['document'] for x in json.load(urllib.request.urlopen(urllib.request.Request(B+':runQuery',data=json.dumps({'structuredQuery':s}).encode(),headers=H))) if x.get('document')]
+            import time
+            for t in range(8):
+              try:
+                L=[x['document'] for x in json.load(urllib.request.urlopen(urllib.request.Request(B+':runQuery',data=json.dumps({'structuredQuery':s}).encode(),headers=H))) if x.get('document')];break
+              except Exception as e:print('retry',e);time.sleep(20)
             S=[d for d in L if 'sv' in d['fields']]
             print('NOME',repr(nm),'docs',len(L),'saves',len(S))
             if not S:continue
