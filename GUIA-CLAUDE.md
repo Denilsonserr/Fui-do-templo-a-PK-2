@@ -2344,3 +2344,6 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - Pedido do dono: no ranking de drops cada um aparece com o que dropou de verdade, e os anéis DOURADOS que ele deu por código contam como se tivessem saído do portal.
 - `ptdBackfill()` (uma vez por conta, `rk_ptdbf`): conta os anéis dourados (c=5) que a pessoa já tem (eles só saem do portal, de código ou do leilão) e manda para o ranking. Depois disso, o wrapper do `anGive` soma todo anel dourado recebido FORA do portal (código) e manda; os do portal continuam somando no fim da entrada (`hyEnd`).
 - Honrado (`PTD_FIX`) agora é o mínimo garantido (4 SP): se os dados reais dele forem maiores, mostra os reais (não soma por cima). Teste `tportal_drops_v511.js`.
+
+## v512 — código 2 anéis SP crítico + pedras
+- `TWCUP['kbjg5r']` (texto só com o dono) = 2 Anéis Dourados SP nível 60: 🎯Crítico+⚔️Dano+🔥Fúria e ✨Vel. Ultimate+🎯Crítico+🌀Combo+, mais 5.000 💎 e 50 Joias Negras (pedras de passiva, `jn`). Uso ÚNICO. Conta no ranking de drops (v511). Teste `tcod_aneissp_v512.js`.
