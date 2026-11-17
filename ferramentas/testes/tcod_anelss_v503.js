@@ -1,0 +1,8 @@
+// v503: código ANELSSDOURADO (uso único) = anel dourado SS no nível máximo. Firestore falso.
+const {chromium}=require('playwright');
+(async()=>{const b=await chromium.launch();const errs=[];const p=await b.newPage({viewport:{width:915,height:412}});p.on('pageerror',e=>errs.push(e.message));await p.route(/fonts\.g/,r=>r.abort());
+  await p.route(/\/fs\/v1\//,r=>{const u=r.request().url(),m=r.request().method();if(/:runQuery/.test(u))return r.fulfill({status:200,contentType:'application/json',body:'[]'});if(m==='GET')return r.fulfill({status:404,contentType:'application/json',body:'{"error":{"code":404}}'});return r.fulfill({status:200,contentType:'application/json',body:'{"name":"x","fields":{}}'})});
+  await p.addInitScript(()=>{if(!sessionStorage.d){sessionStorage.d=1;localStorage.clear();Object.assign(localStorage,{rk_ini:'1',rk_xpv2:'1',rk_dia:'1',tw_nome:'"Bia"',tw_uid:'"u_bia"',rk_own:'["goku"]',rk_lvrz:'1',rk_pvupv:'352',ac_n:'bia',ac_k:'k'})}});
+  await p.goto('http://localhost:8790/index.html');await p.waitForFunction(()=>!document.getElementById('goSelect').disabled,null,{timeout:120000});await p.waitForTimeout(3000);
+  const r=await p.evaluate(async()=>{const E=document.createElement('div');document.body.appendChild(E);const n0=__pvT.anL().length;const ok=await __pvT.cup('anelssdourado',E);const L=__pvT.anL();return {ok,txt:E.textContent,cls:E.className,n:L.length-n0,last:L[L.length-1]}});
+  console.log(JSON.stringify(r));const a=r.last||{};const pass=r.n===1&&a.c===5&&a.g===6&&a.l===60&&a.s&&a.s2;console.log(pass?'OK  anel dourado SS nível 60 com 2 atributos':'FALHA');console.log(errs.length?'ERROS '+errs.join('|'):'sem erros');await b.close()})();

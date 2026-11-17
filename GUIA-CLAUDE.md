@@ -2308,3 +2308,6 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - Tela `#rotate` ("Gire o celular") ganhou botão **GIRAR A TELA** (`rotLock`: tela cheia + `screen.orientation.lock('landscape')`, funciona no Android mesmo com o girar automático desligado). Qualquer toque em pé também tenta (sem o limite de 3 s do `fsAny` e também no app da tela inicial).
 - Se continuar em pé depois de ~1,3 s, mostra ajuda (`.rtHelp`): Android = ativar "Girar automaticamente"; iPhone (`ROT_IOS`) = desligar o cadeado de rotação; dentro do WhatsApp/Instagram/Facebook/TikTok (`ROT_INAPP`) = botão **ABRIR NO CHROME** (link `intent://...package=com.android.chrome`).
 - Cuidado: o rk.js roda ANTES de `FS_IOS`/`FS_APP` do jogo base (dá "before initialization"). Por isso `ROT_IOS` próprio e `rotInit` no `setTimeout`. Teste `tgirar_v502.js`.
+
+## v503 — código do anel dourado SS
+- `TWCUP['1210w7v']` (texto só com o dono) = 💍 Anel Dourado SS no nível máximo (60), uso ÚNICO (1 pessoa). Campo novo `rg:[cor,grau]` → wrapper `_cpR` chama `leiGive({ring})` depois que o servidor aceita. Teste `tcod_anelss_v503.js` (Firestore falso). Debug: `__pvT.cup`, `__pvT.anL`.
