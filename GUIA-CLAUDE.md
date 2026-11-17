@@ -2303,3 +2303,8 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - **Títulos fixos** `pvc1` CAMPEÃO SUPREMO DO PVP, `pvc2` VICE-CAMPEÃO DO PVP, `pvc3` 3º LUGAR DO PVP (placas top1/2/3_pvp). `pvcGrant()` dá e coloca em uso uma vez (ao abrir o jogo e o Ranqueado). Não são `dyn`, então o `tplSync` não tira.
 - **Bônus só no PVP** (wrapper do `rkApply` com `G.gmode==='pvp'`): `pvcBuff` multiplica dano/velocidade, divide dano recebido e soma crítico (+20/+10/+5). Vale para mim e para a sombra do rival campeão (`PV.fight.opp.acc`). Guarda `_pvcV` para não acumular.
 - **Brilho do Top 1** (`.tpl.pvk` em rk.css): raios vermelho-dourados girando no emblema, chama, ondas, coroa 👑 flutuando, brasas subindo, relâmpagos. Teste `tpvp_campeao_v501.js`.
+
+## v502 — celular que não gira
+- Tela `#rotate` ("Gire o celular") ganhou botão **GIRAR A TELA** (`rotLock`: tela cheia + `screen.orientation.lock('landscape')`, funciona no Android mesmo com o girar automático desligado). Qualquer toque em pé também tenta (sem o limite de 3 s do `fsAny` e também no app da tela inicial).
+- Se continuar em pé depois de ~1,3 s, mostra ajuda (`.rtHelp`): Android = ativar "Girar automaticamente"; iPhone (`ROT_IOS`) = desligar o cadeado de rotação; dentro do WhatsApp/Instagram/Facebook/TikTok (`ROT_INAPP`) = botão **ABRIR NO CHROME** (link `intent://...package=com.android.chrome`).
+- Cuidado: o rk.js roda ANTES de `FS_IOS`/`FS_APP` do jogo base (dá "before initialization"). Por isso `ROT_IOS` próprio e `rotInit` no `setTimeout`. Teste `tgirar_v502.js`.

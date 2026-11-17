@@ -2097,3 +2097,11 @@ img.anOn{position:relative;z-index:2}
 .tpl.pvk.sm .pkR,.tpl.pvk.sm .pkW,.tpl.pvk.sm .pkL,.tpl.pvk.sm .pkE.e2,.tpl.pvk.sm .pkE.e4,.tpl.pvk.sm .pkE.e6{display:none}
 .tpl.pvk.sm .pkC{font-size:.75em;top:-45%}.tpl.pvk.sm .pkE{width:.22em;height:.22em}
 .tpl.pvc2>img{animation-name:tpG3p}
+
+/* v502: tela "Gire o celular" com botão e ajuda */
+#rotate .rtB{margin-top:6px;padding:14px 26px;border:0;border-radius:14px;background:linear-gradient(180deg,#ffe08a,#e0a020);color:#2a1400;font:900 18px var(--f-ui);letter-spacing:.08em;box-shadow:0 4px 0 #8a5a00,0 0 18px rgba(255,200,60,.5);cursor:pointer}
+#rotate .rtB:active{transform:translateY(3px);box-shadow:0 1px 0 #8a5a00}
+#rotate .rtC{padding:12px 22px;border-radius:14px;background:#2a6bff;color:#fff;font:900 16px var(--f-ui);letter-spacing:.06em;text-decoration:none;box-shadow:0 4px 0 #123a99}
+#rotate .rtT{display:none;max-width:22em;margin:0;font:600 14px/1.45 var(--f-ui);letter-spacing:0;text-transform:none;color:#e8dcc0}
+#rotate .rtT b{color:#ffd84a}
+#rotate.rtHelp .rtT{display:block}

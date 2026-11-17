@@ -2605,6 +2605,14 @@ img.anOn{position:relative;z-index:2}
 .tpl.pvk.sm .pkC{font-size:.75em;top:-45%}.tpl.pvk.sm .pkE{width:.22em;height:.22em}
 .tpl.pvc2>img{animation-name:tpG3p}
 
+/* v502: tela "Gire o celular" com botão e ajuda */
+#rotate .rtB{margin-top:6px;padding:14px 26px;border:0;border-radius:14px;background:linear-gradient(180deg,#ffe08a,#e0a020);color:#2a1400;font:900 18px var(--f-ui);letter-spacing:.08em;box-shadow:0 4px 0 #8a5a00,0 0 18px rgba(255,200,60,.5);cursor:pointer}
+#rotate .rtB:active{transform:translateY(3px);box-shadow:0 1px 0 #8a5a00}
+#rotate .rtC{padding:12px 22px;border-radius:14px;background:#2a6bff;color:#fff;font:900 16px var(--f-ui);letter-spacing:.06em;text-decoration:none;box-shadow:0 4px 0 #123a99}
+#rotate .rtT{display:none;max-width:22em;margin:0;font:600 14px/1.45 var(--f-ui);letter-spacing:0;text-transform:none;color:#e8dcc0}
+#rotate .rtT b{color:#ffd84a}
+#rotate.rtHelp .rtT{display:block}
+
 .twBag .bgw{display:flex;gap:1em;justify-content:center;align-items:flex-start;margin:.4em 0}
 .twBag .bgc{flex:1;max-width:16em;display:flex;flex-direction:column;gap:.4em;max-height:52vh;overflow:auto;padding:.2em}
 .twBag h5{margin:0 0 .2em;font:900 1em var(--f-ui);letter-spacing:.1em;color:#ffcf4a;display:flex;flex-direction:column}.twBag h5 small{font-size:.65em;color:#cdbfcf;letter-spacing:0}
@@ -13557,6 +13565,26 @@ setTimeout(()=>{try{pvcGrant()}catch(e){}},4000);
 /* bônus na luta do PVP: eu (se for campeão) e a sombra do adversário (se ele for campeão) */
 function pvcBuff(f,b){if(!f||!b||f._pvcV===f.tdm)return;f.tdm=(f.tdm||1)*(1+b);f.tdf=(f.tdf||1)/(1+b);f.tsp=(f.tsp||1)*(1+b);f.tcr=(f.tcr||0)+b*100;f.pvcB=b;f._pvcV=f.tdm}
 {const _ra=rkApply;rkApply=function(){const r=_ra.apply(this,arguments);if(G.gmode==='pvp'&&G.p&&PV.fight){const [p,o]=G.p;pvcBuff(p,PVCB[pvcPl()]);pvcBuff(o,PVCB[pvcPl(PV.fight.opp&&PV.fight.opp.acc||'')])}return r}}
+/* ================= v502: CELULAR QUE NÃO GIRA =================
+   Tela "Gire o celular": botão GIRAR A TELA (tela cheia + trava deitado, funciona mesmo com o girar automático desligado no Android),
+   ajuda se não girar (girar automático / cadeado do iPhone) e "Abrir no Chrome" quando o link foi aberto dentro do WhatsApp/Instagram/Facebook/TikTok. */
+const ROT_INAPP=/FBAN|FBAV|FB_IAB|Instagram|WhatsApp|Line\/|TikTok|musical_ly|Snapchat|; wv\)/i.test(navigator.userAgent)&&!(window.Capacitor&&Capacitor.isNativePlatform&&Capacitor.isNativePlatform());
+const rotPortrait=()=>{try{return matchMedia('(orientation:portrait) and (pointer:coarse)').matches&&!document.body.classList.contains('pcMode')}catch(e){return false}};
+function rotLock(){const d=document.documentElement,rq=d.requestFullscreen||d.webkitRequestFullscreen,lk=()=>{try{const p=screen.orientation&&screen.orientation.lock&&screen.orientation.lock('landscape');if(p&&p.catch)p.catch(()=>{})}catch(e){}};
+  try{if(rq&&!document.fullscreenElement&&!document.webkitFullscreenElement){const p=rq.call(d,{navigationUI:'hide'});if(p&&p.then)p.then(lk).catch(lk);else lk()}else lk()}catch(e){lk()}}
+const ROT_IOS=/iPhone|iPod/.test(navigator.userAgent)||(/iPad|Macintosh/.test(navigator.userAgent)&&'ontouchend' in document);
+function rotHelp(){const R=$('rotate');if(!R)return;R.classList.add('rtHelp')}
+function rotInit(){const R=$('rotate');if(R&&!R.querySelector('.rtB')){
+  const chrome=/Android/i.test(navigator.userAgent)&&ROT_INAPP?`<a class="rtC" href="intent://${location.host}${location.pathname}${location.search}#Intent;scheme=https;package=com.android.chrome;end">🌐 ABRIR NO CHROME</a>`:'';
+  const tip=ROT_IOS?'No iPhone: abra a <b>Central de Controle</b> (puxe de cima, no canto direito) e <b>desligue o cadeado 🔒 de rotação</b>. Depois deite o celular.'
+    :ROT_INAPP?'Você abriu o jogo dentro de outro app (WhatsApp, Instagram...). Toque em <b>Abrir no Chrome</b> ou nos <b>⋮ três pontinhos</b> → <b>Abrir no navegador</b>.'
+    :'Se não girar: puxe a barra de cima do celular e ative <b>Girar automaticamente</b> (ou "Rotação automática"). Depois deite o celular.';
+  R.insertAdjacentHTML('beforeend',`<button class="rtB" type="button">🔄 GIRAR A TELA</button>${chrome}<p class="rtT">${tip}</p>`);
+  R.querySelector('.rtB').addEventListener('click',e=>{e.stopPropagation();rotLock();setTimeout(()=>{if(rotPortrait())rotHelp()},1300)});
+  if(ROT_IOS||ROT_INAPP)rotHelp()}}
+setTimeout(()=>{try{rotInit()}catch(e){}},0);
+/* qualquer toque com o celular em pé tenta girar (sem o limite de 3 s e também no app instalado na tela inicial) */
+document.addEventListener('pointerup',()=>{if(rotPortrait()){rotLock();setTimeout(()=>{if(rotPortrait())rotHelp()},1500)}},{capture:true,passive:true});
 {const _sk=rkTwSkin;rkTwSkin=function(){const r=_sk.apply(this,arguments);try{tnSkin()}catch(e){console.warn(e)}return r}}
 {const _lv2=twLV;twLV=function(){if(TN.on&&G.gmode==='torre'){const B=G.p&&G.p[1];if(B&&B.tnBoss)return TWLV[Math.min(TWLV.length-1,3+Math.floor(TN.g/2))]}return _lv2.apply(this,arguments)}}
 try{RKTWX.fl=1;RKTWX.top=3.2}catch(e){}
@@ -15047,7 +15075,7 @@ window.__dbg={mus:()=>[MCUR,MEL.src.split('/').pop()],stg:()=>STAGE.key,prepMatc
 })();
 </script>
 <style>#updB{position:fixed;left:50%;top:max(8px,env(safe-area-inset-top));transform:translateX(-50%);z-index:99999;padding:10px 22px;border-radius:14px;border:2px solid #fff3c0;background:linear-gradient(#ffd84a,#e08a10);color:#3a1d00;font:900 15px system-ui,sans-serif;box-shadow:0 0 18px #ffb21f;cursor:pointer;animation:updP 1s ease-in-out infinite alternate}@keyframes updP{to{transform:translateX(-50%) scale(1.05)}}</style>
-<script>(function(){const V='5088b70ed62c';if(!/^https?:/.test(location.protocol))return;let nv=null;
+<script>(function(){const V='5ec040c5cf10';if(!/^https?:/.test(location.protocol))return;let nv=null;
 function show(){if(document.getElementById('updB'))return;try{if(typeof G!=='undefined'&&G.mode==='fight')return}catch(e){}const b=document.createElement('button');b.id='updB';b.textContent='🔄 ATUALIZAÇÃO NOVA! Toque para atualizar';
   b.onclick=()=>{b.textContent='⏳ Atualizando...';try{acSave(1)}catch(e){}setTimeout(()=>location.reload(),900)};document.body.appendChild(b)}
 async function chk(){if(document.hidden)return;if(nv){show();return}try{const r=await fetch('versao.txt?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const t=(await r.text()).trim();if(/^[0-9a-f]{8,40}$/.test(t)&&t!==V){nv=t;show()}}catch(e){}}

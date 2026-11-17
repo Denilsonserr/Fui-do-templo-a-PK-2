@@ -5017,6 +5017,26 @@ setTimeout(()=>{try{pvcGrant()}catch(e){}},4000);
 /* bônus na luta do PVP: eu (se for campeão) e a sombra do adversário (se ele for campeão) */
 function pvcBuff(f,b){if(!f||!b||f._pvcV===f.tdm)return;f.tdm=(f.tdm||1)*(1+b);f.tdf=(f.tdf||1)/(1+b);f.tsp=(f.tsp||1)*(1+b);f.tcr=(f.tcr||0)+b*100;f.pvcB=b;f._pvcV=f.tdm}
 {const _ra=rkApply;rkApply=function(){const r=_ra.apply(this,arguments);if(G.gmode==='pvp'&&G.p&&PV.fight){const [p,o]=G.p;pvcBuff(p,PVCB[pvcPl()]);pvcBuff(o,PVCB[pvcPl(PV.fight.opp&&PV.fight.opp.acc||'')])}return r}}
+/* ================= v502: CELULAR QUE NÃO GIRA =================
+   Tela "Gire o celular": botão GIRAR A TELA (tela cheia + trava deitado, funciona mesmo com o girar automático desligado no Android),
+   ajuda se não girar (girar automático / cadeado do iPhone) e "Abrir no Chrome" quando o link foi aberto dentro do WhatsApp/Instagram/Facebook/TikTok. */
+const ROT_INAPP=/FBAN|FBAV|FB_IAB|Instagram|WhatsApp|Line\/|TikTok|musical_ly|Snapchat|; wv\)/i.test(navigator.userAgent)&&!(window.Capacitor&&Capacitor.isNativePlatform&&Capacitor.isNativePlatform());
+const rotPortrait=()=>{try{return matchMedia('(orientation:portrait) and (pointer:coarse)').matches&&!document.body.classList.contains('pcMode')}catch(e){return false}};
+function rotLock(){const d=document.documentElement,rq=d.requestFullscreen||d.webkitRequestFullscreen,lk=()=>{try{const p=screen.orientation&&screen.orientation.lock&&screen.orientation.lock('landscape');if(p&&p.catch)p.catch(()=>{})}catch(e){}};
+  try{if(rq&&!document.fullscreenElement&&!document.webkitFullscreenElement){const p=rq.call(d,{navigationUI:'hide'});if(p&&p.then)p.then(lk).catch(lk);else lk()}else lk()}catch(e){lk()}}
+const ROT_IOS=/iPhone|iPod/.test(navigator.userAgent)||(/iPad|Macintosh/.test(navigator.userAgent)&&'ontouchend' in document);
+function rotHelp(){const R=$('rotate');if(!R)return;R.classList.add('rtHelp')}
+function rotInit(){const R=$('rotate');if(R&&!R.querySelector('.rtB')){
+  const chrome=/Android/i.test(navigator.userAgent)&&ROT_INAPP?`<a class="rtC" href="intent://${location.host}${location.pathname}${location.search}#Intent;scheme=https;package=com.android.chrome;end">🌐 ABRIR NO CHROME</a>`:'';
+  const tip=ROT_IOS?'No iPhone: abra a <b>Central de Controle</b> (puxe de cima, no canto direito) e <b>desligue o cadeado 🔒 de rotação</b>. Depois deite o celular.'
+    :ROT_INAPP?'Você abriu o jogo dentro de outro app (WhatsApp, Instagram...). Toque em <b>Abrir no Chrome</b> ou nos <b>⋮ três pontinhos</b> → <b>Abrir no navegador</b>.'
+    :'Se não girar: puxe a barra de cima do celular e ative <b>Girar automaticamente</b> (ou "Rotação automática"). Depois deite o celular.';
+  R.insertAdjacentHTML('beforeend',`<button class="rtB" type="button">🔄 GIRAR A TELA</button>${chrome}<p class="rtT">${tip}</p>`);
+  R.querySelector('.rtB').addEventListener('click',e=>{e.stopPropagation();rotLock();setTimeout(()=>{if(rotPortrait())rotHelp()},1300)});
+  if(ROT_IOS||ROT_INAPP)rotHelp()}}
+setTimeout(()=>{try{rotInit()}catch(e){}},0);
+/* qualquer toque com o celular em pé tenta girar (sem o limite de 3 s e também no app instalado na tela inicial) */
+document.addEventListener('pointerup',()=>{if(rotPortrait()){rotLock();setTimeout(()=>{if(rotPortrait())rotHelp()},1500)}},{capture:true,passive:true});
 {const _sk=rkTwSkin;rkTwSkin=function(){const r=_sk.apply(this,arguments);try{tnSkin()}catch(e){console.warn(e)}return r}}
 {const _lv2=twLV;twLV=function(){if(TN.on&&G.gmode==='torre'){const B=G.p&&G.p[1];if(B&&B.tnBoss)return TWLV[Math.min(TWLV.length-1,3+Math.floor(TN.g/2))]}return _lv2.apply(this,arguments)}}
 try{RKTWX.fl=1;RKTWX.top=3.2}catch(e){}
