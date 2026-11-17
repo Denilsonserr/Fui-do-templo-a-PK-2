@@ -2319,3 +2319,9 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - Bug: `mnClean` (item de outro jogador) jogava fora `sk`/`v2`/`skb`. A peça aparecia como V2 (nome e imagem), mas não contava no `skDivSet`, e a 2ª transformação do Shaka não funcionava (caso do van hohenheim: elmo, armadura, rosário e botas V2 comprados no Mercado).
 - Conserto: `skFixIt(it)` reconhece a peça pela imagem `SKV2[k]` ou pelo nome `SKDN[k]+' V2'` (V1 pela `RKSP[k]`) e devolve `sk`/`v2`/`skb`. Roda no `mnClean` (compras novas) e no `skFixInv()` ao abrir o jogo e o Ranqueado (compras antigas). Teste `tsk_mercado_v505.js`.
 - Ferramenta: `.github/workflows/conta.yml` mostra as peças e o equipamento do último save de uma conta (`/fs/sv-antes`).
+
+## v506 — travadas: tela de sombras do Sung + golpes dos monstros do Portal
+- Erros reais dos celulares (`/fs-admin/erros`, workflow `uso.yml` agora lista os erros):
+  1. `sjShOpen` com `S` undefined: o TANK só fica na lista com `rk_urso` (wrapper do `sjSys`), então quem tem o Sung e ainda não pegou nenhuma sombra ficava com `o.sh=[]`. Tocar em SOMBRAS escondia o Sistema e dava erro, e a tela ficava preta/travada ("não está respondendo"). Agora a lista é filtrada por `SJSH`; se estiver vazia, volta ao Sistema com aviso. Os painéis inv/sh também filtram.
+  2. `pnStep` `A.hit.includes` (75× em 36 h, no meio da luta do Portal): golpe em sequência (`seq`, Igris/demônio/esqueleto) escolhido pelo revide (linha do `P.arm`) chegava ao `pnStep` base sem ser expandido. Agora o base expande `seq` e garante `hit=[]`.
+- Teste `tsung_sombra_trava_v506.js`. Debug: `__pvT.sjo()`, `__pvT.sja(s,d)`.
