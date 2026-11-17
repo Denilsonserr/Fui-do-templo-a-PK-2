@@ -21,7 +21,7 @@ jobs:
           inv=json.loads(D.get('tw_inv','[]') or '[]')
           print('INVTOTAL',len(inv))
           for it in inv:
-            if it and (it.get('v2') or it.get('skb') or it.get('sk')):print('INV',json.dumps({k:it.get(k) for k in ['id','nm','skb','v2','t','sk']},ensure_ascii=False))
+            if it and (it.get('v2') or it.get('skb') or it.get('sk') or str(it.get('id','')).startswith('mk')):print('INV',json.dumps(it,ensure_ascii=False)[:700])
           for k in D:
             if 'eq' in k.lower() or k in ('rk_own','rk_ped','rk_pfF','rk_pff'):print('EQ',k,D[k][:1500])
           print('KEYS',' '.join(sorted(D.keys())))
