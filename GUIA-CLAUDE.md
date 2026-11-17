@@ -2325,3 +2325,6 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
   1. `sjShOpen` com `S` undefined: o TANK só fica na lista com `rk_urso` (wrapper do `sjSys`), então quem tem o Sung e ainda não pegou nenhuma sombra ficava com `o.sh=[]`. Tocar em SOMBRAS escondia o Sistema e dava erro, e a tela ficava preta/travada ("não está respondendo"). Agora a lista é filtrada por `SJSH`; se estiver vazia, volta ao Sistema com aviso. Os painéis inv/sh também filtram.
   2. `pnStep` `A.hit.includes` (75× em 36 h, no meio da luta do Portal): golpe em sequência (`seq`, Igris/demônio/esqueleto) escolhido pelo revide (linha do `P.arm`) chegava ao `pnStep` base sem ser expandido. Agora o base expande `seq` e garante `hit=[]`.
 - Teste `tsung_sombra_trava_v506.js`. Debug: `__pvT.sjo()`, `__pvT.sja(s,d)`.
+
+## v507 — código 2 anéis SP (dano + crítico) + gemas + giros
+- `TWCUP['m3kone']` (texto só com o dono) = 2 Anéis Dourados SP nível 60, 10 milhões de anos: ⚔️Dano+🎯Crítico+🔥Fúria e 🎯Crítico+⚔️Dano+🌀Combo+, mais 10.000 💎 (`pk.gem`) e 40 giros de passiva (`jn`). `uni:1` = uso ÚNICO (sem `uni`, `jn` vira um por conta). A mensagem vem de `C.msg` no wrapper `_cpS`. Teste `tcod_aneissp_v507.js`.
