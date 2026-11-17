@@ -6207,6 +6207,7 @@ TWCUP['1210w7v']={nm:'💍 ANEL DOURADO SS · nível máximo',it:[],rg:[5,6]}; /
 /* v504: DOISANEISSP (uso único) = 2 anéis dourados SP nível 60, 10 milhões de anos: Velocidade+Sorte+Vampiro e Sorte+Drop+Fúria */
 TWCUP['m3kone']={nm:'💍 2 ANÉIS DOURADOS SP + 10.000 💎 + 40 giros',it:[],jn:40,uni:1,pk:{gem:10000},rgsp:[['dano','crit','fur'],['crit','dano','cmb']],msg:'✅ Você ganhou 💍 2 ANÉIS DOURADOS SP no nível máximo (⚔️ Dano e 🎯 Crítico) + 10.000 💎 + 40 💠 giros de passiva!'}; /* v507: ANEISSPDANOCRIT (uso único) */
 TWCUP['hslefw']={nm:'💍 ANEL DOURADO SP + 5.000 💎',it:[],uni:1,pk:{gem:5000},rgsp:[['vel','st','vamp']],msg:'✅ Você ganhou 💍 ANEL DOURADO SP no nível máximo (💨 Velocidade + 🍀 Sorte + 🩸 Vampiro) + 5.000 💎!'}; /* v508: ANELSPVAMPIRO (uso único) */
+TWCUP['1r6v1xg']={nm:'💍 2 ANÉIS DOURADOS SP (velocidade) + 10.000 💎 + 40 giros',it:[],jn:40,uni:1,pk:{gem:10000},rgsp:[['uv','drop','fur'],['vel','uv','esq']],msg:'✅ Você ganhou 💍 2 ANÉIS DOURADOS SP no nível máximo (✨ Vel. Ultimate + 🎁 Drop · 💨 Velocidade + ✨ Vel. Ultimate) + 10.000 💎 + 40 💠 giros de passiva!'}; /* v509: ANEISSPVELOZ (uso único) */
 TWCUP['1c1t2p1']={nm:'💍 2 ANÉIS DOURADOS SP · nível máximo',it:[],rgsp:[['vel','st','vamp'],['st','drop','fur']]};
 {const _cpS=twCupom;twCupom=async function(code,E){const C=TWCUP[twHash(String(code).toUpperCase())];const r=await _cpS.apply(this,arguments);
   try{if(C&&C.rgsp&&r!==false&&E&&/\bok\b/.test(E.className||'')){const a=1e7,k=.8+.6*Math.log10(a/1e6);

@@ -2331,3 +2331,6 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 
 ## v508 — código anel SP vampiro + gemas
 - `TWCUP['hslefw']` (texto só com o dono) = 1 Anel Dourado SP nível 60, 10 milhões de anos (💨Velocidade+🍀Sorte+🩸Vampiro, igual ao print do dono) + 5.000 💎. Uso ÚNICO. Teste `tcod_anelsp_v508.js`.
+
+## v509 — código 2 anéis SP de velocidade + gemas + giros
+- `TWCUP['1r6v1xg']` (texto só com o dono) = 2 Anéis Dourados SP nível 60: ✨Vel. Ultimate (`uv`, "velocidade de transformação")+🎁Drop+🔥Fúria e 💨Velocidade+✨Vel. Ultimate+💨Esquiva, mais 10.000 💎 e 40 giros. Uso ÚNICO. Teste `tcod_aneissp_v509.js`.
