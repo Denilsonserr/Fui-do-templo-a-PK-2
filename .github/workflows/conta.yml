@@ -11,27 +11,18 @@ jobs:
         env: {NOME: '${{ github.event.inputs.nome }}'}
         run: |
           python3 - <<'P'
-          import json,urllib.request,os,hashlib
-          B='https://fui-do-templo-a-pk-2.denilsinend.workers.dev/fs/v1/projects/furia-do-templo/databases/(default)/documents'
-          H={'Content-Type':'application/json','User-Agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/120 Safari/537.36'}
-          n=os.environ['NOME']
-          for nm in [hashlib.sha256(('furia|acc|'+n.lower().strip()).encode()).hexdigest()[:24]]:
-            s={'from':[{'collectionId':'torre'}],'where':{'fieldFilter':{'field':{'fieldPath':'sv'},'op':'EQUAL','value':{'stringValue':nm}}},'limit':500}
-            import time
-            for t in range(8):
-              try:
-                L=[x['document'] for x in json.load(urllib.request.urlopen(urllib.request.Request(B+':runQuery',data=json.dumps({'structuredQuery':s}).encode(),headers=H))) if x.get('document')];break
-              except Exception as e:print('retry',e);time.sleep(20)
-            S=[d for d in L if 'sv' in d['fields']]
-            print('NOME',repr(nm),'docs',len(L),'saves',len(S))
-            if not S:continue
-            S.sort(key=lambda d:int(d['fields']['ts']['integerValue']))
-            d=S[-1];F=d['fields'];print('ULTIMO SAVE',d['name'].split('/')[-1],F['ts'])
-            D=json.loads(F['d']['stringValue'])
-            inv=json.loads(D.get('tw_inv','[]') or '[]')
-            for it in inv:
-              if it and ('V2' in str(it.get('nm','')) or it.get('skb') or 'Virgem' in str(it.get('nm',''))):print('INV',json.dumps({k:it.get(k) for k in ['id','nm','skb','v2','slot','t','tp']},ensure_ascii=False))
-            for k in D:
-              if 'eq' in k.lower():print('EQ',k,D[k][:1500])
-            print('KEYS',sorted(D.keys())[:200])
+          import json,urllib.request,os,hashlib,time
+          U='https://fui-do-templo-a-pk-2.denilsinend.workers.dev'
+          H={'User-Agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/120 Safari/537.36'}
+          acc=hashlib.sha256(('furia|acc|'+os.environ['NOME'].lower().strip()).encode()).hexdigest()[:24]
+          r=json.load(urllib.request.urlopen(urllib.request.Request(U+'/fs/sv-antes?acc=%s&t=%d'%(acc,int(time.time()*1000)+86400000),headers=H)))
+          print('ACC',acc,'TS',r.get('ts'),'NADA' if r.get('nada') else '')
+          D=json.loads(r.get('d') or '{}')
+          inv=json.loads(D.get('tw_inv','[]') or '[]')
+          print('INVTOTAL',len(inv))
+          for it in inv:
+            if it and (it.get('v2') or it.get('skb') or it.get('sk')):print('INV',json.dumps({k:it.get(k) for k in ['id','nm','skb','v2','t','sk']},ensure_ascii=False))
+          for k in D:
+            if 'eq' in k.lower() or k in ('rk_own','rk_ped','rk_pfF','rk_pff'):print('EQ',k,D[k][:1500])
+          print('KEYS',' '.join(sorted(D.keys())))
           P
