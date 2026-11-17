@@ -1,0 +1,23 @@
+name: Torre — top da semana (ferramenta)
+on:
+  workflow_dispatch:
+    inputs:
+      sem: {description: 'chave da semana (ex w20261116)', required: true}
+jobs:
+  r:
+    runs-on: ubuntu-latest
+    steps:
+      - env: {SEM: '${{ github.event.inputs.sem }}'}
+        run: |
+          python3 - <<'P'
+          import json,urllib.request,os,datetime
+          B='https://fui-do-templo-a-pk-2.denilsinend.workers.dev/fs/v1/projects/furia-do-templo/databases/(default)/documents'
+          H={'Content-Type':'application/json','User-Agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/120 Safari/537.36'}
+          s={'from':[{'collectionId':'torre'}],'where':{'fieldFilter':{'field':{'fieldPath':'sem'},'op':'EQUAL','value':{'stringValue':os.environ['SEM']}}},'limit':1000}
+          L=[x['document'] for x in json.load(urllib.request.urlopen(urllib.request.Request(B+':runQuery',data=json.dumps({'structuredQuery':s}).encode(),headers=H))) if x.get('document')]
+          g=lambda F,k:(F.get(k) or {}).get('stringValue',(F.get(k) or {}).get('integerValue'))
+          R=[(int(g(d['fields'],'pontos') or 0),g(d['fields'],'nome'),g(d['fields'],'char'),g(d['fields'],'andar'),g(d['fields'],'tempo'),g(d['fields'],'trof'),g(d['fields'],'v'),d.get('createTime','')[:19],g(d['fields'],'uid')) for d in L if 'andar' in d['fields']]
+          R.sort(key=lambda r:-r[0])
+          for r in R[:40]:print('TW',r)
+          print('TOTAL',len(R))
+          P
