@@ -6364,3 +6364,32 @@ TWCUP['1yvb5ld']={nm:'ANEL DOURADO S',it:[],anGS:1}; /* v493: vale para qualquer
   try{if(C&&C.anGS&&E&&/\bok\b/.test(E.className)){const g=5,a=5e6,k=.8+.6*Math.log10(a/1e6),S=ANS.map(x=>x[0]),s=S[(Math.random()*S.length)|0],s2=S.filter(x=>x!==s)[(Math.random()*(S.length-1))|0];
     anGive({i:Date.now().toString(36)+Math.random().toString(36).slice(2,6),c:5,g,s,s2,a,v:Math.round(ANV[5][g]*k*10)/10});try{acSave(1)}catch(e){}
     E.textContent='✅ Você ganhou: 💍 ANEL DOURADO S · '+anSt(s)[1]+' + '+anSt(s2)[1]+' · 5.000.000 anos!';try{rkSfx('boom')}catch(e){}}}catch(e){}return r}}
+
+/* ================= v510: RANKING DE MELHORES DROPS DO PORTAL =================
+   Cada entrada no portal soma pontos de drop (anéis pela cor/nota, itens míticos/secretos, peças do Monarca) num total da conta (rk_ptdr).
+   Vai para o servidor como doc ptd_* (pdp = pontos, dsp = anéis dourados SP, dtx = resumo). O ranking mostra o melhor de cada caçador.
+   Honrado entra fixo com 4 Anéis Dourados SP (pedido do dono). */
+const PTDG=[5,8,12,20,30,50,90,160,400]; /* pontos do anel DOURADO por nota E..SP */
+const ptdRingPts=r=>!r?0:(r.c|0)===5?(PTDG[r.g|0]||5):((r.g|0)+1)*((r.c|0)+1);
+const ptdG=()=>Object.assign({sc:0,g:[0,0,0,0,0,0,0,0,0],it:0,sj:0},rkG('ptdr',{}));
+function ptdTx(o){const N=ANG,P=[];for(let g=8;g>=5&&P.length<2;g--)if(o.g[g])P.push(o.g[g]+'× DOURADO '+N[g]);if(!P.length){const b=o.g.findLastIndex?o.g.findLastIndex(x=>x>0):-1;if(b>=0)P.push(o.g[b]+'× DOURADO '+N[b])}
+  if(o.sj)P.push(o.sj+'× peça do Monarca');if(o.it&&P.length<3)P.push(o.it+' itens raros');return P.join(' · ')||'—'}
+async function ptdPost(o){try{const IV=v=>({integerValue:String(v|0)}),SV=v=>({stringValue:String(v)});const id='ptd_'+String(twUid()).replace(/[^\w-]/g,'').slice(0,40)+'_'+Date.now().toString(36);
+  await twFetchT(TWURL+'/torre?documentId='+id+'&key='+TWFB.apiKey,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({fields:{pdp:IV(o.sc),dsp:IV(o.g[8]),dtx:SV(ptdTx(o).slice(0,90)),uid:SV(twUid()),nome:SV(String(twLS.g('tw_nome','')||'?').slice(0,16)),char:SV(rkG('sel','goku'))}})})}catch(e){}}
+{const _e=hyEnd;hyEnd=function(won){const X=HY.pt&&PTR?PTR:null;let an=[],eq=[],sj=0;if(X){an=(X.loot.an||[]).slice();eq=(X.loot.eq||[]).slice();sj=(X.loot.sj||[]).length}
+  const r=_e.apply(this,arguments);
+  try{if(X){const o=ptdG();let s=0;for(const a of an){s+=ptdRingPts(a);if((a.c|0)===5)o.g[Math.min(8,a.g|0)]++}for(const q of eq){if(q==='sec'){s+=80;o.it++}else if(q==='mit'){s+=30;o.it++}}s+=sj*200;o.sj+=sj;
+    if(s>0){o.sc+=s;rkS('ptdr',o);try{acSave()}catch(e){}ptdPost(o)}}}catch(e){}return r}}
+const PTD_FIX=[{uid:'mwc8atkrgg4fns2f',nome:'Honrado',char:'shaka',dsp:4,pdp:4*PTDG[8],dtx:'4× DOURADO SP'}];
+async function ptDropRank(){rkModal(`<div class="twM ptRk"><h3>💍 MELHORES DROPS DOS PORTAIS</h3><p class="twH">Carregando...</p><div class="row"><button class="btn" id="rkMX">FECHAR</button></div></div>`);$('rkMX').onclick=()=>rkModal(null);
+  const M={};for(const f of PTD_FIX)M[f.uid]=Object.assign({},f);
+  try{const body={structuredQuery:{from:[{collectionId:'torre'}],orderBy:[{field:{fieldPath:'pdp'},direction:'DESCENDING'}],limit:300}};const r=await twFetchT(TWURL+':runQuery?key='+TWFB.apiKey,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});const j=await r.json();
+    for(const x of (Array.isArray(j)?j:[])){const F=x&&x.document&&x.document.fields;if(!F||!F.pdp)continue;const e={};for(const k in F){const v=F[k];e[k]=v.stringValue!=null?v.stringValue:v.integerValue!=null?+v.integerValue:v.doubleValue}
+      const k=e.uid||e.nome,fx=PTD_FIX.find(f=>f.uid===k);if(fx){const t=M[k];if(e.pdp>t.pdp)M[k]=Object.assign(e,{pdp:e.pdp+fx.pdp,dsp:(e.dsp|0)+fx.dsp,dtx:e.dtx})}else if(!M[k]||M[k].pdp<e.pdp)M[k]=e}}catch(e){}
+  const L=Object.values(M).sort((a,b)=>(b.dsp|0)-(a.dsp|0)||b.pdp-a.pdp).slice(0,50);if(RKV!=='pt'&&!document.querySelector('.ptRk'))return;const me=twUid();
+  rkModal(`<div class="twM ptRk ptDr"><h3>💍 MELHORES DROPS DOS PORTAIS</h3><p class="twH">Quem tirou os anéis mais raros nos portais (primeiro os Anéis Dourados SP, depois os pontos de drop).</p>
+   <div class="ptRkL">${L.map((e,i)=>`<div class="${e.uid===me?'me':''}${(e.dsp|0)>0?' sp':''}"><b>${i<3?['🥇','🥈','🥉'][i]:i+1+'º'}</b><img src="${IMG[e.char]?IMG[e.char].src:''}" alt=""><span>${twEsc(e.nome||'?')}</span><em>${(e.dsp|0)>0?'<img class="ptDrI" src="'+(RQA.anel2[5]||bp2Ring(5,8,1))+'" alt="">':''}${twEsc(e.dtx||'')}</em><i>${rkFmtN(e.pdp|0)}</i></div>`).join('')}</div>
+   <div class="row"><button class="btn" id="ptDrB">🏆 RANKING DE PONTOS</button><button class="btn" id="rkMX">FECHAR</button></div></div>`);$('rkMX').onclick=()=>rkModal(null);$('ptDrB').onclick=()=>ptRank()}
+{const _r=ptRank;ptRank=async function(){const r=await _r.apply(this,arguments);try{const row=document.querySelector('.ptRk .row');if(row&&!row.querySelector('#ptDrA')){const b=document.createElement('button');b.className='btn main';b.id='ptDrA';b.textContent='💍 MELHORES DROPS';b.onclick=()=>ptDropRank();row.insertBefore(b,row.firstChild)}}catch(e){}return r}}
+{const st=document.createElement('style');st.textContent='.ptDr .ptRkL>div.sp{background:linear-gradient(90deg,rgba(255,216,74,.22),rgba(255,140,30,.08));box-shadow:inset 0 0 0 1px rgba(255,216,74,.6),0 0 .8em rgba(255,200,60,.25)}.ptDr .ptRkL em{display:flex;align-items:center;gap:.3em;color:#ffd84a}.ptDr .ptRkL em .ptDrI{width:1.7em;height:auto;filter:drop-shadow(0 0 .3em #ffd84a)}';document.head.appendChild(st)}
+try{Object.assign(window.__pvT||{},{ptd:()=>ptdG(),ptdr:()=>ptDropRank(),ptk:()=>ptRank(),view:v=>rkView(v)})}catch(e){}

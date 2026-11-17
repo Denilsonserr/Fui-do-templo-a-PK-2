@@ -2334,3 +2334,8 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 
 ## v509 — código 2 anéis SP de velocidade + gemas + giros
 - `TWCUP['1r6v1xg']` (texto só com o dono) = 2 Anéis Dourados SP nível 60: ✨Vel. Ultimate (`uv`, "velocidade de transformação")+🎁Drop+🔥Fúria e 💨Velocidade+✨Vel. Ultimate+💨Esquiva, mais 10.000 💎 e 40 giros. Uso ÚNICO. Teste `tcod_aneissp_v509.js`.
+
+## v510 — ranking MELHORES DROPS dos Portais
+- No fim do rk.js (depois do `hyEnd` do portal, senão o wrapper não roda). Cada entrada soma pontos de drop: anel DOURADO por nota `PTDG=[5,8,12,20,30,50,90,160,400]` (E..SP), anéis de outra cor `(g+1)*(c+1)`, item secreto 80, mítico 30, peça do Monarca 200. Total da conta em `rk_ptdr` {sc, g[9] contagem dos dourados, it, sj}. Ele vai para o servidor em doc `ptd_*` (`pdp`, `dsp` = nº de SP, `dtx` resumo) a cada entrada que dropou algo.
+- Tela: botão **💍 MELHORES DROPS** no ranking dos Caçadores (`ptDropRank`). Ordena por nº de Anéis Dourados SP e depois por pontos; quem tem SP fica com a linha dourada.
+- `PTD_FIX`: **Honrado** fixo com 4× DOURADO SP (1.600 pts), pedido do dono. O que ele pegar de verdade soma por cima. Teste `tportal_drops_v510.js`.
