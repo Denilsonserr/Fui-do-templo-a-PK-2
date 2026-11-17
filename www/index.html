@@ -14960,6 +14960,19 @@ const SPDCAP=2.5,KICAP=3;
 {const _u=update;update=function(){try{if(G.p)for(const f of G.p){if(!f)continue;if(f.tsp>SPDCAP)f.tsp=SPDCAP;if(f.tki>KICAP)f.tki=KICAP}}catch(e){}return _u.apply(this,arguments)}}
 {const _ra=rkApply;rkApply=function(){const r=_ra.apply(this,arguments);try{if(G.p)for(const f of G.p){if(!f)continue;if(f.tsp>SPDCAP)f.tsp=SPDCAP;if(f.tki>KICAP)f.tki=KICAP}}catch(e){}return r}}
 
+/* ================= v516: EQUILÍBRIO SUAVE DOS ANÉIS (retorno decrescente) =================
+   Pedido do dono: equilibrar sem tirar demais, sem os jogadores perceberem. Os anéis continuam mostrando o valor cheio em todas as telas;
+   só NA LUTA (todo o rkApply, inclusive a sombra do PVP via pvDelta) a soma de DANO, CRÍTICO, VELOCIDADE e VEL. ULTIMATE dos anéis rende:
+   até +400% inteiro · de 400 a 1500 rende 70% · acima de 1500 rende 40%. Sorte e drop não mudam.
+   1 anel SP (+840%) → +708% (−16%) · 3 SP (+2520%) → +1578% · 7 SP (+5880%) → +2922%.
+   PVP: multiplicador final de dano acima de ×4 rende metade (ninguém morre num golpe só por causa de anel). */
+const ANDRK=['dano','crit','vel','uv'],anDR=v=>v<=400?v:v<=1500?400+(v-400)*.7:1170+(v-1500)*.4;
+let ANDR=0;
+{const _s=anSum;anSum=function(){const o=_s.apply(this,arguments);if(!ANDR)return o;const r=Object.assign({},o);for(const k of ANDRK)if(r[k]>0)r[k]=Math.round(anDR(r[k])*10)/10;return r}}
+{const _ra=rkApply;rkApply=function(){ANDR++;try{return _ra.apply(this,arguments)}finally{ANDR--;try{if(G.gmode==='pvp'&&G.p)for(const f of G.p)if(f&&f.tdm>4&&f._pvDR!==f.tdm){f.tdm=4+(f.tdm-4)*.5;f._pvDR=f.tdm}}catch(e){}}}}
+{const _pd=pvDelta;pvDelta=function(){ANDR++;try{return _pd.apply(this,arguments)}finally{ANDR--}}}
+try{Object.assign(window.__pvT||{},{anDR:v=>anDR(v),anSumF:id=>{ANDR++;try{return anSum(id)}finally{ANDR--}},anSum:id=>anSum(id)})}catch(e){}
+
 function twTrofList(){const tc=twLS.g('tw_tc',{}),run={};for(const t of TW.tr)run[t.k]=(run[t.k]||0)+1;
   twModal(`<div class="twM"><h3>🎖️ TROFÉUS</h3><div class="twTL">${Object.keys(TWTR).map(k=>{const T=TWTR[k];return `<div class="${tc[k]||run[k]?'got':''}"><i>${T.i}</i><b>${T.n}</b><span>${T.d}</span><em>+${T.p} 🏆</em><small>${run[k]?'nesta subida: '+run[k]+' · ':''}total: ${(tc[k]||0)}</small></div>`}).join('')}</div>
     <p class="twH">Cada troféu soma pontos 🏆 no ranking. Quem sobe mais andares fica na frente; empate = mais troféus, depois menos tempo.</p><div class="row"><button class="btn" id="twTx">FECHAR</button></div></div>`);
@@ -15151,7 +15164,7 @@ window.__dbg={mus:()=>[MCUR,MEL.src.split('/').pop()],stg:()=>STAGE.key,prepMatc
 })();
 </script>
 <style>#updB{position:fixed;left:50%;top:max(8px,env(safe-area-inset-top));transform:translateX(-50%);z-index:99999;padding:10px 22px;border-radius:14px;border:2px solid #fff3c0;background:linear-gradient(#ffd84a,#e08a10);color:#3a1d00;font:900 15px system-ui,sans-serif;box-shadow:0 0 18px #ffb21f;cursor:pointer;animation:updP 1s ease-in-out infinite alternate}@keyframes updP{to{transform:translateX(-50%) scale(1.05)}}</style>
-<script>(function(){const V='78f16ac4646e';if(!/^https?:/.test(location.protocol))return;let nv=null;
+<script>(function(){const V='94eeeaf8c320';if(!/^https?:/.test(location.protocol))return;let nv=null;
 function show(){if(document.getElementById('updB'))return;try{if(typeof G!=='undefined'&&G.mode==='fight')return}catch(e){}const b=document.createElement('button');b.id='updB';b.textContent='🔄 ATUALIZAÇÃO NOVA! Toque para atualizar';
   b.onclick=()=>{b.textContent='⏳ Atualizando...';try{acSave(1)}catch(e){}setTimeout(()=>location.reload(),900)};document.body.appendChild(b)}
 async function chk(){if(document.hidden)return;if(nv){show();return}try{const r=await fetch('versao.txt?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const t=(await r.text()).trim();if(/^[0-9a-f]{8,40}$/.test(t)&&t!==V){nv=t;show()}}catch(e){}}

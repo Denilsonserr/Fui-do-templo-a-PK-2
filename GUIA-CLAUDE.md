@@ -2360,3 +2360,9 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 
 ## v515 — código 2 anéis SP dano
 - `TWCUP['u2sha3']` (texto só com o dono) = 2 Anéis Dourados SP nível 60: ⚔️Dano+🎯Crítico+🔥Fúria e ⚔️Dano+🎁Drop+🌀Combo+. Uso ÚNICO. Teste `tcod_aneissp_v515.js`.
+
+## v516 — equilíbrio suave dos anéis (retorno decrescente)
+- Pedido do dono: equilibrar sem tirar demais e sem os jogadores perceberem. As telas continuam mostrando o valor cheio dos anéis (`anSum` normal).
+- Na luta (`ANDR` ligado durante todo o `rkApply` e o `pvDelta`), a soma de DANO, CRÍTICO, VELOCIDADE e VEL. ULTIMATE dos anéis passa por `anDR`: até +400% conta inteiro, de 400 a 1500 rende 70%, acima de 1500 rende 40%. Sorte/drop sem mudança. 1 SP = +708% (−16%), 3 SP = +1578%, 7 SP = +2922%.
+- PVP: `tdm` final acima de ×4 rende metade (`_pvDR` não acumula).
+- Teste `tequil_aneis_v516.js`. `tvel_cap_v513.js` agora espera a luta rodar (antes falhava às vezes).

@@ -6411,3 +6411,16 @@ try{Object.assign(window.__pvT||{},{ptd:()=>ptdG(),ptbf:()=>ptdBackfill(),ptdr:(
 const SPDCAP=2.5,KICAP=3;
 {const _u=update;update=function(){try{if(G.p)for(const f of G.p){if(!f)continue;if(f.tsp>SPDCAP)f.tsp=SPDCAP;if(f.tki>KICAP)f.tki=KICAP}}catch(e){}return _u.apply(this,arguments)}}
 {const _ra=rkApply;rkApply=function(){const r=_ra.apply(this,arguments);try{if(G.p)for(const f of G.p){if(!f)continue;if(f.tsp>SPDCAP)f.tsp=SPDCAP;if(f.tki>KICAP)f.tki=KICAP}}catch(e){}return r}}
+
+/* ================= v516: EQUILÍBRIO SUAVE DOS ANÉIS (retorno decrescente) =================
+   Pedido do dono: equilibrar sem tirar demais, sem os jogadores perceberem. Os anéis continuam mostrando o valor cheio em todas as telas;
+   só NA LUTA (todo o rkApply, inclusive a sombra do PVP via pvDelta) a soma de DANO, CRÍTICO, VELOCIDADE e VEL. ULTIMATE dos anéis rende:
+   até +400% inteiro · de 400 a 1500 rende 70% · acima de 1500 rende 40%. Sorte e drop não mudam.
+   1 anel SP (+840%) → +708% (−16%) · 3 SP (+2520%) → +1578% · 7 SP (+5880%) → +2922%.
+   PVP: multiplicador final de dano acima de ×4 rende metade (ninguém morre num golpe só por causa de anel). */
+const ANDRK=['dano','crit','vel','uv'],anDR=v=>v<=400?v:v<=1500?400+(v-400)*.7:1170+(v-1500)*.4;
+let ANDR=0;
+{const _s=anSum;anSum=function(){const o=_s.apply(this,arguments);if(!ANDR)return o;const r=Object.assign({},o);for(const k of ANDRK)if(r[k]>0)r[k]=Math.round(anDR(r[k])*10)/10;return r}}
+{const _ra=rkApply;rkApply=function(){ANDR++;try{return _ra.apply(this,arguments)}finally{ANDR--;try{if(G.gmode==='pvp'&&G.p)for(const f of G.p)if(f&&f.tdm>4&&f._pvDR!==f.tdm){f.tdm=4+(f.tdm-4)*.5;f._pvDR=f.tdm}}catch(e){}}}}
+{const _pd=pvDelta;pvDelta=function(){ANDR++;try{return _pd.apply(this,arguments)}finally{ANDR--}}}
+try{Object.assign(window.__pvT||{},{anDR:v=>anDR(v),anSumF:id=>{ANDR++;try{return anSum(id)}finally{ANDR--}},anSum:id=>anSum(id)})}catch(e){}
