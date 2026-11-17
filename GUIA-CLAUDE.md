@@ -2328,3 +2328,6 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 
 ## v507 — código 2 anéis SP (dano + crítico) + gemas + giros
 - `TWCUP['m3kone']` (texto só com o dono) = 2 Anéis Dourados SP nível 60, 10 milhões de anos: ⚔️Dano+🎯Crítico+🔥Fúria e 🎯Crítico+⚔️Dano+🌀Combo+, mais 10.000 💎 (`pk.gem`) e 40 giros de passiva (`jn`). `uni:1` = uso ÚNICO (sem `uni`, `jn` vira um por conta). A mensagem vem de `C.msg` no wrapper `_cpS`. Teste `tcod_aneissp_v507.js`.
+
+## v508 — código anel SP vampiro + gemas
+- `TWCUP['hslefw']` (texto só com o dono) = 1 Anel Dourado SP nível 60, 10 milhões de anos (💨Velocidade+🍀Sorte+🩸Vampiro, igual ao print do dono) + 5.000 💎. Uso ÚNICO. Teste `tcod_anelsp_v508.js`.
