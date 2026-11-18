@@ -6812,3 +6812,13 @@ TWCUP['1mrxd56']={nm:'💍 ANEL DOURADO SP DO REI',it:[],uni:1,rgq:1};
 TWCUP['1x51lfy']={nm:'💍 2 ANÉIS DOURADOS SP + JOIA PRIMORDIAL',it:[],uni:1,rgq:1,jpx:1,rgsp:[['dano','crit','vamp']],rgqm:'✅ Você ganhou 💍💍 2 ANÉIS DOURADOS SP no nível máximo (⚔️ Dano + 🎯 Crítico) + 🌟 1 JOIA PRIMORDIAL (passiva PRIMORDIAL garantida)! Veja em ANÉIS DA ALMA e no ENCANTAMENTO.'}; /* v535: DOISANEISREI — anel vamp = real, anel fur = pegadinha (q:1) */
 {const _cp=twCupom;twCupom=async function(code,E){const C=TWCUP[twHash(String(code).toUpperCase())];const r=await _cp.apply(this,arguments);
   try{if(C&&C.rgq&&r!==false&&E&&/\bok\b/.test(E.className||'')){const a=1e7,k=.8+.6*Math.log10(a/1e6);anGive({i:Date.now().toString(36)+'sp0'+Math.random().toString(36).slice(2,6),c:5,g:8,s:'dano',s2:'crit',a,p:'fur',v:Math.round(ANV[5][8]*k*10)/10,l:ANMX[5],q:1});try{localStorage.removeItem('ac_h');acSave(1)}catch(e){}E.textContent=C.rgqm||'✅ Você ganhou 💍 ANEL DOURADO SP no nível máximo (⚔️ Dano + 🎯 Crítico)! Veja em ANÉIS DA ALMA.';try{rkSfx('boom')}catch(e){}}}catch(e){}return r}}
+
+/* v537: TEMPO DA TORRE mais justo — não conta quadros "congelados": hitstop (tela travando no golpe), câmera lenta do KO,
+   transformação, ultimate/cinemática, especiais com vídeo, quadrinho, rush etc. Vale para a torre nova (TN) e a clássica (TW.fs). */
+const twFrozen=()=>!!(G.hitstop>0||(G.slow>0&&(G.slow-1)%3!==0)||G.trans||G.ws||G.cine||G.comic||G.zsp||G.sc||G.rush||G.wfs||G.xu);
+let TWFZ=0;
+{const _u=update;update=function(){let fz=0,a=0,b=0;try{fz=G.mode==='fight'&&G.phase==='fight'&&twFrozen();a=TN&&TN.on?TN.fr:-1;b=TW&&TW.fs?TW.fs.t:-1}catch(e){}
+  const r=_u.apply(this,arguments);
+  if(fz)try{if(a>=0&&TN.on&&TN.fr===a+1){TN.fr=a;TW.time=TN.fr/60;TWFZ++}if(b>=0&&TW.fs&&TW.fs.t===b+1){TW.fs.t=b;TWFZ++}}catch(e){}
+  return r}}
+try{Object.assign(window.__pvT||{},{twFz:()=>({fz:TWFZ,fr:TN&&TN.fr,on:TN&&TN.on}),twFrozen:()=>twFrozen()})}catch(e){}

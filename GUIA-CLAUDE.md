@@ -2451,3 +2451,6 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 
 ## v536 — código PRIMORDIALX5
 - `TWCUP['1uxk365']` (uso único): 5 joias primordiais (`jpx:5`) + 1 anel SP dano+crit (fur). Teste `tcod_pri5_v536.js`.
+
+## v537 — tempo da torre sem "delay"
+- Wrapper de `update` (fim do rk.js): se o quadro está congelado (`twFrozen`: hitstop, câmera lenta do KO fora do 1/3 que anda, G.trans/ws/cine/comic/zsp/sc/rush/wfs/xu), desfaz o +1 de `TN.fr` (torre nova) e de `TW.fs.t` (torre clássica). Debug `__pvT.twFz()`. Teste `ttorre_tempo_v537.js`.
