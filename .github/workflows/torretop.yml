@@ -18,6 +18,6 @@ jobs:
           g=lambda F,k:(F.get(k) or {}).get('stringValue',(F.get(k) or {}).get('integerValue'))
           R=[(int(g(d['fields'],'pontos') or 0),g(d['fields'],'nome'),g(d['fields'],'char'),g(d['fields'],'andar'),g(d['fields'],'tempo'),g(d['fields'],'trof'),g(d['fields'],'v'),d.get('createTime','')[:19],g(d['fields'],'uid')) for d in L if 'andar' in d['fields']]
           R.sort(key=lambda r:-r[0])
-          for r in R[:40]:print('TW',r)
+          for r in R[:400]:print('TW',r)
           print('TOTAL',len(R))
           P
