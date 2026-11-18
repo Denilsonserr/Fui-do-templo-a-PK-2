@@ -2382,3 +2382,6 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - `RGT` com 6 abas: rp, **gem**, **sta**, dmg, tt, t1. Linhas `RGY6`/`RGX6` (146..1342). Os cartões da direita (`.rgCard`) abrem MAIS RICO e MAIOR STATUS. Nas páginas 2+, as linhas cobrem a cor/badge da arte (roxo) e mostram #6…; os espaços vazios também ficam cobertos.
 - Dados: `rgsPost()` manda um doc `rgs_*` {rgs:'1', rgt, rgem, sdm, scr, sst, stot, char, uid, nome, tit} 9 s depois de abrir, a cada 15 min se mudou ou a cada 6 h. Status = o melhor personagem que a pessoa tem (`cbAll(id).T`: dano, 5+crit, sorte; os mesmos números da tela de Atributos). `rgsQ()` pega os 800 docs mais novos (`orderBy rgt`) e fica com o mais novo de cada uid. Eu mesmo entro com os valores ao vivo.
 - MAIOR STATUS mostra ⚔️ dano, 🎯 crítico, 🍀 sorte e o total. O top 3 tem o total brilhando em ouro/azul/vermelho. Teste `trank_novo_v519.js`.
+
+## v520 — código de aniversário
+- `TWCUP['1krtj4q']` (texto só com o dono) = 🎂 Anel Dourado SP nível 60 (⚔️Dano+🎯Crítico+🔥Fúria) + 10.000 💎 + 100 Joias Negras. Uso ÚNICO. Teste `tcod_aniv_v520.js`.

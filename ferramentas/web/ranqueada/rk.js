@@ -6213,6 +6213,7 @@ TWCUP['1r6v1xg']={nm:'💍 2 ANÉIS DOURADOS SP (velocidade) + 10.000 💎 + 40 
 TWCUP['kbjg5r']={nm:'💍 2 ANÉIS DOURADOS SP + 5.000 💎 + 50 pedras',it:[],jn:50,uni:1,pk:{gem:5000},rgsp:[['crit','dano','fur'],['uv','crit','cmb']],msg:'✅ Você ganhou 💍 2 ANÉIS DOURADOS SP no nível máximo (🎯 Crítico + ⚔️ Dano · ✨ Vel. Ultimate + 🎯 Crítico) + 5.000 💎 + 50 💠 pedras de passiva!'}; /* v512: ANEISSPCRITICO (uso único) */
 TWCUP['3ha3hj']={nm:'💍 ANEL DOURADO SP (sorte e dano)',it:[],uni:1,rgsp:[['st','dano','fur']],msg:'✅ Você ganhou 💍 ANEL DOURADO SP no nível máximo (🍀 Sorte + ⚔️ Dano)! Veja em ANÉIS DA ALMA.'}; /* v514: ANELSPSORTE (uso único) */
 TWCUP['u2sha3']={nm:'💍 2 ANÉIS DOURADOS SP (dano)',it:[],uni:1,rgsp:[['dano','crit','fur'],['dano','drop','cmb']],msg:'✅ Você ganhou 💍 2 ANÉIS DOURADOS SP no nível máximo (⚔️ Dano + 🎯 Crítico · ⚔️ Dano + 🎁 Drop)! Veja em ANÉIS DA ALMA.'}; /* v515: ANEISSPDANODROP (uso único) */
+TWCUP['1krtj4q']={nm:'🎂 PRESENTE DE ANIVERSÁRIO',it:[],jn:100,uni:1,pk:{gem:10000},rgsp:[['dano','crit','fur']],msg:'🎂 FELIZ ANIVERSÁRIO! Você ganhou 💍 ANEL DOURADO SP no nível máximo (⚔️ Dano + 🎯 Crítico) + 10.000 💎 + 100 💠 pedras de passiva!'}; /* v520: FELIZANIVERSARIO (uso único) */
 TWCUP['1c1t2p1']={nm:'💍 2 ANÉIS DOURADOS SP · nível máximo',it:[],rgsp:[['vel','st','vamp'],['st','drop','fur']]};
 {const _cpS=twCupom;twCupom=async function(code,E){const C=TWCUP[twHash(String(code).toUpperCase())];const r=await _cpS.apply(this,arguments);
   try{if(C&&C.rgsp&&r!==false&&E&&/\bok\b/.test(E.className||'')){const a=1e7,k=.8+.6*Math.log10(a/1e6);
