@@ -6824,3 +6824,11 @@ let TWFZ=0;
   if(fz)try{if(a>=0&&TN.on&&TN.fr===a+1){TN.fr=a;TW.time=TN.fr/60;TWFZ++}if(b>=0&&TW.fs&&TW.fs.t===b+1){TW.fs.t=b;TWFZ++}}catch(e){}
   return r}}
 try{Object.assign(window.__pvT||{},{twFz:()=>({fz:TWFZ,fr:TN&&TN.fr,on:TN&&TN.on}),twFrozen:()=>twFrozen()})}catch(e){}
+
+/* v540: ANEL DOURADO SP (c5 g8 — só sai por código/ADM) NÃO pode ser vendido no MERCADO NEGRO.
+   Some da aba VENDER e, se tentar anunciar de outro jeito, o anúncio é recusado. */
+const mnNoSell=r=>!!r&&(r.c|0)===5&&(r.g|0)>=8;
+{const _m=mnMine;mnMine=function(){const L=_m.apply(this,arguments);try{const A=anL(),by=new Map(A.map(r=>[r.i,r]));
+  return L.filter(e=>{if(e.k!=='an')return true;e.ids=e.ids.filter(i=>!mnNoSell(by.get(i)));e.n=e.ids.length;return e.n>0})}catch(e){return L}}}
+{const _p=mnPost;mnPost=async function(id,f){try{if(/^mk_/.test(String(id))&&f&&f.it){const o=JSON.parse(f.it.stringValue||'null');if(o&&o.k==='an'&&mnNoSell(o.r)){rkToast('🔒 Anel DOURADO SP não pode ser vendido no Mercado Negro.','#ff8080');return {ok:false,status:403}}}}catch(e){}return _p.apply(this,arguments)}}
+try{Object.assign(window.__pvT||{},{anGive:r=>anGive(r),mnMine:()=>mnMine(),mnPost:(i,f)=>mnPost(i,f),mnNoSell:r=>mnNoSell(r)})}catch(e){}

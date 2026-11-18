@@ -2460,3 +2460,6 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 
 ## v539 — código ELITEV2
 - `TWCUP['1q578c']` (uso único): passe PREMIUM/elite da temporada Solo Leveling (`bp:2,s2:1`) + 5 joias primordiais + anel SP dano+crit (fur, real). Teste `tcod_elite_v539.js`.
+
+## v540 — anel dourado SP não vende no Mercado Negro
+- `mnNoSell` (c5 g8). Wrapper de `mnMine` tira esses anéis da aba VENDER; wrapper de `mnPost` recusa anúncio `mk_` de anel SP (403 + toast). Outros anéis (inclusive dourado abaixo de SP) continuam vendáveis. Teste `tmercado_sp_v540.js`.
