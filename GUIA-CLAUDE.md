@@ -2385,3 +2385,6 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 
 ## v520 — código de aniversário
 - `TWCUP['1krtj4q']` (texto só com o dono) = 🎂 Anel Dourado SP nível 60 (⚔️Dano+🎯Crítico+🔥Fúria) + 10.000 💎 + 100 Joias Negras. Uso ÚNICO. Teste `tcod_aniv_v520.js`.
+
+## v521 — ADM no "RANK 0" em todos os rankings
+- Pedido do dono: ficar fora da disputa, mas em destaque. O wrapper do `rgDraw` tira da lista quem tem o nome `TWADMN` (não ocupa vaga) e troca o cabeçalho `.rgHd` por uma faixa `.rgAdm` (#0 · 👑 · Denilson ADM · ADMINISTRADOR · RANK 0 · FORA DA DISPUTA · VOCÊ: #x). A faixa é vermelha e dourada, com pulso e brilho correndo, e aparece em todas as abas e páginas. Teste `trank_adm_v521.js`.

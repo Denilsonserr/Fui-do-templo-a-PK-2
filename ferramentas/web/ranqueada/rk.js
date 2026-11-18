@@ -2538,7 +2538,7 @@ function rgH(){return `<button class="hs" data-a="back" style="${rgB(30,12,172,8
   ${RGT.map(([k,n,a,b])=>`<button class="hs rgTb ${RG2.tab===k?'on':''}" data-a="rgTab" data-t="${k}" style="${rgB(a,118,b,184)}"><span>${n}</span></button>`).join('')}
   <div id="rgBody"></div>`}
 /* título no ranking: só a escrita com brilho (sem caixa) */
-function rgTit(k,nm){if(!k)return '';if(k==='adm'){if(nm!=null&&String(nm).toLowerCase()!==TWADMN.toLowerCase())return '';return '<em class="rgT" style="--c:#ff4a4a">👑 ADMINISTRADOR</em>'}const T=TWTIT[k];if(!T)return '';
+function rgTit(k,nm){if(!k)return '';if(k==='adm'){if(nm!=null&&String(nm).toLowerCase()!==TWADMN.toLowerCase())return '';return '<em class="rgT" style="--c:#ff4a4a">ADMINISTRADOR</em>'}const T=TWTIT[k];if(!T)return '';
   const n=T.yt?'YUTA Nº '+T.yt:T.n;return `<em class="rgT" style="--c:${T.c||'#ffd84a'}">${T.rk!=null?'':(T.i||'')+' '}${twEsc(n)}</em>`}
 function rgDraw(){const B=$('rgBody');if(!B)return;const L=RG2.L,t=RG2.tab,me=twUid();
   if(!L){B.innerHTML=`<div class="rgMsg" style="${rgB(160,420,1690,600)}">${RG2.err?rkNetMsg():'Carregando...'}</div>`;return}
@@ -6511,3 +6511,24 @@ rgDraw=function(){const B=$('rgBody');if(!B)return;const L=RG2.L,t=RG2.tab,me=tw
 @keyframes rgSb{0%,100%{filter:brightness(1)}50%{filter:brightness(1.4)}}
 `;document.head.appendChild(st)}
 try{Object.assign(window.__pvT||{},{rgsMine:()=>rgsMine(),rgsPost:f=>rgsPost(f),rank:t=>rkRanking(t)})}catch(e){}
+
+/* ================= v521: ADMINISTRADOR NO "RANK 0" EM TODOS OS RANKINGS =================
+   O dono fica fora da disputa: sai da lista (não ocupa vaga de ninguém) e aparece em destaque numa faixa própria (#0) em cima da lista,
+   em todas as abas e páginas. A faixa substitui o cabeçalho (o "VOCÊ: #x" continua nela). */
+const rgIsAdm=e=>e&&String(e.nome||'').toLowerCase().trim()===TWADMN.toLowerCase();
+{const _d=rgDraw;rgDraw=function(){if(RG2.L)RG2.L=RG2.L.filter(e=>!rgIsAdm(e));const r=_d.apply(this,arguments);try{const B=$('rgBody');const H=B&&B.querySelector('.rgHd');if(H&&RG2.L){
+  const me=twUid(),mi=RG2.L.findIndex(e=>e.uid===me),N=RGN[RG2.tab]||'',amIAdm=String(twLS.g('tw_nome','')||'').toLowerCase().trim()===TWADMN.toLowerCase();
+  H.outerHTML=`<div class="rgAdm" data-pn="${twEsc(TWADMN)}" style="${rgB(146,226,1342,284)}"><i class="aG"></i><b class="r0">#0</b><span class="ac">👑</span><span class="an">${twEsc(TWADMN)}</span><em class="rgT" style="--c:#ff4a4a">👑 ADMINISTRADOR</em><span class="fd">RANK 0 · FORA DA DISPUTA</span>${amIAdm?'':'<span class="mi">'+(mi>=0?'VOCÊ: <b>#'+(mi+1)+'</b>':'Jogue para entrar')+'</span>'}</div>`}}catch(e){}return r}}
+{const st=document.createElement('style');st.textContent=`
+.rk_rkg .rgAdm{position:absolute;box-sizing:border-box;display:flex;align-items:center;gap:1%;padding:0 1.6% 0 1%;border-radius:1.2em;overflow:hidden;pointer-events:auto;
+  background:linear-gradient(90deg,#3a0606,#7a0d0d 30%,#a0161a 50%,#7a0d0d 70%,#3a0606);box-shadow:inset 0 0 0 .14em #ffd25a,0 0 1em rgba(255,80,60,.75),0 0 2.2em rgba(255,200,80,.35);animation:rgAp 2.4s ease-in-out infinite}
+@keyframes rgAp{0%,100%{box-shadow:inset 0 0 0 .14em #ffd25a,0 0 .9em rgba(255,80,60,.65),0 0 2em rgba(255,200,80,.3)}50%{box-shadow:inset 0 0 0 .16em #fff0a0,0 0 1.5em rgba(255,90,60,.95),0 0 3em rgba(255,210,90,.55)}}
+.rk_rkg .rgAdm .aG{position:absolute;inset:0;background:linear-gradient(100deg,transparent 30%,rgba(255,240,180,.45) 45%,transparent 60%);background-size:250% 100%;animation:rgAs 3.2s linear infinite;pointer-events:none}
+@keyframes rgAs{0%{background-position:150% 0}100%{background-position:-100% 0}}
+.rk_rkg .rgAdm .r0{position:relative;font:900 1.9em "Cinzel","Saira Condensed",serif;color:#fff3b0;text-shadow:0 0 .4em #ffcc33,0 0 .9em #ff5a1a,0 .06em 0 #000;min-width:2.4em;text-align:center}
+.rk_rkg .rgAdm .ac{position:relative;font-size:1.7em;filter:drop-shadow(0 0 .3em #ffd84a);animation:pkC 2s ease-in-out infinite}
+.rk_rkg .rgAdm .an{position:relative;font:900 1.75em "Cinzel","Saira Condensed",serif;color:#fff;text-shadow:0 0 .4em #ff3a1a,0 0 .8em rgba(255,200,80,.6),0 .06em 0 #000;white-space:nowrap}
+.rk_rkg .rgAdm .rgT{position:relative;align-self:center;font-size:1.05em;max-width:none;overflow:visible}
+.rk_rkg .rgAdm .fd{position:relative;margin-left:auto;font:900 1em "Saira Condensed",sans-serif;letter-spacing:.08em;color:#ffe08a;text-shadow:0 0 .4em #000;white-space:nowrap}
+.rk_rkg .rgAdm .mi{position:relative;font:800 .95em "Saira Condensed",sans-serif;color:#ffd9c8;white-space:nowrap;text-shadow:0 0 .3em #000}.rk_rkg .rgAdm .mi b{color:#7dff9a}
+`;document.head.appendChild(st)}
