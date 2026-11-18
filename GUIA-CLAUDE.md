@@ -2466,3 +2466,6 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 
 ## v541 — código DOISANEISMEME
 - `TWCUP['1ebfwve']` (uso único): anel SP dano+crit passiva vamp (REAL) + anel SP dano+crit pegadinha (`q:1`, passiva sorteada sem vamp: `rgqx`). Teste `tcod_meme_v541.js`.
+
+## v542 — código PRIMORDIALX7
+- `TWCUP['1udkvs7']` (uso único): 7 joias primordiais (`jpx:7`). Teste `tcod_pri7_v542.js`.
