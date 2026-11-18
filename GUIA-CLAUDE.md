@@ -2445,3 +2445,6 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 
 ## v534 — código ANELSORTEDROP
 - `TWCUP['rcyafv']` (uso único): 1 anel dourado SP nível máximo, sorte (st) + drop, passiva fur. Teste `tcod_anelsp_v534.js`.
+
+## v535 — código DOISANEISREI
+- `TWCUP['1x51lfy']` (uso único): anel SP dano+crit passiva vamp (REAL) + anel SP dano+crit passiva fur com `q:1` (pegadinha, não funciona em luta) + 1 joia primordial (`jpx`). Wrapper rgq agora aceita mensagem `C.rgqm`. Teste `tcod_rei2_v535.js`.
