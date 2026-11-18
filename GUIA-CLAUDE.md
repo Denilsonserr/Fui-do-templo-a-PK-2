@@ -2439,3 +2439,6 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - `TWCUP['1mrxd56']` (texto só com o dono, `rgq:1`, uso ÚNICO) = Anel Dourado SP nível 60 ⚔️Dano + 🎯Crítico + 🔥Fúria com a marca escondida `q:1`.
 - Aparece normal em tudo (anéis, atributos, personagem, `rgsMine`/ranking Maior Status), porque o `anSum` fora da luta não muda. NA LUTA (`ANDR` ligado: `rkApply`/`pvDelta`), o wrapper do `anSum` recalcula sem os anéis `q` (com tnUx e retorno decrescente iguais), e o wrapper do `rkApply` refaz `p.anGP` sem a passiva deles → o anel não faz nada.
 - Para virar anel de verdade depois: apagar `q` do anel (ex.: um fix igual ao `honRingFix`). Teste `tcod_rei_v532.js`.
+
+## v533 — código JOIADIVINA
+- `TWCUP['1bfh45z']` (texto só com o dono, `jdx:1`) = 1 ✨ Joia Divina (passiva DIVINA garantida no Encantamento). Uso ÚNICO. Teste `tjoia_div_v533.js`.
