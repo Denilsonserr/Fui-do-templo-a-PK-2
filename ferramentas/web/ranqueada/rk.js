@@ -6796,3 +6796,15 @@ function rgBoxOpen(r){const O=document.createElement('div');O.className='rgBox';
 .rgBox.op .lid{display:none}.rgBox.op .rw{display:flex;animation:rgBi .5s ease-out}.rgBox.op .ry{opacity:.9}
 @keyframes rgBi{from{transform:scale(.3);opacity:0}to{transform:scale(1);opacity:1}}
 `;document.head.appendChild(st)}
+
+/* ================= v532: "pegadinha" do dono (código ANELDOREI, uso único) =================
+   Anel Dourado SP ⚔️Dano + 🎯Crítico + 🔥Fúria que aparece normal em TUDO (anéis, atributos, personagem, ranking Maior Status),
+   mas NA LUTA não soma nada (nem dano, nem crítico, nem a passiva): como se não estivesse equipado. Marca escondida no anel: q:1. */
+{const _s=anSum;anSum=function(id){const o=_s.apply(this,arguments);if(!ANDR)return o;try{const L=anL(),E=anEq(id).filter(Boolean),R=E.map(i=>L.find(x=>x.i===i)).filter(Boolean);if(!R.some(r=>r.q))return o;
+  const z={dano:0,crit:0,vel:0,st:0,drop:0,uv:0};if(typeof tnUxOn==='function'&&tnUxOn())return z;
+  for(const r of R){if(r.q)continue;z[r.s]=(z[r.s]||0)+anV(r);if(r.c===5&&r.s2&&z[r.s2]!=null)z[r.s2]+=anV(r)*.5}
+  for(const k in z){z[k]=Math.round(z[k]*10)/10;if(ANDRK.includes(k)&&z[k]>0)z[k]=Math.round(anDR(z[k])*10)/10}return Object.assign({},o,z)}catch(e){return o}}}
+{const _ra=rkApply;rkApply=function(){const r=_ra.apply(this,arguments);try{const p=G.p&&G.p[0];if(p&&p.anGP){const id=(p.def&&p.def.id)||rkG('sel','goku'),L=anL(),ok=[];for(const i of anEq(id)){if(!i)continue;const x=L.find(y=>y.i===i);if(x&&!x.q&&x.c===5&&x.g===8&&x.p&&!ok.includes(x.p))ok.push(x.p)}p.anGP=ok}}catch(e){}return r}}
+TWCUP['1mrxd56']={nm:'💍 ANEL DOURADO SP DO REI',it:[],uni:1,rgq:1};
+{const _cp=twCupom;twCupom=async function(code,E){const C=TWCUP[twHash(String(code).toUpperCase())];const r=await _cp.apply(this,arguments);
+  try{if(C&&C.rgq&&r!==false&&E&&/\bok\b/.test(E.className||'')){const a=1e7,k=.8+.6*Math.log10(a/1e6);anGive({i:Date.now().toString(36)+'sp0'+Math.random().toString(36).slice(2,6),c:5,g:8,s:'dano',s2:'crit',a,p:'fur',v:Math.round(ANV[5][8]*k*10)/10,l:ANMX[5],q:1});try{localStorage.removeItem('ac_h');acSave(1)}catch(e){}E.textContent='✅ Você ganhou 💍 ANEL DOURADO SP no nível máximo (⚔️ Dano + 🎯 Crítico)! Veja em ANÉIS DA ALMA.';try{rkSfx('boom')}catch(e){}}}catch(e){}return r}}

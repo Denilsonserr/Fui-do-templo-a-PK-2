@@ -2434,3 +2434,8 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 
 ## v531 — código CAIXASP (caixa com anel SP aleatório)
 - `TWCUP['tuqnoo']` (texto só com o dono, `rgbox:1`) = 1 Anel Dourado SP nível 60 (10 mi anos) ALEATÓRIO. `rgBoxRoll()`: 2 atributos diferentes entre 💨 vel, 🍀 st, 🎁 drop e ✨ uv (NUNCA dano nem crítico) + passiva SP aleatória (`ANGP`). Abre com a caixa tremendo, raios e revelação (`rgBoxOpen`, `.rgBox`; a animação se chama `rgBi` porque `crIn` já existia nas cartas). Uso ÚNICO. Teste `tcod_caixa_v531.js` (4.000 sorteios sem dano/crítico).
+
+## v532 — anel "pegadinha" do dono (código ANELDOREI)
+- `TWCUP['1mrxd56']` (texto só com o dono, `rgq:1`, uso ÚNICO) = Anel Dourado SP nível 60 ⚔️Dano + 🎯Crítico + 🔥Fúria com a marca escondida `q:1`.
+- Aparece normal em tudo (anéis, atributos, personagem, `rgsMine`/ranking Maior Status), porque o `anSum` fora da luta não muda. NA LUTA (`ANDR` ligado: `rkApply`/`pvDelta`), o wrapper do `anSum` recalcula sem os anéis `q` (com tnUx e retorno decrescente iguais), e o wrapper do `rkApply` refaz `p.anGP` sem a passiva deles → o anel não faz nada.
+- Para virar anel de verdade depois: apagar `q` do anel (ex.: um fix igual ao `honRingFix`). Teste `tcod_rei_v532.js`.
