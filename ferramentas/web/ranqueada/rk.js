@@ -6532,3 +6532,140 @@ const rgIsAdm=e=>e&&String(e.nome||'').toLowerCase().trim()===TWADMN.toLowerCase
 .rk_rkg .rgAdm .fd{position:relative;margin-left:auto;font:900 1em "Saira Condensed",sans-serif;letter-spacing:.08em;color:#ffe08a;text-shadow:0 0 .4em #000;white-space:nowrap}
 .rk_rkg .rgAdm .mi{position:relative;font:800 .95em "Saira Condensed",sans-serif;color:#ffd9c8;white-space:nowrap;text-shadow:0 0 .3em #000}.rk_rkg .rgAdm .mi b{color:#7dff9a}
 `;document.head.appendChild(st)}
+
+/* ================= v522: TORNEIO DO MAIS FORTE — boss SUNG JIN-WOO (toda semana) =================
+   Arte do dono `ferramentas/ranqueada_artes/v522/torneio_sung.png` (lobby `jb`). No lugar do Yuta, nos lobbies.
+   Semana do torneio: QUARTA 19:00 → SÁBADO 23:59 (Brasília). O 1º começa hoje, 18/11, às 19:00.
+   Boss Sung sempre no nível MÁXIMO e IMORTAL (a vida não desce). Luta de 90 s: conta o DANO e os CRÍTICOS que você deu.
+   FORÇA = dano × (1 + críticos/100) (cada crítico vale +1%). Ranking com 3 abas (FORÇA, DANO, CRÍTICO); vale o melhor de cada um na semana.
+   Quando o torneio acaba, o top 3 da FORÇA ganha título por 7 dias: 👑 O MAIS FORTE DO JOGO · 2º · 3º. O ADM fica fora (rank 0). */
+const TRNA='a/464f0576dadf5b.webp',TRNT=90,TRNW=7*864e5,TRN0=Date.UTC(2026,10,18,22,0); /* 18/11 19:00 BRT */
+const trnNow0=()=>{try{return ysNow()}catch(e){return Date.now()}};
+function trnWk(t){t=t==null?trnNow0():t;const k=Math.floor((t-TRN0)/TRNW),ini=TRN0+k*TRNW,fim=ini+3*864e5+5*36e5-1e3; /* sáb 23:59:59 BRT = dom 02:59:59Z */
+  const d=new Date(ini-3*36e5);return {k,ini,fim,key:'t'+d.getUTCFullYear()+String(d.getUTCMonth()+1).padStart(2,'0')+String(d.getUTCDate()).padStart(2,'0'),on:t>=ini&&t<=fim,antes:t<ini,depois:t>fim}}
+const trnOn=()=>{const w=trnWk();return w.k>=0&&w.on};
+const trnLeft=()=>{const w=trnWk(),t=trnNow0();if(w.k<0||t<w.ini){const ms=Math.max(0,(w.k<0?TRN0:w.ini)-t);const h=Math.floor(ms/36e5),m=Math.floor(ms%36e5/6e4);return 'COMEÇA EM '+(h>=24?Math.floor(h/24)+'d '+(h%24)+'h':h+'h '+m+'min')}
+  if(t>w.fim){const n=trnWk(w.ini+TRNW);const ms=n.ini-t,h=Math.floor(ms/36e5);return 'PRÓXIMO EM '+(h>=24?Math.floor(h/24)+'d '+(h%24)+'h':h+'h '+Math.floor(ms%36e5/6e4)+'min')}
+  const ms=w.fim-t,h=Math.floor(ms/36e5),m=Math.floor(ms%36e5/6e4);return 'ACABA EM '+(h>=24?Math.floor(h/24)+'d '+(h%24)+'h':h+'h '+m+'min')};
+const trnScore=(d,c)=>Math.round(d*(1+c/100));
+RKBOSS.push({id:'sung',n:'SUNG JIN-WOO',sub:'O Monarca das Sombras',ph:Array.from({length:30},()=>[40,40]),b1:{dm:1.05,df:1.25,sp:1.08},b2:{dm:1.05,df:1.25,sp:1.08},c:'#b06bff'});
+const TRN={on:0,d:0,c:0,lh:0};
+/* lobby: vaga do Sung no lugar do Yuta */
+ysSlotOld=function(){const on=trnOn();return `<button class="ysSlot trnSlot ${on?'':'off'}" data-a="bsel" data-b="sung" style="${rkB(12,325,415,415)}"><img src="${IMG.sung?IMG.sung.src:''}" alt=""><b>Sung Jin-Woo</b><em>🏆 TORNEIO · ${on?trnLeft().replace('ACABA EM ',''):trnLeft()}</em></button>`};
+{const _s=skLobbyH;skLobbyH=function(){return _s.apply(this,arguments).replace(/<button class="hs [^"]*" data-a="bsel" data-b="yuta" style="[^"]*"><\/button>/,`<button class="ysSlot trnSlot sk ${trnOn()?'':'off'}" data-a="bsel" data-b="sung" style="${rkB(15,293,425,388)}"><img src="${IMG.sung?IMG.sung.src:''}" alt=""><b>Sung Jin-Woo</b><em>🏆 TORNEIO · ${trnLeft()}</em></button>`)}}
+{const _a=rkAct;rkAct=function(a,b){
+  if(a==='bsel'&&b&&b.dataset.b==='sung'){RKBID='sung';RKYD=null;RKSRV=null;try{localStorage.setItem('rk_bsel','sung')}catch(e){}rkSfx('whoosh');return rkView('jb')}
+  if(a==='boss'&&RKBID==='sung')return rkView('jb');
+  if(a==='start'&&RKBID==='sung')return trnStart();
+  if(a==='trnRk'){rkSfx('whoosh');return trnRank('f')}
+  if(a==='trnTab')return trnRank(b.dataset.t);
+  if(a==='trnInfo')return trnInfo();
+  if(RKV==='jb'&&a==='back'){RKBID='broly';return rkView('menu')}
+  return _a.apply(this,arguments)}}
+function trnMine(){const w=trnWk(),o=rkG('trn',{});return o.key===w.key?o:{key:w.key,d:0,c:0,f:0,n:0}}
+function trnLobbyH(){const sel=rkG('sel','goku'),me=trnMine(),w=trnWk();let cn=0;try{cn=twCoins()}catch(e){}const on=trnOn();
+  const RW=[['👑','TOP 1','👑 TOP 1 da FORÇA: título O MAIS FORTE DO JOGO por 7 dias'],['🥈','TOP 2','🥈 TOP 2 da FORÇA: título 2º MAIS FORTE DO JOGO por 7 dias'],['🥉','TOP 3','🥉 TOP 3 da FORÇA: título 3º MAIS FORTE DO JOGO por 7 dias'],['⚔️','DANO','⚔️ Ranking de DANO: quem bate mais forte no Sung em 90 s'],['🎯','CRÍTICO','🎯 Ranking de CRÍTICOS: quem acerta mais críticos em 90 s']];
+  const RX=[[478,583],[595,700],[713,818],[830,935],[950,1055]];
+  return `<button class="hs" data-a="back" style="${rkB(18,14,640,110)}"></button>
+  <div class="skCur trnCur" style="${rkB(1300,20,1378,52)}">${rkFmtN(rkG('gem',0))}</div><div class="skCur trnCur" style="${rkB(1432,20,1488,52)}">${rkFmtN(rkG('tic',0))}</div><div class="skCur trnCur" style="${rkB(1540,20,1604,52)}">${rkFmtN(rkG('red',0))}</div>
+  <button class="hs" data-a="bsel" data-b="broly" style="${rkB(10,197,447,300)}"></button>
+  <button class="hs trnOnS" data-a="trnInfo" style="${rkB(10,322,447,440)}"></button>
+  <button class="hs" data-a="bsel" data-b="shaka" style="${rkB(5,458,425,550)}"></button><div class="trnSk" style="${rkB(262,484,416,522)}">${skOn()&&!skAntes()?'EVENTO · '+skLeft():'ENCERRADO'}</div>
+  <button class="hs" data-a="lock" style="${rkB(5,568,415,652)}"></button>
+  <div class="trnBan" style="${rkB(1592,62,1806,262)}"><b>🏆 TORNEIO</b><span class="tl">${trnLeft()}</span><span class="mb">MEU MELHOR</span><span>⚔️ ${rkFmtN(me.d)}</span><span>🎯 ${me.c} críticos</span><span class="fz">💪 ${rkFmtN(me.f)}</span><button class="trnRkB" data-a="trnRk">🏅 RANKING</button></div>
+  <button class="hs" data-a="trnInfo" style="${rkB(478,572,1040,636)}"></button>
+  ${RW.map(([ic,t,d],i)=>`<div class="rkBox trnRw r${i}" data-a="boxinfo" data-t="${d}" style="${rkB(RX[i][0]+6,722,RX[i][1]-6,818)}"><i>${ic}</i><b>${t}</b></div>`).join('')}
+  <button class="hs" data-a="equip" style="${rkB(1066,662,1170,768)}"></button>
+  <div class="trnPort" style="${rkB(1700,740,1790,825)}"><img src="${IMG[sel]?IMG[sel].src:''}" alt=""></div><button class="hs" data-a="sel" style="${rkB(1680,730,1800,830)}"></button>
+  <button class="hs trnGo ${on||pfIsAdm()?'':'lk'}" data-a="start" style="${rkB(1205,730,1655,826)}"><span class="shine"></span>${on?'':pfIsAdm()?'<em>ADM · TESTE</em>':'<em>🔒 '+trnLeft()+'</em>'}</button>`}
+{const _v=rkView;rkView=function(v){if(v!=='jb')return _v.apply(this,arguments);
+  RKV='jb';const W=$('rkWrap');if(!W)return;clearInterval(rkView.iv);rkModal(null);
+  W.innerHTML=`<div class="rkA rk_jb" data-w="1847" data-h="851" data-full="1" style="background-image:url(${TRNA})">${trnLobbyH()}<div id="rkToast"></div><button class="rkMusB" data-a="music" title="Música">🎵</button><button class="rkCodB" data-a="code">🎟️ CÓDIGO</button></div>`;rkFit();
+  W.querySelectorAll('[data-a]').forEach(b=>b.onclick=e=>{e.stopPropagation();rkAct(b.dataset.a,b)});
+  rkView.iv=setInterval(()=>{if(RKV!=='jb'){clearInterval(rkView.iv);return}const e=W.querySelector('.trnBan .tl');if(e)e.textContent=trnLeft()},20000)}}
+function trnInfo(){rkModal(`<div class="twM trnM"><h3>🏆 TORNEIO DO MAIS FORTE</h3><p class="twH">Toda semana, de QUARTA 19:00 até SÁBADO 23:59. Agora: <b>${trnLeft()}</b></p>
+  <ul class="trnL"><li>👤 O boss é o <b>SUNG JIN-WOO no nível MÁXIMO</b>, para todo mundo (qualquer rank).</li><li>♾️ Ele é <b>IMORTAL</b>: a luta dura <b>${TRNT} segundos</b>. Bata o máximo que puder!</li><li>⚔️ Conta o <b>DANO</b> total e os <b>CRÍTICOS</b> que você deu.</li><li>💪 <b>FORÇA</b> = dano × (1 + críticos ÷ 100): cada crítico vale +1%.</li><li>🏅 Vale o seu MELHOR da semana em cada ranking (Força, Dano e Crítico).</li><li>👑 No fim, o <b>TOP 3 da FORÇA</b> ganha título por 7 dias: <b>O MAIS FORTE DO JOGO</b>, 2º e 3º.</li><li>💎 Toda luta dá 5 a 15 gemas.</li></ul>
+  <div class="row"><button class="btn main" id="trnRkI">🏅 VER RANKING</button><button class="btn" id="rkMX">FECHAR</button></div></div>`);$('rkMX').onclick=()=>rkModal(null);$('trnRkI').onclick=()=>trnRank('f')}
+function trnStart(){if(!trnOn()&&!pfIsAdm()){rkSfx('clang');return rkToast('⏳ O torneio '+trnLeft().toLowerCase(),'#c79bff')}
+  RKBID='sung';RKYD=null;RKSEL=null;Object.assign(TRN,{on:1,d:0,c:0,lh:0,t0:0,teste:!trnOn()});rkSfx('powerUp');rkBossStart()}
+{const _bs=rkBossStart;rkBossStart=function(){const r=_bs.apply(this,arguments);if(RKBID==='sung'&&TRN.on)RKFL=RKLVS.length-1;return r}}
+{const _bg=rkBossGo;rkBossGo=function(){const r=_bg.apply(this,arguments);try{if(RKBID==='sung'&&TRN.on&&G.gmode==='boss'&&G.p){G.timer=TRNT;const o=G.p[1];TRN.lh=o.hp;banner('TORNEIO DO MAIS FORTE','#b06bff',130,'SUNG JIN-WOO É IMORTAL · '+TRNT+' s · CAUSE O MÁXIMO DE DANO!');trnHud(1)}}catch(e){}return r}}
+/* imortal + contagem do dano */
+{const _u=update;update=function(){const r=_u.apply(this,arguments);try{if(TRN.on&&RKBID==='sung'&&G.gmode==='boss'&&G.p&&G.p[1]){const o=G.p[1];if(o.hp<TRN.lh)TRN.d+=TRN.lh-o.hp;
+  if(o.ko){o.ko=false;o.bs&&(o.bs='idle')}o.hp=o.mhp;o.hpLag=o.mhp;TRN.lh=o.hp;if(G.frame%6===0)trnHud()}}catch(e){}return r}}
+{const _c=critFx;critFx=function(a,d,h){try{if(TRN.on&&RKBID==='sung'&&G.p&&a===G.p[0])TRN.c++}catch(e){}return _c.apply(this,arguments)}}
+function trnHud(make){let H=document.getElementById('trnHud');if(!H&&make){H=document.createElement('div');H.id='trnHud';document.body.appendChild(H)}if(!H)return;
+  H.innerHTML=`<span>⚔️ <b>${rkFmtN(Math.round(TRN.d))}</b></span><span>🎯 <b>${TRN.c}</b></span><span class="f">💪 <b>${rkFmtN(trnScore(TRN.d,TRN.c))}</b></span>`}
+{const _af=rkAfter;rkAfter=function(w){if(!(RKBID==='sung'&&TRN.on))return _af.apply(this,arguments);
+  G.mode='ranked';$('controls').hidden=true;$('pauseBtn').hidden=true;rainSound(0);G.paused=false;G.diff=RKB.diff0;RKFL=null;TRN.on=0;const H=document.getElementById('trnHud');if(H)H.remove();
+  const d=Math.round(TRN.d),c=TRN.c,f=trnScore(d,c),o=trnMine(),rec={d:d>o.d,c:c>o.c,f:f>o.f};const gem=5+((Math.random()*11)|0);rkAdd('gem',gem);
+  if(!TRN.teste){o.n=(o.n||0)+1;if(rec.d)o.d=d;if(rec.c)o.c=c;if(rec.f)o.f=f;rkS('trn',o);if(rec.d||rec.c||rec.f)trnPost(o)}
+  rkOpen('jb');setTimeout(()=>trnResult({d,c,f,rec,gem,teste:TRN.teste}),250)}}
+{const _q=rkQuit;rkQuit=function(){if(RKBID==='sung'&&TRN.on){G.diff=RKB.diff0;RKFL=null;TRN.on=0;const H=document.getElementById('trnHud');if(H)H.remove();G.gmode='pve';return}return _q.apply(this,arguments)}}
+function trnResult(R){rkSfx(R.rec.f?'boom':'whoosh');rkModal(`<div class="twM trnM trnRes"><h3>🏆 TORNEIO · RESULTADO</h3>${R.teste?'<p class="twH">🧪 Luta de TESTE (o torneio ainda não começou): não vai para o ranking.</p>':''}
+  <div class="trnNum"><div><i>⚔️</i><b>${rkFmtN(R.d)}</b><small>DANO${R.rec.d&&!R.teste?' · 🏅 RECORDE':''}</small></div><div><i>🎯</i><b>${R.c}</b><small>CRÍTICOS${R.rec.c&&!R.teste?' · 🏅 RECORDE':''}</small></div><div class="fz"><i>💪</i><b>${rkFmtN(R.f)}</b><small>FORÇA${R.rec.f&&!R.teste?' · 🏅 RECORDE':''}</small></div></div>
+  <p class="twH">💎 +${R.gem} gemas</p><div class="row"><button class="btn main" id="trnAg">⚔️ LUTAR DE NOVO</button><button class="btn" id="trnRkR">🏅 RANKING</button><button class="btn" id="rkMX">OK</button></div></div>`);
+  $('rkMX').onclick=()=>{rkModal(null);rkView('jb')};$('trnRkR').onclick=()=>trnRank('f');$('trnAg').onclick=()=>{rkModal(null);trnStart()}}
+async function trnPost(o){try{const n=String(twLS.g('tw_nome','')||'').trim();if(!n)return;const IV=v=>({integerValue:String(Math.max(0,Math.round(v)))}),SV=v=>({stringValue:String(v)});
+  const id='trn_'+String(twUid()).replace(/[^\w-]/g,'').slice(0,40)+'_'+Date.now().toString(36);
+  await twFetchT(TWURL+'/torre?documentId='+id+'&key='+TWFB.apiKey,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({fields:{trn:SV('1'),trk:SV(o.key),tdm:IV(o.d),tcr:IV(o.c),tfr:IV(o.f),uid:SV(twUid()),nome:SV(n.slice(0,16)),tit:SV(twTitOn()),char:SV(rkG('sel','goku'))}})})}catch(e){}}
+async function trnLoad(key){const body={structuredQuery:{from:[{collectionId:'torre'}],where:{fieldFilter:{field:{fieldPath:'trk'},op:'EQUAL',value:{stringValue:key}}},limit:1000}};
+  const r=await twFetchT(TWURL+':runQuery?key='+TWFB.apiKey,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});if(!r.ok)throw new Error('http '+r.status);const j=await r.json(),M={};
+  for(const x of (Array.isArray(j)?j:[])){const F=x&&x.document&&x.document.fields;if(!F||!F.trn)continue;const e={};for(const k in F){const v=F[k];e[k]=v.stringValue!=null?v.stringValue:v.integerValue!=null?+v.integerValue:v.doubleValue}
+    const k=e.uid||e.nome,m=M[k]||(M[k]={uid:e.uid,nome:e.nome,tit:e.tit,char:e.char,d:0,c:0,f:0});m.d=Math.max(m.d,e.tdm|0);m.c=Math.max(m.c,e.tcr|0);m.f=Math.max(m.f,e.tfr|0);m.nome=e.nome||m.nome;m.tit=e.tit||m.tit;m.char=e.char||m.char}
+  return Object.values(M).filter(e=>!rgIsAdm(e))}
+const TRNC={};
+async function trnRank(tab){tab=tab||'f';const w=trnWk(),key=trnOn()||w.k<0||trnNow0()<w.ini?w.key:w.key;const T={f:['💪 FORÇA','f'],d:['⚔️ DANO','d'],c:['🎯 CRÍTICO','c']};
+  const draw=L=>{const me=twUid(),S=L.slice().filter(e=>e[tab]>0).sort((a,b)=>b[tab]-a[tab]).slice(0,50),mi=S.findIndex(e=>e.uid===me);
+    rkModal(`<div class="twM trnM trnRk"><h3>🏅 RANKING DO TORNEIO · ${T[tab][0]}</h3><div class="seg twTab">${Object.keys(T).map(k=>`<button data-t="${k}" aria-pressed="${k===tab}">${T[k][0]}</button>`).join('')}</div>
+      <p class="twH">${trnLeft()} · o TOP 3 da FORÇA ganha título por 7 dias${mi>=0?' · VOCÊ: <b>#'+(mi+1)+'</b>':''}</p>
+      <div class="trnAdm"><b>#0</b> 👑 ${twEsc(TWADMN)} <em>ADMINISTRADOR · FORA DA DISPUTA</em></div>
+      <div class="trnLs">${S.length?S.map((e,i)=>`<div class="${i<3?'t'+i:''}${e.uid===me?' me':''}"><b>${i<3?['🥇','🥈','🥉'][i]:i+1+'º'}</b><img src="${IMG[e.char]?IMG[e.char].src:''}" alt=""><span>${twEsc(e.nome||'?')}${rgTit(twTN(e),e.nome)}</span><small>⚔️ ${rkFmtN(e.d)} · 🎯 ${e.c}</small><i>${tab==='c'?e.c+' críticos':rkFmtN(e[tab])}</i></div>`).join(''):'<p class="twH">Ninguém lutou ainda. Seja o primeiro!</p>'}</div>
+      <div class="row"><button class="btn" id="rkMX">FECHAR</button></div></div>`);$('rkMX').onclick=()=>rkModal(null);document.querySelectorAll('.trnRk [data-t]').forEach(b=>b.onclick=()=>trnRank(b.dataset.t))};
+  if(TRNC[key]&&Date.now()-TRNC[key].t<3e4)return draw(TRNC[key].L);
+  rkModal(`<div class="twM trnM"><h3>🏅 RANKING DO TORNEIO</h3><p class="twH">Carregando...</p></div>`);
+  try{const L=await trnLoad(key);const o=trnMine();if(o.key===key&&o.f>0){const me=twUid(),m=L.find(e=>e.uid===me);if(m){m.d=Math.max(m.d,o.d);m.c=Math.max(m.c,o.c);m.f=Math.max(m.f,o.f)}else if(!rgIsAdm({nome:twLS.g('tw_nome','')}))L.push({uid:me,nome:twLS.g('tw_nome','')||'VOCÊ',tit:twTitOn(),char:rkG('sel','goku'),d:o.d,c:o.c,f:o.f})}
+    TRNC[key]={t:Date.now(),L};draw(L)}catch(e){rkModal(`<div class="twM trnM"><h3>🏅 RANKING DO TORNEIO</h3><p class="twH">${rkNetMsg()}</p><div class="row"><button class="btn" id="rkMX">FECHAR</button></div></div>`);$('rkMX').onclick=()=>rkModal(null)}}
+/* títulos da semana: depois que o torneio acaba, o top 3 da FORÇA ganha por 7 dias */
+TWTIT.tmf1={n:'O MAIS FORTE DO JOGO',i:'👑',c:'#ff4ad8',d:'TOP 1 do Torneio do Mais Forte (boss Sung) · dura 7 dias'};
+TWTIT.tmf2={n:'2º MAIS FORTE DO JOGO',i:'⚔️',c:'#b06bff',d:'TOP 2 do Torneio do Mais Forte (boss Sung) · dura 7 dias'};
+TWTIT.tmf3={n:'3º MAIS FORTE DO JOGO',i:'⚔️',c:'#7d9bff',d:'TOP 3 do Torneio do Mais Forte (boss Sung) · dura 7 dias'};
+async function trnTitSync(){try{const t=trnNow0();let w=trnWk(t);if(!w.depois)w=trnWk(w.ini-TRNW);const T=twTits(),cur=rkG('tmfE',null);
+  if(cur&&t>cur.ate){const L=T.filter(k=>!/^tmf\d$/.test(k));if(L.length!==T.length){twLS.s('tw_tit',L);if(/^tmf\d$/.test(twLS.g('tw_titOn','')||''))twLS.s('tw_titOn',cur.prev||'');try{acSave()}catch(e){}}rkS('tmfE',null)}
+  if(w.k<0||t>w.fim+TRNW)return;const done=rkG('tmfK','');if(done===w.key)return;
+  const L=(await trnLoad(w.key)).filter(e=>e.f>0).sort((a,b)=>b.f-a.f).slice(0,3),i=L.findIndex(e=>e.uid===twUid());rkS('tmfK',w.key);if(i<0)return;
+  const k='tmf'+(i+1),T2=twTits().filter(x=>!/^tmf\d$/.test(x));T2.push(k);const prev=twLS.g('tw_titOn','')||'';twLS.s('tw_tit',T2);twLS.s('tw_titOn',k);rkS('tmfE',{k,ate:w.fim+TRNW,prev:/^tmf\d$/.test(prev)?'':prev});
+  try{acSave()}catch(e){}try{pfPub(1)}catch(e){}setTimeout(()=>{try{rkToast('👑 Você é o '+(i+1)+'º MAIS FORTE DO JOGO! Título por 7 dias','#ff4ad8')}catch(e){}},2000)}catch(e){}}
+setTimeout(trnTitSync,7000);setInterval(trnTitSync,30*6e4);
+{const st=document.createElement('style');st.textContent=`
+.rk_jb{background-size:100% 100%!important}
+.trnSlot{background:linear-gradient(90deg,rgba(60,10,90,.95),rgba(120,40,190,.85))!important;border-color:#c48bff!important;box-shadow:0 0 1em rgba(180,100,255,.6)!important}.trnSlot em{color:#ffd84a!important}
+.trnSlot.sk{border-radius:1em}
+.rk_jb .trnCur{font-size:1em}
+.rk_jb .trnOnS{border-radius:1.2em;box-shadow:0 0 1.2em rgba(200,120,255,.8),inset 0 0 1em rgba(200,120,255,.35);animation:trnP 2s ease-in-out infinite}
+@keyframes trnP{0%,100%{box-shadow:0 0 .8em rgba(200,120,255,.6),inset 0 0 .8em rgba(200,120,255,.25)}50%{box-shadow:0 0 1.6em rgba(220,140,255,.95),inset 0 0 1.2em rgba(220,140,255,.45)}}
+.rk_jb .trnSk{position:absolute;display:flex;align-items:center;justify-content:center;background:linear-gradient(90deg,#2a1a02,#4a3006);border-radius:.4em;font:900 .82em var(--f-ui);color:#ffe08a;white-space:nowrap;text-shadow:0 1px 2px #000}
+.rk_jb .trnBan{position:absolute;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;gap:.15em;color:#fff;text-shadow:0 .08em .2em #000;font:800 .85em var(--f-ui);text-align:center;box-sizing:border-box}.rk_jb .trnBan>*{position:static!important;transform:none!important;white-space:nowrap}
+.rk_jb .trnBan>b{font:900 1.35em "Cinzel","Saira Condensed",serif;color:#ffe08a;text-shadow:0 0 .4em #ffb300,0 .06em 0 #000}
+.rk_jb .trnBan .tl{font:900 1em var(--f-ui);color:#fff;background:rgba(0,0,0,.35);border-radius:.4em;padding:.1em .5em}
+.rk_jb .trnBan .mb{margin-top:.3em;font-size:.75em;letter-spacing:.1em;color:#ffd0d0}.rk_jb .trnBan .fz{color:#ffe08a;font-size:1.15em}
+.rk_jb .trnRkB{margin-top:.35em;padding:.35em .9em;border:2px solid #ffd25a;border-radius:.7em;background:linear-gradient(180deg,#ffe08a,#e0a020);color:#2a1400;font:900 1em var(--f-ui);box-shadow:0 .2em 0 #8a5a00,0 0 .8em rgba(255,200,60,.6);cursor:pointer}
+.rk_jb .trnRw{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.1em;border-radius:.6em;cursor:pointer}.rk_jb .trnRw i{font-style:normal;font-size:2.2em;filter:drop-shadow(0 0 .3em rgba(255,255,255,.4))}.rk_jb .trnRw b{font:900 1em var(--f-ui);color:#ffe08a}
+.rk_jb .trnRw.r0 i{animation:pkC 2s ease-in-out infinite}
+.rk_jb .trnPort{position:absolute;border-radius:50%;overflow:hidden;border:2px solid #c48bff;background:#140828;box-shadow:0 0 .8em rgba(180,100,255,.7)}.rk_jb .trnPort img{width:100%;height:100%;object-fit:cover}
+.rk_jb .trnGo{border-radius:1em}.rk_jb .trnGo .shine{position:absolute;inset:0;border-radius:1em;background:linear-gradient(100deg,transparent 35%,rgba(255,255,255,.35) 50%,transparent 65%);background-size:250% 100%;animation:rgAs 2.6s linear infinite}
+.rk_jb .trnGo.lk{filter:grayscale(.6) brightness(.8)}.rk_jb .trnGo em{position:absolute;left:0;right:0;bottom:-1.6em;font:900 .9em var(--f-ui);font-style:normal;color:#ffe08a;text-shadow:0 1px 3px #000;text-align:center}
+#trnHud{position:fixed;left:50%;top:19vh;transform:translateX(-50%);z-index:60;display:flex;gap:1.2em;padding:.35em 1.2em;border-radius:1em;background:linear-gradient(90deg,rgba(40,8,70,.88),rgba(90,20,150,.88));border:2px solid #c48bff;box-shadow:0 0 1em rgba(180,100,255,.6);font:800 clamp(12px,2.2vh,20px) var(--f-ui);color:#fff;pointer-events:none;white-space:nowrap}
+#trnHud b{color:#ffe08a}#trnHud .f b{color:#ff9bf0;text-shadow:0 0 .4em #ff4ad8}
+.trnM .trnL{margin:.4em 0;padding-left:1.2em;text-align:left;line-height:1.5}.trnM .trnL b{color:#ffe08a}
+.trnRes .trnNum{display:flex;gap:1em;justify-content:center;margin:.6em 0}.trnRes .trnNum>div{display:flex;flex-direction:column;align-items:center;min-width:7em;padding:.5em .8em;border-radius:.8em;background:rgba(40,10,80,.7);border:2px solid #8a5cff}
+.trnRes .trnNum i{font-style:normal;font-size:1.8em}.trnRes .trnNum b{font:900 1.7em var(--f-ui);color:#fff}.trnRes .trnNum small{font:800 .8em var(--f-ui);color:#d9c6ff}.trnRes .trnNum .fz{border-color:#ffd25a;box-shadow:0 0 1em rgba(255,200,80,.5)}.trnRes .trnNum .fz b{color:#ffe08a}
+.trnRk .trnAdm{margin:.3em 0;padding:.35em .8em;border-radius:.7em;background:linear-gradient(90deg,#3a0606,#8a1010,#3a0606);border:2px solid #ffd25a;color:#fff;font:900 1em var(--f-ui);text-align:left}.trnRk .trnAdm b{color:#fff3b0;margin-right:.4em}.trnRk .trnAdm em{font-style:normal;font-size:.75em;color:#ffe08a;margin-left:.5em}
+.trnRk .trnLs{max-height:46vh;overflow:auto;display:flex;flex-direction:column;gap:.3em}
+.trnRk .trnLs>div{display:flex;align-items:center;gap:.6em;padding:.3em .7em;border-radius:.7em;background:rgba(30,10,60,.7);border:1px solid rgba(180,130,255,.35)}
+.trnRk .trnLs>div>b{min-width:2.2em;font:900 1.1em var(--f-ui);color:#fff}.trnRk .trnLs img{width:2.2em;height:2.2em;object-fit:contain}.trnRk .trnLs span{flex:1;display:flex;flex-direction:column;font:900 1em var(--f-ui);color:#fff;text-align:left;min-width:0;overflow:hidden}
+.trnRk .trnLs small{font:700 .8em var(--f-ui);color:#cdb8ff;white-space:nowrap}.trnRk .trnLs i{font-style:normal;font:900 1.15em var(--f-ui);color:#ffe08a;white-space:nowrap}
+.trnRk .trnLs .t0{background:linear-gradient(90deg,rgba(120,80,0,.85),rgba(60,30,0,.7));border-color:#ffd25a;box-shadow:0 0 .8em rgba(255,200,60,.45)}.trnRk .trnLs .t1{background:linear-gradient(90deg,rgba(30,60,130,.85),rgba(10,20,60,.7));border-color:#8fc4ff}.trnRk .trnLs .t2{background:linear-gradient(90deg,rgba(130,40,10,.85),rgba(60,15,0,.7));border-color:#ff9a6a}
+.trnRk .trnLs .me{outline:2px solid #7dff9a}
+`;document.head.appendChild(st)}
+try{Object.assign(window.__pvT||{},{trn:()=>TRN,trnWk:t=>trnWk(t),trnStart:()=>trnStart(),trnRank:t=>trnRank(t),trnTit:()=>trnTitSync(),trnView:()=>{RKBID='sung';rkView('jb')}})}catch(e){}

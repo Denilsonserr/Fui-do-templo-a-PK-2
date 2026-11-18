@@ -2388,3 +2388,12 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 
 ## v521 — ADM no "RANK 0" em todos os rankings
 - Pedido do dono: ficar fora da disputa, mas em destaque. O wrapper do `rgDraw` tira da lista quem tem o nome `TWADMN` (não ocupa vaga) e troca o cabeçalho `.rgHd` por uma faixa `.rgAdm` (#0 · 👑 · Denilson ADM · ADMINISTRADOR · RANK 0 · FORA DA DISPUTA · VOCÊ: #x). A faixa é vermelha e dourada, com pulso e brilho correndo, e aparece em todas as abas e páginas. Teste `trank_adm_v521.js`.
+
+## v522 — TORNEIO DO MAIS FORTE (boss Sung, toda semana)
+- Arte do dono `ferramentas/ranqueada_artes/v522/torneio_sung.png` → `TRNA` (lobby `jb`, desenhado pelo wrapper do `rkView`). A vaga do Yuta virou a do Sung: `ysSlotOld` no lobby do Broly e troca do botão no `skLobbyH`. `bsel` 'sung' → `jb`; 'start' com `RKBID==='sung'` → `trnStart()`.
+- Semana (`trnWk`): QUARTA 19:00 → SÁBADO 23:59:59 (Brasília), a partir de `TRN0` = 18/11 19:00. Chave `t`+data da quarta. Fora do horário, o INICIAR fica trancado com a contagem (o ADM pode testar; a luta de teste não vai para o ranking). `window.__ysT` desloca o tempo.
+- Luta: `RKBOSS` ganhou `sung` (b1 dm 1,05 · df 1,25 · sp 1,08). `RKFL` = nível MÁXIMO para todo mundo. `G.timer=90`. IMORTAL: o wrapper do `update` soma a vida perdida em `TRN.d` e devolve a vida cheia todo quadro. Críticos: wrapper do `critFx` (só os do jogador 1). HUD `#trnHud` (dano, críticos, força).
+- Fim (`rkAfter` embrulhado): FORÇA = `dano × (1 + críticos/100)`. Melhor da semana em `rk_trn` {key,d,c,f}; manda o doc `trn_*` {trn,trk,tdm,tcr,tfr,...} quando bate algum recorde. Dá 5–15 💎. Modal `trnResult` (LUTAR DE NOVO / RANKING). Não mexe no XP do rank.
+- Ranking `trnRank(f|d|c)`: o máximo de cada uid na semana. O ADM fica fora, numa faixa #0. Top 3 em ouro/azul/vermelho.
+- Títulos `tmf1/2/3` (O MAIS FORTE DO JOGO, 2º, 3º): `trnTitSync()` (7 s depois de abrir e a cada 30 min). Depois do fim da semana, o top 3 da FORÇA ganha e o título entra em uso. `rk_tmfE` {k, ate = fim+7 dias, prev}: quando vence, tira e volta o título anterior. `rk_tmfK` evita dar 2×.
+- Teste `ttorneio_v522.js` (semana, trava, luta imortal, contagem, resultado, ranking, título e expiração).
