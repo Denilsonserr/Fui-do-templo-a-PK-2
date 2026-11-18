@@ -2425,3 +2425,6 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - Encantamento (`psH` embrulhado): quando a pessoa tem alguma, aparecem os botões `.psJxB` (mesma arte `RQA.jn` com muito brilho: anel girando, pulsando; dourado na Divina, rosa/roxo na Primordial). `psSpinX('d'|'p')`: gasta 1, sorteia só a passiva (i 0–3, 10% de ser a 5ª) da raridade garantida, mesma animação, APLICAR/MANTER como sempre. Não gasta Joia Negra e não mexe na proteção.
 - Conserto junto: o número de Joias Negras com 4+ dígitos ficava cortado ("2") → `.psJn b` menor e por cima.
 - Código `TWCUP['1wq3xm7']` (texto só com o dono) = 2.000 Joias Negras + 1 Joia Primordial + Anel Dourado SP ⚔️Dano + 🎯Crítico (Fúria). Uso ÚNICO. Teste `tjoia_pri_v528.js`.
+
+## v529 — código PRIMORDIALX2
+- `TWCUP['1szmvbc']` (texto só com o dono) = 1.000 Joias Negras + 2 Joias Primordiais + 3 Anéis Dourados SP nível 60 ⚔️Dano + 🎯Crítico (passivas Fúria, Combo+ e Vampiro). Uso ÚNICO. Teste `tcod_pri2_v529.js`.
