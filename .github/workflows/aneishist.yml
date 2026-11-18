@@ -14,7 +14,7 @@ jobs:
           n=os.environ['NOME'].lower().strip();acc=hashlib.sha256(('furia|acc|'+n).encode()).hexdigest()[:24]
           B='https://fui-do-templo-a-pk-2.denilsinend.workers.dev/fs/v1/projects/furia-do-templo/databases/(default)/documents'
           H={'Content-Type':'application/json','User-Agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/120 Safari/537.36'}
-          s={'from':[{'collectionId':'torre'}],'where':{'fieldFilter':{'field':{'fieldPath':'sv'},'op':'EQUAL','value':{'stringValue':acc}}},'orderBy':[{'field':{'fieldPath':'__name__'},'direction':'DESCENDING'}],'limit':400}
+          s={'from':[{'collectionId':'torre'}],'where':{'fieldFilter':{'field':{'fieldPath':'sv'},'op':'EQUAL','value':{'stringValue':acc}}},'orderBy':[{'field':{'fieldPath':'__name__'},'direction':'DESCENDING'}],'limit':int(os.environ.get('LIM','40'))}
           L=[x['document'] for x in json.load(urllib.request.urlopen(urllib.request.Request(B+':runQuery',data=json.dumps({'structuredQuery':s}).encode(),headers=H))) if x.get('document')]
           br=lambda ms:(datetime.datetime.utcfromtimestamp(ms/1000)-datetime.timedelta(hours=3)).strftime('%d/%m %H:%M:%S')
           prev=None;allr={}
