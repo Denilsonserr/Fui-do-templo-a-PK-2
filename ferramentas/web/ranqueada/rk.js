@@ -6712,4 +6712,17 @@ async function actCheck(){try{const n=localStorage.getItem('ac_n');if(!n||!local
 setTimeout(()=>{if(ACTCHK)return;ACTCHK=1;actCheck()},8000);
 /* Mercado Negro bloqueado durante a punição */
 {const _mo=mnOn;mnOn=function(){const ban=rkG('mnBan',0)|0;if(ban>Date.now()){const h=Math.ceil((ban-Date.now())/36e5);setTimeout(()=>{rkView('menu');rkToast('⛔ Mercado Negro bloqueado por trapaça: falta '+(h>=24?Math.ceil(h/24)+' dia(s)':h+'h'),'#ff6a6a')},50);return}return _mo.apply(this,arguments)}}
-try{Object.assign(window.__pvT||{},{actTick:()=>actTick(),actCheck:()=>{ACTCHK=1;return actCheck()},actChk:v=>{ACTCHK=v},actSt:()=>({ACTCHK,acConf:!!acConf,t0:+localStorage.getItem('ac_t')})})}catch(e){}
+try{Object.assign(window.__pvT||{},{twRank:t=>twRank(t),twT:async()=>{try{const A=await twFetch();const L=twBest(A.filter(e=>!e.old),twCmpT);const h=twRows(L,'Vini_junior10','t');return {top:L.slice(0,5).map(e=>e.nome+' '+e.tempo),n:A.length,ok:L.length,vini:A.filter(e=>/vini/i.test(e.nome)).map(e=>[e.tempo,e.old]),h:h.length}}catch(e){return 'ERR '+e.message+' '+(e.stack||'').slice(0,300)}},actTick:()=>actTick(),actCheck:()=>{ACTCHK=1;return actCheck()},actChk:v=>{ACTCHK=v},actSt:()=>({ACTCHK,acConf:!!acConf,t0:+localStorage.getItem('ac_t')})})}catch(e){}
+
+/* ================= v526: RANKING DE TEMPO DA TORRE perdia recordes =================
+   O ⏱ TEMPO saía só das 150 subidas com mais PONTOS (pontos = andares + TROFÉUS). Uma subida rápida com poucos troféus
+   (Vini_junior10: 11 andares em 0:53 com 53 troféus) ficava fora da lista e "não contava". Agora busca também as 600 subidas
+   COMPLETAS (11 andares) mais rápidas e junta as duas listas. */
+{const _f=twFetch;twFetch=async function(){const A=await _f.apply(this,arguments);if(twFetch.x&&Date.now()-twFetch.xt<30000)return twFetch.x;
+  try{const body={structuredQuery:{from:[{collectionId:'torre'}],where:{fieldFilter:{field:{fieldPath:'andar'},op:'EQUAL',value:{integerValue:'11'}}},orderBy:[{field:{fieldPath:'tempo'},direction:'ASCENDING'}],limit:600}};
+    const r=await twFetchT(TWURL+':runQuery?key='+TWFB.apiKey,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)},12000);if(!r.ok)return A;const j=await r.json(),seen=new Set(A.map(e=>e._id).filter(Boolean)),out=A.slice();
+    const key=e=>[e.nome.toLowerCase(),e.andar,e.tempo,e.trof].join('|'),have=new Set(A.map(key));
+    for(const x of (Array.isArray(j)?j:[])){const F=x&&x.document&&x.document.fields;if(!F||F.claim||!F.andar)continue;const g=k=>F[k]?(F[k].stringValue!=null?F[k].stringValue:F[k].integerValue!=null?F[k].integerValue:F[k].doubleValue):undefined;
+      const ct=Date.parse(x.document.createTime||'')||0,old=ct<TWCUT||(+g('v')||0)<180||(ct>=TWBUG&&(+g('v')||0)<202&&(+g('tempo')||0)<300);
+      const e={nome:twAl(String(g('nome')||'?').slice(0,16)),andar:+g('andar')||0,tempo:+g('tempo')||0,old,trof:+g('trof')||0,char:String(g('char')||''),uid:String(g('uid')||'')};if(!e.tempo)continue;const k=key(e);if(have.has(k))continue;have.add(k);out.push(e)}
+    twFetch.x=out;twFetch.xt=Date.now();return out}catch(e){return A}}}

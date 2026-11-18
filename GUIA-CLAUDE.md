@@ -2411,3 +2411,8 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - Punição (conta pelos docs `chx_<conta>_*` no servidor): 1ª vez = aviso; da 2ª em diante = multa de 20% das gemas + `rk_mnBan` 3 dias (o `mnOn` volta para o menu com aviso). Cada vez grava `chx_*` {chx, nome, ct, vez, dg, dt, dr, dm, di, da, multa} para o ADM ver. Modal `.actM` "⚠️ TRAPAÇA DETECTADA".
 - Conserto junto: `IV` com `v|0` estragava números grandes (data em ms). `rgsPost` (rgt) e os docs novos usam `Math.round`.
 - Teste `tanti_save_v525.js` (registro, sem falso alarme jogando normal, voltar o save desfaz + aviso, 2ª vez multa + 3 dias sem mercado).
+
+## v526 — ranking de TEMPO da Torre perdia recordes (caso Vini_junior10 0:53)
+- O `twFetch` trazia só as 150 subidas com mais PONTOS (andar·1e7 + troféus·1e4…). Uma subida rápida com poucos troféus (Vini: 11 andares, 0:53, 53 troféus) ficava fora e "não contava" no ⏱ TEMPO.
+- O wrapper do `twFetch` agora busca também `andar == 11` ordenado por `tempo` ASC (limite 600, timeout 12 s; ~125 KB) e junta tirando repetidos (nome|andar|tempo|troféus). Mesmo filtro `old` (TWCUT/v180/TWBUG). Se essa consulta falhar, usa só a lista antiga.
+- Conferido no servidor: Vini_junior10 0:53 (v202, 17/11 19:58) entra; o top do TEMPO fica Honrado 0:35 · Breno 0:48 · Vini 0:53. Debug `__pvT.twT()`.
