@@ -2419,3 +2419,9 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 
 ## v527 — troca do anel do Honrado
 - `honRingFix()` (6 s depois de abrir; só uid `mwc8atkrgg4fns2f` ou nome Honrado; uma vez, `rk_fixHon1`): o Anel Dourado SP com `s='vel', s2='uv'` vira `s='dano', s2='crit'`. Mesmo id, nível 60, nota SP, idade, valor e passiva (Esquiva). Continua equipado. Salva na hora e mostra um aviso. Teste `thon_anel_v527.js`.
+
+## v528 — JOIAS ESPECIAIS DE PASSIVA (Divina / Primordial garantida) + código JOIAPRIMORDIAL
+- `rk_ps.jd` (✨ Joia Divina = giro com DIVINA garantida) e `rk_ps.jp` (🌟 Joia Primordial = giro com PRIMORDIAL garantida). Por enquanto só saem por código (campos `jdx`/`jpx` no TWCUP, wrapper `_cj`).
+- Encantamento (`psH` embrulhado): quando a pessoa tem alguma, aparecem os botões `.psJxB` (mesma arte `RQA.jn` com muito brilho: anel girando, pulsando; dourado na Divina, rosa/roxo na Primordial). `psSpinX('d'|'p')`: gasta 1, sorteia só a passiva (i 0–3, 10% de ser a 5ª) da raridade garantida, mesma animação, APLICAR/MANTER como sempre. Não gasta Joia Negra e não mexe na proteção.
+- Conserto junto: o número de Joias Negras com 4+ dígitos ficava cortado ("2") → `.psJn b` menor e por cima.
+- Código `TWCUP['1wq3xm7']` (texto só com o dono) = 2.000 Joias Negras + 1 Joia Primordial + Anel Dourado SP ⚔️Dano + 🎯Crítico (Fúria). Uso ÚNICO. Teste `tjoia_pri_v528.js`.

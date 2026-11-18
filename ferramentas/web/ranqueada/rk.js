@@ -6736,3 +6736,32 @@ function honRingFix(){try{if(rkG('fixHon1',0))return;const uid=String(twUid()),n
   setTimeout(()=>{try{rkToast('💍 Seu Anel Dourado SP de Velocidade virou ⚔️ DANO + 🎯 CRÍTICO (presente do ADM)','#ffd84a')}catch(e){}},2500)}catch(e){}}
 setTimeout(honRingFix,6000);
 try{Object.assign(window.__pvT||{},{honFix:()=>honRingFix()})}catch(e){}
+
+/* ================= v528: JOIAS ESPECIAIS DE PASSIVA (só por código, por enquanto) =================
+   ✨ JOIA DIVINA = giro com DIVINA garantida · 🌟 JOIA PRIMORDIAL = giro com PRIMORDIAL garantida.
+   Mesma arte da Joia Negra com muito mais brilho. Guardadas em rk_ps {jd, jp}. Botões no Encantamento, ao lado das Joias Negras.
+   Código JOIAPRIMORDIAL (uso único): 2.000 Joias Negras + 1 Joia Primordial + Anel Dourado SP ⚔️Dano + 🎯Crítico. */
+function psSpinX(kind){const o=psG(),t=psTarget(),k=kind==='p'?'jp':'jd',r=kind==='p'?'pri':'div';if(!t||o.pend||PS.anim||PS.busy)return;
+  if((o[k]|0)<1){rkSfx('clang');return rkToast('Você não tem '+(kind==='p'?'Joia Primordial':'Joia Divina'),'#ff8080')}PS.busy=1;
+  const R={r,i:Math.random()<.1?4:(Math.random()*4)|0};o[k]=(o[k]|0)-1;o.pend={tg:{k:t.k,id:t.id},r:R.r,i:R.i};psS(o);
+  PS.anim=1;rkView('ps');psAnim(R.r,()=>{PS.anim=0;PS.busy=0;rkView('ps');const d=psDef(R);rkSfx('boom');try{SFX.boom()}catch(e){}rkToast('✨ '+psRN(R.r)+': '+d.n,PSRC[R.r])})}
+{const _a=psAct;psAct=function(a,b){if(a==='spinD')return psSpinX('d');if(a==='spinP')return psSpinX('p');return _a.apply(this,arguments)}}
+{const _h=psH;psH=function(){const h=_h.apply(this,arguments),o=psG();if(!(o.jd|0)&&!(o.jp|0))return h;const t=psTarget(),dis=!t||o.pend||PS.anim;
+  return h+'<div class="psJX" style="'+rkB2(140,650,450,765)+'">'+((o.jd|0)?'<button data-p="spinD" class="psJxB d" '+(dis?'disabled':'')+'><span class="jw"><img src="'+RQA.jn+'" alt=""></span><b>DIVINA</b><em>x'+(o.jd|0)+'</em></button>':'')+((o.jp|0)?'<button data-p="spinP" class="psJxB p" '+(dis?'disabled':'')+'><span class="jw"><img src="'+RQA.jn+'" alt=""></span><b>PRIMORDIAL</b><em>x'+(o.jp|0)+'</em></button>':'')+'</div>'}}
+TWCUP['1wq3xm7']={nm:'🌟 JOIA PRIMORDIAL + 2.000 Joias Negras + Anel SP',it:[],jn:2000,uni:1,jpx:1,rgsp:[['dano','crit','fur']],msg:'✅ Você ganhou 🌟 1 JOIA PRIMORDIAL (passiva PRIMORDIAL garantida) + 💠 2.000 Joias Negras + 💍 ANEL DOURADO SP no nível máximo (⚔️ Dano + 🎯 Crítico)!'}; /* JOIAPRIMORDIAL (uso único) */
+{const _cj=twCupom;twCupom=async function(code,E){const C=TWCUP[twHash(String(code).toUpperCase())];const r=await _cj.apply(this,arguments);
+  try{if(C&&(C.jpx||C.jdx)&&r!==false&&E&&/\bok\b/.test(E.className||'')){const o=psG();if(C.jpx)o.jp=(o.jp|0)+C.jpx;if(C.jdx)o.jd=(o.jd|0)+C.jdx;psS(o);try{localStorage.removeItem('ac_h');acSave(1)}catch(e){}if(C.msg)E.textContent=C.msg}}catch(e){}return r}}
+{const st=document.createElement('style');st.textContent=`
+.psJX{position:absolute;display:flex;flex-direction:column;gap:6%;align-items:stretch;font-size:2.1em}.psJn{overflow:visible!important;gap:0!important}.psJn img{height:62%!important}.psJn b{white-space:nowrap;font-size:.85em!important;position:relative;z-index:3}
+.psJxB{flex:1;display:flex;flex-direction:row;align-items:center;justify-content:center;gap:.5em;padding:0 .6em;border-radius:.8em;cursor:pointer;font:900 .9em var(--f-ui);color:#fff;position:relative;overflow:visible}
+.psJxB .jw{position:relative;width:2em;height:2em;display:flex;align-items:center;justify-content:center}
+.psJxB .jw::before{content:'';position:absolute;inset:-35%;border-radius:50%;background:conic-gradient(from 0deg,transparent 0 10%,var(--g1) 15%,transparent 22% 45%,var(--g2) 52%,transparent 60% 80%,var(--g1) 86%,transparent 92%);animation:tpRa 3s linear infinite;filter:blur(1px);opacity:.9}
+.psJxB .jw img{position:relative;width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 0 .25em var(--g1)) drop-shadow(0 0 .6em var(--g1)) drop-shadow(0 0 1.1em var(--g2)) saturate(1.6) brightness(1.25);animation:psJx 1.4s ease-in-out infinite}
+@keyframes psJx{0%,100%{transform:scale(1) rotate(-4deg)}50%{transform:scale(1.12) rotate(4deg)}}
+.psJxB b{letter-spacing:.06em;color:var(--g1);text-shadow:0 0 .4em var(--g1),0 .06em 0 #000}.psJxB em{font-style:normal;color:#fff}
+.psJxB.d{--g1:#ffe680;--g2:#ffb300;background:linear-gradient(180deg,rgba(90,60,0,.9),rgba(40,20,0,.9));border:2px solid #ffe680;box-shadow:0 0 1em rgba(255,220,100,.7)}
+.psJxB.p{--g1:#ff5ef2;--g2:#7d4bff;background:linear-gradient(180deg,rgba(80,10,90,.92),rgba(30,5,50,.92));border:2px solid #ff5ef2;box-shadow:0 0 1.2em rgba(255,94,242,.8),0 0 2.2em rgba(125,75,255,.5);animation:psJp 1.8s ease-in-out infinite}
+@keyframes psJp{0%,100%{box-shadow:0 0 1em rgba(255,94,242,.7),0 0 2em rgba(125,75,255,.4)}50%{box-shadow:0 0 1.8em rgba(255,94,242,1),0 0 3.2em rgba(125,75,255,.7)}}
+.psJxB:disabled{filter:grayscale(.5) brightness(.75);animation:none}
+`;document.head.appendChild(st)}
+try{Object.assign(window.__pvT||{},{psG:()=>psG(),psOpen:()=>psOpen()})}catch(e){}
