@@ -4701,6 +4701,7 @@ const SJMS=[
  {id:'d1',t:'d',n:'Vença 3 lutas com o Sung',g:o=>o.d.w,m:3,xp:600},{id:'d2',t:'d',n:'Acerte 200 golpes com o Sung',g:o=>o.d.h,m:200,xp:500},
  {id:'d3',t:'d',n:'Invoque sombras 2 vezes',g:o=>o.d.u,m:2,xp:400},{id:'d4',t:'d',n:'Vença 2 lutas (qualquer personagem)',g:o=>o.d.a,m:2,xp:300},
  {id:'r1',t:'r',n:'Vença 5 lutas com o Sung (repete sempre)',g:o=>o.cnt.w-(o.ms.r1b||0),m:5,xp:450},
+ {id:'r2',t:'r',n:'Invoque sombras 5 vezes (repete sempre)',g:o=>(o.cnt.ult|0)-(o.ms.r2b|0),m:5,xp:400},{id:'r3',t:'r',n:'Acerte 500 golpes com o Sung (repete sempre)',g:o=>(o.cnt.h|0)-(o.ms.r3b|0),m:500,xp:400},
  ...[[3,2500],[6,5000],[9,9000],[11,15000]].map(([a,x])=>({id:'t'+a,t:'o',n:'Torre: vença o ANDAR '+a,g:()=>{try{return tnBest()}catch(e){return 0}},m:a,xp:x})),
  ...[[2,3000],[4,6000],[6,10000],[8,15000],[10,20000],[13,30000]].map(([i,x])=>({id:'k'+i,t:'o',n:'Rank: chegue em '+((RKR[i]||{}).n||'?'),g:()=>Math.max(0,(rkG('rkmax',-1)|0)),m:i,xp:x,rk:1})),
  ...[[10,2000],[50,6000],[150,15000]].map(([a,x])=>({id:'w'+a,t:'o',n:'Vença '+a+' lutas com o Sung',g:o=>o.cnt.w,m:a,xp:x})),
@@ -4743,7 +4744,7 @@ function sjAct(s,D){const o=sjSys();
     $('rkMX').onclick=()=>sjM(null);$('sjRsY').onclick=()=>{const O=sjSys(),sp2=SJST.reduce((a,[k])=>a+Math.max(0,(O.st[k]|0)-10),0);if(cost&&rkG('gem',0)<cost){rkToast('Faltam diamantes','#ff8080');return}
       if(cost)rkAdd('gem',-cost);for(const [k] of SJST)O.st[k]=Math.min(O.st[k]|0,10);O.pts+=sp2;O.rsN=(O.rsN||0)+1;sjSave(O);try{acSave(1)}catch(e){}sjM(null);try{twSfx('boom')}catch(e){}sjSysOpen();rkToast('↺ Atributos resetados: +'+sp2+' pontos para distribuir','#7dff9a')};return}
   if(s==='cls'){if(o.cls&&!pfIsAdm())return;o.cls=D.k;sjSave(o);try{twSfx('boom')}catch(e){}sjSysOpen();return}
-  if(s==='get'){const M=SJMS.find(m=>m.id===D.k);if(!M||sjDone(o,M)||M.g(o)<M.m)return;if(M.t==='d')o.dc[M.id]=1;else if(M.t==='o')o.ms[M.id]=1;else o.ms.r1b=(o.ms.r1b||0)+M.m;
+  if(s==='get'){const M=SJMS.find(m=>m.id===D.k);if(!M||sjDone(o,M)||M.g(o)<M.m)return;if(M.t==='d')o.dc[M.id]=1;else if(M.t==='o')o.ms[M.id]=1;else o.ms[M.id+'b']=(o.ms[M.id+'b']||0)+M.m;
     const up=sjAddXP(o,M.xp);const es=Math.max(5,Math.round(M.xp/40));rkS('sje',(rkG('sje',0)|0)+es);sjSave(o);setTimeout(()=>{try{rkToast('🟣 +'+es+' ESSÊNCIA DA SOMBRA','#c79bff')}catch(e){}},300);try{twSfx('boom')}catch(e){}sjSysOpen();sjPanel('ms');if(up)sjLvUp(o.lv,up);return}
   if(s==='sh'){document.getElementById('sjSys').hidden=true;return sjShOpen()}
   if(s==='eq'){if(o.sh.includes(D.k)){o.eq=o.eq===D.k?'':D.k;sjSave(o);sjSysOpen();sjPanel(D.from||'inv')}return}
@@ -4770,7 +4771,7 @@ function sjPanel(s){const P=document.getElementById('sjPan');if(!P)return;const 
   if(a&&a.def&&a.def.sid==='sj'&&!a.cpu&&d&&d!==a)SJHN++}catch(e){}return _ahS.call(this,a,d,h)}}
 let SJHN=0;
 {const _er=endRound;endRound=function(){let b0=G.wins?G.wins[0]:0,w=G.koWinner;const r=_er.apply(this,arguments);try{const p=G.p&&G.p[0];if(!p)return r;const won=(G.gmode==='boss'||G.gmode==='torre')?w===0:(G.wins&&G.wins[0]>=2&&b0<2);const fin=(G.gmode==='boss'||G.gmode==='torre')||(G.wins&&(G.wins[0]>=2||G.wins[1]>=2));
-  if(fin){const o=sjSys();o.d.h=(o.d.h||0)+SJHN;SJHN=0;if(won)o.d.a=(o.d.a||0)+1;if(p.def.id==='sung'){o.d.f=(o.d.f||0)+1;if(won){o.d.w=(o.d.w||0)+1;o.cnt.w++;const es=4+((Math.random()*5)|0);rkS('sje',(rkG('sje',0)|0)+es);setTimeout(()=>{try{twToast('🟣 +'+es+' ESSÊNCIA DA SOMBRA','#c79bff')}catch(e){}},1800)}}sjSave(o)}}catch(e){}return r}}
+  if(fin){const o=sjSys();o.d.h=(o.d.h||0)+SJHN;o.cnt.h=(o.cnt.h||0)+SJHN;SJHN=0;if(won)o.d.a=(o.d.a||0)+1;if(p.def.id==='sung'){o.d.f=(o.d.f||0)+1;if(won){o.d.w=(o.d.w||0)+1;o.cnt.w++;const es=4+((Math.random()*5)|0);rkS('sje',(rkG('sje',0)|0)+es);setTimeout(()=>{try{twToast('🟣 +'+es+' ESSÊNCIA DA SOMBRA','#c79bff')}catch(e){}},1800)}}sjSave(o)}}catch(e){}return r}}
 {const st=document.createElement('style');st.textContent=`#sjSys{position:fixed;inset:0;z-index:9100;background:#02040c;display:flex;align-items:center;justify-content:center}#sjSys[hidden]{display:none}
 #sjSys .sjW{position:relative;background-size:100% 100%;font:700 30px var(--f-ui,'Saira Condensed',sans-serif);color:#cfefff}
 #sjSys .sjW>*{position:absolute}#sjSys .sjB{background:transparent;border:0;cursor:pointer;border-radius:.4em}#sjSys .sjB:active{background:rgba(120,200,255,.18)}
@@ -6424,3 +6425,10 @@ let ANDR=0;
 {const _ra=rkApply;rkApply=function(){ANDR++;try{return _ra.apply(this,arguments)}finally{ANDR--;try{if(G.gmode==='pvp'&&G.p)for(const f of G.p)if(f&&f.tdm>4&&f._pvDR!==f.tdm){f.tdm=4+(f.tdm-4)*.5;f._pvDR=f.tdm}}catch(e){}}}}
 {const _pd=pvDelta;pvDelta=function(){ANDR++;try{return _pd.apply(this,arguments)}finally{ANDR--}}}
 try{Object.assign(window.__pvT||{},{anDR:v=>anDR(v),anSumF:id=>{ANDR++;try{return anSum(id)}finally{ANDR--}},anSum:id=>anSum(id)})}catch(e){}
+
+/* ================= v517: SUNG NÃO TRAVA NOS NÍVEIS ALTOS =================
+   Honrado (nível 88) já tinha feito todas as missões únicas: sobrava só a repetível de 450 XP a cada 5 vitórias, e o nível 88 pede 4.110 XP
+   (~46 vitórias por nível). Agora as repetíveis crescem com o nível (+12/+10 XP por nível do Sung) e há 2 repetíveis novas
+   (sombras ×5, golpes ×500). Quem já tinha contagem começa do zero nelas (não ganha tudo de uma vez). */
+for(const [id,k] of [['r1',12],['r2',10],['r3',10]]){const M=SJMS.find(m=>m.id===id);if(!M)continue;const b=M.xp;Object.defineProperty(M,'xp',{get(){let lv=1;try{lv=sjSys().lv|0}catch(e){}return b+Math.max(0,lv-1)*k},configurable:true})}
+{const _ss=sjSys;sjSys=function(){const o=_ss.apply(this,arguments);try{o.cnt=o.cnt||{};let ch=0;if(o.ms.r2b==null){o.ms.r2b=o.cnt.ult|0;ch=1}if(o.ms.r3b==null){o.ms.r3b=o.cnt.h|0;ch=1}if(ch)rkS('sjs',o)}catch(e){}return o}}

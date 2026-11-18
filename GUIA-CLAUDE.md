@@ -2366,3 +2366,8 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - Na luta (`ANDR` ligado durante todo o `rkApply` e o `pvDelta`), a soma de DANO, CRÍTICO, VELOCIDADE e VEL. ULTIMATE dos anéis passa por `anDR`: até +400% conta inteiro, de 400 a 1500 rende 70%, acima de 1500 rende 40%. Sorte/drop sem mudança. 1 SP = +708% (−16%), 3 SP = +1578%, 7 SP = +2922%.
 - PVP: `tdm` final acima de ×4 rende metade (`_pvDR` não acumula).
 - Teste `tequil_aneis_v516.js`. `tvel_cap_v513.js` agora espera a luta rodar (antes falhava às vezes).
+
+## v517 — Sung não trava nos níveis altos
+- Caso do Honrado (Sung nível 88, todas as missões únicas feitas): só sobrava a repetível `r1` (450 XP a cada 5 vitórias), e o nível 88 pede 4.110 XP (~46 vitórias por nível). Parecia que "não upava".
+- As repetíveis agora crescem com o nível (getter em `M.xp`): r1 = 450 + 12/nível; r2 = **Invoque sombras 5× (repete)** 400 + 10/nível; r3 = **Acerte 500 golpes com o Sung (repete)** 400 + 10/nível. Nível 88 → 1.494 / 1.270 / 1.270 XP.
+- Base genérica `o.ms[id+'b']` no RESGATAR. Novo contador `o.cnt.h` (golpes totais). Na 1ª leitura, `r2b`/`r3b` começam na contagem atual (não dá tudo de uma vez). Teste `tsung_niveis_v517.js`.
