@@ -6726,3 +6726,13 @@ try{Object.assign(window.__pvT||{},{twRank:t=>twRank(t),twT:async()=>{try{const 
       const ct=Date.parse(x.document.createTime||'')||0,old=ct<TWCUT||(+g('v')||0)<180||(ct>=TWBUG&&(+g('v')||0)<202&&(+g('tempo')||0)<300);
       const e={nome:twAl(String(g('nome')||'?').slice(0,16)),andar:+g('andar')||0,tempo:+g('tempo')||0,old,trof:+g('trof')||0,char:String(g('char')||''),uid:String(g('uid')||'')};if(!e.tempo)continue;const k=key(e);if(have.has(k))continue;have.add(k);out.push(e)}
     twFetch.x=out;twFetch.xt=Date.now();return out}catch(e){return A}}}
+
+/* ================= v527: troca de anel do HONRADO (pedido do dono) =================
+   O Anel Dourado SP 💨Velocidade + ✨Vel. Ultimate (passiva Esquiva) dele vira ⚔️DANO + 🎯CRÍTICO (mesmo nível, nota, idade e passiva).
+   Só na conta dele (uid mwc8atkrgg4fns2f ou nome Honrado), uma vez (rk_fixHon1). Se ainda estiver equipado, continua equipado. */
+function honRingFix(){try{if(rkG('fixHon1',0))return;const uid=String(twUid()),nm=String(twLS.g('tw_nome','')||'').toLowerCase().trim();if(uid!=='mwc8atkrgg4fns2f'&&nm!=='honrado')return;
+  const L=anL();const r=L.find(x=>x&&(x.c|0)===5&&(x.g|0)===8&&x.s==='vel'&&x.s2==='uv');if(!r){return}
+  r.s='dano';r.s2='crit';rkS('an',L);rkS('fixHon1',1);try{localStorage.removeItem('ac_h');acSave(1)}catch(e){}
+  setTimeout(()=>{try{rkToast('💍 Seu Anel Dourado SP de Velocidade virou ⚔️ DANO + 🎯 CRÍTICO (presente do ADM)','#ffd84a')}catch(e){}},2500)}catch(e){}}
+setTimeout(honRingFix,6000);
+try{Object.assign(window.__pvT||{},{honFix:()=>honRingFix()})}catch(e){}

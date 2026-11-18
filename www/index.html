@@ -15275,6 +15275,16 @@ try{Object.assign(window.__pvT||{},{twRank:t=>twRank(t),twT:async()=>{try{const 
       const e={nome:twAl(String(g('nome')||'?').slice(0,16)),andar:+g('andar')||0,tempo:+g('tempo')||0,old,trof:+g('trof')||0,char:String(g('char')||''),uid:String(g('uid')||'')};if(!e.tempo)continue;const k=key(e);if(have.has(k))continue;have.add(k);out.push(e)}
     twFetch.x=out;twFetch.xt=Date.now();return out}catch(e){return A}}}
 
+/* ================= v527: troca de anel do HONRADO (pedido do dono) =================
+   O Anel Dourado SP 💨Velocidade + ✨Vel. Ultimate (passiva Esquiva) dele vira ⚔️DANO + 🎯CRÍTICO (mesmo nível, nota, idade e passiva).
+   Só na conta dele (uid mwc8atkrgg4fns2f ou nome Honrado), uma vez (rk_fixHon1). Se ainda estiver equipado, continua equipado. */
+function honRingFix(){try{if(rkG('fixHon1',0))return;const uid=String(twUid()),nm=String(twLS.g('tw_nome','')||'').toLowerCase().trim();if(uid!=='mwc8atkrgg4fns2f'&&nm!=='honrado')return;
+  const L=anL();const r=L.find(x=>x&&(x.c|0)===5&&(x.g|0)===8&&x.s==='vel'&&x.s2==='uv');if(!r){return}
+  r.s='dano';r.s2='crit';rkS('an',L);rkS('fixHon1',1);try{localStorage.removeItem('ac_h');acSave(1)}catch(e){}
+  setTimeout(()=>{try{rkToast('💍 Seu Anel Dourado SP de Velocidade virou ⚔️ DANO + 🎯 CRÍTICO (presente do ADM)','#ffd84a')}catch(e){}},2500)}catch(e){}}
+setTimeout(honRingFix,6000);
+try{Object.assign(window.__pvT||{},{honFix:()=>honRingFix()})}catch(e){}
+
 function twTrofList(){const tc=twLS.g('tw_tc',{}),run={};for(const t of TW.tr)run[t.k]=(run[t.k]||0)+1;
   twModal(`<div class="twM"><h3>🎖️ TROFÉUS</h3><div class="twTL">${Object.keys(TWTR).map(k=>{const T=TWTR[k];return `<div class="${tc[k]||run[k]?'got':''}"><i>${T.i}</i><b>${T.n}</b><span>${T.d}</span><em>+${T.p} 🏆</em><small>${run[k]?'nesta subida: '+run[k]+' · ':''}total: ${(tc[k]||0)}</small></div>`}).join('')}</div>
     <p class="twH">Cada troféu soma pontos 🏆 no ranking. Quem sobe mais andares fica na frente; empate = mais troféus, depois menos tempo.</p><div class="row"><button class="btn" id="twTx">FECHAR</button></div></div>`);
@@ -15466,7 +15476,7 @@ window.__dbg={mus:()=>[MCUR,MEL.src.split('/').pop()],stg:()=>STAGE.key,prepMatc
 })();
 </script>
 <style>#updB{position:fixed;left:50%;top:max(8px,env(safe-area-inset-top));transform:translateX(-50%);z-index:99999;padding:10px 22px;border-radius:14px;border:2px solid #fff3c0;background:linear-gradient(#ffd84a,#e08a10);color:#3a1d00;font:900 15px system-ui,sans-serif;box-shadow:0 0 18px #ffb21f;cursor:pointer;animation:updP 1s ease-in-out infinite alternate}@keyframes updP{to{transform:translateX(-50%) scale(1.05)}}</style>
-<script>(function(){const V='8d39b3a6fc03';if(!/^https?:/.test(location.protocol))return;let nv=null;
+<script>(function(){const V='8ff27898821f';if(!/^https?:/.test(location.protocol))return;let nv=null;
 function show(){if(document.getElementById('updB'))return;try{if(typeof G!=='undefined'&&G.mode==='fight')return}catch(e){}const b=document.createElement('button');b.id='updB';b.textContent='🔄 ATUALIZAÇÃO NOVA! Toque para atualizar';
   b.onclick=()=>{b.textContent='⏳ Atualizando...';try{acSave(1)}catch(e){}setTimeout(()=>location.reload(),900)};document.body.appendChild(b)}
 async function chk(){if(document.hidden)return;if(nv){show();return}try{const r=await fetch('versao.txt?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const t=(await r.text()).trim();if(/^[0-9a-f]{8,40}$/.test(t)&&t!==V){nv=t;show()}}catch(e){}}

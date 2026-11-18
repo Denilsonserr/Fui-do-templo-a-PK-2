@@ -2416,3 +2416,6 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - O `twFetch` trazia só as 150 subidas com mais PONTOS (andar·1e7 + troféus·1e4…). Uma subida rápida com poucos troféus (Vini: 11 andares, 0:53, 53 troféus) ficava fora e "não contava" no ⏱ TEMPO.
 - O wrapper do `twFetch` agora busca também `andar == 11` ordenado por `tempo` ASC (limite 600, timeout 12 s; ~125 KB) e junta tirando repetidos (nome|andar|tempo|troféus). Mesmo filtro `old` (TWCUT/v180/TWBUG). Se essa consulta falhar, usa só a lista antiga.
 - Conferido no servidor: Vini_junior10 0:53 (v202, 17/11 19:58) entra; o top do TEMPO fica Honrado 0:35 · Breno 0:48 · Vini 0:53. Debug `__pvT.twT()`.
+
+## v527 — troca do anel do Honrado
+- `honRingFix()` (6 s depois de abrir; só uid `mwc8atkrgg4fns2f` ou nome Honrado; uma vez, `rk_fixHon1`): o Anel Dourado SP com `s='vel', s2='uv'` vira `s='dano', s2='crit'`. Mesmo id, nível 60, nota SP, idade, valor e passiva (Esquiva). Continua equipado. Salva na hora e mostra um aviso. Teste `thon_anel_v527.js`.
