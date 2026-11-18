@@ -2457,3 +2457,6 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 
 ## v538 — código ANELSUPREMO (pegadinha)
 - `TWCUP['1wsu5gk']` (uso único): anel SP dano+crit com `q:1` (não funciona em luta), nome/mensagem de anel normal; `rgqp:1` sorteia a passiva (ANGP) para não ter padrão. Teste `tcod_sup_v538.js`.
+
+## v539 — código ELITEV2
+- `TWCUP['1q578c']` (uso único): passe PREMIUM/elite da temporada Solo Leveling (`bp:2,s2:1`) + 5 joias primordiais + anel SP dano+crit (fur, real). Teste `tcod_elite_v539.js`.
