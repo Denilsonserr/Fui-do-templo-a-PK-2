@@ -2442,3 +2442,6 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 
 ## v533 — código JOIADIVINA
 - `TWCUP['1bfh45z']` (texto só com o dono, `jdx:1`) = 1 ✨ Joia Divina (passiva DIVINA garantida no Encantamento). Uso ÚNICO. Teste `tjoia_div_v533.js`.
+
+## v534 — código ANELSORTEDROP
+- `TWCUP['rcyafv']` (uso único): 1 anel dourado SP nível máximo, sorte (st) + drop, passiva fur. Teste `tcod_anelsp_v534.js`.

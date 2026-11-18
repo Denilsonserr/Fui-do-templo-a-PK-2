@@ -15297,6 +15297,7 @@ function psSpinX(kind){const o=psG(),t=psTarget(),k=kind==='p'?'jp':'jd',r=kind=
 {const _h=psH;psH=function(){const h=_h.apply(this,arguments),o=psG();if(!(o.jd|0)&&!(o.jp|0))return h;const t=psTarget(),dis=!t||o.pend||PS.anim;
   return h+'<div class="psJX" style="'+rkB2(140,650,450,765)+'">'+((o.jd|0)?'<button data-p="spinD" class="psJxB d" '+(dis?'disabled':'')+'><span class="jw"><img src="'+RQA.jn+'" alt=""></span><b>DIVINA</b><em>x'+(o.jd|0)+'</em></button>':'')+((o.jp|0)?'<button data-p="spinP" class="psJxB p" '+(dis?'disabled':'')+'><span class="jw"><img src="'+RQA.jn+'" alt=""></span><b>PRIMORDIAL</b><em>x'+(o.jp|0)+'</em></button>':'')+'</div>'}}
 TWCUP['1szmvbc']={nm:'🌟 2 JOIAS PRIMORDIAIS + 1.000 Joias Negras + 3 Anéis SP',it:[],jn:1000,uni:1,jpx:2,rgsp:[['dano','crit','fur'],['dano','crit','cmb'],['dano','crit','vamp']],msg:'✅ Você ganhou 🌟 2 JOIAS PRIMORDIAIS (passiva PRIMORDIAL garantida) + 💠 1.000 Joias Negras + 💍 3 ANÉIS DOURADOS SP no nível máximo (⚔️ Dano + 🎯 Crítico)!'}; /* v529: PRIMORDIALX2 (uso único) */
+TWCUP['rcyafv']={nm:'💍 ANEL DOURADO SP (sorte e drop)',it:[],uni:1,rgsp:[['st','drop','fur']],msg:'✅ Você ganhou 💍 ANEL DOURADO SP no nível máximo (🍀 Sorte + 🎁 Drop)! Veja em ANÉIS DA ALMA.'}; /* v534: ANELSORTEDROP (uso único) */
 TWCUP['1bfh45z']={nm:'✨ JOIA DIVINA',it:[],uni:1,jdx:1,msg:'✅ Você ganhou ✨ 1 JOIA DIVINA (passiva DIVINA garantida)! Use no ENCANTAMENTO.'}; /* v533: JOIADIVINA (uso único) */
 TWCUP['1wq3xm7']={nm:'🌟 JOIA PRIMORDIAL + 2.000 Joias Negras + Anel SP',it:[],jn:2000,uni:1,jpx:1,rgsp:[['dano','crit','fur']],msg:'✅ Você ganhou 🌟 1 JOIA PRIMORDIAL (passiva PRIMORDIAL garantida) + 💠 2.000 Joias Negras + 💍 ANEL DOURADO SP no nível máximo (⚔️ Dano + 🎯 Crítico)!'}; /* JOIAPRIMORDIAL (uso único) */
 {const _cj=twCupom;twCupom=async function(code,E){const C=TWCUP[twHash(String(code).toUpperCase())];const r=await _cj.apply(this,arguments);
@@ -15549,7 +15550,7 @@ window.__dbg={mus:()=>[MCUR,MEL.src.split('/').pop()],stg:()=>STAGE.key,prepMatc
 })();
 </script>
 <style>#updB{position:fixed;left:50%;top:max(8px,env(safe-area-inset-top));transform:translateX(-50%);z-index:99999;padding:10px 22px;border-radius:14px;border:2px solid #fff3c0;background:linear-gradient(#ffd84a,#e08a10);color:#3a1d00;font:900 15px system-ui,sans-serif;box-shadow:0 0 18px #ffb21f;cursor:pointer;animation:updP 1s ease-in-out infinite alternate}@keyframes updP{to{transform:translateX(-50%) scale(1.05)}}</style>
-<script>(function(){const V='d49b59d2c528';if(!/^https?:/.test(location.protocol))return;let nv=null;
+<script>(function(){const V='d6b75759d832';if(!/^https?:/.test(location.protocol))return;let nv=null;
 function show(){if(document.getElementById('updB'))return;try{if(typeof G!=='undefined'&&G.mode==='fight')return}catch(e){}const b=document.createElement('button');b.id='updB';b.textContent='🔄 ATUALIZAÇÃO NOVA! Toque para atualizar';
   b.onclick=()=>{b.textContent='⏳ Atualizando...';try{acSave(1)}catch(e){}setTimeout(()=>location.reload(),900)};document.body.appendChild(b)}
 async function chk(){if(document.hidden)return;if(nv){show();return}try{const r=await fetch('versao.txt?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const t=(await r.text()).trim();if(/^[0-9a-f]{8,40}$/.test(t)&&t!==V){nv=t;show()}}catch(e){}}
