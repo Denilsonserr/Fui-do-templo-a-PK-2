@@ -2454,3 +2454,6 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 
 ## v537 — tempo da torre sem "delay"
 - Wrapper de `update` (fim do rk.js): se o quadro está congelado (`twFrozen`: hitstop, câmera lenta do KO fora do 1/3 que anda, G.trans/ws/cine/comic/zsp/sc/rush/wfs/xu), desfaz o +1 de `TN.fr` (torre nova) e de `TW.fs.t` (torre clássica). Debug `__pvT.twFz()`. Teste `ttorre_tempo_v537.js`.
+
+## v538 — código ANELSUPREMO (pegadinha)
+- `TWCUP['1wsu5gk']` (uso único): anel SP dano+crit com `q:1` (não funciona em luta), nome/mensagem de anel normal; `rgqp:1` sorteia a passiva (ANGP) para não ter padrão. Teste `tcod_sup_v538.js`.

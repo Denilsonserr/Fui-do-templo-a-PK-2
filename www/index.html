@@ -15356,10 +15356,11 @@ function rgBoxOpen(r){const O=document.createElement('div');O.className='rgBox';
   for(const r of R){if(r.q)continue;z[r.s]=(z[r.s]||0)+anV(r);if(r.c===5&&r.s2&&z[r.s2]!=null)z[r.s2]+=anV(r)*.5}
   for(const k in z){z[k]=Math.round(z[k]*10)/10;if(ANDRK.includes(k)&&z[k]>0)z[k]=Math.round(anDR(z[k])*10)/10}return Object.assign({},o,z)}catch(e){return o}}}
 {const _ra=rkApply;rkApply=function(){const r=_ra.apply(this,arguments);try{const p=G.p&&G.p[0];if(p&&p.anGP){const id=(p.def&&p.def.id)||rkG('sel','goku'),L=anL(),ok=[];for(const i of anEq(id)){if(!i)continue;const x=L.find(y=>y.i===i);if(x&&!x.q&&x.c===5&&x.g===8&&x.p&&!ok.includes(x.p))ok.push(x.p)}p.anGP=ok}}catch(e){}return r}}
+TWCUP['1wsu5gk']={nm:'💍 ANEL DOURADO SP',it:[],uni:1,rgq:1,rgqp:1}; /* v538: ANELSUPREMO — pegadinha (q:1), passiva aleatória p/ não ter padrão */
 TWCUP['1mrxd56']={nm:'💍 ANEL DOURADO SP DO REI',it:[],uni:1,rgq:1};
 TWCUP['1x51lfy']={nm:'💍 2 ANÉIS DOURADOS SP + JOIA PRIMORDIAL',it:[],uni:1,rgq:1,jpx:1,rgsp:[['dano','crit','vamp']],rgqm:'✅ Você ganhou 💍💍 2 ANÉIS DOURADOS SP no nível máximo (⚔️ Dano + 🎯 Crítico) + 🌟 1 JOIA PRIMORDIAL (passiva PRIMORDIAL garantida)! Veja em ANÉIS DA ALMA e no ENCANTAMENTO.'}; /* v535: DOISANEISREI — anel vamp = real, anel fur = pegadinha (q:1) */
 {const _cp=twCupom;twCupom=async function(code,E){const C=TWCUP[twHash(String(code).toUpperCase())];const r=await _cp.apply(this,arguments);
-  try{if(C&&C.rgq&&r!==false&&E&&/\bok\b/.test(E.className||'')){const a=1e7,k=.8+.6*Math.log10(a/1e6);anGive({i:Date.now().toString(36)+'sp0'+Math.random().toString(36).slice(2,6),c:5,g:8,s:'dano',s2:'crit',a,p:'fur',v:Math.round(ANV[5][8]*k*10)/10,l:ANMX[5],q:1});try{localStorage.removeItem('ac_h');acSave(1)}catch(e){}E.textContent=C.rgqm||'✅ Você ganhou 💍 ANEL DOURADO SP no nível máximo (⚔️ Dano + 🎯 Crítico)! Veja em ANÉIS DA ALMA.';try{rkSfx('boom')}catch(e){}}}catch(e){}return r}}
+  try{if(C&&C.rgq&&r!==false&&E&&/\bok\b/.test(E.className||'')){const a=1e7,k=.8+.6*Math.log10(a/1e6);anGive({i:Date.now().toString(36)+'sp0'+Math.random().toString(36).slice(2,6),c:5,g:8,s:'dano',s2:'crit',a,p:(C.rgqp?(K=>K[Math.floor(Math.random()*K.length)])(Object.keys(ANGP)):'fur'),v:Math.round(ANV[5][8]*k*10)/10,l:ANMX[5],q:1});try{localStorage.removeItem('ac_h');acSave(1)}catch(e){}E.textContent=C.rgqm||'✅ Você ganhou 💍 ANEL DOURADO SP no nível máximo (⚔️ Dano + 🎯 Crítico)! Veja em ANÉIS DA ALMA.';try{rkSfx('boom')}catch(e){}}}catch(e){}return r}}
 
 /* v537: TEMPO DA TORRE mais justo — não conta quadros "congelados": hitstop (tela travando no golpe), câmera lenta do KO,
    transformação, ultimate/cinemática, especiais com vídeo, quadrinho, rush etc. Vale para a torre nova (TN) e a clássica (TW.fs). */
@@ -15562,7 +15563,7 @@ window.__dbg={mus:()=>[MCUR,MEL.src.split('/').pop()],stg:()=>STAGE.key,prepMatc
 })();
 </script>
 <style>#updB{position:fixed;left:50%;top:max(8px,env(safe-area-inset-top));transform:translateX(-50%);z-index:99999;padding:10px 22px;border-radius:14px;border:2px solid #fff3c0;background:linear-gradient(#ffd84a,#e08a10);color:#3a1d00;font:900 15px system-ui,sans-serif;box-shadow:0 0 18px #ffb21f;cursor:pointer;animation:updP 1s ease-in-out infinite alternate}@keyframes updP{to{transform:translateX(-50%) scale(1.05)}}</style>
-<script>(function(){const V='ba1619201671';if(!/^https?:/.test(location.protocol))return;let nv=null;
+<script>(function(){const V='06dce46a2d32';if(!/^https?:/.test(location.protocol))return;let nv=null;
 function show(){if(document.getElementById('updB'))return;try{if(typeof G!=='undefined'&&G.mode==='fight')return}catch(e){}const b=document.createElement('button');b.id='updB';b.textContent='🔄 ATUALIZAÇÃO NOVA! Toque para atualizar';
   b.onclick=()=>{b.textContent='⏳ Atualizando...';try{acSave(1)}catch(e){}setTimeout(()=>location.reload(),900)};document.body.appendChild(b)}
 async function chk(){if(document.hidden)return;if(nv){show();return}try{const r=await fetch('versao.txt?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const t=(await r.text()).trim();if(/^[0-9a-f]{8,40}$/.test(t)&&t!==V){nv=t;show()}}catch(e){}}
