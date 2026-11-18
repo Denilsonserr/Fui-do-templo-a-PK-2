@@ -2376,3 +2376,9 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - Vídeo do Honrado: depois de RESETAR (centenas de pontos), apertar o "+" seguidas vezes → "Fúria do Templo não está respondendo". Cada toque fazia `sjSysOpen()` (redesenha a tela inteira com o fundo) e tocava `twSfx('coin')`.
 - Agora o `+` usa `sjPlusUI(o)`: só troca os números (`data-v` = for/vit/agi/per/int/hp/mp/pts), e o som fica limitado a 1 a cada 120 ms. **Segurar o +** (0,4 s) repete sozinho, cada vez mais rápido (depois de 25, coloca 5 por vez); o click do fim não soma de novo. A dica aparece na tela quando há mais de 20 pontos.
 - Teste `tsung_mais_v518.js` (60 toques com o processador 8× mais lento: a tela não é recriada; segurar 3 s coloca ~136 pontos).
+
+## v519 — tela de RANKING nova (arte do dono) + MAIS RICO + MAIOR STATUS
+- Arte `ferramentas/ranqueada_artes/v519/rank2.png`. Em `rank2_limpo.png` o cabeçalho "TOP 100 - RANK GERAL" e o "1 / 20" foram apagados com cv2.inpaint. O jogo usa `ARI.rank='a/7d6ef10d25a9be.webp'`. Título, abas e cartões já vêm na arte (`.rgTit` escondido).
+- `RGT` com 6 abas: rp, **gem**, **sta**, dmg, tt, t1. Linhas `RGY6`/`RGX6` (146..1342). Os cartões da direita (`.rgCard`) abrem MAIS RICO e MAIOR STATUS. Nas páginas 2+, as linhas cobrem a cor/badge da arte (roxo) e mostram #6…; os espaços vazios também ficam cobertos.
+- Dados: `rgsPost()` manda um doc `rgs_*` {rgs:'1', rgt, rgem, sdm, scr, sst, stot, char, uid, nome, tit} 9 s depois de abrir, a cada 15 min se mudou ou a cada 6 h. Status = o melhor personagem que a pessoa tem (`cbAll(id).T`: dano, 5+crit, sorte; os mesmos números da tela de Atributos). `rgsQ()` pega os 800 docs mais novos (`orderBy rgt`) e fica com o mais novo de cada uid. Eu mesmo entro com os valores ao vivo.
+- MAIOR STATUS mostra ⚔️ dano, 🎯 crítico, 🍀 sorte e o total. O top 3 tem o total brilhando em ouro/azul/vermelho. Teste `trank_novo_v519.js`.

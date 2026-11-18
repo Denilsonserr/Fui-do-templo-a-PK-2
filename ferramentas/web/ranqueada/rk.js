@@ -6448,3 +6448,65 @@ function sjPlusUI(o){const M=document.getElementById('sjSys');if(!M){sjSysOpen()
   ['pointerup','pointercancel','pointerleave'].forEach(ev=>document.addEventListener(ev,()=>{if(T||k){stop()}},true));
   /* se segurou, o "click" do fim não soma +1 a mais */
   document.addEventListener('click',e=>{if(held&&e.target.closest&&e.target.closest('#sjSys .sjPl')){held=false;e.stopPropagation();e.preventDefault()}},true)}
+
+/* ================= v519: TELA DE RANKING NOVA (arte do dono) + MAIS RICO + MAIOR STATUS =================
+   6 abas: RANK GERAL · MAIS RICO (gemas) · MAIOR STATUS (dano + crítico + sorte do melhor personagem) · DANO NO BROLY · MAIS RÁPIDO · 1ª FASE.
+   Os textos da arte (título, abas, cartões) já vêm na imagem; o cabeçalho e o "1 / 20" foram apagados da arte e são escritos pelo jogo.
+   Dados novos: cada jogador manda um doc rgs_* (rgt = hora, rgem, sdm/scr/sst/stot, char) ao abrir o jogo e a cada 15 min se mudou. */
+ARI.rank='a/7d6ef10d25a9be.webp';
+RGT.length=0;RGT.push(['rp','RANK GERAL',278,497],['gem','MAIS RICO',505,695],['sta','MAIOR STATUS',703,921],['dmg','DANO NO BROLY',930,1133],['tt','MAIS RÁPIDO',1140,1341],['t1','1ª FASE',1350,1557]);
+const RGY6=[[285,370],[374,455],[459,535],[539,620],[623,705]],RGX6=[146,1342];
+/* status do melhor personagem (o mesmo número da tela de Atributos) */
+function rgsMine(){let best=null;for(const id of rkG('own',[])){if(!CH[id])continue;let T;try{T=cbAll(id).T}catch(e){continue}const d=Math.round(T.dano||0),c=Math.round(5+(T.crit||0)),s=Math.round(T.st||0),t=d+c+s;if(!best||t>best.t)best={id,d,c,s,t}}return best||{id:rkG('sel','goku'),d:0,c:5,s:0,t:5}}
+async function rgsPost(force){try{const n=String(twLS.g('tw_nome','')||'').trim();if(!n)return;const S=rgsMine(),g=rkG('gem',0)|0,sig=[g,S.d,S.c,S.s,S.id,twTitOn()].join('|');
+  if(!force&&rkG('rgsSig','')===sig&&Date.now()-(rkG('rgsT',0)|0)<6*36e5)return;const IV=v=>({integerValue:String(Math.max(0,v|0))}),SV=v=>({stringValue:String(v)});
+  const id='rgs_'+String(twUid()).replace(/[^\w-]/g,'').slice(0,40)+'_'+Date.now().toString(36);
+  const r=await twFetchT(TWURL+'/torre?documentId='+id+'&key='+TWFB.apiKey,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({fields:{rgs:SV('1'),rgt:IV(Date.now()),rgem:IV(g),sdm:IV(S.d),scr:IV(S.c),sst:IV(S.s),stot:IV(S.t),char:SV(S.id),uid:SV(twUid()),nome:SV(n.slice(0,16)),tit:SV(twTitOn())}})});
+  if(r&&r.ok){rkS('rgsSig',sig);rkS('rgsT',Date.now())}}catch(e){}}
+setTimeout(()=>rgsPost(),9000);setInterval(()=>rgsPost(),15*6e4);
+async function rgsQ(){const body={structuredQuery:{from:[{collectionId:'torre'}],orderBy:[{field:{fieldPath:'rgt'},direction:'DESCENDING'}],limit:800}};
+  const r=await twFetchT(TWURL+':runQuery?key='+TWFB.apiKey,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});if(!r.ok)throw new Error('http '+r.status);const j=await r.json(),o=[];
+  for(const x of (Array.isArray(j)?j:[])){const F=x&&x.document&&x.document.fields;if(!F||!F.rgs)continue;const e={};for(const k in F){const v=F[k];e[k]=v.stringValue!=null?v.stringValue:v.integerValue!=null?+v.integerValue:v.doubleValue}o.push(e)}return o}
+async function rgsLoad(){const L=await rgsQ(),M={};for(const e of L){if(!e||e.rgs!=='1')continue;const k=e.uid||e.nome;if(!M[k]||(e.rgt|0)>(M[k].rgt|0))M[k]=e}
+  const me=twUid(),S=rgsMine();M[me]=Object.assign({},M[me]||{},{uid:me,nome:String(twLS.g('tw_nome','')||'VOCÊ'),tit:twTitOn(),rgem:rkG('gem',0)|0,sdm:S.d,scr:S.c,sst:S.s,stot:S.t,char:S.id});
+  return Object.values(M).map(e=>({uid:e.uid,nome:e.nome,tit:e.tit,char:e.char,gem:e.rgem|0,sd:e.sdm|0,sc:e.scr|0,ss:e.sst|0,st:(e.sdm|0)+(e.scr|0)+(e.sst|0)}))}
+{const _r=rkRanking;rkRanking=function(tab){const t=tab||'rp';if(t!=='gem'&&t!=='sta')return _r.apply(this,arguments);
+  RG2.tab=t;RG2.pg=0;RG2.L=null;RG2.err=0;rkModal(null);rkView('rkg');
+  rgsLoad().then(A=>{const L=A.filter(e=>t==='gem'?e.gem>0:e.st>0).sort((a,b)=>t==='gem'?b.gem-a.gem:b.st-a.st);RG2.L=L.slice(0,100);if(RKV==='rkg'&&RG2.tab===t)rgDraw()}).catch(()=>{RG2.err=1;if(RKV==='rkg')rgDraw()})}}
+rgH=function(){return `<button class="hs" data-a="back" style="${rgB(30,12,172,80)}"></button><button class="hs" data-a="home" style="${rgB(1672,12,1816,80)}"></button>
+  ${RGT.map(([k,n,a,b])=>`<button class="hs rgTb rg6 ${RG2.tab===k?'on':''}" data-a="rgTab" data-t="${k}" aria-label="${n}" style="${rgB(a,126,b,194)}"></button>`).join('')}
+  <button class="hs rgCard ${RG2.tab==='gem'?'on':''}" data-a="rgTab" data-t="gem" aria-label="Mais rico" style="${rgB(1366,232,1694,460)}"></button>
+  <button class="hs rgCard ${RG2.tab==='sta'?'on':''}" data-a="rgTab" data-t="sta" aria-label="Maior status" style="${rgB(1366,484,1694,732)}"></button>
+  <div id="rgBody"></div>`};
+const RGN={rp:'RANK GERAL',gem:'MAIS RICO · GEMAS',sta:'MAIOR STATUS · DANO + CRÍTICO + SORTE',dmg:'DANO NO BROLY',tt:'MAIS RÁPIDO',t1:'1ª FASE'};
+rgDraw=function(){const B=$('rgBody');if(!B)return;const L=RG2.L,t=RG2.tab,me=twUid();
+  if(!L){B.innerHTML=`<div class="rgMsg" style="${rgB(160,420,1330,600)}">${RG2.err?rkNetMsg():'Carregando...'}</div>`;return}
+  const pages=Math.max(1,Math.ceil(L.length/5));RG2.pg=Math.min(RG2.pg,pages-1);const mi=L.findIndex(e=>e.uid===me);
+  const ico=e=>t==='gem'||t==='sta'?(IMG[e.char]?IMG[e.char].src:RQA.coin[0]):RQA.rank[rkRank(e.rp)];
+  const val=e=>t==='rp'?rkFmtN(e.rp)+' XP':t==='dmg'?rkFmtN(e.dmg)+' DE DANO':t==='gem'?'<span class="rgGm"><img src="'+RQA.coin[0]+'" alt="">'+rkFmtN(e.gem)+'</span>':t==='sta'?`<span class="rgSt"><i>⚔️ +${rkFmtN(e.sd)}%</i><i>🎯 ${rkFmtN(e.sc)}%</i><i>🍀 +${rkFmtN(e.ss)}</i><b>${rkFmtN(e.st)}</b></span>`:twFmt(e[t]);
+  B.innerHTML=`<div class="rgHd rg6" style="${rgB(176,238,1322,278)}"><span>TOP ${L.length} · ${RGN[t]||''}</span><span>${mi>=0?'VOCÊ: <b>#'+(mi+1)+'</b>':'Jogue para entrar no ranking'} · toque num jogador para ver o perfil</span></div>`+
+    (L.length?L.slice(RG2.pg*5,RG2.pg*5+5).map((e,k)=>{const i=RG2.pg*5+k;return `<div class="rgRw rg6 p${k}${RG2.pg?' pg':''}${e.uid===me?' me':''}${t==='sta'&&i<3?' top3 t'+i:''}" data-pu="${twEsc(e.uid||'')}" data-pn="${twEsc(e.nome||'')}" style="${rgB(RGX6[0],RGY6[k][0],RGX6[1],RGY6[k][1])}">${RG2.pg?`<b class="ps2">#${i+1}</b>`:'<b class="ps0"></b>'}<img src="${ico(e)}" alt=""><span class="nm"><b>${twEsc(e.nome)}</b>${rgTit(twTN(e),e.nome)}</span><span class="vl">${val(e)}</span></div>`}).join('')+(RG2.pg?Array.from({length:Math.max(0,5-L.slice(RG2.pg*5,RG2.pg*5+5).length)},(_,j)=>{const k=5-1-j;return `<div class="rgRw rg6 pg empty" style="${rgB(RGX6[0],RGY6[k][0],RGX6[1],RGY6[k][1])}"></div>`}).join(''):'')
+      :`<div class="rgMsg" style="${rgB(160,420,1330,600)}">Ninguém no ranking ainda. Seja o primeiro!</div>`)+
+    `<button class="hs rgPg" data-a="rgPrev" style="${rgB(748,752,826,812)}" ${RG2.pg?'':'disabled'}>◀</button><div class="rgPn" style="${rgB(840,752,1006,812)}">${RG2.pg+1} / ${pages}</div><button class="hs rgPg" data-a="rgNext" style="${rgB(1020,752,1100,812)}" ${RG2.pg<pages-1?'':'disabled'}>▶</button>`;
+  B.querySelectorAll('[data-a]').forEach(b=>b.onclick=e=>{e.stopPropagation();rkAct(b.dataset.a,b)})};
+{const st=document.createElement('style');st.textContent=`
+.rk_rkg .rgTit{display:none}
+.rk_rkg .rgTb.rg6{border-radius:1.2em}.rk_rkg .rgTb.rg6.on{box-shadow:0 0 1.2em rgba(255,200,80,.55),inset 0 0 1em rgba(255,210,90,.35)!important}.rk_rkg .rgTb.rg6::after{display:none}
+.rk_rkg .rgTb.rg6:not(.on){filter:none}.rk_rkg .rgCard{border-radius:1.2em}.rk_rkg .rgCard.on{box-shadow:0 0 1.6em rgba(255,210,90,.7),inset 0 0 1.2em rgba(255,210,90,.3)}
+.rk_rkg .rgCard:active,.rk_rkg .rgTb.rg6:active{filter:brightness(1.3)}
+.rk_rkg .rgHd.rg6{font-size:1.05em}
+.rk_rkg .rgRw.rg6{padding:0 1.4% 0 .8%;gap:1.2%;border-radius:1.4em}
+.rk_rkg .rgRw.rg6 .ps0{flex:0 0 9.5%}
+.rk_rkg .rgRw.rg6 .ps2{flex:0 0 9.5%;display:flex;align-items:center;justify-content:center;font:900 2.1em "Cinzel","Saira Condensed",serif;color:#fff;text-shadow:0 0 .4em #b07bff,0 .06em 0 #000}
+.rk_rkg .rgRw.rg6.pg{background:linear-gradient(90deg,#1a0a3c,#2b1163 55%,#1a0a3c)!important;opacity:1!important;box-shadow:inset 0 0 0 .14em #9a5cff,0 0 .7em rgba(150,90,255,.45)}
+.rk_rkg .rgRw.rg6.pg.me{box-shadow:inset 0 0 0 .16em #7dff9a,0 0 1em rgba(120,255,150,.55)}.rk_rkg .rgRw.rg6.empty{pointer-events:none}
+.rk_rkg .rgTb.rg6.on::before{content:'';position:absolute;left:18%;right:18%;bottom:-.35em;height:.26em;border-radius:1em;background:linear-gradient(90deg,transparent,#ffd25a,transparent);box-shadow:0 0 .7em #ffd25a}
+.rk_rkg .rgRw.rg6 img{width:3.6em;height:3.6em}
+.rk_rkg .rgRw.rg6 .vl{margin-right:.4em;font-size:1.7em}
+.rk_rkg .rgGm{display:flex;align-items:center;gap:.25em;color:#bfe8ff;text-shadow:0 0 .4em rgba(120,200,255,.8),0 .06em 0 #000}.rk_rkg .rgGm img{width:1.15em!important;height:1.15em!important}
+.rk_rkg .rgSt{display:flex;align-items:center;gap:.55em;font-size:.72em}.rk_rkg .rgSt i{font-style:normal;color:#fff;background:rgba(10,4,30,.55);border:1px solid rgba(255,255,255,.18);border-radius:.6em;padding:.12em .45em}
+.rk_rkg .rgSt b{font-size:1.45em;color:#ffe08a;margin-left:.2em}
+.rk_rkg .rgRw.rg6.top3 .rgSt b{animation:rgSb 1.6s ease-in-out infinite}.rk_rkg .rgRw.rg6.t0 .rgSt b{color:#ffe36a;text-shadow:0 0 .5em #ffcc33,0 0 1em #ff9d00}.rk_rkg .rgRw.rg6.t1 .rgSt b{color:#cfe6ff;text-shadow:0 0 .5em #6fb6ff}.rk_rkg .rgRw.rg6.t2 .rgSt b{color:#ffb38a;text-shadow:0 0 .5em #ff5a2a}
+@keyframes rgSb{0%,100%{filter:brightness(1)}50%{filter:brightness(1.4)}}
+`;document.head.appendChild(st)}
+try{Object.assign(window.__pvT||{},{rgsMine:()=>rgsMine(),rgsPost:f=>rgsPost(f),rank:t=>rkRanking(t)})}catch(e){}
