@@ -6766,3 +6766,10 @@ TWCUP['1wq3xm7']={nm:'🌟 JOIA PRIMORDIAL + 2.000 Joias Negras + Anel SP',it:[]
 .psJxB:disabled{filter:grayscale(.5) brightness(.75);animation:none}
 `;document.head.appendChild(st)}
 try{Object.assign(window.__pvT||{},{psG:()=>psG(),psOpen:()=>psOpen()})}catch(e){}
+
+/* v530: código PEDRAS20ANEIS (uso único): Pedras das Almas para evoluir 20 anéis do nível 1 ao máximo (60), com uma sobrinha.
+   Custo de 1 anel 1→60 (anCost): comum 17 · rara 18 · épica 18 · lendária 18 · mítica 6 · secreta 9 · divina 21. */
+TWCUP['1ire7ck']={nm:'💎 PEDRAS DAS ALMAS PARA 20 ANÉIS',it:[],uni:1,pdq:[400,400,400,400,150,200,450]};
+{const _cp=twCupom;twCupom=async function(code,E){const C=TWCUP[twHash(String(code).toUpperCase())];const r=await _cp.apply(this,arguments);
+  try{if(C&&C.pdq&&r!==false&&E&&/\bok\b/.test(E.className||'')){C.pdq.forEach((n,t)=>pdAdd(t,n));try{localStorage.removeItem('ac_h');acSave(1)}catch(e){}E.textContent='✅ Você ganhou PEDRAS DAS ALMAS para evoluir 20 anéis até o nível máximo: '+C.pdq.map((n,t)=>n+' '+PDN[t]).join(' · ')+'!';try{rkSfx('boom')}catch(e){}}}catch(e){}return r}}
+try{Object.assign(window.__pvT||{},{pdA:()=>pdA()})}catch(e){}

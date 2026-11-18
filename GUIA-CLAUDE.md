@@ -2428,3 +2428,6 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 
 ## v529 — código PRIMORDIALX2
 - `TWCUP['1szmvbc']` (texto só com o dono) = 1.000 Joias Negras + 2 Joias Primordiais + 3 Anéis Dourados SP nível 60 ⚔️Dano + 🎯Crítico (passivas Fúria, Combo+ e Vampiro). Uso ÚNICO. Teste `tcod_pri2_v529.js`.
+
+## v530 — código PEDRAS20ANEIS
+- `TWCUP['1ire7ck']` (texto só com o dono) = Pedras das Almas para evoluir 20 anéis do 1 ao 60 (`pdq`: 400 comum · 400 rara · 400 épica · 400 lendária · 150 mítica · 200 secreta · 450 divina; 1 anel 1→60 custa 17/18/18/18/6/9/21). Uso ÚNICO. Teste `tcod_pedras_v530.js`.
