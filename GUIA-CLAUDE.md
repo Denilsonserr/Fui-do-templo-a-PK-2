@@ -2371,3 +2371,8 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - Caso do Honrado (Sung nível 88, todas as missões únicas feitas): só sobrava a repetível `r1` (450 XP a cada 5 vitórias), e o nível 88 pede 4.110 XP (~46 vitórias por nível). Parecia que "não upava".
 - As repetíveis agora crescem com o nível (getter em `M.xp`): r1 = 450 + 12/nível; r2 = **Invoque sombras 5× (repete)** 400 + 10/nível; r3 = **Acerte 500 golpes com o Sung (repete)** 400 + 10/nível. Nível 88 → 1.494 / 1.270 / 1.270 XP.
 - Base genérica `o.ms[id+'b']` no RESGATAR. Novo contador `o.cnt.h` (golpes totais). Na 1ª leitura, `r2b`/`r3b` começam na contagem atual (não dá tudo de uma vez). Teste `tsung_niveis_v517.js`.
+
+## v518 — o "+" do sistema do Sung travava o celular
+- Vídeo do Honrado: depois de RESETAR (centenas de pontos), apertar o "+" seguidas vezes → "Fúria do Templo não está respondendo". Cada toque fazia `sjSysOpen()` (redesenha a tela inteira com o fundo) e tocava `twSfx('coin')`.
+- Agora o `+` usa `sjPlusUI(o)`: só troca os números (`data-v` = for/vit/agi/per/int/hp/mp/pts), e o som fica limitado a 1 a cada 120 ms. **Segurar o +** (0,4 s) repete sozinho, cada vez mais rápido (depois de 25, coloca 5 por vez); o click do fim não soma de novo. A dica aparece na tela quando há mais de 20 pontos.
+- Teste `tsung_mais_v518.js` (60 toques com o processador 8× mais lento: a tela não é recriada; segurar 3 s coloca ~136 pontos).

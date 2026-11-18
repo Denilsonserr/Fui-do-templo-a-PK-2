@@ -13265,23 +13265,23 @@ function sjSysOpen(){let M=document.getElementById('sjSys');if(!M){M=document.cr
    <div class="sjT" style="${sjP(480,207,595,330)};font-size:2.2em">${C?C.ic:'❔'}</div>
    <div class="sjT sjV" style="${sjP(735,212,820,252)}">${o.lv}</div>
    <div class="sjT sjV" style="${sjP(1005,212,1230,252)};font-size:.78em">${C?C.n:'ESCOLHA'}</div>
-   <div class="sjT sjV" style="${sjP(663,280,812,318)};font-size:.8em">${rkFmtN(V.hp)}</div>
-   <div class="sjT sjV" style="${sjP(888,280,1028,318)};font-size:.8em">${V.mp}</div>
+   <div class="sjT sjV" data-v="hp" style="${sjP(663,280,812,318)};font-size:.8em">${rkFmtN(V.hp)}</div>
+   <div class="sjT sjV" data-v="mp" style="${sjP(888,280,1028,318)};font-size:.8em">${V.mp}</div>
    <div class="sjT sjV" style="${sjP(1146,280,1238,318)};font-size:.8em">${V.fad}%</div>
    <div class="sjXp" style="${sjP(612,328,1238,344)}"><s style="width:${need?Math.min(100,o.xp/need*100):100}%"></s><b>${o.lv>=SJMX?'NÍVEL MÁXIMO':'XP '+rkFmtN(o.xp)+' / '+rkFmtN(need)}</b></div>
-   <div class="sjT sjV ${o.pts?'sjOn':''}" style="${sjP(1140,381,1229,427)}">${o.pts}</div>
-   ${SJST.map(([k],i)=>{const y=[467,545,624,702,780][i];return `<div class="sjT sjV" style="${sjP(1006,y,1106,y+45)}">${o.st[k]}</div><button class="sjB sjPl ${o.pts?'':'no'}" data-s="+" data-k="${k}" style="${sjP(1141,y-2,1195,y+47)}" aria-label="+"></button>`}).join('')}
+   <div class="sjT sjV ${o.pts?'sjOn':''}" data-v="pts" style="${sjP(1140,381,1229,427)}">${o.pts}</div>
+   ${SJST.map(([k],i)=>{const y=[467,545,624,702,780][i];return `<div class="sjT sjV" data-v="${k}" style="${sjP(1006,y,1106,y+45)}">${o.st[k]}</div><button class="sjB sjPl ${o.pts?'':'no'}" data-s="+" data-k="${k}" style="${sjP(1141,y-2,1195,y+47)}" aria-label="+"></button>`}).join('')}
    <button class="sjRs" data-s="rs" style="${sjP(700,386,895,424)}">↺ RESETAR</button>
    <div class="sjTag" style="${sjP(160,22,470,72)}">✦ DIVINO · NÍVEL MÁX. ${SJMX}</div>
    <button class="sjB" data-s="sh" style="${sjP(1305,232,1650,357)}"></button><button class="sjB" data-s="ms" style="${sjP(1307,381,1650,500)}"></button>
    <button class="sjB" data-s="inv" style="${sjP(1307,530,1650,650)}"></button><button class="sjB" data-s="cl" style="${sjP(1307,677,1650,796)}"></button>
    ${SJMS.some(m=>!sjDone(o,m)&&m.g(o)>=m.m)?`<i class="sjDot" style="${sjP(1612,388,1640,416)}"></i>`:''}
-   <div class="sjHint" style="${sjP(505,842,1240,880)}">${['for','Força = dano','vit','Vitalidade = vida','agi','Agilidade = velocidade','per','Percepção = desviar sozinho','int','Inteligência = força da sombra'].filter((x,i)=>i%2).join(' · ')}</div>
+   <div class="sjHint" style="${sjP(505,842,1240,880)}">${['for','Força = dano','vit','Vitalidade = vida','agi','Agilidade = velocidade','per','Percepção = desviar sozinho','int','Inteligência = força da sombra'].filter((x,i)=>i%2).join(' · ')+(o.pts>20?' · SEGURE o + para colocar rápido':'')}</div>
    <div class="sjPan" id="sjPan" hidden></div></div>`;
   M.hidden=false;sjFit();M.onclick=e=>{const b=e.target.closest('[data-s]');if(!b)return;sjAct(b.dataset.s,b.dataset)};if(!o.cls)sjPanel('cl')}
 function sjAct(s,D){const o=sjSys();
   if(s==='x'){const P=document.getElementById('sjPan');if(P&&!P.hidden){P.hidden=true;return}document.getElementById('sjSys').hidden=true;return}
-  if(s==='+'){if(o.pts>0){o.st[D.k]++;o.pts--;sjSave(o);try{twSfx('coin')}catch(e){}sjSysOpen()}return}
+  if(s==='+'){if(o.pts>0){o.st[D.k]++;o.pts--;sjSave(o);sjPlusUI(o)}return} /* v518: sem redesenhar a tela inteira (travava com muitos toques) */
   if(s==='px'){document.getElementById('sjPan').hidden=true;return}
   if(s==='rs'){/* v495: resetar atributos — devolve todos os pontos gastos. 1º reset grátis, depois 500 💎 */
     const sp=SJST.reduce((a,[k])=>a+Math.max(0,(o.st[k]|0)-10),0),free=!o.rsN,cost=free?0:500;
@@ -14981,6 +14981,22 @@ try{Object.assign(window.__pvT||{},{anDR:v=>anDR(v),anSumF:id=>{ANDR++;try{retur
 for(const [id,k] of [['r1',12],['r2',10],['r3',10]]){const M=SJMS.find(m=>m.id===id);if(!M)continue;const b=M.xp;Object.defineProperty(M,'xp',{get(){let lv=1;try{lv=sjSys().lv|0}catch(e){}return b+Math.max(0,lv-1)*k},configurable:true})}
 {const _ss=sjSys;sjSys=function(){const o=_ss.apply(this,arguments);try{o.cnt=o.cnt||{};let ch=0;if(o.ms.r2b==null){o.ms.r2b=o.cnt.ult|0;ch=1}if(o.ms.r3b==null){o.ms.r3b=o.cnt.h|0;ch=1}if(ch)rkS('sjs',o)}catch(e){}return o}}
 
+/* ================= v518: "+" DO SISTEMA DO SUNG TRAVAVA O CELULAR =================
+   Depois de RESETAR (centenas de pontos), cada toque no "+" redesenhava a tela inteira e tocava um som: com toques rápidos o celular
+   ficava "não está respondendo". Agora o "+" só troca os números na tela, o som é limitado e SEGURAR o "+" distribui rápido. */
+let SJSFX=0;
+function sjPlusUI(o){const M=document.getElementById('sjSys');if(!M){sjSysOpen();return}const V=sjV(o),set=(k,v)=>{const e=M.querySelector('[data-v="'+k+'"]');if(e)e.textContent=v};
+  for(const [k] of SJST)set(k,o.st[k]);set('hp',rkFmtN(V.hp));set('mp',V.mp);set('pts',o.pts);
+  const P=M.querySelector('[data-v="pts"]');if(P)P.classList.toggle('sjOn',o.pts>0);M.querySelectorAll('.sjPl').forEach(b=>b.classList.toggle('no',!o.pts));
+  const t=performance.now();if(t-SJSFX>120){SJSFX=t;try{twSfx('coin')}catch(e){}}}
+/* segurar o "+": depois de 0,4 s repete (cada vez mais rápido). O clique normal continua dando +1. */
+{let T=null,k=null,n=0,held=false;const stop=()=>{if(T)clearTimeout(T);T=null;k=null};
+  const step=()=>{if(!k)return;const o=sjSys();if(o.pts<=0){stop();return}const q=Math.min(o.pts,n>25?5:1);o.st[k]+=q;o.pts-=q;sjSave(o);sjPlusUI(o);n++;T=setTimeout(step,n>10?45:90)};
+  document.addEventListener('pointerdown',e=>{const b=e.target.closest&&e.target.closest('#sjSys .sjPl');if(!b)return;stop();k=b.dataset.k;n=0;held=false;T=setTimeout(()=>{held=true;step()},400)},true);
+  ['pointerup','pointercancel','pointerleave'].forEach(ev=>document.addEventListener(ev,()=>{if(T||k){stop()}},true));
+  /* se segurou, o "click" do fim não soma +1 a mais */
+  document.addEventListener('click',e=>{if(held&&e.target.closest&&e.target.closest('#sjSys .sjPl')){held=false;e.stopPropagation();e.preventDefault()}},true)}
+
 function twTrofList(){const tc=twLS.g('tw_tc',{}),run={};for(const t of TW.tr)run[t.k]=(run[t.k]||0)+1;
   twModal(`<div class="twM"><h3>🎖️ TROFÉUS</h3><div class="twTL">${Object.keys(TWTR).map(k=>{const T=TWTR[k];return `<div class="${tc[k]||run[k]?'got':''}"><i>${T.i}</i><b>${T.n}</b><span>${T.d}</span><em>+${T.p} 🏆</em><small>${run[k]?'nesta subida: '+run[k]+' · ':''}total: ${(tc[k]||0)}</small></div>`}).join('')}</div>
     <p class="twH">Cada troféu soma pontos 🏆 no ranking. Quem sobe mais andares fica na frente; empate = mais troféus, depois menos tempo.</p><div class="row"><button class="btn" id="twTx">FECHAR</button></div></div>`);
@@ -15172,7 +15188,7 @@ window.__dbg={mus:()=>[MCUR,MEL.src.split('/').pop()],stg:()=>STAGE.key,prepMatc
 })();
 </script>
 <style>#updB{position:fixed;left:50%;top:max(8px,env(safe-area-inset-top));transform:translateX(-50%);z-index:99999;padding:10px 22px;border-radius:14px;border:2px solid #fff3c0;background:linear-gradient(#ffd84a,#e08a10);color:#3a1d00;font:900 15px system-ui,sans-serif;box-shadow:0 0 18px #ffb21f;cursor:pointer;animation:updP 1s ease-in-out infinite alternate}@keyframes updP{to{transform:translateX(-50%) scale(1.05)}}</style>
-<script>(function(){const V='15746f9c83dc';if(!/^https?:/.test(location.protocol))return;let nv=null;
+<script>(function(){const V='a3368af4608a';if(!/^https?:/.test(location.protocol))return;let nv=null;
 function show(){if(document.getElementById('updB'))return;try{if(typeof G!=='undefined'&&G.mode==='fight')return}catch(e){}const b=document.createElement('button');b.id='updB';b.textContent='🔄 ATUALIZAÇÃO NOVA! Toque para atualizar';
   b.onclick=()=>{b.textContent='⏳ Atualizando...';try{acSave(1)}catch(e){}setTimeout(()=>location.reload(),900)};document.body.appendChild(b)}
 async function chk(){if(document.hidden)return;if(nv){show();return}try{const r=await fetch('versao.txt?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const t=(await r.text()).trim();if(/^[0-9a-f]{8,40}$/.test(t)&&t!==V){nv=t;show()}}catch(e){}}

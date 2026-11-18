@@ -4717,23 +4717,23 @@ function sjSysOpen(){let M=document.getElementById('sjSys');if(!M){M=document.cr
    <div class="sjT" style="${sjP(480,207,595,330)};font-size:2.2em">${C?C.ic:'❔'}</div>
    <div class="sjT sjV" style="${sjP(735,212,820,252)}">${o.lv}</div>
    <div class="sjT sjV" style="${sjP(1005,212,1230,252)};font-size:.78em">${C?C.n:'ESCOLHA'}</div>
-   <div class="sjT sjV" style="${sjP(663,280,812,318)};font-size:.8em">${rkFmtN(V.hp)}</div>
-   <div class="sjT sjV" style="${sjP(888,280,1028,318)};font-size:.8em">${V.mp}</div>
+   <div class="sjT sjV" data-v="hp" style="${sjP(663,280,812,318)};font-size:.8em">${rkFmtN(V.hp)}</div>
+   <div class="sjT sjV" data-v="mp" style="${sjP(888,280,1028,318)};font-size:.8em">${V.mp}</div>
    <div class="sjT sjV" style="${sjP(1146,280,1238,318)};font-size:.8em">${V.fad}%</div>
    <div class="sjXp" style="${sjP(612,328,1238,344)}"><s style="width:${need?Math.min(100,o.xp/need*100):100}%"></s><b>${o.lv>=SJMX?'NÍVEL MÁXIMO':'XP '+rkFmtN(o.xp)+' / '+rkFmtN(need)}</b></div>
-   <div class="sjT sjV ${o.pts?'sjOn':''}" style="${sjP(1140,381,1229,427)}">${o.pts}</div>
-   ${SJST.map(([k],i)=>{const y=[467,545,624,702,780][i];return `<div class="sjT sjV" style="${sjP(1006,y,1106,y+45)}">${o.st[k]}</div><button class="sjB sjPl ${o.pts?'':'no'}" data-s="+" data-k="${k}" style="${sjP(1141,y-2,1195,y+47)}" aria-label="+"></button>`}).join('')}
+   <div class="sjT sjV ${o.pts?'sjOn':''}" data-v="pts" style="${sjP(1140,381,1229,427)}">${o.pts}</div>
+   ${SJST.map(([k],i)=>{const y=[467,545,624,702,780][i];return `<div class="sjT sjV" data-v="${k}" style="${sjP(1006,y,1106,y+45)}">${o.st[k]}</div><button class="sjB sjPl ${o.pts?'':'no'}" data-s="+" data-k="${k}" style="${sjP(1141,y-2,1195,y+47)}" aria-label="+"></button>`}).join('')}
    <button class="sjRs" data-s="rs" style="${sjP(700,386,895,424)}">↺ RESETAR</button>
    <div class="sjTag" style="${sjP(160,22,470,72)}">✦ DIVINO · NÍVEL MÁX. ${SJMX}</div>
    <button class="sjB" data-s="sh" style="${sjP(1305,232,1650,357)}"></button><button class="sjB" data-s="ms" style="${sjP(1307,381,1650,500)}"></button>
    <button class="sjB" data-s="inv" style="${sjP(1307,530,1650,650)}"></button><button class="sjB" data-s="cl" style="${sjP(1307,677,1650,796)}"></button>
    ${SJMS.some(m=>!sjDone(o,m)&&m.g(o)>=m.m)?`<i class="sjDot" style="${sjP(1612,388,1640,416)}"></i>`:''}
-   <div class="sjHint" style="${sjP(505,842,1240,880)}">${['for','Força = dano','vit','Vitalidade = vida','agi','Agilidade = velocidade','per','Percepção = desviar sozinho','int','Inteligência = força da sombra'].filter((x,i)=>i%2).join(' · ')}</div>
+   <div class="sjHint" style="${sjP(505,842,1240,880)}">${['for','Força = dano','vit','Vitalidade = vida','agi','Agilidade = velocidade','per','Percepção = desviar sozinho','int','Inteligência = força da sombra'].filter((x,i)=>i%2).join(' · ')+(o.pts>20?' · SEGURE o + para colocar rápido':'')}</div>
    <div class="sjPan" id="sjPan" hidden></div></div>`;
   M.hidden=false;sjFit();M.onclick=e=>{const b=e.target.closest('[data-s]');if(!b)return;sjAct(b.dataset.s,b.dataset)};if(!o.cls)sjPanel('cl')}
 function sjAct(s,D){const o=sjSys();
   if(s==='x'){const P=document.getElementById('sjPan');if(P&&!P.hidden){P.hidden=true;return}document.getElementById('sjSys').hidden=true;return}
-  if(s==='+'){if(o.pts>0){o.st[D.k]++;o.pts--;sjSave(o);try{twSfx('coin')}catch(e){}sjSysOpen()}return}
+  if(s==='+'){if(o.pts>0){o.st[D.k]++;o.pts--;sjSave(o);sjPlusUI(o)}return} /* v518: sem redesenhar a tela inteira (travava com muitos toques) */
   if(s==='px'){document.getElementById('sjPan').hidden=true;return}
   if(s==='rs'){/* v495: resetar atributos — devolve todos os pontos gastos. 1º reset grátis, depois 500 💎 */
     const sp=SJST.reduce((a,[k])=>a+Math.max(0,(o.st[k]|0)-10),0),free=!o.rsN,cost=free?0:500;
@@ -6432,3 +6432,19 @@ try{Object.assign(window.__pvT||{},{anDR:v=>anDR(v),anSumF:id=>{ANDR++;try{retur
    (sombras ×5, golpes ×500). Quem já tinha contagem começa do zero nelas (não ganha tudo de uma vez). */
 for(const [id,k] of [['r1',12],['r2',10],['r3',10]]){const M=SJMS.find(m=>m.id===id);if(!M)continue;const b=M.xp;Object.defineProperty(M,'xp',{get(){let lv=1;try{lv=sjSys().lv|0}catch(e){}return b+Math.max(0,lv-1)*k},configurable:true})}
 {const _ss=sjSys;sjSys=function(){const o=_ss.apply(this,arguments);try{o.cnt=o.cnt||{};let ch=0;if(o.ms.r2b==null){o.ms.r2b=o.cnt.ult|0;ch=1}if(o.ms.r3b==null){o.ms.r3b=o.cnt.h|0;ch=1}if(ch)rkS('sjs',o)}catch(e){}return o}}
+
+/* ================= v518: "+" DO SISTEMA DO SUNG TRAVAVA O CELULAR =================
+   Depois de RESETAR (centenas de pontos), cada toque no "+" redesenhava a tela inteira e tocava um som: com toques rápidos o celular
+   ficava "não está respondendo". Agora o "+" só troca os números na tela, o som é limitado e SEGURAR o "+" distribui rápido. */
+let SJSFX=0;
+function sjPlusUI(o){const M=document.getElementById('sjSys');if(!M){sjSysOpen();return}const V=sjV(o),set=(k,v)=>{const e=M.querySelector('[data-v="'+k+'"]');if(e)e.textContent=v};
+  for(const [k] of SJST)set(k,o.st[k]);set('hp',rkFmtN(V.hp));set('mp',V.mp);set('pts',o.pts);
+  const P=M.querySelector('[data-v="pts"]');if(P)P.classList.toggle('sjOn',o.pts>0);M.querySelectorAll('.sjPl').forEach(b=>b.classList.toggle('no',!o.pts));
+  const t=performance.now();if(t-SJSFX>120){SJSFX=t;try{twSfx('coin')}catch(e){}}}
+/* segurar o "+": depois de 0,4 s repete (cada vez mais rápido). O clique normal continua dando +1. */
+{let T=null,k=null,n=0,held=false;const stop=()=>{if(T)clearTimeout(T);T=null;k=null};
+  const step=()=>{if(!k)return;const o=sjSys();if(o.pts<=0){stop();return}const q=Math.min(o.pts,n>25?5:1);o.st[k]+=q;o.pts-=q;sjSave(o);sjPlusUI(o);n++;T=setTimeout(step,n>10?45:90)};
+  document.addEventListener('pointerdown',e=>{const b=e.target.closest&&e.target.closest('#sjSys .sjPl');if(!b)return;stop();k=b.dataset.k;n=0;held=false;T=setTimeout(()=>{held=true;step()},400)},true);
+  ['pointerup','pointercancel','pointerleave'].forEach(ev=>document.addEventListener(ev,()=>{if(T||k){stop()}},true));
+  /* se segurou, o "click" do fim não soma +1 a mais */
+  document.addEventListener('click',e=>{if(held&&e.target.closest&&e.target.closest('#sjSys .sjPl')){held=false;e.stopPropagation();e.preventDefault()}},true)}
