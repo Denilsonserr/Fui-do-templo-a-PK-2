@@ -27,6 +27,8 @@ jobs:
             cur=set(G)
             if prev is not None and cur!=prev:print(br(ts),'SP',len(cur),'+',sorted(cur-prev),'-',sorted(prev-cur),'gem',o.get('rk_gem'),'nAneis',len(an))
             prev=cur
+          T=sorted(int(d['fields']['ts']['integerValue']) for d in L);print('JANELA',br(T[0]),'->',br(T[-1]),len(T))
+          o=json.loads(max(L,key=lambda d:int(d['fields']['ts']['integerValue']))['fields']['d']['stringValue']);print('CUP',o.get('tw_cup','')[:1500])
           print('ULTIMO',len(prev or []))
           for k,v in allr.items():print('RING',k,'SIM' if k in (prev or set()) else 'SUMIU',json.dumps(v))
           P
