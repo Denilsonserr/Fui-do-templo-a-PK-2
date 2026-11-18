@@ -2463,3 +2463,6 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 
 ## v540 — anel dourado SP não vende no Mercado Negro
 - `mnNoSell` (c5 g8). Wrapper de `mnMine` tira esses anéis da aba VENDER; wrapper de `mnPost` recusa anúncio `mk_` de anel SP (403 + toast). Outros anéis (inclusive dourado abaixo de SP) continuam vendáveis. Teste `tmercado_sp_v540.js`.
+
+## v541 — código DOISANEISMEME
+- `TWCUP['1ebfwve']` (uso único): anel SP dano+crit passiva vamp (REAL) + anel SP dano+crit pegadinha (`q:1`, passiva sorteada sem vamp: `rgqx`). Teste `tcod_meme_v541.js`.
