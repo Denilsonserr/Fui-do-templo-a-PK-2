@@ -6460,7 +6460,7 @@ const RGY6=[[285,370],[374,455],[459,535],[539,620],[623,705]],RGX6=[146,1342];
 /* status do melhor personagem (o mesmo número da tela de Atributos) */
 function rgsMine(){let best=null;for(const id of rkG('own',[])){if(!CH[id])continue;let T;try{T=cbAll(id).T}catch(e){continue}const d=Math.round(T.dano||0),c=Math.round(5+(T.crit||0)),s=Math.round(T.st||0),t=d+c+s;if(!best||t>best.t)best={id,d,c,s,t}}return best||{id:rkG('sel','goku'),d:0,c:5,s:0,t:5}}
 async function rgsPost(force){try{const n=String(twLS.g('tw_nome','')||'').trim();if(!n)return;const S=rgsMine(),g=rkG('gem',0)|0,sig=[g,S.d,S.c,S.s,S.id,twTitOn()].join('|');
-  if(!force&&rkG('rgsSig','')===sig&&Date.now()-(rkG('rgsT',0)|0)<6*36e5)return;const IV=v=>({integerValue:String(Math.max(0,v|0))}),SV=v=>({stringValue:String(v)});
+  if(!force&&rkG('rgsSig','')===sig&&Date.now()-(+rkG('rgsT',0)||0)<6*36e5)return;const IV=v=>({integerValue:String(Math.max(0,Math.round(+v||0)))}),SV=v=>({stringValue:String(v)});
   const id='rgs_'+String(twUid()).replace(/[^\w-]/g,'').slice(0,40)+'_'+Date.now().toString(36);
   const r=await twFetchT(TWURL+'/torre?documentId='+id+'&key='+TWFB.apiKey,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({fields:{rgs:SV('1'),rgt:IV(Date.now()),rgem:IV(g),sdm:IV(S.d),scr:IV(S.c),sst:IV(S.s),stot:IV(S.t),char:SV(S.id),uid:SV(twUid()),nome:SV(n.slice(0,16)),tit:SV(twTitOn())}})});
   if(r&&r.ok){rkS('rgsSig',sig);rkS('rgsT',Date.now())}}catch(e){}}
@@ -6468,7 +6468,7 @@ setTimeout(()=>rgsPost(),9000);setInterval(()=>rgsPost(),15*6e4);
 async function rgsQ(){const body={structuredQuery:{from:[{collectionId:'torre'}],orderBy:[{field:{fieldPath:'rgt'},direction:'DESCENDING'}],limit:800}};
   const r=await twFetchT(TWURL+':runQuery?key='+TWFB.apiKey,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});if(!r.ok)throw new Error('http '+r.status);const j=await r.json(),o=[];
   for(const x of (Array.isArray(j)?j:[])){const F=x&&x.document&&x.document.fields;if(!F||!F.rgs)continue;const e={};for(const k in F){const v=F[k];e[k]=v.stringValue!=null?v.stringValue:v.integerValue!=null?+v.integerValue:v.doubleValue}o.push(e)}return o}
-async function rgsLoad(){const L=await rgsQ(),M={};for(const e of L){if(!e||e.rgs!=='1')continue;const k=e.uid||e.nome;if(!M[k]||(e.rgt|0)>(M[k].rgt|0))M[k]=e}
+async function rgsLoad(){const L=await rgsQ(),M={};for(const e of L){if(!e||e.rgs!=='1')continue;const k=e.uid||e.nome;if(!M[k]||(+e.rgt||0)>(+M[k].rgt||0))M[k]=e}
   const me=twUid(),S=rgsMine();M[me]=Object.assign({},M[me]||{},{uid:me,nome:String(twLS.g('tw_nome','')||'VOCÊ'),tit:twTitOn(),rgem:rkG('gem',0)|0,sdm:S.d,scr:S.c,sst:S.s,stot:S.t,char:S.id});
   return Object.values(M).map(e=>({uid:e.uid,nome:e.nome,tit:e.tit,char:e.char,gem:e.rgem|0,sd:e.sdm|0,sc:e.scr|0,ss:e.sst|0,st:(e.sdm|0)+(e.scr|0)+(e.sst|0)}))}
 {const _r=rkRanking;rkRanking=function(tab){const t=tab||'rp';if(t!=='gem'&&t!=='sta')return _r.apply(this,arguments);
@@ -6669,3 +6669,47 @@ setTimeout(trnTitSync,7000);setInterval(trnTitSync,30*6e4);
 .trnRk .trnLs .me{outline:2px solid #7dff9a}
 `;document.head.appendChild(st)}
 try{Object.assign(window.__pvT||{},{trn:()=>TRN,trnWk:t=>trnWk(t),trnStart:()=>trnStart(),trnRank:t=>trnRank(t),trnTit:()=>trnTitSync(),trnView:()=>{RKBID='sung';rkView('jb')}})}catch(e){}
+
+/* ================= v525: ANTI-TRAPAÇA "VOLTAR O SAVE" (recuperar itens/gemas carregando um salvamento antigo) =================
+   Truque: gastar/perder algo (gemas, tickets, moedas, itens, anéis), fechar o jogo antes de salvar, apagar os dados e ENTRAR de novo
+   → a conta volta para o salvamento antigo, com as coisas de volta.
+   Agora: todo gasto/perda vira na hora um "registro" no servidor (doc act_*: o que saiu) e o id dele fica no próprio progresso (rk_actS).
+   Ao abrir o jogo, se existe registro da conta mais novo que o salvamento carregado e que NÃO está no progresso → foi voltado:
+   o jogo tira de novo o que já tinha saído (gemas, tickets, moedas vermelhas, ouro, itens e anéis) e aplica a PUNIÇÃO:
+   1ª vez = aviso · 2ª vez em diante = multa de 20% das gemas + 3 dias sem Mercado Negro. Tudo fica registrado para o ADM (doc chx_*). */
+const ACTK=()=>({g:rkG('gem',0)|0,t:rkG('tic',0)|0,r:rkG('red',0)|0,m:twLS.g('tw_moedas',0)|0,it:(()=>{try{return twInv().map(x=>x&&x.id).filter(Boolean)}catch(e){return []}})(),an:(()=>{try{return anL().map(x=>x&&x.i).filter(Boolean)}catch(e){return []}})()});
+let ACTP=null,ACTCHK=0;const ACT_T0=+localStorage.getItem('ac_t')||0; /* ts do salvamento carregado, ANTES de qualquer save desta sessão */
+async function actPost(a){try{const n=localStorage.getItem('ac_n');if(!n||!localStorage.getItem('ac_k'))return;const acc=await acId(n);const SV=v=>({stringValue:String(v)}),IV=v=>({integerValue:String(Math.max(0,Math.round(+v||0)))});
+  await twFetchT(TWURL+'/torre?documentId=act_'+acc+'_'+a.id+'&key='+TWFB.apiKey,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({fields:{act:SV(acc),aid:SV(a.id),at:IV(a.t),dg:IV(a.g),dt:IV(a.tk),dr:IV(a.r),dm:IV(a.m),it:SV(a.it.join(',').slice(0,3000)),an:SV(a.an.join(',').slice(0,1500))}})})}catch(e){}}
+function actTick(){try{if(!localStorage.getItem('ac_k')||acConf||ACTCHK!==2)return;const S=ACTK();if(!ACTP){ACTP=S;return}const P=ACTP;ACTP=S;
+  const g=Math.max(0,P.g-S.g),tk=Math.max(0,P.t-S.t),r=Math.max(0,P.r-S.r),m=Math.max(0,P.m-S.m),si=new Set(S.it),sa=new Set(S.an),it=P.it.filter(x=>!si.has(x)),an=P.an.filter(x=>!sa.has(x));
+  if(!g&&!tk&&!r&&!m&&!it.length&&!an.length)return;if(!g&&!tk&&!r&&!it.length&&!an.length&&m<500)return; /* trocados de ouro não precisam */
+  const a={id:Date.now().toString(36)+Math.random().toString(36).slice(2,6),t:Date.now(),g,tk,r,m,it,an};const L=rkG('actS',[]);L.push(a.id);rkS('actS',L.slice(-400));actPost(a);try{localStorage.removeItem('ac_h');acSave(1)}catch(e){}}catch(e){}}
+setInterval(actTick,3000);
+async function actCheck(){try{const n=localStorage.getItem('ac_n');if(!n||!localStorage.getItem('ac_k')){ACTCHK=2;return}if(acConf){ACTCHK=0;return}try{if(!window.__actNoNewer&&await acNewer()){ACTCHK=0;return}}catch(e){} /* tem salvamento mais novo: o v484 carrega ele primeiro */
+  const acc=await acId(n),t0=ACT_T0||+localStorage.getItem('ac_t')||0;
+  const body={structuredQuery:{from:[{collectionId:'torre'}],where:{fieldFilter:{field:{fieldPath:'act'},op:'EQUAL',value:{stringValue:acc}}},limit:1000}};
+  const r=await twFetchT(TWURL+':runQuery?key='+TWFB.apiKey,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});if(!r.ok){ACTCHK=2;return}const j=await r.json();
+  const have=new Set(rkG('actS',[])),fix=rkG('actFix',[]),fx=new Set(fix),miss=[];
+  for(const x of (Array.isArray(j)?j:[])){const F=x&&x.document&&x.document.fields;if(!F||!F.aid)continue;const g=k=>F[k]?(F[k].stringValue!=null?F[k].stringValue:+F[k].integerValue):null;const a={id:g('aid'),t:+g('at')||0,g:+g('dg')||0,tk:+g('dt')||0,r:+g('dr')||0,m:+g('dm')||0,it:String(g('it')||'').split(',').filter(Boolean),an:String(g('an')||'').split(',').filter(Boolean)};
+    if(a.t>t0+1500&&!have.has(a.id)&&!fx.has(a.id))miss.push(a)}
+  if(!miss.length){ACTCHK=2;return}
+  /* tira de novo o que já tinha saído */
+  let G0=0,T0=0,R0=0,M0=0,I0=0,A0=0;const delIt=new Set(),delAn=new Set();for(const a of miss){G0+=a.g;T0+=a.tk;R0+=a.r;M0+=a.m;a.it.forEach(x=>delIt.add(x));a.an.forEach(x=>delAn.add(x))}
+  rkS('gem',Math.max(0,(rkG('gem',0)|0)-G0));rkS('tic',Math.max(0,(rkG('tic',0)|0)-T0));rkS('red',Math.max(0,(rkG('red',0)|0)-R0));twLS.s('tw_moedas',Math.max(0,(twLS.g('tw_moedas',0)|0)-M0));
+  try{const I=twInv(),I2=I.filter(x=>!(x&&delIt.has(x.id)));I0=I.length-I2.length;if(I0){twLS.s('tw_inv',I2);const E=twLS.g('tw_eqp',{})||{};for(const k in E)if(delIt.has(E[k]))delete E[k];twLS.s('tw_eqp',E)}}catch(e){}
+  try{const A=anL(),A2=A.filter(x=>!(x&&delAn.has(x.i)));A0=A.length-A2.length;if(A0){rkS('an',A2);const Q=rkG('anEq',{});for(const k in Q)Q[k]=(Q[k]||[]).filter(i=>!delAn.has(i));rkS('anEq',Q)}}catch(e){}
+  rkS('actFix',fix.concat(miss.map(a=>a.id)).slice(-400));rkS('actS',Array.from(have).concat(miss.map(a=>a.id)).slice(-400));
+  /* punição: conta quantas vezes já aconteceu (no servidor) */
+  let n0=0;try{const b2={structuredQuery:{from:[{collectionId:'torre'}],where:{fieldFilter:{field:{fieldPath:'chx'},op:'EQUAL',value:{stringValue:acc}}},limit:200}};const r2=await twFetchT(TWURL+':runQuery?key='+TWFB.apiKey,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(b2)});const j2=await r2.json();n0=(Array.isArray(j2)?j2:[]).filter(x=>x&&x.document).length}catch(e){}
+  let multa=0;if(n0>=1){multa=Math.floor((rkG('gem',0)|0)*.2);rkS('gem',(rkG('gem',0)|0)-multa);rkS('mnBan',Date.now()+3*864e5)}
+  try{const SV=v=>({stringValue:String(v)}),IV=v=>({integerValue:String(Math.max(0,Math.round(+v||0)))});await twFetchT(TWURL+'/torre?documentId=chx_'+acc+'_'+Date.now().toString(36)+'&key='+TWFB.apiKey,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({fields:{chx:SV(acc),nome:SV(String(twLS.g('tw_nome','')||n).slice(0,16)),ct:IV(Date.now()),vez:IV(n0+1),dg:IV(G0),dt:IV(T0),dr:IV(R0),dm:IV(M0),di:IV(I0),da:IV(A0),multa:IV(multa)}})})}catch(e){}
+  ACTCHK=2;ACTP=null;try{localStorage.removeItem('ac_h');await acSave(1)}catch(e){}
+  const ln=[G0?'💎 '+rkFmtN(G0)+' gemas':'',T0?'🎫 '+T0+' tickets':'',R0?'🔴 '+R0+' moedas vermelhas':'',M0?'🪙 '+rkFmtN(M0)+' de ouro':'',I0?'🛡️ '+I0+' itens':'',A0?'💍 '+A0+' anéis':''].filter(Boolean).join(' · ');
+  rkModal(`<div class="twM sm actM"><h3>⚠️ TRAPAÇA DETECTADA</h3><p class="twH">Esta conta voltou para um salvamento antigo para recuperar coisas que já tinham sido gastas ou perdidas. Isso foi desfeito:</p><p class="twH ok"><b>${ln||'—'}</b></p>
+    ${n0>=1?`<p class="twH err"><b>PUNIÇÃO (${n0+1}ª vez):</b> multa de 💎 ${rkFmtN(multa)} (20% das gemas) e <b>3 dias sem Mercado Negro</b>.</p>`:`<p class="twH err"><b>AVISO:</b> na próxima vez a conta leva multa de 20% das gemas e fica 3 dias sem Mercado Negro.</p>`}
+    <p class="twH">O administrador foi avisado.</p><div class="row"><button class="btn main" id="rkMX">ENTENDI</button></div></div>`);const b=document.getElementById('rkMX');if(b)b.onclick=()=>rkModal(null)}catch(e){ACTCHK=2}}
+setTimeout(()=>{if(ACTCHK)return;ACTCHK=1;actCheck()},8000);
+/* Mercado Negro bloqueado durante a punição */
+{const _mo=mnOn;mnOn=function(){const ban=rkG('mnBan',0)|0;if(ban>Date.now()){const h=Math.ceil((ban-Date.now())/36e5);setTimeout(()=>{rkView('menu');rkToast('⛔ Mercado Negro bloqueado por trapaça: falta '+(h>=24?Math.ceil(h/24)+' dia(s)':h+'h'),'#ff6a6a')},50);return}return _mo.apply(this,arguments)}}
+try{Object.assign(window.__pvT||{},{actTick:()=>actTick(),actCheck:()=>{ACTCHK=1;return actCheck()},actChk:v=>{ACTCHK=v},actSt:()=>({ACTCHK,acConf:!!acConf,t0:+localStorage.getItem('ac_t')})})}catch(e){}

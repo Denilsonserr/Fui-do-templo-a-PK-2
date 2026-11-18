@@ -2403,3 +2403,11 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 
 ## v524 — Torneio: tentativas ilimitadas (aviso nas regras)
 - Não existe limite de lutas no torneio (nunca existiu). As regras (`trnInfo`) agora dizem "Pode lutar QUANTAS VEZES QUISER enquanto o torneio estiver aberto". Vale o melhor de cada ranking.
+
+## v525 — ANTI-TRAPAÇA "voltar o save" + punição
+- Truque relatado: gastar/perder (gemas, tickets, moedas, itens, anéis), fechar antes de salvar, apagar os dados e ENTRAR → volta o salvamento antigo com as coisas.
+- `actTick` (a cada 3 s, depois da checagem inicial): compara gemas/tickets/vermelhas/ouro (≥500) e os ids de `tw_inv`/`rk_an`. O que saiu vira um registro no servidor `act_<conta>_<id>` {act=conta, aid, at, dg, dt, dr, dm, it, an}, e o id vai para `rk_actS` (dentro do progresso), seguido de um save na hora.
+- `actCheck` (8 s depois de abrir; pula se a conta tem salvamento mais novo → o v484 carrega antes): registros da conta com `at` > `ACT_T0` (o `ac_t` lido ANTES de qualquer save desta sessão) que não estão em `rk_actS` = o progresso foi voltado. Tira tudo de novo (gemas, tickets, vermelhas, ouro, itens e equipados, anéis e anéis equipados), anota em `rk_actFix` e salva.
+- Punição (conta pelos docs `chx_<conta>_*` no servidor): 1ª vez = aviso; da 2ª em diante = multa de 20% das gemas + `rk_mnBan` 3 dias (o `mnOn` volta para o menu com aviso). Cada vez grava `chx_*` {chx, nome, ct, vez, dg, dt, dr, dm, di, da, multa} para o ADM ver. Modal `.actM` "⚠️ TRAPAÇA DETECTADA".
+- Conserto junto: `IV` com `v|0` estragava números grandes (data em ms). `rgsPost` (rgt) e os docs novos usam `Math.round`.
+- Teste `tanti_save_v525.js` (registro, sem falso alarme jogando normal, voltar o save desfaz + aviso, 2ª vez multa + 3 dias sem mercado).
