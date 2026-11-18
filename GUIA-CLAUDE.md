@@ -2431,3 +2431,6 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 
 ## v530 — código PEDRAS20ANEIS
 - `TWCUP['1ire7ck']` (texto só com o dono) = Pedras das Almas para evoluir 20 anéis do 1 ao 60 (`pdq`: 400 comum · 400 rara · 400 épica · 400 lendária · 150 mítica · 200 secreta · 450 divina; 1 anel 1→60 custa 17/18/18/18/6/9/21). Uso ÚNICO. Teste `tcod_pedras_v530.js`.
+
+## v531 — código CAIXASP (caixa com anel SP aleatório)
+- `TWCUP['tuqnoo']` (texto só com o dono, `rgbox:1`) = 1 Anel Dourado SP nível 60 (10 mi anos) ALEATÓRIO. `rgBoxRoll()`: 2 atributos diferentes entre 💨 vel, 🍀 st, 🎁 drop e ✨ uv (NUNCA dano nem crítico) + passiva SP aleatória (`ANGP`). Abre com a caixa tremendo, raios e revelação (`rgBoxOpen`, `.rgBox`; a animação se chama `rgBi` porque `crIn` já existia nas cartas). Uso ÚNICO. Teste `tcod_caixa_v531.js` (4.000 sorteios sem dano/crítico).

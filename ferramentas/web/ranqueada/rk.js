@@ -6772,4 +6772,27 @@ try{Object.assign(window.__pvT||{},{psG:()=>psG(),psOpen:()=>psOpen()})}catch(e)
 TWCUP['1ire7ck']={nm:'💎 PEDRAS DAS ALMAS PARA 20 ANÉIS',it:[],uni:1,pdq:[400,400,400,400,150,200,450]};
 {const _cp=twCupom;twCupom=async function(code,E){const C=TWCUP[twHash(String(code).toUpperCase())];const r=await _cp.apply(this,arguments);
   try{if(C&&C.pdq&&r!==false&&E&&/\bok\b/.test(E.className||'')){C.pdq.forEach((n,t)=>pdAdd(t,n));try{localStorage.removeItem('ac_h');acSave(1)}catch(e){}E.textContent='✅ Você ganhou PEDRAS DAS ALMAS para evoluir 20 anéis até o nível máximo: '+C.pdq.map((n,t)=>n+' '+PDN[t]).join(' · ')+'!';try{rkSfx('boom')}catch(e){}}}catch(e){}return r}}
-try{Object.assign(window.__pvT||{},{pdA:()=>pdA()})}catch(e){}
+try{Object.assign(window.__pvT||{},{pdA:()=>pdA(),rgBoxRoll:()=>rgBoxRoll()})}catch(e){}
+
+/* v531: código CAIXASP (uso único): 🎁 CAIXA com 1 Anel Dourado SP nível 60 ALEATÓRIO — atributos sorteados entre
+   💨 Velocidade, 🍀 Sorte, 🎁 Drop e ✨ Vel. Ultimate (NUNCA dano nem crítico) + passiva SP aleatória. Abre com animação. */
+TWCUP['tuqnoo']={nm:'🎁 CAIXA DO ANEL DOURADO SP',it:[],uni:1,rgbox:1};
+function rgBoxRoll(){const K=['vel','st','drop','uv'],s=K[(Math.random()*K.length)|0],R=K.filter(k=>k!==s),s2=R[(Math.random()*R.length)|0],P=Object.keys(ANGP),p=P[(Math.random()*P.length)|0];return [s,s2,p]}
+function rgBoxOpen(r){const O=document.createElement('div');O.className='rgBox';const nm=k=>(ANS.find(x=>x[0]===k)||[,k])[1];
+  O.innerHTML='<div class="bx"><i class="ry"></i><div class="lid">🎁</div><div class="rw"><img src="'+(RQA.anel2&&RQA.anel2[5]||'')+'" alt=""><b>ANEL DOURADO SP</b><span>Nível 60 · 10.000.000 anos</span><span>'+nm(r.s)+' +'+r.v+'% · '+nm(r.s2)+'</span><span>'+(ANGP[r.p]?ANGP[r.p][0]+': '+ANGP[r.p][1]:'')+'</span><button class="btn main">OK</button></div></div>';
+  document.body.appendChild(O);try{rkSfx('powerUp')}catch(e){}setTimeout(()=>{O.classList.add('op');try{rkSfx('boom')}catch(e){}},1100);O.querySelector('button').onclick=()=>O.remove()}
+{const _cp=twCupom;twCupom=async function(code,E){const C=TWCUP[twHash(String(code).toUpperCase())];const r=await _cp.apply(this,arguments);
+  try{if(C&&C.rgbox&&r!==false&&E&&/\bok\b/.test(E.className||'')){const [s,s2,p]=rgBoxRoll(),a=1e7,k=.8+.6*Math.log10(a/1e6);
+    const ring=anGive({i:Date.now().toString(36)+'bx'+Math.random().toString(36).slice(2,6),c:5,g:8,s,s2,a,p,v:Math.round(ANV[5][8]*k*10)/10,l:ANMX[5]});
+    try{localStorage.removeItem('ac_h');acSave(1)}catch(e){}E.textContent='🎁 Caixa aberta! Veja o seu ANEL DOURADO SP em ANÉIS DA ALMA.';setTimeout(()=>rgBoxOpen(ring),300)}}catch(e){}return r}}
+{const st=document.createElement('style');st.textContent=`
+.rgBox{position:fixed;inset:0;z-index:99990;display:flex;align-items:center;justify-content:center;background:radial-gradient(circle,rgba(60,30,0,.85),rgba(0,0,0,.92))}
+.rgBox .bx{position:relative;display:flex;align-items:center;justify-content:center;min-width:min(80vw,26em);min-height:min(60vh,20em)}
+.rgBox .ry{position:absolute;width:30em;height:30em;max-width:90vmin;max-height:90vmin;border-radius:50%;background:repeating-conic-gradient(from 0deg,rgba(255,215,90,.55) 0 6deg,transparent 6deg 18deg);-webkit-mask-image:radial-gradient(circle,#000 15%,transparent 65%);mask-image:radial-gradient(circle,#000 15%,transparent 65%);animation:tpRa 6s linear infinite;opacity:.25;transition:opacity .5s}
+.rgBox .lid{position:relative;font-size:min(22vmin,9em);animation:rgBs .18s ease-in-out infinite;filter:drop-shadow(0 0 .3em #ffd84a)}
+@keyframes rgBs{0%,100%{transform:rotate(-6deg) scale(1)}50%{transform:rotate(6deg) scale(1.06)}}
+.rgBox .rw{position:absolute;display:none;flex-direction:column;align-items:center;gap:.35em;font:800 clamp(13px,2.4vh,20px) var(--f-ui);color:#fff;text-align:center;text-shadow:0 1px 3px #000}
+.rgBox .rw img{width:min(26vmin,9em);filter:drop-shadow(0 0 .5em #ffd84a) drop-shadow(0 0 1.2em #ffb300);animation:psJx 1.6s ease-in-out infinite}.rgBox .rw b{font:900 1.6em var(--f-ui);color:#ffe08a}
+.rgBox.op .lid{display:none}.rgBox.op .rw{display:flex;animation:rgBi .5s ease-out}.rgBox.op .ry{opacity:.9}
+@keyframes rgBi{from{transform:scale(.3);opacity:0}to{transform:scale(1);opacity:1}}
+`;document.head.appendChild(st)}
