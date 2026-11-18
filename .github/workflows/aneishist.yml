@@ -1,0 +1,32 @@
+name: Conta — histórico dos anéis dourados (ferramenta)
+on:
+  workflow_dispatch:
+    inputs:
+      nome: {description: 'nome da conta', required: true}
+jobs:
+  r:
+    runs-on: ubuntu-latest
+    steps:
+      - env: {NOME: '${{ inputs.nome }}'}
+        run: |
+          python3 - <<'P'
+          import json,urllib.request,os,hashlib,datetime
+          n=os.environ['NOME'].lower().strip();acc=hashlib.sha256(('furia|acc|'+n).encode()).hexdigest()[:24]
+          B='https://fui-do-templo-a-pk-2.denilsinend.workers.dev/fs/v1/projects/furia-do-templo/databases/(default)/documents'
+          H={'Content-Type':'application/json','User-Agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/120 Safari/537.36'}
+          s={'from':[{'collectionId':'torre'}],'where':{'fieldFilter':{'field':{'fieldPath':'sv'},'op':'EQUAL','value':{'stringValue':acc}}},'orderBy':[{'field':{'fieldPath':'__name__'},'direction':'DESCENDING'}],'limit':400}
+          L=[x['document'] for x in json.load(urllib.request.urlopen(urllib.request.Request(B+':runQuery',data=json.dumps({'structuredQuery':s}).encode(),headers=H))) if x.get('document')]
+          br=lambda ms:(datetime.datetime.utcfromtimestamp(ms/1000)-datetime.timedelta(hours=3)).strftime('%d/%m %H:%M:%S')
+          prev=None;allr={}
+          for d in sorted(L,key=lambda d:int(d['fields']['ts']['integerValue'])):
+            ts=int(d['fields']['ts']['integerValue'])
+            try:o=json.loads(d['fields']['d']['stringValue']);an=json.loads(o.get('rk_an','[]') or '[]')
+            except Exception:continue
+            G={x['i']:x for x in an if x and x.get('c')==5 and (x.get('g') or 0)>=8}
+            for k,v in G.items():allr.setdefault(k,v)
+            cur=set(G)
+            if prev is not None and cur!=prev:print(br(ts),'SP',len(cur),'+',sorted(cur-prev),'-',sorted(prev-cur),'gem',o.get('rk_gem'),'nAneis',len(an))
+            prev=cur
+          print('ULTIMO',len(prev or []))
+          for k,v in allr.items():print('RING',k,'SIM' if k in (prev or set()) else 'SUMIU',json.dumps(v))
+          P
