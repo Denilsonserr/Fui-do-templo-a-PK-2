@@ -28,5 +28,15 @@ jobs:
             if k in D:print('K',k,str(D[k])[:900])
           for k in D:
             if 'lv' in k.lower() or 'sj' in k.lower():print('L',k,str(D[k])[:400])
+          an=json.loads(D.get('rk_an','[]') or '[]');print('ANEIS',len(an))
+          for x in an:
+            if x and x.get('c')==5:print('AN',json.dumps(x))
+          print('ANEQ',D.get('rk_anEq','')[:600]);print('ACTS',D.get('rk_actS','')[:300]);print('FIX',D.get('rk_actFix',''));print('FIXHON',D.get('rk_fixHon1'))
+          B='https://fui-do-templo-a-pk-2.denilsinend.workers.dev/fs/v1/projects/furia-do-templo/databases/(default)/documents'
+          H2={'Content-Type':'application/json','User-Agent':H['User-Agent']}
+          for fld in ('act','chx'):
+            q={'structuredQuery':{'from':[{'collectionId':'torre'}],'where':{'fieldFilter':{'field':{'fieldPath':fld},'op':'EQUAL','value':{'stringValue':acc}}},'limit':500}}
+            L=[x['document'] for x in json.load(urllib.request.urlopen(urllib.request.Request(B+':runQuery',data=json.dumps(q).encode(),headers=H2))) if x.get('document')]
+            for d in L:print(fld.upper(),d['createTime'][:19],json.dumps({k:list(v.values())[0] for k,v in d['fields'].items()})[:400])
           print('KEYS',' '.join(sorted(D.keys())))
           P
