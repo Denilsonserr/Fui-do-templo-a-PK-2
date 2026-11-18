@@ -2448,3 +2448,6 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 
 ## v535 — código DOISANEISREI
 - `TWCUP['1x51lfy']` (uso único): anel SP dano+crit passiva vamp (REAL) + anel SP dano+crit passiva fur com `q:1` (pegadinha, não funciona em luta) + 1 joia primordial (`jpx`). Wrapper rgq agora aceita mensagem `C.rgqm`. Teste `tcod_rei2_v535.js`.
+
+## v536 — código PRIMORDIALX5
+- `TWCUP['1uxk365']` (uso único): 5 joias primordiais (`jpx:5`) + 1 anel SP dano+crit (fur). Teste `tcod_pri5_v536.js`.
