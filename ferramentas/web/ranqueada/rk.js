@@ -6536,10 +6536,10 @@ const rgIsAdm=e=>e&&String(e.nome||'').toLowerCase().trim()===TWADMN.toLowerCase
 /* ================= v522: TORNEIO DO MAIS FORTE — boss SUNG JIN-WOO (toda semana) =================
    Arte do dono `ferramentas/ranqueada_artes/v522/torneio_sung.png` (lobby `jb`). No lugar do Yuta, nos lobbies.
    Semana do torneio: QUARTA 19:00 → SÁBADO 23:59 (Brasília). O 1º começa hoje, 18/11, às 19:00.
-   Boss Sung sempre no nível MÁXIMO e IMORTAL (a vida não desce). Luta de 90 s: conta o DANO e os CRÍTICOS que você deu.
+   Boss Sung sempre no nível MÁXIMO e IMORTAL (a vida não desce). Luta de 3 min: conta o DANO e os CRÍTICOS que você deu.
    FORÇA = dano × (1 + críticos/100) (cada crítico vale +1%). Ranking com 3 abas (FORÇA, DANO, CRÍTICO); vale o melhor de cada um na semana.
    Quando o torneio acaba, o top 3 da FORÇA ganha título por 7 dias: 👑 O MAIS FORTE DO JOGO · 2º · 3º. O ADM fica fora (rank 0). */
-const TRNA='a/464f0576dadf5b.webp',TRNT=90,TRNW=7*864e5,TRN0=Date.UTC(2026,10,18,22,0); /* 18/11 19:00 BRT */
+const TRNA='a/464f0576dadf5b.webp',TRNT=180,TRNW=7*864e5,TRN0=Date.UTC(2026,10,18,22,0); /* 18/11 19:00 BRT */
 const trnNow0=()=>{try{return ysNow()}catch(e){return Date.now()}};
 function trnWk(t){t=t==null?trnNow0():t;const k=Math.floor((t-TRN0)/TRNW),ini=TRN0+k*TRNW,fim=ini+3*864e5+5*36e5-1e3; /* sáb 23:59:59 BRT = dom 02:59:59Z */
   const d=new Date(ini-3*36e5);return {k,ini,fim,key:'t'+d.getUTCFullYear()+String(d.getUTCMonth()+1).padStart(2,'0')+String(d.getUTCDate()).padStart(2,'0'),on:t>=ini&&t<=fim,antes:t<ini,depois:t>fim}}
@@ -6564,7 +6564,7 @@ ysSlotOld=function(){const on=trnOn();return `<button class="ysSlot trnSlot ${on
   return _a.apply(this,arguments)}}
 function trnMine(){const w=trnWk(),o=rkG('trn',{});return o.key===w.key?o:{key:w.key,d:0,c:0,f:0,n:0}}
 function trnLobbyH(){const sel=rkG('sel','goku'),me=trnMine(),w=trnWk();let cn=0;try{cn=twCoins()}catch(e){}const on=trnOn();
-  const RW=[['👑','TOP 1','👑 TOP 1 da FORÇA: título O MAIS FORTE DO JOGO por 7 dias'],['🥈','TOP 2','🥈 TOP 2 da FORÇA: título 2º MAIS FORTE DO JOGO por 7 dias'],['🥉','TOP 3','🥉 TOP 3 da FORÇA: título 3º MAIS FORTE DO JOGO por 7 dias'],['⚔️','DANO','⚔️ Ranking de DANO: quem bate mais forte no Sung em 90 s'],['🎯','CRÍTICO','🎯 Ranking de CRÍTICOS: quem acerta mais críticos em 90 s']];
+  const RW=[['👑','TOP 1','👑 TOP 1 da FORÇA: título O MAIS FORTE DO JOGO por 7 dias'],['🥈','TOP 2','🥈 TOP 2 da FORÇA: título 2º MAIS FORTE DO JOGO por 7 dias'],['🥉','TOP 3','🥉 TOP 3 da FORÇA: título 3º MAIS FORTE DO JOGO por 7 dias'],['⚔️','DANO','⚔️ Ranking de DANO: quem bate mais forte no Sung em 3 minutos'],['🎯','CRÍTICO','🎯 Ranking de CRÍTICOS: quem acerta mais críticos em 3 minutos']];
   const RX=[[478,583],[595,700],[713,818],[830,935],[950,1055]];
   return `<button class="hs" data-a="back" style="${rkB(18,14,640,110)}"></button>
   <div class="skCur trnCur" style="${rkB(1300,20,1378,52)}">${rkFmtN(rkG('gem',0))}</div><div class="skCur trnCur" style="${rkB(1432,20,1488,52)}">${rkFmtN(rkG('tic',0))}</div><div class="skCur trnCur" style="${rkB(1540,20,1604,52)}">${rkFmtN(rkG('red',0))}</div>
@@ -6584,12 +6584,12 @@ function trnLobbyH(){const sel=rkG('sel','goku'),me=trnMine(),w=trnWk();let cn=0
   W.querySelectorAll('[data-a]').forEach(b=>b.onclick=e=>{e.stopPropagation();rkAct(b.dataset.a,b)});
   rkView.iv=setInterval(()=>{if(RKV!=='jb'){clearInterval(rkView.iv);return}const e=W.querySelector('.trnBan .tl');if(e)e.textContent=trnLeft()},20000)}}
 function trnInfo(){rkModal(`<div class="twM trnM"><h3>🏆 TORNEIO DO MAIS FORTE</h3><p class="twH">Toda semana, de QUARTA 19:00 até SÁBADO 23:59. Agora: <b>${trnLeft()}</b></p>
-  <ul class="trnL"><li>👤 O boss é o <b>SUNG JIN-WOO no nível MÁXIMO</b>, para todo mundo (qualquer rank).</li><li>♾️ Ele é <b>IMORTAL</b>: a luta dura <b>${TRNT} segundos</b>. Bata o máximo que puder!</li><li>⚔️ Conta o <b>DANO</b> total e os <b>CRÍTICOS</b> que você deu.</li><li>💪 <b>FORÇA</b> = dano × (1 + críticos ÷ 100): cada crítico vale +1%.</li><li>🏅 Vale o seu MELHOR da semana em cada ranking (Força, Dano e Crítico).</li><li>👑 No fim, o <b>TOP 3 da FORÇA</b> ganha título por 7 dias: <b>O MAIS FORTE DO JOGO</b>, 2º e 3º.</li><li>💎 Toda luta dá 5 a 15 gemas.</li></ul>
+  <ul class="trnL"><li>👤 O boss é o <b>SUNG JIN-WOO no nível MÁXIMO</b>, para todo mundo (qualquer rank).</li><li>♾️ Ele é <b>IMORTAL</b>: a luta dura <b>3 minutos</b>. Bata o máximo que puder!</li><li>⚔️ Conta o <b>DANO</b> total e os <b>CRÍTICOS</b> que você deu.</li><li>💪 <b>FORÇA</b> = dano × (1 + críticos ÷ 100): cada crítico vale +1%.</li><li>🏅 Vale o seu MELHOR da semana em cada ranking (Força, Dano e Crítico).</li><li>👑 No fim, o <b>TOP 3 da FORÇA</b> ganha título por 7 dias: <b>O MAIS FORTE DO JOGO</b>, 2º e 3º.</li><li>💎 Toda luta dá 5 a 15 gemas.</li></ul>
   <div class="row"><button class="btn main" id="trnRkI">🏅 VER RANKING</button><button class="btn" id="rkMX">FECHAR</button></div></div>`);$('rkMX').onclick=()=>rkModal(null);$('trnRkI').onclick=()=>trnRank('f')}
 function trnStart(){if(!trnOn()&&!pfIsAdm()){rkSfx('clang');return rkToast('⏳ O torneio '+trnLeft().toLowerCase(),'#c79bff')}
   RKBID='sung';RKYD=null;RKSEL=null;Object.assign(TRN,{on:1,d:0,c:0,lh:0,t0:0,teste:!trnOn()});rkSfx('powerUp');rkBossStart()}
 {const _bs=rkBossStart;rkBossStart=function(){const r=_bs.apply(this,arguments);if(RKBID==='sung'&&TRN.on)RKFL=RKLVS.length-1;return r}}
-{const _bg=rkBossGo;rkBossGo=function(){const r=_bg.apply(this,arguments);try{if(RKBID==='sung'&&TRN.on&&G.gmode==='boss'&&G.p){G.timer=TRNT;const o=G.p[1];TRN.lh=o.hp;banner('TORNEIO DO MAIS FORTE','#b06bff',130,'SUNG JIN-WOO É IMORTAL · '+TRNT+' s · CAUSE O MÁXIMO DE DANO!');trnHud(1)}}catch(e){}return r}}
+{const _bg=rkBossGo;rkBossGo=function(){const r=_bg.apply(this,arguments);try{if(RKBID==='sung'&&TRN.on&&G.gmode==='boss'&&G.p){G.timer=TRNT;const o=G.p[1];TRN.lh=o.hp;banner('TORNEIO DO MAIS FORTE','#b06bff',130,'SUNG JIN-WOO É IMORTAL · 3 MIN · CAUSE O MÁXIMO DE DANO!');trnHud(1)}}catch(e){}return r}}
 /* imortal + contagem do dano */
 {const _u=update;update=function(){const r=_u.apply(this,arguments);try{if(TRN.on&&RKBID==='sung'&&G.gmode==='boss'&&G.p&&G.p[1]){const o=G.p[1];if(o.hp<TRN.lh)TRN.d+=TRN.lh-o.hp;
   if(o.ko){o.ko=false;o.bs&&(o.bs='idle')}o.hp=o.mhp;o.hpLag=o.mhp;TRN.lh=o.hp;if(G.frame%6===0)trnHud()}}catch(e){}return r}}

@@ -2397,3 +2397,6 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - Ranking `trnRank(f|d|c)`: o máximo de cada uid na semana. O ADM fica fora, numa faixa #0. Top 3 em ouro/azul/vermelho.
 - Títulos `tmf1/2/3` (O MAIS FORTE DO JOGO, 2º, 3º): `trnTitSync()` (7 s depois de abrir e a cada 30 min). Depois do fim da semana, o top 3 da FORÇA ganha e o título entra em uso. `rk_tmfE` {k, ate = fim+7 dias, prev}: quando vence, tira e volta o título anterior. `rk_tmfK` evita dar 2×.
 - Teste `ttorneio_v522.js` (semana, trava, luta imortal, contagem, resultado, ranking, título e expiração).
+
+## v523 — Torneio: luta de 3 minutos
+- `TRNT=180` (antes 90 s). Textos do banner, das regras e das caixinhas falam "3 minutos".

@@ -18,7 +18,7 @@ const {chromium}=require('playwright');const SH='/home/claude/fui-do-templo-a-pk
   await p.evaluate(()=>{window.__ysT=Date.parse('2026-11-18T23:00:00Z')-Date.now();__pvT.trnView()});await p.waitForTimeout(1000);await p.screenshot({path:SH+'lobby.png'});
   await p.evaluate(()=>__pvT.trnStart());await p.waitForFunction(()=>{const G=__pvT.G();return G.gmode==='boss'&&G.phase==='fight'&&G.p&&G.p[1]},null,{timeout:60000});await p.waitForTimeout(1500);
   const f=await p.evaluate(async()=>{const G=__pvT.G(),o=G.p[1];const t0=G.timer;for(let i=0;i<5;i++){o.hp-=o.mhp*.3;await new Promise(r=>setTimeout(r,120))}return {t0,hp:o.hp/o.mhp,d:__pvT.trn().d,id:o.def.id,rkL:o.rkL}});
-  console.log(JSON.stringify(f));chk(f.t0<=90&&f.t0>80,'luta de 90 s');chk(f.hp===1&&f.d>0,'Sung imortal (vida volta cheia) e o dano conta');chk(f.id==='sung','boss é o Sung');
+  console.log(JSON.stringify(f));chk(f.t0<=180&&f.t0>170,'luta de 3 minutos');chk(f.hp===1&&f.d>0,'Sung imortal (vida volta cheia) e o dano conta');chk(f.id==='sung','boss é o Sung');
   await p.screenshot({path:SH+'luta.png'});
   await p.evaluate(()=>{__pvT.trn().c=37;__pvT.G().timer=0.05});await p.waitForSelector('.trnRes',{timeout:30000});await p.waitForTimeout(600);await p.screenshot({path:SH+'resultado.png'});
   const rs=await p.$eval('.trnRes',e=>e.textContent.replace(/\s+/g,' '));console.log(rs);chk(/37/.test(rs)&&/FORÇA/.test(rs),'resultado com dano, críticos e força');
