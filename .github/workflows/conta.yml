@@ -24,5 +24,9 @@ jobs:
             if it and (it.get('v2') or it.get('skb') or it.get('sk') or str(it.get('id','')).startswith('mk')):print('INV',json.dumps(it,ensure_ascii=False)[:700])
           for k in D:
             if 'eq' in k.lower() or k in ('rk_own','rk_ped','rk_pfF','rk_pff'):print('EQ',k,D[k][:1500])
+          for k in ('rk_sjs','rk_sje','rk_urso','rk_lv','rk_lvl','rk_xp','rk_own','rk_sel','rk_ped','rk_gold','tw_moedas','rk_gem','rk_rkmax','tn_best','rk_sjT','rk_sjtr','rk_sjtrial','rk_cl','rk_ch'):
+            if k in D:print('K',k,str(D[k])[:900])
+          for k in D:
+            if 'lv' in k.lower() or 'sj' in k.lower():print('L',k,str(D[k])[:400])
           print('KEYS',' '.join(sorted(D.keys())))
           P
