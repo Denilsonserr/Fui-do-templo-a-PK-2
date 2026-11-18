@@ -2400,3 +2400,6 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 
 ## v523 — Torneio: luta de 3 minutos
 - `TRNT=180` (antes 90 s). Textos do banner, das regras e das caixinhas falam "3 minutos".
+
+## v524 — Torneio: tentativas ilimitadas (aviso nas regras)
+- Não existe limite de lutas no torneio (nunca existiu). As regras (`trnInfo`) agora dizem "Pode lutar QUANTAS VEZES QUISER enquanto o torneio estiver aberto". Vale o melhor de cada ranking.
