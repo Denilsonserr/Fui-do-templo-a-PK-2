@@ -2548,4 +2548,4 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 
 ## v562 — ANEL DIVINO (c=6) só do ADM + ADM rank ∞
 - Cor nova c=6 (ANC/ANG "∞"/ANV/ANMX 99/ANRP/AUC/RQA.anel2[6]=a/ccebec8923b51a.webp, ícone vermelho+roxo). `anRingSvg`: desenho do SSS vermelho recolorido (`ANDIVC`) + raios vermelhos/roxos piscando (SMIL). `anAura`: 1 camada vermelha + 1 roxa.
-- `anSum`: anel divino equipado no ADM (`mnAdm`) → dano 99999, crit 999, vel 999, sorte 500, drop 500, uv 999 (`ANINF`). Textos `+N
+- `anSum`: anel divino equipado no ADM (`mnAdm`) → dano 99999, crit 999, vel 999, sorte 500, drop 500, uv 999 (`ANINF`). Textos `+N- (cont.) Textos `+N%` gigantes viram `+∞%` (anH/anCard). Boot (7 s): ADM ganha o anel e XP 99.999.999 (rank máximo); quem não é ADM perde anéis c=6. `mnNoSell` bloqueia c>=6. Ranking: barra do ADM "RANK ∞ · MÁXIMO"; texto 99.999.99x vira ∞ para o ADM. Teste `tanel_divino_v562.js`.
