@@ -15377,10 +15377,10 @@ try{Object.assign(window.__pvT||{},{twFz:()=>({fz:TWFZ,fr:TN&&TN.fr,on:TN&&TN.on
 
 /* v540: ANEL DOURADO SP (c5 g8 — só sai por código/ADM) NÃO pode ser vendido no MERCADO NEGRO.
    Some da aba VENDER e, se tentar anunciar de outro jeito, o anúncio é recusado. */
-const mnNoSell=r=>!!r&&(r.c|0)===5&&(r.g|0)>=8;
+const mnNoSell=r=>!!r&&(r.c|0)===5; /* v544: TODO anel DOURADO (qualquer nota) */
 {const _m=mnMine;mnMine=function(){const L=_m.apply(this,arguments);try{const A=anL(),by=new Map(A.map(r=>[r.i,r]));
   return L.filter(e=>{if(e.k!=='an')return true;e.ids=e.ids.filter(i=>!mnNoSell(by.get(i)));e.n=e.ids.length;return e.n>0})}catch(e){return L}}}
-{const _p=mnPost;mnPost=async function(id,f){try{if(/^mk_/.test(String(id))&&f&&f.it){const o=JSON.parse(f.it.stringValue||'null');if(o&&o.k==='an'&&mnNoSell(o.r)){rkToast('🔒 Anel DOURADO SP não pode ser vendido no Mercado Negro.','#ff8080');return {ok:false,status:403}}}}catch(e){}return _p.apply(this,arguments)}}
+{const _p=mnPost;mnPost=async function(id,f){try{if(/^mk_/.test(String(id))&&f&&f.it){const o=JSON.parse(f.it.stringValue||'null');if(o&&o.k==='an'&&mnNoSell(o.r)){rkToast('🔒 Anel DOURADO não pode ser vendido no Mercado Negro.','#ff8080');return {ok:false,status:403}}}}catch(e){}return _p.apply(this,arguments)}}
 try{Object.assign(window.__pvT||{},{anGive:r=>anGive(r),mnMine:()=>mnMine(),mnPost:(i,f)=>mnPost(i,f),mnNoSell:r=>mnNoSell(r)})}catch(e){}
 
 /* v543: COMPRA DO MERCADO NEGRO não caía no inventário.
@@ -15394,6 +15394,12 @@ twCap=function(){if(MNG)return null;let S=twStacks(),out=null;while(S.length>TWB
   try{const P=twPocs();let ch=0;for(const x of P)if(!p0.has(x.id)&&!/^mk/.test(String(x.id))){x.id='mk'+x.id;ch=1}if(ch)twLS.s('tw_poc',P)}catch(e){}
   try{TW.capOut=null}catch(e){}return r}}
 try{Object.assign(window.__pvT||{},{mnGive:o=>mnGive(o),twCap:()=>twCap(),mkCount:()=>{let n=0;try{n+=twInv().length+twPocs().length+anL().length+(psG().jn|0)}catch(e){}return n}})}catch(e){}
+/* v544: anúncios de anel DOURADO que já estavam no mercado não podem mais ser comprados (somem da aba COMPRAR;
+   o vendedor continua vendo o dele e pode CANCELAR para receber o anel de volta). */
+{const _r=mnRows;mnRows=function(){const R=_r.apply(this,arguments);try{if(MN.tab!=='buy')return R;return R.filter(r=>{if(r.mine)return true;const o=mnIt(r.l);return !(o&&o.k==='an'&&mnNoSell(o.r))})}catch(e){return R}}}
+{const _a=mnAct;mnAct=async function(a,b){try{if(a==='buy'){const X=_r0().find(r=>r.key===MN.sel);const o=X&&X.l&&mnIt(X.l);if(o&&o.k==='an'&&mnNoSell(o.r)){rkToast('🔒 Anel DOURADO não pode ser comprado no Mercado Negro.','#ff8080');return}}}catch(e){}return _a.apply(this,arguments)}}
+function _r0(){try{return mnRows()}catch(e){return []}}
+try{Object.assign(window.__pvT||{},{mnRowsBuy:L=>{MN.tab='buy';MN.L=L;MN.C=new Map();return mnRows().map(r=>r.key)}})}catch(e){}
 
 function twTrofList(){const tc=twLS.g('tw_tc',{}),run={};for(const t of TW.tr)run[t.k]=(run[t.k]||0)+1;
   twModal(`<div class="twM"><h3>🎖️ TROFÉUS</h3><div class="twTL">${Object.keys(TWTR).map(k=>{const T=TWTR[k];return `<div class="${tc[k]||run[k]?'got':''}"><i>${T.i}</i><b>${T.n}</b><span>${T.d}</span><em>+${T.p} 🏆</em><small>${run[k]?'nesta subida: '+run[k]+' · ':''}total: ${(tc[k]||0)}</small></div>`}).join('')}</div>
@@ -15586,7 +15592,7 @@ window.__dbg={mus:()=>[MCUR,MEL.src.split('/').pop()],stg:()=>STAGE.key,prepMatc
 })();
 </script>
 <style>#updB{position:fixed;left:50%;top:max(8px,env(safe-area-inset-top));transform:translateX(-50%);z-index:99999;padding:10px 22px;border-radius:14px;border:2px solid #fff3c0;background:linear-gradient(#ffd84a,#e08a10);color:#3a1d00;font:900 15px system-ui,sans-serif;box-shadow:0 0 18px #ffb21f;cursor:pointer;animation:updP 1s ease-in-out infinite alternate}@keyframes updP{to{transform:translateX(-50%) scale(1.05)}}</style>
-<script>(function(){const V='a94618873e4d';if(!/^https?:/.test(location.protocol))return;let nv=null;
+<script>(function(){const V='d0c0e8a22eb5';if(!/^https?:/.test(location.protocol))return;let nv=null;
 function show(){if(document.getElementById('updB'))return;try{if(typeof G!=='undefined'&&G.mode==='fight')return}catch(e){}const b=document.createElement('button');b.id='updB';b.textContent='🔄 ATUALIZAÇÃO NOVA! Toque para atualizar';
   b.onclick=()=>{b.textContent='⏳ Atualizando...';try{acSave(1)}catch(e){}setTimeout(()=>location.reload(),900)};document.body.appendChild(b)}
 async function chk(){if(document.hidden)return;if(nv){show();return}try{const r=await fetch('versao.txt?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const t=(await r.text()).trim();if(/^[0-9a-f]{8,40}$/.test(t)&&t!==V){nv=t;show()}}catch(e){}}
