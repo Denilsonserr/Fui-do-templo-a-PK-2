@@ -1,26 +1,26 @@
-name: Consultar servidor (ferramenta)
+name: Consulta livre (ferramenta)
 on:
   workflow_dispatch:
     inputs:
-      campo: {description: 'campo do filtro', default: 'sem'}
-      valor: {description: 'valor do filtro', default: 'w20261102'}
+      q: {description: 'structuredQuery JSON', required: true}
+      campos: {description: 'campos para mostrar (virgula)', required: false, default: 'nome,uid'}
 jobs:
-  q:
+  r:
     runs-on: ubuntu-latest
     steps:
-      - name: consulta
+      - env: {Q: '${{ github.event.inputs.q }}', C: '${{ github.event.inputs.campos }}'}
         run: |
-          U='https://firestore.googleapis.com/v1/projects/furia-do-templo/databases/(default)/documents:runQuery?key=AIzaSyDXTjvRMcKtJ5vq2vl-F2B_w2M-7hd_QY0'
-          for f in "${{ inputs.campo }}:${{ inputs.valor }}" "ev:ev20261108"; do
-            C=${f%%:*};V=${f#*:}
-            echo "===== $C == $V"
-            curl -sS -X POST "$U" -H 'Content-Type: application/json' -d "{\"structuredQuery\":{\"from\":[{\"collectionId\":\"torre\"}],\"where\":{\"fieldFilter\":{\"field\":{\"fieldPath\":\"$C\"},\"op\":\"EQUAL\",\"value\":{\"stringValue\":\"$V\"}}},\"limit\":1000}}" | python3 -c "
-          import json,sys
-          for x in json.load(sys.stdin):
-              d=x.get('document')
-              if not d:continue
-              F={k:list(v.values())[0] for k,v in d['fields'].items()}
-              F['_ct']=d['createTime'];F['_id']=d['name'].split('/')[-1]
-              print('ROW',json.dumps(F,ensure_ascii=False))
-          "
-          done
+          cat > c.py <<'PY'
+          import json,urllib.request,os,collections
+          U='https://fui-do-templo-a-pk-2.denilsinend.workers.dev/fs/v1/projects/furia-do-templo/databases/(default)/documents:runQuery'
+          A={'User-Agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/120 Safari/537.36','Content-Type':'application/json'}
+          q=json.loads(os.environ['Q']);C=[c for c in os.environ['C'].split(',') if c]
+          R=json.load(urllib.request.urlopen(urllib.request.Request(U,data=json.dumps({'structuredQuery':q}).encode(),headers=A),timeout=90))
+          D=[x['document'] for x in R if x.get('document')];print('DOCS',len(D))
+          cnt=collections.Counter()
+          for d in D:
+            f={k:list(v.values())[0] for k,v in d['fields'].items()};cnt[f.get('nome')]+=1
+            print(d['createTime'][:19],d['name'].split('/')[-1][:40],' | '.join(str(f.get(c,''))[:60] for c in C))
+          print('POR NOME',cnt.most_common(60))
+          PY
+          python3 c.py
