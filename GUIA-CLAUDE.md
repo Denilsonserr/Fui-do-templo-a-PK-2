@@ -2488,3 +2488,6 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - ADM: botão ✅ APROVAR na tela do mercado (`mkAdmOpen`) lista pedidos com comprador/vendedor/item/preço e confere o SAVE NA NUVEM do comprador (`mkAdmChk`: 🚨 se o pagamento sumiu = voltou o save). OK cria `mkb_<lid>` (vendedor recebe pelo fluxo antigo) + `mkd_<rid>` ok=1; RECUSAR = `mkd` ok=0. Pedidos de anúncio já vendido/cancelado são recusados sozinhos.
 - Comprador (`mkPoll`, boot+9s, a cada 60s e ao abrir o mercado): lê `mkd` pelo campo `mkdb`, cria `mkg_<rid>` (uma vez só no servidor) e entrega item ou devolve gemas. Pode cancelar o pedido (`pcx`).
 - `MN_FECHADO=false` (reaberto). Teste `tmercado_adm_v546.js` (mock com banco em memória, 3 jogadores).
+
+## v547 — taxa de 10% do Mercado para o ADM
+- `MKTAX=.10`. No ✅ OK o ADM grava `mkb` com `preco`=90% (o vendedor recebe isso pelo `mnClaim` antigo), `bruto` e `tx`; cria `mkt_<lid>` (uma vez só) e soma os 10% nas gemas do ADM. Painel mostra quanto o vendedor recebe e quanto vai para o ADM; aviso no anúncio. Teste `tmercado_taxa_v547.js`.
