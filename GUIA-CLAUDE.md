@@ -2542,3 +2542,6 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 
 ## v560 — RANK GERAL (XP) com todos
 - Mesmo problema do PVP: `rkOQ(rp)` top 150 docs (campo da temporada 2 `rp2`, ver S2F) só com 3 jogadores. Wrapper de `rkOQ` para rp (fora do RKS1Q): `where rk==1` orderBy `rp2` + `latestBy:nome` (limite 300), mapeando como o wrapper S2F. Worker: `latestBy` agora só considera docs que TÊM o campo do orderBy (`JOIN … o.n IS NOT NULL`) — docs de dano/torre sem rp não escondem o XP. Teste `trank_xp_v560.js`.
+
+## v561 — Vini 3x XP no ranqueado (3 h)
+- `VNX` 19/11 19:10→22:10 Brasília; `vnxApply` põe entrada pessoal (tag vn) no RKEVX com xp ×3 do evento base, só se `vnOn()`. Teste `tvini_xp_v561.js`.

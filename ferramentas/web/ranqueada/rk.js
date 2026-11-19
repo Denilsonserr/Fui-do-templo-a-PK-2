@@ -7162,3 +7162,10 @@ TWCUP['15txov7']={nm:'PRESENTE PARA TODOS',ev:1,gem:10000,tic:0,chb:1};
     const r=await twFetchT(TWURL+':runQuery?key='+TWFB.apiKey,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});if(!r.ok)throw new Error('http '+r.status);const j=await r.json(),o=[];
     for(const x of (Array.isArray(j)?j:[])){const F=x&&x.document&&x.document.fields;if(!F||!F.rk)continue;const e={_ct:Date.parse(x.document.createTime||'')||0};for(const k in F){const v=F[k];e[k]=v.stringValue!=null?v.stringValue:v.integerValue!=null?+v.integerValue:v.doubleValue}for(const k in S2F)if(e[S2F[k]]!=null)e[k]=e[S2F[k]];else if(k!=='rp')delete e[k];if(e.tw2)e.tt=e.tw2;if(e.t1w2)e.t1=e.t1w2;if(e.rp2==null)e.rp=0;o.push(e)}
     if(o.length)return o}catch(e){}}return _o.apply(this,arguments)}}
+
+/* v561: Vini_junior10 — 3x XP no MODO RANQUEADO (boss) por 3 horas: 19/11 19:10 → 22:10 (Brasília). Entrada pessoal no RKEVX (tag 'vn'), multiplica o evento que estiver valendo. */
+const VNX=[Date.UTC(2026,10,19,22,10),Date.UTC(2026,10,20,1,10)];
+function vnxApply(){for(let i=RKEVX.length-1;i>=0;i--)if(RKEVX[i][5]==='vn')RKEVX.splice(i,1);const t=Date.now();if(!vnOn()||t<VNX[0]||t>=VNX[1])return;
+  const base=RKEVX.find(e=>t>=e[0]&&t<e[1]&&e[5]!=='sx'&&e[5]!=='vn')||null;RKEVX.unshift([t-1000,base?Math.min(VNX[1],base[1]):VNX[1],(base?base[2]:1)*3,'⚡ 3x XP NO RANQUEADO'+(base?' + '+base[3]:''),Object.assign({},base&&base[4]||{}),'vn'])}
+setTimeout(vnxApply,1500);setInterval(vnxApply,20000);
+try{Object.assign(window.__pvT||{},{vnxApply:()=>vnxApply()})}catch(e){}
