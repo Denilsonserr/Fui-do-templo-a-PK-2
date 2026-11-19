@@ -2497,3 +2497,6 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 
 ## v549 — código EVENTO4H (evento pessoal 4h)
 - `TWCUP['1td8pnw']` (uso único, `pbo:4`): `rk_pbo {e}`. `pbApply` põe entrada pessoal no RKEVX (tag pb, XP x2); wrapper `pvStep` dobra as estrelas ganhas; wrapper `rkApply` dobra `tdm` do meu lutador e a chance de crítico (`tcr=2*tcr+5`, chance=5+tcr). Teste `tcod_evento_v549.js`.
+
+## v550 — código PASSE2XMAX
+- `TWCUP['1rsr4q1']` (uso único): PASSE 2X da temporada Solo Leveling (`bp:2,s2:1,x2:1`). Teste `tcod_passe2x_v550.js`.
