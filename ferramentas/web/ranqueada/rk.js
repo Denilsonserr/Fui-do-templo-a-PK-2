@@ -7199,3 +7199,9 @@ setTimeout(()=>{try{const L=anL();if(mnAdm()){if(!L.some(anDiv)){anGive({i:'adm_
 try{Object.assign(window.__pvT||{},{anSum:id=>anSum(id),anGiveX:r=>anGive(r),anDivSvg:()=>anRingSvg({c:6,g:9,s:'dano'},0)})}catch(e){}
 /* v562: para o ADM o XP aparece como ∞ (cabeçalho, conta, ranking) */
 setInterval(()=>{try{if(!mnAdm())return;const W=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT);let n;while(n=W.nextNode()){if(/99\.999\.99\d/.test(n.nodeValue))n.nodeValue=n.nodeValue.replace(/99\.999\.99\d(\s?XP)?/g,'∞$1')}}catch(e){}},1200);
+/* v563: ADM com TODOS os personagens no NÍVEL MÁXIMO e 10 ANÉIS DIVINOS */
+setTimeout(()=>{try{if(!mnAdm())return;let ch=0;const ALL=['sung','yuta','shaka',...RK_MIT,...RK_LEG,...RK_EPI].filter(id=>CH[id]),own=rkG('own',['goku']);
+  for(const id of ALL)if(!own.includes(id)){own.push(id);ch=1}if(ch)rkS('own',own);
+  const A=lvAll();for(const id of ALL){const o=A[id]||{},mx=LVMAX(id);if((o.lv|0)<mx){A[id]=Object.assign({t:[],c:[]},o,{lv:mx});ch=1}}if(ch)rkS('lv',A);
+  const n=anL().filter(anDiv).length;for(let k=n;k<10;k++){anGive({i:'adm_div_'+Date.now().toString(36)+k,c:6,g:9,s:'dano',s2:'crit',a:0,v:9999999,l:99,p:['fur','cmb','vamp','esq'][k%4]});ch=1}
+  if(ch){try{acSave(1)}catch(e){}}}catch(e){}},7600);
