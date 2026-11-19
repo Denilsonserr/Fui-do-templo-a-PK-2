@@ -6829,10 +6829,10 @@ try{Object.assign(window.__pvT||{},{twFz:()=>({fz:TWFZ,fr:TN&&TN.fr,on:TN&&TN.on
 
 /* v540: ANEL DOURADO SP (c5 g8 — só sai por código/ADM) NÃO pode ser vendido no MERCADO NEGRO.
    Some da aba VENDER e, se tentar anunciar de outro jeito, o anúncio é recusado. */
-const mnNoSell=r=>!!r&&(r.c|0)===5; /* v544: TODO anel DOURADO (qualquer nota) */
+const mnNoSell=r=>!!r&&(r.c|0)===5&&(r.g|0)>=8; /* v548: só anel DOURADO SP fica bloqueado (v544 bloqueava todos) */
 {const _m=mnMine;mnMine=function(){const L=_m.apply(this,arguments);try{const A=anL(),by=new Map(A.map(r=>[r.i,r]));
   return L.filter(e=>{if(e.k!=='an')return true;e.ids=e.ids.filter(i=>!mnNoSell(by.get(i)));e.n=e.ids.length;return e.n>0})}catch(e){return L}}}
-{const _p=mnPost;mnPost=async function(id,f){try{if(/^mk_/.test(String(id))&&f&&f.it){const o=JSON.parse(f.it.stringValue||'null');if(o&&o.k==='an'&&mnNoSell(o.r)){rkToast('🔒 Anel DOURADO não pode ser vendido no Mercado Negro.','#ff8080');return {ok:false,status:403}}}}catch(e){}return _p.apply(this,arguments)}}
+{const _p=mnPost;mnPost=async function(id,f){try{if(/^mk_/.test(String(id))&&f&&f.it){const o=JSON.parse(f.it.stringValue||'null');if(o&&o.k==='an'&&mnNoSell(o.r)){rkToast('🔒 Anel DOURADO SP não pode ser vendido no Mercado Negro.','#ff8080');return {ok:false,status:403}}}}catch(e){}return _p.apply(this,arguments)}}
 try{Object.assign(window.__pvT||{},{anGive:r=>anGive(r),mnMine:()=>mnMine(),mnPost:(i,f)=>mnPost(i,f),mnNoSell:r=>mnNoSell(r)})}catch(e){}
 
 /* v543: COMPRA DO MERCADO NEGRO não caía no inventário.
@@ -6849,7 +6849,7 @@ try{Object.assign(window.__pvT||{},{mnGive:o=>mnGive(o),twCap:()=>twCap(),mkCoun
 /* v544: anúncios de anel DOURADO que já estavam no mercado não podem mais ser comprados (somem da aba COMPRAR;
    o vendedor continua vendo o dele e pode CANCELAR para receber o anel de volta). */
 {const _r=mnRows;mnRows=function(){const R=_r.apply(this,arguments);try{if(MN.tab!=='buy')return R;return R.filter(r=>{if(r.mine)return true;const o=mnIt(r.l);return !(o&&o.k==='an'&&mnNoSell(o.r))})}catch(e){return R}}}
-{const _a=mnAct;mnAct=async function(a,b){try{if(a==='buy'){const X=_r0().find(r=>r.key===MN.sel);const o=X&&X.l&&mnIt(X.l);if(o&&o.k==='an'&&mnNoSell(o.r)){rkToast('🔒 Anel DOURADO não pode ser comprado no Mercado Negro.','#ff8080');return}}}catch(e){}return _a.apply(this,arguments)}}
+{const _a=mnAct;mnAct=async function(a,b){try{if(a==='buy'){const X=_r0().find(r=>r.key===MN.sel);const o=X&&X.l&&mnIt(X.l);if(o&&o.k==='an'&&mnNoSell(o.r)){rkToast('🔒 Anel DOURADO SP não pode ser comprado no Mercado Negro.','#ff8080');return}}}catch(e){}return _a.apply(this,arguments)}}
 function _r0(){try{return mnRows()}catch(e){return []}}
 try{Object.assign(window.__pvT||{},{mnRowsBuy:L=>{MN.tab='buy';MN.L=L;MN.C=new Map();return mnRows().map(r=>r.key)}})}catch(e){}
 
@@ -6877,7 +6877,7 @@ try{Object.assign(window.__pvT||{},{punVan:()=>punVan(),mnFech:()=>MN_FECHADO&&!
 const mkPend=()=>{const L=rkG('mkPend',[]);return Array.isArray(L)?L:[]},mkPendS=L=>rkS('mkPend',L);
 const mkQClr=()=>{try{for(const k in RKQC)if(k.includes('"mk'))delete RKQC[k]}catch(e){}};
 async function mkReq(X){const l=X.l,pr=mnPrice(l),o=mnClean(mnIt(l));if(!o){rkToast('Item inválido','#ff8080');return}
-  if(o.k==='an'&&mnNoSell(o.r)){rkToast('🔒 Anel DOURADO não pode ser comprado no Mercado Negro.','#ff8080');return}
+  if(o.k==='an'&&mnNoSell(o.r)){rkToast('🔒 Anel DOURADO SP não pode ser comprado no Mercado Negro.','#ff8080');return}
   if(mkPend().some(p=>p.lid===l.lid)){rkToast('⏳ Você já pediu este item. Aguarde o ADM.','#ffb347');return}
   const g0=rkG('gem',0)|0;if(g0<pr){rkSfx('clang');rkToast('Diamantes insuficientes!','#ff8080');return}
   const rid=l.lid+'_'+mnKey();rkAdd('gem',-pr);const P=mkPend();P.push({rid,lid:l.lid,pr,it:l.it,t:Date.now()});mkPendS(P);try{acSave(1)}catch(e){}

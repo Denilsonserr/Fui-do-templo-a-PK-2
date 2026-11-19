@@ -2491,3 +2491,6 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 
 ## v547 — taxa de 10% do Mercado para o ADM
 - `MKTAX=.10`. No ✅ OK o ADM grava `mkb` com `preco`=90% (o vendedor recebe isso pelo `mnClaim` antigo), `bruto` e `tx`; cria `mkt_<lid>` (uma vez só) e soma os 10% nas gemas do ADM. Painel mostra quanto o vendedor recebe e quanto vai para o ADM; aviso no anúncio. Teste `tmercado_taxa_v547.js`.
+
+## v548 — anel dourado volta a vender (menos SP)
+- `mnNoSell` = c5 e g>=8 de novo. Anúncios de dourado não-SP voltam a aparecer na aba COMPRAR. Teste `tmercado_sp_v540.js`.
