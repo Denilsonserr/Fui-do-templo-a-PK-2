@@ -6940,3 +6940,17 @@ setTimeout(async()=>{try{if(!mnAdm())return;const P=await mkAdmLoad();if(P.lengt
 try{Object.assign(window.__pvT||{},{mkReq:X=>mkReq(X),mkPoll:l=>mkPoll(l),mkPend:()=>mkPend(),mkAdmLoad:()=>mkAdmLoad(),mkAdmOpen:()=>mkAdmOpen(),mkAdmChk:r=>mkAdmChk(r),mnRows:()=>mnRows(),MN:()=>MN,mnLoad:()=>mnLoad(),mnAct:(a,b)=>mnAct(a,b),mnOpen:()=>mnOpen()})}catch(e){}
 /* v547: aviso no anúncio — vendedor recebe 90% */
 {const _a=mnAct;mnAct=async function(a){const r=await _a.apply(this,arguments);try{if(a==='list')setTimeout(()=>rkToast('ℹ️ Quando vender, você recebe 90% (10% vai para o ADM).','#bfe8ff'),1800)}catch(e){}return r}}
+
+/* v549: EVENTO PESSOAL por código (só para quem usou): 2x XP DE RANK, 2x ESTRELAS no PVP ranqueado, 2x DANO e 2x CRÍTICO por 4 horas.
+   rk_pbo {e:fim}. XP via entrada pessoal no RKEVX (tag 'pb'); estrelas via pvStep; dano/crítico via rkApply no meu lutador. */
+TWCUP['1td8pnw']={nm:'⚡ EVENTO PESSOAL 4H',it:[],uni:1,pbo:4,msg:'✅ EVENTO PESSOAL ATIVADO por 4 HORAS (só para você): ⭐ 2x ESTRELAS no PVP · 📈 2x XP de rank · ⚔️ 2x DANO · 🎯 2x CRÍTICO!'}; /* EVENTO4H (uso único) */
+const pbOn=()=>{const B=rkG('pbo',null);return !!(B&&B.e>Date.now())};
+function pbApply(){for(let i=RKEVX.length-1;i>=0;i--)if(RKEVX[i][5]==='pb')RKEVX.splice(i,1);const B=rkG('pbo',null),t=Date.now();if(!B||!(B.e>t))return;
+  const base=RKEVX.find(e=>t>=e[0]&&t<e[1]&&e[5]!=='sx')||null;RKEVX.unshift([t-1000,base?Math.min(B.e,base[1]):B.e,(base?base[2]:1)*2,'⚡ PESSOAL 2x XP · 2x ESTRELAS · 2x DANO · 2x CRÍTICO'+(base?' + '+base[3]:''),Object.assign({},base&&base[4]||{}),'pb'])}
+pbApply();setInterval(pbApply,20000);
+{const _cp=twCupom;twCupom=async function(code,E){const C=TWCUP[twHash(String(code).toUpperCase())];const r=await _cp.apply(this,arguments);
+  try{if(C&&C.pbo&&r!==false&&E&&/\bok\b/.test(E.className||'')){const B=rkG('pbo',null),t=Date.now();rkS('pbo',{e:Math.max(t,B&&B.e||0)+C.pbo*3600e3});pbApply();try{localStorage.removeItem('ac_h');acSave(1)}catch(e){}if(C.msg)E.textContent=C.msg}}catch(e){}return r}}
+{const _s=pvStep;pvStep=function(o,won){const r=_s.apply(this,arguments);try{if(won&&pbOn()&&r&&r.gain>0){const g=r.gain;for(let i=0;i<g;i++){if(o.t>=PVDIV){o.s++;continue}o.s++;if(o.s>=pvNeed(o.t)){o.s=0;if(o.d<2)o.d++;else{o.t++;o.d=0}}}
+  if(o.t>o.bt||o.t===o.bt&&o.d>o.bd){o.bt=o.t;o.bd=o.d}r.gain=g*2;r.up=o.t>r.b.t||o.t===r.b.t&&o.d>r.b.d}}catch(e){}return r}}
+{const _ra=rkApply;rkApply=function(){const r=_ra.apply(this,arguments);try{const p=G.p&&G.p[0];if(p&&pbOn()&&p._pbV!==p.tdm){p.tdm=(p.tdm||1)*2;p.tcr=(p.tcr||0)*2+5;p._pbV=p.tdm /* chance = 5+tcr → dobra */}}catch(e){}return r}}
+try{Object.assign(window.__pvT||{},{pbOn:()=>pbOn(),pvStep:(o,w)=>pvStep(o,w),evX:()=>rkEvX()})}catch(e){}

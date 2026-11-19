@@ -15505,6 +15505,20 @@ try{Object.assign(window.__pvT||{},{mkReq:X=>mkReq(X),mkPoll:l=>mkPoll(l),mkPend
 /* v547: aviso no anúncio — vendedor recebe 90% */
 {const _a=mnAct;mnAct=async function(a){const r=await _a.apply(this,arguments);try{if(a==='list')setTimeout(()=>rkToast('ℹ️ Quando vender, você recebe 90% (10% vai para o ADM).','#bfe8ff'),1800)}catch(e){}return r}}
 
+/* v549: EVENTO PESSOAL por código (só para quem usou): 2x XP DE RANK, 2x ESTRELAS no PVP ranqueado, 2x DANO e 2x CRÍTICO por 4 horas.
+   rk_pbo {e:fim}. XP via entrada pessoal no RKEVX (tag 'pb'); estrelas via pvStep; dano/crítico via rkApply no meu lutador. */
+TWCUP['1td8pnw']={nm:'⚡ EVENTO PESSOAL 4H',it:[],uni:1,pbo:4,msg:'✅ EVENTO PESSOAL ATIVADO por 4 HORAS (só para você): ⭐ 2x ESTRELAS no PVP · 📈 2x XP de rank · ⚔️ 2x DANO · 🎯 2x CRÍTICO!'}; /* EVENTO4H (uso único) */
+const pbOn=()=>{const B=rkG('pbo',null);return !!(B&&B.e>Date.now())};
+function pbApply(){for(let i=RKEVX.length-1;i>=0;i--)if(RKEVX[i][5]==='pb')RKEVX.splice(i,1);const B=rkG('pbo',null),t=Date.now();if(!B||!(B.e>t))return;
+  const base=RKEVX.find(e=>t>=e[0]&&t<e[1]&&e[5]!=='sx')||null;RKEVX.unshift([t-1000,base?Math.min(B.e,base[1]):B.e,(base?base[2]:1)*2,'⚡ PESSOAL 2x XP · 2x ESTRELAS · 2x DANO · 2x CRÍTICO'+(base?' + '+base[3]:''),Object.assign({},base&&base[4]||{}),'pb'])}
+pbApply();setInterval(pbApply,20000);
+{const _cp=twCupom;twCupom=async function(code,E){const C=TWCUP[twHash(String(code).toUpperCase())];const r=await _cp.apply(this,arguments);
+  try{if(C&&C.pbo&&r!==false&&E&&/\bok\b/.test(E.className||'')){const B=rkG('pbo',null),t=Date.now();rkS('pbo',{e:Math.max(t,B&&B.e||0)+C.pbo*3600e3});pbApply();try{localStorage.removeItem('ac_h');acSave(1)}catch(e){}if(C.msg)E.textContent=C.msg}}catch(e){}return r}}
+{const _s=pvStep;pvStep=function(o,won){const r=_s.apply(this,arguments);try{if(won&&pbOn()&&r&&r.gain>0){const g=r.gain;for(let i=0;i<g;i++){if(o.t>=PVDIV){o.s++;continue}o.s++;if(o.s>=pvNeed(o.t)){o.s=0;if(o.d<2)o.d++;else{o.t++;o.d=0}}}
+  if(o.t>o.bt||o.t===o.bt&&o.d>o.bd){o.bt=o.t;o.bd=o.d}r.gain=g*2;r.up=o.t>r.b.t||o.t===r.b.t&&o.d>r.b.d}}catch(e){}return r}}
+{const _ra=rkApply;rkApply=function(){const r=_ra.apply(this,arguments);try{const p=G.p&&G.p[0];if(p&&pbOn()&&p._pbV!==p.tdm){p.tdm=(p.tdm||1)*2;p.tcr=(p.tcr||0)*2+5;p._pbV=p.tdm /* chance = 5+tcr → dobra */}}catch(e){}return r}}
+try{Object.assign(window.__pvT||{},{pbOn:()=>pbOn(),pvStep:(o,w)=>pvStep(o,w),evX:()=>rkEvX()})}catch(e){}
+
 function twTrofList(){const tc=twLS.g('tw_tc',{}),run={};for(const t of TW.tr)run[t.k]=(run[t.k]||0)+1;
   twModal(`<div class="twM"><h3>🎖️ TROFÉUS</h3><div class="twTL">${Object.keys(TWTR).map(k=>{const T=TWTR[k];return `<div class="${tc[k]||run[k]?'got':''}"><i>${T.i}</i><b>${T.n}</b><span>${T.d}</span><em>+${T.p} 🏆</em><small>${run[k]?'nesta subida: '+run[k]+' · ':''}total: ${(tc[k]||0)}</small></div>`}).join('')}</div>
     <p class="twH">Cada troféu soma pontos 🏆 no ranking. Quem sobe mais andares fica na frente; empate = mais troféus, depois menos tempo.</p><div class="row"><button class="btn" id="twTx">FECHAR</button></div></div>`);
@@ -15696,7 +15710,7 @@ window.__dbg={mus:()=>[MCUR,MEL.src.split('/').pop()],stg:()=>STAGE.key,prepMatc
 })();
 </script>
 <style>#updB{position:fixed;left:50%;top:max(8px,env(safe-area-inset-top));transform:translateX(-50%);z-index:99999;padding:10px 22px;border-radius:14px;border:2px solid #fff3c0;background:linear-gradient(#ffd84a,#e08a10);color:#3a1d00;font:900 15px system-ui,sans-serif;box-shadow:0 0 18px #ffb21f;cursor:pointer;animation:updP 1s ease-in-out infinite alternate}@keyframes updP{to{transform:translateX(-50%) scale(1.05)}}</style>
-<script>(function(){const V='af3cbf4ff694';if(!/^https?:/.test(location.protocol))return;let nv=null;
+<script>(function(){const V='7efa9e0b3e03';if(!/^https?:/.test(location.protocol))return;let nv=null;
 function show(){if(document.getElementById('updB'))return;try{if(typeof G!=='undefined'&&G.mode==='fight')return}catch(e){}const b=document.createElement('button');b.id='updB';b.textContent='🔄 ATUALIZAÇÃO NOVA! Toque para atualizar';
   b.onclick=()=>{b.textContent='⏳ Atualizando...';try{acSave(1)}catch(e){}setTimeout(()=>location.reload(),900)};document.body.appendChild(b)}
 async function chk(){if(document.hidden)return;if(nv){show();return}try{const r=await fetch('versao.txt?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const t=(await r.text()).trim();if(/^[0-9a-f]{8,40}$/.test(t)&&t!==V){nv=t;show()}}catch(e){}}

@@ -2494,3 +2494,6 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 
 ## v548 — anel dourado volta a vender (menos SP)
 - `mnNoSell` = c5 e g>=8 de novo. Anúncios de dourado não-SP voltam a aparecer na aba COMPRAR. Teste `tmercado_sp_v540.js`.
+
+## v549 — código EVENTO4H (evento pessoal 4h)
+- `TWCUP['1td8pnw']` (uso único, `pbo:4`): `rk_pbo {e}`. `pbApply` põe entrada pessoal no RKEVX (tag pb, XP x2); wrapper `pvStep` dobra as estrelas ganhas; wrapper `rkApply` dobra `tdm` do meu lutador e a chance de crítico (`tcr=2*tcr+5`, chance=5+tcr). Teste `tcod_evento_v549.js`.
