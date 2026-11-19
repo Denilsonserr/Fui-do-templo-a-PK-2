@@ -2482,3 +2482,9 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - `punVan` (uid mw9apulbiy7r7kgz / nome van hohenheim): -75% das gemas, flag `rk_punVan1` (save antigo sem a flag recebe de novo), modal de aviso. Motivo: duplicação de gemas no mercado com a conta judas (preços 36277/72554/125508/253000 ida e volta) + compra de 175k do Vini desfeita por volta de save.
 - `MN_FECHADO=true`: wrappers de `mnOn`/`mnAct` bloqueiam o mercado p/ todos menos o ADM (`mnAdm`). Para reabrir: `MN_FECHADO=false`.
 - Ferramentas: `.github/workflows/suspeita.yml` e `suspeita2.yml` (mkb tem o NOME do comprador). Teste `tpun_van_v545.js`.
+
+## v546 — Mercado Negro com APROVAÇÃO DO ADM
+- Comprar vira PEDIDO (`mkReq`): gemas reservadas na hora, `rk_mkPend`, doc `mkr_<lid>_<comprador>`. Nada é entregue sem o ADM.
+- ADM: botão ✅ APROVAR na tela do mercado (`mkAdmOpen`) lista pedidos com comprador/vendedor/item/preço e confere o SAVE NA NUVEM do comprador (`mkAdmChk`: 🚨 se o pagamento sumiu = voltou o save). OK cria `mkb_<lid>` (vendedor recebe pelo fluxo antigo) + `mkd_<rid>` ok=1; RECUSAR = `mkd` ok=0. Pedidos de anúncio já vendido/cancelado são recusados sozinhos.
+- Comprador (`mkPoll`, boot+9s, a cada 60s e ao abrir o mercado): lê `mkd` pelo campo `mkdb`, cria `mkg_<rid>` (uma vez só no servidor) e entrega item ou devolve gemas. Pode cancelar o pedido (`pcx`).
+- `MN_FECHADO=false` (reaberto). Teste `tmercado_adm_v546.js` (mock com banco em memória, 3 jogadores).

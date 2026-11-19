@@ -6861,8 +6861,80 @@ function punVan(){try{if(rkG('punVan1',0))return;const uid=String(twUid()),nm=St
 setTimeout(punVan,6500);setInterval(punVan,30000);
 
 /* v545: MERCADO NEGRO FECHADO temporariamente para todos (menos o ADM). As vendas pendentes ficam guardadas no servidor. */
-const MN_FECHADO=true;
+const MN_FECHADO=false; /* v546: reaberto — agora toda compra precisa do OK do ADM */
 const mnAdm=()=>{try{return String(twLS.g('tw_nome','')||'').toLowerCase().trim()===String(TWADMN).toLowerCase()}catch(e){return false}};
 {const _mo=mnOn;mnOn=function(){if(MN_FECHADO&&!mnAdm()){setTimeout(()=>{rkView('menu');rkToast('🔒 MERCADO NEGRO FECHADO temporariamente pelo ADM. Suas vendas ficam guardadas.','#ffb347')},50);return}return _mo.apply(this,arguments)}}
 {const _ma=mnAct;mnAct=async function(){if(MN_FECHADO&&!mnAdm()){rkToast('🔒 Mercado Negro fechado temporariamente.','#ffb347');return}return _ma.apply(this,arguments)}}
 try{Object.assign(window.__pvT||{},{punVan:()=>punVan(),mnFech:()=>MN_FECHADO&&!mnAdm()})}catch(e){}
+
+/* ===================== v546: MERCADO NEGRO COM APROVAÇÃO DO ADM =====================
+   VENDER: igual antes (anúncio). COMPRAR: vira um PEDIDO — o comprador paga na hora (gemas ficam "presas") e o pedido
+   vai para o ADM. Só quando o ADM aperta ✅ OK a venda acontece (cria o mkb_<lid>, o vendedor recebe, o comprador recebe o item).
+   ❌ RECUSAR (ou anúncio cancelado/vendido para outro) → as gemas voltam para o comprador.
+   Docs: mkr_<rid> pedido {mkr:'1',rid,lid,mks,mkb(comprador),preco,it,g0,g1,snm} · mkd_<rid> decisão {mkd:'1',mkdb,rid,lid,ok}
+         mkg_<rid> "já recebi" (uma vez só no servidor — voltar o save não dá item/gemas de novo).
+   O ADM vê, em cada pedido, se o SAVE NA NUVEM do comprador mostra o pagamento (pega quem volta o save). */
+const mkPend=()=>{const L=rkG('mkPend',[]);return Array.isArray(L)?L:[]},mkPendS=L=>rkS('mkPend',L);
+const mkQClr=()=>{try{for(const k in RKQC)if(k.includes('"mk'))delete RKQC[k]}catch(e){}};
+async function mkReq(X){const l=X.l,pr=mnPrice(l),o=mnClean(mnIt(l));if(!o){rkToast('Item inválido','#ff8080');return}
+  if(o.k==='an'&&mnNoSell(o.r)){rkToast('🔒 Anel DOURADO não pode ser comprado no Mercado Negro.','#ff8080');return}
+  if(mkPend().some(p=>p.lid===l.lid)){rkToast('⏳ Você já pediu este item. Aguarde o ADM.','#ffb347');return}
+  const g0=rkG('gem',0)|0;if(g0<pr){rkSfx('clang');rkToast('Diamantes insuficientes!','#ff8080');return}
+  const rid=l.lid+'_'+mnKey();rkAdd('gem',-pr);const P=mkPend();P.push({rid,lid:l.lid,pr,it:l.it,t:Date.now()});mkPendS(P);try{acSave(1)}catch(e){}
+  let r=null;try{r=await mnPost('mkr_'+rid,{mkr:mnSV('1'),rid:mnSV(rid),lid:mnSV(l.lid),mks:mnSV(l.mkv),mkb:mnSV(mnKey()),preco:mnIV(pr),it:mnSV(String(l.it||'').slice(0,3000)),g0:mnIV(g0),g1:mnIV(g0-pr),snm:mnSV(String(l.nome||'?').slice(0,24))})}catch(e){}
+  if(!r||!r.ok){rkAdd('gem',pr);mkPendS(mkPend().filter(p=>p.rid!==rid));try{acSave(1)}catch(e){}rkSfx('clang');rkToast(r&&r.status===409?'⏳ Você já tinha pedido este item.':'Precisa de internet. As gemas voltaram.','#ff8080');return}
+  rkSfx('powerUp');rkToast('⏳ PEDIDO ENVIADO! '+rkFmtN(pr)+' 💎 reservados. O item chega quando o ADM aprovar.','#ffd84a')}
+async function mkReqCancel(lid){const p=mkPend().find(x=>x.lid===lid);if(!p)return;let r=null;
+  try{r=await mnPost('mkd_'+p.rid,{mkd:mnSV('1'),mkdb:mnSV(mnKey()),rid:mnSV(p.rid),lid:mnSV(p.lid),ok:mnSV('0'),mot:mnSV('cancelado pelo comprador')})}catch(e){}
+  if(r&&(r.ok||r.status===409)){mkQClr();await mkPoll(1)}else rkToast('Precisa de internet.','#ff8080')}
+let mkPolling=0;async function mkPoll(loud){if(mkPolling)return;const P=mkPend();if(!P.length)return;mkPolling=1;try{if(loud)mkQClr();
+  const D=await rkQ('mkdb',mnKey(),300),dm=new Map(D.map(d=>[d.rid,d]));let ch=0;
+  for(const p of P){const d=dm.get(p.rid);if(!d)continue;
+    let g=null;try{g=await mnPost('mkg_'+p.rid,{mkg:mnSV('1'),rid:mnSV(p.rid),ok:mnSV(String(d.ok))})}catch(e){}if(!g)continue;
+    const L=mkPend().filter(x=>x.rid!==p.rid);mkPendS(L);ch=1;if(!g.ok)continue; /* 409 = já recebido antes (save voltado) */
+    if(String(d.ok)==='1'){const o=mnClean((()=>{try{return JSON.parse(p.it)}catch(e){return null}})());if(o)mnGive(o);rkSfx('boom');rkToast('✅ O ADM APROVOU sua compra! O item já está com você.','#7dff9a')}
+    else{rkAdd('gem',p.pr|0);rkToast('↩️ Compra não aprovada'+(d.mot?' ('+d.mot+')':'')+'. '+rkFmtN(p.pr)+' 💎 devolvidos.','#ffb347')}}
+  if(ch){try{acSave(1)}catch(e){}if(RKV==='mn')rkView('mn')}}catch(e){}mkPolling=0}
+setTimeout(()=>mkPoll(1),9000);setInterval(()=>mkPoll(),60000);
+{const _l=mnLoad;mnLoad=async function(){const r=await _l.apply(this,arguments);mkPoll(1);return r}}
+
+/* --- tela: botão do pedido + painel do ADM --- */
+{const _h=mnH;mnH=function(){let h=_h.apply(this,arguments);try{
+  if(MN.tab==='buy'&&MN.sel&&mkPend().some(p=>p.lid===MN.sel))h=h.replace(/<button data-m="buy">[\s\S]*?<\/button>/,'<button data-m="pcx" class="mkPd">⏳ AGUARDANDO ADM<br><small>cancelar pedido</small></button>');
+  const np=mkPend().length;if(np)h+=`<div class="mkPdN" style="${rkB2(475,262,1260,306)}">⏳ ${np} pedido(s) de compra aguardando o OK do ADM — as gemas voltam se não for aprovado</div>`;
+  else h+=`<div class="mkPdN i" style="${rkB2(475,262,1260,306)}">🛡️ Toda compra passa pela aprovação do ADM</div>`;
+  if(mnAdm())h+=`<button class="mkAdmB" data-m="admQ" style="${rkB2(1390,176,1640,244)}">✅ APROVAR${MKADMN?' <b>'+MKADMN+'</b>':''}</button>`}catch(e){}return h}}
+{const _a=mnAct;mnAct=async function(a,b){
+  if(a==='admQ'){if(mnAdm())mkAdmOpen();return}
+  if(a==='buy'||a==='pcx'){if(MN.busy)return;const X=mnRows().find(r=>r.key===MN.sel);if(!X||!X.l)return;MN.busy=1;try{if(a==='buy')await mkReq(X);else await mkReqCancel(X.l.lid)}finally{MN.busy=0}if(RKV==='mn')rkView('mn');return}
+  return _a.apply(this,arguments)}}
+
+let MKADMN=0,MKADM=null;
+async function mkAdmLoad(){mkQClr();const [R,D,C]=await Promise.all([rkQ('mkr','1',800),rkQ('mkd','1',1500),rkQ('mkx','1',1500)]);
+  const dec=new Set(D.map(d=>d.rid)),cl=new Map(C.map(c=>[c.lid,c]));const P=R.filter(r=>!dec.has(r.rid)).sort((a,b)=>a._ct-b._ct);
+  for(const r of P.filter(r=>cl.has(r.lid))){try{await mkDec(r,'0','anúncio já vendido ou cancelado')}catch(e){}}
+  MKADM=P.filter(r=>!cl.has(r.lid));MKADMN=MKADM.length;return MKADM}
+async function mkDec(r,ok,mot){return mnPost('mkd_'+r.rid,{mkd:mnSV('1'),mkdb:mnSV(r.mkb),rid:mnSV(r.rid),lid:mnSV(r.lid),ok:mnSV(ok),mot:mnSV(mot||'')})}
+async function mkAdmChk(r){try{const acc=await acId(r.nome),x=await (await twFetchT(new URL(TWURL).origin+'/fs/sv-antes?acc='+encodeURIComponent(acc)+'&t='+(Date.now()+864e5))).json();
+  if(!x||!x.d)return {c:'w',t:'⚠️ sem save na nuvem'};const S=JSON.parse(x.d);let pd=[];try{pd=JSON.parse(S.rk_mkPend||'[]')}catch(e){}const gem=+S.rk_gem||0;
+  if(!pd.some(p=>p.rid===r.rid))return {c:'b',t:'🚨 o save NÃO tem esse pagamento (voltou o save?) · gemas na nuvem: '+rkFmtN(gem)};
+  if(gem>(+r.g1||0)+5000)return {c:'w',t:'⚠️ gemas subiram depois do pedido: '+rkFmtN(r.g1)+' → '+rkFmtN(gem)};
+  return {c:'g',t:'✅ save confere · gemas na nuvem: '+rkFmtN(gem)}}catch(e){return {c:'w',t:'⚠️ não deu para verificar'}}}
+async function mkAdmOpen(){rkModal('<div class="mkAdm"><h3>✅ APROVAR VENDAS DO MERCADO</h3><p>Carregando pedidos...</p></div>');let P;try{P=await mkAdmLoad()}catch(e){rkModal('<div class="mkAdm"><h3>✅ APROVAR VENDAS</h3><p>Sem internet.</p></div>');return}
+  const row=(r,i)=>{const o=mnClean(mnIt(r)),v=mnView(o)||{nm:'?',c:'#fff'};const dt=new Date(r._ct);return `<div class="mkR" data-i="${i}"><div class="mkRi"><b style="color:${v.c}">${twEsc(v.nm)} ${v.r?rkRarN(v.r):''}</b><span>💎 <b>${rkFmtN(r.preco)}</b></span>
+    <small>🛒 Comprador: <b>${twEsc(r.nome)}</b> · 🏷️ Vendedor: <b>${twEsc(r.snm||'?')}</b> · ${dt.toLocaleDateString('pt-BR')} ${dt.toLocaleTimeString('pt-BR').slice(0,5)}</small>
+    <small>Gemas do comprador: ${rkFmtN(r.g0)} → ${rkFmtN(r.g1)}</small><small class="mkChk" id="mkC${i}">🔎 verificando o save...</small></div>
+    <div class="mkRb"><button class="ok" data-k="ok" data-i="${i}">✅ OK</button><button class="no" data-k="no" data-i="${i}">❌ RECUSAR</button></div></div>`};
+  rkModal(`<div class="mkAdm"><h3>✅ APROVAR VENDAS DO MERCADO <small>${P.length} pedido(s)</small></h3>${P.length?'<div class="mkL">'+P.map(row).join('')+'</div>':'<p>Nenhum pedido aguardando. 👍</p>'}<button class="rkB mkX" data-k="x">FECHAR</button></div>`);
+  const M=document.getElementById('rkModal')||document;
+  M.querySelectorAll('.mkAdm [data-k]').forEach(b=>b.onclick=async e=>{e.stopPropagation();const k=b.dataset.k;if(k==='x'){rkModal(null);if(RKV==='mn')rkView('mn');return}
+    const r=P[+b.dataset.i];if(!r||b.disabled)return;const R=b.closest('.mkR');R.querySelectorAll('button').forEach(x=>x.disabled=true);
+    try{if(k==='no'){const x=await mkDec(r,'0','recusado pelo ADM');R.querySelector('.mkRb').innerHTML=x.ok||x.status===409?'<em class="no">❌ RECUSADO — gemas voltam</em>':'<em>erro</em>'}
+      else{const x=await mnPost('mkb_'+r.lid,{mkx:mnSV('1'),mks:mnSV(r.mks),lid:mnSV(r.lid),tipo:mnSV('buy'),preco:mnIV(r.preco),bnm:mnSV(String(r.nome||'').slice(0,24)),buid:mnSV(String(r.uid||''))});
+        if(!x.ok){await mkDec(r,'0','anúncio já vendido ou cancelado');R.querySelector('.mkRb').innerHTML='<em class="no">já vendido/cancelado — gemas voltam</em>'}
+        else{await mkDec(r,'1','');for(const o of P)if(o!==r&&o.lid===r.lid){try{await mkDec(o,'0','vendido para outro jogador')}catch(_){}}R.querySelector('.mkRb').innerHTML='<em class="ok">✅ APROVADO — venda feita</em>'}}
+      MKADMN=Math.max(0,MKADMN-1)}catch(_){R.querySelector('.mkRb').innerHTML='<em>sem internet</em>'}});
+  P.forEach(async(r,i)=>{const c=await mkAdmChk(r),el=document.getElementById('mkC'+i);if(el){el.textContent=c.t;el.className='mkChk '+c.c}})}
+/* ADM: aviso de pedidos pendentes ao entrar */
+setTimeout(async()=>{try{if(!mnAdm())return;const P=await mkAdmLoad();if(P.length)rkToast('🛒 '+P.length+' pedido(s) no Mercado Negro esperando seu ✅ OK','#ffd84a')}catch(e){}},12000);
+try{Object.assign(window.__pvT||{},{mkReq:X=>mkReq(X),mkPoll:l=>mkPoll(l),mkPend:()=>mkPend(),mkAdmLoad:()=>mkAdmLoad(),mkAdmOpen:()=>mkAdmOpen(),mkAdmChk:r=>mkAdmChk(r),mnRows:()=>mnRows(),MN:()=>MN,mnLoad:()=>mnLoad(),mnAct:(a,b)=>mnAct(a,b),mnOpen:()=>mnOpen()})}catch(e){}
