@@ -1,0 +1,31 @@
+name: Mercado — compras recentes (ferramenta)
+on: workflow_dispatch
+jobs:
+  r:
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          cat > m.py <<'PY'
+          import json,urllib.request,time
+          U='https://fui-do-templo-a-pk-2.denilsinend.workers.dev/fs/v1/projects/furia-do-templo/databases/(default)/documents:runQuery'
+          A='Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/120 Safari/537.36'
+          def q(f,v,lim=300):
+            b=json.dumps({"structuredQuery":{"from":[{"collectionId":"torre"}],"where":{"fieldFilter":{"field":{"fieldPath":f},"op":"EQUAL","value":{"stringValue":v}}},"limit":lim}}).encode()
+            for i in range(4):
+              try:
+                r=urllib.request.Request(U,data=b,headers={'Content-Type':'application/json','User-Agent':A});return json.load(urllib.request.urlopen(r,timeout=60))
+              except Exception as e: print('ERR',e);time.sleep(5)
+            return []
+          def F(x):
+            d=x.get('document') or {};f=d.get('fields') or {};o={k:(v.get('stringValue') if 'stringValue' in v else v.get('integerValue')) for k,v in f.items()};o['_ct']=d.get('createTime','');return o
+          L=[F(x) for x in q('mk','1',600) if x.get('document')]
+          B=[F(x) for x in q('mkx','1',600) if x.get('document')]
+          LL={l.get('lid'):l for l in L}
+          print('LISTINGS',len(L),'MKB',len(B))
+          B.sort(key=lambda b:b['_ct'],reverse=True)
+          for b in B[:120]:
+            l=LL.get(b.get('lid')) or {}
+            print(b['_ct'][:19],b.get('tipo'),b.get('preco'),'vend',b.get('mks'),'item',(l.get('it') or '?')[:300])
+          PY
+          python3 m.py
+          echo ERROS; curl -s -A 'Mozilla/5.0 Chrome/120' "https://fui-do-templo-a-pk-2.denilsinend.workers.dev/fs-admin/erros?h=48" | sed 's/<div/\n<div/g' | sed 's/<[^>]*>/ /g' | grep -i "mn\|merc\|mk" | head -60
