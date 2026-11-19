@@ -2513,3 +2513,11 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 
 ## v554 — Sung "caído" no fim dos 3 min
 - `timeOver` compara as vidas; o Sung tinha tomado dano no quadro (vida só volta depois) → jogador vencia com PERFEITO e o Sung caía. Wrapper de `timeOver`: soma o dano, vida cheia, `G.koWinner=1` (Sung de pé) e banner FIM DO TEMPO. Teste em `ttorneio_imortal_v552.js`.
+
+## v555 — RAID DAS FORMIGAS (portal rank S) + BERU (chefe e sombra rank S) + evento S a cada 20 min
+- Artes do dono em `ferramentas/portais/npc/recebido/` (`be_*` Beru, `fv_*` formiga vermelha, `fb_*` formiga branca); `cortar_v555.py` corta, gera a versão SOMBRA (`bes_*`, roxo-azulado) e o retrato; quadros entram no fim do rk.js com `Object.assign(PNJ,…)`. Retrato quadrado do chefe `a/bfc8bd6c749bab.webp` (`BEIMG`).
+- `PNSET.fv/fb/be`. `ptRaid()` = portal S. Wrapper final de `hyMk`: sala 10 vira BERU (converte o Igris: vida 900×0,7×1,8 golpes, df .4, ataque ×1,35, crit 45%); ~72% dos monstros viram formigas (vermelha, branca, vermelha pintada de branco `v:'branco'`); sala 5 continua Urso. Igris agora só nos portais E–A.
+- Beru (wrapper `pnStep`/`pnFrame`/`applyHit`/`pnAura`): passivas Carapaça −40%, Investida (teleporte), Guarda Perfeita 25% (quadros `be_guarda`, revida), Devorar (cura 0,6% por acerto), Fúria <50%. Aura `beAura` (chama do Monarca + orbes roxos + raios). Fim da raid no Beru; `BECH=1`% de extrair (`pnBossReward`).
+- Sombra `SJSH.beru` (rank S): `sjShSt` ×2,2 vida / ×2,4 dano / ×1,3 vel; `besTick/besDraw` (combo 16 quadros, soco, chute, teleporta atrás, cura o Sung, segura especial 30%), dura 20 s (`BELIFE`).
+- Evento `PTSE2` (19/11 15:00 → 26/11 23:59 Brasília): 1º ciclo de cada bloco de 20 min tem portal S (marca `PTGS`). Faixa roxa na tela dos portais; carta S com "🐜 RAID DAS FORMIGAS".
+- Teste `ferramentas/testes/traid_beru_v555.js` (usa `__pvT.ptNow`, porque `__pt.now` é o ptNow sem wrappers).
