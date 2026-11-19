@@ -6831,7 +6831,7 @@ try{Object.assign(window.__pvT||{},{twFz:()=>({fz:TWFZ,fr:TN&&TN.fr,on:TN&&TN.on
 
 /* v540: ANEL DOURADO SP (c5 g8 — só sai por código/ADM) NÃO pode ser vendido no MERCADO NEGRO.
    Some da aba VENDER e, se tentar anunciar de outro jeito, o anúncio é recusado. */
-const mnNoSell=r=>!!r&&(r.c|0)===5&&(r.g|0)>=8; /* v548: só anel DOURADO SP fica bloqueado (v544 bloqueava todos) */
+const mnNoSell=r=>!!r&&((r.c|0)===5&&(r.g|0)>=8||(r.c|0)>=6); /* v548: só anel DOURADO SP fica bloqueado (v544 bloqueava todos) */
 {const _m=mnMine;mnMine=function(){const L=_m.apply(this,arguments);try{const A=anL(),by=new Map(A.map(r=>[r.i,r]));
   return L.filter(e=>{if(e.k!=='an')return true;e.ids=e.ids.filter(i=>!mnNoSell(by.get(i)));e.n=e.ids.length;return e.n>0})}catch(e){return L}}}
 {const _p=mnPost;mnPost=async function(id,f){try{if(/^mk_/.test(String(id))&&f&&f.it){const o=JSON.parse(f.it.stringValue||'null');if(o&&o.k==='an'&&mnNoSell(o.r)){rkToast('🔒 Anel DOURADO SP não pode ser vendido no Mercado Negro.','#ff8080');return {ok:false,status:403}}}}catch(e){}return _p.apply(this,arguments)}}
@@ -7169,3 +7169,33 @@ function vnxApply(){for(let i=RKEVX.length-1;i>=0;i--)if(RKEVX[i][5]==='vn')RKEV
   const base=RKEVX.find(e=>t>=e[0]&&t<e[1]&&e[5]!=='sx'&&e[5]!=='vn')||null;RKEVX.unshift([t-1000,base?Math.min(VNX[1],base[1]):VNX[1],(base?base[2]:1)*3,'⚡ 3x XP NO RANQUEADO'+(base?' + '+base[3]:''),Object.assign({},base&&base[4]||{}),'vn'])}
 setTimeout(vnxApply,1500);setInterval(vnxApply,20000);
 try{Object.assign(window.__pvT||{},{vnxApply:()=>vnxApply()})}catch(e){}
+
+/* ================= v562: ANEL DIVINO (c=6, acima do dourado) — SÓ DO ADM. Raios VERMELHOS e ROXOS, status INFINITO (∞).
+   • ADM ganha 1 ao abrir o jogo (Nota ∞, nível 99). Em quem não é ADM o anel some sozinho (não vende no mercado).
+   • Equipado no ADM: dano/crítico/velocidade/sorte/drop/vel. de transformação no máximo (mostra ∞).
+   • ADM em RANK MÁXIMO INFINITO (XP máximo; no ranking: "RANK ∞ · MÁXIMO"). ================= */
+ANC.push(['DIVINO','#ff2a6a','∞ anos · eterno']);ANG.push('∞');ANFL.push('DIVINO');ANV.push(Array(10).fill(9999999));ANMX.push(99);ANRP.push({m:'#ff1a5a',h:'#f0c0ff',g:'#b040ff'});AUC.push('#c040ff');
+try{if(RQA.anel2)RQA.anel2[6]='a/ccebec8923b51a.webp'}catch(e){}
+const anDiv=r=>!!r&&r.c===6;
+const ANDIVC=x=>x.replace(/#ffc400|#ff0a1e|#ff0012|#ff0018|#ff1a30|#ff2a3a|#ff4050|#ff3b4a|#ff0a22|#ff2238/gi,'#ff1a5a').replace(/#fff3b0|#ffb0b0|#ffd0d0|#fff2f2|#fff4f4/gi,'#e8b8ff').replace(/rgba\(255,\s*196,\s*0,/g,'rgba(190,60,255,').replace(/rgba\(255,\s*0,\s*(18|24|30),/g,'rgba(255,20,90,').replace(/rgba\(255,\s*(10|20|30|40|58),\s*(30|40|48|58|60|74),/g,'rgba(180,50,255,');
+function anDivBolts(){let s='<g class="anDvB">';for(let q=0;q<8;q++){const a=q*45,c=q%2?'#b040ff':'#ff2a5a';let p='M0,-30';for(let k=1;k<6;k++)p+=` L${(Math.random()*10-5).toFixed(1)},${(-30-k*5.5).toFixed(1)}`;
+  s+=`<path d="${p}" transform="rotate(${a})" stroke="${c}" stroke-width="2.4" fill="none" opacity="0"><animate attributeName="opacity" values="0;1;0;0;.8;0" dur="${(.7+q*.13).toFixed(2)}s" repeatCount="indefinite" begin="${(q*.11).toFixed(2)}s"/></path><path d="${p}" transform="rotate(${a})" stroke="#fff" stroke-width=".8" fill="none" opacity="0"><animate attributeName="opacity" values="0;1;0;0;.8;0" dur="${(.7+q*.13).toFixed(2)}s" repeatCount="indefinite" begin="${(q*.11).toFixed(2)}s"/></path>`}return s+'</g>'}
+{const _rs=anRingSvg;anRingSvg=function(r,k){if(!anDiv(r))return _rs.apply(this,arguments);const P4=ANRP[4];ANRP[4]=ANRP[6];let s;try{s=ANDIVC(_rs.call(this,Object.assign({},r,{c:4,g:7}),k))}finally{ANRP[4]=P4}return s.replace(/<\/svg>\s*$/,anDivBolts()+'</svg>')}}
+{const _au=anAura;anAura=function(R,cx,cy,cw){if(!R||!R.some(anDiv))return _au.apply(this,arguments);const A=_au(R.map(r=>anDiv(r)?Object.assign({},r,{c:4,g:7}):r),cx,cy,cw);
+  const roxo=x=>x.replace(/#ff0a1e|#ff0012|#ff0018|#ff1a30|#ff2a3a|#ff4050|#ff3b4a|#ff0a22|#ff2238/gi,'#b040ff').replace(/--c2:#ffd0d4/g,'--c2:#efc8ff');return [A[0],roxo(A[1])]}}
+const ANINF={dano:99999,crit:999,vel:999,st:500,drop:500,uv:999};
+{const _s=anSum;anSum=function(id){const o=_s.apply(this,arguments);try{const L=anL();if(anEq(id).some(i=>i&&anDiv(L.find(x=>x.i===i)))){if(mnAdm())for(const k in ANINF)o[k]=ANINF[k];else for(const k in o)o[k]=Math.min(o[k],50000)}}catch(e){}return o}}
+const anInfTx=h=>String(h).replace(/\+\s?\d{1,3}(?:\.\d{3}){2,}(?:,\d+)?\s?%/g,'+∞%').replace(/\+\s?\d{7,}(?:[.,]\d+)?\s?%/g,'+∞%').replace(/\b99\.999\s?%|\b99999\s?%/g,'∞%');
+{const _h=anH;anH=function(){return anInfTx(_h.apply(this,arguments))}}
+{const _c=anCard;anCard=function(r){const h=_c.apply(this,arguments);if(!anDiv(r))return h;return anInfTx(h).replace('class="anCard"','class="anCard anDv"')}}
+/* só o ADM tem: dá ao ADM; tira de quem não é ADM */
+setTimeout(()=>{try{const L=anL();if(mnAdm()){if(!L.some(anDiv)){anGive({i:'adm_div_'+Date.now().toString(36),c:6,g:9,s:'dano',s2:'crit',a:0,v:9999999,l:99,p:'fur'});try{acSave(1)}catch(e){}}
+      if((rkG('rp',0)|0)<99999999){rkS('rp',99999999);try{acSave(1)}catch(e){}}}
+    else if(L.some(anDiv)){const ids=new Set(L.filter(anDiv).map(r=>r.i));rkS('an',L.filter(r=>!anDiv(r)));const E=rkG('anEq',null);if(E&&typeof E==='object'){for(const k in E)if(Array.isArray(E[k]))E[k]=E[k].map(i=>ids.has(i)?null:i);rkS('anEq',E)}}}catch(e){}},7000);
+/* ranking: ADM em RANK ∞ */
+{const _d=rgDraw;rgDraw=function(){const r=_d.apply(this,arguments);try{const H=document.querySelector('.rk_rkg .rgAdm .fd');if(H&&!/∞/.test(H.textContent))H.innerHTML='RANK ∞ · MÁXIMO · FORA DA DISPUTA'}catch(e){}return r}}
+{const st=document.createElement('style');st.textContent=`.anCard.anDv{background:linear-gradient(100deg,#2a0012e8,#2c0a4ee8,#2a0012e8)!important;box-shadow:0 0 .8em #ff2a5a99,0 0 1.4em #b040ff77;animation:anDvP 1.6s ease-in-out infinite}.anCard.anDv b{color:#ffd0f0;text-shadow:0 0 .4em #ff2a6a,0 0 .7em #b040ff}
+@keyframes anDvP{50%{box-shadow:0 0 1.2em #ff2a5acc,0 0 2em #b040ffaa}}.anDvB{filter:drop-shadow(0 0 2px #ff2a6a) drop-shadow(0 0 4px #b040ff)}`;document.head.appendChild(st)}
+try{Object.assign(window.__pvT||{},{anSum:id=>anSum(id),anGiveX:r=>anGive(r),anDivSvg:()=>anRingSvg({c:6,g:9,s:'dano'},0)})}catch(e){}
+/* v562: para o ADM o XP aparece como ∞ (cabeçalho, conta, ranking) */
+setInterval(()=>{try{if(!mnAdm())return;const W=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT);let n;while(n=W.nextNode()){if(/99\.999\.99\d/.test(n.nodeValue))n.nodeValue=n.nodeValue.replace(/99\.999\.99\d(\s?XP)?/g,'∞$1')}}catch(e){}},1200);

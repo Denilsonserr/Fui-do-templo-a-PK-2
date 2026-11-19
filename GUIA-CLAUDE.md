@@ -2545,3 +2545,7 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 
 ## v561 — Vini 3x XP no ranqueado (3 h)
 - `VNX` 19/11 19:10→22:10 Brasília; `vnxApply` põe entrada pessoal (tag vn) no RKEVX com xp ×3 do evento base, só se `vnOn()`. Teste `tvini_xp_v561.js`.
+
+## v562 — ANEL DIVINO (c=6) só do ADM + ADM rank ∞
+- Cor nova c=6 (ANC/ANG "∞"/ANV/ANMX 99/ANRP/AUC/RQA.anel2[6]=a/ccebec8923b51a.webp, ícone vermelho+roxo). `anRingSvg`: desenho do SSS vermelho recolorido (`ANDIVC`) + raios vermelhos/roxos piscando (SMIL). `anAura`: 1 camada vermelha + 1 roxa.
+- `anSum`: anel divino equipado no ADM (`mnAdm`) → dano 99999, crit 999, vel 999, sorte 500, drop 500, uv 999 (`ANINF`). Textos `+N
