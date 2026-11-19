@@ -22,4 +22,8 @@ const {chromium}=require('playwright');const SH='/home/claude/fui-do-templo-a-pk
   // golpe gigante "de verdade" durante o jogo: zera a vida e espera alguns quadros
   await p.evaluate(()=>{const G=__pvT.G();G.p[1].hp=-1e9});await p.waitForTimeout(1500);
   const r2=await p.evaluate(()=>{const G=__pvT.G();return {ph:G.phase,hp:G.p[1].hp,mhp:G.p[1].mhp,on:__pvT.trn().on}});chk(r2.ph==='fight'&&r2.on&&r2.hp===r2.mhp,'continua lutando depois do golpe gigante');
+  const r3=await p.evaluate(()=>{const G=__pvT.G(),o=G.p[1],T=__pvT.trn(),d0=T.d;o.hp=o.mhp-12345;__pvT.timeOver();return {w:G.koWinner,ph:G.phase,hp:o.hp,mhp:o.mhp,dd:T.d-d0}});
+  chk(r3.w===1&&r3.hp===r3.mhp&&r3.dd>=12345,'fim do tempo: Sung fica de pé (vencedor '+r3.w+'), dano do último golpe conta');
+  await p.waitForTimeout(4000);const r4=await p.evaluate(()=>({st:__pvT.G().p[1].state}));chk(r4.st!=='lose'&&r4.st!=='ko','Sung não aparece caído ('+r4.st+')');
   console.log(errs.length?'ERROS '+errs.join('|'):'sem erros');console.log(ok&&!errs.length?'TUDO OK':'FALHOU');await b.close()})();
+// v554: fim dos 3 minutos com o Sung tendo tomado dano no último quadro

@@ -6984,3 +6984,8 @@ let PSSHOW=0;
 {const _c=cbAll;cbAll=function(){PSSHOW++;try{return _c.apply(this,arguments)}finally{PSSHOW--}}}
 try{if(typeof rgsMine==='function'){const _r=rgsMine;rgsMine=function(){PSSHOW++;try{return _r.apply(this,arguments)}finally{PSSHOW--}}}}catch(e){}
 try{Object.assign(window.__pvT||{},{psSumX:(id,show)=>{if(show)PSSHOW++;try{return psSum(id)}finally{if(show)PSSHOW--}},psSumF:id=>{ANDR++;try{return psSum(id)}finally{ANDR--}},psSpinX:k=>psSpinX(k),psAct:a=>psAct(a),psOpen:()=>psOpen()})}catch(e){}
+/* v554: no FIM DOS 3 MINUTOS o jogo compara a vida (timeOver). O Sung tinha acabado de tomar dano naquele quadro (a vida só volta no fim do quadro)
+   → o jogador "ganhava" com PERFEITO e o Sung aparecia caído. Agora: dano conta, vida do Sung cheia e o Sung fica de pé (imortal). */
+{const _to=timeOver;timeOver=function(){let t=0;try{t=TRN.on&&RKBID==='sung'&&G.gmode==='boss'&&G.p&&G.p[1];if(t){const o=G.p[1];if(o.hp<TRN.lh)TRN.d+=TRN.lh-o.hp;o.hp=o.hpLag=o.mhp;o.ko=false;TRN.lh=o.hp}}catch(e){}
+  const r=_to.apply(this,arguments);try{if(t){G.koWinner=1;banner('FIM DO TEMPO!','#b06bff',110,'SUNG JIN-WOO É IMORTAL')}}catch(e){}return r}}
+try{Object.assign(window.__pvT||{},{timeOver:()=>timeOver()})}catch(e){}

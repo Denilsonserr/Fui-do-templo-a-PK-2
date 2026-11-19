@@ -2510,3 +2510,6 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 ## v553 — código ORIGEMX4 (passiva pegadinha)
 - `TWCUP['qc2noq']` (uso único): anel SP dano+crit real + 4 joias primordiais na fila `ps.jpq` (2 `o` reais + 2 `q` pegadinha, embaralhadas), todas ORIGEM DE TUDO (pri i=4).
 - Pegadinha: ao APLICAR, a passiva ganha `q:1`. Wrapper final de `psSum` desconta passivas q (com limites PSCAP) — luta, sorte e drop. `PSSHOW` (psH, cbAll, rgsMine) mostra cheio na tela de passivas, status e rank. Teste `tcod_origem_v553.js`.
+
+## v554 — Sung "caído" no fim dos 3 min
+- `timeOver` compara as vidas; o Sung tinha tomado dano no quadro (vida só volta depois) → jogador vencia com PERFEITO e o Sung caía. Wrapper de `timeOver`: soma o dano, vida cheia, `G.koWinner=1` (Sung de pé) e banner FIM DO TEMPO. Teste em `ttorneio_imortal_v552.js`.
