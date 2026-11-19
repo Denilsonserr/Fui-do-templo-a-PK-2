@@ -6961,3 +6961,26 @@ try{Object.assign(window.__pvT||{},{pbOn:()=>pbOn(),pvStep:(o,w)=>pvStep(o,w),ev
    no meio do quadro e encerrava a luta. Agora o ko() do Sung no torneio é cancelado: o dano conta e a vida volta cheia na hora. */
 {const _ko=ko;ko=function(a,d){try{if(TRN.on&&RKBID==='sung'&&G.gmode==='boss'&&G.p&&d===G.p[1]){if(d.hp<TRN.lh)TRN.d+=TRN.lh-d.hp;d.hp=d.mhp;d.hpLag=d.mhp;d.ko=false;TRN.lh=d.hp;return}}catch(e){}return _ko.apply(this,arguments)}}
 try{Object.assign(window.__pvT||{},{ko:(a,d)=>ko(a,d),trn:()=>TRN})}catch(e){}
+
+/* v553: JOIA PRIMORDIAL "ORIGEM DE TUDO" garantida (fila o.jpq: 'o' = de verdade, 'q' = PEGADINHA).
+   A passiva pegadinha fica salva com q:1 — aparece igual em tudo (tela de passivas, status, rank), mas NÃO soma:
+   psSum desconta a parte das passivas q (respeitando os limites) — vale para luta, sorte e drop. Só a tela de passivas,
+   o status do personagem (cbAll) e o ranking (rgsMine) mostram o valor cheio (PSSHOW). */
+TWCUP['qc2noq']={nm:'💍 ANEL SP + 🌟 4 JOIAS PRIMORDIAIS (ORIGEM DE TUDO)',it:[],uni:1,jpo:2,jpq:2,rgsp:[['dano','crit','fur']],msg:'✅ Você ganhou 💍 ANEL DOURADO SP no nível máximo (⚔️ Dano + 🎯 Crítico) + 🌟 4 JOIAS PRIMORDIAIS com ✴️ ORIGEM DE TUDO garantida! Use no ENCANTAMENTO.'}; /* ORIGEMX4 (uso único) */
+let PSSHOW=0;
+{const _cq=twCupom;twCupom=async function(code,E){const C=TWCUP[twHash(String(code).toUpperCase())];const r=await _cq.apply(this,arguments);
+  try{if(C&&(C.jpo||C.jpq)&&r!==false&&E&&/\bok\b/.test(E.className||'')){const o=psG(),Q=Array.isArray(o.jpq)?o.jpq:[];for(let i=0;i<(C.jpo|0);i++)Q.push('o');for(let i=0;i<(C.jpq|0);i++)Q.push('q');
+    for(let i=Q.length-1;i>0;i--){const j=(Math.random()*(i+1))|0;[Q[i],Q[j]]=[Q[j],Q[i]]}o.jpq=Q;o.jp=(o.jp|0)+(C.jpo|0)+(C.jpq|0);psS(o);try{localStorage.removeItem('ac_h');acSave(1)}catch(e){}if(C.msg)E.textContent=C.msg}}catch(e){}return r}}
+{const _sx=psSpinX;psSpinX=function(kind){const o=psG();if(kind!=='p'||!Array.isArray(o.jpq)||!o.jpq.length)return _sx.apply(this,arguments);const t=psTarget();if(!t||o.pend||PS.anim||PS.busy)return;
+  if((o.jp|0)<1){o.jpq=[];psS(o);return _sx.apply(this,arguments)}PS.busy=1;const g=o.jpq.shift(),R={r:'pri',i:4};o.jp=(o.jp|0)-1;o.pend={tg:{k:t.k,id:t.id},r:R.r,i:R.i};if(g==='q')o.pend.q=1;psS(o);
+  PS.anim=1;rkView('ps');psAnim(R.r,()=>{PS.anim=0;PS.busy=0;rkView('ps');const d=psDef(R);rkSfx('boom');try{SFX.boom()}catch(e){}rkToast('✨ '+psRN(R.r)+': '+d.n,PSRC[R.r])})}}
+{const _a=psAct;psAct=function(a){const P=(()=>{try{return psG().pend}catch(e){return null}})();const r=_a.apply(this,arguments);
+  try{if(a==='apply'&&P&&P.q){const o=psG();if(P.tg.k==='ch'){if(o.ch[P.tg.id]&&o.ch[P.tg.id].r===P.r&&o.ch[P.tg.id].i===P.i){o.ch[P.tg.id].q=1;psS(o)}}else{const I=twInv(),it=I.find(x=>x.id===P.tg.id);if(it&&it.ps){it.ps.q=1;twLS.s('tw_inv',I)}}}}catch(e){}return r}}
+{const _ps=psSum;psSum=function(id){const o=_ps.apply(this,arguments);if(PSSHOW&&!ANDR)return o;try{const cid=id||eqChar(),L=[psG().ch[cid]];const q=twEqOn();for(const k in q)L.push(q[k].ps);if(!L.some(p=>p&&p.q))return o;
+  if(Object.values(o).every(v=>!v))return o;const all={cd:0,def:0,spd:0,reg:0,drop:0,st:0},real=Object.assign({},all);
+  for(const p of L){const d=psDef(p);if(!d)continue;const add=(T,k,v)=>{T[k]+=v};const V=d.k==='mx'?d.v:{[d.k]:d.v};for(const k in V){add(all,k,V[k]);if(!p.q)add(real,k,V[k])}}
+  const z=Object.assign({},o);for(const k in all){const cut=Math.min(PSCAP[k],all[k])-Math.min(PSCAP[k],real[k]);if(cut>0)z[k]=Math.round(Math.max(0,(z[k]||0)-cut)*100)/100}return z}catch(e){return o}}}
+{const _h=psH;psH=function(){PSSHOW++;try{return _h.apply(this,arguments)}finally{PSSHOW--}}}
+{const _c=cbAll;cbAll=function(){PSSHOW++;try{return _c.apply(this,arguments)}finally{PSSHOW--}}}
+try{if(typeof rgsMine==='function'){const _r=rgsMine;rgsMine=function(){PSSHOW++;try{return _r.apply(this,arguments)}finally{PSSHOW--}}}}catch(e){}
+try{Object.assign(window.__pvT||{},{psSumX:(id,show)=>{if(show)PSSHOW++;try{return psSum(id)}finally{if(show)PSSHOW--}},psSumF:id=>{ANDR++;try{return psSum(id)}finally{ANDR--}},psSpinX:k=>psSpinX(k),psAct:a=>psAct(a),psOpen:()=>psOpen()})}catch(e){}

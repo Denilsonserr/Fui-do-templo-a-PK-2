@@ -2506,3 +2506,7 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 
 ## v552 — Sung do torneio imortal de verdade
 - Bug: a vida do Sung só era restaurada no fim do quadro (wrapper de update); golpe que zerava a vida chamava `ko()` no meio e acabava a luta. Fix: wrapper de `ko` cancela o KO do Sung no torneio (conta o dano, vida cheia). Teste `ttorneio_imortal_v552.js`.
+
+## v553 — código ORIGEMX4 (passiva pegadinha)
+- `TWCUP['qc2noq']` (uso único): anel SP dano+crit real + 4 joias primordiais na fila `ps.jpq` (2 `o` reais + 2 `q` pegadinha, embaralhadas), todas ORIGEM DE TUDO (pri i=4).
+- Pegadinha: ao APLICAR, a passiva ganha `q:1`. Wrapper final de `psSum` desconta passivas q (com limites PSCAP) — luta, sorte e drop. `PSSHOW` (psH, cbAll, rgsMine) mostra cheio na tela de passivas, status e rank. Teste `tcod_origem_v553.js`.
