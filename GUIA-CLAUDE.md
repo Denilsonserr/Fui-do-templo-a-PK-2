@@ -2536,3 +2536,6 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 ## v558 — otimização para celular fraco
 - Quem nunca escolheu gráfico começava no 4K (ft_4k padrão). `qAuto()` (deviceMemory/hardwareConcurrency) escolhe Leve/Médio/Ultra no 1º boot sem `ft_q` (`ft_qa=1`).
 - Wrapper de `dynTick`: resolução já no mínimo e ainda >21 ms/quadro por 3,5 s → desce 1 nível (`setQ`) com banner. No Mínimo `setRes` deixa DPR ir até 0,7 e `render` pula 1 de 2 quadros se >24 ms. Partículas: Leve 120, Mínimo 50. Teste `totimiza_v558.js`.
+
+## v559 — código PRESENTE10K (para todos)
+- `TWCUP['15txov7']` (`ev:1`, 1 vez por conta/aparelho): 10.000 💎 + `chb:1` caixa: 1 personagem aleatório de `RK_LEG`+`RK_EPI` que não tem (tela `rkCharWin`); tendo todos → +3.000 💎. Teste `tcod_presente_v559.js`.

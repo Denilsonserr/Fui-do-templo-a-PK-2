@@ -7147,3 +7147,10 @@ let QSLOW=0;
 let RSKIP=0;{const _rd=render;render=function(){try{if((G.qlv|0)===0&&G.mode==='fight'&&DYN.ema>24&&G.dyn<=.56){RSKIP^=1;if(RSKIP)return}}catch(e){}return _rd.apply(this,arguments)}}
 setInterval(()=>{try{if(G.mode!=='fight')return;const cap=(G.qlv|0)===0?50:(G.qlv|0)===1?120:0;if(cap&&G.parts&&G.parts.length>cap)G.parts.splice(0,G.parts.length-cap)}catch(e){}},250);
 try{Object.assign(window.__pvT||{},{qAuto:()=>qAuto(),q:()=>({qlv:G.qlv,dyn:G.dyn,dpr:DPR,ema:DYN.ema,off:DYN.off}),dynTick:dt=>dynTick(dt),setQ:l=>setQ(l)})}catch(e){}
+
+/* v559: código PRESENTE10K (para TODOS, 1 vez por conta): 10.000 💎 + CAIXA com 1 personagem aleatório (lendários e épicos — sem míticos/ilimitado; só os que ainda não tem; tendo todos → +3.000 💎) */
+TWCUP['15txov7']={nm:'PRESENTE PARA TODOS',ev:1,gem:10000,tic:0,chb:1};
+{const _cb=twCupom;twCupom=async function(code,E){const C=TWCUP[twHash(String(code).toUpperCase())];const r=await _cb.apply(this,arguments);
+  try{if(C&&C.chb&&r!==false&&E&&/\bok\b/.test(E.className||'')){const own=rkG('own',['goku']),L=[...RK_LEG,...RK_EPI].filter(id=>CH[id]&&!own.includes(id));let nm;
+    if(L.length){const id=L[(Math.random()*L.length)|0];own.push(id);rkS('own',own);nm='🎁 CAIXA: '+CH[id].name+'!';setTimeout(()=>{try{rkCharWin(id,0,1)}catch(e){}},700)}else{rkAdd('gem',3000);nm='🎁 CAIXA: você já tem todos → +3.000 💎'}
+    try{localStorage.removeItem('ac_h');acSave(1)}catch(e){}E.textContent='🎉 Código aceito! +10.000 💎 · '+nm+' (já está nos seus personagens)'}}catch(e){}return r}}

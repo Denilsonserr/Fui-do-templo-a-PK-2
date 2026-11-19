@@ -15712,6 +15712,13 @@ let RSKIP=0;{const _rd=render;render=function(){try{if((G.qlv|0)===0&&G.mode==='
 setInterval(()=>{try{if(G.mode!=='fight')return;const cap=(G.qlv|0)===0?50:(G.qlv|0)===1?120:0;if(cap&&G.parts&&G.parts.length>cap)G.parts.splice(0,G.parts.length-cap)}catch(e){}},250);
 try{Object.assign(window.__pvT||{},{qAuto:()=>qAuto(),q:()=>({qlv:G.qlv,dyn:G.dyn,dpr:DPR,ema:DYN.ema,off:DYN.off}),dynTick:dt=>dynTick(dt),setQ:l=>setQ(l)})}catch(e){}
 
+/* v559: código PRESENTE10K (para TODOS, 1 vez por conta): 10.000 💎 + CAIXA com 1 personagem aleatório (lendários e épicos — sem míticos/ilimitado; só os que ainda não tem; tendo todos → +3.000 💎) */
+TWCUP['15txov7']={nm:'PRESENTE PARA TODOS',ev:1,gem:10000,tic:0,chb:1};
+{const _cb=twCupom;twCupom=async function(code,E){const C=TWCUP[twHash(String(code).toUpperCase())];const r=await _cb.apply(this,arguments);
+  try{if(C&&C.chb&&r!==false&&E&&/\bok\b/.test(E.className||'')){const own=rkG('own',['goku']),L=[...RK_LEG,...RK_EPI].filter(id=>CH[id]&&!own.includes(id));let nm;
+    if(L.length){const id=L[(Math.random()*L.length)|0];own.push(id);rkS('own',own);nm='🎁 CAIXA: '+CH[id].name+'!';setTimeout(()=>{try{rkCharWin(id,0,1)}catch(e){}},700)}else{rkAdd('gem',3000);nm='🎁 CAIXA: você já tem todos → +3.000 💎'}
+    try{localStorage.removeItem('ac_h');acSave(1)}catch(e){}E.textContent='🎉 Código aceito! +10.000 💎 · '+nm+' (já está nos seus personagens)'}}catch(e){}return r}}
+
 function twTrofList(){const tc=twLS.g('tw_tc',{}),run={};for(const t of TW.tr)run[t.k]=(run[t.k]||0)+1;
   twModal(`<div class="twM"><h3>🎖️ TROFÉUS</h3><div class="twTL">${Object.keys(TWTR).map(k=>{const T=TWTR[k];return `<div class="${tc[k]||run[k]?'got':''}"><i>${T.i}</i><b>${T.n}</b><span>${T.d}</span><em>+${T.p} 🏆</em><small>${run[k]?'nesta subida: '+run[k]+' · ':''}total: ${(tc[k]||0)}</small></div>`}).join('')}</div>
     <p class="twH">Cada troféu soma pontos 🏆 no ranking. Quem sobe mais andares fica na frente; empate = mais troféus, depois menos tempo.</p><div class="row"><button class="btn" id="twTx">FECHAR</button></div></div>`);
@@ -15903,7 +15910,7 @@ window.__dbg={mus:()=>[MCUR,MEL.src.split('/').pop()],stg:()=>STAGE.key,prepMatc
 })();
 </script>
 <style>#updB{position:fixed;left:50%;top:max(8px,env(safe-area-inset-top));transform:translateX(-50%);z-index:99999;padding:10px 22px;border-radius:14px;border:2px solid #fff3c0;background:linear-gradient(#ffd84a,#e08a10);color:#3a1d00;font:900 15px system-ui,sans-serif;box-shadow:0 0 18px #ffb21f;cursor:pointer;animation:updP 1s ease-in-out infinite alternate}@keyframes updP{to{transform:translateX(-50%) scale(1.05)}}</style>
-<script>(function(){const V='9721a23f50f6';if(!/^https?:/.test(location.protocol))return;let nv=null;
+<script>(function(){const V='3db8844e4584';if(!/^https?:/.test(location.protocol))return;let nv=null;
 function show(){if(document.getElementById('updB'))return;try{if(typeof G!=='undefined'&&G.mode==='fight')return}catch(e){}const b=document.createElement('button');b.id='updB';b.textContent='🔄 ATUALIZAÇÃO NOVA! Toque para atualizar';
   b.onclick=()=>{b.textContent='⏳ Atualizando...';try{acSave(1)}catch(e){}setTimeout(()=>location.reload(),900)};document.body.appendChild(b)}
 async function chk(){if(document.hidden)return;if(nv){show();return}try{const r=await fetch('versao.txt?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const t=(await r.text()).trim();if(/^[0-9a-f]{8,40}$/.test(t)&&t!==V){nv=t;show()}}catch(e){}}
