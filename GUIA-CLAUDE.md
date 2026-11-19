@@ -2500,3 +2500,6 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 
 ## v550 — código PASSE2XMAX
 - `TWCUP['1rsr4q1']` (uso único): PASSE 2X da temporada Solo Leveling (`bp:2,s2:1,x2:1`). Teste `tcod_passe2x_v550.js`.
+
+## v551 — código DIVINA2
+- `TWCUP['uwdaps']` (uso único): 1 joia divina (`jdx:1`). Teste `tjoia_div2_v551.js`.
