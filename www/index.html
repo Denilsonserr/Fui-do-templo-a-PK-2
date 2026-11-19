@@ -15401,6 +15401,20 @@ try{Object.assign(window.__pvT||{},{mnGive:o=>mnGive(o),twCap:()=>twCap(),mkCoun
 function _r0(){try{return mnRows()}catch(e){return []}}
 try{Object.assign(window.__pvT||{},{mnRowsBuy:L=>{MN.tab='buy';MN.L=L;MN.C=new Map();return mnRows().map(r=>r.key)}})}catch(e){}
 
+/* v545: PUNIÇÃO van hohenheim (uid mw9apulbiy7r7kgz) — duplicou gemas no Mercado (compra + volta do save, com a conta "judas").
+   Perde 75% das gemas, uma vez por save (se voltar um save antigo, aplica de novo naquele save). */
+function punVan(){try{if(rkG('punVan1',0))return;const uid=String(twUid()),nm=String(twLS.g('tw_nome','')||'').toLowerCase().trim();if(uid!=='mw9apulbiy7r7kgz'&&nm!=='van hohenheim')return;
+  const g=rkG('gem',0)|0,tira=Math.floor(g*.75);rkS('gem',g-tira);rkS('punVan1',Date.now());try{rkHud&&rkHud()}catch(e){}try{localStorage.removeItem('ac_h');acSave(1)}catch(e){}
+  setTimeout(()=>{try{rkModal('<div class="actM"><h3>⛔ PUNIÇÃO DO ADM</h3><p>Foi detectada <b>duplicação de gemas no Mercado Negro</b> (compra e volta do save).</p><p>Foram removidas <b>'+rkFmtN(tira)+' gemas</b> (75%).</p><p>Se continuar, a conta será banida.</p><button class="rkB" onclick="document.getElementById(\'rkModal\').hidden=true">ENTENDI</button></div>')}catch(e){try{rkToast('⛔ Punição do ADM: -'+tira+' gemas por duplicação no Mercado','#ff6a6a')}catch(_){}}},1500)}catch(e){}}
+setTimeout(punVan,6500);setInterval(punVan,30000);
+
+/* v545: MERCADO NEGRO FECHADO temporariamente para todos (menos o ADM). As vendas pendentes ficam guardadas no servidor. */
+const MN_FECHADO=true;
+const mnAdm=()=>{try{return String(twLS.g('tw_nome','')||'').toLowerCase().trim()===String(TWADMN).toLowerCase()}catch(e){return false}};
+{const _mo=mnOn;mnOn=function(){if(MN_FECHADO&&!mnAdm()){setTimeout(()=>{rkView('menu');rkToast('🔒 MERCADO NEGRO FECHADO temporariamente pelo ADM. Suas vendas ficam guardadas.','#ffb347')},50);return}return _mo.apply(this,arguments)}}
+{const _ma=mnAct;mnAct=async function(){if(MN_FECHADO&&!mnAdm()){rkToast('🔒 Mercado Negro fechado temporariamente.','#ffb347');return}return _ma.apply(this,arguments)}}
+try{Object.assign(window.__pvT||{},{punVan:()=>punVan(),mnFech:()=>MN_FECHADO&&!mnAdm()})}catch(e){}
+
 function twTrofList(){const tc=twLS.g('tw_tc',{}),run={};for(const t of TW.tr)run[t.k]=(run[t.k]||0)+1;
   twModal(`<div class="twM"><h3>🎖️ TROFÉUS</h3><div class="twTL">${Object.keys(TWTR).map(k=>{const T=TWTR[k];return `<div class="${tc[k]||run[k]?'got':''}"><i>${T.i}</i><b>${T.n}</b><span>${T.d}</span><em>+${T.p} 🏆</em><small>${run[k]?'nesta subida: '+run[k]+' · ':''}total: ${(tc[k]||0)}</small></div>`}).join('')}</div>
     <p class="twH">Cada troféu soma pontos 🏆 no ranking. Quem sobe mais andares fica na frente; empate = mais troféus, depois menos tempo.</p><div class="row"><button class="btn" id="twTx">FECHAR</button></div></div>`);
@@ -15592,7 +15606,7 @@ window.__dbg={mus:()=>[MCUR,MEL.src.split('/').pop()],stg:()=>STAGE.key,prepMatc
 })();
 </script>
 <style>#updB{position:fixed;left:50%;top:max(8px,env(safe-area-inset-top));transform:translateX(-50%);z-index:99999;padding:10px 22px;border-radius:14px;border:2px solid #fff3c0;background:linear-gradient(#ffd84a,#e08a10);color:#3a1d00;font:900 15px system-ui,sans-serif;box-shadow:0 0 18px #ffb21f;cursor:pointer;animation:updP 1s ease-in-out infinite alternate}@keyframes updP{to{transform:translateX(-50%) scale(1.05)}}</style>
-<script>(function(){const V='d0c0e8a22eb5';if(!/^https?:/.test(location.protocol))return;let nv=null;
+<script>(function(){const V='1d12bf6b1ca3';if(!/^https?:/.test(location.protocol))return;let nv=null;
 function show(){if(document.getElementById('updB'))return;try{if(typeof G!=='undefined'&&G.mode==='fight')return}catch(e){}const b=document.createElement('button');b.id='updB';b.textContent='🔄 ATUALIZAÇÃO NOVA! Toque para atualizar';
   b.onclick=()=>{b.textContent='⏳ Atualizando...';try{acSave(1)}catch(e){}setTimeout(()=>location.reload(),900)};document.body.appendChild(b)}
 async function chk(){if(document.hidden)return;if(nv){show();return}try{const r=await fetch('versao.txt?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const t=(await r.text()).trim();if(/^[0-9a-f]{8,40}$/.test(t)&&t!==V){nv=t;show()}}catch(e){}}

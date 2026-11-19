@@ -2477,3 +2477,8 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 
 ## v544 — nenhum anel DOURADO no Mercado Negro
 - `mnNoSell` agora = qualquer anel c5 (antes só SP). Wrapper de `mnRows` esconde da aba COMPRAR anúncios antigos de anel dourado (menos os do próprio vendedor, que pode cancelar); `mnAct` recusa a compra. Teste `tmercado_dour_v544.js`.
+
+## v545 — punição van hohenheim + Mercado Negro FECHADO
+- `punVan` (uid mw9apulbiy7r7kgz / nome van hohenheim): -75% das gemas, flag `rk_punVan1` (save antigo sem a flag recebe de novo), modal de aviso. Motivo: duplicação de gemas no mercado com a conta judas (preços 36277/72554/125508/253000 ida e volta) + compra de 175k do Vini desfeita por volta de save.
+- `MN_FECHADO=true`: wrappers de `mnOn`/`mnAct` bloqueiam o mercado p/ todos menos o ADM (`mnAdm`). Para reabrir: `MN_FECHADO=false`.
+- Ferramentas: `.github/workflows/suspeita.yml` e `suspeita2.yml` (mkb tem o NOME do comprador). Teste `tpun_van_v545.js`.

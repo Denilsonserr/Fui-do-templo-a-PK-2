@@ -6852,3 +6852,17 @@ try{Object.assign(window.__pvT||{},{mnGive:o=>mnGive(o),twCap:()=>twCap(),mkCoun
 {const _a=mnAct;mnAct=async function(a,b){try{if(a==='buy'){const X=_r0().find(r=>r.key===MN.sel);const o=X&&X.l&&mnIt(X.l);if(o&&o.k==='an'&&mnNoSell(o.r)){rkToast('🔒 Anel DOURADO não pode ser comprado no Mercado Negro.','#ff8080');return}}}catch(e){}return _a.apply(this,arguments)}}
 function _r0(){try{return mnRows()}catch(e){return []}}
 try{Object.assign(window.__pvT||{},{mnRowsBuy:L=>{MN.tab='buy';MN.L=L;MN.C=new Map();return mnRows().map(r=>r.key)}})}catch(e){}
+
+/* v545: PUNIÇÃO van hohenheim (uid mw9apulbiy7r7kgz) — duplicou gemas no Mercado (compra + volta do save, com a conta "judas").
+   Perde 75% das gemas, uma vez por save (se voltar um save antigo, aplica de novo naquele save). */
+function punVan(){try{if(rkG('punVan1',0))return;const uid=String(twUid()),nm=String(twLS.g('tw_nome','')||'').toLowerCase().trim();if(uid!=='mw9apulbiy7r7kgz'&&nm!=='van hohenheim')return;
+  const g=rkG('gem',0)|0,tira=Math.floor(g*.75);rkS('gem',g-tira);rkS('punVan1',Date.now());try{rkHud&&rkHud()}catch(e){}try{localStorage.removeItem('ac_h');acSave(1)}catch(e){}
+  setTimeout(()=>{try{rkModal('<div class="actM"><h3>⛔ PUNIÇÃO DO ADM</h3><p>Foi detectada <b>duplicação de gemas no Mercado Negro</b> (compra e volta do save).</p><p>Foram removidas <b>'+rkFmtN(tira)+' gemas</b> (75%).</p><p>Se continuar, a conta será banida.</p><button class="rkB" onclick="document.getElementById(\'rkModal\').hidden=true">ENTENDI</button></div>')}catch(e){try{rkToast('⛔ Punição do ADM: -'+tira+' gemas por duplicação no Mercado','#ff6a6a')}catch(_){}}},1500)}catch(e){}}
+setTimeout(punVan,6500);setInterval(punVan,30000);
+
+/* v545: MERCADO NEGRO FECHADO temporariamente para todos (menos o ADM). As vendas pendentes ficam guardadas no servidor. */
+const MN_FECHADO=true;
+const mnAdm=()=>{try{return String(twLS.g('tw_nome','')||'').toLowerCase().trim()===String(TWADMN).toLowerCase()}catch(e){return false}};
+{const _mo=mnOn;mnOn=function(){if(MN_FECHADO&&!mnAdm()){setTimeout(()=>{rkView('menu');rkToast('🔒 MERCADO NEGRO FECHADO temporariamente pelo ADM. Suas vendas ficam guardadas.','#ffb347')},50);return}return _mo.apply(this,arguments)}}
+{const _ma=mnAct;mnAct=async function(){if(MN_FECHADO&&!mnAdm()){rkToast('🔒 Mercado Negro fechado temporariamente.','#ffb347');return}return _ma.apply(this,arguments)}}
+try{Object.assign(window.__pvT||{},{punVan:()=>punVan(),mnFech:()=>MN_FECHADO&&!mnAdm()})}catch(e){}
