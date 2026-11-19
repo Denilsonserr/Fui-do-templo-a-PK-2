@@ -15719,6 +15719,14 @@ TWCUP['15txov7']={nm:'PRESENTE PARA TODOS',ev:1,gem:10000,tic:0,chb:1};
     if(L.length){const id=L[(Math.random()*L.length)|0];own.push(id);rkS('own',own);nm='🎁 CAIXA: '+CH[id].name+'!';setTimeout(()=>{try{rkCharWin(id,0,1)}catch(e){}},700)}else{rkAdd('gem',3000);nm='🎁 CAIXA: você já tem todos → +3.000 💎'}
     try{localStorage.removeItem('ac_h');acSave(1)}catch(e){}E.textContent='🎉 Código aceito! +10.000 💎 · '+nm+' (já está nos seus personagens)'}}catch(e){}return r}}
 
+/* v560: RANK GERAL (XP) também enchia com poucos jogadores (cada partida = doc novo; o limite de 150 ficava só com Breno/Honrado/Stark) → Vini sumia.
+   Agora pega 1 doc (o mais novo) por jogador com `latestBy:'nome'` (worker v557); se der erro, volta ao jeito antigo. */
+{const _o=rkOQ;rkOQ=async function(field,dir,lim){if(field==='rp'&&dir==='DESCENDING'){try{
+    const body={structuredQuery:{from:[{collectionId:'torre'}],where:{fieldFilter:{field:{fieldPath:'rk'},op:'EQUAL',value:{stringValue:'1'}}},orderBy:[{field:{fieldPath:'rp'},direction:'DESCENDING'}],limit:300,latestBy:'nome'}};
+    const r=await twFetchT(TWURL+':runQuery?key='+TWFB.apiKey,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});if(!r.ok)throw new Error('http '+r.status);const j=await r.json(),o=[];
+    for(const x of (Array.isArray(j)?j:[])){const F=x&&x.document&&x.document.fields;if(!F||!F.rk)continue;const e={_ct:Date.parse(x.document.createTime||'')||0};for(const k in F){const v=F[k];e[k]=v.stringValue!=null?v.stringValue:v.integerValue!=null?+v.integerValue:v.doubleValue}if(e.tw)e.tt=e.tw;if(e.t1w)e.t1=e.t1w;o.push(e)}
+    if(o.length)return o}catch(e){}}return _o.apply(this,arguments)}}
+
 function twTrofList(){const tc=twLS.g('tw_tc',{}),run={};for(const t of TW.tr)run[t.k]=(run[t.k]||0)+1;
   twModal(`<div class="twM"><h3>🎖️ TROFÉUS</h3><div class="twTL">${Object.keys(TWTR).map(k=>{const T=TWTR[k];return `<div class="${tc[k]||run[k]?'got':''}"><i>${T.i}</i><b>${T.n}</b><span>${T.d}</span><em>+${T.p} 🏆</em><small>${run[k]?'nesta subida: '+run[k]+' · ':''}total: ${(tc[k]||0)}</small></div>`}).join('')}</div>
     <p class="twH">Cada troféu soma pontos 🏆 no ranking. Quem sobe mais andares fica na frente; empate = mais troféus, depois menos tempo.</p><div class="row"><button class="btn" id="twTx">FECHAR</button></div></div>`);
@@ -15910,7 +15918,7 @@ window.__dbg={mus:()=>[MCUR,MEL.src.split('/').pop()],stg:()=>STAGE.key,prepMatc
 })();
 </script>
 <style>#updB{position:fixed;left:50%;top:max(8px,env(safe-area-inset-top));transform:translateX(-50%);z-index:99999;padding:10px 22px;border-radius:14px;border:2px solid #fff3c0;background:linear-gradient(#ffd84a,#e08a10);color:#3a1d00;font:900 15px system-ui,sans-serif;box-shadow:0 0 18px #ffb21f;cursor:pointer;animation:updP 1s ease-in-out infinite alternate}@keyframes updP{to{transform:translateX(-50%) scale(1.05)}}</style>
-<script>(function(){const V='3db8844e4584';if(!/^https?:/.test(location.protocol))return;let nv=null;
+<script>(function(){const V='b7fd3101d89f';if(!/^https?:/.test(location.protocol))return;let nv=null;
 function show(){if(document.getElementById('updB'))return;try{if(typeof G!=='undefined'&&G.mode==='fight')return}catch(e){}const b=document.createElement('button');b.id='updB';b.textContent='🔄 ATUALIZAÇÃO NOVA! Toque para atualizar';
   b.onclick=()=>{b.textContent='⏳ Atualizando...';try{acSave(1)}catch(e){}setTimeout(()=>location.reload(),900)};document.body.appendChild(b)}
 async function chk(){if(document.hidden)return;if(nv){show();return}try{const r=await fetch('versao.txt?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const t=(await r.text()).trim();if(/^[0-9a-f]{8,40}$/.test(t)&&t!==V){nv=t;show()}}catch(e){}}

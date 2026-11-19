@@ -91,7 +91,7 @@ async function runQuery(db,base,q){q=q||{};const lim=Math.max(1,Math.min(3000,(q
   else sql=`SELECT id,ct,f FROM docs ORDER BY id ${dir}`;
   /* v557: latestBy = só o doc MAIS NOVO de cada valor desse campo (ex.: ranking PVP: 1 doc por conta; antes 2 contas enchiam o limite) */
   if(ff&&q.latestBy&&typeof q.latestBy==='string'&&obf&&obf!=='__name__'&&OPS[ff.op]==='='){const v=scal(ff.value)||{s:''},col=v.s!=null?'s':'n';
-    sql=`WITH x AS (SELECT d.id,d.ct,d.f,o.n AS ob,ROW_NUMBER() OVER (PARTITION BY g.s ORDER BY d.ct DESC) rn FROM kv w JOIN docs d ON d.id=w.id JOIN kv g ON g.id=d.id AND g.k=? LEFT JOIN kv o ON o.id=d.id AND o.k=? WHERE w.k=? AND w.${col}=?) SELECT id,ct,f FROM x WHERE rn=1 ORDER BY ob ${dir}`;args=[q.latestBy,obf,ff.field.fieldPath,v[col]]}
+    sql=`WITH x AS (SELECT d.id,d.ct,d.f,o.n AS ob,ROW_NUMBER() OVER (PARTITION BY g.s ORDER BY d.ct DESC) rn FROM kv w JOIN docs d ON d.id=w.id JOIN kv g ON g.id=d.id AND g.k=? JOIN kv o ON o.id=d.id AND o.k=? AND o.n IS NOT NULL WHERE w.k=? AND w.${col}=?) SELECT id,ct,f FROM x WHERE rn=1 ORDER BY ob ${dir}`;args=[q.latestBy,obf,ff.field.fieldPath,v[col]]}
   sql+=' LIMIT ?';args.push(lim);
   const kk=qKey(q),ttl=qTTL(kk),ck=JSON.stringify(q);if(ttl){const c=QC.get(ck);if(c&&Date.now()-c.t<ttl)return J(c.v)}
   const res=await db.prepare(sql).bind(...args).all(),R=res.results||[];const rr=(res.meta&&res.meta.rows_read)|0;RD.tot+=rr;US.rows+=rr;const b=RD.by[kk]||(RD.by[kk]={n:0,rows:0});b.n++;b.rows+=rr;

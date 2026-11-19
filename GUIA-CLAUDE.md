@@ -2539,3 +2539,6 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 
 ## v559 — código PRESENTE10K (para todos)
 - `TWCUP['15txov7']` (`ev:1`, 1 vez por conta/aparelho): 10.000 💎 + `chb:1` caixa: 1 personagem aleatório de `RK_LEG`+`RK_EPI` que não tem (tela `rkCharWin`); tendo todos → +3.000 💎. Teste `tcod_presente_v559.js`.
+
+## v560 — RANK GERAL (XP) com todos
+- Mesmo problema do PVP: `rkOQ(rp)` top 150 docs só com 3 jogadores. Wrapper de `rkOQ` para rp: `where rk==1` + `latestBy:nome` (limite 300). Worker: `latestBy` agora só considera docs que TÊM o campo do orderBy (`JOIN … o.n IS NOT NULL`) — docs de dano/torre sem rp não escondem o XP. Teste `trank_xp_v560.js`.
