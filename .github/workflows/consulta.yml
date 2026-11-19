@@ -16,7 +16,7 @@ jobs:
           A={'User-Agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/120 Safari/537.36','Content-Type':'application/json'}
           q=json.loads(os.environ['Q']);C=[c for c in os.environ['C'].split(',') if c]
           R=json.load(urllib.request.urlopen(urllib.request.Request(U,data=json.dumps({'structuredQuery':q}).encode(),headers=A),timeout=90))
-          D=[x['document'] for x in R if x.get('document')];print('DOCS',len(D))
+          D=[x['document'] for x in R if x.get('document')];print('DOCS',len(D),'BYTES',len(json.dumps(R)))
           cnt=collections.Counter()
           for d in D:
             f={k:list(v.values())[0] for k,v in d['fields'].items()};cnt[f.get('nome')]+=1
