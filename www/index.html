@@ -15721,10 +15721,10 @@ TWCUP['15txov7']={nm:'PRESENTE PARA TODOS',ev:1,gem:10000,tic:0,chb:1};
 
 /* v560: RANK GERAL (XP) também enchia com poucos jogadores (cada partida = doc novo; o limite de 150 ficava só com Breno/Honrado/Stark) → Vini sumia.
    Agora pega 1 doc (o mais novo) por jogador com `latestBy:'nome'` (worker v557); se der erro, volta ao jeito antigo. */
-{const _o=rkOQ;rkOQ=async function(field,dir,lim){if(field==='rp'&&dir==='DESCENDING'){try{
-    const body={structuredQuery:{from:[{collectionId:'torre'}],where:{fieldFilter:{field:{fieldPath:'rk'},op:'EQUAL',value:{stringValue:'1'}}},orderBy:[{field:{fieldPath:'rp'},direction:'DESCENDING'}],limit:300,latestBy:'nome'}};
+{const _o=rkOQ;rkOQ=async function(field,dir,lim){if(field==='rp'&&dir==='DESCENDING'&&!RKS1Q){try{ /* temporada 2: campo rp2 */
+    const body={structuredQuery:{from:[{collectionId:'torre'}],where:{fieldFilter:{field:{fieldPath:'rk'},op:'EQUAL',value:{stringValue:'1'}}},orderBy:[{field:{fieldPath:'rp2'},direction:'DESCENDING'}],limit:300,latestBy:'nome'}};
     const r=await twFetchT(TWURL+':runQuery?key='+TWFB.apiKey,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});if(!r.ok)throw new Error('http '+r.status);const j=await r.json(),o=[];
-    for(const x of (Array.isArray(j)?j:[])){const F=x&&x.document&&x.document.fields;if(!F||!F.rk)continue;const e={_ct:Date.parse(x.document.createTime||'')||0};for(const k in F){const v=F[k];e[k]=v.stringValue!=null?v.stringValue:v.integerValue!=null?+v.integerValue:v.doubleValue}if(e.tw)e.tt=e.tw;if(e.t1w)e.t1=e.t1w;o.push(e)}
+    for(const x of (Array.isArray(j)?j:[])){const F=x&&x.document&&x.document.fields;if(!F||!F.rk)continue;const e={_ct:Date.parse(x.document.createTime||'')||0};for(const k in F){const v=F[k];e[k]=v.stringValue!=null?v.stringValue:v.integerValue!=null?+v.integerValue:v.doubleValue}for(const k in S2F)if(e[S2F[k]]!=null)e[k]=e[S2F[k]];else if(k!=='rp')delete e[k];if(e.tw2)e.tt=e.tw2;if(e.t1w2)e.t1=e.t1w2;if(e.rp2==null)e.rp=0;o.push(e)}
     if(o.length)return o}catch(e){}}return _o.apply(this,arguments)}}
 
 function twTrofList(){const tc=twLS.g('tw_tc',{}),run={};for(const t of TW.tr)run[t.k]=(run[t.k]||0)+1;
@@ -15918,7 +15918,7 @@ window.__dbg={mus:()=>[MCUR,MEL.src.split('/').pop()],stg:()=>STAGE.key,prepMatc
 })();
 </script>
 <style>#updB{position:fixed;left:50%;top:max(8px,env(safe-area-inset-top));transform:translateX(-50%);z-index:99999;padding:10px 22px;border-radius:14px;border:2px solid #fff3c0;background:linear-gradient(#ffd84a,#e08a10);color:#3a1d00;font:900 15px system-ui,sans-serif;box-shadow:0 0 18px #ffb21f;cursor:pointer;animation:updP 1s ease-in-out infinite alternate}@keyframes updP{to{transform:translateX(-50%) scale(1.05)}}</style>
-<script>(function(){const V='b7fd3101d89f';if(!/^https?:/.test(location.protocol))return;let nv=null;
+<script>(function(){const V='52a93b3ca644';if(!/^https?:/.test(location.protocol))return;let nv=null;
 function show(){if(document.getElementById('updB'))return;try{if(typeof G!=='undefined'&&G.mode==='fight')return}catch(e){}const b=document.createElement('button');b.id='updB';b.textContent='🔄 ATUALIZAÇÃO NOVA! Toque para atualizar';
   b.onclick=()=>{b.textContent='⏳ Atualizando...';try{acSave(1)}catch(e){}setTimeout(()=>location.reload(),900)};document.body.appendChild(b)}
 async function chk(){if(document.hidden)return;if(nv){show();return}try{const r=await fetch('versao.txt?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const t=(await r.text()).trim();if(/^[0-9a-f]{8,40}$/.test(t)&&t!==V){nv=t;show()}}catch(e){}}

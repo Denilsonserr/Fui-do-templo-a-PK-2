@@ -7157,8 +7157,8 @@ TWCUP['15txov7']={nm:'PRESENTE PARA TODOS',ev:1,gem:10000,tic:0,chb:1};
 
 /* v560: RANK GERAL (XP) também enchia com poucos jogadores (cada partida = doc novo; o limite de 150 ficava só com Breno/Honrado/Stark) → Vini sumia.
    Agora pega 1 doc (o mais novo) por jogador com `latestBy:'nome'` (worker v557); se der erro, volta ao jeito antigo. */
-{const _o=rkOQ;rkOQ=async function(field,dir,lim){if(field==='rp'&&dir==='DESCENDING'){try{
-    const body={structuredQuery:{from:[{collectionId:'torre'}],where:{fieldFilter:{field:{fieldPath:'rk'},op:'EQUAL',value:{stringValue:'1'}}},orderBy:[{field:{fieldPath:'rp'},direction:'DESCENDING'}],limit:300,latestBy:'nome'}};
+{const _o=rkOQ;rkOQ=async function(field,dir,lim){if(field==='rp'&&dir==='DESCENDING'&&!RKS1Q){try{ /* temporada 2: campo rp2 */
+    const body={structuredQuery:{from:[{collectionId:'torre'}],where:{fieldFilter:{field:{fieldPath:'rk'},op:'EQUAL',value:{stringValue:'1'}}},orderBy:[{field:{fieldPath:'rp2'},direction:'DESCENDING'}],limit:300,latestBy:'nome'}};
     const r=await twFetchT(TWURL+':runQuery?key='+TWFB.apiKey,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});if(!r.ok)throw new Error('http '+r.status);const j=await r.json(),o=[];
-    for(const x of (Array.isArray(j)?j:[])){const F=x&&x.document&&x.document.fields;if(!F||!F.rk)continue;const e={_ct:Date.parse(x.document.createTime||'')||0};for(const k in F){const v=F[k];e[k]=v.stringValue!=null?v.stringValue:v.integerValue!=null?+v.integerValue:v.doubleValue}if(e.tw)e.tt=e.tw;if(e.t1w)e.t1=e.t1w;o.push(e)}
+    for(const x of (Array.isArray(j)?j:[])){const F=x&&x.document&&x.document.fields;if(!F||!F.rk)continue;const e={_ct:Date.parse(x.document.createTime||'')||0};for(const k in F){const v=F[k];e[k]=v.stringValue!=null?v.stringValue:v.integerValue!=null?+v.integerValue:v.doubleValue}for(const k in S2F)if(e[S2F[k]]!=null)e[k]=e[S2F[k]];else if(k!=='rp')delete e[k];if(e.tw2)e.tt=e.tw2;if(e.t1w2)e.t1=e.t1w2;if(e.rp2==null)e.rp=0;o.push(e)}
     if(o.length)return o}catch(e){}}return _o.apply(this,arguments)}}
