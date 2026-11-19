@@ -7115,3 +7115,19 @@ function beForca(){try{const p=G.p&&G.p[0];if(!p)return 1;const pw=(p.tdm||1)*(1
     f.mhp=Math.round(f.mhp*2.5*k);f.hp=f.hpLag=f.mhp;f.hyAtk*=ak;f.tdm=Math.pow(f.hyAtk/150,.3);f.beK=k;
     setTimeout(()=>{try{banner('⚖️ BERU SE ADAPTOU À SUA FORÇA','#d6a8ff',150,'vida ×'+(2.5*k).toFixed(1).replace('.',',')+' · ataque ×'+ak.toFixed(1).replace('.',','))}catch(e){}},2600)}}catch(e){}return f}}
 try{Object.assign(window.__pvT||{},{rkDropK:()=>rkDropK(),ev2x:()=>ev2xOn(),beForca:()=>beForca(),PTRK:()=>PTRK})}catch(e){}
+
+/* ================= v557: RANKING PVP mostrava só 2 contas — cada partida cria um doc novo (Breno 438, Honrado 394 neste mês) e o limite de 300 docs
+   enchia com eles. Agora o servidor devolve só o doc MAIS NOVO de cada conta (`latestBy:'pva'`, worker v557). Sem o worker novo, funciona como antes.
+   + BÔNUS do Vini_junior10 (conta 10jasju): +4 estrelas por vitória nas 2 primeiras horas e +2 até completar 5 horas (19/11 16:45 → 21:45). ================= */
+async function pvQL(field,val,lim,ob,dir,by){const body={structuredQuery:{from:[{collectionId:'torre'}],where:{fieldFilter:{field:{fieldPath:field},op:'EQUAL',value:{stringValue:val}}},orderBy:[{field:{fieldPath:ob},direction:dir||'DESCENDING'}],limit:lim||300,latestBy:by}};
+  const r=await twFetchT(TWURL+':runQuery?key='+TWFB.apiKey,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});if(!r.ok)throw new Error('http '+r.status);const j=await r.json(),o=[];
+  for(const x of (Array.isArray(j)?j:[])){const F=x&&x.document&&x.document.fields;if(!F)continue;const e={_id:x.document.name.split('/').pop()};for(const k in F){const v=F[k];e[k]=v.stringValue!=null?v.stringValue:v.integerValue!=null?+v.integerValue:v.doubleValue}o.push(e)}return o}
+pvLoadAll=async function(force){if(!force&&PV.all&&Date.now()-PV.allT<60e3)return PV.all;const R=await pvQL('pvk',pvMon(),300,'pvs','DESCENDING','pva'),M={};
+  for(const e of R){if(!e.pva||M[e.pva]&&M[e.pva]._id>e._id)continue;let d={};try{d=JSON.parse(e.d)}catch(x){}M[e.pva]=Object.assign(e,{t:Math.min(PVDIV,d.t|0),dv:d.dv|0,st:d.st|0,ch:d.ch||e.ch,w:d.w|0,l:d.l|0})}
+  PV.all=Object.values(M).sort((a,b)=>b.pvs-a.pvs);PV.allT=Date.now();return PV.all};
+const VNB=[Date.UTC(2026,10,19,19,45),Date.UTC(2026,10,19,21,45),Date.UTC(2026,10,20,0,45)];
+const vnOn=()=>{try{const n=String(twLS.g('tw_nome','')||'').toLowerCase().trim();return pvAcc()==='10jasju'||n==='vini_junior10'}catch(e){return false}};
+function vnExtra(t){t=t||Date.now();if(t<VNB[0]||t>=VNB[2])return 0;return t<VNB[1]?4:2}
+{const _s=pvStep;pvStep=function(o,won){const r=_s.apply(this,arguments);try{const x=won&&r&&r.gain>0&&vnOn()?vnExtra():0;if(x){for(let i=0;i<x;i++){if(o.t>=PVDIV){o.s++;continue}o.s++;if(o.s>=pvNeed(o.t)){o.s=0;if(o.d<2)o.d++;else{o.t++;o.d=0}}}
+  if(o.t>o.bt||o.t===o.bt&&o.d>o.bd){o.bt=o.t;o.bd=o.d}r.gain+=x;r.up=o.t>r.b.t||o.t===r.b.t&&o.d>r.b.d}}catch(e){}return r}}
+try{Object.assign(window.__pvT||{},{pvLoadAll:f=>pvLoadAll(f),vnExtra:t=>vnExtra(t),vnOn:()=>vnOn()})}catch(e){}

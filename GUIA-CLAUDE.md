@@ -2526,3 +2526,9 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - `extra/9z_v556.py`: `rkDropF` × `rkDropK()` (rk.js: `DROPBASE=.6`, ×2 no evento). Portais: `PTRK[].it/sh/pv/sj/gem` viraram getters × `rkDropK()`.
 - Evento `EV2X` (19/11 16:20 → 22/11 23:59 Brasília): entrada no `RKEVX` (XP de rank ×2, `anel:2`) + wrapper `pvStep` (estrelas ×2).
 - Beru: wrapper final de `hyMk` → vida ×2,5×`beForca()` (1–12, pela força do jogador: tdm × crítico × velocidade), ataque ×força^0,35; banner "BERU SE ADAPTOU". Testes `tevento_drop_v556.js`, `traid_beru_v556.js`.
+
+## v557 — ranking PVP com todas as contas + bônus do Vini
+- Bug: `pvLoadAll` pegava os 300 docs `pvs_*` de maior pontuação; cada partida cria um doc (~27 KB) e Breno/Honrado (400+ cada) enchiam a lista → ninguém mais aparecia (Vini incluso), e o adversário do PVP só saía entre eles.
+- Worker: `runQuery` aceita `latestBy` (campo): com filtro de igualdade + orderBy, devolve só o doc mais novo de cada valor (ROW_NUMBER no SQLite/D1). `pvQL` + `pvLoadAll` novo usam `latestBy:'pva'`.
+- Bônus do Vini (`vnOn`: conta 10jasju ou nome vini_junior10): `VNB` 19/11 16:45→18:45 +4 estrelas por vitória, até 21:45 +2 (wrapper de `pvStep`, soma ao evento 2x).
+- Ferramenta `.github/workflows/consulta.yml` (query livre). Teste `tpvp_rank_v557.js` (servidor local com o worker novo).
