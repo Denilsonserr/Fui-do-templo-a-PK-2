@@ -15521,6 +15521,11 @@ pbApply();setInterval(pbApply,20000);
 {const _ra=rkApply;rkApply=function(){const r=_ra.apply(this,arguments);try{const p=G.p&&G.p[0];if(p&&pbOn()&&p._pbV!==p.tdm){p.tdm=(p.tdm||1)*2;p.tcr=(p.tcr||0)*2+5;p._pbV=p.tdm /* chance = 5+tcr → dobra */}}catch(e){}return r}}
 try{Object.assign(window.__pvT||{},{pbOn:()=>pbOn(),pvStep:(o,w)=>pvStep(o,w),evX:()=>rkEvX()})}catch(e){}
 
+/* v552: SUNG DO TORNEIO não pode morrer. Antes a vida era restaurada só no FIM do quadro — um golpe que zerava a vida chamava ko()
+   no meio do quadro e encerrava a luta. Agora o ko() do Sung no torneio é cancelado: o dano conta e a vida volta cheia na hora. */
+{const _ko=ko;ko=function(a,d){try{if(TRN.on&&RKBID==='sung'&&G.gmode==='boss'&&G.p&&d===G.p[1]){if(d.hp<TRN.lh)TRN.d+=TRN.lh-d.hp;d.hp=d.mhp;d.hpLag=d.mhp;d.ko=false;TRN.lh=d.hp;return}}catch(e){}return _ko.apply(this,arguments)}}
+try{Object.assign(window.__pvT||{},{ko:(a,d)=>ko(a,d),trn:()=>TRN})}catch(e){}
+
 function twTrofList(){const tc=twLS.g('tw_tc',{}),run={};for(const t of TW.tr)run[t.k]=(run[t.k]||0)+1;
   twModal(`<div class="twM"><h3>🎖️ TROFÉUS</h3><div class="twTL">${Object.keys(TWTR).map(k=>{const T=TWTR[k];return `<div class="${tc[k]||run[k]?'got':''}"><i>${T.i}</i><b>${T.n}</b><span>${T.d}</span><em>+${T.p} 🏆</em><small>${run[k]?'nesta subida: '+run[k]+' · ':''}total: ${(tc[k]||0)}</small></div>`}).join('')}</div>
     <p class="twH">Cada troféu soma pontos 🏆 no ranking. Quem sobe mais andares fica na frente; empate = mais troféus, depois menos tempo.</p><div class="row"><button class="btn" id="twTx">FECHAR</button></div></div>`);
@@ -15712,7 +15717,7 @@ window.__dbg={mus:()=>[MCUR,MEL.src.split('/').pop()],stg:()=>STAGE.key,prepMatc
 })();
 </script>
 <style>#updB{position:fixed;left:50%;top:max(8px,env(safe-area-inset-top));transform:translateX(-50%);z-index:99999;padding:10px 22px;border-radius:14px;border:2px solid #fff3c0;background:linear-gradient(#ffd84a,#e08a10);color:#3a1d00;font:900 15px system-ui,sans-serif;box-shadow:0 0 18px #ffb21f;cursor:pointer;animation:updP 1s ease-in-out infinite alternate}@keyframes updP{to{transform:translateX(-50%) scale(1.05)}}</style>
-<script>(function(){const V='f31ba46ff1d9';if(!/^https?:/.test(location.protocol))return;let nv=null;
+<script>(function(){const V='2c489a0c4b8a';if(!/^https?:/.test(location.protocol))return;let nv=null;
 function show(){if(document.getElementById('updB'))return;try{if(typeof G!=='undefined'&&G.mode==='fight')return}catch(e){}const b=document.createElement('button');b.id='updB';b.textContent='🔄 ATUALIZAÇÃO NOVA! Toque para atualizar';
   b.onclick=()=>{b.textContent='⏳ Atualizando...';try{acSave(1)}catch(e){}setTimeout(()=>location.reload(),900)};document.body.appendChild(b)}
 async function chk(){if(document.hidden)return;if(nv){show();return}try{const r=await fetch('versao.txt?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const t=(await r.text()).trim();if(/^[0-9a-f]{8,40}$/.test(t)&&t!==V){nv=t;show()}}catch(e){}}

@@ -2503,3 +2503,6 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 
 ## v551 — código DIVINA2
 - `TWCUP['uwdaps']` (uso único): 1 joia divina (`jdx:1`). Teste `tjoia_div2_v551.js`.
+
+## v552 — Sung do torneio imortal de verdade
+- Bug: a vida do Sung só era restaurada no fim do quadro (wrapper de update); golpe que zerava a vida chamava `ko()` no meio e acabava a luta. Fix: wrapper de `ko` cancela o KO do Sung no torneio (conta o dano, vida cheia). Teste `ttorneio_imortal_v552.js`.

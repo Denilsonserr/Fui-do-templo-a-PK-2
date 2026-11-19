@@ -6956,3 +6956,8 @@ pbApply();setInterval(pbApply,20000);
   if(o.t>o.bt||o.t===o.bt&&o.d>o.bd){o.bt=o.t;o.bd=o.d}r.gain=g*2;r.up=o.t>r.b.t||o.t===r.b.t&&o.d>r.b.d}}catch(e){}return r}}
 {const _ra=rkApply;rkApply=function(){const r=_ra.apply(this,arguments);try{const p=G.p&&G.p[0];if(p&&pbOn()&&p._pbV!==p.tdm){p.tdm=(p.tdm||1)*2;p.tcr=(p.tcr||0)*2+5;p._pbV=p.tdm /* chance = 5+tcr → dobra */}}catch(e){}return r}}
 try{Object.assign(window.__pvT||{},{pbOn:()=>pbOn(),pvStep:(o,w)=>pvStep(o,w),evX:()=>rkEvX()})}catch(e){}
+
+/* v552: SUNG DO TORNEIO não pode morrer. Antes a vida era restaurada só no FIM do quadro — um golpe que zerava a vida chamava ko()
+   no meio do quadro e encerrava a luta. Agora o ko() do Sung no torneio é cancelado: o dano conta e a vida volta cheia na hora. */
+{const _ko=ko;ko=function(a,d){try{if(TRN.on&&RKBID==='sung'&&G.gmode==='boss'&&G.p&&d===G.p[1]){if(d.hp<TRN.lh)TRN.d+=TRN.lh-d.hp;d.hp=d.mhp;d.hpLag=d.mhp;d.ko=false;TRN.lh=d.hp;return}}catch(e){}return _ko.apply(this,arguments)}}
+try{Object.assign(window.__pvT||{},{ko:(a,d)=>ko(a,d),trn:()=>TRN})}catch(e){}
