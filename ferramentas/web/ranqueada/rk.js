@@ -7098,3 +7098,20 @@ function besDraw(f){const B=f.sjB,[k,i]=besFr(B),M=(PNJ[k]||[])[i];if(!M)return;
 {const _d=sjBDraw;sjBDraw=function(f){if(f&&f.sjB&&f.sjB.k==='beru')return besDraw(f);return _d.apply(this,arguments)}}
 {const _ah=applyHit;applyHit=function(a,d,h){try{if(d&&d.sjB&&d.sjB.k==='beru'&&d.sjB.st!=='die'&&a&&a!==d&&h&&(h.kind==='beam'||h.kind==='proj'||(h.dmg||0)>=90)){h=Object.assign({},h,{dmg:(h.dmg||0)*.3});if(G.frame-(d.sjB.spT||0)>40){d.sjB.spT=G.frame;txt(d.sjB.x,FLOOR-350,'🛡️ BERU SEGUROU O ESPECIAL','#c9a8ff')}}}catch(e){}return _ah.call(this,a,d,h)}}
 try{Object.assign(window.__pvT||{},{ptNow:t=>ptNow(t),ptRaid:()=>ptRaid(),pnMk:(k,x,o)=>{const f=hyMk('lobo',x);return pnInit(f,k,o)},PTR:()=>PTR,PTGS:()=>PTGS,beBoss:()=>{const f=(HY.mobs||[]).find(m=>m.pn&&m.pn.k==='be')||(G.p&&G.p[1]&&G.p[1].pn&&G.p[1].pn.k==='be'?G.p[1]:null);return f}})}catch(e){}
+
+/* ================= v556: DROPS menores + EVENTO 2x (drop, XP de rank, estrelas do PVP, anel) + BERU muito mais forte e que se ADAPTA à força
+   • Drops do jogo todo ×0,6 (rkDropF via extra/9z_v556.py; portais: item/sombra/poção/peça do Monarca/diamante ×0,6). No evento ×2.
+   • Evento EV2X: até 22/11 23:59 (Brasília): 2x DROP · 2x XP de rank · 2x ESTRELAS no PVP ranqueado · 2x ANEL (chance de anel).
+   • Beru: vida ×2,5 e mais ×1 a ×12 conforme a força de quem entra (dano, crítico e velocidade); ataque ×1 a ×2,4. ================= */
+const DROPBASE=.6,EV2X=[Date.UTC(2026,10,19,19,20),Date.UTC(2026,10,23,2,59,59)],ev2xOn=t=>{t=t||Date.now();return t>=EV2X[0]&&t<EV2X[1]};
+function rkDropK(){return DROPBASE*(ev2xOn()?2:1)}
+RKEVX.splice(0,0,[EV2X[0],EV2X[1],2,'2x DROP · 2x XP · 2x ESTRELAS · 2x ANEL',{anel:2}]);
+try{for(const R of PTRK){for(const k of ['it','sh','pv','sj','gem']){const b=R[k];if(typeof b!=='number')continue;Object.defineProperty(R,k,{get:()=>b*rkDropK(),configurable:true,enumerable:true})}}}catch(e){}
+{const _s=pvStep;pvStep=function(o,won){const r=_s.apply(this,arguments);try{if(won&&ev2xOn()&&r&&r.gain>0){const g=r.gain;for(let i=0;i<g;i++){if(o.t>=PVDIV){o.s++;continue}o.s++;if(o.s>=pvNeed(o.t)){o.s=0;if(o.d<2)o.d++;else{o.t++;o.d=0}}}
+  if(o.t>o.bt||o.t===o.bt&&o.d>o.bd){o.bt=o.t;o.bd=o.d}r.gain=g*2;r.up=o.t>r.b.t||o.t===r.b.t&&o.d>r.b.d}}catch(e){}return r}}
+/* Beru se adapta */
+function beForca(){try{const p=G.p&&G.p[0];if(!p)return 1;const pw=(p.tdm||1)*(1+Math.min(150,p.tcr||0)/100*.6)*Math.min(3,p.tsp||1);return Math.max(1,Math.min(12,pw/2.5))}catch(e){return 1}}
+{const _mk=hyMk;hyMk=function(kind,x,lv){const f=_mk.apply(this,arguments);try{if(HY.on&&ptRaid()&&f&&f.pn&&f.pn.k==='be'&&!f.beAd){f.beAd=1;const k=beForca(),ak=Math.pow(k,.35);
+    f.mhp=Math.round(f.mhp*2.5*k);f.hp=f.hpLag=f.mhp;f.hyAtk*=ak;f.tdm=Math.pow(f.hyAtk/150,.3);f.beK=k;
+    setTimeout(()=>{try{banner('⚖️ BERU SE ADAPTOU À SUA FORÇA','#d6a8ff',150,'vida ×'+(2.5*k).toFixed(1).replace('.',',')+' · ataque ×'+ak.toFixed(1).replace('.',','))}catch(e){}},2600)}}catch(e){}return f}}
+try{Object.assign(window.__pvT||{},{rkDropK:()=>rkDropK(),ev2x:()=>ev2xOn(),beForca:()=>beForca(),PTRK:()=>PTRK})}catch(e){}

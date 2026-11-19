@@ -18,9 +18,9 @@ await p.waitForTimeout(4000);await p.screenshot({path:SH+'sala1.png'});
 const ks={};for(let k=0;k<40;k++){const L=await p.evaluate(()=>{const H=__pt.HY(),G=__dbg.G;const A=[G.p[1],...H.mobs].filter(Boolean);const r=A.map(m=>m.pn?m.pn.k+(m.pn.v==='branco'?'*':''):(m.pnWolf?'lobo':'?'));for(const m of A)if(!m.ko&&!m.hyIdle){m.hp=0;__pvT.ko(G.p[0],m)}return r});for(const x of L)ks[x]=(ks[x]||0)+1;await p.waitForTimeout(250)}
 console.log(JSON.stringify(ks));chk((ks.fv||0)+(ks['fv*']||0)+(ks.fb||0)>0,'formigas aparecem na raid');
 /* sala 10: Beru */
-await p.evaluate(()=>{__pt.R().room=9});await p.evaluate(()=>__pt.next());await p.waitForTimeout(2500);await p.evaluate(()=>{const P=__dbg.G.p[0];P.inv=0;P.hp=P.mhp=99999999});
+await p.evaluate(()=>{__pt.R().room=9;const P=__dbg.G.p[0];P.tdm=25;P.tcr=80});await p.evaluate(()=>__pt.next());await p.waitForTimeout(2500);await p.evaluate(()=>{const P=__dbg.G.p[0];P.inv=0;P.hp=P.mhp=99999999});
 const st=[];for(let k=0;k<40;k++){await p.waitForTimeout(200);st.push(await p.evaluate(()=>{const o=__dbg.G.p[1];return o.pn?(o.pn.a==='guard'?'guarda':o.pn.atk?o.pn.atk.a.replace('be_',''):o.state):'?'}));if(k===12)await p.screenshot({path:SH+'beru.png'})}
-const be=await p.evaluate(()=>{const o=__dbg.G.p[1];return {k:o.pn&&o.pn.k,nome:o.def.name,pas:o.pn&&o.pn.pas,mhp:o.mhp,atk:o.hyAtk}});const seq=[];for(const x of st)if(seq[seq.length-1]!==x)seq.push(x);
+const be=await p.evaluate(()=>{const o=__dbg.G.p[1];return {k:o.pn&&o.pn.k,nome:o.def.name,pas:o.pn&&o.pn.pas,mhp:o.mhp,atk:o.hyAtk,beK:o.beK}});const seq=[];for(const x of st)if(seq[seq.length-1]!==x)seq.push(x);
 console.log(JSON.stringify(be),seq.join('>'));chk(be.k==='be'&&be.pas,'sala 10 é o BERU com passivas');chk(/combo|soco|chute|corre/.test(seq.join()),'Beru ataca (auto combo)');
 /* derrota o Beru com sorte forçada → sombra */
 await p.evaluate(()=>{const G=__dbg.G,o=G.p[1];const R=Math.random;Math.random=()=>0;setTimeout(()=>{Math.random=R},50);o.hp=0;__pvT.ko(G.p[0],o)});await p.waitForTimeout(2500);

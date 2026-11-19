@@ -2521,3 +2521,8 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - Sombra `SJSH.beru` (rank S): `sjShSt` ×2,2 vida / ×2,4 dano / ×1,3 vel; `besTick/besDraw` (combo 16 quadros, soco, chute, teleporta atrás, cura o Sung, segura especial 30%), dura 20 s (`BELIFE`).
 - Evento `PTSE2` (19/11 15:00 → 26/11 23:59 Brasília): 1º ciclo de cada bloco de 20 min tem portal S (marca `PTGS`). Faixa roxa na tela dos portais; carta S com "🐜 RAID DAS FORMIGAS".
 - Teste `ferramentas/testes/traid_beru_v555.js` (usa `__pvT.ptNow`, porque `__pt.now` é o ptNow sem wrappers).
+
+## v556 — drops ×0,6 + evento 2x + Beru adaptável
+- `extra/9z_v556.py`: `rkDropF` × `rkDropK()` (rk.js: `DROPBASE=.6`, ×2 no evento). Portais: `PTRK[].it/sh/pv/sj/gem` viraram getters × `rkDropK()`.
+- Evento `EV2X` (19/11 16:20 → 22/11 23:59 Brasília): entrada no `RKEVX` (XP de rank ×2, `anel:2`) + wrapper `pvStep` (estrelas ×2).
+- Beru: wrapper final de `hyMk` → vida ×2,5×`beForca()` (1–12, pela força do jogador: tdm × crítico × velocidade), ataque ×força^0,35; banner "BERU SE ADAPTOU". Testes `tevento_drop_v556.js`, `traid_beru_v556.js`.
