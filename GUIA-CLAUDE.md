@@ -2532,3 +2532,7 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - Worker: `runQuery` aceita `latestBy` (campo): com filtro de igualdade + orderBy, devolve só o doc mais novo de cada valor (ROW_NUMBER no SQLite/D1). `pvQL` + `pvLoadAll` novo usam `latestBy:'pva'`.
 - Bônus do Vini (`vnOn`: conta 10jasju ou nome vini_junior10): `VNB` 19/11 16:45→18:45 +4 estrelas por vitória, até 21:45 +2 (wrapper de `pvStep`, soma ao evento 2x).
 - Ferramenta `.github/workflows/consulta.yml` (query livre). Teste `tpvp_rank_v557.js` (servidor local com o worker novo).
+
+## v558 — otimização para celular fraco
+- Quem nunca escolheu gráfico começava no 4K (ft_4k padrão). `qAuto()` (deviceMemory/hardwareConcurrency) escolhe Leve/Médio/Ultra no 1º boot sem `ft_q` (`ft_qa=1`).
+- Wrapper de `dynTick`: resolução já no mínimo e ainda >21 ms/quadro por 3,5 s → desce 1 nível (`setQ`) com banner. No Mínimo `setRes` deixa DPR ir até 0,7 e `render` pula 1 de 2 quadros se >24 ms. Partículas: Leve 120, Mínimo 50. Teste `totimiza_v558.js`.

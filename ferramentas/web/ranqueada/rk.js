@@ -7131,3 +7131,19 @@ function vnExtra(t){t=t||Date.now();if(t<VNB[0]||t>=VNB[2])return 0;return t<VNB
 {const _s=pvStep;pvStep=function(o,won){const r=_s.apply(this,arguments);try{const x=won&&r&&r.gain>0&&vnOn()?vnExtra():0;if(x){for(let i=0;i<x;i++){if(o.t>=PVDIV){o.s++;continue}o.s++;if(o.s>=pvNeed(o.t)){o.s=0;if(o.d<2)o.d++;else{o.t++;o.d=0}}}
   if(o.t>o.bt||o.t===o.bt&&o.d>o.bd){o.bt=o.t;o.bd=o.d}r.gain+=x;r.up=o.t>r.b.t||o.t===r.b.t&&o.d>r.b.d}}catch(e){}return r}}
 try{Object.assign(window.__pvT||{},{pvLoadAll:f=>pvLoadAll(f),vnExtra:t=>vnExtra(t),vnOn:()=>vnOn()})}catch(e){}
+
+/* ================= v558: OTIMIZAÇÃO para celular fraco
+   1) Gráfico inicial pelo aparelho (quem nunca escolheu começava no 4K!): memória/núcleos → Leve, Médio ou Ultra. 4K só escolhendo.
+   2) Se o jogo continua lento mesmo com a resolução no mínimo, baixa 1 nível de gráfico sozinho (até o Mínimo) e avisa.
+   3) No Mínimo: resolução pode cair abaixo de 1 (até 0,7) e, se ainda estiver lento, desenha 1 quadro sim/1 não (a luta continua igual, só a tela fica em 30 q/s).
+   4) Menos partículas no Leve (120) e no Mínimo (50). ================= */
+function qAuto(){try{const m=+navigator.deviceMemory||0,c=+navigator.hardwareConcurrency||0,px=(screen.width||0)*(screen.height||0)*Math.pow(window.devicePixelRatio||1,2);
+  if((m&&m<=3)||(c&&c<=4))return 1;if((m&&m<=4)||(c&&c<=6)||px>4.2e6&&m&&m<=6)return 2;return 3}catch(e){return 2}}
+setTimeout(()=>{try{if(localStorage.getItem('ft_q')==null){const lv=qAuto();setQ(lv);localStorage.setItem('ft_qa','1')}}catch(e){}},0);
+let QSLOW=0;
+{const _d=dynTick;dynTick=function(dt){_d.apply(this,arguments);try{if(G.mode!=='fight'||G.paused||document.hidden||dt>1500)return;const floor=DYN.off||G.dyn<=.56;
+  if(floor&&DYN.ema>21){QSLOW+=dt;if(QSLOW>3500&&(G.qlv|0)>0){QSLOW=0;const lv=(G.qlv|0)-1;setQ(lv);try{localStorage.setItem('ft_qa','1')}catch(e){}try{banner('⚙️ GRÁFICO: '+QLN[lv].toUpperCase(),'#bfe8ff',90,'ajustado sozinho para o jogo rodar melhor (troque em Opções)')}catch(e){}}}else QSLOW=Math.max(0,QSLOW-dt*.5)}catch(e){}}}
+{const _r=setRes;setRes=function(){if(!G.baseDPR)return;if((G.qlv|0)!==0)return _r.apply(this,arguments);const d=Math.max(.7,G.baseDPR*G.dyn);if(Math.abs(d-DPR)<.01)return;DPR=d;BGD=Math.max(.7,DPR*.55);cv.width=Math.round(VW*SC*DPR);cv.height=Math.round(H*SC*DPR)}}
+let RSKIP=0;{const _rd=render;render=function(){try{if((G.qlv|0)===0&&G.mode==='fight'&&DYN.ema>24&&G.dyn<=.56){RSKIP^=1;if(RSKIP)return}}catch(e){}return _rd.apply(this,arguments)}}
+setInterval(()=>{try{if(G.mode!=='fight')return;const cap=(G.qlv|0)===0?50:(G.qlv|0)===1?120:0;if(cap&&G.parts&&G.parts.length>cap)G.parts.splice(0,G.parts.length-cap)}catch(e){}},250);
+try{Object.assign(window.__pvT||{},{qAuto:()=>qAuto(),q:()=>({qlv:G.qlv,dyn:G.dyn,dpr:DPR,ema:DYN.ema,off:DYN.off}),dynTick:dt=>dynTick(dt),setQ:l=>setQ(l)})}catch(e){}

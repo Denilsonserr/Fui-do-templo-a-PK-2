@@ -15696,6 +15696,22 @@ function vnExtra(t){t=t||Date.now();if(t<VNB[0]||t>=VNB[2])return 0;return t<VNB
   if(o.t>o.bt||o.t===o.bt&&o.d>o.bd){o.bt=o.t;o.bd=o.d}r.gain+=x;r.up=o.t>r.b.t||o.t===r.b.t&&o.d>r.b.d}}catch(e){}return r}}
 try{Object.assign(window.__pvT||{},{pvLoadAll:f=>pvLoadAll(f),vnExtra:t=>vnExtra(t),vnOn:()=>vnOn()})}catch(e){}
 
+/* ================= v558: OTIMIZAÇÃO para celular fraco
+   1) Gráfico inicial pelo aparelho (quem nunca escolheu começava no 4K!): memória/núcleos → Leve, Médio ou Ultra. 4K só escolhendo.
+   2) Se o jogo continua lento mesmo com a resolução no mínimo, baixa 1 nível de gráfico sozinho (até o Mínimo) e avisa.
+   3) No Mínimo: resolução pode cair abaixo de 1 (até 0,7) e, se ainda estiver lento, desenha 1 quadro sim/1 não (a luta continua igual, só a tela fica em 30 q/s).
+   4) Menos partículas no Leve (120) e no Mínimo (50). ================= */
+function qAuto(){try{const m=+navigator.deviceMemory||0,c=+navigator.hardwareConcurrency||0,px=(screen.width||0)*(screen.height||0)*Math.pow(window.devicePixelRatio||1,2);
+  if((m&&m<=3)||(c&&c<=4))return 1;if((m&&m<=4)||(c&&c<=6)||px>4.2e6&&m&&m<=6)return 2;return 3}catch(e){return 2}}
+setTimeout(()=>{try{if(localStorage.getItem('ft_q')==null){const lv=qAuto();setQ(lv);localStorage.setItem('ft_qa','1')}}catch(e){}},0);
+let QSLOW=0;
+{const _d=dynTick;dynTick=function(dt){_d.apply(this,arguments);try{if(G.mode!=='fight'||G.paused||document.hidden||dt>1500)return;const floor=DYN.off||G.dyn<=.56;
+  if(floor&&DYN.ema>21){QSLOW+=dt;if(QSLOW>3500&&(G.qlv|0)>0){QSLOW=0;const lv=(G.qlv|0)-1;setQ(lv);try{localStorage.setItem('ft_qa','1')}catch(e){}try{banner('⚙️ GRÁFICO: '+QLN[lv].toUpperCase(),'#bfe8ff',90,'ajustado sozinho para o jogo rodar melhor (troque em Opções)')}catch(e){}}}else QSLOW=Math.max(0,QSLOW-dt*.5)}catch(e){}}}
+{const _r=setRes;setRes=function(){if(!G.baseDPR)return;if((G.qlv|0)!==0)return _r.apply(this,arguments);const d=Math.max(.7,G.baseDPR*G.dyn);if(Math.abs(d-DPR)<.01)return;DPR=d;BGD=Math.max(.7,DPR*.55);cv.width=Math.round(VW*SC*DPR);cv.height=Math.round(H*SC*DPR)}}
+let RSKIP=0;{const _rd=render;render=function(){try{if((G.qlv|0)===0&&G.mode==='fight'&&DYN.ema>24&&G.dyn<=.56){RSKIP^=1;if(RSKIP)return}}catch(e){}return _rd.apply(this,arguments)}}
+setInterval(()=>{try{if(G.mode!=='fight')return;const cap=(G.qlv|0)===0?50:(G.qlv|0)===1?120:0;if(cap&&G.parts&&G.parts.length>cap)G.parts.splice(0,G.parts.length-cap)}catch(e){}},250);
+try{Object.assign(window.__pvT||{},{qAuto:()=>qAuto(),q:()=>({qlv:G.qlv,dyn:G.dyn,dpr:DPR,ema:DYN.ema,off:DYN.off}),dynTick:dt=>dynTick(dt),setQ:l=>setQ(l)})}catch(e){}
+
 function twTrofList(){const tc=twLS.g('tw_tc',{}),run={};for(const t of TW.tr)run[t.k]=(run[t.k]||0)+1;
   twModal(`<div class="twM"><h3>🎖️ TROFÉUS</h3><div class="twTL">${Object.keys(TWTR).map(k=>{const T=TWTR[k];return `<div class="${tc[k]||run[k]?'got':''}"><i>${T.i}</i><b>${T.n}</b><span>${T.d}</span><em>+${T.p} 🏆</em><small>${run[k]?'nesta subida: '+run[k]+' · ':''}total: ${(tc[k]||0)}</small></div>`}).join('')}</div>
     <p class="twH">Cada troféu soma pontos 🏆 no ranking. Quem sobe mais andares fica na frente; empate = mais troféus, depois menos tempo.</p><div class="row"><button class="btn" id="twTx">FECHAR</button></div></div>`);
@@ -15887,7 +15903,7 @@ window.__dbg={mus:()=>[MCUR,MEL.src.split('/').pop()],stg:()=>STAGE.key,prepMatc
 })();
 </script>
 <style>#updB{position:fixed;left:50%;top:max(8px,env(safe-area-inset-top));transform:translateX(-50%);z-index:99999;padding:10px 22px;border-radius:14px;border:2px solid #fff3c0;background:linear-gradient(#ffd84a,#e08a10);color:#3a1d00;font:900 15px system-ui,sans-serif;box-shadow:0 0 18px #ffb21f;cursor:pointer;animation:updP 1s ease-in-out infinite alternate}@keyframes updP{to{transform:translateX(-50%) scale(1.05)}}</style>
-<script>(function(){const V='4744a78c7cea';if(!/^https?:/.test(location.protocol))return;let nv=null;
+<script>(function(){const V='9721a23f50f6';if(!/^https?:/.test(location.protocol))return;let nv=null;
 function show(){if(document.getElementById('updB'))return;try{if(typeof G!=='undefined'&&G.mode==='fight')return}catch(e){}const b=document.createElement('button');b.id='updB';b.textContent='🔄 ATUALIZAÇÃO NOVA! Toque para atualizar';
   b.onclick=()=>{b.textContent='⏳ Atualizando...';try{acSave(1)}catch(e){}setTimeout(()=>location.reload(),900)};document.body.appendChild(b)}
 async function chk(){if(document.hidden)return;if(nv){show();return}try{const r=await fetch('versao.txt?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const t=(await r.text()).trim();if(/^[0-9a-f]{8,40}$/.test(t)&&t!==V){nv=t;show()}}catch(e){}}
