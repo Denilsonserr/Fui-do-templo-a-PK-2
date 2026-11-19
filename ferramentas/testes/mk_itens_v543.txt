@@ -1,0 +1,97 @@
+{"k":"an","r":{"c":2,"g":2,"s":"crit","v":13,"l":1,"a":0}}
+{"k":"an","r":{"c":2,"g":5,"s":"dano","v":30,"l":1,"a":0}}
+{"k":"an","r":{"c":2,"g":5,"s":"drop","v":30,"l":1,"a":0}}
+{"k":"an","r":{"c":2,"g":6,"s":"crit","v":40,"l":1,"a":0}}
+{"k":"an","r":{"c":2,"g":6,"s":"drop","v":40,"l":1,"a":0}}
+{"k":"an","r":{"c":2,"g":6,"s":"st","v":40,"l":1,"a":0}}
+{"k":"an","r":{"c":3,"g":7,"s":"st","v":100,"l":40,"a":44781}}
+{"k":"an","r":{"c":4,"g":1,"s":"dano","v":31,"l":1,"a":900}}
+{"k":"an","r":{"c":4,"g":1,"s":"dano","v":44.5,"l":1,"a":8000}}
+{"k":"an","r":{"c":4,"g":1,"s":"dano","v":46.7,"l":1,"a":11400}}
+{"k":"an","r":{"c":4,"g":1,"s":"uv","v":34.6,"l":1,"a":1600}}
+{"k":"an","r":{"c":4,"g":1,"s":"uv","v":46.7,"l":1,"a":11400}}
+{"k":"an","r":{"c":4,"g":2,"s":"crit","v":31.1,"l":1,"a":200}}
+{"k":"an","r":{"c":4,"g":2,"s":"st","v":86.5,"l":1,"a":107400}}
+{"k":"an","r":{"c":4,"g":3,"s":"dano","v":108.6,"l":1,"a":76900}}
+{"k":"an","r":{"c":4,"g":3,"s":"uv","v":73.5,"l":1,"a":3600}}
+{"k":"an","r":{"c":4,"g":3,"s":"uv","v":82.1,"l":1,"a":7600}}
+{"k":"an","r":{"c":4,"g":4,"s":"st","v":63.3,"l":50,"a":400}}
+{"k":"an","r":{"c":4,"g":4,"s":"st","v":80.9,"l":50,"a":1300}}
+{"k":"an","r":{"c":4,"g":5,"s":"dano","v":195.1,"l":1,"a":138500}}
+{"k":"an","r":{"c":4,"g":5,"s":"uv","v":110,"l":1,"a":100000}}
+{"k":"an","r":{"c":4,"g":6,"s":"crit","v":150,"l":11,"a":400}}
+{"k":"an","r":{"c":4,"g":6,"s":"dano","v":236.2,"l":15,"a":44600}}
+{"k":"an","r":{"c":4,"g":6,"s":"st","v":111.6,"l":1,"a":400}}
+{"k":"an","r":{"c":4,"g":6,"s":"st","v":150,"l":1,"a":100000}}
+{"k":"an","r":{"c":4,"g":6,"s":"st","v":228.6,"l":10,"a":33500}}
+{"k":"an","r":{"c":4,"g":7,"s":"crit","v":200,"l":18,"a":100000}}
+{"k":"an","r":{"c":4,"g":7,"s":"crit","v":200,"l":50,"a":100000}}
+{"k":"an","r":{"c":4,"g":7,"s":"crit","v":299.5,"l":1,"a":28800}}
+{"k":"an","r":{"c":4,"g":7,"s":"dano","v":124.4,"l":1,"a":200}}
+{"k":"an","r":{"c":4,"g":7,"s":"dano","v":285.5,"l":1,"a":19400}}
+{"k":"an","r":{"c":4,"g":7,"s":"drop","v":138.7,"l":49,"a":300}}
+{"k":"an","r":{"c":4,"g":7,"s":"st","v":200,"l":45,"a":100000}}
+{"k":"an","r":{"c":4,"g":7,"s":"uv","v":184.5,"l":1,"a":1100}}
+{"k":"an","r":{"c":4,"g":7,"s":"uv","v":200,"l":1,"a":100000}}
+{"k":"an","r":{"c":4,"g":7,"s":"uv","v":200,"l":50,"a":100000}}
+{"k":"an","r":{"c":4,"g":7,"s":"vel","v":200,"l":10,"a":100000}}
+{"k":"an","r":{"c":4,"g":7,"s":"vel","v":309,"l":1,"a":37700}}
+{"k":"an","r":{"c":5,"g":0,"s":"st","v":50,"l":10,"a":500000}}
+{"k":"an","r":{"c":5,"g":0,"s":"st","v":68.3,"l":10,"a":8760000}}
+{"k":"an","r":{"c":5,"g":1,"s":"crit","v":56,"l":1,"a":1000000}}
+{"k":"an","r":{"c":5,"g":5,"s":"drop","v":268.3,"l":10,"a":5000000}}
+{"k":"an","r":{"c":5,"g":5,"s":"drop","v":268.3,"l":19,"a":5000000}}
+{"k":"an","r":{"c":5,"g":5,"s":"drop","v":308,"l":60,"a":10000000}}
+{"k":"an","r":{"c":5,"g":6,"s":"drop","v":420,"l":60,"a":10000000}}
+{"k":"eq","it":{"t":"anel","r":"lend","v":0,"drop":15,"nm":"ANEL DE DROP"}}
+{"k":"eq","it":{"t":"anel","r":"sec","v":0,"crit":30,"dmg":50,"drop":30,"nm":"ANEL DO MONARCA","img":"a/392f4e321b8a1b.webp","ysec":1}}
+{"k":"eq","it":{"t":"anel","r":"sec","v":0,"dmg":50,"crit":30,"drop":30,"nm":"ANEL DO MONARCA","img":"a/392f4e321b8a1b.webp","sj":1,"ysec":1}}
+{"k":"eq","it":{"t":"anel","r":"sec","v":0,"drop":35,"nm":"ANEL DE DROP"}}
+{"k":"eq","it":{"t":"anel","r":"sec","v":50,"st":50,"trf":30,"nm":"ANEL DO YUTA","img":"a/18b75fd8e7316f.webp","yt":1,"ysec":1,"ps":{"r":"epica","i":0}}}
+{"k":"eq","it":{"t":"anel","r":"sec","v":50,"st":50,"trf":30,"nm":"ANEL DO YUTA","img":"a/18b75fd8e7316f.webp","yt":1,"ysec":1}}
+{"k":"eq","it":{"t":"arm","r":"comum","v":1}}
+{"k":"eq","it":{"t":"arm","r":"lend","v":7}}
+{"k":"eq","it":{"t":"arm","r":"mit","v":10,"nm":"ARMADURA SAIYAJIN","img":"a/3b14a53880ea0a.webp","ps":{"r":"comum","i":3}}}
+{"k":"eq","it":{"t":"arm","r":"mit","v":10}}
+{"k":"eq","it":{"t":"arm","r":"rara","v":4}}
+{"k":"eq","it":{"t":"arm","r":"sec","v":0,"dmg":60,"crit":45,"nm":"ARMADURA DE VIRGEM","img":"a/4028bd1bcdaa2b.webp","sk":1,"ysec":1,"ps":{"r":"lend","i":4}}}
+{"k":"eq","it":{"t":"arm","r":"sec","v":0,"dmg":60,"def":45,"crit":0,"nm":"MANTO DO MONARCA","img":"a/128436e45b3d81.webp","sj":1,"ysec":1,"ps":{"r":"rara","i":0}}}
+{"k":"eq","it":{"t":"arm","r":"sec","v":0,"dmg":81,"crit":61,"nm":"ARMADURA DIVINA V2","img":"a/821f811fed7245.webp","sk":1,"ysec":1,"ps":{"r":"lend","i":2},"v2":1,"skb":"skarm"}}
+{"k":"eq","it":{"t":"arm","r":"sec","v":60,"trf":10,"nm":"UNIFORME DO YUTA","img":"a/d1dc8e1ee856f7.webp","yt":1,"ysec":1,"ps":{"r":"lend","i":0}}}
+{"k":"eq","it":{"t":"arm","r":"sec","v":60,"trf":10,"nm":"UNIFORME DO YUTA","img":"a/d1dc8e1ee856f7.webp","yt":1,"ysec":1,"ps":{"r":"lend","i":2}}}
+{"k":"eq","it":{"t":"bot","r":"comum","v":1}}
+{"k":"eq","it":{"t":"bot","r":"epica","v":5}}
+{"k":"eq","it":{"t":"bot","r":"lend","v":7,"dmg":3,"nm":"BOTAS SAIYAJIN","img":"a/b38e21abea12e5.webp","boss":1}}
+{"k":"eq","it":{"t":"bot","r":"lend","v":7,"dmg":3,"nm":"BOTAS SAIYAJIN","img":"a/b38e21abea12e5.webp"}}
+{"k":"eq","it":{"t":"bot","r":"lend","v":7}}
+{"k":"eq","it":{"t":"bot","r":"mit","v":10}}
+{"k":"eq","it":{"t":"bot","r":"rara","v":4}}
+{"k":"eq","it":{"t":"bot","r":"sec","v":50,"vel":40,"dmg":0,"nm":"BOTAS DO MONARCA","img":"a/ebba7984bc3d2a.webp","sj":1,"ysec":1}}
+{"k":"eq","it":{"t":"bot","r":"sec","v":68,"dmg":54,"nm":"BOTAS DIVINAS V2","img":"a/51d56ba0cf56de.webp","sk":1,"ysec":1,"ps":{"r":"lend","i":2},"v2":1,"skb":"skbot"}}
+{"k":"eq","it":{"t":"cap","r":"comum","v":1,"crit":1}}
+{"k":"eq","it":{"t":"cap","r":"epica","v":10,"crit":15}}
+{"k":"eq","it":{"t":"cap","r":"lend","v":20,"crit":20,"nm":"BANDANA DA FOLHA","img":"a/83d90a0f92767c.webp","boss":1}}
+{"k":"eq","it":{"t":"cap","r":"mit","v":35,"crit":25,"nm":"CHAPÉU DO HOKAGE","img":"a/802e03d1457bde.webp"}}
+{"k":"eq","it":{"t":"cap","r":"mit","v":35,"crit":25}}
+{"k":"eq","it":{"t":"cap","r":"obs","v":0,"crit":20,"st":30,"def":40,"drop":30,"nm":"RIKA","img":"a/04ef3a1eff0fbf.webp","yt":1,"ysec":1,"ps":{"r":"epica","i":5}}}
+{"k":"eq","it":{"t":"cap","r":"rara","v":5,"crit":5}}
+{"k":"eq","it":{"t":"cap","r":"sec","v":0,"crit":60,"st":20,"def":90,"nm":"ELMO DE VIRGEM","img":"a/fe9d5dbf9c4059.webp","ysec":1,"ps":{"r":"comum","i":3}}}
+{"k":"eq","it":{"t":"cap","r":"sec","v":0,"def":122,"crit":81,"st":27,"nm":"ELMO DIVINO V2","img":"a/7e4fc23913f50a.webp","sk":1,"ysec":1,"ps":{"r":"epica","i":0},"v2":1,"skb":"skcap"}}
+{"k":"eq","it":{"t":"cap","r":"sec","v":0,"def":90,"crit":60,"st":20,"nm":"ELMO DE VIRGEM","img":"a/fe9d5dbf9c4059.webp","sk":1,"ysec":1,"ps":{"r":"comum","i":3}}}
+{"k":"eq","it":{"t":"esp","r":"comum","v":1}}
+{"k":"eq","it":{"t":"esp","r":"epica","v":5}}
+{"k":"eq","it":{"t":"esp","r":"mit","v":10,"vel":5,"crit":15,"nm":"ADAGA KAMISH","img":"a/17785c2642f43f.webp","boss":1,"ps":{"r":"epica","i":2}}}
+{"k":"eq","it":{"t":"esp","r":"mit","v":10,"vel":5,"crit":15,"nm":"ADAGA KAMISH","img":"a/17785c2642f43f.webp","boss":1}}
+{"k":"eq","it":{"t":"esp","r":"mit","v":10}}
+{"k":"eq","it":{"t":"esp","r":"mit","v":12,"vel":3,"dmg":3,"nm":"GUNBAI DO MADARA","img":"a/5c5ee5a0a8260a.webp","boss":1}}
+{"k":"eq","it":{"t":"esp","r":"rara","v":4}}
+{"k":"eq","it":{"t":"esp","r":"sec","v":0,"dmg":70,"crit":40,"vel":0,"nm":"ADAGAS DO MONARCA","img":"a/36b6bb47a38ebf.webp","sj":1,"ysec":1}}
+{"k":"eq","it":{"t":"esp","r":"sec","v":0,"st":95,"drop":54,"nm":"ROSÁRIO DIVINO V2","img":"a/68f3c675350cea.webp","sk":1,"ysec":1,"ps":{"r":"lend","i":0},"v2":1,"skb":"skros"}}
+{"k":"eq","it":{"t":"esp","r":"sec","v":30,"crit":10,"nm":"ESPADA DO YUTA","img":"a/5bb9d9382402bf.webp","yt":1,"ysec":1,"ps":{"r":"epica","i":4}}}
+{"k":"jn","n":100}
+{"k":"jn","n":150}
+{"k":"jn","n":1}
+{"k":"jn","n":200}
+{"k":"jn","n":2}
+{"k":"jn","n":300}
+{"k":"jn","n":500}

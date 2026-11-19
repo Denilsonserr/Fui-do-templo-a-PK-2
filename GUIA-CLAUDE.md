@@ -2469,3 +2469,8 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 
 ## v542 — código PRIMORDIALX7
 - `TWCUP['1udkvs7']` (uso único): 7 joias primordiais (`jpx:7`). Teste `tcod_pri7_v542.js`.
+
+## v543 — compra do Mercado Negro não caía no inventário
+- Causa: `twCap` (mochila > 40 pilhas) descartava na hora o item mais fraco, muitas vezes o recém-comprado (sem aviso na tela do mercado).
+- Fix (fim do rk.js): `twCap` reescrito ignorando pilhas com id `mk…` (itens do mercado); durante `mnGive` (`MNG=1`) não descarta nada; poções vindas do mercado ganham id `mk…`.
+- Ferramenta `.github/workflows/mercado.yml` lista compras/cancelamentos recentes com o item. Teste `tmercado_compra_v543.js` (usa os 97 itens reais em `mk_itens_v543.txt`, mochila vazia e cheia).

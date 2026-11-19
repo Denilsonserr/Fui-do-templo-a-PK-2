@@ -6834,3 +6834,15 @@ const mnNoSell=r=>!!r&&(r.c|0)===5&&(r.g|0)>=8;
   return L.filter(e=>{if(e.k!=='an')return true;e.ids=e.ids.filter(i=>!mnNoSell(by.get(i)));e.n=e.ids.length;return e.n>0})}catch(e){return L}}}
 {const _p=mnPost;mnPost=async function(id,f){try{if(/^mk_/.test(String(id))&&f&&f.it){const o=JSON.parse(f.it.stringValue||'null');if(o&&o.k==='an'&&mnNoSell(o.r)){rkToast('🔒 Anel DOURADO SP não pode ser vendido no Mercado Negro.','#ff8080');return {ok:false,status:403}}}}catch(e){}return _p.apply(this,arguments)}}
 try{Object.assign(window.__pvT||{},{anGive:r=>anGive(r),mnMine:()=>mnMine(),mnPost:(i,f)=>mnPost(i,f),mnNoSell:r=>mnNoSell(r)})}catch(e){}
+
+/* v543: COMPRA DO MERCADO NEGRO não caía no inventário.
+   Causa: com a mochila cheia (mais de 40 tipos de item), o jogo descarta sozinho o item mais fraco — e o item recém-comprado
+   (ex.: armadura mítica +10) era descartado na hora, sem aviso. Agora: item que veio do Mercado (comprado ou devolvido) NUNCA
+   é descartado automaticamente (id "mk…"); a mochila pode passar de 40 por causa dele. Poções do mercado ganham o mesmo selo. */
+let MNG=0;
+twCap=function(){if(MNG)return null;let S=twStacks(),out=null;while(S.length>TWBAG){const C=S.filter(x=>!(x.ev||x.uniq||x.ysec||x.sk||rkHi(x.r)||(x.ids||[x.id]).some(i=>/^mk/.test(String(i)))));if(!C.length)break;
+  const w=C.sort((a,b)=>rkItV(a)-rkItV(b))[0],ids=new Set(w.ids);if(w.k==='poc')twLS.s('tw_poc',twPocs().filter(x=>!ids.has(x.id)));else twLS.s('tw_inv',twInv().filter(x=>!ids.has(x.id)));out=w;S=twStacks()}return out};
+{const _g=mnGive;mnGive=function(o){const p0=new Set((()=>{try{return twPocs().map(x=>x.id)}catch(e){return []}})());MNG=1;let r;try{r=_g.apply(this,arguments)}finally{MNG=0}
+  try{const P=twPocs();let ch=0;for(const x of P)if(!p0.has(x.id)&&!/^mk/.test(String(x.id))){x.id='mk'+x.id;ch=1}if(ch)twLS.s('tw_poc',P)}catch(e){}
+  try{TW.capOut=null}catch(e){}return r}}
+try{Object.assign(window.__pvT||{},{mnGive:o=>mnGive(o),twCap:()=>twCap(),mkCount:()=>{let n=0;try{n+=twInv().length+twPocs().length+anL().length+(psG().jn|0)}catch(e){}return n}})}catch(e){}
