@@ -42,6 +42,10 @@ jobs:
           print('== GASTOS GRANDES DE GEMAS (act, dg>=15000) ==')
           X=[F(d) for d in rq({'from':[{'collectionId':'torre'}],'where':{'fieldFilter':{'field':{'fieldPath':'dg'},'op':'GREATER_THAN_OR_EQUAL','value':{'integerValue':'15000'}}},'limit':500})]
           for x in sorted(X,key=lambda x:x['_ct']):print(' ',x['_ct'][:19],'gastou',x.get('dg'),'conta',AM.get(x.get('act'),x.get('act')),'itens',(x.get('it') or '')[:80],'aneis',(x.get('an') or '')[:60])
+          print('== COMPRAS >=30000 (doc completo) ==')
+          for d in rq({'from':[{'collectionId':'torre'}],'where':{'fieldFilter':{'field':{'fieldPath':'mkx'},'op':'EQUAL','value':{'stringValue':'1'}}},'limit':800}):
+            x=F(d)
+            if int(x.get('preco') or 0)>=30000:print(' ',d.get('name','').split('/')[-1],json.dumps(x,ensure_ascii=False)[:400])
           now=int(time.time()*1000)
           for n in [s.strip() for s in os.environ.get('NOMES','').split(',') if s.strip()]:
             print('== LINHA DO TEMPO',n,'==');last=None
