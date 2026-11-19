@@ -1,0 +1,77 @@
+name: Suspeitas — gemas/itens fora do normal (ferramenta)
+on: workflow_dispatch
+jobs:
+  r:
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          cat > s.py <<'PY'
+          import json,urllib.request,time,hashlib
+          W='https://fui-do-templo-a-pk-2.denilsinend.workers.dev'
+          B=W+'/fs/v1/projects/furia-do-templo/databases/(default)/documents'
+          A={'User-Agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/120 Safari/537.36'}
+          def get(u):
+            for i in range(4):
+              try:return json.load(urllib.request.urlopen(urllib.request.Request(u,headers=A),timeout=60))
+              except Exception as e:print('ERR',u[:80],e);time.sleep(4)
+          def rq(q):
+            for i in range(4):
+              try:return [x['document'] for x in json.load(urllib.request.urlopen(urllib.request.Request(B+':runQuery',data=json.dumps({'structuredQuery':q}).encode(),headers=dict(A,**{'Content-Type':'application/json'})),timeout=60)) if x.get('document')]
+              except Exception as e:print('ERR q',e);time.sleep(5)
+            return []
+          def F(d):
+            o={k:(list(v.values())[0]) for k,v in (d.get('fields') or {}).items()};o['_ct']=d.get('createTime','');return o
+          def h36(s):
+            x=0x811c9dc5
+            for c in s:x^=ord(c);x=(x*16777619)&0xffffffff
+            d='0123456789abcdefghijklmnopqrstuvwxyz';r=''
+            while True:
+              r=d[x%36]+r;x//=36
+              if not x:break
+            return r
+          # 1) ranking de riqueza (rgs) — último doc por jogador
+          R=[F(d) for d in rq({'from':[{'collectionId':'torre'}],'orderBy':[{'field':{'fieldPath':'rgt'},'direction':'DESCENDING'}],'limit':800})]
+          P={}
+          for r in R:
+            k=r.get('uid') or r.get('nome')
+            if k and (k not in P or int(r.get('rgt',0))>int(P[k].get('rgt',0))):P[k]=r
+          NM={}
+          for r in P.values():
+            u=r.get('uid') or ''
+            if u:NM[h36(u)]=r.get('nome')
+          top=sorted(P.values(),key=lambda r:-int(r.get('rgem',0)))
+          print('== MAIS GEMAS (atual) ==',len(P),'jogadores')
+          for r in top[:40]:print(' ',r.get('nome'),'gemas',r.get('rgem'),'status',r.get('stot'),'dano',r.get('sdm'),'crit',r.get('scr'))
+          # 2) histórico de saves dos 30 mais ricos: pulos de gemas
+          print('== HISTÓRICO DE GEMAS (saves na nuvem) ==')
+          now=int(time.time()*1000)
+          for r in top[:30]:
+            n=str(r.get('nome') or '').lower().strip()
+            if not n:continue
+            acc=hashlib.sha256(('furia|acc|'+n).encode()).hexdigest()[:24]
+            row=[]
+            for hrs in (0,6,12,24,48,72,120):
+              s=get(W+'/fs/sv-antes?acc=%s&t=%d'%(acc,now-hrs*3600000+60000)) or {}
+              if s.get('nada') or not s.get('d'):row.append((hrs,None,None,None,None));continue
+              D=json.loads(s['d'])
+              try:an=json.loads(D.get('rk_an','[]') or '[]')
+              except:an=[]
+              try:ps=json.loads(D.get('rk_ps','{}') or '{}')
+              except:ps={}
+              row.append((hrs,D.get('rk_gem'),sum(1 for x in an if x and x.get('c')==5),ps.get('jn'),(ps.get('jp',0) or 0)+(ps.get('jd',0) or 0)))
+              time.sleep(.3)
+            print(' ',r.get('nome'),' | '.join('%dh: gem=%s dour=%s jn=%s jx=%s'%x for x in row))
+          # 3) punidos pelo anti-save (chx)
+          print('== ANTI-SAVE (chx) ==')
+          C=[F(d) for d in rq({'from':[{'collectionId':'torre'}],'where':{'fieldFilter':{'field':{'fieldPath':'chx'},'op':'GREATER_THAN','value':{'stringValue':''}}},'limit':300})]
+          for c in sorted(C,key=lambda c:c['_ct']):print(' ',c['_ct'][:19],json.dumps({k:v for k,v in c.items() if k!='_ct'},ensure_ascii=False)[:300])
+          # 4) mercado: transferências (preço 1 ou preço absurdo por item fraco)
+          print('== MERCADO ==')
+          L={F(d).get('lid'):F(d) for d in rq({'from':[{'collectionId':'torre'}],'where':{'fieldFilter':{'field':{'fieldPath':'mk'},'op':'EQUAL','value':{'stringValue':'1'}}},'limit':800})}
+          X=[F(d) for d in rq({'from':[{'collectionId':'torre'}],'where':{'fieldFilter':{'field':{'fieldPath':'mkx'},'op':'EQUAL','value':{'stringValue':'1'}}},'limit':800})]
+          for x in sorted(X,key=lambda x:x['_ct']):
+            if x.get('tipo')!='buy':continue
+            l=L.get(x.get('lid')) or {};pr=int(x.get('preco') or 0)
+            if pr>=20000 or pr<=2:print(' ',x['_ct'][:19],'preço',pr,'vendedor',NM.get(x.get('mks'),x.get('mks')),'| item',(l.get('it') or '?')[:160],'| campos',json.dumps({k:v for k,v in l.items() if k not in('it','_ct')},ensure_ascii=False)[:200])
+          PY
+          python3 s.py
