@@ -7385,3 +7385,6 @@ function luvGift(){try{if(rkG('luvG',0)||!twTits().includes('love'))return;rkS('
   setTimeout(()=>{try{rkToast('💖 PRESENTE DO ADM: +200.000 💎 para o título LOVE!','#ff5fa8')}catch(e){}},800)}catch(e){}}
 setTimeout(luvGift,8000);setInterval(luvGift,60000);
 try{Object.assign(window.__pvT||{},{luvGift:()=>luvGift()})}catch(e){}
+
+/* v580: código 30.000 💎 (uso único) */
+TWCUP['bony18']={nm:'💎 30.000 DIAMANTES',it:[],uni:1,pk:{gem:30000},msg:'✅ Você ganhou 💎 30.000 DIAMANTES!'};

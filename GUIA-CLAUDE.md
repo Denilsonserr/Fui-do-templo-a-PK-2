@@ -2703,3 +2703,6 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 ## v579 — leilão não mostrava os lances (correção)
 - No servidor de verdade a consulta `lei=='2'` dava 429 → `l2Load` voltava vazio ("Ainda sem lances") e o lance mínimo virava 50.000. Agora `l2Load` busca por `lot` (1 consulta por anel; traz os lances `lei:'2'` E a aprovação `l2ok`) com `l2Q` (fetch direto, sem a trava de 15 min do twFetchT). Falhou tudo → erro (lance recusado, settle não mexe). Worker: `qTTL('lot')` = 2 s.
 - Teste `tleilao_aneis_v579.js` (simula o 429 do `lei`).
+
+## v580 — código 30.000 💎 (uso único)
+- `TWCUP['bony18']` (`uni:1`, `pk:{gem:30000}`). Texto só com o dono. Teste `tcod_gem30_v580.js` (`COD=TEXTO`).
