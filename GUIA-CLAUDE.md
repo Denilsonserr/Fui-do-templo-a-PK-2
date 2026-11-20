@@ -2693,3 +2693,6 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 
 ## v576 — leilão: devolve NA HORA quando cobrem
 - Volta o comportamento da v572 (pedido do dono): `l2Settle` devolve os 💎 assim que alguém cobre o lance (toast "cobriram seu lance! Dê outro lance"). Settle a cada 15 s e, com a tela do leilão aberta, a cada ~5 s. O servidor ainda guarda consultas 20 s. Teste `tleilao_aneis_v576.js`.
+
+## v577 — leilão: maior lance quase ao vivo
+- Worker: `qTTL('lei')` = 2 s (antes 20 s). Assim o lance mínimo (maior + 1.000) usa o maior lance real e ninguém consegue dar lance menor que o que já está registrado; a devolução para quem foi coberto também fica mais rápida. Teste `tleilao_aneis_v577.js` (servidor local).
