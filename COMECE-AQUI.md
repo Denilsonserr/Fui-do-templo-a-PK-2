@@ -1,6 +1,6 @@
 # FÚRIA DO TEMPLO — GUIA DE PASSAGEM PARA OUTRA CONVERSA / OUTRA CONTA DO CLAUDE
 
-A versão atual é a v575.
+A versão atual é a v576.
 Atualizado em 20/11/2026. Este arquivo tem 3 partes:
 - **Parte 1** — para o dono (Denilson): como continuar em outra conversa.
 - **Parte 2** — para o Claude novo: regras, onde está tudo, servidor, como publicar, o que existe no jogo.
@@ -16,7 +16,7 @@ O histórico completo, versão por versão, está em `GUIA-CLAUDE.md` (procure p
 2. Conecte o **GitHub** e dê acesso ao repositório **Denilsonserr/Fui-do-templo-a-PK-2**.
 3. Comece uma conversa nova com esse repositório e mande esta mensagem:
 
-   > Continua o meu jogo Fúria do Templo. Repositório: Denilsonserr/Fui-do-templo-a-PK-2. Lê primeiro o COMECE-AQUI.md inteiro (e o GUIA-CLAUDE.md quando precisar de detalhe) e segue as regras dele. A versão atual é a v575.
+   > Continua o meu jogo Fúria do Templo. Repositório: Denilsonserr/Fui-do-templo-a-PK-2. Lê primeiro o COMECE-AQUI.md inteiro (e o GUIA-CLAUDE.md quando precisar de detalhe) e segue as regras dele. A versão atual é a v576.
 
 4. Depois é só pedir as coisas do mesmo jeito de sempre.
 5. **Onde fica o jogo:**
@@ -76,7 +76,7 @@ O histórico completo, versão por versão, está em `GUIA-CLAUDE.md` (procure p
   - `consulta.yml` (query livre: input `q` = structuredQuery JSON, `campos`) — o mais útil.
   - `uso.yml` (uso do servidor + erros do jogo), `status.yml`, `conta.yml` (save/anéis de uma conta), `aneishist.yml`, `mercado.yml`, `suspeita.yml`/`suspeita2.yml` (gemas/itens suspeitos, compras grandes com o nome do comprador), `torretop.yml`, `pvtop.yml`, `leilao.yml`.
 
-### O que existe no jogo hoje (v575)
+### O que existe no jogo hoje (v576)
 - **Personagens (19):** míticos Sung, Yuta, Naruto, Madara, Garou; ilimitado/secreto **Shaka** (nível 70); lendários Goku, Aokiji, Zoro, Broly, Vegeta, Gogeta, Gojo, Luffy, Rengoku; épicos Aylla, Zedry, Zaykon, Qingqing (`RK_MIT/RK_LEG/RK_EPI`, `LVMAX`: mítico 50, lendário 40, épico 30).
 - **Modos:** Ranqueada (Boss; temporada 2, XP em `rp2`), **PVP Ranqueado** (estrelas, divisões, campeões com título e bônus, `pvStep`), Torre (ranking de TEMPO; o tempo não conta travadinha/câmera lenta/animações), Caça, Desafio, **Portais** (E…S; dungeon de 10 salas: Urso na 5, Igris na 10; **portal S = RAID DAS FORMIGAS** com chefe **BERU** que se adapta à força do jogador), **Torneio do Mais Forte** (Sung imortal no lugar do boss do Yuta, 3 min, quarta 19h → sábado), Gacha, Passe de Batalha, Mercado Negro, Leilão.
 - **Sung:** Sistema do Jogador (níveis, atributos, missões), sombras **Urso (C), Igris (A), Beru (S — a mais forte, 1% no Beru)**.

@@ -15861,8 +15861,8 @@ let L2OK={};
 async function l2LoadOk(){for(const k in RKQC)if(k.includes('"l2ok'))delete RKQC[k];let A=[];try{A=await rkQ('l2ok','1',50)}catch(e){return L2OK}const O={};for(const x of A)if(x.lot&&!O[x.lot])O[x.lot]=x;L2OK=O;return O}
 const l2Esc=()=>{const o=rkG('l2E',{});return o&&typeof o==='object'?o:{}};
 async function l2Settle(){if(Date.now()<L2T0)return;const E=l2Esc();if(!Object.keys(E).length)return;const B=await l2Load(),me=twUid(),end=Date.now()>=L2T1+8000;let ch=0,msg=[];
-  for(const id in E){const e=E[id],top=B[id];if(!e||!e.v||e.win)continue; /* v575: só devolve NO FIM do leilão, para quem não ganhou */
-    if(end&&(!top||top.uid!==me)){rkAdd('gem',e.v);msg.push('💎 +'+rkFmtN(e.v)+' devolvidos (você não ganhou esse anel no leilão)');delete E[id];ch=1}
+  for(const id in E){const e=E[id],top=B[id];if(!e||!e.v||e.win)continue; /* v576: devolve NA HORA em que alguém cobre (para continuar dando lance) e no fim para quem não ganhou */
+    const lost=top&&top.uid!==me&&top.lv>e.v;if(lost||(end&&(!top||top.uid!==me))){rkAdd('gem',e.v);msg.push('💎 +'+rkFmtN(e.v)+(lost&&!end?' devolvidos: cobriram seu lance! Dê outro lance':' devolvidos (você não ganhou esse anel no leilão)'));delete E[id];ch=1}
     else if(end&&top&&top.uid===me){e.win=1;ch=1}}
   if(ch){rkS('l2E',E);try{acSave(1)}catch(e){}msg.forEach((m,i)=>setTimeout(()=>{try{rkToast(m,'#ffd84a')}catch(_){}},400+i*1800))}
   if(end&&Object.values(E).some(e=>e&&e.win))await l2Claim()}
@@ -15872,7 +15872,7 @@ async function l2Claim(){const E=l2Esc(),me=twUid(),R=rkG('l2R',{})||{};const O=
 function l2Win(got){const M=document.createElement('div');M.id='l2W';M.innerHTML=`<div class="leiP"><h3>📩 MENSAGEM DO ADM · LEILÃO</h3><p class="leiS on">🏆 PARABÉNS! O ADM APROVOU E VOCÊ RECEBEU</p>
   <div class="leiG">${got.map(L=>`<div class="leiC me"><b>${L.nm}</b><p>${L.d}</p></div>`).join('')}</div><p class="leiH">Veja em ANÉIS DA ALMA.</p><div class="row"><button class="btn main" id="l2WX">OK</button></div></div>`;
   document.body.appendChild(M);try{rkSfx('powerUp')}catch(e){}document.getElementById('l2WX').onclick=()=>M.remove()}
-setTimeout(()=>{l2Settle().catch(()=>{})},6500);setInterval(()=>{const t=Date.now();if(t>=L2T0&&t<L2T1+7*864e5)l2Settle().catch(()=>{})},45000);
+setTimeout(()=>{l2Settle().catch(()=>{})},6500);setInterval(()=>{const t=Date.now();if(t>=L2T0&&t<L2T1+7*864e5)l2Settle().catch(()=>{})},15000); /* v576: 15 s (antes 45 s) */
 async function l2Bid(id,v){const L=L2L.find(q=>q.id===id);if(!L||!l2On())return rkToast('O leilão não está aberto','#ff8080');try{await l2Load()}catch(e){};l2Draw();const top=L2B[id],need=top?top.lv+L2ST:L.min;
   if(top&&top.uid===twUid())return rkToast('Você já é o maior lance nesse anel','#9fd0ff');if(v<need)return rkToast('O lance mínimo agora é '+rkFmtN(need)+' 💎','#ff8080');
   const E=l2Esc(),old=(E[id]&&E[id].v)||0,pay=v-old;if(rkG('gem',0)<pay)return rkToast('Faltam diamantes (precisa de '+rkFmtN(pay)+' 💎)','#ff8080');
@@ -15886,7 +15886,7 @@ async function l2Aprova(id){if(!mnAdm())return;if(Date.now()<L2T1)return rkToast
   if(r.ok){const P=rkG('l2P',{})||{};if(!P[id]){P[id]=1;rkS('l2P',P);rkAdd('gem',top.lv);try{acSave(1)}catch(e){}}rkSfx('coin');rkToast('✅ APROVADO! '+(top.nome||'?')+' recebe o anel · +'+rkFmtN(top.lv)+' 💎 para você','#7dff9a')}
   else if(r.status===409)rkToast('Esse anel já foi aprovado','#9fd0ff');else return rkToast('Erro '+r.status,'#ff8080');await l2LoadOk();L2SIG={};l2Draw()}
 let L2V=0,L2SIG={};
-function l2Open(){L2V=1;l2Draw();Promise.all([l2Load(),l2LoadOk()]).then(()=>{L2SIG={};l2Draw()}).catch(()=>{});const iv=setInterval(()=>{if(!L2V||!document.getElementById('l2M')){clearInterval(iv);return}if(Date.now()-L2TL>5000)l2Load().then(l2Draw).catch(()=>{});else l2Draw()},1000)}
+function l2Open(){L2V=1;l2Draw();Promise.all([l2Load(),l2LoadOk()]).then(()=>{L2SIG={};l2Draw()}).catch(()=>{});const iv=setInterval(()=>{if(!L2V||!document.getElementById('l2M')){clearInterval(iv);return}if(Date.now()-L2TL>5000){if(Object.keys(l2Esc()).length)l2Settle().then(l2Draw).catch(()=>{});else l2Load().then(l2Draw).catch(()=>{})}else l2Draw()},1000)}
 function l2CardH(L){const B=L2B||{},tp=B[L.id],me=twUid(),E=l2Esc(),mine=tp&&tp.uid===me,nx=tp?tp.lv+L2ST:L.min,on=l2On(),end=Date.now()>=L2T1,ok=L2OK[L.id];
   let h=`<b>${L.nm}</b><small class="l2d">${L.d}</small><small>Lance inicial ${rkFmtN(L.min)} 💎 · único, não pode ser vendido</small><p>${tp?`Maior lance: <em>${rkFmtN(tp.lv)} 💎</em> · ${twEsc(tp.nome||'?')}${mine?' (VOCÊ)':''}`:'Ainda sem lances'}</p>${E[L.id]&&E[L.id].v?`<p class="leiMy">Seu lance preso: ${rkFmtN(E[L.id].v)} 💎</p>`:''}`;
   if(on&&!mine)h+=`<div class="leiBt">${[nx,nx+5000,nx+10000].map(v=>`<button class="btn ${v===nx?'main':''}" data-lb="${L.id}" data-v="${v}">${rkFmtN(v)}</button>`).join('')}</div>
@@ -15896,7 +15896,7 @@ function l2CardH(L){const B=L2B||{},tp=B[L.id],me=twUid(),E=l2Esc(),mine=tp&&tp.
   return h}
 function l2Draw(){let M=document.getElementById('l2M');const t=Date.now();
   if(!M){M=document.createElement('div');M.id='l2M';M.className='leiM2';document.body.appendChild(M);L2SIG={};
-    M.innerHTML=`<div class="leiP"><h3>⚖️ LEILÃO DOS ANÉIS LENDÁRIOS</h3><p class="leiS" id="l2S"></p><p class="leiH">Só 2 anéis, que só existem neste leilão. Ganha quem der o MAIOR lance em cada um. Os 💎 do seu lance ficam presos até o fim; se você não ganhar, eles voltam quando o leilão terminar. Para cobrir de novo, você paga só a diferença. Mínimo +${rkFmtN(L2ST)} 💎 por cima. No fim, o ADM aprova e o anel chega para quem ganhou.</p>
+    M.innerHTML=`<div class="leiP"><h3>⚖️ LEILÃO DOS ANÉIS LENDÁRIOS</h3><p class="leiS" id="l2S"></p><p class="leiH">Só 2 anéis, que só existem neste leilão. Ganha quem der o MAIOR lance em cada um. Os 💎 do seu lance ficam presos; se alguém cobrir, eles voltam NA HORA para você dar outro lance. Mínimo +${rkFmtN(L2ST)} 💎 por cima. No fim, o ADM aprova e o anel chega para quem ganhou.</p>
      <div class="leiG">${L2L.map(L=>`<div class="leiC" id="l2C_${L.id}"></div>`).join('')}</div><div class="row"><button class="btn" id="l2X">FECHAR</button><span class="leiGem" id="l2Gem"></span></div></div>`;
     M.onclick=e=>{if(e.target.id==='l2X'||e.target===M){L2V=0;M.remove();return}const ap=e.target.closest('[data-la]');if(ap&&!ap.disabled){ap.disabled=true;Promise.resolve(l2Aprova(ap.dataset.la)).finally(()=>{ap.disabled=false});return}
       const b=e.target.closest('[data-lb]');if(!b||b.disabled)return;let v=b.dataset.v;
@@ -16129,7 +16129,7 @@ window.__dbg={mus:()=>[MCUR,MEL.src.split('/').pop()],stg:()=>STAGE.key,prepMatc
 })();
 </script>
 <style>#updB{position:fixed;left:50%;top:max(8px,env(safe-area-inset-top));transform:translateX(-50%);z-index:99999;padding:10px 22px;border-radius:14px;border:2px solid #fff3c0;background:linear-gradient(#ffd84a,#e08a10);color:#3a1d00;font:900 15px system-ui,sans-serif;box-shadow:0 0 18px #ffb21f;cursor:pointer;animation:updP 1s ease-in-out infinite alternate}@keyframes updP{to{transform:translateX(-50%) scale(1.05)}}</style>
-<script>(function(){const V='a113f7467af6';if(!/^https?:/.test(location.protocol))return;let nv=null;
+<script>(function(){const V='e867146c19ad';if(!/^https?:/.test(location.protocol))return;let nv=null;
 function show(){if(document.getElementById('updB'))return;try{if(typeof G!=='undefined'&&G.mode==='fight')return}catch(e){}const b=document.createElement('button');b.id='updB';b.textContent='🔄 ATUALIZAÇÃO NOVA! Toque para atualizar';
   b.onclick=()=>{b.textContent='⏳ Atualizando...';try{acSave(1)}catch(e){}setTimeout(()=>location.reload(),900)};document.body.appendChild(b)}
 async function chk(){if(document.hidden)return;if(nv){show();return}try{const r=await fetch('versao.txt?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const t=(await r.text()).trim();if(/^[0-9a-f]{8,40}$/.test(t)&&t!==V){nv=t;show()}}catch(e){}}

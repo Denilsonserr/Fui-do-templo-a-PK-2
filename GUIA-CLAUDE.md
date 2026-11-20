@@ -2690,3 +2690,6 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - REI DA FÚRIA (`lx:'a'`): wrapper de `applyHit` — no meu lutador, ao acertar 10 golpes liga ataque ×3 por 600 quadros (10 s), 1 vez por luta (`_lxH/_lxU/_lxT` no lutador).
 - FORTUNA (`lx:'b'`): wrapper de `twAddItem` — item RARA ou melhor tem `LXDUP=30%` de vir dobrado, 1 vez por luta (`_lxD`). `lxHas(f,x)` olha os anéis do personagem da luta.
 - Testes `tleilao_aneis_v575.js` (servidor local) e `tanel_poderes_v575.js`.
+
+## v576 — leilão: devolve NA HORA quando cobrem
+- Volta o comportamento da v572 (pedido do dono): `l2Settle` devolve os 💎 assim que alguém cobre o lance (toast "cobriram seu lance! Dê outro lance"). Settle a cada 15 s e, com a tela do leilão aberta, a cada ~5 s. O servidor ainda guarda consultas 20 s. Teste `tleilao_aneis_v576.js`.
