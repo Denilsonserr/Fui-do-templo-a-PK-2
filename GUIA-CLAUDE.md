@@ -2659,3 +2659,6 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 ## v567 — código SOMBRA BERU + 2 Origem de Tudo PEGADINHA (uso único)
 - Campo novo `sbr:1` em códigos (wrapper de `twCupom`): põe 'beru' em `sjSys().sh` (+ `sjBe`). Sem Sung, a mensagem avisa que a sombra só luta com o Sung.
 - `TWCUP['pl1fi5']` (`uni:1`): `sbr:1` + `jpq:2` (2 Joias Primordiais ORIGEM DE TUDO que aparecem no status mas não funcionam na luta/drop). Texto só com o dono. Teste `tcod_beru_v567.js` (`COD=TEXTO`).
+
+## v568 — Vini 4x em tudo (40 min)
+- `VN40` 20/11 15:45→16:25 Brasília, só `vnOn()`: `vn40Apply` (entrada tag vn40 no RKEVX: XP ×4 do base, gem ×4, luck ×4, anel ×4), wrapper `rkDropK` ×4 (drops e portais), wrapper `pvStep` (estrelas ×4). Teste `tvini40_v568.js`.
