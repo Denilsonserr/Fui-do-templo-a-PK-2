@@ -230,7 +230,7 @@ const RKEVX=[/* v406: sexta-feira 13 até 00:00 (por cima do 2x XP de rank) */[D
   [Date.UTC(2026,10,12,19,30),Date.UTC(2026,10,16,2,59),2,'2x XP DE RANK']];
 const rkEvX=()=>{const t=Date.now();return RKEVX.find(e=>t>=e[0]&&t<e[1])||null};
 const rkAdm2=()=>{try{return twIsAdm()?2:1}catch(e){return 1}};
-const rkEvG=()=>((e=>(e&&e[4]&&e[4].gem)||1)(rkEvX()))*rkAdm2(),rkEvL=()=>((e=>(e&&e[4]&&e[4].luck)||1)(rkEvX()))+rkAdm2()-1,rkEvD=()=>((e=>(e&&e[4]&&e[4].drop)||1)(rkEvX()))+rkAdm2()-1; /* v344: somado (evento 3x = +200%, título ADM 2x = +100%) */
+const rkEvG=()=>((e=>(e&&e[4]&&e[4].gem)||1)(rkEvX()))*rkAdm2()*(typeof lxGemK==='function'?lxGemK():1),rkEvL=()=>((e=>(e&&e[4]&&e[4].luck)||1)(rkEvX()))+rkAdm2()-1,rkEvD=()=>((e=>(e&&e[4]&&e[4].drop)||1)(rkEvX()))+rkAdm2()-1; /* v344: somado (evento 3x = +200%, título ADM 2x = +100%) */
 const rkEvTxt=()=>'';const rkEvTxt0=()=>{const e=rkEvX();if(!e)return '';const m=Math.max(0,Math.round((e[1]-Date.now())/60000));return `<div class="rkEvX">🔥 EVENTO <b>${e[3]}</b> NA RANQUEADA! · termina em ${m>=60?Math.floor(m/60)+'h'+String(m%60).padStart(2,'0'):m+' min'}</div>`};
 let R_SRV=0;
 function rkAfter(w){G.mode='ranked';$('controls').hidden=true;$('pauseBtn').hidden=true;rainSound(0);G.paused=false;G.diff=RKB.diff0;
@@ -7278,13 +7278,14 @@ try{Object.assign(window.__pvT||{},{pb5On:()=>pb5On(),spM:f=>speedMul(f)})}catch
 /* ================= v572: LEILÃO DOS ANÉIS — 20/11 20:00 → 21:00 (Brasília). 2 anéis únicos (só existem no leilão, não vendem: dourado SP = mnNoSell).
    Lance inicial 50.000 💎 cada, ganha o maior lance. 💎 do lance ficam presos; coberto = volta. No fim o ADM APROVA cada anel (doc l2ok_<lote>):
    aí o vencedor recebe o anel (mensagem) e o ADM recebe os 💎 do lance vencedor. Lances = docs l2_* {lei:'2',lot,lv,t}. ================= */
-const LXR={a:{nm:'ANEL DO LEILÃO · REI DA FÚRIA',s:'dano',s2:'crit',p:'fur',ex:{vel:150,uv:150},tx:'+150% 💨 Velocidade · +150% ✨ Vel. Ultimate'},
-  b:{nm:'ANEL DO LEILÃO · DEUSA DA FORTUNA',s:'st',s2:'drop',p:'vamp',ex:{dano:200,crit:100,vel:100,uv:100},tx:'+200% ⚔️ Dano · +100% 🎯 Crítico · +100% 💨 Velocidade · +100% ✨ Vel. Ultimate'}};
+/* v574: pedido do dono — REI DA FÚRIA = 1000% em 3 status (dano, crítico e VELOCIDADE); FORTUNA = 1000 sorte + 1000% drop + 💎 +20% nos diamantes do farm. */
+const LXR={a:{nm:'ANEL DO LEILÃO · REI DA FÚRIA',s:'dano',s2:'crit',s3:'vel',p:'fur',ex:{},tx:'💨 Velocidade +1000%'},
+  b:{nm:'ANEL DO LEILÃO · DEUSA DA FORTUNA',s:'st',s2:'drop',p:'vamp',ex:{},gem:.2,tx:'💎 +20% de diamantes no farm'}};
 const L2T0=Date.UTC(2026,10,20,23,0),L2T1=Date.UTC(2026,10,21,0,0),L2ST=1000;
-const L2L=[{id:'lxa',x:'a',min:50000,nm:'💍 '+LXR.a.nm,d:'⚔️ +1000% DANO · 🎯 +1000% CRÍTICO · 🔥 Fúria · '+LXR.a.tx},{id:'lxb',x:'b',min:50000,nm:'💍 '+LXR.b.nm,d:'🍀 +1000% SORTE · 🎁 +1000% DROP · 🩸 Vampiro · '+LXR.b.tx}];
+const L2L=[{id:'lxa',x:'a',min:50000,nm:'💍 '+LXR.a.nm,d:'⚔️ +1000% DANO · 🎯 +1000% CRÍTICO · 💨 +1000% VELOCIDADE · 🔥 Fúria'},{id:'lxb',x:'b',min:50000,nm:'💍 '+LXR.b.nm,d:'🍀 +1000% SORTE · 🎁 +1000% DROP · 💎 +20% DIAMANTES no farm · 🩸 Vampiro'}];
 /* status do anel: 2º status cheio (os outros dourados dão metade) + efeitos especiais */
 {const _s=anSum;anSum=function(id){const o=_s.apply(this,arguments);try{if(typeof tnUxOn==='function'&&tnUxOn())return o;const L=anL();for(const i of anEq(id)){if(!i)continue;const r=L.find(x=>x.i===i);if(!r||!r.lx||!LXR[r.lx])continue;
-  const v=anV(r),f=v/(r.v||1);if(r.s2&&o[r.s2]!=null)o[r.s2]+=v*.5;const E=LXR[r.lx].ex;for(const k in E)if(o[k]!=null)o[k]+=E[k]*f}for(const k in o)if(typeof o[k]==='number')o[k]=Math.round(o[k]*10)/10}catch(e){}return o}}
+  const v=anV(r),f=v/(r.v||1);if(r.s2&&o[r.s2]!=null)o[r.s2]+=v*.5;const s3=LXR[r.lx].s3;if(s3&&o[s3]!=null)o[s3]+=v;const E=LXR[r.lx].ex;for(const k in E)if(o[k]!=null)o[k]+=E[k]*f}for(const k in o)if(typeof o[k]==='number')o[k]=Math.round(o[k]*10)/10}catch(e){}return o}}
 {const _c=anCard;anCard=function(r){const h=_c.apply(this,arguments);try{if(r&&r.lx&&LXR[r.lx])return h.replace(/<b>ANEL [^<·]*·/,'<b>⚖️ '+LXR[r.lx].nm+' ·')}catch(e){}return h}}
 function l2Give(L){const X=LXR[L.x];return anGive({i:Date.now().toString(36)+'lx'+Math.random().toString(36).slice(2,6),c:5,g:8,s:X.s,s2:X.s2,p:X.p,a:1e7,v:1000,l:ANMX[5],lx:L.x})}
 const l2On=()=>{const t=Date.now();return t>=L2T0&&t<L2T1};
@@ -7356,3 +7357,7 @@ try{Object.assign(window.__pvT||{},{l2:{open:()=>l2Open(),bid:(i,v)=>l2Bid(i,v),
 
 /* v573: código 220.000 💎 (uso único) */
 TWCUP['1vgo0kh']={nm:'💎 220.000 DIAMANTES',it:[],uni:1,pk:{gem:220000},msg:'✅ Você ganhou 💎 220.000 DIAMANTES!'};
+
+/* v574: 💎 +20% no farm com o anel FORTUNA equipado no personagem escolhido (entra no rkEvG = multiplicador de diamantes das lutas). */
+function lxGemK(){try{const id=rkG('sel','goku'),L=anL();let k=1;for(const i of anEq(id)){if(!i)continue;const r=L.find(x=>x.i===i);if(r&&r.lx&&LXR[r.lx]&&LXR[r.lx].gem)k+=LXR[r.lx].gem}return k}catch(e){return 1}}
+try{Object.assign(window.__pvT||{},{lxGemK:()=>lxGemK()})}catch(e){}

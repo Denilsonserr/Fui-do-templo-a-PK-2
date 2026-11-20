@@ -2680,3 +2680,7 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 
 ## v573 — código 220.000 💎 (uso único)
 - `TWCUP['1vgo0kh']` (`uni:1`, `pk:{gem:220000}`). Texto só com o dono. Teste `tcod_gem220_v573.js` (`COD=TEXTO`).
+
+## v574 — anéis do leilão: 3º status e bônus de diamantes
+- `LXR.a` (REI DA FÚRIA): dano + crit + `s3:'vel'`, todos 1000% (sem os extras da v572). `LXR.b` (FORTUNA): sorte 1000 + drop 1000 + `gem:.2`.
+- `rkEvG` (multiplicador de 💎 das lutas) × `lxGemK()` (1 + 0,2 se o anel FORTUNA estiver no personagem escolhido `rk_sel`). Teste `tleilao_aneis_v574.js`.
