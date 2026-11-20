@@ -15807,6 +15807,23 @@ setTimeout(vn40Apply,1700);setInterval(vn40Apply,20000);
   if(o.t>o.bt||o.t===o.bt&&o.d>o.bd){o.bt=o.t;o.bd=o.d}r.gain+=x;r.up=o.t>r.b.t||o.t===r.b.t&&o.d>r.b.d}}catch(e){}return r}}
 try{Object.assign(window.__pvT||{},{vn40Apply:()=>vn40Apply(),dropK:()=>rkDropK()})}catch(e){}
 
+/* v570: BERU — chance de extrair sobe de 1% para 3%; e os 2 PRIMEIROS do servidor que derrotarem o Beru no portal S depois de 20/11 17:20 (Brasília)
+   pegam a sombra GARANTIDA (vaga no servidor: docs berup_1 / berup_2, 409 = vaga já tomada). Só conta quem tem o Sung e ainda não tem o Beru; o ADM não ocupa vaga. */
+const BECH2=3,BEG0=Date.UTC(2026,10,20,20,20);
+function beGive(n){const o=sjSys();if(o.sh.includes('beru'))return;o.sh.push('beru');sjSave(o);rkS('sjBe',1);try{acSave(1)}catch(e){}
+  if(n)banner('VOCÊ É O Nº '+n+' DO SERVIDOR!','#ffe08a',130,'Beru garantido para os 2 primeiros');setTimeout(()=>pnShWin('beru'),n?2600:1400)}
+async function beClaim(){const nm=String(twLS.g('tw_nome','')||'?').slice(0,16),IV=v=>({integerValue:String(v)});
+  for(let n=1;n<=2;n++){let r;try{r=await twFetchT(TWURL+'/torre?documentId=berup_'+n+'&key='+TWFB.apiKey,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({fields:{nome:{stringValue:nm},andar:IV(0),tempo:IV(0),uid:{stringValue:twUid()},berup:{stringValue:String(n)},v:IV(570)}})})}catch(e){return 0}
+    if(r.ok)return n;if(r.status!==409&&r.status!==403)return 0}return 0}
+{const _pb=pnBossReward;pnBossReward=function(d){if(!(d&&d.pn&&d.pn.k==='be'))return _pb.apply(this,arguments);const o=sjSys();
+  if(o.sh.includes('beru')){banner('BERU FOI DERROTADO!','#d6a8ff',100,'você já tem a sombra dele');return}
+  if(!sjOwned()){if(Math.random()*100<BECH2)banner('A SOMBRA DE BERU SE MEXEU...','#b06bff',110,'mas só o SUNG pode extrair sombras');else banner('BERU FOI DERROTADO!','#d6a8ff',110,'a sombra não respondeu ('+BECH2+'% de chance)');return}
+  const roll=()=>{if(Math.random()*100<BECH2)beGive(0);else banner('BERU FOI DERROTADO!','#d6a8ff',110,'a sombra não respondeu ('+BECH2+'% de chance)')};
+  let adm=0;try{adm=mnAdm()}catch(e){}
+  if(Date.now()>=BEG0&&!adm){beClaim().then(n=>{if(n)beGive(n);else roll()}).catch(()=>roll());return}
+  roll()}}
+try{Object.assign(window.__pvT||{},{beReward:()=>pnBossReward({pn:{k:'be'}}),beClaim:()=>beClaim()})}catch(e){}
+
 function twTrofList(){const tc=twLS.g('tw_tc',{}),run={};for(const t of TW.tr)run[t.k]=(run[t.k]||0)+1;
   twModal(`<div class="twM"><h3>🎖️ TROFÉUS</h3><div class="twTL">${Object.keys(TWTR).map(k=>{const T=TWTR[k];return `<div class="${tc[k]||run[k]?'got':''}"><i>${T.i}</i><b>${T.n}</b><span>${T.d}</span><em>+${T.p} 🏆</em><small>${run[k]?'nesta subida: '+run[k]+' · ':''}total: ${(tc[k]||0)}</small></div>`}).join('')}</div>
     <p class="twH">Cada troféu soma pontos 🏆 no ranking. Quem sobe mais andares fica na frente; empate = mais troféus, depois menos tempo.</p><div class="row"><button class="btn" id="twTx">FECHAR</button></div></div>`);
@@ -15998,7 +16015,7 @@ window.__dbg={mus:()=>[MCUR,MEL.src.split('/').pop()],stg:()=>STAGE.key,prepMatc
 })();
 </script>
 <style>#updB{position:fixed;left:50%;top:max(8px,env(safe-area-inset-top));transform:translateX(-50%);z-index:99999;padding:10px 22px;border-radius:14px;border:2px solid #fff3c0;background:linear-gradient(#ffd84a,#e08a10);color:#3a1d00;font:900 15px system-ui,sans-serif;box-shadow:0 0 18px #ffb21f;cursor:pointer;animation:updP 1s ease-in-out infinite alternate}@keyframes updP{to{transform:translateX(-50%) scale(1.05)}}</style>
-<script>(function(){const V='6fbddf4cf4e4';if(!/^https?:/.test(location.protocol))return;let nv=null;
+<script>(function(){const V='5d57762ad42b';if(!/^https?:/.test(location.protocol))return;let nv=null;
 function show(){if(document.getElementById('updB'))return;try{if(typeof G!=='undefined'&&G.mode==='fight')return}catch(e){}const b=document.createElement('button');b.id='updB';b.textContent='🔄 ATUALIZAÇÃO NOVA! Toque para atualizar';
   b.onclick=()=>{b.textContent='⏳ Atualizando...';try{acSave(1)}catch(e){}setTimeout(()=>location.reload(),900)};document.body.appendChild(b)}
 async function chk(){if(document.hidden)return;if(nv){show();return}try{const r=await fetch('versao.txt?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const t=(await r.text()).trim();if(/^[0-9a-f]{8,40}$/.test(t)&&t!==V){nv=t;show()}}catch(e){}}

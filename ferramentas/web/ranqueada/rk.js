@@ -7242,3 +7242,20 @@ setTimeout(vn40Apply,1700);setInterval(vn40Apply,20000);
 {const _s=pvStep;pvStep=function(o,won){const r=_s.apply(this,arguments);try{if(won&&r&&r.gain>0&&vn40On()){const x=r.gain*3;for(let i=0;i<x;i++){if(o.t>=PVDIV){o.s++;continue}o.s++;if(o.s>=pvNeed(o.t)){o.s=0;if(o.d<2)o.d++;else{o.t++;o.d=0}}}
   if(o.t>o.bt||o.t===o.bt&&o.d>o.bd){o.bt=o.t;o.bd=o.d}r.gain+=x;r.up=o.t>r.b.t||o.t===r.b.t&&o.d>r.b.d}}catch(e){}return r}}
 try{Object.assign(window.__pvT||{},{vn40Apply:()=>vn40Apply(),dropK:()=>rkDropK()})}catch(e){}
+
+/* v570: BERU — chance de extrair sobe de 1% para 3%; e os 2 PRIMEIROS do servidor que derrotarem o Beru no portal S depois de 20/11 17:20 (Brasília)
+   pegam a sombra GARANTIDA (vaga no servidor: docs berup_1 / berup_2, 409 = vaga já tomada). Só conta quem tem o Sung e ainda não tem o Beru; o ADM não ocupa vaga. */
+const BECH2=3,BEG0=Date.UTC(2026,10,20,20,20);
+function beGive(n){const o=sjSys();if(o.sh.includes('beru'))return;o.sh.push('beru');sjSave(o);rkS('sjBe',1);try{acSave(1)}catch(e){}
+  if(n)banner('VOCÊ É O Nº '+n+' DO SERVIDOR!','#ffe08a',130,'Beru garantido para os 2 primeiros');setTimeout(()=>pnShWin('beru'),n?2600:1400)}
+async function beClaim(){const nm=String(twLS.g('tw_nome','')||'?').slice(0,16),IV=v=>({integerValue:String(v)});
+  for(let n=1;n<=2;n++){let r;try{r=await twFetchT(TWURL+'/torre?documentId=berup_'+n+'&key='+TWFB.apiKey,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({fields:{nome:{stringValue:nm},andar:IV(0),tempo:IV(0),uid:{stringValue:twUid()},berup:{stringValue:String(n)},v:IV(570)}})})}catch(e){return 0}
+    if(r.ok)return n;if(r.status!==409&&r.status!==403)return 0}return 0}
+{const _pb=pnBossReward;pnBossReward=function(d){if(!(d&&d.pn&&d.pn.k==='be'))return _pb.apply(this,arguments);const o=sjSys();
+  if(o.sh.includes('beru')){banner('BERU FOI DERROTADO!','#d6a8ff',100,'você já tem a sombra dele');return}
+  if(!sjOwned()){if(Math.random()*100<BECH2)banner('A SOMBRA DE BERU SE MEXEU...','#b06bff',110,'mas só o SUNG pode extrair sombras');else banner('BERU FOI DERROTADO!','#d6a8ff',110,'a sombra não respondeu ('+BECH2+'% de chance)');return}
+  const roll=()=>{if(Math.random()*100<BECH2)beGive(0);else banner('BERU FOI DERROTADO!','#d6a8ff',110,'a sombra não respondeu ('+BECH2+'% de chance)')};
+  let adm=0;try{adm=mnAdm()}catch(e){}
+  if(Date.now()>=BEG0&&!adm){beClaim().then(n=>{if(n)beGive(n);else roll()}).catch(()=>roll());return}
+  roll()}}
+try{Object.assign(window.__pvT||{},{beReward:()=>pnBossReward({pn:{k:'be'}}),beClaim:()=>beClaim()})}catch(e){}
