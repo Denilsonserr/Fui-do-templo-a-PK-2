@@ -15938,6 +15938,12 @@ function lxHas(f,x){try{const id=(f&&f.def&&f.def.id)||rkG('sel','goku'),L=anL()
   setTimeout(()=>{try{rkToast('🍀 SORTE DA FORTUNA! Item '+R.n+' DUPLICADO!','#7dff9a')}catch(e){}},1200)}}catch(e){}return r}}
 try{Object.assign(window.__pvT||{},{lxHas:(f,x)=>lxHas(f,x),addItem:(E,R)=>twAddItem(E,R),TWEQ:()=>TWEQ,TWEQR:()=>TWEQR,inv:()=>twInv(),hit:(a,d,h)=>applyHit(a,d,h)})}catch(e){}
 
+/* v578: presente do ADM — +200.000 💎 para quem tem o título LOVE (1 vez por conta: rk_luvG). */
+function luvGift(){try{if(rkG('luvG',0)||!twTits().includes('love'))return;rkS('luvG',1);rkAdd('gem',200000);try{localStorage.removeItem('ac_h');acSave(1)}catch(e){}
+  setTimeout(()=>{try{rkToast('💖 PRESENTE DO ADM: +200.000 💎 para o título LOVE!','#ff5fa8')}catch(e){}},800)}catch(e){}}
+setTimeout(luvGift,8000);setInterval(luvGift,60000);
+try{Object.assign(window.__pvT||{},{luvGift:()=>luvGift()})}catch(e){}
+
 function twTrofList(){const tc=twLS.g('tw_tc',{}),run={};for(const t of TW.tr)run[t.k]=(run[t.k]||0)+1;
   twModal(`<div class="twM"><h3>🎖️ TROFÉUS</h3><div class="twTL">${Object.keys(TWTR).map(k=>{const T=TWTR[k];return `<div class="${tc[k]||run[k]?'got':''}"><i>${T.i}</i><b>${T.n}</b><span>${T.d}</span><em>+${T.p} 🏆</em><small>${run[k]?'nesta subida: '+run[k]+' · ':''}total: ${(tc[k]||0)}</small></div>`}).join('')}</div>
     <p class="twH">Cada troféu soma pontos 🏆 no ranking. Quem sobe mais andares fica na frente; empate = mais troféus, depois menos tempo.</p><div class="row"><button class="btn" id="twTx">FECHAR</button></div></div>`);
@@ -16129,7 +16135,7 @@ window.__dbg={mus:()=>[MCUR,MEL.src.split('/').pop()],stg:()=>STAGE.key,prepMatc
 })();
 </script>
 <style>#updB{position:fixed;left:50%;top:max(8px,env(safe-area-inset-top));transform:translateX(-50%);z-index:99999;padding:10px 22px;border-radius:14px;border:2px solid #fff3c0;background:linear-gradient(#ffd84a,#e08a10);color:#3a1d00;font:900 15px system-ui,sans-serif;box-shadow:0 0 18px #ffb21f;cursor:pointer;animation:updP 1s ease-in-out infinite alternate}@keyframes updP{to{transform:translateX(-50%) scale(1.05)}}</style>
-<script>(function(){const V='e867146c19ad';if(!/^https?:/.test(location.protocol))return;let nv=null;
+<script>(function(){const V='7a1711c0f89b';if(!/^https?:/.test(location.protocol))return;let nv=null;
 function show(){if(document.getElementById('updB'))return;try{if(typeof G!=='undefined'&&G.mode==='fight')return}catch(e){}const b=document.createElement('button');b.id='updB';b.textContent='🔄 ATUALIZAÇÃO NOVA! Toque para atualizar';
   b.onclick=()=>{b.textContent='⏳ Atualizando...';try{acSave(1)}catch(e){}setTimeout(()=>location.reload(),900)};document.body.appendChild(b)}
 async function chk(){if(document.hidden)return;if(nv){show();return}try{const r=await fetch('versao.txt?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const t=(await r.text()).trim();if(/^[0-9a-f]{8,40}$/.test(t)&&t!==V){nv=t;show()}}catch(e){}}

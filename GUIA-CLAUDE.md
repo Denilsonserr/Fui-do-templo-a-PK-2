@@ -2696,3 +2696,6 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 
 ## v577 — leilão: maior lance quase ao vivo
 - Worker: `qTTL('lei')` = 2 s (antes 20 s). Assim o lance mínimo (maior + 1.000) usa o maior lance real e ninguém consegue dar lance menor que o que já está registrado; a devolução para quem foi coberto também fica mais rápida. Teste `tleilao_aneis_v577.js` (servidor local).
+
+## v578 — +200.000 💎 para o título LOVE
+- `luvGift()` (8 s depois de abrir e a cada 1 min): se `twTits()` tem 'love' e não tem `rk_luvG` → +200.000 💎, marca `rk_luvG` (1 vez por conta). Teste `tluv_gemas_v578.js`.

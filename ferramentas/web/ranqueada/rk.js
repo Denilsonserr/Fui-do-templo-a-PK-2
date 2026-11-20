@@ -7373,3 +7373,9 @@ function lxHas(f,x){try{const id=(f&&f.def&&f.def.id)||rkG('sel','goku'),L=anL()
 {const _ai=twAddItem;twAddItem=function(E,R){const r=_ai.apply(this,arguments);try{const P=G.p&&G.p[0];if(P&&!P.cpu&&!P._lxD&&R&&TWEQR.indexOf(R)>=1&&lxHas(P,'b')&&Math.random()*100<LXDUP){P._lxD=1;_ai.apply(this,arguments);
   setTimeout(()=>{try{rkToast('🍀 SORTE DA FORTUNA! Item '+R.n+' DUPLICADO!','#7dff9a')}catch(e){}},1200)}}catch(e){}return r}}
 try{Object.assign(window.__pvT||{},{lxHas:(f,x)=>lxHas(f,x),addItem:(E,R)=>twAddItem(E,R),TWEQ:()=>TWEQ,TWEQR:()=>TWEQR,inv:()=>twInv(),hit:(a,d,h)=>applyHit(a,d,h)})}catch(e){}
+
+/* v578: presente do ADM — +200.000 💎 para quem tem o título LOVE (1 vez por conta: rk_luvG). */
+function luvGift(){try{if(rkG('luvG',0)||!twTits().includes('love'))return;rkS('luvG',1);rkAdd('gem',200000);try{localStorage.removeItem('ac_h');acSave(1)}catch(e){}
+  setTimeout(()=>{try{rkToast('💖 PRESENTE DO ADM: +200.000 💎 para o título LOVE!','#ff5fa8')}catch(e){}},800)}catch(e){}}
+setTimeout(luvGift,8000);setInterval(luvGift,60000);
+try{Object.assign(window.__pvT||{},{luvGift:()=>luvGift()})}catch(e){}
