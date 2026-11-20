@@ -7281,7 +7281,7 @@ try{Object.assign(window.__pvT||{},{pb5On:()=>pb5On(),spM:f=>speedMul(f)})}catch
 /* v574: pedido do dono — REI DA FÚRIA = 1000% em 3 status (dano, crítico e VELOCIDADE); FORTUNA = 1000 sorte + 1000% drop + 💎 +20% nos diamantes do farm. */
 const LXR={a:{nm:'ANEL DO LEILÃO · REI DA FÚRIA',s:'dano',s2:'crit',s3:'vel',p:'fur',ex:{},tx:'💨 Velocidade +1000% · 💥 a cada 10 golpes: ATAQUE x3 por 10 s (1 vez por luta)'},
   b:{nm:'ANEL DO LEILÃO · DEUSA DA FORTUNA',s:'st',s2:'drop',p:'vamp',ex:{},gem:.2,tx:'💎 +20% de diamantes no farm · 🍀 chance de DUPLICAR um item raro (1 vez por luta)'}};
-const L2T0=Date.UTC(2026,10,20,23,0),L2T1=Date.UTC(2026,10,21,0,0),L2ST=1000;
+const L2T0=Date.UTC(2026,10,20,23,0),L2T1=Date.UTC(2026,10,21,0,15),L2ST=1000; /* v582: até 21:15 (Brasília) */
 const L2L=[{id:'lxa',x:'a',min:50000,nm:'💍 '+LXR.a.nm,d:'⚔️ +1000% DANO · 🎯 +1000% CRÍTICO · 💨 +1000% VELOCIDADE · 🔥 Fúria · 💥 10 golpes = ATAQUE x3 por 10 s (1x por luta)'},{id:'lxb',x:'b',min:50000,nm:'💍 '+LXR.b.nm,d:'🍀 +1000% SORTE · 🎁 +1000% DROP · 💎 +20% DIAMANTES no farm · 🍀 chance de DUPLICAR item raro (1x por luta) · 🩸 Vampiro'}];
 /* status do anel: 2º status cheio (os outros dourados dão metade) + efeitos especiais */
 {const _s=anSum;anSum=function(id){const o=_s.apply(this,arguments);try{if(typeof tnUxOn==='function'&&tnUxOn())return o;const L=anL();for(const i of anEq(id)){if(!i)continue;const r=L.find(x=>x.i===i);if(!r||!r.lx||!LXR[r.lx])continue;
