@@ -2706,3 +2706,6 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 
 ## v580 — código 30.000 💎 (uso único)
 - `TWCUP['bony18']` (`uni:1`, `pk:{gem:30000}`). Texto só com o dono. Teste `tcod_gem30_v580.js` (`COD=TEXTO`).
+
+## v581 — código 270.000 💎 (uso único)
+- `TWCUP['1oux84i']` (`uni:1`, `pk:{gem:270000}`). Texto só com o dono. Teste `tcod_gem270_v581.js` (`COD=TEXTO`).

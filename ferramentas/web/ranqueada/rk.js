@@ -7388,3 +7388,6 @@ try{Object.assign(window.__pvT||{},{luvGift:()=>luvGift()})}catch(e){}
 
 /* v580: código 30.000 💎 (uso único) */
 TWCUP['bony18']={nm:'💎 30.000 DIAMANTES',it:[],uni:1,pk:{gem:30000},msg:'✅ Você ganhou 💎 30.000 DIAMANTES!'};
+
+/* v581: código 270.000 💎 (uso único) */
+TWCUP['1oux84i']={nm:'💎 270.000 DIAMANTES',it:[],uni:1,pk:{gem:270000},msg:'✅ Você ganhou 💎 270.000 DIAMANTES!'};
