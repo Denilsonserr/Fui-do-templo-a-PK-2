@@ -2684,3 +2684,9 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 ## v574 — anéis do leilão: 3º status e bônus de diamantes
 - `LXR.a` (REI DA FÚRIA): dano + crit + `s3:'vel'`, todos 1000% (sem os extras da v572). `LXR.b` (FORTUNA): sorte 1000 + drop 1000 + `gem:.2`.
 - `rkEvG` (multiplicador de 💎 das lutas) × `lxGemK()` (1 + 0,2 se o anel FORTUNA estiver no personagem escolhido `rk_sel`). Teste `tleilao_aneis_v574.js`.
+
+## v575 — leilão devolve só no fim + poderes dos anéis do leilão
+- `l2Settle`: 💎 de quem foi coberto ficam presos até o FIM (devolve só para quem não ganhou); cobrir de novo paga só a diferença. Texto da tela atualizado.
+- REI DA FÚRIA (`lx:'a'`): wrapper de `applyHit` — no meu lutador, ao acertar 10 golpes liga ataque ×3 por 600 quadros (10 s), 1 vez por luta (`_lxH/_lxU/_lxT` no lutador).
+- FORTUNA (`lx:'b'`): wrapper de `twAddItem` — item RARA ou melhor tem `LXDUP=30%` de vir dobrado, 1 vez por luta (`_lxD`). `lxHas(f,x)` olha os anéis do personagem da luta.
+- Testes `tleilao_aneis_v575.js` (servidor local) e `tanel_poderes_v575.js`.

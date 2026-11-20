@@ -15843,10 +15843,10 @@ try{Object.assign(window.__pvT||{},{pb5On:()=>pb5On(),spM:f=>speedMul(f)})}catch
    Lance inicial 50.000 💎 cada, ganha o maior lance. 💎 do lance ficam presos; coberto = volta. No fim o ADM APROVA cada anel (doc l2ok_<lote>):
    aí o vencedor recebe o anel (mensagem) e o ADM recebe os 💎 do lance vencedor. Lances = docs l2_* {lei:'2',lot,lv,t}. ================= */
 /* v574: pedido do dono — REI DA FÚRIA = 1000% em 3 status (dano, crítico e VELOCIDADE); FORTUNA = 1000 sorte + 1000% drop + 💎 +20% nos diamantes do farm. */
-const LXR={a:{nm:'ANEL DO LEILÃO · REI DA FÚRIA',s:'dano',s2:'crit',s3:'vel',p:'fur',ex:{},tx:'💨 Velocidade +1000%'},
-  b:{nm:'ANEL DO LEILÃO · DEUSA DA FORTUNA',s:'st',s2:'drop',p:'vamp',ex:{},gem:.2,tx:'💎 +20% de diamantes no farm'}};
+const LXR={a:{nm:'ANEL DO LEILÃO · REI DA FÚRIA',s:'dano',s2:'crit',s3:'vel',p:'fur',ex:{},tx:'💨 Velocidade +1000% · 💥 a cada 10 golpes: ATAQUE x3 por 10 s (1 vez por luta)'},
+  b:{nm:'ANEL DO LEILÃO · DEUSA DA FORTUNA',s:'st',s2:'drop',p:'vamp',ex:{},gem:.2,tx:'💎 +20% de diamantes no farm · 🍀 chance de DUPLICAR um item raro (1 vez por luta)'}};
 const L2T0=Date.UTC(2026,10,20,23,0),L2T1=Date.UTC(2026,10,21,0,0),L2ST=1000;
-const L2L=[{id:'lxa',x:'a',min:50000,nm:'💍 '+LXR.a.nm,d:'⚔️ +1000% DANO · 🎯 +1000% CRÍTICO · 💨 +1000% VELOCIDADE · 🔥 Fúria'},{id:'lxb',x:'b',min:50000,nm:'💍 '+LXR.b.nm,d:'🍀 +1000% SORTE · 🎁 +1000% DROP · 💎 +20% DIAMANTES no farm · 🩸 Vampiro'}];
+const L2L=[{id:'lxa',x:'a',min:50000,nm:'💍 '+LXR.a.nm,d:'⚔️ +1000% DANO · 🎯 +1000% CRÍTICO · 💨 +1000% VELOCIDADE · 🔥 Fúria · 💥 10 golpes = ATAQUE x3 por 10 s (1x por luta)'},{id:'lxb',x:'b',min:50000,nm:'💍 '+LXR.b.nm,d:'🍀 +1000% SORTE · 🎁 +1000% DROP · 💎 +20% DIAMANTES no farm · 🍀 chance de DUPLICAR item raro (1x por luta) · 🩸 Vampiro'}];
 /* status do anel: 2º status cheio (os outros dourados dão metade) + efeitos especiais */
 {const _s=anSum;anSum=function(id){const o=_s.apply(this,arguments);try{if(typeof tnUxOn==='function'&&tnUxOn())return o;const L=anL();for(const i of anEq(id)){if(!i)continue;const r=L.find(x=>x.i===i);if(!r||!r.lx||!LXR[r.lx])continue;
   const v=anV(r),f=v/(r.v||1);if(r.s2&&o[r.s2]!=null)o[r.s2]+=v*.5;const s3=LXR[r.lx].s3;if(s3&&o[s3]!=null)o[s3]+=v;const E=LXR[r.lx].ex;for(const k in E)if(o[k]!=null)o[k]+=E[k]*f}for(const k in o)if(typeof o[k]==='number')o[k]=Math.round(o[k]*10)/10}catch(e){}return o}}
@@ -15861,8 +15861,8 @@ let L2OK={};
 async function l2LoadOk(){for(const k in RKQC)if(k.includes('"l2ok'))delete RKQC[k];let A=[];try{A=await rkQ('l2ok','1',50)}catch(e){return L2OK}const O={};for(const x of A)if(x.lot&&!O[x.lot])O[x.lot]=x;L2OK=O;return O}
 const l2Esc=()=>{const o=rkG('l2E',{});return o&&typeof o==='object'?o:{}};
 async function l2Settle(){if(Date.now()<L2T0)return;const E=l2Esc();if(!Object.keys(E).length)return;const B=await l2Load(),me=twUid(),end=Date.now()>=L2T1+8000;let ch=0,msg=[];
-  for(const id in E){const e=E[id],top=B[id];if(!e||!e.v||e.win)continue;const lost=top&&top.uid!==me&&top.lv>e.v;
-    if(lost||(end&&(!top||top.uid!==me))){rkAdd('gem',e.v);msg.push('💎 +'+rkFmtN(e.v)+' devolvidos (lance coberto no leilão)');delete E[id];ch=1}
+  for(const id in E){const e=E[id],top=B[id];if(!e||!e.v||e.win)continue; /* v575: só devolve NO FIM do leilão, para quem não ganhou */
+    if(end&&(!top||top.uid!==me)){rkAdd('gem',e.v);msg.push('💎 +'+rkFmtN(e.v)+' devolvidos (você não ganhou esse anel no leilão)');delete E[id];ch=1}
     else if(end&&top&&top.uid===me){e.win=1;ch=1}}
   if(ch){rkS('l2E',E);try{acSave(1)}catch(e){}msg.forEach((m,i)=>setTimeout(()=>{try{rkToast(m,'#ffd84a')}catch(_){}},400+i*1800))}
   if(end&&Object.values(E).some(e=>e&&e.win))await l2Claim()}
@@ -15896,7 +15896,7 @@ function l2CardH(L){const B=L2B||{},tp=B[L.id],me=twUid(),E=l2Esc(),mine=tp&&tp.
   return h}
 function l2Draw(){let M=document.getElementById('l2M');const t=Date.now();
   if(!M){M=document.createElement('div');M.id='l2M';M.className='leiM2';document.body.appendChild(M);L2SIG={};
-    M.innerHTML=`<div class="leiP"><h3>⚖️ LEILÃO DOS ANÉIS LENDÁRIOS</h3><p class="leiS" id="l2S"></p><p class="leiH">Só 2 anéis, que só existem neste leilão. Ganha quem der o MAIOR lance em cada um. Os 💎 do seu lance ficam presos; se alguém cobrir, voltam para você. Mínimo +${rkFmtN(L2ST)} 💎 por cima. No fim, o ADM aprova e o anel chega para quem ganhou.</p>
+    M.innerHTML=`<div class="leiP"><h3>⚖️ LEILÃO DOS ANÉIS LENDÁRIOS</h3><p class="leiS" id="l2S"></p><p class="leiH">Só 2 anéis, que só existem neste leilão. Ganha quem der o MAIOR lance em cada um. Os 💎 do seu lance ficam presos até o fim; se você não ganhar, eles voltam quando o leilão terminar. Para cobrir de novo, você paga só a diferença. Mínimo +${rkFmtN(L2ST)} 💎 por cima. No fim, o ADM aprova e o anel chega para quem ganhou.</p>
      <div class="leiG">${L2L.map(L=>`<div class="leiC" id="l2C_${L.id}"></div>`).join('')}</div><div class="row"><button class="btn" id="l2X">FECHAR</button><span class="leiGem" id="l2Gem"></span></div></div>`;
     M.onclick=e=>{if(e.target.id==='l2X'||e.target===M){L2V=0;M.remove();return}const ap=e.target.closest('[data-la]');if(ap&&!ap.disabled){ap.disabled=true;Promise.resolve(l2Aprova(ap.dataset.la)).finally(()=>{ap.disabled=false});return}
       const b=e.target.closest('[data-lb]');if(!b||b.disabled)return;let v=b.dataset.v;
@@ -15925,6 +15925,18 @@ TWCUP['1vgo0kh']={nm:'💎 220.000 DIAMANTES',it:[],uni:1,pk:{gem:220000},msg:'�
 /* v574: 💎 +20% no farm com o anel FORTUNA equipado no personagem escolhido (entra no rkEvG = multiplicador de diamantes das lutas). */
 function lxGemK(){try{const id=rkG('sel','goku'),L=anL();let k=1;for(const i of anEq(id)){if(!i)continue;const r=L.find(x=>x.i===i);if(r&&r.lx&&LXR[r.lx]&&LXR[r.lx].gem)k+=LXR[r.lx].gem}return k}catch(e){return 1}}
 try{Object.assign(window.__pvT||{},{lxGemK:()=>lxGemK()})}catch(e){}
+
+/* v575: poderes dos anéis do leilão.
+   REI DA FÚRIA: ao acertar 10 golpes na luta, o ataque fica x3 por 10 s (600 quadros) — 1 vez por luta.
+   FORTUNA: quando cai um item RARO ou melhor (twAddItem), 30% de chance de vir DOBRADO — 1 vez por luta. */
+const LXDUP=30;
+function lxHas(f,x){try{const id=(f&&f.def&&f.def.id)||rkG('sel','goku'),L=anL();return anEq(id).some(i=>{if(!i)return false;const r=L.find(q=>q.i===i);return r&&r.lx===x})}catch(e){return false}}
+{const _ah=applyHit;applyHit=function(a,d,h){try{const P=G.p&&G.p[0];if(P&&a===P&&!a.cpu&&d&&d!==a&&h){if(a._lxA==null)a._lxA=lxHas(a,'a');
+  if(a._lxA){if(a._lxT&&G.frame<a._lxT)h=Object.assign({},h,{dmg:(h.dmg||0)*3});
+    else if(!a._lxU){a._lxH=(a._lxH||0)+1;if(a._lxH>=10){a._lxU=1;a._lxT=G.frame+600;try{banner('💥 FÚRIA DO REI! ATAQUE x3','#ffd84a',90,'10 segundos')}catch(e){}}}}}}catch(e){}return _ah.call(this,a,d,h)}}
+{const _ai=twAddItem;twAddItem=function(E,R){const r=_ai.apply(this,arguments);try{const P=G.p&&G.p[0];if(P&&!P.cpu&&!P._lxD&&R&&TWEQR.indexOf(R)>=1&&lxHas(P,'b')&&Math.random()*100<LXDUP){P._lxD=1;_ai.apply(this,arguments);
+  setTimeout(()=>{try{rkToast('🍀 SORTE DA FORTUNA! Item '+R.n+' DUPLICADO!','#7dff9a')}catch(e){}},1200)}}catch(e){}return r}}
+try{Object.assign(window.__pvT||{},{lxHas:(f,x)=>lxHas(f,x),addItem:(E,R)=>twAddItem(E,R),TWEQ:()=>TWEQ,TWEQR:()=>TWEQR,inv:()=>twInv(),hit:(a,d,h)=>applyHit(a,d,h)})}catch(e){}
 
 function twTrofList(){const tc=twLS.g('tw_tc',{}),run={};for(const t of TW.tr)run[t.k]=(run[t.k]||0)+1;
   twModal(`<div class="twM"><h3>🎖️ TROFÉUS</h3><div class="twTL">${Object.keys(TWTR).map(k=>{const T=TWTR[k];return `<div class="${tc[k]||run[k]?'got':''}"><i>${T.i}</i><b>${T.n}</b><span>${T.d}</span><em>+${T.p} 🏆</em><small>${run[k]?'nesta subida: '+run[k]+' · ':''}total: ${(tc[k]||0)}</small></div>`}).join('')}</div>
@@ -16117,7 +16129,7 @@ window.__dbg={mus:()=>[MCUR,MEL.src.split('/').pop()],stg:()=>STAGE.key,prepMatc
 })();
 </script>
 <style>#updB{position:fixed;left:50%;top:max(8px,env(safe-area-inset-top));transform:translateX(-50%);z-index:99999;padding:10px 22px;border-radius:14px;border:2px solid #fff3c0;background:linear-gradient(#ffd84a,#e08a10);color:#3a1d00;font:900 15px system-ui,sans-serif;box-shadow:0 0 18px #ffb21f;cursor:pointer;animation:updP 1s ease-in-out infinite alternate}@keyframes updP{to{transform:translateX(-50%) scale(1.05)}}</style>
-<script>(function(){const V='5e0287b11310';if(!/^https?:/.test(location.protocol))return;let nv=null;
+<script>(function(){const V='a113f7467af6';if(!/^https?:/.test(location.protocol))return;let nv=null;
 function show(){if(document.getElementById('updB'))return;try{if(typeof G!=='undefined'&&G.mode==='fight')return}catch(e){}const b=document.createElement('button');b.id='updB';b.textContent='🔄 ATUALIZAÇÃO NOVA! Toque para atualizar';
   b.onclick=()=>{b.textContent='⏳ Atualizando...';try{acSave(1)}catch(e){}setTimeout(()=>location.reload(),900)};document.body.appendChild(b)}
 async function chk(){if(document.hidden)return;if(nv){show();return}try{const r=await fetch('versao.txt?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const t=(await r.text()).trim();if(/^[0-9a-f]{8,40}$/.test(t)&&t!==V){nv=t;show()}}catch(e){}}
