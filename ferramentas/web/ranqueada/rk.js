@@ -1811,7 +1811,7 @@ const anL=()=>rkG('an',[]),anEqAll=()=>rkG('anEq',{}),anEq=id=>{const e=(anEqAll
 const anSlots=id=>id==='sung'?Math.min(7,Math.floor(sjSys().lv/10)):Math.min(8,Math.floor(lvOf(id).lv/10)); /* v461: Sung = até 7 anéis (igual ao Shaka), pelo nível do SISTEMA */
 const anAge=r=>r.c===5?(r.a||1e6).toLocaleString('pt-BR')+' anos':r.c===3||(r.c===4&&r.a)?(r.a||25000).toLocaleString('pt-BR')+' anos':ANC[r.c][2];
 const anSt=k=>ANS.find(x=>x[0]===k)||ANS[0];
-const anTxt=r=>{const S=anSt(r.s);let t=S[1]+' +'+anV(r)+S[2];if(r.c===5&&typeof ANGP!=='undefined'){if(r.s2){const S2=anSt(r.s2);t+=' · '+S2[1]+' +'+Math.round(anV(r)*5)/10+S2[2]}if(r.p&&ANGP[r.p])t+=' · ✦ '+ANGP[r.p][0]+': '+ANGP[r.p][1]}return t}; /* v475: dourado */
+const anTxt=r=>{const S=anSt(r.s);let t=S[1]+' +'+anV(r)+S[2];if(r.c===5&&typeof ANGP!=='undefined'){if(r.s2){const S2=anSt(r.s2);t+=' · '+S2[1]+' +'+(r.lx?anV(r):Math.round(anV(r)*5)/10)+S2[2]}if(r.p&&ANGP[r.p])t+=' · ✦ '+ANGP[r.p][0]+': '+ANGP[r.p][1];if(r.lx&&typeof LXR!=='undefined'&&LXR[r.lx])t+=' · ⚖️ '+LXR[r.lx].tx}return t}; /* v475: dourado */
 function anSum(id){const o={dano:0,crit:0,vel:0,st:0,drop:0,uv:0};const L=anL(),E=anEq(id);for(const i of E){if(!i)continue;const r=L.find(x=>x.i===i);if(r)o[r.s]+=anV(r)}for(const k in o)o[k]=Math.round(o[k]*10)/10;return o}
 function anWho(r){const A=anEqAll();for(const id in A)if((A[id]||[]).includes(r.i))return id;return null}
 /* sorteio de um anel */
@@ -7274,3 +7274,82 @@ setTimeout(pb5Apply,1800);setInterval(pb5Apply,20000);
 {const _ra=rkApply;rkApply=function(){const r=_ra.apply(this,arguments);try{const p=G.p&&G.p[0];if(p&&!p.cpu&&pb5On()&&p._pb5V!==p.tdm){p.tdm=(p.tdm||1)*2;p.tcr=(p.tcr||0)*2+5;p._pb5V=p.tdm}}catch(e){}return r}}
 {const _sm=speedMul;speedMul=function(f){const r=_sm.apply(this,arguments);try{if(f&&G.p&&f===G.p[0]&&!f.cpu&&pb5On())return r*2}catch(e){}return r}}
 try{Object.assign(window.__pvT||{},{pb5On:()=>pb5On(),spM:f=>speedMul(f)})}catch(e){}
+
+/* ================= v572: LEILÃO DOS ANÉIS — 20/11 20:00 → 21:00 (Brasília). 2 anéis únicos (só existem no leilão, não vendem: dourado SP = mnNoSell).
+   Lance inicial 50.000 💎 cada, ganha o maior lance. 💎 do lance ficam presos; coberto = volta. No fim o ADM APROVA cada anel (doc l2ok_<lote>):
+   aí o vencedor recebe o anel (mensagem) e o ADM recebe os 💎 do lance vencedor. Lances = docs l2_* {lei:'2',lot,lv,t}. ================= */
+const LXR={a:{nm:'ANEL DO LEILÃO · REI DA FÚRIA',s:'dano',s2:'crit',p:'fur',ex:{vel:150,uv:150},tx:'+150% 💨 Velocidade · +150% ✨ Vel. Ultimate'},
+  b:{nm:'ANEL DO LEILÃO · DEUSA DA FORTUNA',s:'st',s2:'drop',p:'vamp',ex:{dano:200,crit:100,vel:100,uv:100},tx:'+200% ⚔️ Dano · +100% 🎯 Crítico · +100% 💨 Velocidade · +100% ✨ Vel. Ultimate'}};
+const L2T0=Date.UTC(2026,10,20,23,0),L2T1=Date.UTC(2026,10,21,0,0),L2ST=1000;
+const L2L=[{id:'lxa',x:'a',min:50000,nm:'💍 '+LXR.a.nm,d:'⚔️ +1000% DANO · 🎯 +1000% CRÍTICO · 🔥 Fúria · '+LXR.a.tx},{id:'lxb',x:'b',min:50000,nm:'💍 '+LXR.b.nm,d:'🍀 +1000% SORTE · 🎁 +1000% DROP · 🩸 Vampiro · '+LXR.b.tx}];
+/* status do anel: 2º status cheio (os outros dourados dão metade) + efeitos especiais */
+{const _s=anSum;anSum=function(id){const o=_s.apply(this,arguments);try{if(typeof tnUxOn==='function'&&tnUxOn())return o;const L=anL();for(const i of anEq(id)){if(!i)continue;const r=L.find(x=>x.i===i);if(!r||!r.lx||!LXR[r.lx])continue;
+  const v=anV(r),f=v/(r.v||1);if(r.s2&&o[r.s2]!=null)o[r.s2]+=v*.5;const E=LXR[r.lx].ex;for(const k in E)if(o[k]!=null)o[k]+=E[k]*f}for(const k in o)if(typeof o[k]==='number')o[k]=Math.round(o[k]*10)/10}catch(e){}return o}}
+{const _c=anCard;anCard=function(r){const h=_c.apply(this,arguments);try{if(r&&r.lx&&LXR[r.lx])return h.replace(/<b>ANEL [^<·]*·/,'<b>⚖️ '+LXR[r.lx].nm+' ·')}catch(e){}return h}}
+function l2Give(L){const X=LXR[L.x];return anGive({i:Date.now().toString(36)+'lx'+Math.random().toString(36).slice(2,6),c:5,g:8,s:X.s,s2:X.s2,p:X.p,a:1e7,v:1000,l:ANMX[5],lx:L.x})}
+const l2On=()=>{const t=Date.now();return t>=L2T0&&t<L2T1};
+let L2B=null,L2TL=0;
+async function l2Load(){for(const k in RKQC)if(k.includes('"lei'))delete RKQC[k];let A=[];try{A=await rkQ('lei','2',3000)}catch(e){}const B={};
+  for(const x of A){const lv=+x.lv|0,t=+x.t||0;if(!x.lot||!lv||t>L2T1+5000)continue;const L=L2L.find(q=>q.id===x.lot);if(!L||lv<L.min)continue;const c=B[x.lot];if(!c||lv>c.lv||(lv===c.lv&&t<c.t))B[x.lot]={lv,uid:x.uid,nome:x.nome,t}}
+  L2B=B;L2TL=Date.now();return B}
+let L2OK={};
+async function l2LoadOk(){for(const k in RKQC)if(k.includes('"l2ok'))delete RKQC[k];let A=[];try{A=await rkQ('l2ok','1',50)}catch(e){return L2OK}const O={};for(const x of A)if(x.lot&&!O[x.lot])O[x.lot]=x;L2OK=O;return O}
+const l2Esc=()=>{const o=rkG('l2E',{});return o&&typeof o==='object'?o:{}};
+async function l2Settle(){if(Date.now()<L2T0)return;const E=l2Esc();if(!Object.keys(E).length)return;const B=await l2Load(),me=twUid(),end=Date.now()>=L2T1+8000;let ch=0,msg=[];
+  for(const id in E){const e=E[id],top=B[id];if(!e||!e.v||e.win)continue;const lost=top&&top.uid!==me&&top.lv>e.v;
+    if(lost||(end&&(!top||top.uid!==me))){rkAdd('gem',e.v);msg.push('💎 +'+rkFmtN(e.v)+' devolvidos (lance coberto no leilão)');delete E[id];ch=1}
+    else if(end&&top&&top.uid===me){e.win=1;ch=1}}
+  if(ch){rkS('l2E',E);try{acSave(1)}catch(e){}msg.forEach((m,i)=>setTimeout(()=>{try{rkToast(m,'#ffd84a')}catch(_){}},400+i*1800))}
+  if(end&&Object.values(E).some(e=>e&&e.win))await l2Claim()}
+async function l2Claim(){const E=l2Esc(),me=twUid(),R=rkG('l2R',{})||{};const O=await l2LoadOk();const got=[];
+  for(const L of L2L){const e=E[L.id],ok=O[L.id];if(!e||!e.win||R[L.id]||!ok||ok.wu!==me)continue;l2Give(L);R[L.id]=1;delete E[L.id];got.push(L)}
+  if(got.length){rkS('l2R',R);rkS('l2E',E);try{localStorage.removeItem('ac_h');acSave(1)}catch(e){}l2Win(got)}}
+function l2Win(got){const M=document.createElement('div');M.id='l2W';M.innerHTML=`<div class="leiP"><h3>📩 MENSAGEM DO ADM · LEILÃO</h3><p class="leiS on">🏆 PARABÉNS! O ADM APROVOU E VOCÊ RECEBEU</p>
+  <div class="leiG">${got.map(L=>`<div class="leiC me"><b>${L.nm}</b><p>${L.d}</p></div>`).join('')}</div><p class="leiH">Veja em ANÉIS DA ALMA.</p><div class="row"><button class="btn main" id="l2WX">OK</button></div></div>`;
+  document.body.appendChild(M);try{rkSfx('powerUp')}catch(e){}document.getElementById('l2WX').onclick=()=>M.remove()}
+setTimeout(()=>{l2Settle().catch(()=>{})},6500);setInterval(()=>{const t=Date.now();if(t>=L2T0&&t<L2T1+7*864e5)l2Settle().catch(()=>{})},45000);
+async function l2Bid(id,v){const L=L2L.find(q=>q.id===id);if(!L||!l2On())return rkToast('O leilão não está aberto','#ff8080');try{await l2Load()}catch(e){};l2Draw();const top=L2B[id],need=top?top.lv+L2ST:L.min;
+  if(top&&top.uid===twUid())return rkToast('Você já é o maior lance nesse anel','#9fd0ff');if(v<need)return rkToast('O lance mínimo agora é '+rkFmtN(need)+' 💎','#ff8080');
+  const E=l2Esc(),old=(E[id]&&E[id].v)||0,pay=v-old;if(rkG('gem',0)<pay)return rkToast('Faltam diamantes (precisa de '+rkFmtN(pay)+' 💎)','#ff8080');
+  rkAdd('gem',-pay);E[id]={v};rkS('l2E',E);try{acSave(1)}catch(e){}
+  try{const r=await mnPost('l2_'+id+'_'+String(twUid()).replace(/[^\w-]/g,'').slice(0,30)+'_'+Date.now().toString(36),{lei:mnSV('2'),lot:mnSV(id),lv:mnIV(v),t:mnIV(Date.now())});if(!r.ok)throw 0}
+  catch(e){rkAdd('gem',pay);if(old)E[id]={v:old};else delete E[id];rkS('l2E',E);return rkToast('Sem internet: lance não enviado','#ff8080')}
+  rkSfx('coin');rkToast('⚖️ Lance de '+rkFmtN(v)+' 💎 enviado!','#7dff9a');L2B=Object.assign({},L2B||{},{[id]:{lv:v,uid:twUid(),nome:String(twLS.g('tw_nome','')||'?').slice(0,16),t:Date.now()}});l2Draw();setTimeout(()=>l2Load().then(l2Draw).catch(()=>{}),1500)}
+/* ADM: aprova e entrega (só depois do fim). O ADM recebe os 💎 do lance vencedor. */
+async function l2Aprova(id){if(!mnAdm())return;if(Date.now()<L2T1)return rkToast('Só depois que o leilão terminar','#ff8080');const B=await l2Load(),top=B[id];if(!top)return rkToast('Esse anel não teve lance','#ff8080');
+  let r;try{r=await mnPost('l2ok_'+id,{l2ok:mnSV('1'),lot:mnSV(id),wu:mnSV(top.uid),wn:mnSV(top.nome||'?'),lv:mnIV(top.lv)})}catch(e){return rkToast('Sem internet','#ff8080')}
+  if(r.ok){const P=rkG('l2P',{})||{};if(!P[id]){P[id]=1;rkS('l2P',P);rkAdd('gem',top.lv);try{acSave(1)}catch(e){}}rkSfx('coin');rkToast('✅ APROVADO! '+(top.nome||'?')+' recebe o anel · +'+rkFmtN(top.lv)+' 💎 para você','#7dff9a')}
+  else if(r.status===409)rkToast('Esse anel já foi aprovado','#9fd0ff');else return rkToast('Erro '+r.status,'#ff8080');await l2LoadOk();L2SIG={};l2Draw()}
+let L2V=0,L2SIG={};
+function l2Open(){L2V=1;l2Draw();Promise.all([l2Load(),l2LoadOk()]).then(()=>{L2SIG={};l2Draw()}).catch(()=>{});const iv=setInterval(()=>{if(!L2V||!document.getElementById('l2M')){clearInterval(iv);return}if(Date.now()-L2TL>5000)l2Load().then(l2Draw).catch(()=>{});else l2Draw()},1000)}
+function l2CardH(L){const B=L2B||{},tp=B[L.id],me=twUid(),E=l2Esc(),mine=tp&&tp.uid===me,nx=tp?tp.lv+L2ST:L.min,on=l2On(),end=Date.now()>=L2T1,ok=L2OK[L.id];
+  let h=`<b>${L.nm}</b><small class="l2d">${L.d}</small><small>Lance inicial ${rkFmtN(L.min)} 💎 · único, não pode ser vendido</small><p>${tp?`Maior lance: <em>${rkFmtN(tp.lv)} 💎</em> · ${twEsc(tp.nome||'?')}${mine?' (VOCÊ)':''}`:'Ainda sem lances'}</p>${E[L.id]&&E[L.id].v?`<p class="leiMy">Seu lance preso: ${rkFmtN(E[L.id].v)} 💎</p>`:''}`;
+  if(on&&!mine)h+=`<div class="leiBt">${[nx,nx+5000,nx+10000].map(v=>`<button class="btn ${v===nx?'main':''}" data-lb="${L.id}" data-v="${v}">${rkFmtN(v)}</button>`).join('')}</div>
+   <div class="leiIn"><input type="number" inputmode="numeric" min="${nx}" step="1000" placeholder="outro valor (mín. ${rkFmtN(nx)})" data-li="${L.id}"><button class="btn" data-lb="${L.id}" data-v="in">DAR LANCE</button></div>`;
+  else if(mine&&on)h+='<p class="leiWin">🏆 Você está ganhando este anel</p>';
+  if(end&&tp)h+=ok?`<p class="leiWin">✅ APROVADO PELO ADM · entregue para ${twEsc(ok.wn||tp.nome||'?')}</p>`:mnAdm()?`<button class="btn main l2ap" data-la="${L.id}">✅ APROVAR E ENTREGAR</button>`:mine?'<p class="leiWin">🏆 Você ganhou! Esperando o ADM aprovar para receber.</p>':'<p class="leiMy">⏳ Esperando o ADM aprovar</p>';
+  return h}
+function l2Draw(){let M=document.getElementById('l2M');const t=Date.now();
+  if(!M){M=document.createElement('div');M.id='l2M';M.className='leiM2';document.body.appendChild(M);L2SIG={};
+    M.innerHTML=`<div class="leiP"><h3>⚖️ LEILÃO DOS ANÉIS LENDÁRIOS</h3><p class="leiS" id="l2S"></p><p class="leiH">Só 2 anéis, que só existem neste leilão. Ganha quem der o MAIOR lance em cada um. Os 💎 do seu lance ficam presos; se alguém cobrir, voltam para você. Mínimo +${rkFmtN(L2ST)} 💎 por cima. No fim, o ADM aprova e o anel chega para quem ganhou.</p>
+     <div class="leiG">${L2L.map(L=>`<div class="leiC" id="l2C_${L.id}"></div>`).join('')}</div><div class="row"><button class="btn" id="l2X">FECHAR</button><span class="leiGem" id="l2Gem"></span></div></div>`;
+    M.onclick=e=>{if(e.target.id==='l2X'||e.target===M){L2V=0;M.remove();return}const ap=e.target.closest('[data-la]');if(ap&&!ap.disabled){ap.disabled=true;Promise.resolve(l2Aprova(ap.dataset.la)).finally(()=>{ap.disabled=false});return}
+      const b=e.target.closest('[data-lb]');if(!b||b.disabled)return;let v=b.dataset.v;
+      if(v==='in'){const I=M.querySelector('input[data-li="'+b.dataset.lb+'"]');v=I?I.value:'';if(!v){rkToast('Digite quantos diamantes','#ff8080');return}}
+      b.disabled=true;Promise.resolve(l2Bid(b.dataset.lb,parseInt(String(v).replace(/\D/g,''),10)||0)).finally(()=>{b.disabled=false})}}
+  const S=document.getElementById('l2S');if(S){S.textContent=t<L2T0?'ABRE ÀS 20:00 (BRASÍLIA) · faltam '+rkTmS(L2T0-t):t<L2T1?'🔴 AO VIVO · TERMINA EM '+rkTmS(L2T1-t):'ENCERRADO';S.className='leiS'+(l2On()?' on':'')}
+  const Gm=document.getElementById('l2Gem');if(Gm)Gm.textContent='Você tem '+rkFmtN(rkG('gem',0))+' 💎';
+  const B=L2B||{},me=twUid(),E=l2Esc(),on=l2On(),end=t>=L2T1;
+  for(const L of L2L){const tp=B[L.id],ok=L2OK[L.id],sig=[tp?tp.lv:0,tp?tp.uid:'',(E[L.id]&&E[L.id].v)||0,on,end,ok?1:0].join('|');if(L2SIG[L.id]===sig)continue;const C=document.getElementById('l2C_'+L.id);if(!C)continue;
+    const foc=document.activeElement&&document.activeElement.dataset&&document.activeElement.dataset.li===L.id;if(foc)continue;
+    L2SIG[L.id]=sig;C.className='leiC'+(tp&&tp.uid===me?' me':'');C.innerHTML=l2CardH(L)}}
+{const _mh=mnH;mnH=function(){const t=Date.now(),show=t>=L2T0-6*36e5&&t<L2T1+3*864e5;return _mh.apply(this,arguments)+(show?`<button class="hs leiBtn l2Btn ${l2On()?'on':''}" data-a="lei2">⚖️ LEILÃO DOS ANÉIS${l2On()?' · AO VIVO':t<L2T0?' · 20:00':' · ENCERRADO'}</button>`:'')}}
+{const _a=rkAct;rkAct=function(a,b){if(a==='lei2'){rkSfx('whoosh');return l2Open()}return _a.apply(this,arguments)}}
+{const st=document.createElement('style');st.textContent=`#l2M,#l2W{position:fixed;inset:0;z-index:9200;background:rgba(4,2,10,.8);display:flex;align-items:center;justify-content:center}
+#l2M .leiP,#l2W .leiP{width:min(820px,96vw);max-height:94vh;overflow:auto;background:linear-gradient(#1c1206,#0b0703);border:2px solid #ffd84a;border-radius:14px;padding:10px 14px;color:#fff;font:700 13px var(--f-ui,sans-serif);box-shadow:0 0 30px #ffb40055}
+#l2M h3,#l2W h3{margin:0;color:#ffd84a;font-size:22px}#l2M .leiS,#l2W .leiS{margin:4px 0;color:#ffe9a8;font-weight:900}#l2M .leiS.on,#l2W .leiS.on{color:#ff6a7a}#l2M .leiH,#l2W .leiH{margin:0 0 8px;color:#cbb88a;font-size:11px}
+#l2M .leiG,#l2W .leiG{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:8px}#l2M .leiC,#l2W .leiC{background:#24180a;border:1px solid #6a5420;border-radius:10px;padding:7px}#l2M .leiC.me,#l2W .leiC.me{border-color:#7dff9a;box-shadow:0 0 10px #7dff9a55}
+#l2M .leiC b,#l2W .leiC b{display:block;color:#ffe08a;font-size:14px}#l2M .leiC small{display:block;color:#a8936a}#l2M .leiC small.l2d{color:#ffcf6a;font-weight:900;margin:2px 0}#l2M .leiC p{margin:4px 0}#l2M .leiC em{font-style:normal;color:#7dff9a;font-weight:900}#l2M .leiMy{color:#9fd0ff}
+#l2M .leiBt{display:flex;flex-wrap:wrap;gap:4px}#l2M .leiIn{display:flex;gap:4px;margin-top:5px}#l2M .leiIn input{flex:1;min-width:0;background:#120c04;border:1px solid #8a6a20;border-radius:6px;color:#fff;font:800 13px var(--f-ui,sans-serif);padding:5px 7px}#l2M .btn{font-size:11px;padding:4px 8px}#l2M .leiWin,#l2W .leiWin{color:#7dff9a;font-weight:900}#l2M .btn:disabled{opacity:.5}#l2M .row,#l2W .row{display:flex;gap:10px;align-items:center;justify-content:center;margin-top:8px}#l2M .leiGem{color:#9fd0ff}#l2M .l2ap{margin-top:5px;width:100%;font-size:13px;padding:6px}
+.l2Btn{top:22%!important}`;document.head.appendChild(st)}
+try{Object.assign(window.__pvT||{},{l2:{open:()=>l2Open(),bid:(i,v)=>l2Bid(i,v),ap:i=>l2Aprova(i),settle:()=>l2Settle(),load:()=>l2Load(),give:i=>l2Give(L2L.find(q=>q.id===i)),E:()=>l2Esc()},anSum:id=>anSum(id)})}catch(e){}

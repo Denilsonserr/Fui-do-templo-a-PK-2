@@ -2671,3 +2671,9 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 
 ## v571 — código SUPER EVENTO PESSOAL 3 h + anel SP (uso único)
 - `TWCUP['yxllzo']` (`uni:1`, `pb5:3`, `rgsp:[['dano','crit','fur']]`). `rk_pb5 {e:fim}`; `pb5Apply` (tag pb5 no RKEVX, XP ×5 do base), `pvStep` (estrelas ×5), `rkApply` (tdm ×2, tcr ×2+5 — como o pbo, só onde o rkApply roda), `speedMul` ×2 no meu lutador (fora do SPDCAP). Teste `tcod_super5x_v571.js` (`COD=TEXTO`).
+
+## v572 — LEILÃO DOS ANÉIS (20/11 20:00–21:00 Brasília) com aprovação do ADM
+- 2 anéis únicos (`LXR`, campo `lx` no anel; c=5 g=8 → já não vendem por `mnNoSell`): **a** REI DA FÚRIA (dano 1000 + crit 1000 cheio, fúria, +150 vel/uv) e **b** DEUSA DA FORTUNA (sorte 1000 + drop 1000, vampiro, +200 dano, +100 crit/vel/uv). `anTxt` mostra o 2º status cheio + efeitos; wrapper de `anSum` soma o resto do 2º status e os extras.
+- Leilão novo (`L2*`, botão "⚖️ LEILÃO DOS ANÉIS" no Mercado Negro): lances `l2_*` {lei:'2',lot,lv,t}, mínimo 50.000 💎, +1.000 por cima; 💎 presos/devolvidos como no v498 (`l2Settle`).
+- Fim: o ADM (`mnAdm`) vê "✅ APROVAR E ENTREGAR" → doc `l2ok_<lote>` {wu, wn, lv} (409 = já aprovado) e recebe os 💎 do vencedor (1 vez, `rk_l2P`). O vencedor (`l2Claim`, a cada 45 s) recebe o anel + mensagem.
+- Servidor guarda consultas 20 s: o maior lance pode demorar até 20 s para aparecer para os outros. Teste `tleilao_aneis_v572.js` (servidor local).
