@@ -15770,6 +15770,15 @@ setTimeout(()=>{try{if(!mnAdm())return;let ch=0;const ALL=['sung','yuta','shaka'
   const n=anL().filter(anDiv).length;for(let k=n;k<10;k++){anGive({i:'adm_div_'+Date.now().toString(36)+k,c:6,g:9,s:'dano',s2:'crit',a:0,v:9999999,l:99,p:['fur','cmb','vamp','esq'][k%4]});ch=1}
   if(ch){try{acSave(1)}catch(e){}}}catch(e){}},7600);
 
+/* v564: Vini_junior10 — 4x ESTRELAS no PVP ranqueado e 4x XP no ranqueado por 4 horas: 20/11 10:00 → 14:00 (Brasília). Multiplica o que já estiver valendo. */
+const VN4=[Date.UTC(2026,10,20,13,0),Date.UTC(2026,10,20,17,0)],vn4On=t=>{t=t||Date.now();return vnOn()&&t>=VN4[0]&&t<VN4[1]};
+function vn4Apply(){for(let i=RKEVX.length-1;i>=0;i--)if(RKEVX[i][5]==='vn4')RKEVX.splice(i,1);const t=Date.now();if(!vn4On(t))return;
+  const base=RKEVX.find(e=>t>=e[0]&&t<e[1]&&e[5]!=='sx'&&e[5]!=='vn4')||null;RKEVX.unshift([t-1000,base?Math.min(VN4[1],base[1]):VN4[1],(base?base[2]:1)*4,'⚡ 4x XP · 4x ESTRELAS'+(base?' + '+base[3]:''),Object.assign({},base&&base[4]||{}),'vn4'])}
+setTimeout(vn4Apply,1600);setInterval(vn4Apply,20000);
+{const _s=pvStep;pvStep=function(o,won){const r=_s.apply(this,arguments);try{if(won&&r&&r.gain>0&&vn4On()){const x=r.gain*3;for(let i=0;i<x;i++){if(o.t>=PVDIV){o.s++;continue}o.s++;if(o.s>=pvNeed(o.t)){o.s=0;if(o.d<2)o.d++;else{o.t++;o.d=0}}}
+  if(o.t>o.bt||o.t===o.bt&&o.d>o.bd){o.bt=o.t;o.bd=o.d}r.gain+=x;r.up=o.t>r.b.t||o.t===r.b.t&&o.d>r.b.d}}catch(e){}return r}}
+try{Object.assign(window.__pvT||{},{vn4Apply:()=>vn4Apply()})}catch(e){}
+
 function twTrofList(){const tc=twLS.g('tw_tc',{}),run={};for(const t of TW.tr)run[t.k]=(run[t.k]||0)+1;
   twModal(`<div class="twM"><h3>🎖️ TROFÉUS</h3><div class="twTL">${Object.keys(TWTR).map(k=>{const T=TWTR[k];return `<div class="${tc[k]||run[k]?'got':''}"><i>${T.i}</i><b>${T.n}</b><span>${T.d}</span><em>+${T.p} 🏆</em><small>${run[k]?'nesta subida: '+run[k]+' · ':''}total: ${(tc[k]||0)}</small></div>`}).join('')}</div>
     <p class="twH">Cada troféu soma pontos 🏆 no ranking. Quem sobe mais andares fica na frente; empate = mais troféus, depois menos tempo.</p><div class="row"><button class="btn" id="twTx">FECHAR</button></div></div>`);
@@ -15961,7 +15970,7 @@ window.__dbg={mus:()=>[MCUR,MEL.src.split('/').pop()],stg:()=>STAGE.key,prepMatc
 })();
 </script>
 <style>#updB{position:fixed;left:50%;top:max(8px,env(safe-area-inset-top));transform:translateX(-50%);z-index:99999;padding:10px 22px;border-radius:14px;border:2px solid #fff3c0;background:linear-gradient(#ffd84a,#e08a10);color:#3a1d00;font:900 15px system-ui,sans-serif;box-shadow:0 0 18px #ffb21f;cursor:pointer;animation:updP 1s ease-in-out infinite alternate}@keyframes updP{to{transform:translateX(-50%) scale(1.05)}}</style>
-<script>(function(){const V='a7c19c302495';if(!/^https?:/.test(location.protocol))return;let nv=null;
+<script>(function(){const V='fa70fb11d8f7';if(!/^https?:/.test(location.protocol))return;let nv=null;
 function show(){if(document.getElementById('updB'))return;try{if(typeof G!=='undefined'&&G.mode==='fight')return}catch(e){}const b=document.createElement('button');b.id='updB';b.textContent='🔄 ATUALIZAÇÃO NOVA! Toque para atualizar';
   b.onclick=()=>{b.textContent='⏳ Atualizando...';try{acSave(1)}catch(e){}setTimeout(()=>location.reload(),900)};document.body.appendChild(b)}
 async function chk(){if(document.hidden)return;if(nv){show();return}try{const r=await fetch('versao.txt?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const t=(await r.text()).trim();if(/^[0-9a-f]{8,40}$/.test(t)&&t!==V){nv=t;show()}}catch(e){}}

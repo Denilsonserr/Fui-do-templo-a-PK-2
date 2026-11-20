@@ -2552,3 +2552,6 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 
 ## v563 — ADM: todos os personagens no nível máximo + 10 anéis divinos
 - Boot 7,6 s (só `mnAdm`): `own` += sung, yuta, shaka, RK_MIT, RK_LEG, RK_EPI; `rk_lv[id].lv = LVMAX(id)`; completa até 10 anéis c=6 (passivas variadas). Teste `tadm_tudo_v563.js`.
+
+## v564 — Vini 4x estrelas e 4x XP no ranqueado (4 h)
+- `VN4` 20/11 10:00→14:00 Brasília; `vn4Apply` (entrada pessoal tag vn4 no RKEVX, xp ×4 do evento base) + wrapper `pvStep` (ganho ×4). Só `vnOn()`. Teste `tvini4x_v564.js`.

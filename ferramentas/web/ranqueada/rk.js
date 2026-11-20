@@ -7205,3 +7205,12 @@ setTimeout(()=>{try{if(!mnAdm())return;let ch=0;const ALL=['sung','yuta','shaka'
   const A=lvAll();for(const id of ALL){const o=A[id]||{},mx=LVMAX(id);if((o.lv|0)<mx){A[id]=Object.assign({t:[],c:[]},o,{lv:mx});ch=1}}if(ch)rkS('lv',A);
   const n=anL().filter(anDiv).length;for(let k=n;k<10;k++){anGive({i:'adm_div_'+Date.now().toString(36)+k,c:6,g:9,s:'dano',s2:'crit',a:0,v:9999999,l:99,p:['fur','cmb','vamp','esq'][k%4]});ch=1}
   if(ch){try{acSave(1)}catch(e){}}}catch(e){}},7600);
+
+/* v564: Vini_junior10 — 4x ESTRELAS no PVP ranqueado e 4x XP no ranqueado por 4 horas: 20/11 10:00 → 14:00 (Brasília). Multiplica o que já estiver valendo. */
+const VN4=[Date.UTC(2026,10,20,13,0),Date.UTC(2026,10,20,17,0)],vn4On=t=>{t=t||Date.now();return vnOn()&&t>=VN4[0]&&t<VN4[1]};
+function vn4Apply(){for(let i=RKEVX.length-1;i>=0;i--)if(RKEVX[i][5]==='vn4')RKEVX.splice(i,1);const t=Date.now();if(!vn4On(t))return;
+  const base=RKEVX.find(e=>t>=e[0]&&t<e[1]&&e[5]!=='sx'&&e[5]!=='vn4')||null;RKEVX.unshift([t-1000,base?Math.min(VN4[1],base[1]):VN4[1],(base?base[2]:1)*4,'⚡ 4x XP · 4x ESTRELAS'+(base?' + '+base[3]:''),Object.assign({},base&&base[4]||{}),'vn4'])}
+setTimeout(vn4Apply,1600);setInterval(vn4Apply,20000);
+{const _s=pvStep;pvStep=function(o,won){const r=_s.apply(this,arguments);try{if(won&&r&&r.gain>0&&vn4On()){const x=r.gain*3;for(let i=0;i<x;i++){if(o.t>=PVDIV){o.s++;continue}o.s++;if(o.s>=pvNeed(o.t)){o.s=0;if(o.d<2)o.d++;else{o.t++;o.d=0}}}
+  if(o.t>o.bt||o.t===o.bt&&o.d>o.bd){o.bt=o.t;o.bd=o.d}r.gain+=x;r.up=o.t>r.b.t||o.t===r.b.t&&o.d>r.b.d}}catch(e){}return r}}
+try{Object.assign(window.__pvT||{},{vn4Apply:()=>vn4Apply()})}catch(e){}
