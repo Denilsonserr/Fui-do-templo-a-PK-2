@@ -7231,12 +7231,12 @@ TWCUP['t40mdb']={nm:'💍 ANEL DOURADO SP + 🌟 JOIA PRIMORDIAL (ORIGEM DE TUDO
   try{if(C&&C.sbr&&r!==false&&E&&/\bok\b/.test(E.className||'')){const o=sjSys();if(!o.sh.includes('beru')){o.sh.push('beru');sjSave(o);rkS('sjBe',1)}try{localStorage.removeItem('ac_h');acSave(1)}catch(e){}if(C.msg)E.textContent=C.msg+(sjOwned()?'':' (A sombra só luta com o SUNG.)')}}catch(e){}return r}}
 TWCUP['pl1fi5']={nm:'🐜 SOMBRA BERU + 🌟 2 JOIAS PRIMORDIAIS (ORIGEM DE TUDO)',it:[],uni:1,sbr:1,jpq:2,msg:'✅ Você ganhou 🐜 a SOMBRA BERU (Rank S) + 🌟 2 JOIAS PRIMORDIAIS com ✴️ ORIGEM DE TUDO garantida! Veja em SISTEMA → SOMBRAS e use as joias no ENCANTAMENTO.'};
 
-/* v568: Vini 4x EM TUDO por 40 min (20/11 15:45 → 16:25 Brasília): XP de rank, estrelas do PVP, drop (itens/portais), gemas, sorte e chance de anel. Só vnOn(). */
-const VN40=[Date.UTC(2026,10,20,18,45),Date.UTC(2026,10,20,19,25)],vn40On=t=>{t=t||Date.now();return vnOn()&&t>=VN40[0]&&t<VN40[1]};
+/* v568: Vini 4x EM TUDO por 40 min (20/11 15:45 → 16:25 Brasília) · v569: de novo 20/11 16:30 → 17:40 Brasília: XP de rank, estrelas do PVP, drop (itens/portais), gemas, sorte e chance de anel. Só vnOn(). */
+const VN40=[Date.UTC(2026,10,20,18,45),Date.UTC(2026,10,20,19,25)],VN40B=[Date.UTC(2026,10,20,19,30),Date.UTC(2026,10,20,20,40)],vn40On=t=>{t=t||Date.now();return vnOn()&&(t>=VN40[0]&&t<VN40[1]||t>=VN40B[0]&&t<VN40B[1])};
 function vn40Apply(){for(let i=RKEVX.length-1;i>=0;i--)if(RKEVX[i][5]==='vn40')RKEVX.splice(i,1);const t=Date.now();if(!vn40On(t))return;
   const base=RKEVX.find(e=>t>=e[0]&&t<e[1]&&e[5]!=='sx'&&e[5]!=='vn40')||null,b4=Object.assign({},base&&base[4]||{});
   const x={gem:(b4.gem||1)*4,luck:(b4.luck||1)*4,drop:b4.drop||1,anel:(b4.anel||1)*4};
-  RKEVX.unshift([t-1000,base?Math.min(VN40[1],base[1]):VN40[1],(base?base[2]:1)*4,'⚡ VINI 4x EM TUDO'+(base?' + '+base[3]:''),Object.assign(b4,x),'vn40'])}
+  const fim=t<VN40[1]?VN40[1]:VN40B[1];RKEVX.unshift([t-1000,base?Math.min(fim,base[1]):fim,(base?base[2]:1)*4,'⚡ VINI 4x EM TUDO'+(base?' + '+base[3]:''),Object.assign(b4,x),'vn40'])}
 setTimeout(vn40Apply,1700);setInterval(vn40Apply,20000);
 {const _k=rkDropK;rkDropK=function(){const r=_k.apply(this,arguments);try{if(vn40On())return r*4}catch(e){}return r}}
 {const _s=pvStep;pvStep=function(o,won){const r=_s.apply(this,arguments);try{if(won&&r&&r.gain>0&&vn40On()){const x=r.gain*3;for(let i=0;i<x;i++){if(o.t>=PVDIV){o.s++;continue}o.s++;if(o.s>=pvNeed(o.t)){o.s=0;if(o.d<2)o.d++;else{o.t++;o.d=0}}}

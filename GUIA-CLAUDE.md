@@ -2662,3 +2662,6 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 
 ## v568 — Vini 4x em tudo (40 min)
 - `VN40` 20/11 15:45→16:25 Brasília, só `vnOn()`: `vn40Apply` (entrada tag vn40 no RKEVX: XP ×4 do base, gem ×4, luck ×4, anel ×4), wrapper `rkDropK` ×4 (drops e portais), wrapper `pvStep` (estrelas ×4). Teste `tvini40_v568.js`.
+
+## v569 — Vini 4x em tudo de novo (1 h)
+- `VN40B` 20/11 16:30→17:40 Brasília somado ao `vn40On` (mesmo 4x da v568). Teste `tvini40_v569.js`.
