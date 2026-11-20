@@ -7225,3 +7225,8 @@ try{Object.assign(window.__pvT||{},{MAXHP:()=>MAXHP})}catch(e){}
 
 /* v566: código ANEL SP (dano + crítico) + 1 JOIA PRIMORDIAL com ORIGEM DE TUDO garantida (real) — uso único no jogo todo. */
 TWCUP['t40mdb']={nm:'💍 ANEL DOURADO SP + 🌟 JOIA PRIMORDIAL (ORIGEM DE TUDO)',it:[],uni:1,jpo:1,rgsp:[['dano','crit','fur']],msg:'✅ Você ganhou 💍 ANEL DOURADO SP no nível máximo (⚔️ Dano + 🎯 Crítico) + 🌟 1 JOIA PRIMORDIAL com ✴️ ORIGEM DE TUDO garantida! Veja em ANÉIS DA ALMA e use a joia no ENCANTAMENTO.'};
+
+/* v567: campo sbr:1 nos códigos = dá a SOMBRA BERU (Rank S) para o Sung. Código BERU + 2 Joias Primordiais ORIGEM DE TUDO PEGADINHA (jpq: aparecem, não funcionam) — uso único. */
+{const _cq=twCupom;twCupom=async function(code,E){const C=TWCUP[twHash(String(code).toUpperCase())];const r=await _cq.apply(this,arguments);
+  try{if(C&&C.sbr&&r!==false&&E&&/\bok\b/.test(E.className||'')){const o=sjSys();if(!o.sh.includes('beru')){o.sh.push('beru');sjSave(o);rkS('sjBe',1)}try{localStorage.removeItem('ac_h');acSave(1)}catch(e){}if(C.msg)E.textContent=C.msg+(sjOwned()?'':' (A sombra só luta com o SUNG.)')}}catch(e){}return r}}
+TWCUP['pl1fi5']={nm:'🐜 SOMBRA BERU + 🌟 2 JOIAS PRIMORDIAIS (ORIGEM DE TUDO)',it:[],uni:1,sbr:1,jpq:2,msg:'✅ Você ganhou 🐜 a SOMBRA BERU (Rank S) + 🌟 2 JOIAS PRIMORDIAIS com ✴️ ORIGEM DE TUDO garantida! Veja em SISTEMA → SOMBRAS e use as joias no ENCANTAMENTO.'};

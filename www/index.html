@@ -15790,6 +15790,11 @@ try{Object.assign(window.__pvT||{},{MAXHP:()=>MAXHP})}catch(e){}
 /* v566: código ANEL SP (dano + crítico) + 1 JOIA PRIMORDIAL com ORIGEM DE TUDO garantida (real) — uso único no jogo todo. */
 TWCUP['t40mdb']={nm:'💍 ANEL DOURADO SP + 🌟 JOIA PRIMORDIAL (ORIGEM DE TUDO)',it:[],uni:1,jpo:1,rgsp:[['dano','crit','fur']],msg:'✅ Você ganhou 💍 ANEL DOURADO SP no nível máximo (⚔️ Dano + 🎯 Crítico) + 🌟 1 JOIA PRIMORDIAL com ✴️ ORIGEM DE TUDO garantida! Veja em ANÉIS DA ALMA e use a joia no ENCANTAMENTO.'};
 
+/* v567: campo sbr:1 nos códigos = dá a SOMBRA BERU (Rank S) para o Sung. Código BERU + 2 Joias Primordiais ORIGEM DE TUDO PEGADINHA (jpq: aparecem, não funcionam) — uso único. */
+{const _cq=twCupom;twCupom=async function(code,E){const C=TWCUP[twHash(String(code).toUpperCase())];const r=await _cq.apply(this,arguments);
+  try{if(C&&C.sbr&&r!==false&&E&&/\bok\b/.test(E.className||'')){const o=sjSys();if(!o.sh.includes('beru')){o.sh.push('beru');sjSave(o);rkS('sjBe',1)}try{localStorage.removeItem('ac_h');acSave(1)}catch(e){}if(C.msg)E.textContent=C.msg+(sjOwned()?'':' (A sombra só luta com o SUNG.)')}}catch(e){}return r}}
+TWCUP['pl1fi5']={nm:'🐜 SOMBRA BERU + 🌟 2 JOIAS PRIMORDIAIS (ORIGEM DE TUDO)',it:[],uni:1,sbr:1,jpq:2,msg:'✅ Você ganhou 🐜 a SOMBRA BERU (Rank S) + 🌟 2 JOIAS PRIMORDIAIS com ✴️ ORIGEM DE TUDO garantida! Veja em SISTEMA → SOMBRAS e use as joias no ENCANTAMENTO.'};
+
 function twTrofList(){const tc=twLS.g('tw_tc',{}),run={};for(const t of TW.tr)run[t.k]=(run[t.k]||0)+1;
   twModal(`<div class="twM"><h3>🎖️ TROFÉUS</h3><div class="twTL">${Object.keys(TWTR).map(k=>{const T=TWTR[k];return `<div class="${tc[k]||run[k]?'got':''}"><i>${T.i}</i><b>${T.n}</b><span>${T.d}</span><em>+${T.p} 🏆</em><small>${run[k]?'nesta subida: '+run[k]+' · ':''}total: ${(tc[k]||0)}</small></div>`}).join('')}</div>
     <p class="twH">Cada troféu soma pontos 🏆 no ranking. Quem sobe mais andares fica na frente; empate = mais troféus, depois menos tempo.</p><div class="row"><button class="btn" id="twTx">FECHAR</button></div></div>`);
@@ -15981,7 +15986,7 @@ window.__dbg={mus:()=>[MCUR,MEL.src.split('/').pop()],stg:()=>STAGE.key,prepMatc
 })();
 </script>
 <style>#updB{position:fixed;left:50%;top:max(8px,env(safe-area-inset-top));transform:translateX(-50%);z-index:99999;padding:10px 22px;border-radius:14px;border:2px solid #fff3c0;background:linear-gradient(#ffd84a,#e08a10);color:#3a1d00;font:900 15px system-ui,sans-serif;box-shadow:0 0 18px #ffb21f;cursor:pointer;animation:updP 1s ease-in-out infinite alternate}@keyframes updP{to{transform:translateX(-50%) scale(1.05)}}</style>
-<script>(function(){const V='46cae0bd46ca';if(!/^https?:/.test(location.protocol))return;let nv=null;
+<script>(function(){const V='a68a41211b3d';if(!/^https?:/.test(location.protocol))return;let nv=null;
 function show(){if(document.getElementById('updB'))return;try{if(typeof G!=='undefined'&&G.mode==='fight')return}catch(e){}const b=document.createElement('button');b.id='updB';b.textContent='🔄 ATUALIZAÇÃO NOVA! Toque para atualizar';
   b.onclick=()=>{b.textContent='⏳ Atualizando...';try{acSave(1)}catch(e){}setTimeout(()=>location.reload(),900)};document.body.appendChild(b)}
 async function chk(){if(document.hidden)return;if(nv){show();return}try{const r=await fetch('versao.txt?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const t=(await r.text()).trim();if(/^[0-9a-f]{8,40}$/.test(t)&&t!==V){nv=t;show()}}catch(e){}}

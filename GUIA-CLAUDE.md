@@ -2655,3 +2655,7 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 
 ## v566 — código anel SP + Origem de Tudo (uso único)
 - `TWCUP['t40mdb']` (`uni:1`): `rgsp:[['dano','crit','fur']]` (anel dourado SP nível máximo) + `jpo:1` (1 Joia Primordial com ORIGEM DE TUDO real). Texto do código só com o dono. Teste `tcod_anelorigem_v566.js` (rodar com `COD=TEXTO`).
+
+## v567 — código SOMBRA BERU + 2 Origem de Tudo PEGADINHA (uso único)
+- Campo novo `sbr:1` em códigos (wrapper de `twCupom`): põe 'beru' em `sjSys().sh` (+ `sjBe`). Sem Sung, a mensagem avisa que a sombra só luta com o Sung.
+- `TWCUP['pl1fi5']` (`uni:1`): `sbr:1` + `jpq:2` (2 Joias Primordiais ORIGEM DE TUDO que aparecem no status mas não funcionam na luta/drop). Texto só com o dono. Teste `tcod_beru_v567.js` (`COD=TEXTO`).
