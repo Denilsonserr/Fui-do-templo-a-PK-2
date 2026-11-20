@@ -15779,6 +15779,14 @@ setTimeout(vn4Apply,1600);setInterval(vn4Apply,20000);
   if(o.t>o.bt||o.t===o.bt&&o.d>o.bd){o.bt=o.t;o.bd=o.d}r.gain+=x;r.up=o.t>r.b.t||o.t===r.b.t&&o.d>r.b.d}}catch(e){}return r}}
 try{Object.assign(window.__pvT||{},{vn4Apply:()=>vn4Apply()})}catch(e){}
 
+/* v565: ADM IMORTAL em tudo — o personagem do ADM e a SOMBRA dele (Sung) nunca morrem: a vida volta cheia todo quadro e o KO é cancelado. */
+const admFix=()=>{try{if(!mnAdm()||G.mode!=='fight'||!G.p)return;const p=G.p[0];if(!p||p.cpu)return;const M=p.mhp||MAXHP;if(p.hp<M){p.hp=M;p.hpLag=M}p.ko=false;
+  const B=p.sjB;if(B&&B.st!=='die'){if(B.mhp&&B.hp<B.mhp)B.hp=B.mhp;if(B.life!=null&&B.life<600)B.life=600}}catch(e){}};
+{const _u=update;update=function(){admFix();const r=_u.apply(this,arguments);admFix();return r}}
+{const _ko=ko;ko=function(a,d){try{if(mnAdm()&&G.p&&d===G.p[0]&&!d.cpu){d.hp=d.mhp||MAXHP;d.hpLag=d.hp;d.ko=false;return}}catch(e){}return _ko.apply(this,arguments)}}
+{const _ah=applyHit;applyHit=function(a,d,h){try{if(mnAdm()&&G.p&&d===G.p[0]&&!d.cpu&&a!==d){const r=_ah.call(this,a,d,Object.assign({},h||{},{dmg:0}));d.hp=d.mhp||MAXHP;d.hpLag=d.hp;return r}}catch(e){}return _ah.apply(this,arguments)}}
+try{Object.assign(window.__pvT||{},{MAXHP:()=>MAXHP})}catch(e){}
+
 function twTrofList(){const tc=twLS.g('tw_tc',{}),run={};for(const t of TW.tr)run[t.k]=(run[t.k]||0)+1;
   twModal(`<div class="twM"><h3>🎖️ TROFÉUS</h3><div class="twTL">${Object.keys(TWTR).map(k=>{const T=TWTR[k];return `<div class="${tc[k]||run[k]?'got':''}"><i>${T.i}</i><b>${T.n}</b><span>${T.d}</span><em>+${T.p} 🏆</em><small>${run[k]?'nesta subida: '+run[k]+' · ':''}total: ${(tc[k]||0)}</small></div>`}).join('')}</div>
     <p class="twH">Cada troféu soma pontos 🏆 no ranking. Quem sobe mais andares fica na frente; empate = mais troféus, depois menos tempo.</p><div class="row"><button class="btn" id="twTx">FECHAR</button></div></div>`);
@@ -15970,7 +15978,7 @@ window.__dbg={mus:()=>[MCUR,MEL.src.split('/').pop()],stg:()=>STAGE.key,prepMatc
 })();
 </script>
 <style>#updB{position:fixed;left:50%;top:max(8px,env(safe-area-inset-top));transform:translateX(-50%);z-index:99999;padding:10px 22px;border-radius:14px;border:2px solid #fff3c0;background:linear-gradient(#ffd84a,#e08a10);color:#3a1d00;font:900 15px system-ui,sans-serif;box-shadow:0 0 18px #ffb21f;cursor:pointer;animation:updP 1s ease-in-out infinite alternate}@keyframes updP{to{transform:translateX(-50%) scale(1.05)}}</style>
-<script>(function(){const V='fa70fb11d8f7';if(!/^https?:/.test(location.protocol))return;let nv=null;
+<script>(function(){const V='9751af2bee9a';if(!/^https?:/.test(location.protocol))return;let nv=null;
 function show(){if(document.getElementById('updB'))return;try{if(typeof G!=='undefined'&&G.mode==='fight')return}catch(e){}const b=document.createElement('button');b.id='updB';b.textContent='🔄 ATUALIZAÇÃO NOVA! Toque para atualizar';
   b.onclick=()=>{b.textContent='⏳ Atualizando...';try{acSave(1)}catch(e){}setTimeout(()=>location.reload(),900)};document.body.appendChild(b)}
 async function chk(){if(document.hidden)return;if(nv){show();return}try{const r=await fetch('versao.txt?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const t=(await r.text()).trim();if(/^[0-9a-f]{8,40}$/.test(t)&&t!==V){nv=t;show()}}catch(e){}}

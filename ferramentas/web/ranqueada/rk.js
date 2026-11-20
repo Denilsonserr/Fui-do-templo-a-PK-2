@@ -7214,3 +7214,11 @@ setTimeout(vn4Apply,1600);setInterval(vn4Apply,20000);
 {const _s=pvStep;pvStep=function(o,won){const r=_s.apply(this,arguments);try{if(won&&r&&r.gain>0&&vn4On()){const x=r.gain*3;for(let i=0;i<x;i++){if(o.t>=PVDIV){o.s++;continue}o.s++;if(o.s>=pvNeed(o.t)){o.s=0;if(o.d<2)o.d++;else{o.t++;o.d=0}}}
   if(o.t>o.bt||o.t===o.bt&&o.d>o.bd){o.bt=o.t;o.bd=o.d}r.gain+=x;r.up=o.t>r.b.t||o.t===r.b.t&&o.d>r.b.d}}catch(e){}return r}}
 try{Object.assign(window.__pvT||{},{vn4Apply:()=>vn4Apply()})}catch(e){}
+
+/* v565: ADM IMORTAL em tudo — o personagem do ADM e a SOMBRA dele (Sung) nunca morrem: a vida volta cheia todo quadro e o KO é cancelado. */
+const admFix=()=>{try{if(!mnAdm()||G.mode!=='fight'||!G.p)return;const p=G.p[0];if(!p||p.cpu)return;const M=p.mhp||MAXHP;if(p.hp<M){p.hp=M;p.hpLag=M}p.ko=false;
+  const B=p.sjB;if(B&&B.st!=='die'){if(B.mhp&&B.hp<B.mhp)B.hp=B.mhp;if(B.life!=null&&B.life<600)B.life=600}}catch(e){}};
+{const _u=update;update=function(){admFix();const r=_u.apply(this,arguments);admFix();return r}}
+{const _ko=ko;ko=function(a,d){try{if(mnAdm()&&G.p&&d===G.p[0]&&!d.cpu){d.hp=d.mhp||MAXHP;d.hpLag=d.hp;d.ko=false;return}}catch(e){}return _ko.apply(this,arguments)}}
+{const _ah=applyHit;applyHit=function(a,d,h){try{if(mnAdm()&&G.p&&d===G.p[0]&&!d.cpu&&a!==d){const r=_ah.call(this,a,d,Object.assign({},h||{},{dmg:0}));d.hp=d.mhp||MAXHP;d.hpLag=d.hp;return r}}catch(e){}return _ah.apply(this,arguments)}}
+try{Object.assign(window.__pvT||{},{MAXHP:()=>MAXHP})}catch(e){}

@@ -2555,3 +2555,6 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 
 ## v564 — Vini 4x estrelas e 4x XP no ranqueado (4 h)
 - `VN4` 20/11 10:00→14:00 Brasília; `vn4Apply` (entrada pessoal tag vn4 no RKEVX, xp ×4 do evento base) + wrapper `pvStep` (ganho ×4). Só `vnOn()`. Teste `tvini4x_v564.js`.
+
+## v565 — ADM imortal
+- `admFix` (antes e depois de `update`): se `mnAdm()`, vida do G.p[0] cheia (`mhp||MAXHP`), `ko=false`; sombra `sjB` com vida cheia e tempo ≥ 600 quadros. `ko()` do ADM cancelado; `applyHit` no ADM com dano 0. Teste `tadm_imortal_v565.js`.
