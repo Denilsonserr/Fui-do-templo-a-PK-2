@@ -2652,3 +2652,6 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 
 ## v565 — ADM imortal
 - `admFix` (antes e depois de `update`): se `mnAdm()`, vida do G.p[0] cheia (`mhp||MAXHP`), `ko=false`; sombra `sjB` com vida cheia e tempo ≥ 600 quadros. `ko()` do ADM cancelado; `applyHit` no ADM com dano 0. Teste `tadm_imortal_v565.js`.
+
+## v566 — código anel SP + Origem de Tudo (uso único)
+- `TWCUP['t40mdb']` (`uni:1`): `rgsp:[['dano','crit','fur']]` (anel dourado SP nível máximo) + `jpo:1` (1 Joia Primordial com ORIGEM DE TUDO real). Texto do código só com o dono. Teste `tcod_anelorigem_v566.js` (rodar com `COD=TEXTO`).

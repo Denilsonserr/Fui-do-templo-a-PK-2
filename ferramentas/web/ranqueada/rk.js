@@ -7222,3 +7222,6 @@ const admFix=()=>{try{if(!mnAdm()||G.mode!=='fight'||!G.p)return;const p=G.p[0];
 {const _ko=ko;ko=function(a,d){try{if(mnAdm()&&G.p&&d===G.p[0]&&!d.cpu){d.hp=d.mhp||MAXHP;d.hpLag=d.hp;d.ko=false;return}}catch(e){}return _ko.apply(this,arguments)}}
 {const _ah=applyHit;applyHit=function(a,d,h){try{if(mnAdm()&&G.p&&d===G.p[0]&&!d.cpu&&a!==d){const r=_ah.call(this,a,d,Object.assign({},h||{},{dmg:0}));d.hp=d.mhp||MAXHP;d.hpLag=d.hp;return r}}catch(e){}return _ah.apply(this,arguments)}}
 try{Object.assign(window.__pvT||{},{MAXHP:()=>MAXHP})}catch(e){}
+
+/* v566: código ANEL SP (dano + crítico) + 1 JOIA PRIMORDIAL com ORIGEM DE TUDO garantida (real) — uso único no jogo todo. */
+TWCUP['t40mdb']={nm:'💍 ANEL DOURADO SP + 🌟 JOIA PRIMORDIAL (ORIGEM DE TUDO)',it:[],uni:1,jpo:1,rgsp:[['dano','crit','fur']],msg:'✅ Você ganhou 💍 ANEL DOURADO SP no nível máximo (⚔️ Dano + 🎯 Crítico) + 🌟 1 JOIA PRIMORDIAL com ✴️ ORIGEM DE TUDO garantida! Veja em ANÉIS DA ALMA e use a joia no ENCANTAMENTO.'};
