@@ -1,184 +1,120 @@
-# FÚRIA DO TEMPLO — GUIA DE PASSAGEM PARA OUTRA CONTA DO CLAUDE
+# FÚRIA DO TEMPLO — GUIA DE PASSAGEM PARA OUTRA CONVERSA / OUTRA CONTA DO CLAUDE
 
 A versão atual é a v565.
-Versão do jogo neste momento: **v460** (11/11/2026).
-Este arquivo tem duas partes: a **Parte 1** é para o dono (Denilson) e a **Parte 2** é para o Claude da outra conta.
+Atualizado em 20/11/2026. Este arquivo tem 3 partes:
+- **Parte 1** — para o dono (Denilson): como continuar em outra conversa.
+- **Parte 2** — para o Claude novo: regras, onde está tudo, servidor, como publicar, o que existe no jogo.
+- **Parte 3** — como criar um PERSONAGEM NOVO (o próximo deve ser o **GOKU INSTINTO SUPERIOR**).
+
+O histórico completo, versão por versão, está em `GUIA-CLAUDE.md` (procure por `## vNNN`).
 
 ---
 
-## PARTE 1 — PARA O DONO: COMO USAR EM OUTRA CONTA
+## PARTE 1 — PARA O DONO
 
-1. Entre na outra conta do Claude e abra o **Claude Code** (claude.ai/code ou a parte de código do app).
-2. Conecte o **GitHub** nessa conta e dê acesso ao repositório **Denilsonserr/Fui-do-templo-a-PK-2**.
-3. Comece uma conversa nova com esse repositório e mande este arquivo, ou só esta mensagem:
+1. Abra o **Claude Code** (claude.ai/code ou a parte de código do app) na conta que for usar.
+2. Conecte o **GitHub** e dê acesso ao repositório **Denilsonserr/Fui-do-templo-a-PK-2**.
+3. Comece uma conversa nova com esse repositório e mande esta mensagem:
 
-   > Continua o meu jogo Fúria do Templo. Repositório: Denilsonserr/Fui-do-templo-a-PK-2. Lê primeiro os arquivos COMECE-AQUI.md e GUIA-CLAUDE.md inteiros e segue as regras deles. A versão atual é a v565.
+   > Continua o meu jogo Fúria do Templo. Repositório: Denilsonserr/Fui-do-templo-a-PK-2. Lê primeiro o COMECE-AQUI.md inteiro (e o GUIA-CLAUDE.md quando precisar de detalhe) e segue as regras dele. A versão atual é a v565.
 
 4. Depois é só pedir as coisas do mesmo jeito de sempre.
 5. **Onde fica o jogo:**
-   - **Site (o principal):** https://fui-do-templo-a-pk-2.denilsinend.workers.dev — na sua conta da **Cloudflare**. Atualiza sozinho uns 2 minutos depois de cada versão.
-   - **APK leve:** GitHub → Releases → `ultima-versao`. Ele abre o site da Cloudflare, então **nunca precisa reinstalar** para atualizar o jogo. Quando sai versão nova, aparece no jogo o botão **"🔄 ATUALIZAÇÃO NOVA"**.
-   - GitHub Pages (antigo, lento): https://denilsonserr.github.io/Fui-do-templo-a-PK-2/
-6. **Servidor do jogo (contas, ranking, chat, códigos):** desde 10/11 é o **banco D1 "furia" da Cloudflare** (grátis, 5 milhões de leituras por dia). O Firebase antigo não é mais usado.
-7. **Códigos secretos:** o texto dos códigos **não fica no GitHub**. Guarde a sua lista. Se o Claude novo precisar de um código antigo, mande na conversa.
-8. **Personagem novo:**
-   1. Avise: "vou mandar um personagem novo: NOME".
-   2. Mande tudo: folhas de poses (PNG, fundo liso), vídeos (transformação e ultimate, entram sem som), rosto, corpo inteiro, botões/HUD e **as regras dele escritas do seu jeito**.
-   3. Diga **"mandei tudo, pode fazer"**. O Claude só começa aí e não inventa poder.
+   - **Site (o principal):** https://fui-do-templo-a-pk-2.denilsinend.workers.dev — conta da **Cloudflare** do dono. Atualiza sozinho ~2 minutos depois de cada versão. Para forçar: `?v=NÚMERO` no fim do link.
+   - **APK leve:** GitHub → Releases → `ultima-versao`. Ele abre o site, então **nunca precisa reinstalar**. Quando sai versão nova, aparece no jogo o aviso amarelo **"🔄 ATUALIZAÇÃO NOVA — toque para atualizar"**.
+6. **Servidor (contas, saves, ranking, chat, códigos, mercado):** o **Worker da Cloudflare** com o **banco D1 "furia"**. O uso está bem abaixo do limite (o workflow `uso.yml` mostra quanto já foi usado). O Firebase antigo não é mais usado.
+7. **Códigos secretos:** o texto dos códigos **não fica no GitHub** (só um "hash"). Guarde a sua lista. Se o Claude novo precisar de um código antigo, mande na conversa.
+8. **Personagem novo:** veja a Parte 3. Mande as artes e as regras e diga **"mandei tudo, pode fazer"**.
 
 ---
 
-## PARTE 2 — PARA O CLAUDE DA OUTRA CONTA
+## PARTE 2 — PARA O CLAUDE NOVO
 
 ### Quem é o dono e como responder
-- Denilson fala português do Brasil simples, muitas vezes por voz, com erros de digitação ("rark" = rank/ranqueada, "boys"/"boss", "porção" = poção, "cluade" = Claude).
-- **Responda em português simples e curto, sem termos técnicos.** No fim de cada versão diga o que mudou e termine com:
-  - `Site novo: https://fui-do-templo-a-pk-2.denilsinend.workers.dev`
-  - `APK no GitHub: Releases → ultima-versao`
-- **Toda versão:** testar → seção `## vNNN` no fim do `GUIA-CLAUDE.md` → trocar a versão no topo deste arquivo (`sed 's/\*\*vOLD\*\*/**vNEW**/; s/A versão atual é a vOLD\./A versão atual é a vNEW./'`) → commit → push.
-- Faça direto; só pergunte quando a decisão for dele (prêmios, valores). Mostre prints quando mudar algo visual.
-- **Não mande o APK no chat sem ele pedir.**
+- **Denilson ("Denilson ADM")**, fala português do Brasil simples, muitas vezes por voz, com erros de digitação: "rark" = rank/ranking, "boys" = boss, "porção" = poção, "codico" = código, "Provine" = "pro Vini", "Ignis" = Igris, "anel SG/SP" = nota do anel.
+- Responda **em português simples, curto, sem termos técnicos**. No fim de cada versão: o que mudou, o que foi testado e o link `https://fui-do-templo-a-pk-2.denilsinend.workers.dev/?v=NNN`.
+- Faça direto; só pergunte quando a decisão for dele (prêmios, valores, algo que não dá para desfazer). Quando algo é visual, mande print (Playwright, `deviceScaleFactor:2`).
+- Pedidos frequentes: **códigos** (anéis, gemas, joias, passe), **eventos** (2x/3x XP, estrelas, drop), **bugs mandados por print dos jogadores**, **bônus pessoais** para o Vini (conta espiã dele, `vnOn()`), coisas só do ADM.
 
 ### Regras fixas do dono
-- Vídeos de super e transformação **sem som** (exceção: vídeo do giro do Shaka no gacha tem som).
-- **Não copiar arte de jogos comerciais. Não clonar vozes reais. Não abrir a pasta pirata do FighterZ.** Vídeo de referência que ele mandar = só a ideia; o efeito é feito em código.
-- Personagem novo só quando ele mandar TUDO. Não inventar poderes.
-- Nomes com "adm" são proibidos; só o código ADM dá "Denilson ADM" e o título ADM.
-- **Código secreto: nunca escrever o texto no repositório**, só o hash `twHash` (FNV-1a base36) em `TWCUP`. O texto vai só para o dono, na conversa.
+- Vídeos de super/transformação entram **sem som** (exceção: giro do gacha do Shaka/Sung).
+- **Não copiar arte de jogos comerciais, não clonar vozes reais.** Referência em vídeo = só a ideia; efeito feito em código.
+- **Personagem novo só quando ele mandar tudo.** Não inventar poderes.
+- Nomes com "adm" são proibidos; o ADM é a conta **"Denilson ADM"** (`TWADMN`, `mnAdm()` no rk.js).
+- **Código secreto: nunca escrever o texto no repositório**, só o hash `twHash` (FNV-1a base36 do texto em MAIÚSCULAS) em `TWCUP[hash]`. O texto vai só para o dono, na conversa.
 - Moeda vermelha 🔴 = dinheiro de verdade para ele: dar pouco.
-- Jogo privado para amigos (música de artista famoso pode, mas sai se lançar).
-- Recortes sempre conferidos (sem borda branca, sem buraco). Não baixar a qualidade das artes para diminuir tamanho. Se uma imagem não vai ficar boa, não usa.
-- Bots (v313/v314): 15 jogadores falsos nos rankings, a pedido dele e dos amigos; desligar com `BOTON=false` quando ele mandar tirar.
+- Recortes sempre conferidos (sem borda branca, sem buraco). Não baixar a qualidade das artes.
+- Bots: jogadores falsos nos rankings (`botList`), a pedido dele.
 
 ### Onde está cada coisa
-- Jogo inteiro: `www/index.html` (um arquivo); artes/sons/vídeos em `www/a/`.
-- **O `www/index.html` é GERADO. Nunca edite à mão.** Monte com:
-  ```
-  bash ferramentas/web/montar.sh
-  ```
-  Ordem: `base_v212.html` → `patch_v213.py` (injeta `ferramentas/web/ranqueada/rk.js` + `rk.css` + `rk_assets.json` como `RQA`) → `ferramentas/web/extra/*.py` em ordem alfabética (personagens novos, Shaka `9e_v280`, zoom `9h_v290`, travamento `9i_v293`, padrão leve/turbo `9j_v295`, aviso de atualização `9k_v296`, teclado `9l_v305`, servidor novo `9m_v309`). No fim confere o JavaScript e grava `www/versao.txt`.
-- Quase tudo novo vai no fim do `rk.js` (mesmo escopo do script base: troque funções com `{const _x=fn;fn=function(){...}}`; `const` do base não dá para trocar).
-- Use `rep(antigo,novo)` com assert de contagem nos patches.
-- Testes Playwright em `ferramentas/testes/` (`node NOME.js`). Use `__dbg.G`. Para testes com servidor, rode antes `node ferramentas/servidor/local.mjs 8790` e abra `http://localhost:8790/index.html`. Os mais novos: `tfs_v309` (servidor), `tbot_v314`, `tcev_v315`, `tanel_v318`, `tcaca_v295`, `tbau_v293`, `tcod_v294`, `trec_v298`.
+- Jogo inteiro: `www/index.html` (UM arquivo, GERADO) + artes/sons/vídeos em `www/a/` (nome = hash do conteúdo, `.webp/.mp4`).
+- **Nunca edite `www/index.html` à mão.** Monte com `bash ferramentas/web/montar.sh`:
+  `base_v212.html` → `patch_v213.py` (injeta `ferramentas/web/ranqueada/rk.js` + `rk.css` + `rk_assets.json` = `RQA`) → `ferramentas/web/extra/*.py` em ordem alfabética (personagens e trocas de texto do código base; o mais novo é `9z_v556.py`). No fim confere o JavaScript e grava `www/versao.txt`.
+- **Quase tudo novo vai no FIM do `rk.js`.** Ele roda no mesmo escopo do script base: troque funções com `{const _x=fn;fn=function(){...;return _x.apply(this,arguments)}}`. `const` do base NÃO dá para trocar — para isso use um patch em `extra/` com `rep(antigo,novo)` conferindo a contagem.
+- O rk.js roda ANTES de vários `const` do base (ex.: `DYN`, `FS_IOS`, quadros/qualidade): usar no topo dá erro TDZ → use dentro de funções ou `setTimeout(...,0)`.
+- Funções internas não são globais no `page.evaluate`: exponha ganchos com `try{Object.assign(window.__pvT||{},{...})}catch(e){}` (há centenas: `__pvT.cup`, `__pvT.G`, `__pvT.treino`, `__pvT.ko`, `__pt.start`...). `__dbg.G` = estado da luta.
+- **Testes:** Playwright em `ferramentas/testes/` (`node NOME.js`). Servidor local com o worker de verdade + SQLite: `node ferramentas/servidor/local.mjs 8790` e abrir `http://localhost:8790/index.html`. Para fingir o servidor em teste, `p.route(/\/fs\//, ...)`. Fechar o modal que aparece: `rkModal.hidden=true;innerHTML=''`.
+- Artes do dono ficam nas pastas `ferramentas/...` (personagens, portais/npc, aneis, ranqueada_artes, titulos, torre_artes, vfx).
 
-### Publicar
-- `git push` (a remota mostra "This repository moved", é normal).
-- Cloudflare publica sozinha em ~2 min (`wrangler.jsonc`: worker `worker/index.js` + pasta `www` + banco D1 `furia`, id `c7962d81-d19e-41b3-bc3b-22e07a16c8ff`).
-- `apk.yml` gera o APK leve (`capacitor.config.json` → `server.url` = site da Cloudflare, `webDir` = `apk_www`).
-- Use `gh api` (REST); GraphQL e secrets são bloqueados pelo proxy.
-- Commits: `git -c user.name="Claude" -c user.email="noreply@anthropic.com" commit` com as linhas de atribuição que o sistema indicar.
+### Publicar (toda versão)
+1. Testar.
+2. Seção `## vNNN` no fim do `GUIA-CLAUDE.md` (o que mudou + nome do teste).
+3. `sed -i 's/A versão atual é a v[0-9]*\./A versão atual é a vNNN./g' COMECE-AQUI.md`
+4. `git checkout -- ferramentas/ia/__pycache__` e `git add -A ferramentas www worker GUIA-CLAUDE.md COMECE-AQUI.md` (+ `.github` se mexeu).
+5. Commit com `git -c user.name="Claude" -c user.email="noreply@anthropic.com" commit` (+ as linhas de atribuição que o sistema mandar).
+6. Push: `for i in 1 2 3 4; do git push -q origin HEAD:main && break; git pull -q --rebase origin main; sleep 15; done`. Se reclamar "repository moved": `git remote set-url origin https://github.com/Denilsonserr/Fui-do-templo-a-PK-2.git`.
+- A Cloudflare publica **site + worker** sozinha em ~2–4 min (`wrangler.jsonc`: worker `worker/index.js`, pasta `www`, banco D1 `furia`). **Mexeu no worker? teste no servidor local antes** — erro no worker derruba o jogo de todos.
+- `apk.yml` gera o APK leve (não precisa rodar a cada versão).
 
 ### Servidor (Cloudflare Worker + D1)
-- `worker/index.js` imita a API REST do Firestore que o jogo usa: `POST /fs/v1/projects/furia-do-templo/databases/(default)/documents/torre[?documentId=ID]` (cria; 409 = ID já existe = "uso único") e `.../documents:runQuery` (fieldFilter + orderBy + limit). Só cria e consulta, nunca apaga.
-- Ferramentas: `/fs-admin/count` e `/fs-admin/stats` (jogadores, contas, online, hoje). O workflow `status.yml` testa tudo.
-- O sandbox do Claude não acessa a internet do jogo: dispare workflows (`gh api -X POST repos/Denilsonserr/Fui-do-templo-a-PK-2/actions/workflows/ARQUIVO.yml/dispatches -f ref=main`) e leia o log do job.
-- **Contas:** nome + senha, saves `sv_*` assinados com HMAC da senha (o jogo inteiro do aparelho vai em `d`). Senha esquecida → código de uso único com `rec:'<nome>'` (v298). Conta que só existe no Firebase antigo é buscada lá no ENTRAR (v312).
-- **Pendente:** importar do Firebase antigo (contas, códigos usados, títulos, perfis, mercado e o RANK de cada conta) com `importar.yml` — só funciona depois das 05:00 de Brasília (limite do Firebase) e o worker aceita importação só até 11/11/2026 15:00.
+- `worker/index.js` imita a API REST do Firestore: `POST .../documents/torre?documentId=ID` (cria; **409 = já existe** = é assim que funciona "uso único") e `.../documents:runQuery` (UM fieldFilter + orderBy + limit). Nunca apaga nem edita doc.
+- **v557: `latestBy:'campo'`** no runQuery = devolve só o doc MAIS NOVO de cada valor desse campo (que tenha o campo do orderBy). Usado nos rankings PVP (`pva`) e Rank Geral (`nome`, campo da temporada `rp2`), porque cada partida cria um doc novo e 2–3 jogadores enchiam o limite.
+- Respostas muito grandes dão erro 429 ("too many"): use limit baixo para docs pesados (saves `sv_*` ≤ 60).
+- Contas: nome + senha; save `sv_*` (o localStorage inteiro em `d`), id da conta = `sha256('furia|acc|'+nome.toLowerCase().trim()).slice(0,24)`. Rota `/fs/sv-antes?acc=&t=` = último save antes do horário t.
+- **O sandbox do Claude NÃO acessa o site.** Para olhar dados reais, dispare workflows do GitHub e leia o log:
+  `gh api -X POST repos/Denilsonserr/Fui-do-templo-a-PK-2/actions/workflows/ARQUIVO.yml/dispatches -f ref=main -f 'inputs[x]=...'` → depois `gh api .../actions/runs/ID/logs` (zip).
+  - `consulta.yml` (query livre: input `q` = structuredQuery JSON, `campos`) — o mais útil.
+  - `uso.yml` (uso do servidor + erros do jogo), `status.yml`, `conta.yml` (save/anéis de uma conta), `aneishist.yml`, `mercado.yml`, `suspeita.yml`/`suspeita2.yml` (gemas/itens suspeitos, compras grandes com o nome do comprador), `torretop.yml`, `pvtop.yml`, `leilao.yml`.
 
-### O que existe hoje (v319)
-- **Menu:** Batalha Aventura (= Modos de Jogo), Batalha Treino, História 🔒, Configuração, 👤 Conta.
-- **Modos de Jogo:** Modo Boss (Broly / Yuta do evento), Torre, **Caçador** (Lobo Negro, 10 níveis), Gacha (padrão, Yuta, **Shaka ilimitado**), Passivas (Joias Negras), Mercado Negro, Abas de Evento, Passe de Batalha, Ranking, Recompensas, Conquistas, Biblioteca (personagens, **anéis**, equipamentos, itens, coleções), Perfil (perfil + histórico, todo mundo vê).
-- **Ranks:** Madeira 0 → Bronze 1000 → Prata 2500 → Ouro 5000 → Diamante 9000 → Lendário 15000 → Dragão Lendário 23000 → Divindade 35000 → Divindade Suprema 50000 → Divindade Celestial 70000 → Deus Celestial 100000.
-- **Caça:** cada nível vencido = baú com anel 100% (anel por cor/nota: branco, amarelo, roxo, preto, vermelho; notas E…SSS) + loot (gemas até 500 por caçada, pedras das almas, set do lobo); SAIR E GUARDAR depois de cada nível; ranking da Caça (5 abas) e títulos da Caça; poções valem.
-- **Anéis da alma:** 8 espaços por personagem (1 a cada 10 níveis); aparecem **no chão, um dentro do outro, em volta do personagem em pé** (desenhados em SVG, o mais raro por fora) em todas as telas e no perfil público.
-- **Shaka:** personagem secreto (gacha ilimitado), itens próprios (Elmo, Armadura, Luvas, Botas, Rosário) ~40–50% mais fortes que os do Yuta, títulos Nº1–10.
-- **Eventos:** `RKEVX` (XP/gemas/sorte/drop por horário), evento ao vivo da Caça `CEV` (v315), torneio da Torre, passe.
-- **Proteções:** mochila cheia não apaga item secreto/único; item secreto não vende; luta não trava (loop com try/catch) e manda erro para o servidor (`er_*`); letras de luta não roubam o teclado das caixas de texto.
+### O que existe no jogo hoje (v565)
+- **Personagens (19):** míticos Sung, Yuta, Naruto, Madara, Garou; ilimitado/secreto **Shaka** (nível 70); lendários Goku, Aokiji, Zoro, Broly, Vegeta, Gogeta, Gojo, Luffy, Rengoku; épicos Aylla, Zedry, Zaykon, Qingqing (`RK_MIT/RK_LEG/RK_EPI`, `LVMAX`: mítico 50, lendário 40, épico 30).
+- **Modos:** Ranqueada (Boss; temporada 2, XP em `rp2`), **PVP Ranqueado** (estrelas, divisões, campeões com título e bônus, `pvStep`), Torre (ranking de TEMPO; o tempo não conta travadinha/câmera lenta/animações), Caça, Desafio, **Portais** (E…S; dungeon de 10 salas: Urso na 5, Igris na 10; **portal S = RAID DAS FORMIGAS** com chefe **BERU** que se adapta à força do jogador), **Torneio do Mais Forte** (Sung imortal no lugar do boss do Yuta, 3 min, quarta 19h → sábado), Gacha, Passe de Batalha, Mercado Negro, Leilão.
+- **Sung:** Sistema do Jogador (níveis, atributos, missões), sombras **Urso (C), Igris (A), Beru (S — a mais forte, 1% no Beru)**.
+- **Anéis da alma:** cores branco→amarelo→roxo→preto→vermelho→**dourado** (c=5, notas até **SP**, passivas esq/cmb/vamp/fur) → **DIVINO** (c=6, só do ADM, status ∞). Soma com retorno decrescente na luta (`anDR`); velocidade com teto (`SPDCAP`). Anel dourado SP não vende no mercado.
+- **Passivas (Encantamento):** joias negras (giros), raridades até **Divina** e **Primordial** (a mais forte: ORIGEM DE TUDO); Joia Divina/Primordial garantida só por código.
+- **Mercado Negro (v546):** vender = anúncio; **comprar = PEDIDO que o ADM aprova** (botão ✅ APROVAR só para o ADM, confere se o comprador voltou o save); **10% de toda venda vai para o ADM**; item comprado nunca é descartado com a mochila cheia.
+- **Anti-trapaça:** anti-volta-de-save (`act_*`, `actCheck`, punição com multa e bloqueio do mercado); punição do van hohenheim (v545).
+- **Rankings (tela nova v519):** Rank Geral (XP), Mais Rico, Maior Status, Dano no Broly, Mais Rápido, 1ª Fase; ADM aparece como "#0 · RANK ∞ · fora da disputa".
+- **Códigos:** `TWCUP[hash]={nm, ...}` + campos tratados em wrappers de `twCupom`: `uni:1` (1 pessoa no jogo todo), `acc:1`/`ev:1` (1 por conta/aparelho), `rgsp:[[stat,stat2,passiva],...]` (anel dourado SP), `rg`, `rgq` (anel PEGADINHA: aparece, não funciona), `rgbox`, `jn` (joias negras), `jpx`/`jdx` (Joia Primordial/Divina), `jpo/jpq` (Origem de Tudo real/pegadinha), `pdq` (pedras das almas), `bp:2,s2:1,x2:1` (passe 2X), `pbo` (evento pessoal), `gem`, `chb` (caixa de personagem). Exemplos e testes: `ferramentas/testes/tcod_*.js`.
+- **Eventos:** `RKEVX` = lista `[início, fim, multXP, nome, {gem,luck,drop,anel}, tag]` (o primeiro que vale agora ganha). Bônus pessoais entram como entrada com tag no começo da lista (`pb`, `vn`, `vn4`). Drops do jogo inteiro ×0,6 (`rkDropK`, v556); evento 2x até 22/11 23:59.
+- **ADM (Denilson ADM):** todos os personagens no nível máximo, 10 anéis divinos, XP ∞, **imortal** (personagem e sombra), entra em tudo, aprova o mercado.
+- **Celular fraco (v558):** gráfico escolhido pelo aparelho e desce sozinho se travar.
 
-### Pendências
-- Rodar `importar.yml` depois das 05:00 de 11/11 e contar para o dono quantas contas e ranks voltaram.
-- O dono pode mandar: mais bestas (3 antes de novos modos), regras do modo Soul Land, mais personagens.
-- O histórico completo, versão por versão, está em `GUIA-CLAUDE.md`.
+---
 
-## v461 — Sung pronto pro lançamento
-- Forma: um pouco abaixo do Shaka (vel 1.78, dano ×.97, dano recebido ×1.03); golpes ~2.3× mais rápidos; espada/brilho ROXOS (sjPurp troca só os pixels azuis) + raios roxos.
-- Passivas: 1º golpe sofrido bloqueado (pose espada no chão); a cada 3 acertos teleporta pra trás + TAPA DO MONARCA; ≤50% vida = sobrevivência (+20% dano/vel); <20% = modo sangue (+10% vida, 1×/round).
-- Sistema até nv 100 (SJMX); anéis do Sung = min(7, nv/10).
-- TANK mais agressivo (alcance 330, defende ×.55, contra-ataca). Sombras +25% dano e +30% velocidade.
-- Itens do Monarca: valores das peças do Shaka; no Sung +50% (set completo +60%), nos outros 50%. Sombra ganha METADE do bônus (25%/30% dos valores) × nível da sombra (nv1 30% … máx 100%). Ícones novos com rachaduras vermelhas (personagens/sung/itens/rachaduras.py) + brilho vermelho pulsando.
-- Testes: tsung_passivas_v461.js, tsung_itens_v461.js.
+## PARTE 3 — COMO CRIAR UM PERSONAGEM NOVO (próximo: GOKU INSTINTO SUPERIOR)
 
-## v462 — Título MONARCA Nº1–10 (10 primeiros a pegar o Sung)
-- Servidor: torre/sjtit_N (create-only, 409 = já tem dono). Pendente offline: rk_sjtp. Tenta ao pegar o Sung (rkMegaSJ) e ao abrir o menu.
-- Bônus de dano lutando com o Sung (Boss, Torre, Caça, Portais): Nº1 +30, Nº2 +25, Nº3 +20, Nº4 +18 … Nº10 +6 (SJTB). Nº1 e Nº2 acima do Shaka (+20).
-- Visual: borda roxa girando, fumaça preta subindo, Nº1 com texto brilhando; janela própria (sjTitWin). Cuidado: classes .a/.b/.c são globais (anel dourado) — usei .sa/.sb/.sc.
-- Teste: tsung_titulo_v462.js.
+### O que pedir ao dono (não começar antes de "mandei tudo")
+1. **Folhas de poses** (PNG, fundo liso branco ou verde, cada folha = 1 animação em fila): parado, andar, correr/dash, soco (combo), chute, especial/ki, tomando golpe, caindo/nocaute, defesa, pulo. Quanto mais quadros, melhor.
+2. **Rosto quadrado** (retrato), **corpo inteiro** (VS/perfil/gacha) e, se tiver, **botões/HUD**.
+3. **Vídeos** (sem som): transformação e ultimate.
+4. **Regras dele escritas do jeito dele**: raridade, nível máximo, velocidade, dano, passivas, transformação, ultimate, como se pega (gacha/código/evento), preço/chance/garantia.
+5. Guardar as regras em `ferramentas/personagens/<nome>/REGRAS.md` (modelo: `ferramentas/personagens/shaka/REGRAS.md`).
 
-## v463 — Gacha do Sung mais difícil + RESET do Sung
-- Sung: 0,03% por giro (sorte não conta) e garantia: número secreto por jogador entre 190 e 210 giros (rk_sjTg). Peças do Monarca: cada uma entre 170 e 300 (rk_sjTgI).
-- Reset 1× por jogador (rk_rs463): quem tinha o Sung perde Sung, peças do Monarca (menos a Manopla do passe) e título MONARCA Nº; recebe 80 💎 × giros do banner do Sung no histórico desde 09:00 (mín. 1.600). Aviso ao abrir o menu (rk_rs463m).
-- Títulos do servidor recomeçam: documentId agora é torre/sjtit2_N. Histórico passa a guardar o banner (campo b).
-- Teste: tsung_reset_v463.js.
-- v463c: quem tem CONTA e foi resetado recebe tickets e diamantes de volta como estavam no último save antes das 09:00 (rota nova do worker /fs/sv-antes?acc=&t= ; assinatura conferida no jogo com acFind). Nunca tira: fica o maior valor (agora × save antigo). 1 vez (rk_rs463b). Teste: tsung_reset_save_v463.js (usa o worker de verdade no servidor local).
+### Caminho que funcionou (Sung v421–v470, Yuta, Shaka)
+1. Pasta `ferramentas/personagens/<nome>/` com `poses/01..NN` (folhas do dono), `recebido/`, `videos/`.
+2. **Recorte:** script `seg_<sid>.py` (tira o fundo, separa os quadros de cada folha → `work/cut`). Modelos: `ferramentas/personagens/sung/seg_sj.py`, `shaka/seg_sk.py`, `ferramentas/portais/npc/cortar.py` (para monstros/sombras, `cortar_v555.py` do Beru).
+3. **Build:** `build_<sid>.py` (escala, nitidez, salva webp em `www/a/` com nome = hash, gera `build/<sid>.json` com quadros `{s,w,h,ax,ay}` por animação) e `imgs_<sid>.py` (retrato, ícone, corpo inteiro → `build/imgs.json`).
+4. **Patch** `ferramentas/web/extra/9z_<nome>.py` (modelo **`9y_sung.py`**): cria a entrada em `CH` (`{sid,id,name,cn,energy,...}`), `SPRH.<sid>` (quadros), `PTH`/`FULLIMG`/`loadImg` (imagens), `ROS` (descrição na tela de VS), listas de sids de alta resolução, e liga a lógica de golpes.
+5. **Lógica nova** (passivas, transformação, ultimate, aura) no fim do `rk.js`, com wrappers (`startTransform`, `updTrans`, `applyHit`, `update`, `drawSprite`...).
+6. Primeiro só no **MODO TESTE do ADM** (painel 🧪, lista `Object.keys(CH)`), depois entra no gacha/listas (`RK_MIT/RK_LEG/...`, `rkRar`, `LVMAX`).
+7. Teste Playwright (`tsung_v421.js` é um bom modelo) + prints para o dono aprovar antes de liberar.
 
-## v464 — VOLTA NO TEMPO antes do Sung (15/11 10:48)
-- 1× por jogador (rk_rs464): tira Sung, peças do Monarca (menos Manopla) e título MONARCA Nº; zera contadores. Títulos no servidor: sjtit3_N.
-- Com conta (rk_rs464b, assíncrono): último save antes das 09:00 (/fs/sv-antes) → 💎 e 🎫 = maior entre o save e (agora − devolução antiga rk_rs463g); personagens = os do save.
-- Sem conta: +80 💎 por giro do histórico com b='mit'. Aviso "VOLTAMOS NO TEMPO" ao abrir o menu (rk_rs464m).
-- Gacha: Sung garantido em 250; escondido: 0 até 100 giros, 0,2% de 101-150, depois sobe +0,093%/giro (mediana ~183, metade entre 168 e 200). Peças: 0,3%, garantia 200.
-- SJREL = 11:00 Brasília (14:00Z). Contagem no topo da tela de início (#sjCdT). Teste: tsung_volta_v464.js.
-
-## v465 — Portais às 12:00 + códigos da atualização (textos só com o dono)
-- PTREL = 15/11 12:00 Brasília (15:00Z).
-- Códigos (1× por aparelho/conta): 26vofv = 1.000–5.000 💎 · 1l10mju = anel rank S PRETO ou VERMELHO · 4brzfl = PASSE PAGO · nupno9 = PASSE 2X (premium + todos os prêmios em dobro, menos a Caixa V2 de Virgem; o.x2 no rk_bp, selo ⚡ PASSE 2X).
-- Teste: C1..C4=<códigos> node ferramentas/testes/tcodigos_v465.js.
-- v466: MANOPLA DO MONARCA (só passe pago, nível 20): dano 100 · def 70 · crít 70 · vel 60 · status 50; vale 100% em qualquer personagem (Sung +50/60%); brilho dourado.
-- v467: quem tem título de ADMINISTRADOR (twIsAdm) entra nos Portais antes das 12:00 (PT0 recua 3h só para ele; às 12:00 volta ao horário de todos). Teste: tportais_adm_v467.js.
-- v468: espaço próprio do COLAR ('col'): mochila (RKSLOT, aba 📿) e tela Equipamentos (LBSLE: colar no desenho do colar em cima; espada e poção descem). Colar das Sombras virou t:'col' (migra do espaço do anel). Teste: tcolar_v468.js.
-- v469: TIRADO o tingimento roxo dos quadros do Sung (wrapper de drawSprite/spriteImg da v461) — ele apagava os efeitos de energia azul/roxo dos golpes (camada S.b). Raios roxos da forma continuam.
-- v470: Sung — combo Dança das Sombras com 11 golpes + finalizador forte (extra/9z_v470.py); combo a cada 2 s; +15% de dano (sem a sombra); DASH teleporta atrás do inimigo e atordoa 0,5 s (recarga 1 s); a passiva do tapa a cada 3 golpes não conta/interrompe mais o combo (era isso que cortava o combo em ~5 golpes). Teste: tsung_v470.js.
-- v471: 2º código do PASSE 2X (hash swnp7u, texto só com o dono).
-
-## v472 — Dungeon dos Portais: NPCs do dono, chefes Urso e Igris, sombras
-- Artes: ferramentas/portais/npc (recebido/, cortar.py → npc.json; refs.py → retratos). Cada folha é normalizada pela altura do 1º quadro (tabela POSE).
-- Motor novo "pn" (pnInit/pnStep/pnDraw, por cima do bs dos lobos): DEMÔNIO DE CHAMA e CEIFADOR, cores roxo/vermelho/branco (PNV), AURA de nível BRANCA<AZUL<PRETA<VERMELHA (PNL: dano/vida/velocidade). Batem sem parar, kb ≤ 2 (não empurram). Até 2 LOBOS SOMBRIOS por sala (pretos, sem combo).
-- Morreu → cai PÓ e às vezes 💎 (mais no rank alto). Sala comum SEM baú; baú só no chefe (+ chance de peça do Monarca 0,3% E … 3% S).
-- Chefes: sala 5/15/25… URSO DAS SOMBRAS (3 vidas, renasce com a animação de erguer); 1ª vitória com Sung = sombra TANK rank C (rk_urso). Sala 10/20… IGRIS (forte/rápido, não trava apanhando); sombra IGRIS rank A por chance: E .2 · D .5 · C 1 · B 2 · A 3,5 · S 5 %.
-- Tela "ERGA-SE!" (pnShWin) com EQUIPAR AGORA. Sung SEM sombra do urso até vencer o Urso (sjSys filtra 'tank' sem rk_urso).
-- IGRIS sombra (SJSH.igris, rank A): igsTick/igsDraw — aura do Monarca, combo longo, crítico 35%, teleporta atrás de quem ataca o Sung e derruba, segura especial (metade do dano).
-- Testes: tportal_npc_v472.js, tigris_sombra_v472.js.
-
-## v473 — correções do portal + Igris OP + fim no Igris + portais desenhados
-- BUG golpe infinito no fim da sala: o inimigo "parado" (hyIdle) era um NPC novo e continuava atacando invisível → bsStep só usa pnStep se !f.hyIdle (e ele volta a ficar na frente, então o jogador anda de frente).
-- Igris chefe: recorte do golpe refeito (cortar.py com ONLY=ig_golpe e filtro de pedaços do vizinho; quadros 4,5,13 tirados), menor (sc .78), muito rápido, AUTO COMBO em sequência, PASSIVAS (banner na entrada): armadura −30%, lâmina fantasma (projétil a cada 3 combos), passo sombrio (teleporte), contra-golpe 20%, fúria <50%.
-- Dungeon NÃO é infinita: Urso na sala 5, IGRIS na 10 → matou o Igris = baú + chance da sombra → fim do portal ("PORTAL CONCLUÍDO"), espera o próximo.
-- Portais do dono (E…S) em ferramentas/portais (recebido/portais_ranks.png, cortar_portais.py → portais_rank.json = PTRI): tela VERSUS e, durante a procura, os próximos portais aparecem na tela "EM BREVE".
-- Teste: tportal_v473.js.
-
-## v474 — NPCs batendo de verdade + rank S demora + sem anel + sem pulo ao atravessar
-- BUG GRANDE: os golpes em sequência (seq) dos NPCs não tinham alcance (A.rg) → caixa NaN → nunca acertavam. Agora rg padrão 340 (pesado 380). Contador PNST (__pn.st) mostra tentativas/acertos.
-- Demônio/Ceifador: mais rápidos, combos em sequência, armadura (62%+8%/nível de não parar ao apanhar), revidam no meio do apanho, resistência ~1 s depois de atordoar.
-- Rank: vida ×1,3 E … ×3,6 S (chefe A/S ×1,6), dano ×0,55 E … ×1,45 S (PTHP/PTDM); mais monstros por sala e mais vivos ao mesmo tempo.
-- Dungeon sem anel (só o futuro anel de 1 milhão de anos). Recompensa "ANÉIS" virou "PÓ E 💎".
-- Atravessando para a próxima sala (HY.gate) o analógico não faz pular (updFighter com inp.up=false).
-- Igris rank S mata um Sung sem itens parado em ~4 s. Teste: tportal_v474.js.
-
-## v475 — ANEL DOURADO (1 milhão a 10 milhões de anos)
-- Cor nova c=5 (ANC/ANV/ANMX/ANRP/AUC/ANFL + ícone RQA.anel2[5] = referência do dono em ferramentas/aneis). Nota nova "SP" (g=8). Valores = dobro do vermelho, com bônus pela idade, + 1 atributo extra (r.s2, metade do valor).
-- Notas (anGold): E 34 · D 26 · C 18 · B 11 · A 6 · S 3,2 · SS 1,2 · SSS 0,45 · SP 0,05 %.
-- Passiva só no SP (r.p): esquiva 15% · combo+ (golpes extras dourados, 40% por acerto, auto combo 11→~15/16) · vampiro 5% · fúria +25% abaixo de 50%.
-- Visual: mandala dourada com centro vermelho; SSS/SP com raios dourados piscando e brilho maior; aura do chão = raios vermelhos + dourados.
-- Drop SÓ no baú do chefe do Portal: Igris E .35 · D .6 · C 1 · B 1,5 · A 2,5 · S 4 % (Urso: metade). Teste: tanel_dourado_v475.js.
-- v476: código ADM (hash 1tr2s9s, texto só com o dono): 1 anel DOURADO SSS de Sorte, 5 milhões de anos (só título ADM, 1 por conta).
-- v477: anel dourado com o MESMO desenho/efeitos do vermelho, só em dourado (ANGOLD troca as cores do SVG e da aura; ícone = anel vermelho pintado de dourado a/4ed53f66c18b34). Sem a mandala da referência e sem vermelho junto.
-- v478: código ADM (hash qaceh2, texto só com o dono): Sung no nível 100 do Sistema + 5 pontos por nível que faltava (só título ADM, 1 por conta).
-
-## v479 — TEMPORADA 2 da Ranqueada + eventos (15/11 14:15 → 17/11 23:59)
-- Ranqueada do zero: rk_rp → 0 (antigo em rk_rpS1, 1× por aparelho, rk_s2). Ranking do servidor da T2 usa campos rp2/dmg2/tw2/t1w2 (rkOQ/rkSend novos); TEMP.id=2.
-- Fim da T1 (t1Reward, 1×, rk_s2rw): lê o ranking antigo (campo rp, docs antes de T2INI) → títulos brilhantes T1: CAMPEÃO (1º, 15.000 💎 + 20 🎫) · VICE (2º, 10.000) · 3º LUGAR (7.500) · TOP 10 (4.000 + 10 🎫) · GUERREIRO (todo mundo que jogou, 1.500 + 5 🎫). Janela "FIM DA TEMPORADA 1".
-- Eventos: 3x EM TUDO (RKEVX: XP, gemas, sorte, drop, anel) · EVENTO DO PASSE (BPEV e2: missões extras + 3x XP) · 2x SOMBRA (essência ×2 e chance da sombra do Igris ×2).
-- Teste: ttemporada2_v479.js.
-- v480: BUG Igris "não descia": vida/defesa vinham da Hidra × rank (dano ficava em 9-17%, Igris S com 684 mil = ~140 mil golpes). Agora fixo por rank (PTB): Igris E 250 … S 900 golpes básicos, Urso 120…430 por vida, monstros 10…38 × aura. Sung Sistema 100 sem itens: em 20 s o Igris E perde 83% e o S 23%. Teste: tportal_vida_v480.js. (Obs.: nos testes não use vida 1e9 no jogador — o HUD trava.)
-- v481: 3º código do PASSE 2X (hash edzhx5, texto só com o dono).
-- v482: código ADM (hash 18cu6rr, texto só com o dono): 6 anéis DOURADOS SP (1 de cada atributo, 10 milhões de anos, passivas esq/cmb/vamp/fur) + 50.000 joias negras (rk_ps.jn).
-- v483: recompensas de RANK por temporada: a lista do que já foi pego (rwc2/rwc) era da T1 e travava a T2 → zera 1× (rk_rws2); aviso ao abrir o menu se tem prêmio de rank pendente. Teste: trank_rw_v483.js.
-- v484: CONTA EM 2 APARELHOS (duplicava gemas): sem botão 'MANTER ESTE APARELHO' — se a conta tem save mais novo, este aparelho não salva e carrega o da conta (contagem de 5 s). Confere a cada 60 s e salva logo após gastar gemas/tickets. Teste: tconta2_v484.js.
-- v485: não perder progresso trocando de aparelho: salva a cada 30 s se mudou; confere save mais novo ao voltar para o jogo; antes de carregar o da conta o aparelho manda CÓPIA (doc bk_, 1 por estado); na CONTA botão '📦 RECUPERAR PROGRESSO' lista cópias de até 3 dias e restaura (o jogador mesmo). Teste: tconta2_v484.js.
-- v486: código de uso ÚNICO no jogo inteiro (hash slolnn, texto só com o dono): 10.000 💎 + anel vermelho SSS (atributo aleatório) para quem avisou do bug das 2 contas.
-- v487: girar passiva x1 / x5 / x10 / x20 (lista de escolha ordenada da melhor p/ pior); código ADM (hash nwnyuf, texto só com o dono): 1.000 de cada Pedra das Almas.
-- v488: missões — Torre nova agora conta no passe (andares, lutas, completar torre) e no Sistema do Sung (vitórias); 'Invoque sombras' vira 'Vença lutas com o Sung' para quem não é Necromante ou está sem sombra.
-- v489: TORNEIO THE BEST na Torre (15/11 20:00–21:00): 1º anel dourado S + 10.000 💎 + título THE BEST (arte do dono, arco-íris, +30% dano/+20% crit/+20% sorte/+20% drop/+10% anel na Caça); 2º vermelho SSS + 5.000; 3º vermelho SS + 3.000.
-- v490: Torneio THE BEST recomeça 20:30–21:30 (ranking novo) e é igual para todos: andar 1, ULTRA (sem bônus nenhum), risco normal, mesmos bosses/cenários; só conta subida começada no torneio.
-- v491: Torre no torneio — depois de cair e começar de novo, a subida nova voltava para o andar 1 ao passar de andar (marca do torneio era apagada 3 s depois do fim). Corrigido; teste ttorre_fluxo_v491 sobe os 11 andares.
-- v492: código ADM de uso único (hash 1yvb5ld, texto só com o dono): 1 anel dourado S.
-- v493: o código do anel dourado S (1yvb5ld) agora vale para qualquer jogador (1 pessoa só), não só ADM.
+### GOKU INSTINTO SUPERIOR — o que já dá para adiantar
+- Já existe o **Goku normal**: `CH.goku` (sid `gk`, lendário, nível 40). Decidir com o dono:
+  - **(a) personagem NOVO separado** (ex.: id `goku_ui`, sid novo `gu`, provavelmente MÍTICO e no gacha/evento), ou
+  - **(b) transformação do Goku** que já existe (forma "Instinto Superior").
+  Pelo jeito que ele falou ("o próximo personagem"), o mais provável é **(a)**, mas confirme.
+- Ideia natural para o Instinto Superior (só sugerir; **as regras quem decide é o dono**): esquiva automática (o Shaka já tem esquiva na forma de olhos abertos — dá para reaproveitar), muito rápido, aura prateada/azul-clara, contra-ataque.
+- Não usar arte de jogo comercial. As artes vêm do dono.
+- Antes de começar: abra `GUIA-CLAUDE.md` nas seções do **Sung (v421–v470)** e do **Shaka (v280+)**, que são os exemplos mais completos de personagem com transformação, ultimate em vídeo, gacha, itens e títulos.

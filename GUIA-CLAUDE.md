@@ -2268,6 +2268,100 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - Ganchos de teste `window.__pt` (now, list, start, R, HY, log, next, clear). Teste `ferramentas/testes/tportais_v460.js`.
 - v461: passivas do Sung (applyHit/update/spriteKey). NÃO mexer na imagem dos quadros do Sung (S.b = efeitos de energia; v469 desfez o roxo), sjShBonus = bônus dos itens na sombra.
 
+<!-- histórico v461–v493 movido do COMECE-AQUI.md em 20/11/2026 -->
+## v461 — Sung pronto pro lançamento
+- Forma: um pouco abaixo do Shaka (vel 1.78, dano ×.97, dano recebido ×1.03); golpes ~2.3× mais rápidos; espada/brilho ROXOS (sjPurp troca só os pixels azuis) + raios roxos.
+- Passivas: 1º golpe sofrido bloqueado (pose espada no chão); a cada 3 acertos teleporta pra trás + TAPA DO MONARCA; ≤50% vida = sobrevivência (+20% dano/vel); <20% = modo sangue (+10% vida, 1×/round).
+- Sistema até nv 100 (SJMX); anéis do Sung = min(7, nv/10).
+- TANK mais agressivo (alcance 330, defende ×.55, contra-ataca). Sombras +25% dano e +30% velocidade.
+- Itens do Monarca: valores das peças do Shaka; no Sung +50% (set completo +60%), nos outros 50%. Sombra ganha METADE do bônus (25%/30% dos valores) × nível da sombra (nv1 30% … máx 100%). Ícones novos com rachaduras vermelhas (personagens/sung/itens/rachaduras.py) + brilho vermelho pulsando.
+- Testes: tsung_passivas_v461.js, tsung_itens_v461.js.
+
+## v462 — Título MONARCA Nº1–10 (10 primeiros a pegar o Sung)
+- Servidor: torre/sjtit_N (create-only, 409 = já tem dono). Pendente offline: rk_sjtp. Tenta ao pegar o Sung (rkMegaSJ) e ao abrir o menu.
+- Bônus de dano lutando com o Sung (Boss, Torre, Caça, Portais): Nº1 +30, Nº2 +25, Nº3 +20, Nº4 +18 … Nº10 +6 (SJTB). Nº1 e Nº2 acima do Shaka (+20).
+- Visual: borda roxa girando, fumaça preta subindo, Nº1 com texto brilhando; janela própria (sjTitWin). Cuidado: classes .a/.b/.c são globais (anel dourado) — usei .sa/.sb/.sc.
+- Teste: tsung_titulo_v462.js.
+
+## v463 — Gacha do Sung mais difícil + RESET do Sung
+- Sung: 0,03% por giro (sorte não conta) e garantia: número secreto por jogador entre 190 e 210 giros (rk_sjTg). Peças do Monarca: cada uma entre 170 e 300 (rk_sjTgI).
+- Reset 1× por jogador (rk_rs463): quem tinha o Sung perde Sung, peças do Monarca (menos a Manopla do passe) e título MONARCA Nº; recebe 80 💎 × giros do banner do Sung no histórico desde 09:00 (mín. 1.600). Aviso ao abrir o menu (rk_rs463m).
+- Títulos do servidor recomeçam: documentId agora é torre/sjtit2_N. Histórico passa a guardar o banner (campo b).
+- Teste: tsung_reset_v463.js.
+- v463c: quem tem CONTA e foi resetado recebe tickets e diamantes de volta como estavam no último save antes das 09:00 (rota nova do worker /fs/sv-antes?acc=&t= ; assinatura conferida no jogo com acFind). Nunca tira: fica o maior valor (agora × save antigo). 1 vez (rk_rs463b). Teste: tsung_reset_save_v463.js (usa o worker de verdade no servidor local).
+
+## v464 — VOLTA NO TEMPO antes do Sung (15/11 10:48)
+- 1× por jogador (rk_rs464): tira Sung, peças do Monarca (menos Manopla) e título MONARCA Nº; zera contadores. Títulos no servidor: sjtit3_N.
+- Com conta (rk_rs464b, assíncrono): último save antes das 09:00 (/fs/sv-antes) → 💎 e 🎫 = maior entre o save e (agora − devolução antiga rk_rs463g); personagens = os do save.
+- Sem conta: +80 💎 por giro do histórico com b='mit'. Aviso "VOLTAMOS NO TEMPO" ao abrir o menu (rk_rs464m).
+- Gacha: Sung garantido em 250; escondido: 0 até 100 giros, 0,2% de 101-150, depois sobe +0,093%/giro (mediana ~183, metade entre 168 e 200). Peças: 0,3%, garantia 200.
+- SJREL = 11:00 Brasília (14:00Z). Contagem no topo da tela de início (#sjCdT). Teste: tsung_volta_v464.js.
+
+## v465 — Portais às 12:00 + códigos da atualização (textos só com o dono)
+- PTREL = 15/11 12:00 Brasília (15:00Z).
+- Códigos (1× por aparelho/conta): 26vofv = 1.000–5.000 💎 · 1l10mju = anel rank S PRETO ou VERMELHO · 4brzfl = PASSE PAGO · nupno9 = PASSE 2X (premium + todos os prêmios em dobro, menos a Caixa V2 de Virgem; o.x2 no rk_bp, selo ⚡ PASSE 2X).
+- Teste: C1..C4=<códigos> node ferramentas/testes/tcodigos_v465.js.
+- v466: MANOPLA DO MONARCA (só passe pago, nível 20): dano 100 · def 70 · crít 70 · vel 60 · status 50; vale 100% em qualquer personagem (Sung +50/60%); brilho dourado.
+- v467: quem tem título de ADMINISTRADOR (twIsAdm) entra nos Portais antes das 12:00 (PT0 recua 3h só para ele; às 12:00 volta ao horário de todos). Teste: tportais_adm_v467.js.
+- v468: espaço próprio do COLAR ('col'): mochila (RKSLOT, aba 📿) e tela Equipamentos (LBSLE: colar no desenho do colar em cima; espada e poção descem). Colar das Sombras virou t:'col' (migra do espaço do anel). Teste: tcolar_v468.js.
+- v469: TIRADO o tingimento roxo dos quadros do Sung (wrapper de drawSprite/spriteImg da v461) — ele apagava os efeitos de energia azul/roxo dos golpes (camada S.b). Raios roxos da forma continuam.
+- v470: Sung — combo Dança das Sombras com 11 golpes + finalizador forte (extra/9z_v470.py); combo a cada 2 s; +15% de dano (sem a sombra); DASH teleporta atrás do inimigo e atordoa 0,5 s (recarga 1 s); a passiva do tapa a cada 3 golpes não conta/interrompe mais o combo (era isso que cortava o combo em ~5 golpes). Teste: tsung_v470.js.
+- v471: 2º código do PASSE 2X (hash swnp7u, texto só com o dono).
+
+## v472 — Dungeon dos Portais: NPCs do dono, chefes Urso e Igris, sombras
+- Artes: ferramentas/portais/npc (recebido/, cortar.py → npc.json; refs.py → retratos). Cada folha é normalizada pela altura do 1º quadro (tabela POSE).
+- Motor novo "pn" (pnInit/pnStep/pnDraw, por cima do bs dos lobos): DEMÔNIO DE CHAMA e CEIFADOR, cores roxo/vermelho/branco (PNV), AURA de nível BRANCA<AZUL<PRETA<VERMELHA (PNL: dano/vida/velocidade). Batem sem parar, kb ≤ 2 (não empurram). Até 2 LOBOS SOMBRIOS por sala (pretos, sem combo).
+- Morreu → cai PÓ e às vezes 💎 (mais no rank alto). Sala comum SEM baú; baú só no chefe (+ chance de peça do Monarca 0,3% E … 3% S).
+- Chefes: sala 5/15/25… URSO DAS SOMBRAS (3 vidas, renasce com a animação de erguer); 1ª vitória com Sung = sombra TANK rank C (rk_urso). Sala 10/20… IGRIS (forte/rápido, não trava apanhando); sombra IGRIS rank A por chance: E .2 · D .5 · C 1 · B 2 · A 3,5 · S 5 %.
+- Tela "ERGA-SE!" (pnShWin) com EQUIPAR AGORA. Sung SEM sombra do urso até vencer o Urso (sjSys filtra 'tank' sem rk_urso).
+- IGRIS sombra (SJSH.igris, rank A): igsTick/igsDraw — aura do Monarca, combo longo, crítico 35%, teleporta atrás de quem ataca o Sung e derruba, segura especial (metade do dano).
+- Testes: tportal_npc_v472.js, tigris_sombra_v472.js.
+
+## v473 — correções do portal + Igris OP + fim no Igris + portais desenhados
+- BUG golpe infinito no fim da sala: o inimigo "parado" (hyIdle) era um NPC novo e continuava atacando invisível → bsStep só usa pnStep se !f.hyIdle (e ele volta a ficar na frente, então o jogador anda de frente).
+- Igris chefe: recorte do golpe refeito (cortar.py com ONLY=ig_golpe e filtro de pedaços do vizinho; quadros 4,5,13 tirados), menor (sc .78), muito rápido, AUTO COMBO em sequência, PASSIVAS (banner na entrada): armadura −30%, lâmina fantasma (projétil a cada 3 combos), passo sombrio (teleporte), contra-golpe 20%, fúria <50%.
+- Dungeon NÃO é infinita: Urso na sala 5, IGRIS na 10 → matou o Igris = baú + chance da sombra → fim do portal ("PORTAL CONCLUÍDO"), espera o próximo.
+- Portais do dono (E…S) em ferramentas/portais (recebido/portais_ranks.png, cortar_portais.py → portais_rank.json = PTRI): tela VERSUS e, durante a procura, os próximos portais aparecem na tela "EM BREVE".
+- Teste: tportal_v473.js.
+
+## v474 — NPCs batendo de verdade + rank S demora + sem anel + sem pulo ao atravessar
+- BUG GRANDE: os golpes em sequência (seq) dos NPCs não tinham alcance (A.rg) → caixa NaN → nunca acertavam. Agora rg padrão 340 (pesado 380). Contador PNST (__pn.st) mostra tentativas/acertos.
+- Demônio/Ceifador: mais rápidos, combos em sequência, armadura (62%+8%/nível de não parar ao apanhar), revidam no meio do apanho, resistência ~1 s depois de atordoar.
+- Rank: vida ×1,3 E … ×3,6 S (chefe A/S ×1,6), dano ×0,55 E … ×1,45 S (PTHP/PTDM); mais monstros por sala e mais vivos ao mesmo tempo.
+- Dungeon sem anel (só o futuro anel de 1 milhão de anos). Recompensa "ANÉIS" virou "PÓ E 💎".
+- Atravessando para a próxima sala (HY.gate) o analógico não faz pular (updFighter com inp.up=false).
+- Igris rank S mata um Sung sem itens parado em ~4 s. Teste: tportal_v474.js.
+
+## v475 — ANEL DOURADO (1 milhão a 10 milhões de anos)
+- Cor nova c=5 (ANC/ANV/ANMX/ANRP/AUC/ANFL + ícone RQA.anel2[5] = referência do dono em ferramentas/aneis). Nota nova "SP" (g=8). Valores = dobro do vermelho, com bônus pela idade, + 1 atributo extra (r.s2, metade do valor).
+- Notas (anGold): E 34 · D 26 · C 18 · B 11 · A 6 · S 3,2 · SS 1,2 · SSS 0,45 · SP 0,05 %.
+- Passiva só no SP (r.p): esquiva 15% · combo+ (golpes extras dourados, 40% por acerto, auto combo 11→~15/16) · vampiro 5% · fúria +25% abaixo de 50%.
+- Visual: mandala dourada com centro vermelho; SSS/SP com raios dourados piscando e brilho maior; aura do chão = raios vermelhos + dourados.
+- Drop SÓ no baú do chefe do Portal: Igris E .35 · D .6 · C 1 · B 1,5 · A 2,5 · S 4 % (Urso: metade). Teste: tanel_dourado_v475.js.
+- v476: código ADM (hash 1tr2s9s, texto só com o dono): 1 anel DOURADO SSS de Sorte, 5 milhões de anos (só título ADM, 1 por conta).
+- v477: anel dourado com o MESMO desenho/efeitos do vermelho, só em dourado (ANGOLD troca as cores do SVG e da aura; ícone = anel vermelho pintado de dourado a/4ed53f66c18b34). Sem a mandala da referência e sem vermelho junto.
+- v478: código ADM (hash qaceh2, texto só com o dono): Sung no nível 100 do Sistema + 5 pontos por nível que faltava (só título ADM, 1 por conta).
+
+## v479 — TEMPORADA 2 da Ranqueada + eventos (15/11 14:15 → 17/11 23:59)
+- Ranqueada do zero: rk_rp → 0 (antigo em rk_rpS1, 1× por aparelho, rk_s2). Ranking do servidor da T2 usa campos rp2/dmg2/tw2/t1w2 (rkOQ/rkSend novos); TEMP.id=2.
+- Fim da T1 (t1Reward, 1×, rk_s2rw): lê o ranking antigo (campo rp, docs antes de T2INI) → títulos brilhantes T1: CAMPEÃO (1º, 15.000 💎 + 20 🎫) · VICE (2º, 10.000) · 3º LUGAR (7.500) · TOP 10 (4.000 + 10 🎫) · GUERREIRO (todo mundo que jogou, 1.500 + 5 🎫). Janela "FIM DA TEMPORADA 1".
+- Eventos: 3x EM TUDO (RKEVX: XP, gemas, sorte, drop, anel) · EVENTO DO PASSE (BPEV e2: missões extras + 3x XP) · 2x SOMBRA (essência ×2 e chance da sombra do Igris ×2).
+- Teste: ttemporada2_v479.js.
+- v480: BUG Igris "não descia": vida/defesa vinham da Hidra × rank (dano ficava em 9-17%, Igris S com 684 mil = ~140 mil golpes). Agora fixo por rank (PTB): Igris E 250 … S 900 golpes básicos, Urso 120…430 por vida, monstros 10…38 × aura. Sung Sistema 100 sem itens: em 20 s o Igris E perde 83% e o S 23%. Teste: tportal_vida_v480.js. (Obs.: nos testes não use vida 1e9 no jogador — o HUD trava.)
+- v481: 3º código do PASSE 2X (hash edzhx5, texto só com o dono).
+- v482: código ADM (hash 18cu6rr, texto só com o dono): 6 anéis DOURADOS SP (1 de cada atributo, 10 milhões de anos, passivas esq/cmb/vamp/fur) + 50.000 joias negras (rk_ps.jn).
+- v483: recompensas de RANK por temporada: a lista do que já foi pego (rwc2/rwc) era da T1 e travava a T2 → zera 1× (rk_rws2); aviso ao abrir o menu se tem prêmio de rank pendente. Teste: trank_rw_v483.js.
+- v484: CONTA EM 2 APARELHOS (duplicava gemas): sem botão 'MANTER ESTE APARELHO' — se a conta tem save mais novo, este aparelho não salva e carrega o da conta (contagem de 5 s). Confere a cada 60 s e salva logo após gastar gemas/tickets. Teste: tconta2_v484.js.
+- v485: não perder progresso trocando de aparelho: salva a cada 30 s se mudou; confere save mais novo ao voltar para o jogo; antes de carregar o da conta o aparelho manda CÓPIA (doc bk_, 1 por estado); na CONTA botão '📦 RECUPERAR PROGRESSO' lista cópias de até 3 dias e restaura (o jogador mesmo). Teste: tconta2_v484.js.
+- v486: código de uso ÚNICO no jogo inteiro (hash slolnn, texto só com o dono): 10.000 💎 + anel vermelho SSS (atributo aleatório) para quem avisou do bug das 2 contas.
+- v487: girar passiva x1 / x5 / x10 / x20 (lista de escolha ordenada da melhor p/ pior); código ADM (hash nwnyuf, texto só com o dono): 1.000 de cada Pedra das Almas.
+- v488: missões — Torre nova agora conta no passe (andares, lutas, completar torre) e no Sistema do Sung (vitórias); 'Invoque sombras' vira 'Vença lutas com o Sung' para quem não é Necromante ou está sem sombra.
+- v489: TORNEIO THE BEST na Torre (15/11 20:00–21:00): 1º anel dourado S + 10.000 💎 + título THE BEST (arte do dono, arco-íris, +30% dano/+20% crit/+20% sorte/+20% drop/+10% anel na Caça); 2º vermelho SSS + 5.000; 3º vermelho SS + 3.000.
+- v490: Torneio THE BEST recomeça 20:30–21:30 (ranking novo) e é igual para todos: andar 1, ULTRA (sem bônus nenhum), risco normal, mesmos bosses/cenários; só conta subida começada no torneio.
+- v491: Torre no torneio — depois de cair e começar de novo, a subida nova voltava para o andar 1 ao passar de andar (marca do torneio era apagada 3 s depois do fim). Corrigido; teste ttorre_fluxo_v491 sobe os 11 andares.
+- v492: código ADM de uso único (hash 1yvb5ld, texto só com o dono): 1 anel dourado S.
+- v493: o código do anel dourado S (1yvb5ld) agora vale para qualquer jogador (1 pessoa só), não só ADM.
+
 ## v494 — Evento dos Portais: RANK S garantido a cada 30 min + 2x sorte do Igris
 - `PTSE` = 16/11 08:00 → 17/11 00:00 (Brasília). O 1º ciclo que abre em cada meia hora (:00/:30) tem um portal S garantido (`PTGS[i]`, wrappers de ptNow/ptList; global, igual para todos). Medido: S abre a cada 15–39 min (fora do evento ~2 em 21 ciclos). Igris: chance da sombra ×2. Faixa vermelha na tela dos Portais com "próximo em ~N min".
 - Teste: `ferramentas/testes/tportal_s_v494.js`.
