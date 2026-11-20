@@ -15824,6 +15824,21 @@ async function beClaim(){const nm=String(twLS.g('tw_nome','')||'?').slice(0,16),
   roll()}}
 try{Object.assign(window.__pvT||{},{beReward:()=>pnBossReward({pn:{k:'be'}}),beClaim:()=>beClaim()})}catch(e){}
 
+/* v571: SUPER EVENTO PESSOAL por código (3 h, só para quem usou): 5x XP DE RANK, 5x ESTRELAS no PVP, 2x FORÇA (dano), 2x CRÍTICO, 2x VELOCIDADE + anel dourado SP.
+   rk_pb5 {e:fim}. XP via entrada pessoal no RKEVX (tag 'pb5'); estrelas via pvStep; dano/crítico via rkApply; velocidade via speedMul (fora do teto dos anéis). */
+TWCUP['yxllzo']={nm:'⚡ SUPER EVENTO PESSOAL 3H + 💍 ANEL SP',it:[],uni:1,pb5:3,rgsp:[['dano','crit','fur']],msg:'✅ SUPER EVENTO PESSOAL ATIVADO por 3 HORAS (só para você): 📈 5x XP de rank · ⭐ 5x ESTRELAS no PVP · ⚔️ 2x FORÇA · 🎯 2x CRÍTICO · 💨 2x VELOCIDADE + 💍 ANEL DOURADO SP no nível máximo (⚔️ Dano + 🎯 Crítico)!'};
+const pb5On=()=>{const B=rkG('pb5',null);return !!(B&&B.e>Date.now())};
+function pb5Apply(){for(let i=RKEVX.length-1;i>=0;i--)if(RKEVX[i][5]==='pb5')RKEVX.splice(i,1);const B=rkG('pb5',null),t=Date.now();if(!B||!(B.e>t))return;
+  const base=RKEVX.find(e=>t>=e[0]&&t<e[1]&&e[5]!=='sx'&&e[5]!=='pb5')||null;RKEVX.unshift([t-1000,base?Math.min(B.e,base[1]):B.e,(base?base[2]:1)*5,'⚡ SUPER EVENTO 5x XP · 5x ESTRELAS · 2x FORÇA · 2x CRÍTICO · 2x VELOCIDADE'+(base?' + '+base[3]:''),Object.assign({},base&&base[4]||{}),'pb5'])}
+setTimeout(pb5Apply,1800);setInterval(pb5Apply,20000);
+{const _cp=twCupom;twCupom=async function(code,E){const C=TWCUP[twHash(String(code).toUpperCase())];const r=await _cp.apply(this,arguments);
+  try{if(C&&C.pb5&&r!==false&&E&&/\bok\b/.test(E.className||'')){const B=rkG('pb5',null),t=Date.now();rkS('pb5',{e:Math.max(t,B&&B.e||0)+C.pb5*3600e3});pb5Apply();try{localStorage.removeItem('ac_h');acSave(1)}catch(e){}if(C.msg)E.textContent=C.msg}}catch(e){}return r}}
+{const _s=pvStep;pvStep=function(o,won){const r=_s.apply(this,arguments);try{if(won&&pb5On()&&r&&r.gain>0){const x=r.gain*4;for(let i=0;i<x;i++){if(o.t>=PVDIV){o.s++;continue}o.s++;if(o.s>=pvNeed(o.t)){o.s=0;if(o.d<2)o.d++;else{o.t++;o.d=0}}}
+  if(o.t>o.bt||o.t===o.bt&&o.d>o.bd){o.bt=o.t;o.bd=o.d}r.gain+=x;r.up=o.t>r.b.t||o.t===r.b.t&&o.d>r.b.d}}catch(e){}return r}}
+{const _ra=rkApply;rkApply=function(){const r=_ra.apply(this,arguments);try{const p=G.p&&G.p[0];if(p&&!p.cpu&&pb5On()&&p._pb5V!==p.tdm){p.tdm=(p.tdm||1)*2;p.tcr=(p.tcr||0)*2+5;p._pb5V=p.tdm}}catch(e){}return r}}
+{const _sm=speedMul;speedMul=function(f){const r=_sm.apply(this,arguments);try{if(f&&G.p&&f===G.p[0]&&!f.cpu&&pb5On())return r*2}catch(e){}return r}}
+try{Object.assign(window.__pvT||{},{pb5On:()=>pb5On(),spM:f=>speedMul(f)})}catch(e){}
+
 function twTrofList(){const tc=twLS.g('tw_tc',{}),run={};for(const t of TW.tr)run[t.k]=(run[t.k]||0)+1;
   twModal(`<div class="twM"><h3>🎖️ TROFÉUS</h3><div class="twTL">${Object.keys(TWTR).map(k=>{const T=TWTR[k];return `<div class="${tc[k]||run[k]?'got':''}"><i>${T.i}</i><b>${T.n}</b><span>${T.d}</span><em>+${T.p} 🏆</em><small>${run[k]?'nesta subida: '+run[k]+' · ':''}total: ${(tc[k]||0)}</small></div>`}).join('')}</div>
     <p class="twH">Cada troféu soma pontos 🏆 no ranking. Quem sobe mais andares fica na frente; empate = mais troféus, depois menos tempo.</p><div class="row"><button class="btn" id="twTx">FECHAR</button></div></div>`);
@@ -16015,7 +16030,7 @@ window.__dbg={mus:()=>[MCUR,MEL.src.split('/').pop()],stg:()=>STAGE.key,prepMatc
 })();
 </script>
 <style>#updB{position:fixed;left:50%;top:max(8px,env(safe-area-inset-top));transform:translateX(-50%);z-index:99999;padding:10px 22px;border-radius:14px;border:2px solid #fff3c0;background:linear-gradient(#ffd84a,#e08a10);color:#3a1d00;font:900 15px system-ui,sans-serif;box-shadow:0 0 18px #ffb21f;cursor:pointer;animation:updP 1s ease-in-out infinite alternate}@keyframes updP{to{transform:translateX(-50%) scale(1.05)}}</style>
-<script>(function(){const V='5d57762ad42b';if(!/^https?:/.test(location.protocol))return;let nv=null;
+<script>(function(){const V='c74b2e787424';if(!/^https?:/.test(location.protocol))return;let nv=null;
 function show(){if(document.getElementById('updB'))return;try{if(typeof G!=='undefined'&&G.mode==='fight')return}catch(e){}const b=document.createElement('button');b.id='updB';b.textContent='🔄 ATUALIZAÇÃO NOVA! Toque para atualizar';
   b.onclick=()=>{b.textContent='⏳ Atualizando...';try{acSave(1)}catch(e){}setTimeout(()=>location.reload(),900)};document.body.appendChild(b)}
 async function chk(){if(document.hidden)return;if(nv){show();return}try{const r=await fetch('versao.txt?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const t=(await r.text()).trim();if(/^[0-9a-f]{8,40}$/.test(t)&&t!==V){nv=t;show()}}catch(e){}}

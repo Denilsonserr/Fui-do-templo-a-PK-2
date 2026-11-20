@@ -7259,3 +7259,18 @@ async function beClaim(){const nm=String(twLS.g('tw_nome','')||'?').slice(0,16),
   if(Date.now()>=BEG0&&!adm){beClaim().then(n=>{if(n)beGive(n);else roll()}).catch(()=>roll());return}
   roll()}}
 try{Object.assign(window.__pvT||{},{beReward:()=>pnBossReward({pn:{k:'be'}}),beClaim:()=>beClaim()})}catch(e){}
+
+/* v571: SUPER EVENTO PESSOAL por código (3 h, só para quem usou): 5x XP DE RANK, 5x ESTRELAS no PVP, 2x FORÇA (dano), 2x CRÍTICO, 2x VELOCIDADE + anel dourado SP.
+   rk_pb5 {e:fim}. XP via entrada pessoal no RKEVX (tag 'pb5'); estrelas via pvStep; dano/crítico via rkApply; velocidade via speedMul (fora do teto dos anéis). */
+TWCUP['yxllzo']={nm:'⚡ SUPER EVENTO PESSOAL 3H + 💍 ANEL SP',it:[],uni:1,pb5:3,rgsp:[['dano','crit','fur']],msg:'✅ SUPER EVENTO PESSOAL ATIVADO por 3 HORAS (só para você): 📈 5x XP de rank · ⭐ 5x ESTRELAS no PVP · ⚔️ 2x FORÇA · 🎯 2x CRÍTICO · 💨 2x VELOCIDADE + 💍 ANEL DOURADO SP no nível máximo (⚔️ Dano + 🎯 Crítico)!'};
+const pb5On=()=>{const B=rkG('pb5',null);return !!(B&&B.e>Date.now())};
+function pb5Apply(){for(let i=RKEVX.length-1;i>=0;i--)if(RKEVX[i][5]==='pb5')RKEVX.splice(i,1);const B=rkG('pb5',null),t=Date.now();if(!B||!(B.e>t))return;
+  const base=RKEVX.find(e=>t>=e[0]&&t<e[1]&&e[5]!=='sx'&&e[5]!=='pb5')||null;RKEVX.unshift([t-1000,base?Math.min(B.e,base[1]):B.e,(base?base[2]:1)*5,'⚡ SUPER EVENTO 5x XP · 5x ESTRELAS · 2x FORÇA · 2x CRÍTICO · 2x VELOCIDADE'+(base?' + '+base[3]:''),Object.assign({},base&&base[4]||{}),'pb5'])}
+setTimeout(pb5Apply,1800);setInterval(pb5Apply,20000);
+{const _cp=twCupom;twCupom=async function(code,E){const C=TWCUP[twHash(String(code).toUpperCase())];const r=await _cp.apply(this,arguments);
+  try{if(C&&C.pb5&&r!==false&&E&&/\bok\b/.test(E.className||'')){const B=rkG('pb5',null),t=Date.now();rkS('pb5',{e:Math.max(t,B&&B.e||0)+C.pb5*3600e3});pb5Apply();try{localStorage.removeItem('ac_h');acSave(1)}catch(e){}if(C.msg)E.textContent=C.msg}}catch(e){}return r}}
+{const _s=pvStep;pvStep=function(o,won){const r=_s.apply(this,arguments);try{if(won&&pb5On()&&r&&r.gain>0){const x=r.gain*4;for(let i=0;i<x;i++){if(o.t>=PVDIV){o.s++;continue}o.s++;if(o.s>=pvNeed(o.t)){o.s=0;if(o.d<2)o.d++;else{o.t++;o.d=0}}}
+  if(o.t>o.bt||o.t===o.bt&&o.d>o.bd){o.bt=o.t;o.bd=o.d}r.gain+=x;r.up=o.t>r.b.t||o.t===r.b.t&&o.d>r.b.d}}catch(e){}return r}}
+{const _ra=rkApply;rkApply=function(){const r=_ra.apply(this,arguments);try{const p=G.p&&G.p[0];if(p&&!p.cpu&&pb5On()&&p._pb5V!==p.tdm){p.tdm=(p.tdm||1)*2;p.tcr=(p.tcr||0)*2+5;p._pb5V=p.tdm}}catch(e){}return r}}
+{const _sm=speedMul;speedMul=function(f){const r=_sm.apply(this,arguments);try{if(f&&G.p&&f===G.p[0]&&!f.cpu&&pb5On())return r*2}catch(e){}return r}}
+try{Object.assign(window.__pvT||{},{pb5On:()=>pb5On(),spM:f=>speedMul(f)})}catch(e){}

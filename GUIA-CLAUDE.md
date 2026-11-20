@@ -2668,3 +2668,6 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 
 ## v570 — Beru 3% + 2 primeiros garantidos
 - Wrapper final de `pnBossReward` (k='be'): chance `BECH2=3%` (antes `BECH=1`). Depois de `BEG0` (20/11 17:20 Brasília), quem tem o Sung e não tem o Beru tenta pegar a vaga `berup_1`/`berup_2` no servidor (409 = tomada) → Beru garantido + banner "Nº N DO SERVIDOR"; sem vaga → chance normal. Sem Sung não gasta vaga; ADM não ocupa vaga. Teste `tberu2_v570.js` (servidor local).
+
+## v571 — código SUPER EVENTO PESSOAL 3 h + anel SP (uso único)
+- `TWCUP['yxllzo']` (`uni:1`, `pb5:3`, `rgsp:[['dano','crit','fur']]`). `rk_pb5 {e:fim}`; `pb5Apply` (tag pb5 no RKEVX, XP ×5 do base), `pvStep` (estrelas ×5), `rkApply` (tdm ×2, tcr ×2+5 — como o pbo, só onde o rkApply roda), `speedMul` ×2 no meu lutador (fora do SPDCAP). Teste `tcod_super5x_v571.js` (`COD=TEXTO`).
