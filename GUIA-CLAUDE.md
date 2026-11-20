@@ -2677,3 +2677,6 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - Leilão novo (`L2*`, botão "⚖️ LEILÃO DOS ANÉIS" no Mercado Negro): lances `l2_*` {lei:'2',lot,lv,t}, mínimo 50.000 💎, +1.000 por cima; 💎 presos/devolvidos como no v498 (`l2Settle`).
 - Fim: o ADM (`mnAdm`) vê "✅ APROVAR E ENTREGAR" → doc `l2ok_<lote>` {wu, wn, lv} (409 = já aprovado) e recebe os 💎 do vencedor (1 vez, `rk_l2P`). O vencedor (`l2Claim`, a cada 45 s) recebe o anel + mensagem.
 - Servidor guarda consultas 20 s: o maior lance pode demorar até 20 s para aparecer para os outros. Teste `tleilao_aneis_v572.js` (servidor local).
+
+## v573 — código 220.000 💎 (uso único)
+- `TWCUP['1vgo0kh']` (`uni:1`, `pk:{gem:220000}`). Texto só com o dono. Teste `tcod_gem220_v573.js` (`COD=TEXTO`).

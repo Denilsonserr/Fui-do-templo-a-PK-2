@@ -7353,3 +7353,6 @@ function l2Draw(){let M=document.getElementById('l2M');const t=Date.now();
 #l2M .leiBt{display:flex;flex-wrap:wrap;gap:4px}#l2M .leiIn{display:flex;gap:4px;margin-top:5px}#l2M .leiIn input{flex:1;min-width:0;background:#120c04;border:1px solid #8a6a20;border-radius:6px;color:#fff;font:800 13px var(--f-ui,sans-serif);padding:5px 7px}#l2M .btn{font-size:11px;padding:4px 8px}#l2M .leiWin,#l2W .leiWin{color:#7dff9a;font-weight:900}#l2M .btn:disabled{opacity:.5}#l2M .row,#l2W .row{display:flex;gap:10px;align-items:center;justify-content:center;margin-top:8px}#l2M .leiGem{color:#9fd0ff}#l2M .l2ap{margin-top:5px;width:100%;font-size:13px;padding:6px}
 .l2Btn{top:22%!important}`;document.head.appendChild(st)}
 try{Object.assign(window.__pvT||{},{l2:{open:()=>l2Open(),bid:(i,v)=>l2Bid(i,v),ap:i=>l2Aprova(i),settle:()=>l2Settle(),load:()=>l2Load(),give:i=>l2Give(L2L.find(q=>q.id===i)),E:()=>l2Esc()},anSum:id=>anSum(id)})}catch(e){}
+
+/* v573: código 220.000 💎 (uso único) */
+TWCUP['1vgo0kh']={nm:'💎 220.000 DIAMANTES',it:[],uni:1,pk:{gem:220000},msg:'✅ Você ganhou 💎 220.000 DIAMANTES!'};
