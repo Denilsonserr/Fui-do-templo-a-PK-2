@@ -7303,7 +7303,7 @@ let L2OK={};
 async function l2LoadOk(){try{await l2Load()}catch(e){return L2OK}L2OK=L2OKX;return L2OK}
 const l2Esc=()=>{const o=rkG('l2E',{});return o&&typeof o==='object'?o:{}};
 async function l2Settle(){if(Date.now()<L2T0)return;const E=l2Esc();if(!Object.keys(E).length)return;const B=await l2Load(),me=twUid(),end=Date.now()>=L2T1+8000;let ch=0,msg=[];
-  for(const id in E){const e=E[id],top=B[id];if(!e||!e.v||e.win)continue; /* v576: devolve NA HORA em que alguém cobre (para continuar dando lance) e no fim para quem não ganhou */
+  for(const id in E){const e=E[id],top=B[id];if(e&&e.win&&!end){delete e.win;ch=1} /* v582: quem ficou marcado como vencedor às 21:00 (versão velha) volta a disputar */if(!e||!e.v||e.win)continue; /* v576: devolve NA HORA em que alguém cobre (para continuar dando lance) e no fim para quem não ganhou */
     const lost=top&&top.uid!==me&&top.lv>e.v;if(lost||(end&&(!top||top.uid!==me))){rkAdd('gem',e.v);msg.push('💎 +'+rkFmtN(e.v)+(lost&&!end?' devolvidos: cobriram seu lance! Dê outro lance':' devolvidos (você não ganhou esse anel no leilão)'));delete E[id];ch=1}
     else if(end&&top&&top.uid===me){e.win=1;ch=1}}
   if(ch){rkS('l2E',E);try{acSave(1)}catch(e){}msg.forEach((m,i)=>setTimeout(()=>{try{rkToast(m,'#ffd84a')}catch(_){}},400+i*1800))}

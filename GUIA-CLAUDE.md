@@ -2711,4 +2711,4 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - `TWCUP['1oux84i']` (`uni:1`, `pk:{gem:270000}`). Texto só com o dono. Teste `tcod_gem270_v581.js` (`COD=TEXTO`).
 
 ## v582 — leilão dos anéis até 21:15
-- `L2T1` = 20/11 21:15 Brasília (antes 21:00).
+- `L2T1` = 20/11 21:15 Brasília (antes 21:00). `l2Settle` tira o `win` marcado antes do novo fim (quem abriu a versão velha às 21:00).
