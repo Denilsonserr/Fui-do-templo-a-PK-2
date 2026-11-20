@@ -72,7 +72,7 @@ async function usoFlush(db,force){if(!force&&US.req<200&&Date.now()-US.t<60000)r
    + contador de linhas lidas por tipo de consulta (/fs-admin/reads) para achar o que gasta mais. */
 const QC=new Map(),RD={t0:Date.now(),tot:0,by:{}};
 const qKey=q=>{const ff=q&&q.where&&q.where.fieldFilter;return ff?ff.field.fieldPath:'ob:'+(((q&&q.orderBy)||[])[0]||{field:{}}).field.fieldPath}
-const qTTL=k=>/^(sv|nome|nomeL|uid|cupom|rec)$/.test(k)?0:k==='ch'?8000:k==='lei'?2000:20000; /* v577: leilão quase ao vivo (2 s) — o maior lance aparece logo para todos */
+const qTTL=k=>/^(sv|nome|nomeL|uid|cupom|rec)$/.test(k)?0:k==='ch'?8000:k==='lei'||k==='lot'?2000:20000; /* v577: leilão quase ao vivo (2 s) — o maior lance aparece logo para todos */
 const scal=v=>{if(!v||typeof v!=='object')return null;if('stringValue' in v){const s=String(v.stringValue);return s.length<=200?{s}:null}
   if('integerValue' in v)return {n:Number(v.integerValue)};if('doubleValue' in v)return {n:Number(v.doubleValue)};if('booleanValue' in v)return {n:v.booleanValue?1:0};return null};
 const rid=()=>{const a='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789',b=crypto.getRandomValues(new Uint8Array(20));let s='';for(const x of b)s+=a[x%62];return s};

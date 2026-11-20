@@ -2699,3 +2699,7 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 
 ## v578 — +200.000 💎 para o título LOVE
 - `luvGift()` (8 s depois de abrir e a cada 1 min): se `twTits()` tem 'love' e não tem `rk_luvG` → +200.000 💎, marca `rk_luvG` (1 vez por conta). Teste `tluv_gemas_v578.js`.
+
+## v579 — leilão não mostrava os lances (correção)
+- No servidor de verdade a consulta `lei=='2'` dava 429 → `l2Load` voltava vazio ("Ainda sem lances") e o lance mínimo virava 50.000. Agora `l2Load` busca por `lot` (1 consulta por anel; traz os lances `lei:'2'` E a aprovação `l2ok`) com `l2Q` (fetch direto, sem a trava de 15 min do twFetchT). Falhou tudo → erro (lance recusado, settle não mexe). Worker: `qTTL('lot')` = 2 s.
+- Teste `tleilao_aneis_v579.js` (simula o 429 do `lei`).

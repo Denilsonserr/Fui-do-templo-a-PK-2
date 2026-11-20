@@ -7290,11 +7290,17 @@ const L2L=[{id:'lxa',x:'a',min:50000,nm:'💍 '+LXR.a.nm,d:'⚔️ +1000% DANO �
 function l2Give(L){const X=LXR[L.x];return anGive({i:Date.now().toString(36)+'lx'+Math.random().toString(36).slice(2,6),c:5,g:8,s:X.s,s2:X.s2,p:X.p,a:1e7,v:1000,l:ANMX[5],lx:L.x})}
 const l2On=()=>{const t=Date.now();return t>=L2T0&&t<L2T1};
 let L2B=null,L2TL=0;
-async function l2Load(){for(const k in RKQC)if(k.includes('"lei'))delete RKQC[k];let A=[];try{A=await rkQ('lei','2',3000)}catch(e){}const B={};
-  for(const x of A){const lv=+x.lv|0,t=+x.t||0;if(!x.lot||!lv||t>L2T1+5000)continue;const L=L2L.find(q=>q.id===x.lot);if(!L||lv<L.min)continue;const c=B[x.lot];if(!c||lv>c.lv||(lv===c.lv&&t<c.t))B[x.lot]={lv,uid:x.uid,nome:x.nome,t}}
+/* v579: no servidor a consulta por 'lei' dava 429 → ninguém via os lances. Agora busca por 'lot' (1 consulta por anel), que traz os lances E a aprovação do ADM. */
+let L2OKX={};
+/* consulta direta (sem a trava de 15 min do twFetchT quando QUALQUER consulta dá 429 — o leilão não pode parar por causa de ranking/chat) */
+async function l2Q(field,val,lim){const body={structuredQuery:{from:[{collectionId:'torre'}],where:{fieldFilter:{field:{fieldPath:field},op:'EQUAL',value:{stringValue:val}}},limit:lim||500}};
+  const r=await _twFetchT(TWURL+':runQuery?key='+TWFB.apiKey,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});if(!r.ok)throw new Error('http '+r.status);const j=await r.json(),o=[];
+  for(const x of (Array.isArray(j)?j:[])){const F=x&&x.document&&x.document.fields;if(!F)continue;const e={_ct:Date.parse(x.document.createTime||'')||0};for(const k in F){const v=F[k];e[k]=v.stringValue!=null?v.stringValue:v.integerValue!=null?+v.integerValue:v.doubleValue}o.push(e)}return o}
+async function l2Load(){let A=[],ok=0;const O={};for(const L of L2L){try{const R=await l2Q('lot',L.id,500);ok++;for(const x of R){if(x.l2ok==='1'){if(!O[L.id])O[L.id]=x}else A.push(x)}}catch(e){}}if(!ok)throw new Error('sem servidor');L2OKX=O;const B={};
+  for(const x of A){if(x.lei!=='2')continue;const lv=+x.lv|0,t=+x.t||0;if(!x.lot||!lv||t>L2T1+5000)continue;const L=L2L.find(q=>q.id===x.lot);if(!L||lv<L.min)continue;const c=B[x.lot];if(!c||lv>c.lv||(lv===c.lv&&t<c.t))B[x.lot]={lv,uid:x.uid,nome:x.nome,t}}
   L2B=B;L2TL=Date.now();return B}
 let L2OK={};
-async function l2LoadOk(){for(const k in RKQC)if(k.includes('"l2ok'))delete RKQC[k];let A=[];try{A=await rkQ('l2ok','1',50)}catch(e){return L2OK}const O={};for(const x of A)if(x.lot&&!O[x.lot])O[x.lot]=x;L2OK=O;return O}
+async function l2LoadOk(){try{await l2Load()}catch(e){return L2OK}L2OK=L2OKX;return L2OK}
 const l2Esc=()=>{const o=rkG('l2E',{});return o&&typeof o==='object'?o:{}};
 async function l2Settle(){if(Date.now()<L2T0)return;const E=l2Esc();if(!Object.keys(E).length)return;const B=await l2Load(),me=twUid(),end=Date.now()>=L2T1+8000;let ch=0,msg=[];
   for(const id in E){const e=E[id],top=B[id];if(!e||!e.v||e.win)continue; /* v576: devolve NA HORA em que alguém cobre (para continuar dando lance) e no fim para quem não ganhou */
@@ -7309,7 +7315,7 @@ function l2Win(got){const M=document.createElement('div');M.id='l2W';M.innerHTML
   <div class="leiG">${got.map(L=>`<div class="leiC me"><b>${L.nm}</b><p>${L.d}</p></div>`).join('')}</div><p class="leiH">Veja em ANÉIS DA ALMA.</p><div class="row"><button class="btn main" id="l2WX">OK</button></div></div>`;
   document.body.appendChild(M);try{rkSfx('powerUp')}catch(e){}document.getElementById('l2WX').onclick=()=>M.remove()}
 setTimeout(()=>{l2Settle().catch(()=>{})},6500);setInterval(()=>{const t=Date.now();if(t>=L2T0&&t<L2T1+7*864e5)l2Settle().catch(()=>{})},15000); /* v576: 15 s (antes 45 s) */
-async function l2Bid(id,v){const L=L2L.find(q=>q.id===id);if(!L||!l2On())return rkToast('O leilão não está aberto','#ff8080');try{await l2Load()}catch(e){};l2Draw();const top=L2B[id],need=top?top.lv+L2ST:L.min;
+async function l2Bid(id,v){const L=L2L.find(q=>q.id===id);if(!L||!l2On())return rkToast('O leilão não está aberto','#ff8080');try{await l2Load()}catch(e){return rkToast('Sem conexão com o leilão, tente de novo','#ff8080')};l2Draw();const top=L2B[id],need=top?top.lv+L2ST:L.min;
   if(top&&top.uid===twUid())return rkToast('Você já é o maior lance nesse anel','#9fd0ff');if(v<need)return rkToast('O lance mínimo agora é '+rkFmtN(need)+' 💎','#ff8080');
   const E=l2Esc(),old=(E[id]&&E[id].v)||0,pay=v-old;if(rkG('gem',0)<pay)return rkToast('Faltam diamantes (precisa de '+rkFmtN(pay)+' 💎)','#ff8080');
   rkAdd('gem',-pay);E[id]={v};rkS('l2E',E);try{acSave(1)}catch(e){}
