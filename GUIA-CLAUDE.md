@@ -2743,3 +2743,6 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 
 ## v589 — 3ª rodada do leilão: só 10 minutos
 - `L2T1` = 22:10 Brasília (22:00–22:10).
+
+## v590 — 2 códigos de anel dourado SP (uso único cada)
+- `TWCUP['8mhjtv']` (dano+crit, fúria) e `TWCUP['1monb4f']` (sorte+drop, fúria), `uni:1`. Textos só com o dono. Teste `tcod_aneis_v590.js` (`C1=... C2=...`).

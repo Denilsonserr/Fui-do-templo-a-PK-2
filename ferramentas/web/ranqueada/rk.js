@@ -7481,3 +7481,7 @@ l2Aprova=async function(id){if(!mnAdm())return;if(Date.now()<L2T1)return rkToast
   const Me=document.getElementById('l2Me');if(Me){const n=l3Need(L2B||{},null);Me.innerHTML='💎 SEUS DIAMANTES: <b>'+rkFmtN(rkG('gem',0))+'</b>'+(n?' · 🏆 você está ganhando lances que somam <b>'+rkFmtN(n)+'</b>':'')}}catch(e){}return r}}
 /* mais rápido: com a tela aberta consulta a cada 2 s */
 {const _o=l2Open;l2Open=function(){const r=_o.apply(this,arguments);const iv=setInterval(()=>{if(!document.getElementById('l2M')){clearInterval(iv);return}if(Date.now()-L2TL>1800)l2Load().then(()=>l2Draw()).catch(()=>{})},2000);return r}}
+
+/* v590: 2 códigos de anel dourado SP nível máximo (uso único cada) */
+TWCUP['8mhjtv']={nm:'💍 ANEL DOURADO SP (dano e crítico)',it:[],uni:1,rgsp:[['dano','crit','fur']],msg:'✅ Você ganhou 💍 ANEL DOURADO SP no nível máximo (⚔️ Dano + 🎯 Crítico)! Veja em ANÉIS DA ALMA.'};
+TWCUP['1monb4f']={nm:'💍 ANEL DOURADO SP (sorte e drop)',it:[],uni:1,rgsp:[['st','drop','fur']],msg:'✅ Você ganhou 💍 ANEL DOURADO SP no nível máximo (🍀 Sorte + 🎁 Drop)! Veja em ANÉIS DA ALMA.'};
