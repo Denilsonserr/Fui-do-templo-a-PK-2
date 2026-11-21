@@ -7485,3 +7485,6 @@ l2Aprova=async function(id){if(!mnAdm())return;if(Date.now()<L2T1)return rkToast
 /* v590: 2 códigos de anel dourado SP nível máximo (uso único cada) */
 TWCUP['8mhjtv']={nm:'💍 ANEL DOURADO SP (dano e crítico)',it:[],uni:1,rgsp:[['dano','crit','fur']],msg:'✅ Você ganhou 💍 ANEL DOURADO SP no nível máximo (⚔️ Dano + 🎯 Crítico)! Veja em ANÉIS DA ALMA.'};
 TWCUP['1monb4f']={nm:'💍 ANEL DOURADO SP (sorte e drop)',it:[],uni:1,rgsp:[['st','drop','fur']],msg:'✅ Você ganhou 💍 ANEL DOURADO SP no nível máximo (🍀 Sorte + 🎁 Drop)! Veja em ANÉIS DA ALMA.'};
+
+/* v591: código anel dourado SP nível máximo dano+crítico (uso único) */
+TWCUP['1kqojih']={nm:'💍 ANEL DOURADO SP (dano e crítico)',it:[],uni:1,rgsp:[['dano','crit','fur']],msg:'✅ Você ganhou 💍 ANEL DOURADO SP no nível máximo (⚔️ Dano + 🎯 Crítico)! Veja em ANÉIS DA ALMA.'};
