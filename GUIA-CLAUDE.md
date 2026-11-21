@@ -2753,3 +2753,6 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 ## v592 — títulos PILAR SUPREMO (Vini) e PATROCINADOR + códigos
 - `TWTIT.pilar` (vermelho, raios SVG piscando, `TBUF` +30 dano/def/vel/crit/st) e `TWTIT.patr` (dourado brilhante com ✦, +30 def/vel/crit/st, sem dano). Visual no wrapper de `pfTitH` (classes `pilT`/`patT`). Ambos `hid:1`.
 - `TWCUP['11r1khu']` (`uni:1`, título pilar) e `TWCUP['vfknfr']` (`uni:1`, título patr + anel PRETO SS sorte/drop + VERMELHO SSS dano/crit via `rg592`, + DOURADO SP sorte/drop via `rgsp`). Wrapper de `twCupom` com `tit592` dá o título e já coloca em uso. Textos só com o dono. Teste `ttitulos_v592.js` (`C1=... C2=...`).
+
+## v593 — código anel VERMELHO SSS dano+crítico (uso único)
+- Campo novo `rgx:[[cor,nota,s,s2]]` em códigos (anéis comuns no nível máximo, idade máxima). `TWCUP['15j3h6a']` (`uni:1`, `rgx:[[4,7,'dano','crit']]`). Texto só com o dono. Teste `tcod_sss_v593.js` (`COD=TEXTO`).

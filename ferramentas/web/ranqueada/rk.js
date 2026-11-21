@@ -7519,3 +7519,9 @@ TWCUP['vfknfr']={nm:'👑 TÍTULO PATROCINADOR + 3 ANÉIS',it:[],uni:1,tit592:'p
       anGive({i:id(),c:3,g:6,s:'st',s2:'drop',v:ANV[3][6],a:75000,l:ANMX[3]});anGive({i:id(),c:4,g:7,s:'dano',s2:'crit',v:ANV[4][7],a:100000,l:ANMX[4]})}
     try{localStorage.removeItem('ac_h');acSave(1)}catch(e){}if(C.msg)E.textContent=C.msg;try{twSfx('boom')}catch(e){}}}catch(e){}return r}}
 try{Object.assign(window.__pvT||{},{titH:t=>pfTitH(t,'x'),tb:k=>tbOf(k),anS:id=>anSum(id)})}catch(e){}
+
+/* v593: campo rgx:[[cor,nota,status,status2]] nos códigos = anéis comuns no nível máximo (idade máxima da cor). Código: anel VERMELHO SSS dano+crítico (uso único). */
+{const _cp=twCupom;twCupom=async function(code,E){const C=TWCUP[twHash(String(code).toUpperCase())];const r=await _cp.apply(this,arguments);
+  try{if(C&&C.rgx&&r!==false&&E&&/\bok\b/.test(E.className||'')){for(const [c,g,s,s2] of C.rgx)anGive({i:Date.now().toString(36)+Math.random().toString(36).slice(2,6),c,g,s,s2,v:ANV[c][g],a:c===4?100000:c===3?75000:0,l:ANMX[c]});
+    try{localStorage.removeItem('ac_h');acSave(1)}catch(e){}if(C.msg)E.textContent=C.msg}}catch(e){}return r}}
+TWCUP['15j3h6a']={nm:'💍 ANEL VERMELHO SSS (dano e crítico)',it:[],uni:1,rgx:[[4,7,'dano','crit']],msg:'✅ Você ganhou 💍 ANEL VERMELHO SSS no nível máximo (⚔️ Dano + 🎯 Crítico)! Veja em ANÉIS DA ALMA.'};
