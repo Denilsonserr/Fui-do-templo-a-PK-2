@@ -7246,6 +7246,8 @@ try{Object.assign(window.__pvT||{},{vn40Apply:()=>vn40Apply(),dropK:()=>rkDropK(
 /* v570: BERU — chance de extrair sobe de 1% para 3%; e os 2 PRIMEIROS do servidor que derrotarem o Beru no portal S depois de 20/11 17:20 (Brasília)
    pegam a sombra GARANTIDA (vaga no servidor: docs berup_1 / berup_2, 409 = vaga já tomada). Só conta quem tem o Sung e ainda não tem o Beru; o ADM não ocupa vaga. */
 const BECH2=3,BEG0=Date.UTC(2026,10,20,20,20);
+/* v596: evento até 21/11 23:59 (Brasília): 3x chance do Beru (3% → 9%) */
+const EVB=[Date.UTC(2026,10,21,23,0),Date.UTC(2026,10,22,2,59,59)],evbOn=t=>{t=t||Date.now();return t>=EVB[0]&&t<EVB[1]},beCh=()=>BECH2*(evbOn()?3:1);
 function beGive(n){const o=sjSys();if(o.sh.includes('beru'))return;o.sh.push('beru');sjSave(o);rkS('sjBe',1);try{acSave(1)}catch(e){}
   if(n)banner('VOCÊ É O Nº '+n+' DO SERVIDOR!','#ffe08a',130,'Beru garantido para os 2 primeiros');setTimeout(()=>pnShWin('beru'),n?2600:1400)}
 async function beClaim(){const nm=String(twLS.g('tw_nome','')||'?').slice(0,16),IV=v=>({integerValue:String(v)});
@@ -7253,8 +7255,8 @@ async function beClaim(){const nm=String(twLS.g('tw_nome','')||'?').slice(0,16),
     if(r.ok)return n;if(r.status!==409&&r.status!==403)return 0}return 0}
 {const _pb=pnBossReward;pnBossReward=function(d){if(!(d&&d.pn&&d.pn.k==='be'))return _pb.apply(this,arguments);const o=sjSys();
   if(o.sh.includes('beru')){banner('BERU FOI DERROTADO!','#d6a8ff',100,'você já tem a sombra dele');return}
-  if(!sjOwned()){if(Math.random()*100<BECH2)banner('A SOMBRA DE BERU SE MEXEU...','#b06bff',110,'mas só o SUNG pode extrair sombras');else banner('BERU FOI DERROTADO!','#d6a8ff',110,'a sombra não respondeu ('+BECH2+'% de chance)');return}
-  const roll=()=>{if(Math.random()*100<BECH2)beGive(0);else banner('BERU FOI DERROTADO!','#d6a8ff',110,'a sombra não respondeu ('+BECH2+'% de chance)')};
+  if(!sjOwned()){if(Math.random()*100<beCh())banner('A SOMBRA DE BERU SE MEXEU...','#b06bff',110,'mas só o SUNG pode extrair sombras');else banner('BERU FOI DERROTADO!','#d6a8ff',110,'a sombra não respondeu ('+beCh()+'% de chance)');return}
+  const roll=()=>{if(Math.random()*100<beCh())beGive(0);else banner('BERU FOI DERROTADO!','#d6a8ff',110,'a sombra não respondeu ('+beCh()+'% de chance)')};
   let adm=0;try{adm=mnAdm()}catch(e){}
   if(Date.now()>=BEG0&&!adm){beClaim().then(n=>{if(n)beGive(n);else roll()}).catch(()=>roll());return}
   roll()}}
@@ -7525,3 +7527,13 @@ try{Object.assign(window.__pvT||{},{titH:t=>pfTitH(t,'x'),tb:k=>tbOf(k),anS:id=>
   try{if(C&&C.rgx&&r!==false&&E&&/\bok\b/.test(E.className||'')){for(const [c,g,s,s2] of C.rgx)anGive({i:Date.now().toString(36)+Math.random().toString(36).slice(2,6),c,g,s,s2,v:ANV[c][g],a:c===4?100000:c===3?75000:0,l:ANMX[c]});
     try{localStorage.removeItem('ac_h');acSave(1)}catch(e){}if(C.msg)E.textContent=C.msg}}catch(e){}return r}}
 TWCUP['15j3h6a']={nm:'💍 ANEL VERMELHO SSS (dano e crítico)',it:[],uni:1,rgx:[[4,7,'dano','crit']],msg:'✅ Você ganhou 💍 ANEL VERMELHO SSS no nível máximo (⚔️ Dano + 🎯 Crítico)! Veja em ANÉIS DA ALMA.'};
+
+/* v596: EVENTO até 21/11 23:59 (Brasília): 3x BERU (chance 9%) · 2x ESTRELAS no PVP · 2x XP de rank — por cima do evento 2x que já está rolando. */
+function evbApply(){for(let i=RKEVX.length-1;i>=0;i--)if(RKEVX[i][5]==='evb')RKEVX.splice(i,1);const t=Date.now();if(!evbOn(t))return;
+  const base=RKEVX.find(e=>t>=e[0]&&t<e[1]&&e[5]!=='sx'&&e[5]!=='evb'&&e[5]!=='pb5'&&e[5]!=='vn40')||null;
+  RKEVX.push([t-1000,EVB[1],(base?base[2]:1)*2,'🐜 3x BERU · 2x ESTRELAS PVP · 2x XP'+(base?' + '+base[3]:''),Object.assign({},base&&base[4]||{}),'evb']);
+  /* fica DEPOIS das entradas pessoais (vn40/pb5) e ANTES do evento geral */const i=RKEVX.findIndex(e=>e[5]==='evb'),j=RKEVX.indexOf(base);if(base&&j<i){const e=RKEVX.splice(i,1)[0];RKEVX.splice(j,0,e)}}
+setTimeout(evbApply,1600);setInterval(evbApply,20000);
+{const _s=pvStep;pvStep=function(o,won){const r=_s.apply(this,arguments);try{if(won&&evbOn()&&r&&r.gain>0){const x=r.gain;for(let i=0;i<x;i++){if(o.t>=PVDIV){o.s++;continue}o.s++;if(o.s>=pvNeed(o.t)){o.s=0;if(o.d<2)o.d++;else{o.t++;o.d=0}}}
+  if(o.t>o.bt||o.t===o.bt&&o.d>o.bd){o.bt=o.t;o.bd=o.d}r.gain+=x;r.up=o.t>r.b.t||o.t===r.b.t&&o.d>r.b.d}}catch(e){}return r}}
+try{Object.assign(window.__pvT||{},{evbApply:()=>evbApply(),beCh:()=>beCh()})}catch(e){}

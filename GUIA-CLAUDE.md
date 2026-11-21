@@ -2772,3 +2772,6 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - Ki = TIRO TRIPLO (3 balas de uma vez em leque). Balas com `vy` e `big` em `aucFire`.
 - Bug da v594: `aucTick` saía cedo quando não tinha bala no ar → os golpes com arma não atiravam. Corrigido.
 - Teste `tal_v595.js`.
+
+## v596 — evento até 21/11 23:59: 3x Beru, 2x estrelas PVP, 2x XP
+- `EVB`/`evbOn`: `beCh()` = 9% do Beru (3x de `BECH2`); `evbApply` põe entrada `evb` no RKEVX com XP ×2 por cima do evento geral (fica antes dele); wrapper de `pvStep` dobra as estrelas. Teste `tevb_v596.js`.
