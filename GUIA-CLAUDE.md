@@ -2756,3 +2756,12 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 
 ## v593 — código anel VERMELHO SSS dano+crítico (uso único)
 - Campo novo `rgx:[[cor,nota,s,s2]]` em códigos (anéis comuns no nível máximo, idade máxima). `TWCUP['15j3h6a']` (`uni:1`, `rgx:[[4,7,'dano','crit']]`). Texto só com o dono. Teste `tcod_sss_v593.js` (`COD=TEXTO`).
+
+## v594 — ALUCARD etapa 1 (só no MODO TESTE do ADM)
+- Pasta `ferramentas/personagens/alucard/`: `poses/` (13 folhas do dono; a 13 = super combo numerado, os números foram apagados e a folha dividida em `13a`/`13b`), `referencia.jpg`, `seg_al.py` (recorte; folha 11 com colunas fixas `XB`), `build_al.py ai` (Real-ESRGAN → build/al_ai.json, ~10 min), `imgs_al.py` (retrato/ícone/corpo inteiro).
+- Patch `ferramentas/web/extra/9z_v594_alucard.py`: sid `al`, id `alucard`. Usa a lógica do Yuta (como o Sung): `isYt` vale para al; `isAuc(f)`. Fora do `ALLC` → só aparece no painel 🧪 TESTE. Sem Rika, sem o contra-ataque passivo do Yuta, transformação e ultimate = "EM BREVE".
+- Rápido (walk 7.4, super combo D=3). Soco: soco→soco→TIRO→chute alto (lança)→tiro pra cima; chutes com a arma; rasteira atirando. Golpes com arma (`AUC_GUN`: ujab3/ustr/usweep/uajab) disparam um TIRO (`aucFire`: projétil rápido com rastro vermelho, acerta de longe, `AUCB` atualizado no `aucTick` dentro do `ytTick`).
+- Ki (4 de ki) = rajada de 3 tiros de longe (`aucKiStep`, folha 03). Combo (botão I) = SUPER COMBO (folha 13, 16 quadros, 12 acertos + final 160).
+- Aura = chama do Gojo (GJAU) recolorida de VERMELHO (`aucRed`/`aucAura`), sempre ligada (fraca), forte carregando com raios vermelhos.
+- ATENÇÃO nomes: `ALB` já existia no jogo base (erro "already declared") → tudo do Alucard usa prefixo `auc`/`AUC`.
+- Teste: `ferramentas/testes/tal_v594.js` (jogador comum não vê o TESTE; ADM luta, tiros de 560 px acertam, super combo).
