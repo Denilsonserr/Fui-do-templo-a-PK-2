@@ -2775,3 +2775,6 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 
 ## v596 — evento até 21/11 23:59: 3x Beru, 2x estrelas PVP, 2x XP
 - `EVB`/`evbOn`: `beCh()` = 9% do Beru (3x de `BECH2`); `evbApply` põe entrada `evb` no RKEVX com XP ×2 por cima do evento geral (fica antes dele); wrapper de `pvStep` dobra as estrelas. Teste `tevb_v596.js`.
+
+## v597 — portal rank S a cada 10 min até 21/11 23:59
+- `PTS10`/`ptSEP(t)`: período do PTSE2 = 10 min (6e5) nessa janela, 20 min fora. Como cada ciclo de portal dura ~15–20 min (busca 5–10 + aberto 10), TODO ciclo tem rank S hoje. Faixa do evento mostra "A CADA 10 MIN". Teste `tportal10_v597.js`.

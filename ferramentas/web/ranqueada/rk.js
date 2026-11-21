@@ -7054,10 +7054,12 @@ const BECH=1; /* % de chance de extrair o Beru (Igris no rank S = 5%) */
 {const _sv=showVS;showVS=function(){const r=_sv.apply(this,arguments);try{if(HY.on&&ptRaid())setTimeout(()=>banner('🐜 RAID DAS FORMIGAS','#d6a8ff',150,'formigas por todo lado · o REI BERU espera na sala 10'),400)}catch(e){}return r}}
 /* evento: rank S a cada 20 min */
 const PTSE2=[Date.UTC(2026,10,19,18,0),Date.UTC(2026,10,27,2,59,59)],ptSE2=t=>{t=t||Date.now();return t>=PTSE2[0]&&t<PTSE2[1]};
+/* v597: hoje (21/11) até 23:59 o rank S vem a cada 10 min (todo ciclo de portal tem rank S); depois volta a cada 20 min */
+const PTS10=[Date.UTC(2026,10,21,23,40),Date.UTC(2026,10,22,2,59,59)],ptSEP=t=>{t=t||Date.now();return t>=PTS10[0]&&t<PTS10[1]?6e5:12e5};
 {const _pn=ptNow;ptNow=function(now){const N=_pn.apply(this,arguments);try{if(N&&N.i!=null&&(N.st==='busca'||N.st==='aberto')){const ini=N.st==='aberto'?N.ini:N.fim,s_i=(5+Math.floor(ptRnd(N.i,1)*6))*6e4,prev=ini-s_i-PTOPEN;
-  if(ptSE2(ini)&&Math.floor(ini/12e5)>Math.floor(prev/12e5)){PTGS[N.i]=true;if(N.L)N.L=ptList(N.i)}}}catch(e){}return N}}
-{const _ph2=ptH;ptH=function(){let h=_ph2.apply(this,arguments);try{if(ptSE2()){const N=ptNow(),g=N.i!=null&&PTGS[N.i];const nx=Math.ceil(Date.now()/12e5)*12e5,mm=Math.max(0,Math.ceil((nx-Date.now())/6e4));
-  h+=`<div class="ptSEv be">🐜 EVENTO RAID DAS FORMIGAS: PORTAL RANK S A CADA 20 MIN · sombra BERU (rank S)${g?` · <b>${N.st==='aberto'?'A RAID ESTÁ ABERTA AGORA!':'ESTE CICLO TEM RAID!'}</b>`:` · próxima em ~${mm} min`}</div>`}}catch(e){}return h}}
+  if(ptSE2(ini)&&Math.floor(ini/ptSEP(ini))>Math.floor(prev/ptSEP(ini))){PTGS[N.i]=true;if(N.L)N.L=ptList(N.i)}}}catch(e){}return N}}
+{const _ph2=ptH;ptH=function(){let h=_ph2.apply(this,arguments);try{if(ptSE2()){const N=ptNow(),g=N.i!=null&&PTGS[N.i];const PP=ptSEP(),nx=Math.ceil(Date.now()/PP)*PP,mm=Math.max(0,Math.ceil((nx-Date.now())/6e4));
+  h+=`<div class="ptSEv be">🐜 EVENTO RAID DAS FORMIGAS: PORTAL RANK S A CADA ${PP===6e5?'10':'20'} MIN · sombra BERU (rank S)${g?` · <b>${N.st==='aberto'?'A RAID ESTÁ ABERTA AGORA!':'ESTE CICLO TEM RAID!'}</b>`:` · próxima em ~${mm} min`}</div>`}}catch(e){}return h}}
 {const st=document.createElement('style');st.textContent=`.ptSl .ptRaid{position:absolute;left:0;right:0;top:auto;bottom:3%;text-align:center;font:900 .7em var(--f-ui,sans-serif)!important;color:#fff!important;background:linear-gradient(90deg,transparent,#3a0a6ad0,transparent);padding:.15em 0;text-shadow:0 0 .5em #b06bff,0 0 .2em #000,0 .1em .3em #000;letter-spacing:.02em;pointer-events:none;animation:ptRaidP 1.6s ease-in-out infinite}@keyframes ptRaidP{50%{transform:scale(1.07);text-shadow:0 0 .9em #c070ff,0 0 .2em #000}}.ptSEv.be{background:linear-gradient(90deg,#1c0636e8,#3c0c6ae8,#1c0636e8);border-color:#b06bff;color:#ecdcff;box-shadow:0 0 .8em #b06bff88}`;document.head.appendChild(st)}
 
 /* ---------- SOMBRA BERU (rank S) ---------- */
@@ -7537,3 +7539,5 @@ setTimeout(evbApply,1600);setInterval(evbApply,20000);
 {const _s=pvStep;pvStep=function(o,won){const r=_s.apply(this,arguments);try{if(won&&evbOn()&&r&&r.gain>0){const x=r.gain;for(let i=0;i<x;i++){if(o.t>=PVDIV){o.s++;continue}o.s++;if(o.s>=pvNeed(o.t)){o.s=0;if(o.d<2)o.d++;else{o.t++;o.d=0}}}
   if(o.t>o.bt||o.t===o.bt&&o.d>o.bd){o.bt=o.t;o.bd=o.d}r.gain+=x;r.up=o.t>r.b.t||o.t===r.b.t&&o.d>r.b.d}}catch(e){}return r}}
 try{Object.assign(window.__pvT||{},{evbApply:()=>evbApply(),beCh:()=>beCh()})}catch(e){}
+
+try{Object.assign(window.__pvT||{},{ptNow:t=>ptNow(t),ptGS:()=>PTGS})}catch(e){}
