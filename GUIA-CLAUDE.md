@@ -2721,3 +2721,6 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 ## v584 — leilão: 1ª rodada anulada + 2ª rodada 21:25–22:00
 - Lotes novos `lxa2` (REI DA FÚRIA, mínimo 500.000 💎) e `lxb2` (FORTUNA, mínimo 300.000 💎); `L2T0/L2T1` = 20/11 21:25 → 22:00 Brasília.
 - `l2Reset1` (1 vez por conta, `rk_l2rs1`): quem recebeu anel da 1ª rodada (`rk_l2R`) perde o anel (sai do `an` e do `anEq`) e recebe o lance de volta (`L2R1.lxa`=667.000 do Honrado); lances presos `lxa/lxb` voltam; o ADM devolve o que recebeu na aprovação (`rk_l2P.lxa` → −667.000). Teste `tleilao_rodada2_v584.js`.
+
+## v585 — 2ª rodada do leilão começa 21:40
+- `L2T0` = 20/11 21:40 Brasília (fim continua 22:00). Lances dados entre 21:25 e 21:40 continuam valendo.

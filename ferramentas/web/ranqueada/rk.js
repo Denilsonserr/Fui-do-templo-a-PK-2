@@ -7281,7 +7281,7 @@ try{Object.assign(window.__pvT||{},{pb5On:()=>pb5On(),spM:f=>speedMul(f)})}catch
 /* v574: pedido do dono — REI DA FÚRIA = 1000% em 3 status (dano, crítico e VELOCIDADE); FORTUNA = 1000 sorte + 1000% drop + 💎 +20% nos diamantes do farm. */
 const LXR={a:{nm:'ANEL DO LEILÃO · REI DA FÚRIA',s:'dano',s2:'crit',s3:'vel',p:'fur',ex:{},tx:'💨 Velocidade +1000% · 💥 a cada 10 golpes: ATAQUE x3 por 10 s (1 vez por luta)'},
   b:{nm:'ANEL DO LEILÃO · DEUSA DA FORTUNA',s:'st',s2:'drop',p:'vamp',ex:{},gem:.2,tx:'💎 +20% de diamantes no farm · 🍀 chance de DUPLICAR um item raro (1 vez por luta)'}};
-const L2T0=Date.UTC(2026,10,21,0,25),L2T1=Date.UTC(2026,10,21,1,0),L2ST=1000; /* v584: 2ª RODADA 21:25 → 22:00 (Brasília); 1ª rodada (20:00–21:15, lotes lxa/lxb) anulada */
+const L2T0=Date.UTC(2026,10,21,0,40),L2T1=Date.UTC(2026,10,21,1,0),L2ST=1000; /* v584: 2ª RODADA 21:25 → 22:00 (Brasília); 1ª rodada (20:00–21:15, lotes lxa/lxb) anulada */
 const L2L=[{id:'lxa2',x:'a',min:500000,nm:'💍 '+LXR.a.nm,d:'⚔️ +1000% DANO · 🎯 +1000% CRÍTICO · 💨 +1000% VELOCIDADE · 🔥 Fúria · 💥 10 golpes = ATAQUE x3 por 10 s (1x por luta)'},{id:'lxb2',x:'b',min:300000,nm:'💍 '+LXR.b.nm,d:'🍀 +1000% SORTE · 🎁 +1000% DROP · 💎 +20% DIAMANTES no farm · 🍀 chance de DUPLICAR item raro (1x por luta) · 🩸 Vampiro'}];
 /* status do anel: 2º status cheio (os outros dourados dão metade) + efeitos especiais */
 {const _s=anSum;anSum=function(id){const o=_s.apply(this,arguments);try{if(typeof tnUxOn==='function'&&tnUxOn())return o;const L=anL();for(const i of anEq(id)){if(!i)continue;const r=L.find(x=>x.i===i);if(!r||!r.lx||!LXR[r.lx])continue;
@@ -7344,13 +7344,13 @@ function l2Draw(){let M=document.getElementById('l2M');const t=Date.now();
       const b=e.target.closest('[data-lb]');if(!b||b.disabled)return;let v=b.dataset.v;
       if(v==='in'){const I=M.querySelector('input[data-li="'+b.dataset.lb+'"]');v=I?I.value:'';if(!v){rkToast('Digite quantos diamantes','#ff8080');return}}
       b.disabled=true;Promise.resolve(l2Bid(b.dataset.lb,parseInt(String(v).replace(/\D/g,''),10)||0)).finally(()=>{b.disabled=false})}}
-  const S=document.getElementById('l2S');if(S){S.textContent=t<L2T0?'2ª RODADA · ABRE ÀS 21:25 (BRASÍLIA) · faltam '+rkTmS(L2T0-t):t<L2T1?'🔴 AO VIVO · TERMINA EM '+rkTmS(L2T1-t):'ENCERRADO';S.className='leiS'+(l2On()?' on':'')}
+  const S=document.getElementById('l2S');if(S){S.textContent=t<L2T0?'2ª RODADA · ABRE ÀS 21:40 (BRASÍLIA) · faltam '+rkTmS(L2T0-t):t<L2T1?'🔴 AO VIVO · TERMINA EM '+rkTmS(L2T1-t):'ENCERRADO';S.className='leiS'+(l2On()?' on':'')}
   const Gm=document.getElementById('l2Gem');if(Gm)Gm.textContent='Você tem '+rkFmtN(rkG('gem',0))+' 💎';
   const B=L2B||{},me=twUid(),E=l2Esc(),on=l2On(),end=t>=L2T1;
   for(const L of L2L){const tp=B[L.id],ok=L2OK[L.id],sig=[tp?tp.lv:0,tp?tp.uid:'',(E[L.id]&&E[L.id].v)||0,on,end,ok?1:0].join('|');if(L2SIG[L.id]===sig)continue;const C=document.getElementById('l2C_'+L.id);if(!C)continue;
     const foc=document.activeElement&&document.activeElement.dataset&&document.activeElement.dataset.li===L.id;if(foc)continue;
     L2SIG[L.id]=sig;C.className='leiC'+(tp&&tp.uid===me?' me':'');C.innerHTML=l2CardH(L)}}
-{const _mh=mnH;mnH=function(){const t=Date.now(),show=t>=L2T0-6*36e5&&t<L2T1+3*864e5;return _mh.apply(this,arguments)+(show?`<button class="hs leiBtn l2Btn ${l2On()?'on':''}" data-a="lei2">⚖️ LEILÃO DOS ANÉIS${l2On()?' · AO VIVO':t<L2T0?' · 21:25':' · ENCERRADO'}</button>`:'')}}
+{const _mh=mnH;mnH=function(){const t=Date.now(),show=t>=L2T0-6*36e5&&t<L2T1+3*864e5;return _mh.apply(this,arguments)+(show?`<button class="hs leiBtn l2Btn ${l2On()?'on':''}" data-a="lei2">⚖️ LEILÃO DOS ANÉIS${l2On()?' · AO VIVO':t<L2T0?' · 21:40':' · ENCERRADO'}</button>`:'')}}
 {const _a=rkAct;rkAct=function(a,b){if(a==='lei2'){rkSfx('whoosh');return l2Open()}return _a.apply(this,arguments)}}
 {const st=document.createElement('style');st.textContent=`#l2M,#l2W{position:fixed;inset:0;z-index:9200;background:rgba(4,2,10,.8);display:flex;align-items:center;justify-content:center}
 #l2M .leiP,#l2W .leiP{width:min(820px,96vw);max-height:94vh;overflow:auto;background:linear-gradient(#1c1206,#0b0703);border:2px solid #ffd84a;border-radius:14px;padding:10px 14px;color:#fff;font:700 13px var(--f-ui,sans-serif);box-shadow:0 0 30px #ffb40055}
