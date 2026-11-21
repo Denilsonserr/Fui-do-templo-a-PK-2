@@ -2724,3 +2724,7 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 
 ## v585 — 2ª rodada do leilão começa 21:40
 - `L2T0` = 20/11 21:40 Brasília (fim continua 22:00). Lances dados entre 21:25 e 21:40 continuam valendo.
+
+## v586 — BUG: leilão devolvia o mesmo lance várias vezes (diamantes multiplicados)
+- `l2Settle` rodava em paralelo (intervalo 15 s + tela aberta a cada ~5 s + boot) e cada execução lia o mesmo lance preso ANTES do `await l2Load()` → devolvia N vezes. Agora trava `L2SB` (1 por vez), `l2Settle0` lê `l2Esc()` depois da consulta, e `l2Bid` espera o acerto terminar.
+- Achado pela ferramenta `suspeita.yml`: Stark foi de ~498 mil (18:20) para ~7 milhões (21:25); Honrado e Breno também subiram. Teste `tleilao_dupla_v586.js`.
