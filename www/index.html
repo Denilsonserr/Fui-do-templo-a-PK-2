@@ -15855,13 +15855,21 @@ function l2Give(L){const X=LXR[L.x];return anGive({i:Date.now().toString(36)+'lx
 const l2On=()=>{const t=Date.now();return t>=L2T0&&t<L2T1};
 let L2B=null,L2TL=0;
 /* v579: no servidor a consulta por 'lei' dava 429 → ninguém via os lances. Agora busca por 'lot' (1 consulta por anel), que traz os lances E a aprovação do ADM. */
+/* v587: contas que ganharam diamantes pelo erro do leilão (v586) voltam ao valor certo (pedido do dono):
+   Honrado = 329.606 (antes do leilão) + 220.000 (código) · Breno = 382.154 + 300.000 (códigos) · Stark = 497.898 · Jogador anônimo = 533 (+200.000 se tiver o presente LOVE).
+   Fica: diamantes = valor certo − lances ainda presos. Lances dessas contas antes de 21:40 não valem (voltam pelo acerto). */
+const L2FX={mwc8atkrgg4fns2f:549606,mw8697axqj3ixwzu:682154,mwe5v81ci1cbh2k0:497898,mw82q4abrrmnp9ku:533},L2FXT=Date.UTC(2026,10,21,0,40);
+function l2Fix587(){try{if(rkG('fx587',0))return;const u=twUid(),T=L2FX[u];if(T==null)return;rkS('fx587',1);let t=T;if(u==='mw82q4abrrmnp9ku'&&rkG('luvG',0))t+=200000;
+  const E=l2Esc();let esc=0;for(const k in E)if(E[k]&&E[k].v&&!E[k].win)esc+=E[k].v|0;const g0=rkG('gem',0)|0;rkS('gem',t-esc);try{localStorage.removeItem('ac_h');acSave(1)}catch(e){}
+  setTimeout(()=>{try{rkToast('⚠️ Ajuste do ADM: um erro do leilão deu diamantes a mais. Seus diamantes foram corrigidos para '+rkFmtN(t)+' 💎.','#ffb347')}catch(e){}},1500);try{console.log('fx587',g0,'->',t-esc)}catch(e){}}catch(e){}}
+setTimeout(l2Fix587,3000);setInterval(l2Fix587,30000);
 let L2OKX={};
 /* consulta direta (sem a trava de 15 min do twFetchT quando QUALQUER consulta dá 429 — o leilão não pode parar por causa de ranking/chat) */
 async function l2Q(field,val,lim){const body={structuredQuery:{from:[{collectionId:'torre'}],where:{fieldFilter:{field:{fieldPath:field},op:'EQUAL',value:{stringValue:val}}},limit:lim||500}};
   const r=await _twFetchT(TWURL+':runQuery?key='+TWFB.apiKey,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});if(!r.ok)throw new Error('http '+r.status);const j=await r.json(),o=[];
   for(const x of (Array.isArray(j)?j:[])){const F=x&&x.document&&x.document.fields;if(!F)continue;const e={_ct:Date.parse(x.document.createTime||'')||0};for(const k in F){const v=F[k];e[k]=v.stringValue!=null?v.stringValue:v.integerValue!=null?+v.integerValue:v.doubleValue}o.push(e)}return o}
 async function l2Load(){let A=[],ok=0;const O={};for(const L of L2L){try{const R=await l2Q('lot',L.id,500);ok++;for(const x of R){if(x.l2ok==='1'){if(!O[L.id])O[L.id]=x}else A.push(x)}}catch(e){}}if(!ok)throw new Error('sem servidor');L2OKX=O;const B={};
-  for(const x of A){if(x.lei!=='2')continue;const lv=+x.lv|0,t=+x.t||0;if(!x.lot||!lv||t>L2T1+5000)continue;const L=L2L.find(q=>q.id===x.lot);if(!L||lv<L.min)continue;const c=B[x.lot];if(!c||lv>c.lv||(lv===c.lv&&t<c.t))B[x.lot]={lv,uid:x.uid,nome:x.nome,t}}
+  for(const x of A){if(x.lei!=='2')continue;if(L2FX[x.uid]!=null&&(+x.t||0)<L2FXT)continue; /* v587 */const lv=+x.lv|0,t=+x.t||0;if(!x.lot||!lv||t>L2T1+5000)continue;const L=L2L.find(q=>q.id===x.lot);if(!L||lv<L.min)continue;const c=B[x.lot];if(!c||lv>c.lv||(lv===c.lv&&t<c.t))B[x.lot]={lv,uid:x.uid,nome:x.nome,t}}
   L2B=B;L2TL=Date.now();return B}
 let L2OK={};
 async function l2LoadOk(){try{await l2Load()}catch(e){return L2OK}L2OK=L2OKX;return L2OK}
@@ -15871,7 +15879,7 @@ let L2SB=0;
 async function l2Settle(){if(L2SB)return;L2SB=1;try{return await l2Settle0()}finally{L2SB=0}}
 async function l2Settle0(){if(Date.now()<L2T0)return;if(!Object.keys(l2Esc()).length)return;const B=await l2Load(),E=l2Esc(),me=twUid(),end=Date.now()>=L2T1+8000;let ch=0,msg=[];
   for(const id in E){const e=E[id],top=B[id];if(e&&e.win&&!end){delete e.win;ch=1} /* v582: quem ficou marcado como vencedor às 21:00 (versão velha) volta a disputar */if(!e||!e.v||e.win)continue; /* v576: devolve NA HORA em que alguém cobre (para continuar dando lance) e no fim para quem não ganhou */
-    const lost=top&&top.uid!==me&&top.lv>e.v;if(lost||(end&&(!top||top.uid!==me))){rkAdd('gem',e.v);msg.push('💎 +'+rkFmtN(e.v)+(lost&&!end?' devolvidos: cobriram seu lance! Dê outro lance':' devolvidos (você não ganhou esse anel no leilão)'));delete E[id];ch=1}
+    const lost=top&&top.uid!==me&&top.lv>e.v||L2FX[me]!=null&&!((e.t|0)>=L2FXT)&&!(top&&top.uid===me) /* v587: lance antigo (não vale) das contas corrigidas */;if(lost||(end&&(!top||top.uid!==me))){rkAdd('gem',e.v);msg.push('💎 +'+rkFmtN(e.v)+(lost&&!end?' devolvidos: cobriram seu lance! Dê outro lance':' devolvidos (você não ganhou esse anel no leilão)'));delete E[id];ch=1}
     else if(end&&top&&top.uid===me){e.win=1;ch=1}}
   if(ch){rkS('l2E',E);try{acSave(1)}catch(e){}msg.forEach((m,i)=>setTimeout(()=>{try{rkToast(m,'#ffd84a')}catch(_){}},400+i*1800))}
   if(end&&Object.values(E).some(e=>e&&e.win))await l2Claim()}
@@ -15886,7 +15894,7 @@ async function l2Bid(id,v){if(L2SB){for(let i=0;i<40&&L2SB;i++)await new Promise
 const L=L2L.find(q=>q.id===id);if(!L||!l2On())return rkToast('O leilão não está aberto','#ff8080');try{await l2Load()}catch(e){return rkToast('Sem conexão com o leilão, tente de novo','#ff8080')};l2Draw();const top=L2B[id],need=top?top.lv+L2ST:L.min;
   if(top&&top.uid===twUid())return rkToast('Você já é o maior lance nesse anel','#9fd0ff');if(v<need)return rkToast('O lance mínimo agora é '+rkFmtN(need)+' 💎','#ff8080');
   const E=l2Esc(),old=(E[id]&&E[id].v)||0,pay=v-old;if(rkG('gem',0)<pay)return rkToast('Faltam diamantes (precisa de '+rkFmtN(pay)+' 💎)','#ff8080');
-  rkAdd('gem',-pay);E[id]={v};rkS('l2E',E);try{acSave(1)}catch(e){}
+  rkAdd('gem',-pay);E[id]={v,t:Date.now()};rkS('l2E',E);try{acSave(1)}catch(e){}
   try{const r=await mnPost('l2_'+id+'_'+String(twUid()).replace(/[^\w-]/g,'').slice(0,30)+'_'+Date.now().toString(36),{lei:mnSV('2'),lot:mnSV(id),lv:mnIV(v),t:mnIV(Date.now())});if(!r.ok)throw 0}
   catch(e){rkAdd('gem',pay);if(old)E[id]={v:old};else delete E[id];rkS('l2E',E);return rkToast('Sem internet: lance não enviado','#ff8080')}
   rkSfx('coin');rkToast('⚖️ Lance de '+rkFmtN(v)+' 💎 enviado!','#7dff9a');L2B=Object.assign({},L2B||{},{[id]:{lv:v,uid:twUid(),nome:String(twLS.g('tw_nome','')||'?').slice(0,16),t:Date.now()}});l2Draw();setTimeout(()=>l2Load().then(l2Draw).catch(()=>{}),1500)}
@@ -15906,14 +15914,14 @@ function l2CardH(L){const B=L2B||{},tp=B[L.id],me=twUid(),E=l2Esc(),mine=tp&&tp.
   return h}
 function l2Draw(){let M=document.getElementById('l2M');const t=Date.now();
   if(!M){M=document.createElement('div');M.id='l2M';M.className='leiM2';document.body.appendChild(M);L2SIG={};
-    M.innerHTML=`<div class="leiP"><h3>⚖️ LEILÃO DOS ANÉIS LENDÁRIOS</h3><p class="leiS" id="l2S"></p><p class="leiH">Só 2 anéis, que só existem neste leilão. Ganha quem der o MAIOR lance em cada um. Os 💎 do seu lance ficam presos; se alguém cobrir, eles voltam NA HORA para você dar outro lance. Mínimo +${rkFmtN(L2ST)} 💎 por cima. No fim, o ADM aprova e o anel chega para quem ganhou.</p>
+    M.innerHTML=`<div class="leiP"><h3>⚖️ LEILÃO DOS ANÉIS LENDÁRIOS</h3><p class="leiS" id="l2S"></p><p class="l2Me" id="l2Me"></p><p class="leiH">Só 2 anéis, que só existem neste leilão. Ganha quem der o MAIOR lance em cada um. Os 💎 do seu lance ficam presos; se alguém cobrir, eles voltam NA HORA para você dar outro lance. Mínimo +${rkFmtN(L2ST)} 💎 por cima. No fim, o ADM aprova e o anel chega para quem ganhou.</p>
      <div class="leiG">${L2L.map(L=>`<div class="leiC" id="l2C_${L.id}"></div>`).join('')}</div><div class="row"><button class="btn" id="l2X">FECHAR</button><span class="leiGem" id="l2Gem"></span></div></div>`;
     M.onclick=e=>{if(e.target.id==='l2X'||e.target===M){L2V=0;M.remove();return}const ap=e.target.closest('[data-la]');if(ap&&!ap.disabled){ap.disabled=true;Promise.resolve(l2Aprova(ap.dataset.la)).finally(()=>{ap.disabled=false});return}
       const b=e.target.closest('[data-lb]');if(!b||b.disabled)return;let v=b.dataset.v;
       if(v==='in'){const I=M.querySelector('input[data-li="'+b.dataset.lb+'"]');v=I?I.value:'';if(!v){rkToast('Digite quantos diamantes','#ff8080');return}}
       b.disabled=true;Promise.resolve(l2Bid(b.dataset.lb,parseInt(String(v).replace(/\D/g,''),10)||0)).finally(()=>{b.disabled=false})}}
   const S=document.getElementById('l2S');if(S){S.textContent=t<L2T0?'2ª RODADA · ABRE ÀS 21:40 (BRASÍLIA) · faltam '+rkTmS(L2T0-t):t<L2T1?'🔴 AO VIVO · TERMINA EM '+rkTmS(L2T1-t):'ENCERRADO';S.className='leiS'+(l2On()?' on':'')}
-  const Gm=document.getElementById('l2Gem');if(Gm)Gm.textContent='Você tem '+rkFmtN(rkG('gem',0))+' 💎';
+  const Gm=document.getElementById('l2Gem');if(Gm)Gm.textContent='Você tem '+rkFmtN(rkG('gem',0))+' 💎';{const Me=document.getElementById('l2Me');if(Me){const E0=l2Esc();let pr=0;for(const k in E0)if(E0[k]&&E0[k].v)pr+=E0[k].v|0;Me.innerHTML='💎 SEUS DIAMANTES PARA LANCE: <b>'+rkFmtN(rkG('gem',0))+'</b>'+(pr?' · 🔒 presos em lances: <b>'+rkFmtN(pr)+'</b>':'')}}
   const B=L2B||{},me=twUid(),E=l2Esc(),on=l2On(),end=t>=L2T1;
   for(const L of L2L){const tp=B[L.id],ok=L2OK[L.id],sig=[tp?tp.lv:0,tp?tp.uid:'',(E[L.id]&&E[L.id].v)||0,on,end,ok?1:0].join('|');if(L2SIG[L.id]===sig)continue;const C=document.getElementById('l2C_'+L.id);if(!C)continue;
     const foc=document.activeElement&&document.activeElement.dataset&&document.activeElement.dataset.li===L.id;if(foc)continue;
@@ -15926,7 +15934,7 @@ function l2Draw(){let M=document.getElementById('l2M');const t=Date.now();
 #l2M .leiG,#l2W .leiG{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:8px}#l2M .leiC,#l2W .leiC{background:#24180a;border:1px solid #6a5420;border-radius:10px;padding:7px}#l2M .leiC.me,#l2W .leiC.me{border-color:#7dff9a;box-shadow:0 0 10px #7dff9a55}
 #l2M .leiC b,#l2W .leiC b{display:block;color:#ffe08a;font-size:14px}#l2M .leiC small{display:block;color:#a8936a}#l2M .leiC small.l2d{color:#ffcf6a;font-weight:900;margin:2px 0}#l2M .leiC p{margin:4px 0}#l2M .leiC em{font-style:normal;color:#7dff9a;font-weight:900}#l2M .leiMy{color:#9fd0ff}
 #l2M .leiBt{display:flex;flex-wrap:wrap;gap:4px}#l2M .leiIn{display:flex;gap:4px;margin-top:5px}#l2M .leiIn input{flex:1;min-width:0;background:#120c04;border:1px solid #8a6a20;border-radius:6px;color:#fff;font:800 13px var(--f-ui,sans-serif);padding:5px 7px}#l2M .btn{font-size:11px;padding:4px 8px}#l2M .leiWin,#l2W .leiWin{color:#7dff9a;font-weight:900}#l2M .btn:disabled{opacity:.5}#l2M .row,#l2W .row{display:flex;gap:10px;align-items:center;justify-content:center;margin-top:8px}#l2M .leiGem{color:#9fd0ff}#l2M .l2ap{margin-top:5px;width:100%;font-size:13px;padding:6px}
-.l2Btn{top:22%!important}`;document.head.appendChild(st)}
+.l2Btn{top:22%!important}#l2M .l2Me{margin:4px 0 6px;padding:6px 10px;border-radius:8px;background:#0e2a3a;border:1px solid #4fb3ff;color:#bfe8ff;font-size:16px;font-weight:900}#l2M .l2Me b{color:#7fe0ff;font-size:19px}`;document.head.appendChild(st)}
 try{Object.assign(window.__pvT||{},{l2:{open:()=>l2Open(),bid:(i,v)=>l2Bid(i,v),ap:i=>l2Aprova(i),settle:()=>l2Settle(),load:()=>l2Load(),give:i=>l2Give(L2L.find(q=>q.id===i)),E:()=>l2Esc()},anSum:id=>anSum(id)})}catch(e){}
 
 /* v573: código 220.000 💎 (uso único) */
@@ -16176,7 +16184,7 @@ window.__dbg={mus:()=>[MCUR,MEL.src.split('/').pop()],stg:()=>STAGE.key,prepMatc
 })();
 </script>
 <style>#updB{position:fixed;left:50%;top:max(8px,env(safe-area-inset-top));transform:translateX(-50%);z-index:99999;padding:10px 22px;border-radius:14px;border:2px solid #fff3c0;background:linear-gradient(#ffd84a,#e08a10);color:#3a1d00;font:900 15px system-ui,sans-serif;box-shadow:0 0 18px #ffb21f;cursor:pointer;animation:updP 1s ease-in-out infinite alternate}@keyframes updP{to{transform:translateX(-50%) scale(1.05)}}</style>
-<script>(function(){const V='76e0cfd56ae6';if(!/^https?:/.test(location.protocol))return;let nv=null;
+<script>(function(){const V='327f306161e2';if(!/^https?:/.test(location.protocol))return;let nv=null;
 function show(){if(document.getElementById('updB'))return;try{if(typeof G!=='undefined'&&G.mode==='fight')return}catch(e){}const b=document.createElement('button');b.id='updB';b.textContent='🔄 ATUALIZAÇÃO NOVA! Toque para atualizar';
   b.onclick=()=>{b.textContent='⏳ Atualizando...';try{acSave(1)}catch(e){}setTimeout(()=>location.reload(),900)};document.body.appendChild(b)}
 async function chk(){if(document.hidden)return;if(nv){show();return}try{const r=await fetch('versao.txt?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const t=(await r.text()).trim();if(/^[0-9a-f]{8,40}$/.test(t)&&t!==V){nv=t;show()}}catch(e){}}

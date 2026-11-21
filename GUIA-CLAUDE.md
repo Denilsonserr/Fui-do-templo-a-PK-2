@@ -2728,3 +2728,8 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 ## v586 — BUG: leilão devolvia o mesmo lance várias vezes (diamantes multiplicados)
 - `l2Settle` rodava em paralelo (intervalo 15 s + tela aberta a cada ~5 s + boot) e cada execução lia o mesmo lance preso ANTES do `await l2Load()` → devolvia N vezes. Agora trava `L2SB` (1 por vez), `l2Settle0` lê `l2Esc()` depois da consulta, e `l2Bid` espera o acerto terminar.
 - Achado pela ferramenta `suspeita.yml`: Stark foi de ~498 mil (18:20) para ~7 milhões (21:25); Honrado e Breno também subiram. Teste `tleilao_dupla_v586.js`.
+
+## v587 — diamantes do erro do leilão corrigidos + diamantes à vista no leilão
+- `l2Fix587` (1 vez, `rk_fx587`, por uid em `L2FX`): Honrado 549.606 (329.606 antes do leilão + 220.000 do código), Breno 682.154 (382.154 + 300.000 dos códigos), Stark 497.898, Jogador anônimo 533 (+200.000 se `rk_luvG`). Diamantes = valor certo − lances presos. Vini/Michael normais (não mudam). ADM não mexido.
+- Lances dessas contas antes de `L2FXT` (21:40) não valem (`l2Load`), e o lance preso velho (sem `t`) volta no acerto. `l2Bid` agora grava `t` no lance preso.
+- Tela do leilão: faixa "💎 SEUS DIAMANTES PARA LANCE" (+ presos em lances). Teste `tleilao_fix_v587.js`.
