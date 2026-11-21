@@ -2749,3 +2749,7 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 
 ## v591 — código anel dourado SP dano+crítico (uso único)
 - `TWCUP['1kqojih']` (`uni:1`, `rgsp:[['dano','crit','fur']]`). Texto só com o dono. Teste: `tcod_aneis_v590.js` com `C1=TEXTO`.
+
+## v592 — títulos PILAR SUPREMO (Vini) e PATROCINADOR + códigos
+- `TWTIT.pilar` (vermelho, raios SVG piscando, `TBUF` +30 dano/def/vel/crit/st) e `TWTIT.patr` (dourado brilhante com ✦, +30 def/vel/crit/st, sem dano). Visual no wrapper de `pfTitH` (classes `pilT`/`patT`). Ambos `hid:1`.
+- `TWCUP['11r1khu']` (`uni:1`, título pilar) e `TWCUP['vfknfr']` (`uni:1`, título patr + anel PRETO SS sorte/drop + VERMELHO SSS dano/crit via `rg592`, + DOURADO SP sorte/drop via `rgsp`). Wrapper de `twCupom` com `tit592` dá o título e já coloca em uso. Textos só com o dono. Teste `ttitulos_v592.js` (`C1=... C2=...`).

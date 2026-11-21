@@ -16053,6 +16053,37 @@ TWCUP['1monb4f']={nm:'💍 ANEL DOURADO SP (sorte e drop)',it:[],uni:1,rgsp:[['s
 /* v591: código anel dourado SP nível máximo dano+crítico (uso único) */
 TWCUP['1kqojih']={nm:'💍 ANEL DOURADO SP (dano e crítico)',it:[],uni:1,rgsp:[['dano','crit','fur']],msg:'✅ Você ganhou 💍 ANEL DOURADO SP no nível máximo (⚔️ Dano + 🎯 Crítico)! Veja em ANÉIS DA ALMA.'};
 
+/* ================= v592: 2 TÍTULOS NOVOS (pedido do dono)
+   PILAR SUPREMO (do Vini, o jogador que mais ajuda): +30% em TUDO · vermelho com mechas de raios vermelhos.
+   PATROCINADOR: +30% em tudo MENOS dano · dourado bem brilhante.
+   Códigos (uso único cada): o do Vini dá o título; o do patrocinador dá o título + anel PRETO SS (sorte+drop) + anel DOURADO SP (sorte+drop) + anel VERMELHO SSS (dano+crítico), todos no nível máximo. ================= */
+TWTIT.pilar={n:'PILAR SUPREMO',i:'⚡',c:'#ff2a3a',d:'O pilar do Fúria do Templo · ✦ +30% em TUDO (dano, defesa, velocidade, crítico e sorte)',hid:1,pil:1};
+TWTIT.patr={n:'PATROCINADOR',i:'👑',c:'#ffd84a',d:'Patrocinador do Fúria do Templo · ✦ +30% em defesa, velocidade, crítico e sorte',hid:1,pat:1};
+TBUF.pilar={dano:30,def:30,vel:30,crit:30,st:30};TBUF.patr={def:30,vel:30,crit:30,st:30};
+{const _pt=pfTitH;pfTitH=function(t,n,adm){const T=TWTIT[t];
+  if(T&&T.pil)return `<span class="pfTt pilT"><i>⚡</i><b>PILAR SUPREMO</b><svg class="pz a" viewBox="0 0 20 40"><path d="M12 0 2 22h7l-4 18 13-26h-8z"/></svg><svg class="pz b" viewBox="0 0 20 40"><path d="M12 0 2 22h7l-4 18 13-26h-8z"/></svg><svg class="pz c" viewBox="0 0 20 40"><path d="M12 0 2 22h7l-4 18 13-26h-8z"/></svg></span>`;
+  if(T&&T.pat)return `<span class="pfTt patT"><i>👑</i><b>PATROCINADOR</b><i class="ps a">✦</i><i class="ps b">✦</i><i class="ps c">✦</i></span>`;return _pt.apply(this,arguments)}}
+{const st=document.createElement('style');st.textContent=`
+.pfTt.pilT{position:relative;overflow:visible;background:linear-gradient(100deg,#3a0006,#a3000f 40%,#ff2a3a 50%,#a3000f 60%,#3a0006);background-size:250% 100%;border:1px solid #ff4a5a;box-shadow:0 0 10px #ff1a2a,inset 0 0 8px #ff6a7a88;animation:pilBg 2.4s linear infinite}
+.pfTt.pilT b{color:#fff;text-shadow:0 0 6px #ff2a3a,0 0 12px #ff0018;letter-spacing:.06em}
+.pfTt.pilT .pz{position:absolute;width:12px;height:24px;fill:#ff3a4a;filter:drop-shadow(0 0 4px #ff0018);opacity:0;animation:pilZ 1.6s infinite}
+.pfTt.pilT .pz.a{left:-8px;top:-10px}.pfTt.pilT .pz.b{right:-6px;top:-12px;animation-delay:.55s}.pfTt.pilT .pz.c{left:45%;bottom:-14px;animation-delay:1.1s}
+@keyframes pilBg{to{background-position:-250% 0}}@keyframes pilZ{0%,70%,100%{opacity:0}74%,82%{opacity:1}78%{opacity:.3}}
+.pfTt.patT{position:relative;overflow:visible;background:linear-gradient(110deg,#7a4b00,#ffcf3a 30%,#fff6c0 48%,#ffcf3a 62%,#7a4b00);background-size:260% 100%;border:1px solid #fff2a0;box-shadow:0 0 14px #ffd84a,0 0 28px #ffb40088;animation:patBg 2s linear infinite}
+.pfTt.patT b{color:#3a2200;text-shadow:0 1px 0 #fff8d0;letter-spacing:.06em}
+.pfTt.patT .ps{position:absolute;color:#fff;font-style:normal;text-shadow:0 0 6px #ffe680;animation:patS 1.8s infinite;opacity:0}
+.pfTt.patT .ps.a{left:-6px;top:-8px}.pfTt.patT .ps.b{right:-5px;top:-9px;animation-delay:.6s}.pfTt.patT .ps.c{right:30%;bottom:-11px;animation-delay:1.2s}
+@keyframes patBg{to{background-position:-260% 0}}@keyframes patS{0%,100%{opacity:0;transform:scale(.4)}50%{opacity:1;transform:scale(1.2) rotate(30deg)}}
+@media (prefers-reduced-motion:reduce){.pfTt.pilT,.pfTt.patT,.pfTt.pilT .pz,.pfTt.patT .ps{animation:none}.pfTt.pilT .pz,.pfTt.patT .ps{opacity:1}}`;document.head.appendChild(st)}
+TWCUP['11r1khu']={nm:'⚡ TÍTULO PILAR SUPREMO',it:[],uni:1,tit592:'pilar',msg:'⚡ Você ganhou o título PILAR SUPREMO! (+30% em TUDO) · já está em uso no seu perfil.'};
+TWCUP['vfknfr']={nm:'👑 TÍTULO PATROCINADOR + 3 ANÉIS',it:[],uni:1,tit592:'patr',rg592:1,rgsp:[['st','drop','fur']],msg:'👑 Você ganhou o título PATROCINADOR (+30% em tudo menos dano) + 💍 anel PRETO SS (sorte e drop) + 💍 anel DOURADO SP (sorte e drop) + 💍 anel VERMELHO SSS (dano e crítico), todos no nível máximo!'};
+{const _cp=twCupom;twCupom=async function(code,E){const C=TWCUP[twHash(String(code).toUpperCase())];const r=await _cp.apply(this,arguments);
+  try{if(C&&C.tit592&&r!==false&&E&&/\bok\b/.test(E.className||'')){twGiveTit(C.tit592);twLS.s('tw_titOn',C.tit592);
+    if(C.rg592){const id=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,6);
+      anGive({i:id(),c:3,g:6,s:'st',s2:'drop',v:ANV[3][6],a:75000,l:ANMX[3]});anGive({i:id(),c:4,g:7,s:'dano',s2:'crit',v:ANV[4][7],a:100000,l:ANMX[4]})}
+    try{localStorage.removeItem('ac_h');acSave(1)}catch(e){}if(C.msg)E.textContent=C.msg;try{twSfx('boom')}catch(e){}}}catch(e){}return r}}
+try{Object.assign(window.__pvT||{},{titH:t=>pfTitH(t,'x'),tb:k=>tbOf(k),anS:id=>anSum(id)})}catch(e){}
+
 function twTrofList(){const tc=twLS.g('tw_tc',{}),run={};for(const t of TW.tr)run[t.k]=(run[t.k]||0)+1;
   twModal(`<div class="twM"><h3>🎖️ TROFÉUS</h3><div class="twTL">${Object.keys(TWTR).map(k=>{const T=TWTR[k];return `<div class="${tc[k]||run[k]?'got':''}"><i>${T.i}</i><b>${T.n}</b><span>${T.d}</span><em>+${T.p} 🏆</em><small>${run[k]?'nesta subida: '+run[k]+' · ':''}total: ${(tc[k]||0)}</small></div>`}).join('')}</div>
     <p class="twH">Cada troféu soma pontos 🏆 no ranking. Quem sobe mais andares fica na frente; empate = mais troféus, depois menos tempo.</p><div class="row"><button class="btn" id="twTx">FECHAR</button></div></div>`);
@@ -16244,7 +16275,7 @@ window.__dbg={mus:()=>[MCUR,MEL.src.split('/').pop()],stg:()=>STAGE.key,prepMatc
 })();
 </script>
 <style>#updB{position:fixed;left:50%;top:max(8px,env(safe-area-inset-top));transform:translateX(-50%);z-index:99999;padding:10px 22px;border-radius:14px;border:2px solid #fff3c0;background:linear-gradient(#ffd84a,#e08a10);color:#3a1d00;font:900 15px system-ui,sans-serif;box-shadow:0 0 18px #ffb21f;cursor:pointer;animation:updP 1s ease-in-out infinite alternate}@keyframes updP{to{transform:translateX(-50%) scale(1.05)}}</style>
-<script>(function(){const V='43fa835cb6fa';if(!/^https?:/.test(location.protocol))return;let nv=null;
+<script>(function(){const V='83fcee0a1f55';if(!/^https?:/.test(location.protocol))return;let nv=null;
 function show(){if(document.getElementById('updB'))return;try{if(typeof G!=='undefined'&&G.mode==='fight')return}catch(e){}const b=document.createElement('button');b.id='updB';b.textContent='🔄 ATUALIZAÇÃO NOVA! Toque para atualizar';
   b.onclick=()=>{b.textContent='⏳ Atualizando...';try{acSave(1)}catch(e){}setTimeout(()=>location.reload(),900)};document.body.appendChild(b)}
 async function chk(){if(document.hidden)return;if(nv){show();return}try{const r=await fetch('versao.txt?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const t=(await r.text()).trim();if(/^[0-9a-f]{8,40}$/.test(t)&&t!==V){nv=t;show()}}catch(e){}}
