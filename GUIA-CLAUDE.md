@@ -2717,3 +2717,7 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - Bug (desde a v546): o PEDIDO `mkr_*` também tem o campo `mks`, então o `mnClaim` do VENDEDOR achava que era um cancelamento: devolvia o item para ele e criava `mkc_<lid>` — depois o pagamento (mkb) nunca chegava (409). Agora `mnClaim` ignora docs sem `tipo`.
 - `mkFix583` (só ADM, 1 vez `rk_mkfx583`): compra `wurbwp_mwpmsuvj` (espada do Breno, 300.000) anulada → +270.000 💎 (os 30.000 da taxa já tinham caído para o ADM), tira o pedido pendente ou a espada (esp/sec v30 crit10) da mochila. O Breno não recebe (mkc já existe) e já tinha pego o item de volta pelo bug.
 - Teste `tmk_anula_v583.js`. (`tmercado_taxa_v547.js` agora mostra +270.000 a mais no ADM por causa do mkFix583.)
+
+## v584 — leilão: 1ª rodada anulada + 2ª rodada 21:25–22:00
+- Lotes novos `lxa2` (REI DA FÚRIA, mínimo 500.000 💎) e `lxb2` (FORTUNA, mínimo 300.000 💎); `L2T0/L2T1` = 20/11 21:25 → 22:00 Brasília.
+- `l2Reset1` (1 vez por conta, `rk_l2rs1`): quem recebeu anel da 1ª rodada (`rk_l2R`) perde o anel (sai do `an` e do `anEq`) e recebe o lance de volta (`L2R1.lxa`=667.000 do Honrado); lances presos `lxa/lxb` voltam; o ADM devolve o que recebeu na aprovação (`rk_l2P.lxa` → −667.000). Teste `tleilao_rodada2_v584.js`.

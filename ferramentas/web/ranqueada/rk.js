@@ -7281,8 +7281,8 @@ try{Object.assign(window.__pvT||{},{pb5On:()=>pb5On(),spM:f=>speedMul(f)})}catch
 /* v574: pedido do dono — REI DA FÚRIA = 1000% em 3 status (dano, crítico e VELOCIDADE); FORTUNA = 1000 sorte + 1000% drop + 💎 +20% nos diamantes do farm. */
 const LXR={a:{nm:'ANEL DO LEILÃO · REI DA FÚRIA',s:'dano',s2:'crit',s3:'vel',p:'fur',ex:{},tx:'💨 Velocidade +1000% · 💥 a cada 10 golpes: ATAQUE x3 por 10 s (1 vez por luta)'},
   b:{nm:'ANEL DO LEILÃO · DEUSA DA FORTUNA',s:'st',s2:'drop',p:'vamp',ex:{},gem:.2,tx:'💎 +20% de diamantes no farm · 🍀 chance de DUPLICAR um item raro (1 vez por luta)'}};
-const L2T0=Date.UTC(2026,10,20,23,0),L2T1=Date.UTC(2026,10,21,0,15),L2ST=1000; /* v582: até 21:15 (Brasília) */
-const L2L=[{id:'lxa',x:'a',min:50000,nm:'💍 '+LXR.a.nm,d:'⚔️ +1000% DANO · 🎯 +1000% CRÍTICO · 💨 +1000% VELOCIDADE · 🔥 Fúria · 💥 10 golpes = ATAQUE x3 por 10 s (1x por luta)'},{id:'lxb',x:'b',min:50000,nm:'💍 '+LXR.b.nm,d:'🍀 +1000% SORTE · 🎁 +1000% DROP · 💎 +20% DIAMANTES no farm · 🍀 chance de DUPLICAR item raro (1x por luta) · 🩸 Vampiro'}];
+const L2T0=Date.UTC(2026,10,21,0,25),L2T1=Date.UTC(2026,10,21,1,0),L2ST=1000; /* v584: 2ª RODADA 21:25 → 22:00 (Brasília); 1ª rodada (20:00–21:15, lotes lxa/lxb) anulada */
+const L2L=[{id:'lxa2',x:'a',min:500000,nm:'💍 '+LXR.a.nm,d:'⚔️ +1000% DANO · 🎯 +1000% CRÍTICO · 💨 +1000% VELOCIDADE · 🔥 Fúria · 💥 10 golpes = ATAQUE x3 por 10 s (1x por luta)'},{id:'lxb2',x:'b',min:300000,nm:'💍 '+LXR.b.nm,d:'🍀 +1000% SORTE · 🎁 +1000% DROP · 💎 +20% DIAMANTES no farm · 🍀 chance de DUPLICAR item raro (1x por luta) · 🩸 Vampiro'}];
 /* status do anel: 2º status cheio (os outros dourados dão metade) + efeitos especiais */
 {const _s=anSum;anSum=function(id){const o=_s.apply(this,arguments);try{if(typeof tnUxOn==='function'&&tnUxOn())return o;const L=anL();for(const i of anEq(id)){if(!i)continue;const r=L.find(x=>x.i===i);if(!r||!r.lx||!LXR[r.lx])continue;
   const v=anV(r),f=v/(r.v||1);if(r.s2&&o[r.s2]!=null)o[r.s2]+=v*.5;const s3=LXR[r.lx].s3;if(s3&&o[s3]!=null)o[s3]+=v;const E=LXR[r.lx].ex;for(const k in E)if(o[k]!=null)o[k]+=E[k]*f}for(const k in o)if(typeof o[k]==='number')o[k]=Math.round(o[k]*10)/10}catch(e){}return o}}
@@ -7344,13 +7344,13 @@ function l2Draw(){let M=document.getElementById('l2M');const t=Date.now();
       const b=e.target.closest('[data-lb]');if(!b||b.disabled)return;let v=b.dataset.v;
       if(v==='in'){const I=M.querySelector('input[data-li="'+b.dataset.lb+'"]');v=I?I.value:'';if(!v){rkToast('Digite quantos diamantes','#ff8080');return}}
       b.disabled=true;Promise.resolve(l2Bid(b.dataset.lb,parseInt(String(v).replace(/\D/g,''),10)||0)).finally(()=>{b.disabled=false})}}
-  const S=document.getElementById('l2S');if(S){S.textContent=t<L2T0?'ABRE ÀS 20:00 (BRASÍLIA) · faltam '+rkTmS(L2T0-t):t<L2T1?'🔴 AO VIVO · TERMINA EM '+rkTmS(L2T1-t):'ENCERRADO';S.className='leiS'+(l2On()?' on':'')}
+  const S=document.getElementById('l2S');if(S){S.textContent=t<L2T0?'2ª RODADA · ABRE ÀS 21:25 (BRASÍLIA) · faltam '+rkTmS(L2T0-t):t<L2T1?'🔴 AO VIVO · TERMINA EM '+rkTmS(L2T1-t):'ENCERRADO';S.className='leiS'+(l2On()?' on':'')}
   const Gm=document.getElementById('l2Gem');if(Gm)Gm.textContent='Você tem '+rkFmtN(rkG('gem',0))+' 💎';
   const B=L2B||{},me=twUid(),E=l2Esc(),on=l2On(),end=t>=L2T1;
   for(const L of L2L){const tp=B[L.id],ok=L2OK[L.id],sig=[tp?tp.lv:0,tp?tp.uid:'',(E[L.id]&&E[L.id].v)||0,on,end,ok?1:0].join('|');if(L2SIG[L.id]===sig)continue;const C=document.getElementById('l2C_'+L.id);if(!C)continue;
     const foc=document.activeElement&&document.activeElement.dataset&&document.activeElement.dataset.li===L.id;if(foc)continue;
     L2SIG[L.id]=sig;C.className='leiC'+(tp&&tp.uid===me?' me':'');C.innerHTML=l2CardH(L)}}
-{const _mh=mnH;mnH=function(){const t=Date.now(),show=t>=L2T0-6*36e5&&t<L2T1+3*864e5;return _mh.apply(this,arguments)+(show?`<button class="hs leiBtn l2Btn ${l2On()?'on':''}" data-a="lei2">⚖️ LEILÃO DOS ANÉIS${l2On()?' · AO VIVO':t<L2T0?' · 20:00':' · ENCERRADO'}</button>`:'')}}
+{const _mh=mnH;mnH=function(){const t=Date.now(),show=t>=L2T0-6*36e5&&t<L2T1+3*864e5;return _mh.apply(this,arguments)+(show?`<button class="hs leiBtn l2Btn ${l2On()?'on':''}" data-a="lei2">⚖️ LEILÃO DOS ANÉIS${l2On()?' · AO VIVO':t<L2T0?' · 21:25':' · ENCERRADO'}</button>`:'')}}
 {const _a=rkAct;rkAct=function(a,b){if(a==='lei2'){rkSfx('whoosh');return l2Open()}return _a.apply(this,arguments)}}
 {const st=document.createElement('style');st.textContent=`#l2M,#l2W{position:fixed;inset:0;z-index:9200;background:rgba(4,2,10,.8);display:flex;align-items:center;justify-content:center}
 #l2M .leiP,#l2W .leiP{width:min(820px,96vw);max-height:94vh;overflow:auto;background:linear-gradient(#1c1206,#0b0703);border:2px solid #ffd84a;border-radius:14px;padding:10px 14px;color:#fff;font:700 13px var(--f-ui,sans-serif);box-shadow:0 0 30px #ffb40055}
@@ -7401,3 +7401,18 @@ function mkFix583(){try{if(!mnAdm()||rkG('mkfx583',0))return;rkS('mkfx583',1);co
   rkAdd('gem',270000);try{localStorage.removeItem('ac_h');acSave(1)}catch(e){}setTimeout(()=>{try{rkToast('↩️ Compra do Breno ANULADA: +270.000 💎 de volta (os outros 30.000 já eram seus da taxa)','#7dff9a')}catch(e){}},1200)}catch(e){}}
 setTimeout(mkFix583,5000);setInterval(mkFix583,60000);
 try{Object.assign(window.__pvT||{},{mkFix583:()=>mkFix583()})}catch(e){}
+
+/* v584: 1ª rodada do leilão ANULADA (pedido do dono). Uma vez por conta (rk_l2rs1):
+   - quem recebeu o anel da 1ª rodada (rk_l2R.lxa/lxb) perde o anel e recebe de volta o lance vencedor (REI DA FÚRIA: Honrado, 667.000 💎);
+   - lances ainda presos da 1ª rodada (rk_l2E.lxa/lxb) voltam inteiros;
+   - o ADM devolve o que recebeu na aprovação (rk_l2P.lxa = 667.000 💎). */
+const L2R1={lxa:667000,lxb:0};
+function l2Reset1(){try{if(rkG('l2rs1',0))return;rkS('l2rs1',1);let back=0,lost=0,adm=0;
+  const R=rkG('l2R',{})||{};for(const k of ['lxa','lxb'])if(R[k]){const x=k==='lxa'?'a':'b',L=anL(),n=L.length,F=L.filter(r=>r.lx!==x);if(F.length<n){rkS('an',F);const A=anEqAll();for(const id in A)A[id]=(A[id]||[]).map(i=>F.some(r=>r.i===i)?i:null);rkS('anEq',A);lost++}
+    back+=L2R1[k]|0;delete R[k]}rkS('l2R',R);
+  const E=l2Esc();for(const k of ['lxa','lxb'])if(E[k]){back+=E[k].v|0;delete E[k]}rkS('l2E',E);
+  if(mnAdm()){const P=rkG('l2P',{})||{};for(const k of ['lxa','lxb'])if(P[k]){adm+=L2R1[k]|0;delete P[k]}rkS('l2P',P)}
+  if(back)rkAdd('gem',back);if(adm)rkAdd('gem',-adm);if(back||adm||lost){try{localStorage.removeItem('ac_h');acSave(1)}catch(e){}
+    setTimeout(()=>{try{rkToast('⚖️ 1ª rodada do leilão ANULADA'+(back?': +'+rkFmtN(back)+' 💎 de volta':'')+(lost?' · o anel saiu':'')+(adm?' · −'+rkFmtN(adm)+' 💎 (devolvidos aos jogadores)':'')+'. 2ª RODADA até 22:00!','#ffd84a')}catch(e){}},1500)}}catch(e){}}
+setTimeout(l2Reset1,4000);setInterval(l2Reset1,60000);
+try{Object.assign(window.__pvT||{},{l2Reset1:()=>l2Reset1()})}catch(e){}

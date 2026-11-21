@@ -1,0 +1,20 @@
+// v584: 1ª rodada anulada (anel sai, diamantes voltam, ADM devolve) + 2ª rodada 21:25–22:00 com lance inicial 500.000 / 300.000
+const {chromium}=require('playwright');
+(async()=>{let ok=1;const chk=(c,m)=>{console.log((c?'OK  ':'FALHA ')+m);if(!c)ok=0};const E=[];const b=await chromium.launch();
+  const page=async(nome,t,extra)=>{const p=await b.newPage();p.on('pageerror',e=>E.push(e.message));await p.route(/fonts\.g/,r=>r.abort());await p.clock.setFixedTime(t);
+    await p.addInitScript(([n,x])=>{if(!sessionStorage.d){sessionStorage.d=1;localStorage.clear();Object.assign(localStorage,{rk_ini:'1',rk_xpv2:'1',rk_dia:'1',rk_lvrz:'1',rk_pvupv:'352',tw_nome:JSON.stringify(n),tw_uid:'"u_'+n.replace(/\W/g,'')+'"',rk_gem:'1000'},x)}},[nome,extra]);
+    await p.goto('http://localhost:8790/index.html');await p.waitForTimeout(7000);return p};
+  const T=Date.UTC(2026,10,21,0,30);
+  const ring={i:'r1',c:5,g:8,s:'dano',s2:'crit',p:'fur',a:1e7,v:1000,l:50,lx:'a'};
+  let p=await page('Honrado',T,{rk_an:JSON.stringify([ring,{i:'r2',c:1,g:1,s:'vel',v:3,a:1,l:1}]),rk_anEq:JSON.stringify({goku:['r1','r2']}),rk_l2R:JSON.stringify({lxa:1}),rk_l2E:JSON.stringify({lxb:{v:346000,win:1}})});
+  let r=await p.evaluate(()=>({gem:JSON.parse(localStorage.rk_gem),an:JSON.parse(localStorage.rk_an).map(x=>x.i),eq:JSON.parse(localStorage.rk_anEq).goku,E:JSON.parse(localStorage.rk_l2E)}));console.log(JSON.stringify(r));
+  chk(r.gem===1000+667000+346000,'Honrado: +667.000 (anel) +346.000 (lance preso) de volta');chk(!r.an.includes('r1')&&r.an.includes('r2')&&!r.eq.includes('r1'),'o anel do leilão saiu (o outro anel fica)');
+  await p.evaluate(()=>__pvT.l2Reset1());chk(await p.evaluate(()=>JSON.parse(localStorage.rk_gem))===r.gem,'só 1 vez');
+  await p.evaluate(()=>__pvT.l2.bid('lxa2',499000));chk(await p.evaluate(()=>JSON.parse(localStorage.rk_gem))===r.gem,'2ª rodada: lance abaixo de 500.000 recusado');
+  await p.evaluate(()=>__pvT.l2.bid('lxa2',500000));await p.waitForTimeout(800);chk(await p.evaluate(()=>JSON.parse(localStorage.rk_gem))===r.gem-500000,'2ª rodada: lance de 500.000 no REI DA FÚRIA');
+  await p.evaluate(()=>__pvT.l2.bid('lxb2',299000));chk(await p.evaluate(()=>JSON.parse(localStorage.rk_gem))===r.gem-500000,'FORTUNA: abaixo de 300.000 recusado');
+  await p.evaluate(()=>__pvT.l2.bid('lxb2',300000));await p.waitForTimeout(800);chk(await p.evaluate(()=>JSON.parse(localStorage.rk_gem))===r.gem-800000,'FORTUNA: lance de 300.000');await p.close();
+  p=await page('Denilson ADM',T,{rk_gem:'1288135',rk_l2P:JSON.stringify({lxa:1})});r=await p.evaluate(()=>JSON.parse(localStorage.rk_gem));chk(r===1288135-667000+270000 /* +270.000 do mkFix583 neste teste */,'ADM devolve os 667.000 que recebeu ('+r+')');
+  await p.evaluate(()=>__pvT.l2.open());await p.waitForTimeout(2500);await p.screenshot({path:__dirname+'/shots/t584_adm.png'});await p.close();
+  p=await page('Stark',T,{});chk(await p.evaluate(()=>JSON.parse(localStorage.rk_gem))===1000,'quem não tinha nada preso não muda');await p.close();
+  console.log(E.length?'ERROS '+E.join('|'):'sem erros');console.log(ok&&!E.length?'TUDO OK':'FALHOU');await b.close()})();
