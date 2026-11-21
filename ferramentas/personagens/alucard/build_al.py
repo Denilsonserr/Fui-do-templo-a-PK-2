@@ -6,8 +6,8 @@ from PIL import Image,ImageFilter,ImageEnhance
 AI=len(sys.argv)>1 and sys.argv[1]=='ai';T0=time.time()
 OUT='/home/claude/fui-do-templo-a-pk-2/www/a';TGT=290.0;RES=2.6
 # altura "em pé" equivalente de cada folha (px da folha)
-U={'01':538,'02':528,'03':533,'04':535,'05':588,'06':521,'07':650,'08':1300,'09':570,'10':580,'11':470,'12':477,'13a':280,'13b':280}
-NF={'01':6,'02':6,'03':6,'04':6,'05':6,'06':6,'07':6,'08':1,'09':4,'10':4,'11':6,'12':6,'13a':8,'13b':8}
+U={'01':538,'02':528,'03':533,'04':535,'05':588,'06':521,'07':650,'08':1300,'09':570,'10':580,'11':470,'12':477,'13a':280,'13b':280,'14':557}
+NF={'01':6,'02':6,'03':6,'04':6,'05':6,'06':6,'07':6,'08':1,'09':4,'10':4,'11':6,'12':6,'13a':8,'13b':8,'14':6}
 ROWS={t:2 if t=='07' else 1 for t in NF}
 def G(t,ix):return [(t,i) for i in ix]
 # v594: ALUCARD (sid al). Pistoleiro rápido: socos (04), tiros (03), chutes com a arma (05), rasteira atirando (12), super combo numerado (13a+13b).
@@ -23,7 +23,9 @@ Y={'relax':G('01',[0]*6),'gin':G('04',[0]*5),'idle':G('03',[0]*6),'walk':G('02',
   'palm':G('04',[2,3,3,3,3,3,5,5]),'roxo':G('05',[1,2,3,3,4,5]),'cmb':G('13a',range(8))+G('13b',range(8)),'cmb1':G('13a',range(8))+G('13b',range(8)),
   'jumpv':G('10',[0,1,2,2,2,2,2,2]),'jumpd':G('10',[0,1,2,2,2,2,2,2]),'hover':G('10',[2]*6),'land':G('10',[3]*8),
   'ajab':G('10',[1])+G('03',[4,4,4,4,4])+G('10',[2,2]),'akick':G('10',[1])+G('05',[3,3,3,3])+G('10',[2,2,2]),
-  'rkY':G('04',range(6)),'rka':G('04',range(6)),'rkb':G('04',range(6)),'rkp':G('04',range(6)),'pose':G('08',[0])}
+  'rkY':G('04',range(6)),'rka':G('04',range(6)),'rkb':G('04',range(6)),'rkp':G('04',range(6)),'pose':G('08',[0]),
+  # v595: POSTURAS DE TIRO (o forte dele é o tiro): A = duas mãos (folha 14), B = uma mão (03), C = agachado com as duas armas (07), D = afasta pra trás e atira (03), E = tiro grosso (08)
+  'sA':G('14',[1,2,3,3,4,4,5,5]),'sB':G('03',[1,2,4,4,4,4,5,5]),'sC':G('07',[2,1,0,1,0,1,0,2]),'sD':G('03',[5,3,3,4,4,4,4,5]),'sE':G('08',[0]*8)}
 AIR={'jumpv','jumpd','hover','ajab','akick'}
 GL={}
 for t in NF:

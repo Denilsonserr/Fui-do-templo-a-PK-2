@@ -2765,3 +2765,10 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - Aura = chama do Gojo (GJAU) recolorida de VERMELHO (`aucRed`/`aucAura`), sempre ligada (fraca), forte carregando com raios vermelhos.
 - ATENÇÃO nomes: `ALB` já existia no jogo base (erro "already declared") → tudo do Alucard usa prefixo `auc`/`AUC`.
 - Teste: `ferramentas/testes/tal_v594.js` (jogador comum não vê o TESTE; ADM luta, tiros de 560 px acertam, super combo).
+
+## v595 — Alucard: o forte é o TIRO (pedido do dono)
+- Folha nova `poses/14_tiro_duas_maos.png` (mira com as duas mãos, clarão e fumaça). Animações novas no `build_al.py`: `sA` (duas mãos, 14), `sB` (uma mão, 03), `sC` (agachado com as duas armas, 07), `sD` (afasta pra trás e atira, 03), `sE` (tiro grosso, 08).
+- Botão SOCO vira sequência de TIROS (`AUCMAP` no wrapper de `startMove`: ujab→aj1/aj1b sorteado, ujab2→aj2, ujab3→aj3, uknee→aj4, ustr→aj5; `MOVES.aj*`/`VGA.aj*`). `AUCSH`: aj1 1 tiro · aj2 2 tiros rápidos · aj3 agachado RAJADA ULTRA RÁPIDA de 6 · aj4 pula pra trás e 2 tiros · aj5 TIRO GROSSO (bala grande, joga longe). Chute continua com os chutes (emenda nos dois sentidos).
+- Ki = TIRO TRIPLO (3 balas de uma vez em leque). Balas com `vy` e `big` em `aucFire`.
+- Bug da v594: `aucTick` saía cedo quando não tinha bala no ar → os golpes com arma não atiravam. Corrigido.
+- Teste `tal_v595.js`.
