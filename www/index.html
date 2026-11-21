@@ -15845,7 +15845,7 @@ try{Object.assign(window.__pvT||{},{pb5On:()=>pb5On(),spM:f=>speedMul(f)})}catch
 /* v574: pedido do dono — REI DA FÚRIA = 1000% em 3 status (dano, crítico e VELOCIDADE); FORTUNA = 1000 sorte + 1000% drop + 💎 +20% nos diamantes do farm. */
 const LXR={a:{nm:'ANEL DO LEILÃO · REI DA FÚRIA',s:'dano',s2:'crit',s3:'vel',p:'fur',ex:{},tx:'💨 Velocidade +1000% · 💥 a cada 10 golpes: ATAQUE x3 por 10 s (1 vez por luta)'},
   b:{nm:'ANEL DO LEILÃO · DEUSA DA FORTUNA',s:'st',s2:'drop',p:'vamp',ex:{},gem:.2,tx:'💎 +20% de diamantes no farm · 🍀 chance de DUPLICAR um item raro (1 vez por luta)'}};
-const L2T0=Date.UTC(2026,10,21,1,0),L2T1=Date.UTC(2026,10,21,2,0),L2ST=1000; /* v588: 3ª RODADA 22:00 → 23:00 (Brasília), SEM diamantes presos */ /* v584: 2ª RODADA 21:25 → 22:00 (Brasília); 1ª rodada (20:00–21:15, lotes lxa/lxb) anulada */
+const L2T0=Date.UTC(2026,10,21,1,0),L2T1=Date.UTC(2026,10,21,1,10),L2ST=1000; /* v589: só 10 min (22:00–22:10) */ /* v588: 3ª RODADA 22:00 → 23:00 (Brasília), SEM diamantes presos */ /* v584: 2ª RODADA 21:25 → 22:00 (Brasília); 1ª rodada (20:00–21:15, lotes lxa/lxb) anulada */
 const L2L=[{id:'lxa2',x:'a',min:500000,nm:'💍 '+LXR.a.nm,d:'⚔️ +1000% DANO · 🎯 +1000% CRÍTICO · 💨 +1000% VELOCIDADE · 🔥 Fúria · 💥 10 golpes = ATAQUE x3 por 10 s (1x por luta)'},{id:'lxb2',x:'b',min:300000,nm:'💍 '+LXR.b.nm,d:'🍀 +1000% SORTE · 🎁 +1000% DROP · 💎 +20% DIAMANTES no farm · 🍀 chance de DUPLICAR item raro (1x por luta) · 🩸 Vampiro'}];
 /* status do anel: 2º status cheio (os outros dourados dão metade) + efeitos especiais */
 {const _s=anSum;anSum=function(id){const o=_s.apply(this,arguments);try{if(typeof tnUxOn==='function'&&tnUxOn())return o;const L=anL();for(const i of anEq(id)){if(!i)continue;const r=L.find(x=>x.i===i);if(!r||!r.lx||!LXR[r.lx])continue;
@@ -16237,7 +16237,7 @@ window.__dbg={mus:()=>[MCUR,MEL.src.split('/').pop()],stg:()=>STAGE.key,prepMatc
 })();
 </script>
 <style>#updB{position:fixed;left:50%;top:max(8px,env(safe-area-inset-top));transform:translateX(-50%);z-index:99999;padding:10px 22px;border-radius:14px;border:2px solid #fff3c0;background:linear-gradient(#ffd84a,#e08a10);color:#3a1d00;font:900 15px system-ui,sans-serif;box-shadow:0 0 18px #ffb21f;cursor:pointer;animation:updP 1s ease-in-out infinite alternate}@keyframes updP{to{transform:translateX(-50%) scale(1.05)}}</style>
-<script>(function(){const V='eaf2e8876a5e';if(!/^https?:/.test(location.protocol))return;let nv=null;
+<script>(function(){const V='7caabe18573a';if(!/^https?:/.test(location.protocol))return;let nv=null;
 function show(){if(document.getElementById('updB'))return;try{if(typeof G!=='undefined'&&G.mode==='fight')return}catch(e){}const b=document.createElement('button');b.id='updB';b.textContent='🔄 ATUALIZAÇÃO NOVA! Toque para atualizar';
   b.onclick=()=>{b.textContent='⏳ Atualizando...';try{acSave(1)}catch(e){}setTimeout(()=>location.reload(),900)};document.body.appendChild(b)}
 async function chk(){if(document.hidden)return;if(nv){show();return}try{const r=await fetch('versao.txt?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const t=(await r.text()).trim();if(/^[0-9a-f]{8,40}$/.test(t)&&t!==V){nv=t;show()}}catch(e){}}

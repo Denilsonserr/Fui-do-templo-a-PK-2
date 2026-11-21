@@ -2740,3 +2740,6 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - `l2Load` novo: ignora lances fora da janela; separa `l2ok` (aprovação) e `l3pg` (pagamento). Tela consulta a cada 2 s.
 - Fim: ADM aprova (`l2ok`, sem pagar na hora). Vencedor (`l3Settle`, trava `L3CB`, a cada 10 s e ao abrir): cria `l3pg_<lote>` (1 vez no servidor; 409 = já pago) → paga e recebe o item. Sem diamantes suficientes = aviso e espera. ADM recebe quando o `l3pg` aparece (`rk_l2P`, 1 vez).
 - `l2Reset2` (1 vez, `rk_l2rs2`): devolve lances presos da 2ª rodada. Teste `tleilao_r3_v588.js`.
+
+## v589 — 3ª rodada do leilão: só 10 minutos
+- `L2T1` = 22:10 Brasília (22:00–22:10).
