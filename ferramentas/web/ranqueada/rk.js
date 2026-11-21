@@ -1350,7 +1350,7 @@ async function mnAct(a,b){if(a==='back')return rkView('menu');
 /* vendedor recebe: diamantes (vendido) ou o item de volta (cancelado/removido) — 1 vez só (mkc_<lid>) */
 let mnClaiming=0;async function mnClaim(quiet){if(mnClaiming)return;mnClaiming=1;let got=0,gem=0,it=0;try{if(!quiet)for(const k in RKQC)if(k.includes('"mk'))delete RKQC[k];const me=mnKey(),C=await rkQ('mks',me,500),done=rkG('mkc',[]);let pend=0;
   const mine=MN.L?MN.L.filter(l=>l.mkv===me):await rkQ('mkv',me,500);
-  for(const c of C){if(done.includes(c.lid))continue;const l=mine.find(x=>x.lid===c.lid);if(!l)continue;let r;try{r=await mnPost('mkc_'+c.lid,{mkc:mnSV('1'),lid:mnSV(c.lid)})}catch(x){pend++;continue}
+  for(const c of C){if(done.includes(c.lid))continue;if(!c.tipo)continue; /* v583: o PEDIDO (mkr) também tem 'mks' e era tratado como CANCELAMENTO: o vendedor pegava o item de volta e depois não recebia o pagamento */const l=mine.find(x=>x.lid===c.lid);if(!l)continue;let r;try{r=await mnPost('mkc_'+c.lid,{mkc:mnSV('1'),lid:mnSV(c.lid)})}catch(x){pend++;continue}
     if(r.ok){if(c.tipo==='buy'){rkAdd('gem',c.preco|0);gem+=c.preco|0}else{mnGive(mnIt(l));it++}got++}done.push(c.lid)}
   rkS('mkc',done);rkS('mkpend',pend);if(got){try{acSave(1)}catch(x){}rkSfx('powerUp');rkToast('💰 Mercado Negro: '+(gem?'+'+rkFmtN(gem)+' 💎 ':'')+(it?it+' item(ns) de volta':''),'#ffd84a')}else if(!quiet&&RKV==='mn')rkToast('Nada para receber agora.','#bfe8ff')}catch(e){}mnClaiming=0;if(got&&RKV==='mn')rkView('mn')}
 /* ao abrir o ranqueado, recebe as vendas sozinho */
@@ -7391,3 +7391,13 @@ TWCUP['bony18']={nm:'💎 30.000 DIAMANTES',it:[],uni:1,pk:{gem:30000},msg:'✅ 
 
 /* v581: código 270.000 💎 (uso único) */
 TWCUP['1oux84i']={nm:'💎 270.000 DIAMANTES',it:[],uni:1,pk:{gem:270000},msg:'✅ Você ganhou 💎 270.000 DIAMANTES!'};
+
+/* v583: ANULAR a compra do ADM no Mercado Negro (item do Breno, 300.000 💎, anúncio wurbwp_mwpmsuvj). O ADM pagou 300.000 e já recebeu 30.000 de taxa
+   → volta 270.000 (fica como antes). O Breno NÃO recebe o pagamento (o mkc_ já existe no servidor) e já tinha pego o item de volta.
+   O item não é entregue para o ADM (sai do pedido pendente) — se já tinha chegado, sai da mochila do ADM. 1 vez (rk_mkfx583). */
+function mkFix583(){try{if(!mnAdm()||rkG('mkfx583',0))return;rkS('mkfx583',1);const rid='wurbwp_mwpmsuvj_13vlve8';
+  const P=mkPend(),had=P.some(p=>p.rid===rid);if(had)mkPendS(P.filter(p=>p.rid!==rid));
+  else{const I=twInv(),k=I.map((x,i)=>[x,i]).reverse().find(([x])=>x&&x.t==='esp'&&x.r==='sec'&&(x.v|0)===30&&(x.crit|0)===10);if(k){I.splice(k[1],1);twLS.s('tw_inv',I)}}
+  rkAdd('gem',270000);try{localStorage.removeItem('ac_h');acSave(1)}catch(e){}setTimeout(()=>{try{rkToast('↩️ Compra do Breno ANULADA: +270.000 💎 de volta (os outros 30.000 já eram seus da taxa)','#7dff9a')}catch(e){}},1200)}catch(e){}}
+setTimeout(mkFix583,5000);setInterval(mkFix583,60000);
+try{Object.assign(window.__pvT||{},{mkFix583:()=>mkFix583()})}catch(e){}

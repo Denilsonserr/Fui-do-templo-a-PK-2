@@ -2712,3 +2712,8 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 
 ## v582 — leilão dos anéis até 21:15
 - `L2T1` = 20/11 21:15 Brasília (antes 21:00). `l2Settle` tira o `win` marcado antes do novo fim (quem abriu a versão velha às 21:00).
+
+## v583 — compra do ADM com o Breno anulada + correção do Mercado
+- Bug (desde a v546): o PEDIDO `mkr_*` também tem o campo `mks`, então o `mnClaim` do VENDEDOR achava que era um cancelamento: devolvia o item para ele e criava `mkc_<lid>` — depois o pagamento (mkb) nunca chegava (409). Agora `mnClaim` ignora docs sem `tipo`.
+- `mkFix583` (só ADM, 1 vez `rk_mkfx583`): compra `wurbwp_mwpmsuvj` (espada do Breno, 300.000) anulada → +270.000 💎 (os 30.000 da taxa já tinham caído para o ADM), tira o pedido pendente ou a espada (esp/sec v30 crit10) da mochila. O Breno não recebe (mkc já existe) e já tinha pego o item de volta pelo bug.
+- Teste `tmk_anula_v583.js`. (`tmercado_taxa_v547.js` agora mostra +270.000 a mais no ADM por causa do mkFix583.)
