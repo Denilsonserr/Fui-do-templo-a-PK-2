@@ -2733,3 +2733,10 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - `l2Fix587` (1 vez, `rk_fx587`, por uid em `L2FX`): Honrado 549.606 (329.606 antes do leilão + 220.000 do código), Breno 682.154 (382.154 + 300.000 dos códigos), Stark 497.898, Jogador anônimo 533 (+200.000 se `rk_luvG`). Diamantes = valor certo − lances presos. Vini/Michael normais (não mudam). ADM não mexido.
 - Lances dessas contas antes de `L2FXT` (21:40) não valem (`l2Load`), e o lance preso velho (sem `t`) volta no acerto. `l2Bid` agora grava `t` no lance preso.
 - Tela do leilão: faixa "💎 SEUS DIAMANTES PARA LANCE" (+ presos em lances). Teste `tleilao_fix_v587.js`.
+
+## v588 — LEILÃO 3ª rodada (22:00–23:00) SEM diamantes presos
+- `L2L` trocado (mutado) para `lxa3`, `lxb3`, `sp3` (anel dourado SP dano+crit, `l2Give` com `sp`), mínimo 30.000 cada. `L2T0/L2T1` 22:00→23:00 Brasília.
+- `l2Bid` novo: NÃO tira diamantes; exige `gem >= lance + soma dos itens em que já está ganhando` (`l3Need`). Sem presos/devolução → sem o bug de multiplicar.
+- `l2Load` novo: ignora lances fora da janela; separa `l2ok` (aprovação) e `l3pg` (pagamento). Tela consulta a cada 2 s.
+- Fim: ADM aprova (`l2ok`, sem pagar na hora). Vencedor (`l3Settle`, trava `L3CB`, a cada 10 s e ao abrir): cria `l3pg_<lote>` (1 vez no servidor; 409 = já pago) → paga e recebe o item. Sem diamantes suficientes = aviso e espera. ADM recebe quando o `l3pg` aparece (`rk_l2P`, 1 vez).
+- `l2Reset2` (1 vez, `rk_l2rs2`): devolve lances presos da 2ª rodada. Teste `tleilao_r3_v588.js`.

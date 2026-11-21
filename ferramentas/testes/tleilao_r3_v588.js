@@ -1,0 +1,23 @@
+// v588: 3ª rodada SEM diamantes presos — precisa TER o valor, paga só quando o ADM aprova, ADM recebe quando o vencedor paga, sem multiplicar
+const {chromium}=require('playwright');
+(async()=>{let ok=1;const chk=(c,m)=>{console.log((c?'OK  ':'FALHA ')+m);if(!c)ok=0};const E=[];const b=await chromium.launch();const ctx={};
+  const page=async(nome,t,x)=>{let c=ctx[nome];if(!c)c=ctx[nome]=await b.newContext({viewport:{width:915,height:422},deviceScaleFactor:2});const p=await c.newPage();p.on('pageerror',e=>E.push(nome+': '+e.message));await p.route(/fonts\.g/,r=>r.abort());await p.clock.setFixedTime(t);
+    await p.addInitScript(([n,x])=>{if(!localStorage.__i){localStorage.clear();Object.assign(localStorage,{__i:'1',rk_ini:'1',rk_xpv2:'1',rk_dia:'1',rk_lvrz:'1',rk_pvupv:'352',rk_l2rs1:'1',rk_mkfx583:'1',tw_nome:JSON.stringify(n),tw_uid:'"u_'+n.replace(/\W/g,'')+'"'},x)}},[nome,x]);
+    await p.goto('http://localhost:8790/index.html');await p.waitForTimeout(6500);await p.evaluate(()=>{document.querySelectorAll('#l2W,#lvrzM').forEach(e=>e.remove());const m=document.getElementById('rkModal');if(m){m.innerHTML='';m.hidden=true}});return p};
+  const gem=p=>p.evaluate(()=>JSON.parse(localStorage.rk_gem));const W=ms=>new Promise(r=>setTimeout(r,ms));
+  const ON=Date.UTC(2026,10,21,1,10),FIM=Date.UTC(2026,10,21,2,2);
+  let a=await page('Ana',ON,{rk_gem:'100000',rk_l2E:JSON.stringify({lxa2:{v:500000,t:1}})});chk(await gem(a)===600000,'lance preso da 2ª rodada volta 1 vez (+500.000)');
+  await a.evaluate(()=>{localStorage.rk_gem='100000'});
+  await a.evaluate(()=>__pvT.l2.bid('sp3',29000));await a.evaluate(()=>__pvT.l2.bid('sp3',30000));await a.waitForTimeout(600);chk(await gem(a)===100000,'lance de 30.000 no anel SP NÃO tira diamantes');
+  await W(2500);await a.evaluate(()=>__pvT.l2.bid('lxa3',80000));let B=await a.evaluate(async()=>{const B=await __pvT.l2.load();return B.lxa3||null});chk(!B,'80.000 no REI recusado: precisa TER 110.000 (80.000 + 30.000 do anel SP)');
+  await a.evaluate(()=>__pvT.l2.bid('lxa3',70000));await a.waitForTimeout(600);await a.evaluate(()=>__pvT.l2.open());await W(2500);await a.screenshot({path:__dirname+'/shots/t588_aovivo.png'});await a.close();
+  await W(2500);let bb=await page('Beto',ON+60000,{rk_gem:'50000'});await bb.evaluate(()=>__pvT.l2.bid('sp3',31000));await bb.waitForTimeout(600);chk(await gem(bb)===50000,'Beto cobre o SP com 31.000 (sem tirar diamantes)');await bb.close();
+  await W(2500);const adm=await page('Denilson ADM',FIM,{rk_gem:'1000'});await adm.evaluate(()=>__pvT.l2.open());await W(2500);chk(await adm.locator('[data-la]').count()===2,'ADM vê APROVAR em 2 itens (REI e SP)');
+  await adm.click('[data-la="lxa3"]');await W(1500);await adm.click('[data-la="sp3"]');await W(1500);chk(await gem(adm)===1000,'ADM ainda não recebeu (vencedor não pagou)');await adm.close();
+  await W(2500);a=await page('Ana',FIM+30000,{});await a.evaluate(()=>Promise.all([__pvT.l2.settle(),__pvT.l2.settle(),__pvT.l2.settle()]));await a.waitForTimeout(800);
+  let r=await a.evaluate(()=>({g:JSON.parse(localStorage.rk_gem),n:__pvT.anL().filter(x=>x.lx==='a').length}));chk(r.g===30000&&r.n===1,'Ana pagou 70.000 UMA vez e recebeu o REI DA FÚRIA ('+r.g+')');
+  await a.evaluate(()=>__pvT.l2.settle());chk(await gem(a)===30000,'não paga 2 vezes');await a.close();
+  bb=await page('Beto',FIM+40000,{});await bb.evaluate(()=>__pvT.l2.settle());await bb.waitForTimeout(800);r=await bb.evaluate(()=>({g:JSON.parse(localStorage.rk_gem),sp:__pvT.anL().filter(x=>x.c===5&&x.g===8&&x.s==='dano'&&x.s2==='crit').length}));chk(r.g===19000&&r.sp===1,'Beto pagou 31.000 e recebeu o anel SP');await bb.close();
+  await W(2500);const adm2=await page('Denilson ADM',FIM+60000,{});await adm2.evaluate(()=>Promise.all([__pvT.l2.settle(),__pvT.l2.settle()]));await adm2.waitForTimeout(500);await adm2.evaluate(()=>__pvT.l2.settle());chk(await gem(adm2)===102000,'ADM recebeu 101.000 UMA vez ('+(await gem(adm2))+')');
+  await adm2.evaluate(()=>__pvT.l2.open());await W(2500);await adm2.screenshot({path:__dirname+'/shots/t588_fim.png'});await adm2.close();
+  console.log(E.length?'ERROS '+E.join('|'):'sem erros');console.log(ok&&!E.length?'TUDO OK':'FALHOU');await b.close()})();
