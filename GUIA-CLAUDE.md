@@ -2926,3 +2926,14 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 ## v621 — Código único PACOTE DO ALUCARD (texto só com o dono)
 - `p5pgxx` (`alpk:1`): Alucard + os 9 itens (alcap, alarm, alesp, alluv, alane, albot, alpluv, alpane, alpcap) + 50.000 💎 + passe 2X Hellsing.
 - Teste: `tcod_v621.js`.
+
+## v622 — Torneio Soberano do PVP + evento 2x + caixa lendária
+- TORNEIO (`TSOB`): 22/11, 20h–21h BRT.
+  - Conta as ⭐ ganhas no PVP (`rk_tsob`) e manda doc `tsb_<acc>_<ts>` (`tsK='sob1122'`, `tsS`).
+  - Ranking: `pvQL('tsK',…,'tsS',…,'pva')`. Aviso no topo da tela do PVP (`.tsBan`) e modal de ranking.
+  - Depois das 21h, `tsAward()` dá ao 1º o título `pvsob` SOBERANO DO PVP.
+  - Bônus do título: a cada 5 vitórias +1 ⭐ (`rk_sobW`). ADM fora.
+- EVENTO `ev622` até 23/11 23:59: RKEVX `{luck:2,anel:2}`, XP ×2.
+  - Gacha: se a 1ª tirada for fraca (red/equip comum/rara/épica), tira de novo.
+- CAIXA DE ESCOLHA LENDÁRIA: 1 por conta durante o evento (`rk_cxLev`, `rk_cxLg`). Abre sozinha no menu da Ranqueada. Se já tiver todos, ganha 5.000 💎.
+- Teste: `ttorneio_sob_v622.js` (hora falsa via `Date.now` depois de carregar).

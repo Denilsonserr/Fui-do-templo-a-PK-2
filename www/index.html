@@ -16712,6 +16712,59 @@ TWCUP['p5pgxx']={nm:'PACOTE DO ALUCARD',it:[],bp:2,s3:1,x2:1,uni:1,alpk:1};
     rkAdd('gem',50000);try{acSave(1)}catch(e){}
     E.textContent='❤️ PACOTE DO ALUCARD! Você ganhou o 🧛 ALUCARD + '+n+' itens dele + 50.000 💎 + PASSE 2X (prêmios em dobro)!';setTimeout(()=>{try{rkSfx('boom')}catch(e){}},300)}}catch(e){}return r}}
 
+/* ================= v622: TORNEIO SOBERANO DO PVP (22/11, 20h–21h de Brasília) =================
+   Conta as ⭐ GANHAS no PVP ranqueado dentro da janela (rk_tsob {k,n}); a cada vitória manda um doc 'tsb_<acc>_<ts>' (tsK, tsS).
+   Ranking ao vivo: pvQL('tsK',TSOB.k,…,'tsS',…,'pva'). Depois das 21h, quem ficou em 1º ganha o título SOBERANO DO PVP (pvsob):
+   a cada 5 vitórias no PVP, +1 ⭐ extra (rk_sobW conta as vitórias). ADM não entra no torneio. */
+const TSOB={a:Date.UTC(2026,10,22,23,0),b:Date.UTC(2026,10,23,0,0),k:'sob1122',show:Date.UTC(2026,10,24,2,59)};
+const tsOn=()=>{const t=Date.now();return t>=TSOB.a&&t<TSOB.b},tsMy=()=>{const o=rkG('tsob',{});return o&&o.k===TSOB.k?o.n|0:0};
+TWTIT.pvsob={n:'SOBERANO DO PVP',i:'⚜️',c:'#ffcf3a',d:'Venceu o Torneio Soberano do PVP (22/11) · a cada 5 vitórias no PVP ganha +1 ⭐ extra'};
+const pvStar1=o=>{if(o.t>=PVDIV){o.s++;return}o.s++;if(o.s>=pvNeed(o.t)){o.s=0;if(o.d<2)o.d++;else{o.t++;o.d=0}}};
+/* bônus do título */
+{const _s=pvStep;pvStep=function(o,won){const r=_s.apply(this,arguments);try{if(won&&r&&twTits().includes('pvsob')){const w=rkG('sobW',0)+1;rkS('sobW',w);
+  if(w%5===0){pvStar1(o);if(o.t>o.bt||o.t===o.bt&&o.d>o.bd){o.bt=o.t;o.bd=o.d}r.gain=(r.gain|0)+1;r.up=o.t>r.b.t||o.t===r.b.t&&o.d>r.b.d;setTimeout(()=>{try{rkToast('⚜️ SOBERANO: +1 ⭐ extra (5 vitórias)!','#ffcf3a')}catch(e){}},1200)}}}catch(e){}return r}}
+/* contagem do torneio (o mais de fora: conta tudo que ganhou) */
+async function tsPost(){try{const acc=pvAcc();if(!acc||mnAdm())return;const nm=twLS.g('tw_nome','')||'Jogador',ts=Date.now();
+  await pvPost('tsb_'+acc+'_'+ts.toString(36).padStart(9,'0'),{nome:{stringValue:String(nm).slice(0,16)},andar:pvIV(0),tempo:pvIV(0),pva:{stringValue:acc},tsK:{stringValue:TSOB.k},tsS:pvIV(tsMy()),ch:{stringValue:pvTeam()[0]||'goku'}})}catch(e){}}
+{const _s=pvStep;pvStep=function(o,won){const r=_s.apply(this,arguments);try{if(won&&r&&r.gain>0&&tsOn()&&!mnAdm()&&pvAcc()){rkS('tsob',{k:TSOB.k,n:tsMy()+r.gain});tsPost()}}catch(e){}return r}}
+let TSR={t:0,L:null};
+async function tsLoad(force){if(!force&&TSR.L&&Date.now()-TSR.t<(tsOn()?30e3:600e3))return TSR.L;try{const R=await pvQL('tsK',TSOB.k,40,'tsS','DESCENDING','pva');
+  const M={};for(const e of R){if(!e.pva||!(e.tsS>0))continue;if(!M[e.pva]||e.tsS>M[e.pva].tsS)M[e.pva]=e}TSR.L=Object.values(M).sort((a,b)=>b.tsS-a.tsS||String(a._id).localeCompare(String(b._id)));TSR.t=Date.now()}catch(e){}return TSR.L}
+async function tsAward(){if(Date.now()<TSOB.b+60e3||rkG('tsobDone','')===TSOB.k)return;const L=await tsLoad(1);if(!L)return;rkS('tsobDone',TSOB.k);if(L[0])rkS('tsobW',{k:TSOB.k,n:L[0].nome,s:L[0].tsS});
+  if(L[0]&&L[0].pva===pvAcc()&&!mnAdm()){const T=twTits();if(!T.includes('pvsob')){T.push('pvsob');twLS.s('tw_tit',T);twLS.s('tw_titOn','pvsob')}try{acSave(1)}catch(e){}try{pfPub(1)}catch(e){}
+    setTimeout(()=>{try{rkSfx('boom');rkModal(`<div class="twM sm tsM"><h3>⚜️ SOBERANO DO PVP!</h3><p class="twH">Você ganhou o <b>TORNEIO SOBERANO</b> com <b>${L[0].tsS} ⭐</b>!</p><p class="twH">Novo título: <b style="color:#ffcf3a">⚜️ SOBERANO DO PVP</b> — a cada 5 vitórias no PVP você ganha <b>+1 ⭐ extra</b>.</p><div class="row"><button class="btn ok" id="rkMX">👑 SOU O SOBERANO</button></div></div>`);$('rkMX').onclick=()=>rkModal(null)}catch(e){}},1500)}}
+function tsRank(){rkModal(`<div class="twM tsM"><h3>🏆 TORNEIO SOBERANO DO PVP</h3><p class="twH">Hoje das <b>20h às 21h</b>: quem GANHAR mais ⭐ no PVP ranqueado vira o <b style="color:#ffcf3a">⚜️ SOBERANO DO PVP</b> (+1 ⭐ extra a cada 5 vitórias).</p><div id="tsL" class="tsL"><p class="twH">Carregando…</p></div><div class="row"><button class="btn" id="rkMX">FECHAR</button></div></div>`);
+  $('rkMX').onclick=()=>rkModal(null);tsLoad(1).then(L=>{const E=$('tsL');if(!E)return;const me=pvAcc();E.innerHTML=L&&L.length?L.slice(0,15).map((e,i)=>`<div class="${e.pva===me?'me':''}"><i>${i===0?'⚜️':i+1+'º'}</i><b>${twEsc(e.nome||'?')}</b><span>${e.tsS} ⭐</span></div>`).join(''):'<p class="twH">Ninguém pontuou ainda.</p>'})}
+function tsBan(){const t=Date.now();if(t>TSOB.show)return '';const W=rkG('tsobW',null),mm=x=>{const s=Math.max(0,Math.round(x/1000));return Math.floor(s/60)+':'+String(s%60).padStart(2,'0')};
+  const txt=t<TSOB.a?`🏆 TORNEIO SOBERANO hoje às <b>20h</b> (até 21h) · começa em ${mm(TSOB.a-t)}`:t<TSOB.b?`🏆 TORNEIO AO VIVO · termina em <b>${mm(TSOB.b-t)}</b> · suas ⭐ <b>${tsMy()}</b>`:W&&W.k===TSOB.k?`⚜️ SOBERANO DO PVP: <b>${twEsc(W.n)}</b> (${W.s} ⭐)`:'🏆 TORNEIO SOBERANO encerrado · vendo o vencedor…';
+  return `<button class="tsBan${t>=TSOB.a&&t<TSOB.b?' live':''}" data-tsr="1">${txt} · <u>RANKING</u></button>`}
+{const _ph=pvH;pvH=function(){return tsBan()+_ph.apply(this,arguments)}}
+{const _v=rkView;rkView=function(v){const r=_v.apply(this,arguments);try{if(v==='pvp'){const b=document.querySelector('#rkWrap .tsBan');if(b)b.onclick=e=>{e.stopPropagation();tsRank()};tsAward()}}catch(e){}return r}}
+setInterval(()=>{try{if(RKV==='pvp'&&showScreen.cur==='ranked'&&!PV.fight&&!document.querySelector('#rkModal:not([hidden]) .twM')){const b=document.querySelector('#rkWrap .tsBan');const n=tsBan();if(b&&n){const d=document.createElement('div');d.innerHTML=n;b.innerHTML=d.firstChild.innerHTML;b.className=d.firstChild.className}}}catch(e){}},1000);
+setTimeout(()=>{try{tsAward()}catch(e){}},6000);setInterval(()=>{try{tsAward()}catch(e){}},90e3);
+
+/* ================= v622: EVENTO 2x SORTE · 2x SORTE NO GACHA · 2x XP RANK · 2x ANEL DA ALMA + CAIXA DE ESCOLHA LENDÁRIA =================
+   Até 23/11 23:59 (Brasília). Gacha: se a 1ª tirada vier fraca (red ou equipamento comum/raro/épico), tira de novo (a pity anda 2x também).
+   Caixa: 1 por conta durante o evento (rk_cxLg = quantas tem, rk_cxLev = já ganhou) → escolhe 1 lendário que não tem (se tiver todos: 5.000 💎). */
+const EV622=[Date.UTC(2026,10,22,22,0),Date.UTC(2026,10,24,2,59,59)];
+RKEVX.push([EV622[0],EV622[1],2,'🍀 2x SORTE · 🎰 2x SORTE NO GACHA · 2x XP RANK · 💍 2x ANEL DA ALMA',{luck:2,anel:2},'ev622']);
+const ev622On=()=>{const t=Date.now();return t>=EV622[0]&&t<EV622[1]};
+{const _r=rkRoll;rkRoll=function(){const a=_r.apply(this,arguments);try{if(ev622On()&&a&&(a.k==='red'||a.k==='eq'&&['comum','rara','epica'].includes(a.r)))return _r.apply(this,arguments)}catch(e){}return a}}
+function cxLgOpen(){const own=rkG('own',['goku']),L=RK_LEG.filter(id=>CH[id]&&!own.includes(id));
+  if(!L.length){rkS('cxLg',Math.max(0,rkG('cxLg',0)-1));rkAdd('gem',5000);try{acSave(1)}catch(e){}rkToast('Você já tem todos os lendários: +5.000 💎','#7dff9a');return}
+  rkModal(`<div class="twM bpPk"><h3>🎁 CAIXA DE ESCOLHA LENDÁRIA</h3><p class="twH">Presente para todos! Toque no personagem LENDÁRIO que você quer.</p><div class="bpPkG">${L.map(id=>`<button data-k="${id}"><img src="${fullSrc(id)}" alt=""><b>${twEsc(CH[id].name)}</b></button>`).join('')}</div><div class="row"><button class="btn" id="rkMX">DEPOIS</button></div></div>`);
+  $('rkMX').onclick=()=>rkModal(null);document.querySelectorAll(RKMS()+'.bpPkG button').forEach(b=>b.onclick=()=>{const k=b.dataset.k,o=rkG('own',['goku']);if(rkG('cxLg',0)<1)return rkModal(null);
+    if(!o.includes(k)){o.push(k);rkS('own',o)}rkS('cxLg',rkG('cxLg',0)-1);try{acSave(1)}catch(e){}rkModal(null);rkSfx('boom');rkToast('✦ '+CH[k].name+' liberado! (Caixa Lendária)','#ffd84a');try{if(RKV==='menu')rkView('menu')}catch(e){}})}
+function cxLgChk(){try{if(ev622On()&&!rkG('cxLev',0)){rkS('cxLev',1);rkS('cxLg',rkG('cxLg',0)+1);try{acSave(1)}catch(e){}}if(rkG('cxLg',0)>0&&showScreen.cur==='ranked'&&RKV==='menu'&&!document.querySelector('#rkModal:not([hidden]) .twM'))setTimeout(cxLgOpen,1200)}catch(e){}}
+{const _o=rkOpen;rkOpen=function(){const r=_o.apply(this,arguments);setTimeout(cxLgChk,2500);return r}}
+{const st=document.createElement('style');st.textContent=`
+.tsBan{position:absolute;left:50%;top:1.2%;transform:translateX(-50%);z-index:6;max-width:94%;padding:.3em .9em;border-radius:1em;border:2px solid #ffcf3a;background:linear-gradient(180deg,#3a2400,#140a00);color:#ffe9a8;font:800 1em var(--f-ui);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;box-shadow:0 0 .8em #ffb30088;cursor:pointer}
+.tsBan.live{animation:tsL 1.2s ease-in-out infinite;border-color:#ff4a3a;color:#fff}@keyframes tsL{50%{box-shadow:0 0 1.4em #ff4a3a}}
+.tsBan u{color:#ffcf3a}.tsM h3{color:#ffcf3a}.tsL{max-height:46vh;overflow:auto;display:flex;flex-direction:column;gap:.25em;margin:.4em 0}
+.tsL div{display:flex;gap:.6em;align-items:center;padding:.3em .7em;border-radius:.6em;background:#1a140a;border:1px solid #ffcf3a33}.tsL div.me{border-color:#7dff9a;background:#0f2a14}
+.tsL i{font-style:normal;width:2.2em;font-weight:900;color:#ffcf3a}.tsL b{flex:1;text-align:left}.tsL span{font-weight:900}`;document.head.appendChild(st)}
+try{Object.assign(window.__vw,{TSOB,tsMy:()=>tsMy(),tsLoad:f=>tsLoad(f),tsAward:()=>tsAward(),ev622On:()=>ev622On(),cxLgChk:()=>cxLgChk(),cxLgOpen:()=>cxLgOpen(),rkRoll:()=>rkRoll(),pvStep:(o,w)=>pvStep(o,w)})}catch(e){}
+
 function twTrofList(){const tc=twLS.g('tw_tc',{}),run={};for(const t of TW.tr)run[t.k]=(run[t.k]||0)+1;
   twModal(`<div class="twM"><h3>🎖️ TROFÉUS</h3><div class="twTL">${Object.keys(TWTR).map(k=>{const T=TWTR[k];return `<div class="${tc[k]||run[k]?'got':''}"><i>${T.i}</i><b>${T.n}</b><span>${T.d}</span><em>+${T.p} 🏆</em><small>${run[k]?'nesta subida: '+run[k]+' · ':''}total: ${(tc[k]||0)}</small></div>`}).join('')}</div>
     <p class="twH">Cada troféu soma pontos 🏆 no ranking. Quem sobe mais andares fica na frente; empate = mais troféus, depois menos tempo.</p><div class="row"><button class="btn" id="twTx">FECHAR</button></div></div>`);
@@ -16903,7 +16956,7 @@ window.__dbg={mus:()=>[MCUR,MEL.src.split('/').pop()],stg:()=>STAGE.key,prepMatc
 })();
 </script>
 <style>#updB{position:fixed;left:50%;top:max(8px,env(safe-area-inset-top));transform:translateX(-50%);z-index:99999;padding:10px 22px;border-radius:14px;border:2px solid #fff3c0;background:linear-gradient(#ffd84a,#e08a10);color:#3a1d00;font:900 15px system-ui,sans-serif;box-shadow:0 0 18px #ffb21f;cursor:pointer;animation:updP 1s ease-in-out infinite alternate}@keyframes updP{to{transform:translateX(-50%) scale(1.05)}}</style>
-<script>(function(){const V='11099a167a77';if(!/^https?:/.test(location.protocol))return;let nv=null;
+<script>(function(){const V='153c608a2404';if(!/^https?:/.test(location.protocol))return;let nv=null;
 function show(){if(document.getElementById('updB'))return;try{if(typeof G!=='undefined'&&G.mode==='fight')return}catch(e){}const b=document.createElement('button');b.id='updB';b.textContent='🔄 ATUALIZAÇÃO NOVA! Toque para atualizar';
   b.onclick=()=>{b.textContent='⏳ Atualizando...';try{acSave(1)}catch(e){}setTimeout(()=>location.reload(),900)};document.body.appendChild(b)}
 async function chk(){if(document.hidden)return;if(nv){show();return}try{const r=await fetch('versao.txt?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const t=(await r.text()).trim();if(/^[0-9a-f]{8,40}$/.test(t)&&t!==V){nv=t;show()}}catch(e){}}
