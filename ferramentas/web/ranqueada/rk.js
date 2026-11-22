@@ -7793,3 +7793,4 @@ TWCUP['w3em5e']={nm:'PASSE V2 · TEMPORADA DE HELLSING (prêmios em dobro)',it:[
 TWCUP['vtf0gf']={nm:'PASSE V2 · TEMPORADA DE HELLSING (prêmios em dobro)',it:[],bp:2,s3:1,x2:1,uni:1};
 TWCUP['1ju5c3b']={nm:'🐜 SOMBRA BERU (Rank S)',it:[],uni:1,sbr:1,msg:'✅ Você ganhou 🐜 a SOMBRA BERU (Rank S)! Veja em SISTEMA → SOMBRAS.'};
 try{window.__bp2={bpG:()=>bpG(),bpS:o=>bpS(o),claim:(r,i,q)=>bp2Claim(r,i,q),rkG:(k,d)=>rkG(k,d),BPS,twInv:()=>twInv()}}catch(e){}
+try{window.__vw={rkView:v=>rkView(v),fullSrc:id=>fullSrc(id)}}catch(e){}

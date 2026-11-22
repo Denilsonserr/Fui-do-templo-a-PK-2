@@ -2867,3 +2867,9 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - O wrapper `bp2Claim` do x2 agora repete só `g` (gemas), `t` (tickets), `j` (joias) e `po` (pó).
 - Personagem, armadura, anel, item exclusivo, poção e 🔴 não dobram (pedido do dono).
 - Hook `window.__bp2`. Teste: `tpasse2x_v612.js`.
+
+## v613 — Alucard de corpo inteiro (arte do dono)
+- `ferramentas/personagens/alucard/corpo_inteiro.png` → `full_v613.py` → `a/459fdad9160275.webp`.
+- `build/imgs.json` 'full' aponta para ela, entra no `FULLIMG.alucard`. Aparece no perfil, passe, versus, anéis etc.
+- Se rodar `imgs_al.py` de novo, ele volta a usar o meio-corpo antigo: rode depois `full_v613.py` e recoloque o 'full'.
+- Hook `window.__vw`. Teste: `tal_full_v613.js`.
