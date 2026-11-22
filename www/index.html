@@ -15884,7 +15884,7 @@ try{Object.assign(window.__pvT||{},{ptNow:t=>ptNow(t),ptRaid:()=>ptRaid(),pnMk:(
    • Drops do jogo todo ×0,6 (rkDropF via extra/9z_v556.py; portais: item/sombra/poção/peça do Monarca/diamante ×0,6). No evento ×2.
    • Evento EV2X: até 22/11 23:59 (Brasília): 2x DROP · 2x XP de rank · 2x ESTRELAS no PVP ranqueado · 2x ANEL (chance de anel).
    • Beru: vida ×2,5 e mais ×1 a ×12 conforme a força de quem entra (dano, crítico e velocidade); ataque ×1 a ×2,4. ================= */
-const DROPBASE=.6,EV2X=[Date.UTC(2026,10,19,19,20),Date.UTC(2026,10,23,2,59,59)],ev2xOn=t=>{t=t||Date.now();return t>=EV2X[0]&&t<EV2X[1]};
+const DROPBASE=.6,EV2X=[Date.UTC(2026,10,19,19,20),Date.UTC(2026,10,22,17,45)] /* v618: dono pediu para encerrar às 14:45 de 22/11 (era até 23:59) */,ev2xOn=t=>{t=t||Date.now();return t>=EV2X[0]&&t<EV2X[1]};
 function rkDropK(){return DROPBASE*(ev2xOn()?2:1)}
 RKEVX.splice(0,0,[EV2X[0],EV2X[1],2,'2x DROP · 2x XP · 2x ESTRELAS · 2x ANEL',{anel:2}]);
 try{for(const R of PTRK){for(const k of ['it','sh','pv','sj','gem']){const b=R[k];if(typeof b!=='number')continue;Object.defineProperty(R,k,{get:()=>b*rkDropK(),configurable:true,enumerable:true})}}}catch(e){}
@@ -16870,7 +16870,7 @@ window.__dbg={mus:()=>[MCUR,MEL.src.split('/').pop()],stg:()=>STAGE.key,prepMatc
 })();
 </script>
 <style>#updB{position:fixed;left:50%;top:max(8px,env(safe-area-inset-top));transform:translateX(-50%);z-index:99999;padding:10px 22px;border-radius:14px;border:2px solid #fff3c0;background:linear-gradient(#ffd84a,#e08a10);color:#3a1d00;font:900 15px system-ui,sans-serif;box-shadow:0 0 18px #ffb21f;cursor:pointer;animation:updP 1s ease-in-out infinite alternate}@keyframes updP{to{transform:translateX(-50%) scale(1.05)}}</style>
-<script>(function(){const V='bc974dc5b7ff';if(!/^https?:/.test(location.protocol))return;let nv=null;
+<script>(function(){const V='31d2eef2d69a';if(!/^https?:/.test(location.protocol))return;let nv=null;
 function show(){if(document.getElementById('updB'))return;try{if(typeof G!=='undefined'&&G.mode==='fight')return}catch(e){}const b=document.createElement('button');b.id='updB';b.textContent='🔄 ATUALIZAÇÃO NOVA! Toque para atualizar';
   b.onclick=()=>{b.textContent='⏳ Atualizando...';try{acSave(1)}catch(e){}setTimeout(()=>location.reload(),900)};document.body.appendChild(b)}
 async function chk(){if(document.hidden)return;if(nv){show();return}try{const r=await fetch('versao.txt?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const t=(await r.text()).trim();if(/^[0-9a-f]{8,40}$/.test(t)&&t!==V){nv=t;show()}}catch(e){}}

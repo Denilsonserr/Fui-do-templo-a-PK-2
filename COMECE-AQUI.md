@@ -1,6 +1,6 @@
 # FÚRIA DO TEMPLO — GUIA DE PASSAGEM PARA OUTRA CONVERSA / OUTRA CONTA DO CLAUDE
 
-A versão atual é a v617.
+A versão atual é a v618.
 Atualizado em 20/11/2026. Este arquivo tem 3 partes:
 - **Parte 1** — para o dono (Denilson): como continuar em outra conversa.
 - **Parte 2** — para o Claude novo: regras, onde está tudo, servidor, como publicar, o que existe no jogo.
@@ -16,7 +16,7 @@ O histórico completo, versão por versão, está em `GUIA-CLAUDE.md` (procure p
 2. Conecte o **GitHub** e dê acesso ao repositório **Denilsonserr/Fui-do-templo-a-PK-2**.
 3. Comece uma conversa nova com esse repositório e mande esta mensagem:
 
-   > Continua o meu jogo Fúria do Templo. Repositório: Denilsonserr/Fui-do-templo-a-PK-2. Lê primeiro o COMECE-AQUI.md inteiro (e o GUIA-CLAUDE.md quando precisar de detalhe) e segue as regras dele. A versão atual é a v617.
+   > Continua o meu jogo Fúria do Templo. Repositório: Denilsonserr/Fui-do-templo-a-PK-2. Lê primeiro o COMECE-AQUI.md inteiro (e o GUIA-CLAUDE.md quando precisar de detalhe) e segue as regras dele. A versão atual é a v618.
 
 4. Depois é só pedir as coisas do mesmo jeito de sempre.
 5. **Onde fica o jogo:**

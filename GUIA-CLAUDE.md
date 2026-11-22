@@ -2904,3 +2904,7 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
   - no `extra/9z_v617_alucard_imune.py`: Gojo, Garou (contra no 3º golpe), Naruto, Luffy, Madara, Qingqing, Shaka (Olhos Abertos), Alucard.
 - A ESQUIVA PERFEITA do Garou (dash com invencibilidade) continua: é habilidade, não passiva.
 - Teste: `tal_imune_v617.js`.
+
+## v618 — Evento EV2X encerrado antes
+- O dono pediu para tirar o 2x DROP/XP/ESTRELAS/ANEL. `EV2X[1]` = 22/11 14:45 BRT (era 23:59).
+- Agora sem evento: drop volta ao normal reduzido (`DROPBASE` .6).

@@ -7105,7 +7105,7 @@ try{Object.assign(window.__pvT||{},{ptNow:t=>ptNow(t),ptRaid:()=>ptRaid(),pnMk:(
    • Drops do jogo todo ×0,6 (rkDropF via extra/9z_v556.py; portais: item/sombra/poção/peça do Monarca/diamante ×0,6). No evento ×2.
    • Evento EV2X: até 22/11 23:59 (Brasília): 2x DROP · 2x XP de rank · 2x ESTRELAS no PVP ranqueado · 2x ANEL (chance de anel).
    • Beru: vida ×2,5 e mais ×1 a ×12 conforme a força de quem entra (dano, crítico e velocidade); ataque ×1 a ×2,4. ================= */
-const DROPBASE=.6,EV2X=[Date.UTC(2026,10,19,19,20),Date.UTC(2026,10,23,2,59,59)],ev2xOn=t=>{t=t||Date.now();return t>=EV2X[0]&&t<EV2X[1]};
+const DROPBASE=.6,EV2X=[Date.UTC(2026,10,19,19,20),Date.UTC(2026,10,22,17,45)] /* v618: dono pediu para encerrar às 14:45 de 22/11 (era até 23:59) */,ev2xOn=t=>{t=t||Date.now();return t>=EV2X[0]&&t<EV2X[1]};
 function rkDropK(){return DROPBASE*(ev2xOn()?2:1)}
 RKEVX.splice(0,0,[EV2X[0],EV2X[1],2,'2x DROP · 2x XP · 2x ESTRELAS · 2x ANEL',{anel:2}]);
 try{for(const R of PTRK){for(const k of ['it','sh','pv','sj','gem']){const b=R[k];if(typeof b!=='number')continue;Object.defineProperty(R,k,{get:()=>b*rkDropK(),configurable:true,enumerable:true})}}}catch(e){}
