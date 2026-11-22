@@ -2879,3 +2879,8 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - `g55i8w`: 10 a 20 tickets (`ev:1,rtic`).
 - `1mu9n78`: 1000 💎 (`ev:1,gem`).
 - Teste: `tcod_v614.js`.
+
+## v615 — Alucard vai até o nível 75
+- `LVMAX` (linha ~845 do rk.js): `alucard` 75, `shaka` 70; os outros seguem pela raridade (mítico 50, lendário 40, épico 30).
+- Do 71 ao 75 custa o mesmo do 50+ (`LVCOST`: 3000 moedas + 200 pó).
+- Teste: `tal_nivel75_v615.js`.

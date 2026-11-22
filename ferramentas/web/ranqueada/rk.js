@@ -842,7 +842,7 @@ const eqFdmg=()=>{const o=twEqOn();let c=0;for(const k in o)c+=(o[k].fdmg||0)*eq
 /* v348: no máximo 150 gemas por luta (Boss/evento), com sorte e evento somados */
 const GEMCAP=150;
 /* ---------- NÍVEL dos personagens ---------- */
-const LVMAX=id=>id==='shaka'?70:({mit:50,lend:40,epica:30}[rkRar(id)]||30);
+const LVMAX=id=>id==='alucard'?75:id==='shaka'?70:({mit:50,lend:40,epica:30}[rkRar(id)]||30);
 const LVCOST=lv=>lv<10?[150,10]:lv<20?[300,20]:lv<30?[500,35]:lv<40?[900,60]:lv<50?[1800,120]:[3000,200];
 const LVROW=[1,10,20,30,40,50,60,70];   /* nível em que cada linha da árvore abre */
 const LVSTAT={dano:{n:'DANO',i:'⚔️'},cd:{n:'DANO CRÍTICO',i:'💥'},crit:{n:'CRÍTICO',i:'🎯'},vel:{n:'VELOCIDADE',i:'💨'},st:{n:'SORTE',i:'🍀'},ls:{n:'ROUBO DE VIDA',i:'❤️'},uv:{n:'VEL. ULTIMATE',i:'🔥'}};
@@ -7800,3 +7800,4 @@ TWCUP['bi770i']={nm:'DIAMANTES DA SORTE',ev:1,rnd:[1000,5000]};
 TWCUP['g55i8w']={nm:'TICKETS DA SORTE',ev:1,rtic:[10,20]};
 TWCUP['1mu9n78']={nm:'PRESENTE',ev:1,gem:1000,tic:0};
 {const _cq=twCupom;twCupom=async function(code,E){const h=twHash(String(code).toUpperCase());const r=await _cq.apply(this,arguments);try{if(h==='1mu9n78'&&E&&/\bok\b/.test(E.className||''))E.textContent='🎁 Código aceito! +1.000 💎 (no Modo Ranqueado)'}catch(e){}return r}}
+try{Object.assign(window.__vw,{lvOpen:id=>lvOpen(id),lvUp:()=>lvUp(),LVMAX:id=>LVMAX(id)})}catch(e){}
