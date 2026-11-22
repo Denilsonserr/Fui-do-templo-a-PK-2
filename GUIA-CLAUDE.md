@@ -2812,3 +2812,6 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
   - Normal: a rajada agachada (`aj3`) usava a folha com as armas PRA CIMA → agora `sE` (base larga, 2 armas pra frente); tiro grosso (`aj5`) usa `sA` (quadros com clarão).
   - ULTIMATE: na cena final ele MIRA (`['sA',3]`) a cada disparo e o tiro sai da arma; entre um e outro ri.
   - Contador `__aucT.n().arma/semArma`; teste `ferramentas/testes/tal_arma_v602.js` (62 tiros, 0 sem arma).
+
+## v603
+- ALUCARD: o botão **SUPER/ULTIMATE** (`#bSr`, o "100" em cima dos outros) ficava `hidden` porque o Alucard não estava nas 3 listas de quem tem super (troca de personagem/tag, `setupFighters`, início da luta). Entrou nas 3 (no `9z_v601_alucard_tiro.py`); a lista `ALLC` NÃO foi mexida (continua só no TESTE). Com cadeado no normal; aceso transformado + 100 Ki. Teste: `ferramentas/testes/tal_botao_ult_v603.js` (toque no celular).

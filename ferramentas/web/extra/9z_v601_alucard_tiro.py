@@ -71,4 +71,8 @@ rep("if(e===AUBL-14){aucMuzzle(f.x+f.facing*130,FLOOR-170,f.facing,'big',1);","i
 # botão ULTIMATE (poder máximo): como o Sung — transformado + 100 Ki, sem faísca
 rep("function srReady(f){if(f.def.sid==='sj')return sjSRok(f);","function srReady(f){if(f.def.sid==='sj')return sjSRok(f);if(f.def.sid==='al')return !!f.form&&f.ki>=100&&!G.trans;")
 rep("function trySR(f,o){if(f.def.sid==='sj')return _trySR(f,o);","function trySR(f,o){if(f.def.sid==='sj'||f.def.sid==='al')return _trySR(f,o);")
+# v603: o botão SUPER/ULTIMATE (o de 100, em cima de tudo) só aparecia para quem está nessas listas -> entra o Alucard (ALLC fica de fora: ele continua só no TESTE)
+rep("'garou','yuta','shaka','sung'].includes(inn.def.id);","'garou','yuta','shaka','sung','alucard'].includes(inn.def.id);")
+rep("'garou','yuta','shaka','sung'].includes(id);camReset(1.25)}","'garou','yuta','shaka','sung','alucard'].includes(id);camReset(1.25)}")
+rep("G.pick==='shaka'||G.pick==='sung');","G.pick==='shaka'||G.pick==='sung'||G.pick==='alucard');")
 open(P,'w',encoding='utf8').write(s);print('alucard tiro ok',len(TIP),len(s))
