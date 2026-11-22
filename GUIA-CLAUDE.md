@@ -2884,3 +2884,15 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - `LVMAX` (linha ~845 do rk.js): `alucard` 75, `shaka` 70; os outros seguem pela raridade (mítico 50, lendário 40, épico 30).
 - Do 71 ao 75 custa o mesmo do 50+ (`LVCOST`: 3000 moedas + 200 pó).
 - Teste: `tal_nivel75_v615.js`.
+
+## v616 — Passe com 25 níveis + PEDRA DA TRANSFERÊNCIA
+- Passe: `BPMAX=25` (bpLv, códigos de passe máximo); 3 páginas (setas: direita avança, esquerda `data-d="-"` volta).
+  - Página 3 = níveis 21–25; os 5 quadros que sobram ficam escuros (`.bpEmp`).
+  - Níveis 21–25 são empurrados no fim do rk.js (se BPF/BPP tiverem 20). Premium 23 e 25 = `{jt:1}`.
+- PEDRA DA TRANSFERÊNCIA (`rk_ps.jt`, ícone `a/41a200ec470c71.webp` = Joia Negra recolorida para vermelho-rubi):
+  - Passa a passiva de um personagem/item para outro. Sai da origem; o destino troca a que tinha, com aviso. Mantém a flag `q` (pegadinha continua pegadinha).
+  - Botão TRANSFERIR no ENCANTAMENTO → view `jt`.
+  - Tela com a arte do dono: `ferramentas/ranqueada_artes/v616/tela_transferir.png`, limpa por `tela_transf.py` → `a/09bef2851224d7.webp`.
+  - Na tela: quadrado = escolher origem/destino; caixa = passiva.
+  - Só por passe e código (campo `jt:N`). No passe 2X ela NÃO dobra.
+- Hooks `window.__jt`. Teste: `tpedra_transf_v616.js`.

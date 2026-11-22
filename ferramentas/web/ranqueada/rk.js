@@ -1390,7 +1390,8 @@ const BPMS=[['s1','Vença 25 lutas no Modo Boss','bossW',25,400],['s2','Vença 6
 const bpDay=()=>{const d=new Date();return d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate()};
 function bpG(){let o=rkG('bp',null);if(!o||o.s!==BPS.n)o={s:BPS.n,xp:0,c:{},dd:'',d:{},dc:[],sc:[],cf:[],cn:[],cp:[],own:0};if(o.dd!==bpDay()){o.dd=bpDay();o.d={};o.dc=[]}if(o.ei!==BPEV.id){o.ei=BPEV.id;o.e={};o.ec=[]}return o}
 const bpS=o=>{rkS('bp',o);try{acSave()}catch(e){}};
-const bpLv=o=>Math.min(20,Math.floor((o.xp|0)/BPS.xpL)),bpOn2=()=>Date.now()<=BPS.fim;
+const BPMAX=25; /* v616: passe com 25 níveis (3 páginas) */
+const bpLv=o=>Math.min(BPMAX,Math.floor((o.xp|0)/BPS.xpL)),bpOn2=()=>Date.now()<=BPS.fim;
 function bpAdd(k,n){try{if(!bpOn2())return;const o=bpG();o.c[k]=(o.c[k]|0)+n;o.d[k]=(o.d[k]|0)+n;if(bpEvOn())o.e[k]=(o.e[k]|0)+n;bpS(o)}catch(e){}}
 function bpUnlock(t){const o=bpG();o.own=Math.max(o.own|0,t);bpS(o)}
 function bpPend(){try{const o=bpG(),L=bpLv(o);for(let i=0;i<L;i++){if(!o.cf.includes(i))return true;if(o.own>=1&&!o.cn.includes(i))return true;if(o.own>=2&&!o.cp.includes(i))return true}
@@ -1421,7 +1422,7 @@ function bpH(){const o=bpG(),L=bpLv(o),p0=BP.pg*10,xpIn=(o.xp|0)-L*BPS.xpL,end=M
   <button class="hs bpAr" data-b="pg" data-d="-1" style="${bpB(0,450,48,540)}"></button><button class="hs bpAr" data-b="pg" data-d="1" style="${bpB(1726,450,1774,540)}"></button>
   <div class="bpPgI" style="${bpB(780,800,1000,840)}">${BP.pg+1}/2 · níveis ${p0+1}–${p0+10}</div>`}
 function bpOn(){$('rkWrap').querySelectorAll('[data-b]').forEach(b=>b.onclick=e=>{e.stopPropagation();bpAct(b.dataset.b,b)})}
-async function bpAct(a,b){if(a==='back')return rkView('menu');if(a==='pg'){BP.pg=BP.pg?0:1;rkSfx('whoosh');return rkView('bp')}if(a==='tr'){BP.tr=BP.tr==='p'?'n':'p';rkSfx('whoosh');return rkView('bp')}
+async function bpAct(a,b){if(a==='back')return rkView('menu');if(a==='pg'){BP.pg=(BP.pg+(b&&b.dataset.d==='-'?2:1))%3;rkSfx('whoosh');return rkView('bp')}if(a==='tr'){BP.tr=BP.tr==='p'?'n':'p';rkSfx('whoosh');return rkView('bp')}
   if(a==='code')return rkAct('code');if(a==='mis')return bpMis();
   if(a==='info'){const o=bpG(),r=b.dataset.r,i=+b.dataset.i,L=(r==='f'?BPF:r==='p'?BPP:BPN)[i];const lk=(r==='n'&&o.own<1)||(r==='p'&&o.own<2);
     return rkToast(`Nível ${i+1}: `+L.map(x=>bpIco(x)[1]).join(' + ')+(i>=bpLv(o)?' · faça as MISSÕES para chegar':'')+(lk?' · 🔒 libera com o código do passe':''),'#ffd84a')}
@@ -2154,7 +2155,7 @@ const ADMOUT=['M0,30 L-30,24 L-55,34 L-80,20','M400,30 L430,36 L452,25 L478,38',
 /* v303: código de 1 pessoa: PASSE MÁXIMO (passe prêmio/elite + nível 20) + 18.000 💎 (texto do código só com o dono) */
 TWCUP['gs2l5f']={nm:'PASSE MÁXIMO + 18.000 💎',it:[],bpx:1,gx:18000};
 {const _cp3=twCupom;twCupom=async function(code,E){const C=TWCUP[twHash(String(code).toUpperCase())];const r=await _cp3.apply(this,arguments);
-  if(C&&(C.bpx||C.gx)&&E&&/\bok\b/.test(E.className)){try{if(C.bpx){bpUnlock(2);const o=bpG();o.xp=Math.max(o.xp|0,20*BPS.xpL);bpS(o)}if(C.gx)rkAdd('gem',C.gx);acSave(1)}catch(e){}
+  if(C&&(C.bpx||C.gx)&&E&&/\bok\b/.test(E.className)){try{if(C.bpx){bpUnlock(2);const o=bpG();o.xp=Math.max(o.xp|0,BPMAX*BPS.xpL);bpS(o)}if(C.gx)rkAdd('gem',C.gx);acSave(1)}catch(e){}
     E.textContent='👑 Código aceito! PASSE MÁXIMO liberado (nível 20)'+(C.gx?' + '+rkFmtN(C.gx)+' 💎':'')+'! Abra o Passe de Batalha para pegar os prêmios.';try{rkSfx('boom')}catch(e){}}return r}}
 /* v304: código de 1 pessoa: PASSE FULL (passe prêmio + nível 20), sem gemas extras */
 TWCUP['2rq1y4']={nm:'PASSE FULL',it:[],bpx:1};
@@ -2167,7 +2168,7 @@ TWCUP['h5wrl3'].off=1;
   let t='🎁 Código aceito! '+C.nm;
   if(C.gem>0){const gq=C.gem;rkAdd('gem',gq);t='🎁 Código aceito! +'+rkFmtN(gq)+' 💎'}
   if(C.chr){const own=rkG('own',['goku']);if(!own.includes(C.chr)){own.push(C.chr);rkS('own',own)}t='🎁 Código aceito! Você ganhou o '+C.nm+'!'}
-  if(C.bpx){try{bpUnlock(2);const o=bpG();o.xp=Math.max(o.xp|0,20*BPS.xpL);bpS(o)}catch(e){}}if(C.gx)rkAdd('gem',C.gx);
+  if(C.bpx){try{bpUnlock(2);const o=bpG();o.xp=Math.max(o.xp|0,BPMAX*BPS.xpL);bpS(o)}catch(e){}}if(C.gx)rkAdd('gem',C.gx);
   try{acSave(1)}catch(e){}E.className='twH ok';E.textContent=t;try{twSfx('powerUp');setTimeout(()=>twSfx('boom'),300)}catch(e){}return true}}
 
 /* v308: servidor no LIMITE DE LEITURAS do dia (erro 429) — avisar certo em vez de "sem internet" */
@@ -4424,7 +4425,7 @@ TWCUP['10fttsa']={nm:'CAIXA SURPRESA DA SEXTA-FEIRA 13',acc:1,it:[],sxbox:1};
 TWCUP['mxbknc']={nm:'DEVOLUÇÃO DE RANK',it:[],rp:1250};
 {const _cp12=twCupom;twCupom=async function(code,E){const C=TWCUP[twHash(String(code).toUpperCase())];const r=await _cp12.apply(this,arguments);
   if(C&&(C.bpmax||C.sx||C.sxbox||C.rp)&&r&&E&&/ok/.test(E.className||'')){const L=[];
-    if(C.bpmax){const o=bpG();o.own=2;o.xp=Math.max(o.xp|0,20*BPS.xpL);bpS(o);L.push('🎖️ PASSE PREMIUM + NÍVEL MÁXIMO (pegue os prêmios no Passe)')}
+    if(C.bpmax){const o=bpG();o.own=2;o.xp=Math.max(o.xp|0,BPMAX*BPS.xpL);bpS(o);L.push('🎖️ PASSE PREMIUM + NÍVEL MÁXIMO (pegue os prêmios no Passe)')}
     if(C.sx){rkS('sx',rkG('sx',0)+C.sx);L.push('🎃 +'+C.sx+' ABÓBORAS')}
     if(C.sxbox){rkS('sxbox',rkG('sxbox',0)+C.sxbox);L.push('❓ +'+C.sxbox+' CAIXA SURPRESA (abra na Loja Sexta-feira 13)')}
     if(C.rp){rkS('rp',rkG('rp',0)+C.rp);try{for(let i=0;i<=rkLvl();i++)twGiveTit('rk'+i)}catch(e){}L.push('🏅 +'+rkFmtN(C.rp)+' XP DE RANK')}
@@ -4458,7 +4459,7 @@ function luvGive(C){const own=rkG('own',['goku']);for(const id of ALLC)if(CH[id]
   for(const k in RKSP){const S=RKSP[k];if(has(S.nm))continue;I.push(Object.assign({id:'lv'+k+Date.now().toString(36)+Math.random().toString(36).slice(2,5)},S));n++}
   for(const k of SKSEC){if(I.some(x=>x&&x.v2&&x.skb===k))continue;const it=Object.assign({id:'lvv'+k+Date.now().toString(36)},RKSP[k]);skV2Evo(it);I.push(it);n++}
   twLS.s('tw_inv',I);const RT=TWEQR[TWEQR.length-1];for(const E of TWEQ){try{twAddItem(E,RT);n++}catch(e){}}try{TW.capOut=twCap()}catch(e){}
-  if(C.luv==='love'){rkAdd('tic',500);rkAdd('red',30000);try{twAddCoins(200000)}catch(e){}rkS('sx',rkG('sx',0)+3000);rkS('sxbox',rkG('sxbox',0)+10);const o=bpG();o.own=2;o.xp=Math.max(o.xp|0,20*BPS.xpL);bpS(o);rkS('skdvok',1)}
+  if(C.luv==='love'){rkAdd('tic',500);rkAdd('red',30000);try{twAddCoins(200000)}catch(e){}rkS('sx',rkG('sx',0)+3000);rkS('sxbox',rkG('sxbox',0)+10);const o=bpG();o.own=2;o.xp=Math.max(o.xp|0,BPMAX*BPS.xpL);bpS(o);rkS('skdvok',1)}
   twGiveTit(C.luv);twLS.s('tw_titOn',C.luv);return {own:own.length,n}}
 {const _cp13=twCupom;twCupom=async function(code,E){const C=TWCUP[twHash(String(code).toUpperCase())];const r=await _cp13.apply(this,arguments);
   if(C&&C.luv&&r&&E&&/ok/.test(E.className||'')){let R={own:0,n:0};try{R=luvGive(C)}catch(e){console.warn(e)}try{acSave(1)}catch(e){}
@@ -5422,14 +5423,14 @@ function bp2Card(L,i,got,ok,lock,row){const [im,tx]=bpIco(L[0]),ex=L.slice(1).ma
 bpH=function(){const o=bpG(),L=bpLv(o),p0=BP.pg*10,xpIn=(o.xp|0)-L*BPS.xpL,end=Math.max(0,BPS.fim-Date.now()),dd=Math.floor(end/864e5),hh=Math.floor(end%864e5/36e5),own=o.own>=2;
   const mis=BPMD.some(m=>(o.d[m[2]]|0)>=m[3]&&!o.dc.includes(m[0]))||BPMS.some(m=>(o.c[m[2]]|0)>=m[3]&&!o.sc.includes(m[0]));
   return `<button class="hs bpBk bp2Bk" data-b="back" style="${bp2B(10,10,120,80)}">⬅</button>
-  <div class="bp2Lv" style="${bp2B(470,105,620,205)}"><b>${L}</b><small>/20</small></div>
-  <div class="bp2Bar" style="${bp2B(692,163,1476,196)}"><s style="width:${L>=20?100:xpIn/BPS.xpL*100}%"></s><span>${L>=20?'NÍVEL MÁXIMO!':'NÍVEL '+(L+1)+' · '+xpIn+' / '+BPS.xpL+' XP'}</span></div>
+  <div class="bp2Lv" style="${bp2B(470,105,620,205)}"><b>${L}</b><small>/${BPMAX}</small></div>
+  <div class="bp2Bar" style="${bp2B(692,163,1476,196)}"><s style="width:${L>=BPMAX?100:xpIn/BPS.xpL*100}%"></s><span>${L>=BPMAX?'NÍVEL MÁXIMO!':'NÍVEL '+(L+1)+' · '+xpIn+' / '+BPS.xpL+' XP'}</span></div>
   <div class="bp2Tm" style="${bp2B(692,200,1476,226)}">${bpOn2()?'⏳ termina em '+dd+'d '+hh+'h':'TEMPORADA ENCERRADA'}</div>
   <button class="hs bp2Mi" data-b="mis" style="${bp2B(1537,143,1802,210)}">${mis?'<i class="dot"></i>':''}</button>
   <div class="bp2Pm ${own?'on':''}" style="${bp2B(78,705,252,760)}">${own?'✔ LIBERADO':'🔒 SÓ COM CÓDIGO'}</div>
-  ${BP2X.map(([a,b],j)=>{const i=p0+j;return `<div class="bpCell" style="${bp2B(a,285,b,440)}">${bp2Card(BPF[i],i,o.cf.includes(i),i<L,false,'f')}</div><div class="bpCell" style="${bp2B(a,530,b,690)}">${bp2Card(BPP[i],i,o.cp.includes(i),i<L,!own,'p')}</div><div class="bp2Mk ${i<L?'on':''}" style="${bp2B((a+b)/2-26,463,(a+b)/2+26,500)}">${i+1}</div>`}).join('')}
-  <button class="hs bpAr" data-b="pg" style="${bp2B(0,430,50,520)}"></button><button class="hs bpAr" data-b="pg" style="${bp2B(1797,430,1847,520)}"></button>
-  <div class="bp2Bt" style="${bp2B(520,775,1340,835)}"><button data-b="code">🎟️ CÓDIGO DO PREMIUM</button><button data-b="all">✔ PEGAR TUDO</button><span>Página ${BP.pg+1}/2 · níveis ${p0+1}–${p0+10}</span></div>`};
+  ${BP2X.map(([a,b],j)=>{const i=p0+j;if(i>=BPMAX||!BPF[i]||!BPP[i])return `<div class="bpEmp" style="${bp2B(a,285,b,440)}"></div><div class="bpEmp" style="${bp2B(a,530,b,690)}"></div>`;return `<div class="bpCell" style="${bp2B(a,285,b,440)}">${bp2Card(BPF[i],i,o.cf.includes(i),i<L,false,'f')}</div><div class="bpCell" style="${bp2B(a,530,b,690)}">${bp2Card(BPP[i],i,o.cp.includes(i),i<L,!own,'p')}</div><div class="bp2Mk ${i<L?'on':''}" style="${bp2B((a+b)/2-26,463,(a+b)/2+26,500)}">${i+1}</div>`}).join('')}
+  <button class="hs bpAr" data-b="pg" data-d="-" style="${bp2B(0,430,50,520)}"></button><button class="hs bpAr" data-b="pg" style="${bp2B(1797,430,1847,520)}"></button>
+  <div class="bp2Bt" style="${bp2B(520,775,1340,835)}"><button data-b="code">🎟️ CÓDIGO DO PREMIUM</button><button data-b="all">✔ PEGAR TUDO</button><span>Página ${BP.pg+1}/3 · níveis ${p0+1}–${Math.min(BPMAX,p0+10)}</span></div>`};
 {const _ba=bpAct;bpAct=async function(a,b){if(a==='tr')return;
   if(a==='info'){const o=bpG(),r=b.dataset.r,i=+b.dataset.i,L=(r==='f'?BPF:BPP)[i],lk=r==='p'&&o.own<2;return rkToast(`Nível ${i+1}: `+L.map(x=>bpIco(x)[1]).join(' + ')+(i>=bpLv(o)?' · faça as MISSÕES para chegar':'')+(lk?' · 🔒 PREMIUM: libera com o código':''),'#d8b4ff')}
   if(a==='claim'||a==='all'){if(BP.busy)return;BP.busy=1;try{if(a==='claim')await bp2Claim(b.dataset.r,+b.dataset.i);else{const o=bpG(),L=bpLv(o);let n=0;for(let i=0;i<L;i++)for(const r of ['f','p'])n+=await bp2Claim(r,i,1);rkToast(n?'✔ '+n+' prêmio(s) pegos!':'Nada para pegar agora.','#7dff9a')}}finally{BP.busy=0}if(RKV==='bp')rkView('bp');return}
@@ -7678,7 +7679,7 @@ twCap=function(){if(MNG)return null;const S=twStacks();if(S.length<=TWBAG)return
   if(idI.size)twLS.s('tw_inv',twInv().filter(x=>!idI.has(x.id)));if(idP.size)twLS.s('tw_poc',twPocs().filter(x=>!idP.has(x.id)));return rm[rm.length-1]};
 try{Object.assign(window.__pvT||{},{twCap:()=>{const t=performance.now();const r=twCap();return {ms:performance.now()-t,stacks:twStacks().length,out:r&&r.key}}})}catch(e){}
 /* v607: na arte do Hellsing o emblema da cruz fica onde estava o número do nível: o nível vai para dentro da barra */
-{const _bh=bpH;bpH=function(){let h=_bh.apply(this,arguments);try{const L=bpLv(bpG());h=h.replace(/(<div class="bp2Bar"[^>]*><s[^>]*><\/s><span>)/,'$1⭐ '+L+'/20 · ')}catch(e){}return h}}
+{const _bh=bpH;bpH=function(){let h=_bh.apply(this,arguments);try{const L=bpLv(bpG());h=h.replace(/(<div class="bp2Bar"[^>]*><s[^>]*><\/s><span>)/,'$1⭐ '+L+'/'+BPMAX+' · ')}catch(e){}return h}}
 {const st=document.createElement('style');st.textContent='.rk_bp .bp2Lv{display:none!important}';document.head.appendChild(st)}
 
 /* ================= v608: CARTA DO ALUCARD (arte do dono, ferramentas/personagens/alucard/carta.png) — aparece quando ganha na invocação e no ÁLBUM.
@@ -7801,3 +7802,92 @@ TWCUP['g55i8w']={nm:'TICKETS DA SORTE',ev:1,rtic:[10,20]};
 TWCUP['1mu9n78']={nm:'PRESENTE',ev:1,gem:1000,tic:0};
 {const _cq=twCupom;twCupom=async function(code,E){const h=twHash(String(code).toUpperCase());const r=await _cq.apply(this,arguments);try{if(h==='1mu9n78'&&E&&/\bok\b/.test(E.className||''))E.textContent='🎁 Código aceito! +1.000 💎 (no Modo Ranqueado)'}catch(e){}return r}}
 try{Object.assign(window.__vw,{lvOpen:id=>lvOpen(id),lvUp:()=>lvUp(),LVMAX:id=>LVMAX(id)})}catch(e){}
+
+/* ================= v616: PEDRA DA TRANSFERÊNCIA — passa a passiva de um personagem/item para OUTRO personagem/item =================
+   Fica no ENCANTAMENTO (botão 🔁 TRANSFERIR). 1 pedra = 1 transferência. A passiva SAI da origem e vai para o destino
+   (a que o destino tinha é trocada). Só por código (campo jt:N) e pelo passe (níveis 23 e 25 do premium). Guardada em rk_ps.jt. */
+RQA.jt='a/41a200ec470c71.webp';RQA.jt_tela='a/09bef2851224d7.webp';
+function psAddJt(n){const o=psG();o.jt=Math.max(0,(o.jt|0)+n);psS(o)}
+/* passe: níveis 21–25 */
+if(BPF.length===20)BPF.push([{g:800}],[{po:300}],[{g:1000},{t:3}],[{j:3}],[{g:1500}]);
+if(BPP.length===20)BPP.push([{g:3000},{t:5}],[{g:3500},{j:6}],[{jt:1},{g:3000}],[{g:4000},{po:800}],[{jt:1},{g:6000}]);
+{const _bi=bpIco;bpIco=function(x){if(x&&x.jt)return [RQA.jt,(x.jt>1?x.jt+' ':'')+'PEDRA DA TRANSFERÊNCIA'];return _bi.apply(this,arguments)}}
+{const _bg=bp2Give;bp2Give=function(x,msg){if(x&&x.jt){psAddJt(x.jt);msg.push('🔁 +'+x.jt+' PEDRA DA TRANSFERÊNCIA')}return _bg.apply(this,arguments)}}
+{const _c=bp2Claim;bp2Claim=async function(r,i,q){const r0=await _c.apply(this,arguments);try{if(r0&&(r==='f'?BPF:BPP)[i].some(x=>x.jt)){setTimeout(()=>rkSfx('boom'),300);setTimeout(()=>rkToast('🔁 Você ganhou a PEDRA DA TRANSFERÊNCIA! Use no ENCANTAMENTO.','#3cf0d0'),1300)}}catch(e){}return r0}}
+/* código: campo jt */
+{const _cq=twCupom;twCupom=async function(code,E){const C=TWCUP[twHash(String(code).toUpperCase())];const r=await _cq.apply(this,arguments);
+  try{if(C&&C.jt&&r!==false&&E&&/\bok\b/.test(E.className||'')){psAddJt(C.jt);try{acSave(1)}catch(e){}E.textContent=C.msg||('✅ Você ganhou 🔁 '+C.jt+' PEDRA'+(C.jt>1?'S':'')+' DA TRANSFERÊNCIA! Use no ENCANTAMENTO (botão 🔁 TRANSFERIR).')}}catch(e){}return r}}
+/* lista de todos os destinos possíveis (personagens que tem + itens com espaço de passiva) */
+function jtAll(){const o=psG(),L=[];for(const id of rkG('own',['goku']).filter(id=>CH[id]))L.push({k:'ch',id,img:(typeof PTH!=='undefined'&&PTH[id])||fullSrc(id),nm:CH[id].name,ps:o.ch[id]||null,tp:'👤'});
+  const Q=twEqp(),T={esp:'🗡️',cap:'⛑️',anel:'💍',arm:'🛡️',bot:'🥾'};for(const x of twInv().filter(x=>x&&T[x.t]))L.push({k:'it',id:x.id,img:rkItIc(x),nm:rkItNm(x),ps:x.ps||null,tp:T[x.t],on:Q[x.t]===x.id});return L}
+function jtGet(e){if(e.k==='ch')return psG().ch[e.id]||null;const it=twInv().find(x=>x.id===e.id);return it&&it.ps||null}
+function jtDo(src,dst){const o=psG();if((o.jt|0)<1||o.pend)return 0;const ps=jtGet(src);if(!ps||!psDef(ps))return 0;if(src.k===dst.k&&src.id===dst.id)return 0;
+  const P=JSON.parse(JSON.stringify(ps));o.jt=(o.jt|0)-1;
+  if(src.k==='ch')delete o.ch[src.id];if(dst.k==='ch')o.ch[dst.id]=P;
+  if(src.k==='it'||dst.k==='it'){const I=twInv();if(src.k==='it'){const a=I.find(x=>x.id===src.id);if(a)delete a.ps}if(dst.k==='it'){const b=I.find(x=>x.id===dst.id);if(!b){o.jt++;return 0}b.ps=P}twLS.s('tw_inv',I)}
+  psS(o);try{acSave(1)}catch(e){}return 1}
+let JT={src:null,dst:null};
+/* tela TRANSFERIR (arte do dono, ferramentas/ranqueada_artes/v616/tela_transferir.png, quadros limpos) */
+function jtOpen(){const o=psG();if(o.pend){rkSfx('clang');rkToast('Primeiro escolha: APLICAR ou MANTER a passiva sorteada','#ff8080');return}
+  const t=psTarget();JT={src:t&&t.ps&&psDef(t.ps)?{k:t.k,id:t.id}:null,dst:null};rkView('jt')}
+const jtFind=e=>e&&jtAll().find(x=>x.k===e.k&&x.id===e.id)||null;
+const jtPsBox=(ps,lbl,c)=>{const d=ps&&psDef(ps);return d?`<div class="jtPg psr_${d.r}" style="--rc:${PSRC[d.r]};--pc:${PSTC[d.k]}"><img src="${RQA.jn}" alt=""><i>${PSTI[d.k]}</i></div><div class="jtPt"><small style="color:${c}">${lbl}</small><b style="color:${PSRC[d.r]}">${psRN(d.r)} · ${d.n}</b><em>${psFx(d)}</em></div>`:`<div class="jtPt none"><small style="color:${c}">${lbl}</small><b>—</b></div>`};
+function jtH(){const S=jtFind(JT.src),D=jtFind(JT.dst),o=psG(),sp=S&&S.ps&&psDef(S.ps)?S.ps:null,can=S&&D&&sp&&(o.jt|0)>=1;
+  const sq=(e,w,x)=>`<button class="hs jtSq ${e?'has':''}" data-j="${w}" style="${rkB2(...x)}">${e?`<img src="${e.img}" alt=""><span>${e.tp} ${twEsc(e.nm)}</span>`:`<b>＋</b><span>${w==='src'?'escolher a origem':'escolher o destino'}</span>`}</button>`;
+  return `<button class="hs jtX" data-j="back" style="${rkB2(1570,20,1652,98)}"></button>
+  ${sq(S,'src',[234,402,406,564])}<div class="jtBx" style="${rkB2(446,438,744,522)}">${jtPsBox(sp,'PASSIVA ATUAL','#e8b07a')}</div>
+  ${sq(D,'dst',[942,402,1112,564])}<div class="jtBx" style="${rkB2(1154,440,1438,524)}">${D&&D.ps&&psDef(D.ps)&&sp?`${jtPsBox(sp,'NOVA PASSIVA','#ffd36a')}<i class="jtW">troca: ${psDef(D.ps).n}</i>`:jtPsBox(D?sp:null,'NOVA PASSIVA','#ffd36a')}</div>
+  <div class="jtCo" style="${rkB2(806,662,1110,738)}"><img src="${RQA.jt}" alt=""><b>x1</b><small>você tem <b>${o.jt|0}</b></small></div>
+  <button class="hs jtGo ${can?'':'off'}" data-j="go" style="${rkB2(566,774,1106,880)}"></button>`}
+function jtOn(){document.querySelectorAll('#rkWrap [data-j]').forEach(b=>b.onclick=e=>{e.stopPropagation();jtAct(b.dataset.j)})}
+function jtAct(a){if(a==='back'){rkSfx('whoosh');return rkView('ps')}
+  if(a==='src'||a==='dst')return jtPick(a);
+  if(a==='go'){const o=psG(),S=jtFind(JT.src),D=jtFind(JT.dst);
+    if((o.jt|0)<1){rkSfx('clang');return rkToast('Você não tem PEDRA DA TRANSFERÊNCIA (vem do passe e de códigos).','#ff8080')}
+    if(!S||!S.ps||!psDef(S.ps)){rkSfx('clang');return rkToast('Escolha a ORIGEM (quem tem a passiva).','#ff8080')}
+    if(!D){rkSfx('clang');return rkToast('Escolha o DESTINO (quem vai receber).','#ff8080')}
+    if(D.ps&&psDef(D.ps)){rkModal(`<div class="twM sm jtM"><h3><img src="${RQA.jt}" alt="">TROCAR?</h3><p class="twH">${twEsc(D.nm)} vai PERDER a passiva que tem agora:</p><p class="twH">${psTxtH(D.ps)}</p><div class="row"><button class="btn" id="jtB">VOLTAR</button><button class="btn ok" id="jtOk">TRANSFERIR</button></div></div>`);
+      $('jtB').onclick=()=>rkModal(null);$('jtOk').onclick=()=>{rkModal(null);jtGo(S,D)};return}
+    return jtGo(S,D)}}
+function jtGo(S,D){if(!jtDo(S,D)){rkSfx('clang');rkToast('Não deu para transferir.','#ff8080');return}
+  rkSfx('powerUp');setTimeout(()=>rkSfx('boom'),250);JT={src:null,dst:{k:D.k,id:D.id}};rkView('jt');rkToast('✔ Passiva transferida para '+D.nm+'!','#ff8a9a');
+  const A=document.querySelector('#rkWrap .rkA');if(A){A.classList.add('jtFx');setTimeout(()=>A.classList.remove('jtFx'),1200)}}
+function jtPick(w){const s=JT.src,L=jtAll().filter(e=>w==='src'?e.ps&&psDef(e.ps):!(s&&e.k===s.k&&e.id===s.id));JT.tp=JT.tp||'all';
+  const LL=L.filter(e=>JT.tp==='all'||e.tp===JT.tp);
+  rkModal(`<div class="twM jtM"><h3><img src="${RQA.jt}" alt="">${w==='src'?'ORIGEM · quem PERDE a passiva':'DESTINO · quem RECEBE a passiva'}</h3>
+  <div class="jtTp">${['all','👤','🗡️','⛑️','💍','🛡️','🥾'].map(k=>`<button data-t="${k}" class="${JT.tp===k?'on':''}">${k==='all'?'TODOS':k}</button>`).join('')}</div>
+  <div class="jtL">${LL.length?LL.map((e,j)=>`<button class="jtI" data-i="${j}"><img src="${e.img}" alt=""><span><b>${e.tp} ${twEsc(e.nm)}${e.on?' <em>EQUIPADO</em>':''}</b>${e.ps&&psDef(e.ps)?psTxtH(e.ps):'<small class="no">sem passiva</small>'}</span></button>`).join(''):`<p class="twH">${w==='src'?'Nenhum personagem ou item com passiva aqui.':'Nada aqui.'}</p>`}</div>
+  <div class="row"><button class="btn" id="jtX">FECHAR</button></div></div>`);
+  $('jtX').onclick=()=>rkModal(null);document.querySelectorAll('#rkModal .jtTp button').forEach(b=>b.onclick=()=>{JT.tp=b.dataset.t;rkSfx('whoosh');jtPick(w)});
+  document.querySelectorAll('#rkModal .jtI').forEach(b=>b.onclick=()=>{const e=LL[+b.dataset.i];JT[w]={k:e.k,id:e.id};if(w==='src'&&JT.dst&&JT.dst.k===e.k&&JT.dst.id===e.id)JT.dst=null;rkModal(null);rkSfx('whoosh');rkView('jt')})}
+{const _v=rkView;rkView=function(v){if(v!=='jt')return _v.apply(this,arguments);RKV='jt';const W=$('rkWrap');if(!W)return;clearInterval(rkView.iv);rkModal(null);
+  W.innerHTML=`<div class="rkA rk_jt" data-w="1672" data-h="941" data-full="1" style="background-image:url(${RQA.jt_tela})">${jtH()}<div id="rkToast"></div></div>`;rkFit();jtOn()}}
+{const _h=psH;psH=function(){const h=_h.apply(this,arguments);const o=psG();
+  return h+`<div class="psJt" style="${rkB2(30,770,420,856)}"><div class="c"><img src="${RQA.jt}" alt=""><b>${o.jt|0}</b></div><button data-p="jt" ${(o.jt|0)<1?'class="off"':''}>TRANSFERIR<small>passiva</small></button></div>`}}
+{const _a=psAct;psAct=function(a,b){if(a==='jt'){if(PS.anim||PS.busy)return;return jtOpen()}return _a.apply(this,arguments)}}
+{const st=document.createElement('style');st.textContent=`
+.psJt{position:absolute;display:flex;align-items:center;gap:.5em}.psJt .c{position:relative;height:100%;aspect-ratio:1}.psJt .c img{width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 0 .5em #ff2a4a)}
+.psJt .c b{position:absolute;right:-.2em;bottom:0;font:900 .9em var(--f-ui);color:#fff;text-shadow:0 0 3px #000,0 1px 2px #000}
+.psJt button{flex:1;height:80%;border:2px solid #ff8a9a;border-radius:.8em;background:linear-gradient(180deg,#a8142c,#4a0610);color:#fff0f2;font:900 .9em var(--f-ui);display:flex;flex-direction:column;align-items:center;justify-content:center;box-shadow:0 0 .8em #ff2a4a88;cursor:pointer}
+.psJt button small{font:700 .6em var(--f-ui);opacity:.85}.psJt button.off{filter:grayscale(.8) brightness(.7)}
+.jtM h3{display:flex;align-items:center;justify-content:center;gap:.4em;color:#ffb0bc}
+.rk_jt{background-size:100% 100%}.rk_jt .jtX{border-radius:50%}
+.rk_jt .jtSq{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.2em;background:none;border:0;color:#ffb3be;cursor:pointer;overflow:hidden;padding:.3em}
+.rk_jt .jtSq>b{font:900 3em var(--f-ui);color:#ff4a62;text-shadow:0 0 .4em #ff1a3a;animation:jtP 1.4s ease-in-out infinite}.rk_jt .jtSq span{font:800 .78em var(--f-ui);text-align:center;line-height:1.1;text-shadow:0 1px 2px #000}
+.rk_jt .jtSq.has img{flex:1;min-height:0;max-width:100%;object-fit:contain;filter:drop-shadow(0 0 .4em #ff2a4a)}.rk_jt .jtSq.has span{color:#fff;max-width:100%;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+@keyframes jtP{50%{transform:scale(1.15);opacity:.7}}
+.rk_jt .jtBx{display:flex;align-items:center;gap:.6em;padding:0 .6em;position:absolute}.rk_jt .jtPg{position:relative;height:80%;aspect-ratio:1;flex:none}.rk_jt .jtPg img{width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 0 .4em var(--rc)) hue-rotate(0deg)}
+.rk_jt .jtPg i{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-style:normal;font-size:1.3em}
+.rk_jt .jtPt{display:flex;flex-direction:column;min-width:0}.rk_jt .jtPt small{font:800 .85em var(--f-ui)}.rk_bp .bpEmp{position:absolute;background:rgba(8,0,2,.72);border-radius:.8em}.rk_jt .jtPt b{font:900 1em var(--f-ui);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.rk_jt .jtPt em{font:600 .74em var(--f-ui);display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;color:#f3e4e6;font-style:normal;line-height:1.15}
+.rk_jt .jtPt.none b{color:#7a5a5e}.rk_jt .jtW{position:absolute;right:.6em;bottom:-.1em;font:800 .6em var(--f-ui);color:#ff8a8a;font-style:normal}
+.rk_jt .jtCo{display:flex;align-items:center;gap:.4em;padding-left:1.6%;position:absolute}.rk_jt .jtCo img{height:100%;filter:drop-shadow(0 0 .4em #ff2a4a)}.rk_jt .jtCo>b{font:900 1.4em var(--f-ui);color:#fff}.rk_jt .jtCo small{font:800 1em var(--f-ui);color:#e8c0c6;margin-left:.6em}.rk_jt .jtCo small b{color:#fff}
+.rk_jt .jtGo{background:none;border:0;cursor:pointer}.rk_jt .jtGo.off{background:rgba(20,0,4,.45);border-radius:1em}
+.rk_jt.jtFx::after{content:'';position:absolute;inset:0;background:radial-gradient(circle at 50% 50%,#ff3a5acc,transparent 60%);animation:jtF 1.1s ease-out forwards;pointer-events:none}@keyframes jtF{from{opacity:1}to{opacity:0}}.jtM h3 img{height:1.8em}
+.jtSrc{display:flex;gap:.6em;align-items:center;background:#0b2a28;border:1px solid #2affd055;border-radius:.6em;padding:.4em .6em;text-align:left}.jtSrc img{height:3.4em;width:3.4em;object-fit:contain}.jtSrc div{display:flex;flex-direction:column}.jtSrc small{color:#7dffe6;font-weight:800;font-size:.7em}
+.jtTp{display:flex;gap:.3em;justify-content:center;flex-wrap:wrap;margin:.3em 0}.jtTp button{padding:.25em .7em;border-radius:.6em;border:1px solid #ff4a6277;background:#240b0f;color:#ffe0e4;font:800 .8em var(--f-ui)}.jtTp button.on{background:#b01830;color:#fff}
+.jtL{max-height:42vh;overflow:auto;display:flex;flex-direction:column;gap:.3em;padding:.2em}
+.jtI{display:flex;gap:.5em;align-items:center;text-align:left;padding:.3em .5em;border-radius:.6em;border:1px solid #ffffff22;background:#141a24;color:#fff}.jtI:active,.jtI:hover{border-color:#ff4a62;background:#2a0f14}
+.jtI img{height:2.8em;width:2.8em;object-fit:contain;flex:none}.jtI span{display:flex;flex-direction:column;font-size:.85em}.jtI em{font-style:normal;color:#7dff9a;font-size:.75em}.jtI small.no{opacity:.6}
+.jtCf{display:flex;align-items:center;justify-content:center;gap:1em}.jtCf div{display:flex;flex-direction:column;align-items:center;max-width:40%}.jtCf img{height:4em;width:4em;object-fit:contain}.jtCf i{font-size:2em;color:#2affd0;font-style:normal}
+`;document.head.appendChild(st)}
+try{window.__jt={jtDo,jtAll,jtGet,psAddJt,psG:()=>psG(),jtOpen:()=>jtOpen(),JT:()=>JT,BPF:()=>BPF,BPP:()=>BPP}}catch(e){}
