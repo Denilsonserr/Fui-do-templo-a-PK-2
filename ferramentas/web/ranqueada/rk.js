@@ -7924,3 +7924,11 @@ function pvEq(){if(G.gmode!=='pvp'||!G.p||!PV.fight)return;const F=PV.fight,[p,o
 {const _u=update;update=function(){try{if(G.gmode==='pvp'&&PV.fight&&G.mode==='fight'){if(G.phase!=='fight')PV.tmOn=0;else if(!PV.tmOn){PV.tmOn=1;if(G.timer<=99.9)G.timer=PVTIME}}}catch(e){}return _u.apply(this,arguments)}}
 try{Object.assign(window.__vw||(window.__vw={}),{pvEqOne:f=>pvEqOne(f),pvEqPow:f=>pvEqPow(f),PVEQ,pvEqInfo:()=>PV.eq,MAXHP:()=>MAXHP})}catch(e){}
 try{Object.assign(window.__vw,{pvStart:(o,f)=>pvStart(o,f)})}catch(e){}
+
+/* v621: código de USO ÚNICO (texto só com o dono): ALUCARD + todos os 9 itens dele + 50.000 💎 + PASSE 2X (Hellsing). */
+TWCUP['p5pgxx']={nm:'PACOTE DO ALUCARD',it:[],bp:2,s3:1,x2:1,uni:1,alpk:1};
+{const _cq=twCupom;twCupom=async function(code,E){const C=TWCUP[twHash(String(code).toUpperCase())];const r=await _cq.apply(this,arguments);
+  try{if(C&&C.alpk&&r!==false&&E&&/\bok\b/.test(E.className||'')){const own=rkG('own',['goku']);if(!own.includes('alucard')){own.push('alucard');rkS('own',own)}
+    const I=twInv(),ks=['alcap','alarm','alesp','alluv','alane','albot','alpluv','alpane','alpcap'];let n=0;for(const k of ks)if(RKSP[k]&&!I.some(y=>y&&y.nm===RKSP[k].nm)){rkGiveSp(k);n++}
+    rkAdd('gem',50000);try{acSave(1)}catch(e){}
+    E.textContent='❤️ PACOTE DO ALUCARD! Você ganhou o 🧛 ALUCARD + '+n+' itens dele + 50.000 💎 + PASSE 2X (prêmios em dobro)!';setTimeout(()=>{try{rkSfx('boom')}catch(e){}},300)}}catch(e){}return r}}

@@ -2922,3 +2922,7 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - O ADM fica de fora.
 - Cuidado: já existia `pvPow` (linha ~2669). O novo se chama `pvEqPow`.
 - Teste: `tpvp_equilibrio_v620.js`.
+
+## v621 — Código único PACOTE DO ALUCARD (texto só com o dono)
+- `p5pgxx` (`alpk:1`): Alucard + os 9 itens (alcap, alarm, alesp, alluv, alane, albot, alpluv, alpane, alpcap) + 50.000 💎 + passe 2X Hellsing.
+- Teste: `tcod_v621.js`.
