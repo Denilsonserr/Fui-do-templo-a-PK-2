@@ -2832,3 +2832,11 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - **Música ALEATÓRIA em toda batalha**: `musPick` (chamado no `startMatch`) sorteia entre TODAS as músicas, nunca a mesma da luta anterior (`rk_lastMus`), mesmo que a pessoa tenha escolhido uma na rádio. Só "sem música" é respeitado.
 - **Giro da Invocação do Alucard** passa o vídeo da transformação dele (`ALINV`, 1280×720 nítido, sem som; pré-carrega ao abrir a aba). A invocação continua trancada para os jogadores até 22/11 13:00 (`ALG0`).
 - Teste: `ferramentas/testes/tmusica_v606.js`.
+
+## v607
+- **PASSE · TEMPORADA DE HELLSING** (`BPS.n=3`, termina 22/12 23:59 Brasília; arte `ALIT.passe`): todo mundo recomeça do nível 0 e sem premium. Códigos NOVOS (texto só com o dono; `TWCUP` com `s3`, o `BP2K` agora exige `s3` → códigos da temporada Solo Leveling não liberam). Premium e 2X (`x2`, tudo em dobro).
+  - Grátis ≈ 7.000 💎 + itens de sempre; nível 20 = mítico aleatório entre os normais (`chn`: Naruto/Madara/Garou; já tem todos = 3.000 💎).
+  - Premium ≈ 30.000 💎; exclusivos `alp`: LUVAS (5), ANEL (12) e CHAPÉU (17) DO REI VAMPIRO = o DOBRO da Manopla/Anel/Elmo do Monarca, 100% em todos; anel VERMELHO SSS (10); anel DOURADO SP nível 0 (`asp`, 15); caixa SHAKA/SUNG/YUTA aleatória (`chb`, 20; já tem os 3 = 5.000 💎).
+- **SET DO ALUCARD** (6 peças, `RKSP.alcap/alarm/alesp/alluv/alane/albot`, artes cortadas por `ferramentas/personagens/alucard/itens/cortar.py`): um pouco acima do Shaka V2; 100% no Alucard (+10% com 5+ peças), 50% nos outros (`eqNf` e stats com `it.al`). Só na Invocação do Alucard: cada peça só depois do giro 200 (não aparece), garantida no 300, nunca repete (`rk_pityALS`). Efeitos: ícones pulsando em vermelho-sangue; na luta, névoa de sangue em quem veste (mais forte com o set).
+- **INVENTÁRIO**: `twCap` (descarte automático acima de 40 espaços) refeito: antes descartava um por um relendo/gravando o inventário inteiro (com muitos itens o navegador travava); agora calcula e grava uma vez só (2000 itens: 9 ms). Nunca descarta item único/secreto/evento/mercado/do Alucard.
+- Testes: `tpasse_hellsing_v607.js` (precisa do servidor local; `COD=` código premium), `tinv_cap_v607.js`.
