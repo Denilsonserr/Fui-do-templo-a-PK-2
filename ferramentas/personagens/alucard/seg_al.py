@@ -5,8 +5,8 @@ from PIL import Image
 from scipy import ndimage as nd
 from skimage.segmentation import watershed
 SRC=os.path.join(os.path.dirname(os.path.abspath(__file__)),'poses')
-F={'01':'01_andando_bolso','02':'02_andando_arma','03':'03_sacar_atirar','04':'04_socos','05':'05_chute_arma','06':'06_duas_armas_agachar','07':'07_agachado_armas_grade','08':'08_pose_armas','09':'09_correndo','10':'10_pulo','11':'11_tomando_golpe_caindo','12':'12_rasteira_tiro','13a':'13a_super_combo_1a8','13b':'13b_super_combo_9a16','14':'14_tiro_duas_maos'}
-GRID={'01':(1,6),'02':(1,6),'03':(1,6),'04':(1,6),'05':(1,6),'06':(1,6),'07':(2,3),'08':(1,1),'09':(1,4),'10':(1,4),'11':(1,6),'12':(1,6),'13a':(1,8),'13b':(1,8),'14':(1,6)}
+F={'01':'01_andando_bolso','02':'02_andando_arma','03':'03_sacar_atirar','04':'04_socos','05':'05_chute_arma','06':'06_duas_armas_agachar','07':'07_agachado_armas_grade','08':'08_pose_armas','09':'09_correndo','10':'10_pulo','11':'11_tomando_golpe_caindo','12':'12_rasteira_tiro','13a':'13a_super_combo_1a8','13b':'13b_super_combo_9a16','14':'14_tiro_duas_maos','f02':'f02_andando','f03':'f03_correndo_a','f04':'f04_correndo_b','f05':'f05_pulo','f06':'f06_posturas_tiro','f07':'f07_sacar_atirar','f08':'f08_risada_numerada','f09':'f09_soco','f10':'f10_defesa','f11a':'f11a_super_combo_1a8','f11b':'f11b_super_combo_9a16','f12':'f12_vitoria','f13':'f13_dano_cai','f14':'f14_chute','f15':'f15_agachar'}
+GRID={'01':(1,6),'02':(1,6),'03':(1,6),'04':(1,6),'05':(1,6),'06':(1,6),'07':(2,3),'08':(1,1),'09':(1,4),'10':(1,4),'11':(1,6),'12':(1,6),'13a':(1,8),'13b':(1,8),'14':(1,6),'f02':(1,5),'f03':(1,5),'f04':(1,5),'f05':(1,5),'f06':(1,5),'f07':(1,6),'f08':(1,6),'f09':(1,6),'f10':(1,6),'f11a':(1,8),'f11b':(1,8),'f12':(1,5),'f13':(1,6),'f14':(1,6),'f15':(1,6)}
 MODE={}
 XB={'11':[0,300,610,900,1275,1680,2172]}  # folha 11: poses com larguras diferentes (deitado é largo) -> colunas fixas
 os.makedirs('cut',exist_ok=True)

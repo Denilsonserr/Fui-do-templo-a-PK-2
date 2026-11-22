@@ -2778,3 +2778,6 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 
 ## v597 — portal rank S a cada 10 min até 21/11 23:59
 - `PTS10`/`ptSEP(t)`: período do PTSE2 = 10 min (6e5) nessa janela, 20 min fora. Como cada ciclo de portal dura ~15–20 min (busca 5–10 + aberto 10), TODO ciclo tem rank S hoje. Faixa do evento mostra "A CADA 10 MIN". Teste `tportal10_v597.js`.
+
+## v598
+- ALUCARD (ainda só no 🧪 TESTE do ADM): **efeitos dos tiros desenhados no canvas** (sem PNG), no patch `9z_v594_alucard.py`: `aucMuzzle` (clarão do cano em estrela girando + cone pra frente; tiro grosso ganha clarão "cartoon" serrilhado + anel), traçante afinando com brilho (`aucDrawFX`, modo `lighter`), 4 tipos por bala (`kind`): `weak` (curto amarelo), `mid`, `fast` (laser fino e longo com brilho em cruz), `big` (cometa grosso com espiral dupla e faíscas), `aucImpact` (estrela + faíscas em linha + anel), cápsulas de latão que quicam no chão e fumaça. Transformado (`f.form`) usa a paleta vermelho-sangue (`AUCPAL.r`). Desenho entra depois de `drawParts()` no loop principal. Debug: `window.__aucT`. Teste: `ferramentas/testes/tal_tiros_v598.js`.
