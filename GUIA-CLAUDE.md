@@ -2873,3 +2873,9 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - `build/imgs.json` 'full' aponta para ela, entra no `FULLIMG.alucard`. Aparece no perfil, passe, versus, anéis etc.
 - Se rodar `imgs_al.py` de novo, ele volta a usar o meio-corpo antigo: rode depois `full_v613.py` e recoloque o 'full'.
 - Hook `window.__vw`. Teste: `tal_full_v613.js`.
+
+## v614 — 3 códigos para todos, 1 vez por conta/aparelho (texto só com o dono)
+- `bi770i`: 1000 a 5000 💎 (`ev:1,rnd`).
+- `g55i8w`: 10 a 20 tickets (`ev:1,rtic`).
+- `1mu9n78`: 1000 💎 (`ev:1,gem`).
+- Teste: `tcod_v614.js`.

@@ -7794,3 +7794,9 @@ TWCUP['vtf0gf']={nm:'PASSE V2 · TEMPORADA DE HELLSING (prêmios em dobro)',it:[
 TWCUP['1ju5c3b']={nm:'🐜 SOMBRA BERU (Rank S)',it:[],uni:1,sbr:1,msg:'✅ Você ganhou 🐜 a SOMBRA BERU (Rank S)! Veja em SISTEMA → SOMBRAS.'};
 try{window.__bp2={bpG:()=>bpG(),bpS:o=>bpS(o),claim:(r,i,q)=>bp2Claim(r,i,q),rkG:(k,d)=>rkG(k,d),BPS,twInv:()=>twInv()}}catch(e){}
 try{window.__vw={rkView:v=>rkView(v),fullSrc:id=>fullSrc(id)}}catch(e){}
+
+/* v614: 3 códigos PARA TODOS, 1 vez por conta/aparelho (texto só com o dono). */
+TWCUP['bi770i']={nm:'DIAMANTES DA SORTE',ev:1,rnd:[1000,5000]};
+TWCUP['g55i8w']={nm:'TICKETS DA SORTE',ev:1,rtic:[10,20]};
+TWCUP['1mu9n78']={nm:'PRESENTE',ev:1,gem:1000,tic:0};
+{const _cq=twCupom;twCupom=async function(code,E){const h=twHash(String(code).toUpperCase());const r=await _cq.apply(this,arguments);try{if(h==='1mu9n78'&&E&&/\bok\b/.test(E.className||''))E.textContent='🎁 Código aceito! +1.000 💎 (no Modo Ranqueado)'}catch(e){}return r}}
