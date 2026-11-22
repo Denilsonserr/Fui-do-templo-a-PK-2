@@ -7053,7 +7053,7 @@ const BECH=1; /* % de chance de extrair o Beru (Igris no rank S = 5%) */
   h=h.replace(/Extremo · 10 salas: URSO na 5 e IGRIS na 10 \(sombra!\)/,'Extremo · 🐜 RAID DAS FORMIGAS: URSO na 5 e BERU na 10 (sombra RANK S!)')}catch(e){}return h}}
 {const _sv=showVS;showVS=function(){const r=_sv.apply(this,arguments);try{if(HY.on&&ptRaid())setTimeout(()=>banner('🐜 RAID DAS FORMIGAS','#d6a8ff',150,'formigas por todo lado · o REI BERU espera na sala 10'),400)}catch(e){}return r}}
 /* evento: rank S a cada 20 min */
-const PTSE2=[Date.UTC(2026,10,19,18,0),Date.UTC(2026,10,27,2,59,59)],ptSE2=t=>{t=t||Date.now();return t>=PTSE2[0]&&t<PTSE2[1]};
+const PTSE2=[Date.UTC(2026,10,19,18,0),Date.UTC(2026,10,22,17,45)] /* v619: dono pediu para tirar (era até 26/11) */,ptSE2=t=>{t=t||Date.now();return t>=PTSE2[0]&&t<PTSE2[1]};
 /* v597: hoje (21/11) até 23:59 o rank S vem a cada 10 min (todo ciclo de portal tem rank S); depois volta a cada 20 min */
 const PTS10=[Date.UTC(2026,10,21,23,40),Date.UTC(2026,10,22,2,59,59)],ptSEP=t=>{t=t||Date.now();return t>=PTS10[0]&&t<PTS10[1]?6e5:12e5};
 {const _pn=ptNow;ptNow=function(now){const N=_pn.apply(this,arguments);try{if(N&&N.i!=null&&(N.st==='busca'||N.st==='aberto')){const ini=N.st==='aberto'?N.ini:N.fim,s_i=(5+Math.floor(ptRnd(N.i,1)*6))*6e4,prev=ini-s_i-PTOPEN;

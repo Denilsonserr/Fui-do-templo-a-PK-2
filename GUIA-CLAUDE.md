@@ -2908,3 +2908,6 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 ## v618 — Evento EV2X encerrado antes
 - O dono pediu para tirar o 2x DROP/XP/ESTRELAS/ANEL. `EV2X[1]` = 22/11 14:45 BRT (era 23:59).
 - Agora sem evento: drop volta ao normal reduzido (`DROPBASE` .6).
+
+## v619 — Evento do portal Rank S garantido encerrado
+- `PTSE2[1]` = 22/11 14:45 BRT (era até 26/11 23:59). Portais voltam à chance normal.
