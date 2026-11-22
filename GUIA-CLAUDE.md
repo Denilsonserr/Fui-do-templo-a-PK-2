@@ -2896,3 +2896,11 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
   - Na tela: quadrado = escolher origem/destino; caixa = passiva.
   - Só por passe e código (campo `jt:N`). No passe 2X ela NÃO dobra.
 - Hooks `window.__jt`. Teste: `tpedra_transf_v616.js`.
+
+## v617 — Ninguém desvia do Alucard
+- `ALHIT=1` durante o golpe do Alucard: é o applyHit mais de fora, no fim do rk.js.
+- Todo desvio automático/passivo checa `!ALHIT`:
+  - no rk.js: anel SP 💨, esquiva dos chefes/bestas, PERCEPÇÃO do Sung, DESVIO DIVINO;
+  - no `extra/9z_v617_alucard_imune.py`: Gojo, Garou (contra no 3º golpe), Naruto, Luffy, Madara, Qingqing, Shaka (Olhos Abertos), Alucard.
+- A ESQUIVA PERFEITA do Garou (dash com invencibilidade) continua: é habilidade, não passiva.
+- Teste: `tal_imune_v617.js`.

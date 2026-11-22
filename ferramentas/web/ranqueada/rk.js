@@ -213,7 +213,7 @@ function rkPassTick(o){if(!o.rkB||o.ko)return;const lv=o.rkL||0,P=o.rkP,t=rkTot(
   const dk=P.dmgU>fr?P.dmgK:0,sk=P.spU>fr?P.spK:0;o.tdm=o.rkB.dm*(1+dk);o.tsp=o.rkB.sp*(1+sk);if((dk||sk)&&fr%5===0)addP({x:o.x+rand(-60,60),y:o.y-rand(30,260),vx:0,vy:-rand(1,3),life:20,max:20,c:dk?'#ff4a2a':'#ffd84a',type:'glow',sz:rand(3,6),g:0});o.rkHp=o.hp}
 /* bloqueio (nível 2+) e esquiva (nível 3+) com tempo de recarga */
 function rkPassHit(a,d,h){if(!d.rkB||d.ko||!d.grounded||G.trans||h.kind==='beam')return;const lv=d.rkL||0,fr=G.frame,P=d.rkP,PS=d.rkPS||rkPSlv(lv);if(d.state==='attack'||d.state==='hit'||d.state==='airhit')return;
-  if(PS.dge&&fr>(P.dgCd||0)&&Math.random()<.15){P.dgCd=fr+90;d.inv=14;d.x=clamp(d.x-d.facing*90,40,WW-40);txt(d.x,d.y-280,'ESQUIVOU!','#bfe8ff');for(let i=0;i<10;i++)addP({x:d.x+rand(-40,40),y:d.y-rand(20,240),vx:-d.facing*rand(1,4),vy:0,life:14,max:14,c:'#bfe8ff',type:'glow',sz:rand(3,6),g:0});return false}
+  if(PS.dge&&!ALHIT&&fr>(P.dgCd||0)&&Math.random()<.15){P.dgCd=fr+90;d.inv=14;d.x=clamp(d.x-d.facing*90,40,WW-40);txt(d.x,d.y-280,'ESQUIVOU!','#bfe8ff');for(let i=0;i<10;i++)addP({x:d.x+rand(-40,40),y:d.y-rand(20,240),vx:-d.facing*rand(1,4),vy:0,life:14,max:14,c:'#bfe8ff',type:'glow',sz:rand(3,6),g:0});return false}
   if(PS.blk&&fr>(P.blCd||0)&&Math.random()<.1){P.blCd=fr+60;d.state='blockstun';d.st=0;d.hitstun=8;d.vx=a.facing*2;txt(d.x,d.y-280,'BLOQUEOU!','#9fd8ff');ring(h.px||d.x,h.py||d.y-150,'#9fd8ff',110,12,4);try{SFX.block()}catch(e){}return true}}
 /* desistir durante o combate conta como derrota */
 function rkQuit(){if(G.gmode!=='boss'||!G.p)return;G.diff=RKB.diff0;if(RKFL!=null){rkStAdd('loss',1);G.gmode='pve';return}const ri=rkLvl(),rp0=rkG('rp',0),rp1=Math.max(0,rp0-RKXL[ri]);rkS('rp',rp1);rkStAdd('loss',1);rkSend({rp:rp1,dmg:0,t1:0,tt:0,won:0});G.gmode='pve'}
@@ -1754,7 +1754,7 @@ function caEmb(f,x,y,vx,vy,l,g){(f.bEm=f.bEm||[]).push({x,y,vx,vy,l,m:l,g})}
   return _bs.apply(this,arguments)}}
 {const _t=bsTry;bsTry=function(f,o,box,h){const hp0=o.hp,r=_t.apply(this,arguments);if(r&&(f.bPas||[]).includes('lif')&&o.hp<hp0&&!f.ko)f.hp=Math.min(f.mhp,f.hp+(hp0-o.hp)*.15);return r}}
 {const _ah=applyHit;applyHit=function(a,d,h){if(isBs(d)&&G.gmode==='caca'){if(d.bs==='rev')return false;const P=d.bPas||[];
-    if(P.includes('esq')&&!h.lock&&!d.ko&&!(d.inv>0)&&Math.random()<.12){d.inv=24;try{txt(d.x,d.y-200,'ESQUIVOU!','#d9b3ff');SFX.whoosh()}catch(e){}if(d.grounded&&d.bs!=='combo')bsSet(d,'back');return false}
+    if(P.includes('esq')&&!h.lock&&!ALHIT&&!d.ko&&!(d.inv>0)&&Math.random()<.12){d.inv=24;try{txt(d.x,d.y-200,'ESQUIVOU!','#d9b3ff');SFX.whoosh()}catch(e){}if(d.grounded&&d.bs!=='combo')bsSet(d,'back');return false}
     if(P.includes('arm')&&((d.bs==='combo'&&[2,3,8,9,10,12,13].includes(d.bp))||(d.bs==='a_pounce'&&!d.grounded))){const K={state:d.state,bs:d.bs,bp:d.bp,bpt:d.bpt,bt:d.bt,vx:d.vx,vy:d.vy,grounded:d.grounded,y:d.y,x:d.x};const r=_ah.apply(this,arguments);if(r&&!d.ko&&d.bs!=='rev'){Object.assign(d,K);d.hitstun=0;try{spark(d.x,d.y-90,'#b34dff',1,8)}catch(e){}}return r}}
   return _ah.apply(this,arguments)}}
 {const _ko=ko;ko=function(a,d){if(G.gmode==='caca'&&isBs(d)){if(d.bs==='rev')return;if(G.phase==='fight'&&(d.bLv||1)<10){caLvUp(a,d);return}}return _ko.apply(this,arguments)}}
@@ -4480,7 +4480,7 @@ function skvNeed(){if(!SKVP){SKVP=loadSid('skv').then(()=>{SKVOK=1}).catch(()=>{
    combo mais rápido com luzes douradas o tempo todo, e AURA DIVINA (auréola + raios de luz girando atrás dele) ================= */
 const SKDC=['#fff3b0','#ffe680','#ffffff','#ffd84a'];
 /* desvio divino: 50% de chance, recarga curta, aparece atrás do inimigo deixando 2 fantasmas */
-{const _dg=skDodge;skDodge=function(a,d,h){if(!d||!d.skDiv)return _dg.apply(this,arguments);if(!isSk(d)||h.lock||d.ko||!a||a===d||G.ws||G.trans)return false;
+{const _dg=skDodge;skDodge=function(a,d,h){if(!d||!d.skDiv)return _dg.apply(this,arguments);if(!isSk(d)||h.lock||ALHIT||d.ko||!a||a===d||G.ws||G.trans)return false;
   if(G.frame<(d.skDg||0)||Math.random()>.5)return false;d.skDg=G.frame+30;
   for(let i=0;i<2;i++)d.ghosts.push({key:spriteKey(d),x:d.x-d.facing*i*30,y:d.y,facing:d.facing,life:16-i*4,col:i?'#ffffff':'#ffe680'});
   d.x=clamp(a.x-a.facing*140,40,WW-40);d.facing=a.x>d.x?1:-1;d.inv=Math.max(d.inv,14);if(d.state==='hit'||d.state==='blockstun')neutral(d);
@@ -4767,7 +4767,7 @@ function sjPanel(s){const P=document.getElementById('sjPan');if(!P)return;const 
 {const _uSJ=update;update=function(){const r=_uSJ.apply(this,arguments);try{if(G.p&&G.mode==='fight'){const p=G.p[0];if(p&&p.def.sid==='sj'&&!p.cpu&&!p.sjA&&G.phase==='fight'){p.sjA=1;const V=sjV(sjSys());
     p.tdm=(p.tdm||1)*V.dm;p.tdf=(p.tdf||1)*V.df;p.tsp=(p.tsp||1)*V.sp;p.tcr=(p.tcr||0)+V.cr;p.sjS=V}}}catch(e){}return r}}
 {const _ahS=applyHit;applyHit=function(a,d,h){try{
-  if(d&&d.sjS&&d.sjS.dg>0&&a&&a!==d&&h&&!h.lock&&!d.ko&&!G.ws&&!G.trans&&G.frame>=(d.sjDg||0)&&Math.random()<d.sjS.dg){d.sjDg=G.frame+45;try{d.ghosts.push({key:spriteKey(d),x:d.x,y:d.y,facing:d.facing,life:14,col:'#7fd0ff'})}catch(_){}
+  if(d&&d.sjS&&d.sjS.dg>0&&a&&a!==d&&h&&!h.lock&&!ALHIT&&!d.ko&&!G.ws&&!G.trans&&G.frame>=(d.sjDg||0)&&Math.random()<d.sjS.dg){d.sjDg=G.frame+45;try{d.ghosts.push({key:spriteKey(d),x:d.x,y:d.y,facing:d.facing,life:14,col:'#7fd0ff'})}catch(_){}
     d.x=clamp(a.x-a.facing*150,40,WW-40);d.facing=a.x>d.x?1:-1;d.inv=Math.max(d.inv||0,12);if(d.state==='hit'||d.state==='blockstun')neutral(d);txt(d.x,d.y-300,'DESVIOU! (PERCEPÇÃO)','#bfe8ff');ring(d.x,d.y-150,'#7fd0ff',90,10,3);return true}
   if(a&&a.sjS&&a.sjS.sw>1&&h&&!h.sjB&&typeof sjSword==='function'&&sjSword(a))h=Object.assign({},h,{dmg:(h.dmg||0)*a.sjS.sw});
   if(a&&a.def&&a.def.sid==='sj'&&!a.cpu&&d&&d!==a)SJHN++}catch(e){}return _ahS.call(this,a,d,h)}}
@@ -6097,7 +6097,7 @@ const ANGOLD=x=>x.replace(/#ff0a1e|#ff0012|#ff0018|#ff1a30|#ff2a3a|#ff4050|#ff3b
 /* passivas do SP na luta */
 {const _ra=rkApply;rkApply=function(){_ra.apply(this,arguments);try{const p=G.p&&G.p[0];if(!p)return;const id=(p.def&&p.def.id)||rkG('sel','goku'),L=anL();p.anGP=[];for(const i of anEq(id)){if(!i)continue;const r=L.find(x=>x.i===i);if(r&&r.c===5&&r.g===8&&r.p&&!p.anGP.includes(r.p))p.anGP.push(r.p)}}catch(e){}}}
 {const _ah=applyHit;applyHit=function(a,d,h){try{
-    if(d&&d.anGP&&d.anGP.includes('esq')&&a&&a!==d&&h&&!h.lock&&Math.random()<.15&&!d.ko){txt(d.x,d.y-300,'💨 ESQUIVA!','#ffd84a');try{d.ghosts.push({key:spriteKey(d),x:d.x,y:d.y,facing:d.facing,life:12,col:'#ffd84a'})}catch(e){}return false}
+    if(d&&d.anGP&&d.anGP.includes('esq')&&a&&a!==d&&h&&!h.lock&&!ALHIT&&Math.random()<.15&&!d.ko){txt(d.x,d.y-300,'💨 ESQUIVA!','#ffd84a');try{d.ghosts.push({key:spriteKey(d),x:d.x,y:d.y,facing:d.facing,life:12,col:'#ffd84a'})}catch(e){}return false}
     if(a&&a.anGP&&a.anGP.length&&a!==d&&h){if(a.anGP.includes('fur')&&a.hp<(a.mhp||MAXHP)*.5)h=Object.assign({},h,{dmg:(h.dmg||0)*1.25})
       const h0=d?d.hp:0,r=_ah.call(this,a,d,h);
       if(r&&d){if(a.anGP.includes('vamp')){const dd=Math.max(0,h0-d.hp);a.hp=Math.min(a.mhp||MAXHP,a.hp+dd*.05)}
@@ -7891,3 +7891,11 @@ function jtPick(w){const s=JT.src,L=jtAll().filter(e=>w==='src'?e.ps&&psDef(e.ps
 .jtCf{display:flex;align-items:center;justify-content:center;gap:1em}.jtCf div{display:flex;flex-direction:column;align-items:center;max-width:40%}.jtCf img{height:4em;width:4em;object-fit:contain}.jtCf i{font-size:2em;color:#2affd0;font-style:normal}
 `;document.head.appendChild(st)}
 try{window.__jt={jtDo,jtAll,jtGet,psAddJt,psG:()=>psG(),jtOpen:()=>jtOpen(),JT:()=>JT,BPF:()=>BPF,BPP:()=>BPP}}catch(e){}
+
+/* ================= v617: ALUCARD — ninguém desvia dos golpes dele =================
+   ALHIT=1 durante o golpe do Alucard (este é o applyHit mais de fora). Os desvios automáticos/passivos checam !ALHIT:
+   💨 Esquiva do anel SP, 💨 esquiva das bestas/chefes, PERCEPÇÃO do Sung, DESVIO DIVINO e OLHOS ABERTOS do Shaka,
+   e os desvios dos personagens (Gojo, Garou, Naruto, Luffy, Madara, Qingqing, Alucard) — extra/9z_v617_alucard_imune.py. */
+var ALHIT=0;
+{const _ah=applyHit;applyHit=function(a,d,h){const o=ALHIT;ALHIT=(a&&a!==d&&typeof isAuc==='function'&&isAuc(a))?1:0;try{return _ah.apply(this,arguments)}finally{ALHIT=o}}}
+try{Object.assign(window.__vw,{applyHit:(a,d,h)=>applyHit(a,d,h)})}catch(e){}
