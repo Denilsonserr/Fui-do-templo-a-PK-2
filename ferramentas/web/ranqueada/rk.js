@@ -3320,17 +3320,18 @@ const mnRK=r=>[r.c,r.g,r.s,anLvl(r),r.a||0].join('|');
    As músicas completas estão no MUS (18, 19, 20): rádio do Ranqueado e música da luta. EVMUS=0 desliga o evento. */
 /* v451: agora o lobby (menu principal, giro do Sung e as outras telas fora da luta) toca as 3 músicas de SOLO LEVELING mandadas pelo dono, inteiras, uma depois da outra.
    As do Saint Seiya continuam no MUS (18–20) para a rádio e as lutas. */
-const EVMUS=1,EVMS=[[21,'a/70487c63a0bfec.mp3','LEveL – ABERTURA'],[22,'a/28e97e8ccc453a.mp3','DARK ARIA LV.2 (PT-BR)'],[23,'a/f9907cd6d1a33f.mp3','DARK ARIA LV.2']];let EVMI=-1;
+/* v606: agora tocam as 2 músicas do ALUCARD (menu, invocação e telas fora da luta) */
+const EVMUS=1,EVMS=[[24,'a/b9dc4444173b21.mp3','HELLSING – ABERTURA'],[25,'a/11ae0f46904639.mp3','RAP DO ALUCARD (TAUZ)']];let EVMI=-1;
 function evMusOn(){return EVMUS&&showScreen.cur==='ranked'&&G.mode!=='fight'}
 function evMusPlay(next){if(!EVMUS||!MUS[EVMS[0][0]])return;const i=next&&EVMI>=0?(EVMI+1)%EVMS.length:EVMI>=0?EVMI:(Math.random()*EVMS.length)|0;const nw=i!==EVMI||!MEL.src.endsWith(EVMS[i][1]);EVMI=i;
-  const [mi,src,nm]=EVMS[i];MCUR=mi;MEL.loop=false;if(nw){MEL.src=src;try{MEL.currentTime=0}catch(e){}try{rkToast('🎶 SOLO LEVELING · '+nm,'#9a7bff')}catch(e){}}
+  const [mi,src,nm]=EVMS[i];MCUR=mi;MEL.loop=false;if(nw){MEL.src=src;try{MEL.currentTime=0}catch(e){}try{rkToast('🎶 ALUCARD · '+nm,'#ff5a66')}catch(e){}}
   if(AU.on&&!document.hidden){const p=MEL.play();if(p&&p.catch)p.catch(()=>{})}}
 MEL.addEventListener('ended',()=>{if(EVMI>=0&&evMusOn())evMusPlay(1)});
 {const _o=rkOpen;rkOpen=function(){const r=_o.apply(this,arguments);try{if(EVMUS)evMusPlay()}catch(e){}return r}}
 /* luta: volta ao normal (música em loop escolhida na rádio / aleatória) */
 {const _mp=musPick;musPick=function(){MEL.loop=true;if(EVMI>=0){EVMI=-1;MCUR=-1;try{MEL.pause();MEL.removeAttribute('src')}catch(e){}}if(G.gmode!=='torre'&&rkG('mus','auto')!=='auto')return rkMusPlay();return _mp.apply(this,arguments)}}
 /* rádio: no lobby continua o evento; a escolha vale para as LUTAS */
-{const _rm=rkMusic;rkMusic=function(){const r=_rm.apply(this,arguments);if(!EVMUS)return r;try{const M=document.querySelector(RKMS()+'.rkMu');if(M){M.insertAdjacentHTML('beforebegin','<p class="twH evMuN">🎶 <b>SOLO LEVELING</b>: no menu e no giro tocam as 3 músicas do Sung. Nas <b>LUTAS</b> toca a que você escolher aqui (ou ALEATÓRIA).</p>');
+{const _rm=rkMusic;rkMusic=function(){const r=_rm.apply(this,arguments);if(!EVMUS)return r;try{const M=document.querySelector(RKMS()+'.rkMu');if(M){M.insertAdjacentHTML('beforebegin','<p class="twH evMuN">🎶 <b>HELLSING</b>: no menu e na invocação tocam as 2 músicas do Alucard. Nas <b>LUTAS</b> cada batalha começa com uma música ALEATÓRIA.</p>');
   M.querySelectorAll('button').forEach(b=>b.onclick=()=>{rkS('mus',b.dataset.m);rkSfx('whoosh');rkMusic()})}}catch(e){}return r}}
 /* ================= v368: PERFIL NOVO (artes do dono) + BATALHAS + ÁLBUM DE CARTAS + COLEÇÃO =================
    Artes 1847×851 (ferramentas/ranqueada_artes/perfil_v368). Coordenadas em pixels da arte com rkB3.
@@ -7599,3 +7600,18 @@ function mnModos(){rkModal(`<div class="twM mn2CM"><h3>🎮 MODOS DE JOGO</h3><d
 function alRelChk(){try{const on=Date.now()>=ALG0||pfIsAdm(),t=document.querySelector('#roster .tile[data-c="alucard"]');if(t)t.hidden=!on;const i=ALLC.indexOf('alucard');if(on&&i<0)ALLC.push('alucard');if(!on&&i>=0)ALLC.splice(i,1)}catch(e){}}
 setTimeout(alRelChk,800);setInterval(alRelChk,20000);
 try{Object.assign(window.__pvT||{},{alg:()=>({open:algOpen(),pity:rkG('pityAL',0),ban:RKBAN}),alRoll:()=>{RKMTMP=[];return rkRollA()},alCost:n=>{const b=RKBAN;RKBAN='al';const c=rkCost(n);RKBAN=b;return c}})}catch(e){}
+
+/* ================= v606: MÚSICA ALEATÓRIA EM TODA BATALHA (pedido do dono) + VÍDEO DA TRANSFORMAÇÃO DO ALUCARD NO GIRO =================
+   Cada luta (startMatch → musPick) sorteia uma música de TODAS (nunca a mesma da luta anterior). Só não toca se a pessoa escolheu "sem música".
+   Giro da Invocação do Alucard: vídeo da transformação dele (1280×720, nítido), sem som (a música do lobby continua). */
+{const _mp=musPick;musPick=function(){MEL.loop=true;if(EVMI>=0){EVMI=-1;MCUR=-1;try{MEL.pause();MEL.removeAttribute('src')}catch(e){}}
+  if(MSEL==='none'||rkG('mus','auto')==='none'){MCUR=-1;try{MEL.pause()}catch(e){}return}
+  const last=+(localStorage.getItem('rk_lastMus')||-1);let i=(Math.random()*MUS.length)|0;if(MUS.length>1)while(i===last)i=(Math.random()*MUS.length)|0;
+  try{localStorage.setItem('rk_lastMus',String(i))}catch(e){}MCUR=i;MEL.src=MUS[i][1];try{MEL.currentTime=0}catch(e){}}}
+const ALINV='a/6060fac432c798.mp4';
+{const _pv=rkPlayVid;rkPlayVid=function(cb){if(RKBAN!=='al')return _pv(cb);const O=document.createElement('div');O.className='rkFx skFx alFx';O.innerHTML='<video playsinline preload="auto"></video><span>toque para pular</span>';rkHost().appendChild(O);
+  const v=O.querySelector('video');let d=0;const end=()=>{if(d)return;d=1;try{v.pause()}catch(e){}O.remove();cb()};v.muted=true;v.defaultMuted=true;v.setAttribute('muted','');v.src=ALINV;v.onended=end;v.onerror=end;O.onclick=end;
+  const pr=v.play();if(pr&&pr.catch)pr.catch(()=>{v.play().catch(end)});setTimeout(end,12000)}}
+/* pré-carrega o vídeo quando abre a aba do Alucard */
+{const _g=rkView;rkView=function(v){const r=_g.apply(this,arguments);if(v==='gacha'&&RKBAN==='al'&&!window.__alPre){window.__alPre=1;try{const l=document.createElement('link');l.rel='preload';l.as='video';l.href=ALINV;document.head.appendChild(l)}catch(e){}}return r}}
+try{Object.assign(window.__pvT||{},{musPick:()=>{musPick();return MCUR},musN:()=>MUS.length})}catch(e){}

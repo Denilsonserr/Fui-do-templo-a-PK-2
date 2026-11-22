@@ -2826,3 +2826,9 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - **Botões personalizados do ALUCARD** (artes do dono `ferramentas/personagens/alucard/botoes/normal.png` e `transformado.png`, 1670×942; só os botões, sem o HUD de vida): `hud_al.py` (cópia do `hud_sk.py` do Shaka com as posições da arte) → `build/hud_alucard.json` → patch `9z_v605_alucard_botoes.py` (`HUDA.alucard`, `HUTH.alucard` com `k:'blood'`). Mesmo tamanho/lugar dos botões de sempre.
 - Transformado: `aucBtnFx` (raios vermelhos em volta, gotas de SANGUE que escorrem e pingam dos botões, névoa vermelha pulsando) + `#controls.alf` (brilho vermelho nos botões e nos cantos).
 - Teste: `ferramentas/testes/tal_botoes_v605.js`.
+
+## v606
+- **Músicas do ALUCARD** (dono): Hellsing – Abertura (`a/b9dc4444173b21.mp3`) e Rap do Alucard – Tauz (`a/11ae0f46904639.mp3`), mp3 128k. Entram no `MUS` (24, 25) e nos botões de música (patch `9z_v606_musicas.py`). No lobby (menu e invocação) o `EVMS` agora toca SÓ essas 2 (antes as 3 do Solo Leveling).
+- **Música ALEATÓRIA em toda batalha**: `musPick` (chamado no `startMatch`) sorteia entre TODAS as músicas, nunca a mesma da luta anterior (`rk_lastMus`), mesmo que a pessoa tenha escolhido uma na rádio. Só "sem música" é respeitado.
+- **Giro da Invocação do Alucard** passa o vídeo da transformação dele (`ALINV`, 1280×720 nítido, sem som; pré-carrega ao abrir a aba). A invocação continua trancada para os jogadores até 22/11 13:00 (`ALG0`).
+- Teste: `ferramentas/testes/tmusica_v606.js`.
