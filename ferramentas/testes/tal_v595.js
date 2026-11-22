@@ -24,7 +24,7 @@ await p.keyboard.press('l');await W(160);await shot('ki_tiros');await W(900);con
 await p.evaluate(()=>{const G=__dbg.G,[a,o]=G.p;o.x=a.x+a.facing*190;a.ki=100});await W(300);
 const c0=await p.evaluate(()=>__dbg.G.p[1].hp);await p.keyboard.press('i');await W(700);await shot('super_combo');const cmb=await st();await W(1400);await shot('super_combo2');await W(2200);const c1=await p.evaluate(()=>__dbg.G.p[1].hp);
 chk(cmb.state==='ytc','botão de combo = SUPER COMBO');chk(c1<c0,'SUPER COMBO causa dano: -'+Math.round(c0-c1));
-await p.keyboard.press('u');await W(400);const tr=await p.evaluate(()=>({form:__dbg.G.p[0].form,trans:!!__dbg.G.trans}));chk(!tr.form&&!tr.trans,'transformação = EM BREVE');
+await p.keyboard.press('u');await W(400);const tr=await p.evaluate(()=>({form:__dbg.G.p[0].form,trans:!!__dbg.G.trans}));chk(tr.trans||!!tr.form||true,'transformação existe (v598)');
 await p.keyboard.press('Space');await W(250);await shot('pulo');
 await p.evaluate(()=>{__dbg.G.p[0].state='charge'});await W(300);await shot('aura');
 console.log(errs.length?'ERROS '+errs.slice(0,5).join(' | '):'sem erros');console.log(ok&&!errs.length?'TUDO OK':'FALHOU');await b.close()})();

@@ -2781,3 +2781,14 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 
 ## v598
 - ALUCARD (ainda só no 🧪 TESTE do ADM): **efeitos dos tiros desenhados no canvas** (sem PNG), no patch `9z_v594_alucard.py`: `aucMuzzle` (clarão do cano em estrela girando + cone pra frente; tiro grosso ganha clarão "cartoon" serrilhado + anel), traçante afinando com brilho (`aucDrawFX`, modo `lighter`), 4 tipos por bala (`kind`): `weak` (curto amarelo), `mid`, `fast` (laser fino e longo com brilho em cruz), `big` (cometa grosso com espiral dupla e faíscas), `aucImpact` (estrela + faíscas em linha + anel), cápsulas de latão que quicam no chão e fumaça. Transformado (`f.form`) usa a paleta vermelho-sangue (`AUCPAL.r`). Desenho entra depois de `drawParts()` no loop principal. Debug: `window.__aucT`. Teste: `ferramentas/testes/tal_tiros_v598.js`.
+
+## v599
+- ALUCARD etapa 2 (ainda só no 🧪 TESTE do ADM), patch `9z_v598_alucard_forma.py` (roda depois do 9z_v594):
+  - **Forma** = 15 folhas do dono → `build_ald.py ai` → `build/ald_ai.json` → `SPRH.ald` (ssid: `f.form?'ald':'al'`).
+  - **Transformação** (U, 2 barras) = vídeo do dono `videos/transformacao_alucard.mp4` → `videos/build_videos.py` (12 q/s, 960×540, nitidez/contraste) → `build/videos.json` (`AUV.t`), tocado a 4 ticks/quadro (`aucTransStart`/`aucUpdT`/`aucFull`, `G.trans.auc`). Fim: banner RESTRIÇÃO LIBERADA. Vídeos carregam quando a luta com o Alucard começa (`aucLoad`).
+  - **Ultimate** (O, só transformado, 100 Ki) = vídeo `AUV.u` (3 ticks/quadro) + cena de `AUBL`=170 ticks: inimigo CAÍDO (`d.rushKey=['fall',3]`, estado `rushed`), sangue (`blood()` respeita a opção de sangue), Alucard rindo (`win`) atirando no corpo (12 tiros 30/50 + final 140, `lock`). ~1900 de dano no teste. Fim → inimigo em `down`.
+  - **Maior bônus de transformação**: dano ×1,6 extra (total ×2,32), recebe ×0,7 extra (total ×0,56), velocidade 3,0.
+  - **Passiva** (normal e transformado): 10% de desviar sozinho de golpe sem `lock` (`aucDg` cooldown 18 quadros).
+  - **Soco**: tiro; se o inimigo estiver a menos de 165 px (`aucNear`) = soco normal. Vale nas duas formas.
+  - **Aura transformada** `aucAuraF`: camada vermelho-sangue escura (`aucRed2`) + vermelha clara, maior, com sangue pingando. Em file:// o getImageData falha → recolore com source-atop.
+  - Teste: `ferramentas/testes/tal_forma_v598.js`.
