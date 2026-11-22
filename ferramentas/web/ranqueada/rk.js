@@ -7682,3 +7682,8 @@ try{Object.assign(window.__pvT||{},{twCap:()=>{const t=performance.now();const r
 /* v607: na arte do Hellsing o emblema da cruz fica onde estava o número do nível: o nível vai para dentro da barra */
 {const _bh=bpH;bpH=function(){let h=_bh.apply(this,arguments);try{const L=bpLv(bpG());h=h.replace(/(<div class="bp2Bar"[^>]*><s[^>]*><\/s><span>)/,'$1⭐ '+L+'/20 · ')}catch(e){}return h}}
 {const st=document.createElement('style');st.textContent='.rk_bp .bp2Lv{display:none!important}';document.head.appendChild(st)}
+
+/* ================= v608: CARTA DO ALUCARD (arte do dono, ferramentas/personagens/alucard/carta.png) — aparece quando ganha na invocação e no ÁLBUM.
+   Álbum: páginas novas HELLSING (Alucard) e SOLO LEVELING (Sung, que tinha carta mas não estava em nenhuma página). ================= */
+CRT.chr.alucard='a/5317c70e4817b6.webp';
+try{for(const [k,n,L] of [['sl','SOLO LEVELING',['sung']],['hs','HELLSING',['alucard']]])if(!ALB.some(a=>a.k===k))ALB.push({k,n,L:L.filter(id=>CH[id]&&CRT.chr[id])})}catch(e){}

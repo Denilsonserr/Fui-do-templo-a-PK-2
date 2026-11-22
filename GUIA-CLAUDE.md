@@ -2840,3 +2840,8 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - **SET DO ALUCARD** (6 peças, `RKSP.alcap/alarm/alesp/alluv/alane/albot`, artes cortadas por `ferramentas/personagens/alucard/itens/cortar.py`): um pouco acima do Shaka V2; 100% no Alucard (+10% com 5+ peças), 50% nos outros (`eqNf` e stats com `it.al`). Só na Invocação do Alucard: cada peça só depois do giro 200 (não aparece), garantida no 300, nunca repete (`rk_pityALS`). Efeitos: ícones pulsando em vermelho-sangue; na luta, névoa de sangue em quem veste (mais forte com o set).
 - **INVENTÁRIO**: `twCap` (descarte automático acima de 40 espaços) refeito: antes descartava um por um relendo/gravando o inventário inteiro (com muitos itens o navegador travava); agora calcula e grava uma vez só (2000 itens: 9 ms). Nunca descarta item único/secreto/evento/mercado/do Alucard.
 - Testes: `tpasse_hellsing_v607.js` (precisa do servidor local; `COD=` código premium), `tinv_cap_v607.js`.
+
+## v608
+- **Carta do ALUCARD** (arte do dono `ferramentas/personagens/alucard/carta.png` → `CRT.chr.alucard`, 700×1018): aparece na revelação quando ganha ele na invocação e no ÁLBUM.
+- Álbum: páginas novas **HELLSING** (Alucard) e **SOLO LEVELING** (Sung — tinha carta mas não estava em nenhuma página). Completar a página dá o prêmio de sempre (+300 💎).
+- Teste: `ferramentas/testes/tcarta_alucard_v608.js`.
