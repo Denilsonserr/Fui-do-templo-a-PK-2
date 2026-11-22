@@ -2806,3 +2806,9 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
   - **Botão ULTIMATE** (poder máximo): `srReady`/`trySR` do Alucard como o Sung — transformado + 100 Ki, sem precisar da faísca.
 - **Gráfico não muda mais sozinho** (rk.js `QDOWN=0`): girar o celular dava tranco e o v558 baixava para Leve. Só a pessoa troca em Opções.
 - Teste: `ferramentas/testes/tal_tiro_v601.js`.
+
+## v602
+- ALUCARD: **tiro só sai com a arma APONTADA**. No `9z_v601_alucard_tiro.py`, `AIM` lista (conferido nas folhas) os quadros de cada animação de tiro com a arma pra frente, normal (`al`) e transformado (`ald`); só eles entram em `AUTIP` (ponta medida; `MAN` corrige o `al sE`, onde a detecção pegava o pé). `aucTip(f)` = null fora desses quadros → o tiro do combo/chute com arma/Ki ESPERA o quadro certo (Ki atira de qualquer jeito no fim). O nome do arquivo some do quadro depois de carregar: `aucSrc(S)` usa `S.img.src`.
+  - Normal: a rajada agachada (`aj3`) usava a folha com as armas PRA CIMA → agora `sE` (base larga, 2 armas pra frente); tiro grosso (`aj5`) usa `sA` (quadros com clarão).
+  - ULTIMATE: na cena final ele MIRA (`['sA',3]`) a cada disparo e o tiro sai da arma; entre um e outro ri.
+  - Contador `__aucT.n().arma/semArma`; teste `ferramentas/testes/tal_arma_v602.js` (62 tiros, 0 sem arma).
