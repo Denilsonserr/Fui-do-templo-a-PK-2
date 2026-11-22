@@ -19,5 +19,5 @@ await W(700);const h1=await ev(()=>__dbg.G.p[1].hp);chk(seq.some(m=>/^af/.test(m
 /* morcegos */
 await ev(()=>{const G=__dbg.G,[a,o]=G.p;a.x=200;o.x=800;a.facing=1;a.ki=100;o.hp=o.mhp||3600;a.state='idle'});await W(200);const b0=await ev(()=>__dbg.G.p[1].hp);
 await p.keyboard.press('l');await W(600);const nb=await ev(()=>__aucT.n().bat);await shot('morcegos1');await W(250);await shot('morcegos2');await W(1500);const b1=await ev(()=>__dbg.G.p[1].hp);
-chk(nb>=5,'Ki transformado solta MORCEGOS ('+nb+')');chk(b1<b0,'morcegos perseguem e acertam: -'+Math.round(b0-b1));
+console.log('(v601: morcegos removidos a pedido do dono)');chk(b1<b0,'Ki transformado acerta: -'+Math.round(b0-b1));
 console.log(errs.length?'ERROS '+errs.slice(0,5).join(' | '):'sem erros');console.log(ok&&!errs.length?'TUDO OK':'FALHOU');await b.close()})();

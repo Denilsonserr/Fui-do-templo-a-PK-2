@@ -7142,9 +7142,9 @@ try{Object.assign(window.__pvT||{},{pvLoadAll:f=>pvLoadAll(f),vnExtra:t=>vnExtra
 function qAuto(){try{const m=+navigator.deviceMemory||0,c=+navigator.hardwareConcurrency||0,px=(screen.width||0)*(screen.height||0)*Math.pow(window.devicePixelRatio||1,2);
   if((m&&m<=3)||(c&&c<=4))return 1;if((m&&m<=4)||(c&&c<=6)||px>4.2e6&&m&&m<=6)return 2;return 3}catch(e){return 2}}
 setTimeout(()=>{try{if(localStorage.getItem('ft_q')==null){const lv=qAuto();setQ(lv);localStorage.setItem('ft_qa','1')}}catch(e){}},0);
-let QSLOW=0;
+let QSLOW=0;const QDOWN=0; /* v601: o dono pediu — o gráfico NUNCA muda sozinho (girar o celular dava um tranco e baixava para Leve). Só a pessoa troca em Opções. 1 = liga de novo */
 {const _d=dynTick;dynTick=function(dt){_d.apply(this,arguments);try{if(G.mode!=='fight'||G.paused||document.hidden||dt>1500)return;const floor=DYN.off||G.dyn<=.56;
-  if(floor&&DYN.ema>21){QSLOW+=dt;if(QSLOW>3500&&(G.qlv|0)>0){QSLOW=0;const lv=(G.qlv|0)-1;setQ(lv);try{localStorage.setItem('ft_qa','1')}catch(e){}try{banner('⚙️ GRÁFICO: '+QLN[lv].toUpperCase(),'#bfe8ff',90,'ajustado sozinho para o jogo rodar melhor (troque em Opções)')}catch(e){}}}else QSLOW=Math.max(0,QSLOW-dt*.5)}catch(e){}}}
+  if(QDOWN&&floor&&DYN.ema>21){QSLOW+=dt;if(QSLOW>3500&&(G.qlv|0)>0){QSLOW=0;const lv=(G.qlv|0)-1;setQ(lv);try{localStorage.setItem('ft_qa','1')}catch(e){}try{banner('⚙️ GRÁFICO: '+QLN[lv].toUpperCase(),'#bfe8ff',90,'ajustado sozinho para o jogo rodar melhor (troque em Opções)')}catch(e){}}}else QSLOW=Math.max(0,QSLOW-dt*.5)}catch(e){}}}
 {const _r=setRes;setRes=function(){if(!G.baseDPR)return;if((G.qlv|0)!==0)return _r.apply(this,arguments);const d=Math.max(.7,G.baseDPR*G.dyn);if(Math.abs(d-DPR)<.01)return;DPR=d;BGD=Math.max(.7,DPR*.55);cv.width=Math.round(VW*SC*DPR);cv.height=Math.round(H*SC*DPR)}}
 let RSKIP=0;{const _rd=render;render=function(){try{if((G.qlv|0)===0&&G.mode==='fight'&&DYN.ema>24&&G.dyn<=.56){RSKIP^=1;if(RSKIP)return}}catch(e){}return _rd.apply(this,arguments)}}
 setInterval(()=>{try{if(G.mode!=='fight')return;const cap=(G.qlv|0)===0?50:(G.qlv|0)===1?120:0;if(cap&&G.parts&&G.parts.length>cap)G.parts.splice(0,G.parts.length-cap)}catch(e){}},250);
