@@ -9183,7 +9183,7 @@ function rkLibH(){return `<button class="hs" data-a="back" style="${rkB(20,10,14
   <div class="rkPed" id="rkPed" style="${rkB(380,120,920,640)}"></div><div class="rkInfo" id="rkInfo" style="${rkB(300,700,1000,800)}"></div>
   <button class="rkUse" id="rkUse" data-a="libUse" style="${rkB(18,600,268,668)}" hidden></button>`}
 function rkLibItems(){const own=rkG('own',['goku']),inv=twInv(),Q=twEqp(),R=[];
-  if(RKL.tab==='chr'){for(const id of ['alucard','sung','shaka','yuta'].concat(RK_MIT,RK_LEG,RK_EPI).filter(i=>CH[i]&&(i!=='sung'||sjRel()||pfIsAdm())&&(i!=='alucard'||Date.now()>=Date.UTC(2026,10,22,16,0,0)||pfIsAdm())))R.push({id,k:'chr',r:rkRar(id),has:own.includes(id),img:IMG[id]?IMG[id].src:'',big:fullSrc(id),nm:CH[id].name,d:(id==='alucard'?'✦ SP · INVOCAÇÃO ILIMITADA':id==='shaka'?'✦ PERSONAGEM SECRETO · ILIMITADO':{mit:'✦ PERSONAGEM MÍTICO',lend:'PERSONAGEM LENDÁRIO'}[rkRar(id)]||'PERSONAGEM ÉPICO')+(rkG('sel','goku')===id?' · EM USO NA RANQUEADA':'')})}
+  if(RKL.tab==='chr'){for(const id of ['alucard','sung','shaka','yuta'].concat(RK_MIT,RK_LEG,RK_EPI).filter(i=>CH[i]&&(i!=='sung'||sjRel()||pfIsAdm())&&(i!=='alucard'||Date.now()>=Date.UTC(2026,10,22,15,30,0)||pfIsAdm())))R.push({id,k:'chr',r:rkRar(id),has:own.includes(id),img:IMG[id]?IMG[id].src:'',big:fullSrc(id),nm:CH[id].name,d:(id==='alucard'?'✦ SP · INVOCAÇÃO ILIMITADA':id==='shaka'?'✦ PERSONAGEM SECRETO · ILIMITADO':{mit:'✦ PERSONAGEM MÍTICO',lend:'PERSONAGEM LENDÁRIO'}[rkRar(id)]||'PERSONAGEM ÉPICO')+(rkG('sel','goku')===id?' · EM USO NA RANQUEADA':'')})}
   else if(RKL.tab==='eq'){for(const k in RKSP){const S=RKSP[k];const has=inv.some(x=>x.nm===S.nm);R.push({id:'sp'+k,k:'eq',r:S.r,has,img:S.img,big:S.img,nm:S.nm,d:(S.r==='obs'?'✦ OBSCURO · ':S.r==='sec'?'✦ SECRETO · ':S.r==='lend'?'LENDÁRIO ESPECIAL · ':'MÍTICO ESPECIAL · ')+rkSpTxt(S)+(S.boss?' · drop do Modo Boss':' · só no gacha')})}
     for(const E of TWEQ)for(const Rr of TWEQR.filter(q=>!rkHi(q.k))){const has=inv.some(x=>x.t===E.k&&x.r===Rr.k);const v=E.k==='cap'?TWCAPV[Rr.k]:null;R.push({id:E.k+Rr.k,k:'eq',r:Rr.k,has,img:twIco(E.k,Rr.k),big:twIco(E.k,Rr.k),nm:E.n+' '+Rr.n,d:E.k==='cap'?'Transformação +'+v[0]+'% · Crítico +'+v[1]+'%':E.d.replace('Aumenta o ','').replace('Aumenta a ','')+' +'+Rr.v+'%'})}}
   else if(RKL.tab==='it'){R.push({id:'gem',k:'it',r:'rara',has:1,img:RQA.coin[0],big:RQA.coin[0],nm:'GEMINHAS',d:'Você tem '+rkFmtN(rkG('gem',0))+' · usadas na Invocação'});R.push({id:'tic',k:'it',r:'lend',has:1,img:RQA.coin[2],big:RQA.coin[2],nm:'TICKET DE GIRO',d:'Você tem '+rkFmtN(rkG('tic',0))+' · 1 ticket = 1 giro'});
@@ -14919,10 +14919,10 @@ const sh2On=()=>{const t=Date.now();return t>=T2INI&&t<EVFIM};
 {const _r=Math.random;const _pb=pnBossReward;pnBossReward=function(d){if(d&&d.pn&&d.pn.k==='ig'&&sh2On()){const R=Math.random;Math.random=()=>R()*.5;try{return _pb.apply(this,arguments)}finally{Math.random=R}}return _pb.apply(this,arguments)}}
 /* ---------- ranking da Temporada 2: campos novos ---------- */
 const S2F={rp:'rp2',dmg:'dmg2',tw:'tw2',t1w:'t1w2'};
-{const _q=rkOQ;rkOQ=async function(field,dir,lim){if(RKS1Q||!S2F[field])return _q.apply(this,arguments);const L=await _q.call(this,S2F[field],dir,lim);for(const e of L){for(const k in S2F)if(e[S2F[k]]!=null)e[k]=e[S2F[k]];else if(k!=='rp')delete e[k];if(e.tw2)e.tt=e.tw2;if(e.t1w2)e.t1=e.t1w2;if(e.rp2==null)e.rp=0}return L}}
+{const _q=rkOQ;rkOQ=async function(field,dir,lim){if(RKS1Q||!S2F[field])return _q.apply(this,arguments);const L=await _q.call(this,S2F[field],dir,lim);for(const e of L){for(const k in S2F)if(e[S2F[k]]!=null)e[k]=e[S2F[k]];else if(k!=='rp')delete e[k];if(e[S2F.tw])e.tt=e[S2F.tw];if(e[S2F.t1w])e.t1=e[S2F.t1w];if(e[S2F.rp]==null)e.rp=0}return L}}
 let RKS1Q=0;
 rkSend=function(x){const n=twLS.g('tw_nome','');if(!n)return;const IV=v=>({integerValue:String(Math.max(0,Math.round(v)))});const lv=x.lv!=null?x.lv:rkLvl();
-  const f={nome:{stringValue:n},andar:IV(0),tempo:IV(0),uid:{stringValue:twUid()},tit:{stringValue:twTitOn()},rk:{stringValue:'1'},s:{stringValue:'2'},rp2:IV(x.rp),lv:IV(lv),dmg2:IV(x.dmg),...(x.won&&x.tt>0?{rkr:{stringValue:rkBP()+lv},tw2:IV(x.tt)}:{}),...(x.t1>0?{t1w2:IV(x.t1)}:{}),t1:IV(x.t1),tt:IV(x.tt),won:IV(x.won),char:{stringValue:G.pick||''},v:IV(479)};
+  const f={nome:{stringValue:n},andar:IV(0),tempo:IV(0),uid:{stringValue:twUid()},tit:{stringValue:twTitOn()},rk:{stringValue:'1'},s:{stringValue:S2F.rp.slice(2)},[S2F.rp]:IV(x.rp),lv:IV(lv),[S2F.dmg]:IV(x.dmg),...(x.won&&x.tt>0?{rkr:{stringValue:rkBP()+lv},[S2F.tw]:IV(x.tt)}:{}),...(x.t1>0?{[S2F.t1w]:IV(x.t1)}:{}),t1:IV(x.t1),tt:IV(x.tt),won:IV(x.won),char:{stringValue:G.pick||''},v:IV(479)};
   twFetchT(TWURL+'/torre?key='+TWFB.apiKey,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({fields:f})}).catch(()=>{})};
 /* ---------- títulos da Temporada 1 ---------- */
 const T1T={t1c:['CAMPEÃO DA TEMPORADA 1','🏆','#ffd84a','1º lugar da Ranqueada na Temporada 1',1],t1v:['VICE-CAMPEÃO DA TEMPORADA 1','🥈','#dfe8ff','2º lugar da Ranqueada na Temporada 1',2],
@@ -15940,9 +15940,9 @@ TWCUP['15txov7']={nm:'PRESENTE PARA TODOS',ev:1,gem:10000,tic:0,chb:1};
 /* v560: RANK GERAL (XP) também enchia com poucos jogadores (cada partida = doc novo; o limite de 150 ficava só com Breno/Honrado/Stark) → Vini sumia.
    Agora pega 1 doc (o mais novo) por jogador com `latestBy:'nome'` (worker v557); se der erro, volta ao jeito antigo. */
 {const _o=rkOQ;rkOQ=async function(field,dir,lim){if(field==='rp'&&dir==='DESCENDING'&&!RKS1Q){try{ /* temporada 2: campo rp2 */
-    const body={structuredQuery:{from:[{collectionId:'torre'}],where:{fieldFilter:{field:{fieldPath:'rk'},op:'EQUAL',value:{stringValue:'1'}}},orderBy:[{field:{fieldPath:'rp2'},direction:'DESCENDING'}],limit:300,latestBy:'nome'}};
+    const body={structuredQuery:{from:[{collectionId:'torre'}],where:{fieldFilter:{field:{fieldPath:'rk'},op:'EQUAL',value:{stringValue:'1'}}},orderBy:[{field:{fieldPath:S2F.rp},direction:'DESCENDING'}],limit:300,latestBy:'nome'}};
     const r=await twFetchT(TWURL+':runQuery?key='+TWFB.apiKey,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});if(!r.ok)throw new Error('http '+r.status);const j=await r.json(),o=[];
-    for(const x of (Array.isArray(j)?j:[])){const F=x&&x.document&&x.document.fields;if(!F||!F.rk)continue;const e={_ct:Date.parse(x.document.createTime||'')||0};for(const k in F){const v=F[k];e[k]=v.stringValue!=null?v.stringValue:v.integerValue!=null?+v.integerValue:v.doubleValue}for(const k in S2F)if(e[S2F[k]]!=null)e[k]=e[S2F[k]];else if(k!=='rp')delete e[k];if(e.tw2)e.tt=e.tw2;if(e.t1w2)e.t1=e.t1w2;if(e.rp2==null)e.rp=0;o.push(e)}
+    for(const x of (Array.isArray(j)?j:[])){const F=x&&x.document&&x.document.fields;if(!F||!F.rk)continue;const e={_ct:Date.parse(x.document.createTime||'')||0};for(const k in F){const v=F[k];e[k]=v.stringValue!=null?v.stringValue:v.integerValue!=null?+v.integerValue:v.doubleValue}for(const k in S2F)if(e[S2F[k]]!=null)e[k]=e[S2F[k]];else if(k!=='rp')delete e[k];if(e[S2F.tw])e.tt=e[S2F.tw];if(e[S2F.t1w])e.t1=e[S2F.t1w];if(e[S2F.rp]==null)e.rp=0;o.push(e)}
     if(o.length)return o}catch(e){}}return _o.apply(this,arguments)}}
 
 /* v561: Vini_junior10 — 3x XP no MODO RANQUEADO (boss) por 3 horas: 19/11 19:10 → 22:10 (Brasília). Entrada pessoal no RKEVX (tag 'vn'), multiplica o evento que estiver valendo. */
@@ -16328,7 +16328,7 @@ try{Object.assign(window.__pvT||{},{ptNow:t=>ptNow(t),ptGS:()=>PTGS})}catch(e){}
    SP ALUCARD: garantido no giro 250 (rk_pityAL). Regra do dono que NÃO aparece no jogo: antes do giro 200 ele não sai.
    Drop normal (equipamento / moeda vermelha) + chance de ANEL VERMELHO. Abre HOJE (22/11) às 13:00 (Brasília) e não fecha.
    O Alucard entra na lista de personagens às 13:00 (antes só o ADM vê). ================= */
-const ALG0=Date.UTC(2026,10,22,16,0,0),algOpen=()=>Date.now()>=ALG0||(typeof twIsAdm==='function'&&twIsAdm()&&!window.__alLockTest),algHHMM=()=>'13:00';
+const ALG0=Date.UTC(2026,10,22,15,30,0),algOpen=()=>Date.now()>=ALG0||(typeof twIsAdm==='function'&&twIsAdm()&&!window.__alLockTest),algHHMM=()=>'12:30';
 RQA.gacha_al='a/73a9b81f7e9a75.webp';
 const alOwned=()=>rkG('own',[]).includes('alucard');
 const ALRING=1.5; /* % de anel vermelho por giro */
@@ -16466,6 +16466,107 @@ try{Object.assign(window.__pvT||{},{twCap:()=>{const t=performance.now();const r
    Álbum: páginas novas HELLSING (Alucard) e SOLO LEVELING (Sung, que tinha carta mas não estava em nenhuma página). ================= */
 CRT.chr.alucard='a/5317c70e4817b6.webp';
 try{for(const [k,n,L] of [['sl','SOLO LEVELING',['sung']],['hs','HELLSING',['alucard']]])if(!ALB.some(a=>a.k===k))ALB.push({k,n,L:L.filter(id=>CH[id]&&CRT.chr[id])})}catch(e){}
+
+/* ================= v610: TEMPORADA 3 DA RANQUEADA (meio-dia de 22/11) + TÍTULOS DA TEMPORADA 2 + "O PÁSSARO DE HERMES" (Alucard) + INVOCAÇÃO ÀS 12:30
+   • 12:00 (Brasília): Ranqueada volta do ZERO para todos (rk_rp → 0, antigo em rk_rpS2; 1× por aparelho, rk_s3) e as recompensas de RANK podem ser pegas de novo.
+     Ranking do servidor passa para os campos rp3/dmg3/tw3/t1w3 (S2F muda na hora; se o jogo estiver aberto ao meio-dia, vira sozinho).
+   • Fim da TEMPORADA 2 (1× por aparelho, rk_s3rw): lê o ranking da T2 (rp2, docs antes do meio-dia) → títulos novos T2 (sangue/Hellsing):
+     👑 CAMPEÃO (1º, 15.000 💎 + 20 🎫) · 🥈 VICE (2º, 10.000) · 🥉 3º LUGAR (7.500) · ⭐ TOP 10 (4.000 + 10 🎫) · ⚔️ GUERREIRO (todo mundo que jogou, 1.500 + 5 🎫).
+     As placas de TOP do servidor (dinâmicas) passam a valer a T3: quem era top na T2 perde e quem subir na T3 ganha.
+   • ALUCARD: os 10 primeiros do servidor a pegar ganham "O PÁSSARO DE HERMES Nº1…Nº10" (+30% … +6% de dano com o Alucard; servidor hmtit_N, como o Sung).
+     O HONRADO (escolheu o personagem) ganha o título SEM número (+30%) e não ocupa vaga dos 10.
+   • Invocação e Alucard na lista: 12:30 (antes 13:00), com contagem regressiva no topo da tela de início e do menu. ================= */
+const T3INI=Date.UTC(2026,10,22,15,0,0);
+function rkT3(){if(Date.now()<T3INI)return false;if(S2F.rp!=='rp3'){Object.assign(S2F,{rp:'rp3',dmg:'dmg3',tw:'tw3',t1w:'t1w3'});try{Object.assign(TEMP,{id:3,n:'TEMPORADA 3',ini:'2026-11-22'})}catch(e){}}
+  try{if(!rkG('s3',0)){rkS('s3',1);const rp=rkG('rp',0)|0;rkS('rpS2',rp);rkS('rp',0);rkS('rwc2',[]);rkS('rwc',[]);rkS('s3rwPend',1);try{acSave(1)}catch(e){}}}catch(e){}return true}
+rkT3();setInterval(()=>{try{const was=rkG('s3',0);rkT3();if(!was&&rkG('s3',0)){try{if(typeof RKV!=='undefined'&&RKV==='menu')rkView('menu')}catch(e){}setTimeout(async()=>{try{await t2Reward()}catch(e){}try{t2Win()}catch(e){}},2500)}}catch(e){}},15000);
+/* títulos da Temporada 2 */
+const T2T={t2c:['CAMPEÃO DA TEMPORADA 2','👑','#ff2a3a','1º lugar da Ranqueada na Temporada 2',1],t2v:['VICE-CAMPEÃO DA TEMPORADA 2','🥈','#ffc0c8','2º lugar da Ranqueada na Temporada 2',2],
+  t2b:['3º LUGAR DA TEMPORADA 2','🥉','#ff9a4a','3º lugar da Ranqueada na Temporada 2',3],t2x:['TOP 10 DA TEMPORADA 2','⭐','#ff4a7a','Entre os 10 primeiros da Ranqueada na Temporada 2',4],t2g:['GUERREIRO DA TEMPORADA 2','⚔️','#c0303a','Jogou a Ranqueada na Temporada 2',5]};
+for(const k in T2T){const [n,i,c,d]=T2T[k];TWTIT[k]={n,i,c,d,hid:1,t2:T2T[k][4]}}
+{const _pt=pfTitH;pfTitH=function(t,n,adm){const T=TWTIT[t];if(T&&T.t2){const k=T.t2,X=T2T[t];return `<span class="pfTt t2t q${k}"><i class="t2g"></i><i class="t2r"></i><i class="ic">${X[1]}</i><b>${X[0].replace(' DA TEMPORADA 2','')}</b><em>T2</em>${k<=3?'<i class="t2d d1"></i><i class="t2d d2"></i><i class="t2d d3"></i><i class="t1s s1">✦</i><i class="t1s s3">✦</i>':''}</span>`}return _pt.apply(this,arguments)}}
+/* O PÁSSARO DE HERMES (Alucard) */
+const HMTB=[30,30,25,20,18,16,14,12,10,8,6];
+TWTIT.hm0={n:'O PÁSSARO DE HERMES',i:'🦇',c:'#ff2a3a',d:'Quem escolheu o Alucard para o jogo · +30% de dano com o Alucard',hid:1,hmt:0};
+for(let n=1;n<=10;n++)TWTIT['hm'+n]={n:'O PÁSSARO DE HERMES Nº'+n,i:'🦇',c:n===1?'#ff4a5a':n<=3?'#ff2a3a':'#c0101e',d:'Um dos 10 primeiros do servidor a pegar o Alucard · +'+HMTB[n]+'% de dano com o Alucard',hid:1,hmt:n};
+{const _pt=pfTitH;pfTitH=function(t,n,adm){const T=TWTIT[t];if(T&&T.hmt!=null){const N=T.hmt,k=N<=1?1:N<=3?2:N<=6?3:4;return `<span class="pfTt hmt h${k}"><i class="hmg"></i><i class="hmw l"></i><i class="hmw r"></i><i class="ic">🦇</i><b>O PÁSSARO DE HERMES</b>${N?`<em>Nº ${N}</em>`:'<em>✝</em>'}<i class="hmb b1"></i><i class="hmb b2"></i><i class="hmb b3"></i></span>`}return _pt.apply(this,arguments)}}
+const isHonrado=()=>{try{return String(twUid())==='mwc8atkrgg4fns2f'||String(twLS.g('tw_nome','')||'').toLowerCase().trim()==='honrado'}catch(e){return false}};
+const hmHas=()=>twTits().some(k=>/^hm\d+$/.test(k));
+function hmHonGive(){try{if(!isHonrado()||twTits().includes('hm0'))return;const L=twTits();L.push('hm0');twLS.s('tw_tit',L);twLS.s('tw_titOn','hm0');try{twTitSync()}catch(e){}try{acSave(1)}catch(e){}setTimeout(()=>{try{hmTitWin(0)}catch(e){}},1500)}catch(e){}}
+async function hmTitClaim(show){if(isHonrado()){rkS('hmtp',0);return}if(hmHas()){rkS('hmtp',0);return}if(!rkG('own',[]).includes('alucard'))return;rkS('hmtp',1);const nm=String(twLS.g('tw_nome','')||'?').slice(0,16),IV=v=>({integerValue:String(v)});
+  for(let n=1;n<=10;n++){let r;try{r=await twFetchT(TWURL+'/torre?documentId=hmtit_'+n+'&key='+TWFB.apiKey,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({fields:{nome:{stringValue:nm},andar:IV(0),tempo:IV(0),uid:{stringValue:twUid()},hmt:{stringValue:String(n)},v:IV(610)}})})}catch(e){return}
+    if(r.ok){rkS('hmtp',0);const L=twTits();L.push('hm'+n);twLS.s('tw_tit',L);twLS.s('tw_titOn','hm'+n);try{twTitSync()}catch(e){}try{acSave(1)}catch(e){}if(show)await hmTitWin(n);return}
+    if(r.status!==409&&r.status!==403)return}
+  rkS('hmtp',0)}
+function hmTitWin(n){return new Promise(res=>{const O=document.createElement('div');O.className='rkWin end hmTw';O.innerHTML=`<i class="hmFm"></i><div class="t"><b>✦ ${n?'VOCÊ É O Nº '+n+' DO SERVIDOR!':'TÍTULO ESPECIAL!'} ✦</b><span>${n?'UM DOS 10 PRIMEIROS A PEGAR O ALUCARD':'VOCÊ ESCOLHEU O ALUCARD PARA O JOGO'}</span></div><div class="ytTw">${pfTitH('hm'+n,'',false)}</div><i class="rays"></i><div class="t2">+${HMTB[n]}% de dano quando você luta com o Alucard</div>`;rkHost().appendChild(O);try{rkSfx('boom');setTimeout(()=>rkSfx('powerUp'),300)}catch(e){}setTimeout(()=>{O.onclick=()=>{O.remove();res()}},600)})}
+const hmTitN=()=>{const k=twTits().find(k=>/^hm\d+$/.test(k));return k?HMTB[+k.slice(2)]||0:0};
+{const _ra=rkApply;rkApply=function(){_ra.apply(this,arguments);try{const tw=typeof TW!=='undefined'&&TW.on&&G.gmode==='torre';if(!G.p||!(tw||G.gmode==='boss'||G.gmode==='caca'))return;const p=G.p[0],b=hmTitN();if(b&&isAuc(p))p.tdm=(p.tdm||1)+b/100}catch(e){}}}
+/* ganhou o Alucard → tenta o título (depois da carta) */
+{const _cw=rkCharWin;rkCharWin=function(id,mit,nw){const r=_cw.apply(this,arguments);try{if(id==='alucard'&&!hmHas()&&!isHonrado()){rkS('hmtp',1);Promise.resolve(r).then(()=>setTimeout(()=>hmTitClaim(1),900))}}catch(e){}return r}}
+{const _op=rkOpen;rkOpen=function(v){const r=_op.apply(this,arguments);setTimeout(()=>{try{hmHonGive()}catch(e){}if(rkG('hmtp',0)&&rkG('own',[]).includes('alucard'))hmTitClaim(1)},3400);
+  if(rkG('s3rwPend',0))setTimeout(async()=>{try{await t2Reward()}catch(e){}try{t2Win()}catch(e){}},3000);return r}}
+/* fim da Temporada 2: ranking final (rp2, latestBy nome) */
+async function t2Reward(){if(rkG('s3rw',0)||!twLS.g('tw_nome','')||Date.now()<T3INI)return;let L=[];
+  try{const body={structuredQuery:{from:[{collectionId:'torre'}],where:{fieldFilter:{field:{fieldPath:'rk'},op:'EQUAL',value:{stringValue:'1'}}},orderBy:[{field:{fieldPath:'rp2'},direction:'DESCENDING'}],limit:300,latestBy:'nome'}};
+    const r=await twFetchT(TWURL+':runQuery?key='+TWFB.apiKey,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});if(!r.ok)return;const j=await r.json();
+    for(const x of (Array.isArray(j)?j:[])){const F=x&&x.document&&x.document.fields;if(!F||!F.rp2)continue;const ct=Date.parse(x.document.createTime||'')||0;if(ct>=T3INI)continue;L.push({uid:F.uid&&F.uid.stringValue,nome:F.nome&&F.nome.stringValue,rp:+(F.rp2.integerValue||0),ct})}}catch(e){return}
+  const M={};for(const e of L){if(String(e.nome||'').toLowerCase()==='denilson adm')continue;const k=e.uid||String(e.nome||'').toLowerCase();const o=M[k]||(M[k]={uid:e.uid,nome:e.nome,rp:0,ct:0});if(e.ct>=o.ct){o.ct=e.ct;o.rp=e.rp|0;o.nome=e.nome}}
+  const S=Object.values(M).filter(o=>o.rp>0).sort((a,b)=>b.rp-a.rp),me=twUid(),nm=String(twLS.g('tw_nome','')).toLowerCase(),i=S.findIndex(o=>(o.uid&&o.uid===me)||String(o.nome||'').toLowerCase()===nm),played=i>=0||(rkG('rpS2',0)|0)>0;
+  rkS('s3rw',1);rkS('s3rwPend',0);if(!played)return;const pos=i>=0?i+1:0,T=[];
+  const add=k=>{const L2=twTits();if(!L2.includes(k)){L2.push(k);twLS.s('tw_tit',L2)}T.push(k)};
+  if(pos===1)add('t2c');else if(pos===2)add('t2v');else if(pos===3)add('t2b');else if(pos>0&&pos<=10)add('t2x');add('t2g');
+  const gem=pos===1?15000:pos===2?10000:pos===3?7500:pos&&pos<=10?4000:1500,tic=pos&&pos<=3?20:pos&&pos<=10?10:5;rkAdd('gem',gem);rkAdd('tic',tic);
+  twLS.s('tw_titOn',T[0]);try{twTitSync()}catch(e){}try{acSave(1)}catch(e){}rkS('s3msg',{pos,gem,tic,T})}
+function t2Win(){const x=rkG('s3msg',null);if(!x)return;rkS('s3msg',null);const W=document.createElement('div');W.id='t1W';W.className='t2W';
+  W.innerHTML=`<i class="ry"></i><h2>🩸 FIM DA TEMPORADA 2</h2><p>${x.pos?'Você terminou em <b>'+x.pos+'º lugar</b> na Ranqueada!':'Obrigado por jogar a Ranqueada na Temporada 2!'}</p>${x.T.map(k=>`<div class="tt">${pfTitH(k,'',false)}</div>`).join('')}
+  <div class="rw">💎 +${rkFmtN(x.gem)} · 🎫 +${x.tic}</div><p>A <b>TEMPORADA 3</b> começou: a Ranqueada voltou do zero para todo mundo e as recompensas de rank podem ser pegas de novo. Corra para o topo!</p><div class="row"><button class="btn main" id="t1X">BORA!</button></div>`;
+  document.body.appendChild(W);try{rkSfx('boom');setTimeout(()=>rkSfx('powerUp'),400)}catch(e){}W.querySelector('#t1X').onclick=()=>W.remove()}
+/* contagem regressiva da Invocação do Alucard (tela de início e menu) */
+{const tick=()=>{const d=ALG0-Date.now();for(const [hid,sel] of [['alCdT','#title'],['alCdM','#rkWrap .rk_menu']]){const T=document.querySelector(sel);let e=document.getElementById(hid);
+    if(!T||d<-3600e3){if(e)e.remove();continue}if(!e||e.parentNode!==T){if(e)e.remove();e=document.createElement('div');e.id=hid;e.className='alCd';T.appendChild(e)}
+    if(d>0){const s=Math.ceil(d/1000),h=Math.floor(s/3600),m=Math.floor(s%3600/60),ss=s%60;e.classList.remove('ok');e.innerHTML=`🦇 INVOCAÇÃO DO ALUCARD ABRE EM <b>${h?h+'h ':''}${String(m).padStart(2,'0')}m ${String(ss).padStart(2,'0')}s</b>`}
+    else{e.classList.add('ok');e.innerHTML='🦇 INVOCAÇÃO DO ALUCARD <b>ABERTA!</b> GIRE AGORA'}}};setInterval(tick,1000);setTimeout(tick,500)}
+{const st=document.createElement('style');st.textContent=`
+.alCd{position:absolute;left:50%;top:1.2vh;transform:translateX(-50%);z-index:30;pointer-events:none;padding:.7vh 2.4vh;border-radius:2vh;font:900 2.4vh var(--f-ui,sans-serif);color:#ffe0e4;white-space:nowrap;background:linear-gradient(90deg,rgba(60,0,10,.93),rgba(14,0,4,.93));border:.25vh solid #ff2a3a;box-shadow:0 0 2vh rgba(255,30,50,.75),0 .4vh 1.2vh #000;text-shadow:0 0 1vh #ff2a3a,0 .2vh .4vh #000;animation:alCdP 1.6s ease-in-out infinite}
+.alCd b{font-size:1.25em;color:#fff;letter-spacing:.05em;margin-left:.3em;font-variant-numeric:tabular-nums}.alCd.ok{border-color:#ffd84a;box-shadow:0 0 2.4vh rgba(255,216,74,.85),0 .4vh 1.2vh #000}
+#alCdM{top:auto;bottom:1vh;font-size:1.9vh}#sjCdT{display:none!important}
+@keyframes alCdP{0%,100%{box-shadow:0 0 1.4vh rgba(255,30,50,.6),0 .4vh 1.2vh #000}50%{box-shadow:0 0 3vh rgba(255,30,50,1),0 .4vh 1.2vh #000}}
+/* títulos T2 (sangue) */
+.pfTt.t2t{position:relative;overflow:visible;isolation:isolate;border-color:transparent;animation:rkUq 1.8s linear infinite}
+.pfTt.t2t b{letter-spacing:.04em}.pfTt.t2t em{font-style:normal;font-weight:900;margin-left:.35em;padding:0 .35em;border-radius:.4em;font-size:.85em;color:#fff;background:linear-gradient(90deg,#7a0010,#ff2a3a);box-shadow:0 0 .4em #ff2a3a}
+.pfTt.t2t .ic{font-style:normal;filter:drop-shadow(0 0 .35em #ff3a4a)}
+.pfTt.t2t .t2g{position:absolute;inset:-.4em -.55em;border-radius:1em;z-index:-1;pointer-events:none;filter:blur(.5em);animation:t1Gl 1.6s ease-in-out infinite}
+.pfTt.t2t .t2r{position:absolute;inset:-.15em;border-radius:inherit;z-index:-1;pointer-events:none;background:repeating-linear-gradient(115deg,transparent 0 .6em,rgba(255,40,60,.25) .6em .8em);background-size:200% 100%;animation:t2Sl 2.4s linear infinite;mix-blend-mode:screen}
+.pfTt.t2t .t2d{position:absolute;bottom:-.55em;width:.32em;height:.55em;border-radius:0 0 .3em .3em;background:linear-gradient(#ff2a3a,#7a0010);box-shadow:0 0 .3em #ff2a3a;animation:t2Dr 2.2s ease-in infinite;opacity:0}.pfTt.t2t .d1{left:22%}.pfTt.t2t .d2{left:55%;animation-delay:.8s}.pfTt.t2t .d3{left:80%;animation-delay:1.5s}
+.pfTt.t2t .t1s{position:absolute;font-style:normal;color:#ffd0d4;text-shadow:0 0 .4em #fff,0 0 .9em #ff2a3a;animation:pfTw 1.5s ease-in-out infinite;opacity:0}.pfTt.t2t .s1{left:.6em;top:-.5em}.pfTt.t2t .s3{right:.2em;top:-.4em;animation-delay:1s}
+@keyframes t2Sl{to{background-position:-200% 0}}@keyframes t2Dr{0%{opacity:0;transform:translateY(-.3em) scaleY(.4)}20%{opacity:1}100%{opacity:0;transform:translateY(.9em) scaleY(1.3)}}
+.pfTt.t2t.q1{background:linear-gradient(90deg,#2a0004,#6a0010,#2a0004) padding-box,conic-gradient(from var(--ua,0deg),#ffd84a,#ff1a2a,#fff,#a00010,#ffd84a) border-box;box-shadow:0 0 1.2em #ff1a2a,0 0 2.8em #a00010,0 .3em 1em #000;animation-duration:1s}
+.pfTt.t2t.q1 b{text-shadow:none!important;background:linear-gradient(90deg,#fff6c0,#fff,#ffe27a,#fff,#fff6c0);background-size:250% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:admT 1.3s linear infinite;filter:drop-shadow(0 0 .3em #ff1a2a) drop-shadow(0 .08em .12em #000)}
+.pfTt.t2t.q1 .t2g{background:radial-gradient(ellipse,rgba(255,30,50,.95),rgba(160,0,20,.55) 55%,transparent 75%)}
+.pfTt.t2t.q2{background:linear-gradient(90deg,#20080c,#4a1a22,#20080c) padding-box,conic-gradient(from var(--ua,0deg),#fff,#ffb0b8,#e8e8f0,#ff5a6a,#fff) border-box;box-shadow:0 0 1em #ffc0c8,0 0 2.1em #ff3a4a,0 .3em 1em #000}
+.pfTt.t2t.q2 b{color:#fff3f5;text-shadow:0 0 .35em #ff8a9a,0 .08em .2em #000}.pfTt.t2t.q2 .t2g{background:radial-gradient(ellipse,rgba(255,190,200,.85),rgba(255,60,80,.45) 55%,transparent 75%)}
+.pfTt.t2t.q3{background:linear-gradient(90deg,#2a0e06,#5a2010,#2a0e06) padding-box,conic-gradient(from var(--ua,0deg),#ffd0a0,#ff5a2a,#fff0e0,#a02010,#ffd0a0) border-box;box-shadow:0 0 .9em #ff6a3a,0 0 1.8em #a02010,0 .3em 1em #000}
+.pfTt.t2t.q3 b{color:#fff0e0;text-shadow:0 0 .35em #ff6a3a,0 .08em .2em #000}.pfTt.t2t.q3 .t2g{background:radial-gradient(ellipse,rgba(255,110,60,.85),rgba(160,30,10,.4) 55%,transparent 75%)}
+.pfTt.t2t.q4{background:linear-gradient(90deg,#28000e,#5a0a2a,#28000e) padding-box,conic-gradient(from var(--ua,0deg),#ffc0d8,#ff2a6a,#fff,#a0003a,#ffc0d8) border-box;box-shadow:0 0 .8em #ff3a7a,0 .25em .8em #000;animation-duration:2.4s}
+.pfTt.t2t.q4 b{color:#fff0f6;text-shadow:0 0 .35em #ff3a7a,0 .08em .2em #000}.pfTt.t2t.q4 .t2g{background:radial-gradient(ellipse,rgba(255,60,120,.7),transparent 70%)}
+.pfTt.t2t.q5{background:linear-gradient(90deg,#1a0004,#3a0008,#1a0004) padding-box,conic-gradient(from var(--ua,0deg),#ff9aa4,#c0303a,#ffe0e4,#7a0010,#ff9aa4) border-box;box-shadow:0 0 .6em #c0303a,0 .2em .7em #000;animation-duration:3s}
+.pfTt.t2t.q5 b{color:#ffe8ea;text-shadow:0 0 .3em #c0303a,0 .08em .2em #000}.pfTt.t2t.q5 .t2g{background:radial-gradient(ellipse,rgba(200,40,60,.55),transparent 70%)}
+#t1W.t2W{background:radial-gradient(circle at 50% 45%,#4a0008 0,#140002 45%,#000 85%)}#t1W.t2W h2{color:#ffd0d4;text-shadow:0 0 2vh #ff1a2a,0 .4vh 1vh #000}#t1W.t2W .ry{background:repeating-conic-gradient(rgba(255,30,50,.22) 0 6deg,transparent 6deg 18deg)}
+/* O PÁSSARO DE HERMES */
+.pfTt.hmt{position:relative;overflow:visible;isolation:isolate;border-color:transparent;padding-left:1.1em;padding-right:1.1em;background:linear-gradient(90deg,#1a0004,#5a0010 40%,#5a0010 60%,#1a0004) padding-box,conic-gradient(from var(--ua,0deg),#ff1a2a,#2a0004,#ff6a7a,#000,#ff1a2a) border-box;box-shadow:0 0 1em #ff1a2a,0 .3em 1em #000;animation:rkUq 1.4s linear infinite}
+.pfTt.hmt b{letter-spacing:.06em;font-family:Georgia,serif;font-style:italic;color:#fff;text-shadow:0 0 .4em #ff1a2a,0 .1em .2em #000}
+.pfTt.hmt em{font-style:normal;font-weight:900;margin-left:.4em;padding:0 .4em;border-radius:.4em;font-size:.85em;color:#1a0004;background:linear-gradient(90deg,#ffd84a,#fff6c0);box-shadow:0 0 .5em #ffd84a}
+.pfTt.hmt .ic{font-style:normal;animation:hmFl 1.2s ease-in-out infinite;filter:drop-shadow(0 0 .4em #ff1a2a)}
+.pfTt.hmt .hmg{position:absolute;inset:-.45em -.6em;border-radius:1em;z-index:-1;pointer-events:none;filter:blur(.55em);background:radial-gradient(ellipse,rgba(255,20,40,.9),rgba(120,0,15,.5) 55%,transparent 78%);animation:t1Gl 1.5s ease-in-out infinite}
+.pfTt.hmt .hmw{position:absolute;top:50%;width:1.3em;height:1em;margin-top:-.5em;pointer-events:none;background:radial-gradient(ellipse at 100% 50%,#ff2a3a 0 30%,transparent 31%),linear-gradient(#000,#3a0006);clip-path:polygon(0 30%,35% 0,55% 35%,75% 10%,100% 50%,75% 90%,55% 65%,35% 100%,0 70%);filter:drop-shadow(0 0 .3em #ff1a2a);animation:hmWg .9s ease-in-out infinite}
+.pfTt.hmt .hmw.l{left:-1em}.pfTt.hmt .hmw.r{right:-1em;transform:scaleX(-1);animation-name:hmWgR}
+.pfTt.hmt .hmb{position:absolute;width:.35em;height:.35em;border-radius:50%;background:#ff2a3a;box-shadow:0 0 .4em #ff1a2a;opacity:0;animation:hmBd 2s ease-in infinite;bottom:-.3em}.pfTt.hmt .b1{left:30%}.pfTt.hmt .b2{left:58%;animation-delay:.7s}.pfTt.hmt .b3{left:78%;animation-delay:1.4s}
+.pfTt.hmt.h1{box-shadow:0 0 1.4em #ff1a2a,0 0 3em #a00010,0 .3em 1em #000;animation-duration:.9s}.pfTt.hmt.h1 b{text-shadow:none!important;filter:drop-shadow(0 0 .25em #ff1a2a) drop-shadow(0 .08em .1em #000);background:linear-gradient(90deg,#fff,#ffe0e4,#fff6c0,#fff,#ffe0e4);background-size:250% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:admT 1.3s linear infinite}
+.pfTt.hmt.h3,.pfTt.hmt.h4{animation-duration:2.2s}.pfTt.hmt.h4 .hmw{display:none}
+@keyframes hmWg{0%,100%{transform:scaleY(1)}50%{transform:scaleY(.45)}}@keyframes hmWgR{0%,100%{transform:scaleX(-1) scaleY(1)}50%{transform:scaleX(-1) scaleY(.45)}}
+@keyframes hmFl{0%,100%{transform:translateY(0)}50%{transform:translateY(-.15em)}}@keyframes hmBd{0%{opacity:0;transform:translateY(-.2em)}25%{opacity:1}100%{opacity:0;transform:translateY(1em)}}
+.rkWin.hmTw{background:radial-gradient(circle at 50% 45%,#5a0010 0,#140002 50%,#000 85%)}.rkWin.hmTw .t b{color:#ffd0d4;text-shadow:0 0 1.5vh #ff1a2a}`;document.head.appendChild(st)}
+try{window.__t3={rkT3,t2Reward,t2Win,hmTitClaim,hmHonGive,tit:k=>pfTitH(k,'',false),S2F:()=>Object.assign({},S2F)}}catch(e){}
 
 function twTrofList(){const tc=twLS.g('tw_tc',{}),run={};for(const t of TW.tr)run[t.k]=(run[t.k]||0)+1;
   twModal(`<div class="twM"><h3>🎖️ TROFÉUS</h3><div class="twTL">${Object.keys(TWTR).map(k=>{const T=TWTR[k];return `<div class="${tc[k]||run[k]?'got':''}"><i>${T.i}</i><b>${T.n}</b><span>${T.d}</span><em>+${T.p} 🏆</em><small>${run[k]?'nesta subida: '+run[k]+' · ':''}total: ${(tc[k]||0)}</small></div>`}).join('')}</div>
@@ -16658,7 +16759,7 @@ window.__dbg={mus:()=>[MCUR,MEL.src.split('/').pop()],stg:()=>STAGE.key,prepMatc
 })();
 </script>
 <style>#updB{position:fixed;left:50%;top:max(8px,env(safe-area-inset-top));transform:translateX(-50%);z-index:99999;padding:10px 22px;border-radius:14px;border:2px solid #fff3c0;background:linear-gradient(#ffd84a,#e08a10);color:#3a1d00;font:900 15px system-ui,sans-serif;box-shadow:0 0 18px #ffb21f;cursor:pointer;animation:updP 1s ease-in-out infinite alternate}@keyframes updP{to{transform:translateX(-50%) scale(1.05)}}</style>
-<script>(function(){const V='3b2a7c7b1d14';if(!/^https?:/.test(location.protocol))return;let nv=null;
+<script>(function(){const V='48018053beda';if(!/^https?:/.test(location.protocol))return;let nv=null;
 function show(){if(document.getElementById('updB'))return;try{if(typeof G!=='undefined'&&G.mode==='fight')return}catch(e){}const b=document.createElement('button');b.id='updB';b.textContent='🔄 ATUALIZAÇÃO NOVA! Toque para atualizar';
   b.onclick=()=>{b.textContent='⏳ Atualizando...';try{acSave(1)}catch(e){}setTimeout(()=>location.reload(),900)};document.body.appendChild(b)}
 async function chk(){if(document.hidden)return;if(nv){show();return}try{const r=await fetch('versao.txt?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const t=(await r.text()).trim();if(/^[0-9a-f]{8,40}$/.test(t)&&t!==V){nv=t;show()}}catch(e){}}

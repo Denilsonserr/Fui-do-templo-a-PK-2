@@ -2,7 +2,7 @@
 const {chromium}=require('playwright');const SH=process.env.SH||'/tmp/';
 (async()=>{let ok=1;const chk=(c,m)=>{console.log((c?'OK  ':'FALHA ')+m);if(!c)ok=0};const E=[];const b=await chromium.launch();
 const page=async(extra)=>{const p=await b.newPage({viewport:{width:915,height:412}});p.on('pageerror',e=>E.push(e.message));await p.route(/fonts\.g/,r=>r.abort());await p.clock.install({time:Date.UTC(2026,10,22,16,30)});
-  await p.addInitScript(o=>{if(!sessionStorage.d){sessionStorage.d=1;localStorage.clear();Object.assign(localStorage,o)}},Object.assign({rk_ini:'1',rk_xpv2:'1',tw_nome:'"Bia"',rk_own:'["goku"]',rk_gem:'0',rk_bp:JSON.stringify({s:2,xp:5000,c:{},dd:'',d:{},dc:[],sc:[],cf:[0,1],cn:[],cp:[],own:2})},extra||{}));
+  await p.addInitScript(o=>{if(!sessionStorage.d){sessionStorage.d=1;localStorage.clear();Object.assign(localStorage,o)}},Object.assign({rk_ini:'1',rk_xpv2:'1',rk_s3:'1',rk_s3rw:'1',tw_nome:'"Bia"',rk_own:'["goku"]',rk_gem:'0',rk_bp:JSON.stringify({s:2,xp:5000,c:{},dd:'',d:{},dc:[],sc:[],cf:[0,1],cn:[],cp:[],own:2})},extra||{}));
   await p.goto('http://localhost:8790/index.html');await p.waitForFunction(()=>!document.getElementById('goSelect').disabled,null,{timeout:120000});await p.waitForTimeout(1200);return p};
 let p=await page();
 const bp=await p.evaluate(()=>JSON.parse(localStorage.rk_bp||'{}'));

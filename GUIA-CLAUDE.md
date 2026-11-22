@@ -2849,3 +2849,10 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 ## v609
 - **Menu do Alucard trocado** pelo vídeo novo do dono, que tem o botão **RANQUEADA PVP** (`ferramentas/ranqueada_artes/v609/video.sh`, 10 s com emenda no loop). Botões da esquerda reposicionados (Boss, PVP, Torre, Caçador, Gacha, Portais). "Modos de Jogo" voltou a ir direto para a tela inicial (a escolha `mnModos` do v604 ficou sem uso).
 - Teste: `ferramentas/testes/tmenu_pvp_v609.js`.
+
+## v610
+- **TEMPORADA 3 da Ranqueada** às 12:00 de 22/11 (`T3INI`): `rkT3()` (ao abrir e a cada 15 s) — 1× por aparelho (`rk_s3`): `rk_rp` → 0 (antigo em `rk_rpS2`), `rwc2/rwc` zerados (recompensas de rank de novo). Ranking do servidor: `S2F` vira `rp3/dmg3/tw3/t1w3` (rkSend, rkOQ e a busca latestBy do v560 usam `S2F` agora, não mais `rp2` fixo). `TEMP.id=3`. Placas de TOP dinâmicas passam a valer a T3.
+- **Fim da T2** (`t2Reward`, 1×, `rk_s3rw`): busca `rp2` (latestBy nome, docs antes do meio-dia, sem o ADM) → títulos novos T2 (`t2c/t2v/t2b/t2x/t2g`, estilo sangue com gotas e listras) + 💎/🎫 igual à T1; janela "FIM DA TEMPORADA 2".
+- **O PÁSSARO DE HERMES** (Alucard): 10 primeiros do servidor `hm1..hm10` (`hmtit_N`, como o Sung; +30…+6% de dano com o Alucard); tenta ao ganhar o Alucard (carta) e ao abrir o menu se pendente (`rk_hmtp`). **Honrado** (uid `mwc8atkrgg4fns2f`) ganha `hm0` sem número (+30%) e não ocupa vaga.
+- **Invocação do Alucard e liberação: 12:30** (`ALG0`). Contagem regressiva no topo da tela de início (`#alCdT`) e no menu (`#alCdM`); a do Sung foi escondida.
+- Testes: `ttemporada3_v610.js` (servidor local), `tal_pity_v610.js` (contagem 1x/10x, nunca antes de 200, garantido no 250, para depois de ter).
