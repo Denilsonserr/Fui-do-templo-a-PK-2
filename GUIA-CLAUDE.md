@@ -2821,3 +2821,8 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - **Invocação Ilimitada do ALUCARD** (`RKBAN==='al'`, 3ª aba, no lugar da do Shaka; arte `RQA.gacha_al`): abre **22/11 13:00** (`ALG0`; ADM gira antes), não fecha. 160 💎 / 1.400 💎; ticket: **2 por giro** (10x = 20). SP Alucard (`rk_pityAL`): **nunca antes do giro 200** (regra do dono, NÃO aparece no jogo), 1,2% por giro do 200 ao 249, **garantido no 250** (é o que aparece). **Anel VERMELHO** 1,5% por giro (rank E–SSS sorteado, `alRingRoll`→`anGive`, carta e histórico próprios). Resto: equipamento 30% / moeda vermelha. Equipamentos do Alucard: "em breve" (o dono vai mandar).
 - Alucard entra no `ALLC` (patch 9z_v601) e o rk.js `alRelChk` esconde/tira antes das 13:00 (ADM vê sempre); Biblioteca e `rkRar` = mítico. Os botões genéricos 🎵/CÓDIGO/👤 somem nessa arte (ela já tem os dela; hotspots `conta`/`music`/`code`).
 - Teste: `ferramentas/testes/tgacha_alucard_v604.js`.
+
+## v605
+- **Botões personalizados do ALUCARD** (artes do dono `ferramentas/personagens/alucard/botoes/normal.png` e `transformado.png`, 1670×942; só os botões, sem o HUD de vida): `hud_al.py` (cópia do `hud_sk.py` do Shaka com as posições da arte) → `build/hud_alucard.json` → patch `9z_v605_alucard_botoes.py` (`HUDA.alucard`, `HUTH.alucard` com `k:'blood'`). Mesmo tamanho/lugar dos botões de sempre.
+- Transformado: `aucBtnFx` (raios vermelhos em volta, gotas de SANGUE que escorrem e pingam dos botões, névoa vermelha pulsando) + `#controls.alf` (brilho vermelho nos botões e nos cantos).
+- Teste: `ferramentas/testes/tal_botoes_v605.js`.
