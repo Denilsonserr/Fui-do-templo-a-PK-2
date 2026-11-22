@@ -14581,15 +14581,13 @@ TWCUP['nupno9']={nm:'PASSE 2X · TEMPORADA SOLO LEVELING (prêmios em dobro)',it
     if(C.gr){const g=1000+Math.round(Math.random()*40)*100;rkAdd('gem',g);E.textContent='✅ Código usado! Você ganhou 💎 '+rkFmtN(g)+'!'}
     if(C.anS){const c=Math.random()<.5?3:4,s=ANS[(Math.random()*ANS.length)|0][0];anGive({i:Date.now().toString(36)+Math.random().toString(36).slice(2,6),c,g:5,s,v:ANV[c][5],a:c===4?100000:50000+((Math.random()*25001)|0)});
       E.textContent='✅ Código usado! Saiu: 💍 ANEL '+ANC[c][0]+' S ('+anSt(s)[1]+')!';try{rkSfx('boom')}catch(e){}}
-    if(C.x2){const o=bpG();o.own=2;o.x2=1;bpS(o);E.textContent='✅ PASSE 2X liberado! Todos os prêmios do passe vêm em dobro (menos a Caixa V2 de Virgem).'}
+    if(C.x2){const o=bpG();o.own=2;o.x2=1;bpS(o);E.textContent='✅ PASSE 2X liberado! 💎 Gemas, ✨ pó, 🎟️ tickets e 🔮 joias do passe vêm em DOBRO.'}
     try{acSave(1)}catch(e){}}}catch(e){}return r}}
-/* passe 2X: cada prêmio é entregue de novo (sem a Caixa V2 de Virgem) */
+/* passe 2X (v612): só dobra o que é de juntar — 💎 gemas, ✨ pó, 🎟️ tickets e 🔮 joias de passiva. Personagens, armaduras, anéis, itens exclusivos, poções e 🔴 NÃO dobram. */
 {const _bc=bp2Claim;bp2Claim=async function(r,i,quiet){const o=bpG(),C=r==='f'?'cf':'cp',ja=o[C].includes(i);const ok=await _bc.apply(this,arguments);
-  try{if(ok&&!ja&&bpG().x2){const T=(r==='f'?BPF:BPP)[i],msg=[];for(const x0 of T){const x=Object.assign({},x0);delete x.sk2;if(!Object.keys(x).length)continue;
-      if(x.g)rkAdd('gem',x.g);if(x.r)rkAdd('red',x.r);if(x.t)rkAdd('tic',x.t);if(x.j)psAddJn(x.j);if(x.pc||x.pd){const pk=x.pc?'cura':'drop',k=x.pc||x.pd;twAddPoc({k,pk,v:RKPKV[pk][rkPkI(k)]})}
-      if(x.ch==='mit'){const own=rkG('own',['goku']),P=[...RK_MIT,'yuta'].filter(id=>CH[id]&&!own.includes(id));if(P.length){const id=P[(Math.random()*P.length)|0];own.push(id);rkS('own',own);msg.push('✦ '+CH[id].name+' liberado!')}else{rkAdd('gem',3000);msg.push('+3000 💎')}}
-      try{bp2Give(x,msg)}catch(e){}}
-    try{acSave(1)}catch(e){}setTimeout(()=>rkToast('⚡ PASSE 2X · nível '+(i+1)+' em dobro!'+(msg.length?' · '+msg.join(' · '):''),'#ffd84a'),900)}}catch(e){}return ok}}
+  try{if(ok&&!ja&&bpG().x2){const T=(r==='f'?BPF:BPP)[i],msg=[];for(const x of T){
+      if(x.g){rkAdd('gem',x.g);msg.push('+'+x.g+' 💎')}if(x.t){rkAdd('tic',x.t);msg.push('+'+x.t+' 🎟️')}if(x.j){psAddJn(x.j);msg.push('+'+x.j+' joias')}if(x.po){rkS('po',lvPo()+x.po);msg.push('+'+x.po+' pó')}}
+    try{acSave(1)}catch(e){}if(msg.length)setTimeout(()=>rkToast('⚡ PASSE 2X · nível '+(i+1)+' em dobro! '+msg.join(' · '),'#ffd84a'),900)}}catch(e){}return ok}}
 {const _bh=bpH;bpH=function(){const h=_bh.apply(this,arguments);return bpG().x2?h+'<div style="position:absolute;right:2%;top:2%;z-index:9;padding:.4em 1em;border-radius:1em;font:900 1.1em var(--f-ui);color:#1a1000;background:linear-gradient(90deg,#ffd84a,#fff3b0,#ffd84a);box-shadow:0 0 1em #ffd84a">⚡ PASSE 2X</div>':h}}
 window.__cup=(c,E)=>twCupom(c,E);
 /* ================= v466: MANOPLA DO MONARCA (dourada, só no PASSE PAGO, nível 20) — mais forte que qualquer peça V2 de Virgem
@@ -16573,6 +16571,7 @@ TWCUP['1ur3vn3']={nm:'PASSE PREMIUM · TEMPORADA DE HELLSING',it:[],bp:2,s3:1,un
 TWCUP['w3em5e']={nm:'PASSE V2 · TEMPORADA DE HELLSING (prêmios em dobro)',it:[],bp:2,s3:1,x2:1,uni:1};
 TWCUP['vtf0gf']={nm:'PASSE V2 · TEMPORADA DE HELLSING (prêmios em dobro)',it:[],bp:2,s3:1,x2:1,uni:1};
 TWCUP['1ju5c3b']={nm:'🐜 SOMBRA BERU (Rank S)',it:[],uni:1,sbr:1,msg:'✅ Você ganhou 🐜 a SOMBRA BERU (Rank S)! Veja em SISTEMA → SOMBRAS.'};
+try{window.__bp2={bpG:()=>bpG(),bpS:o=>bpS(o),claim:(r,i,q)=>bp2Claim(r,i,q),rkG:(k,d)=>rkG(k,d),BPS,twInv:()=>twInv()}}catch(e){}
 
 function twTrofList(){const tc=twLS.g('tw_tc',{}),run={};for(const t of TW.tr)run[t.k]=(run[t.k]||0)+1;
   twModal(`<div class="twM"><h3>🎖️ TROFÉUS</h3><div class="twTL">${Object.keys(TWTR).map(k=>{const T=TWTR[k];return `<div class="${tc[k]||run[k]?'got':''}"><i>${T.i}</i><b>${T.n}</b><span>${T.d}</span><em>+${T.p} 🏆</em><small>${run[k]?'nesta subida: '+run[k]+' · ':''}total: ${(tc[k]||0)}</small></div>`}).join('')}</div>
@@ -16765,7 +16764,7 @@ window.__dbg={mus:()=>[MCUR,MEL.src.split('/').pop()],stg:()=>STAGE.key,prepMatc
 })();
 </script>
 <style>#updB{position:fixed;left:50%;top:max(8px,env(safe-area-inset-top));transform:translateX(-50%);z-index:99999;padding:10px 22px;border-radius:14px;border:2px solid #fff3c0;background:linear-gradient(#ffd84a,#e08a10);color:#3a1d00;font:900 15px system-ui,sans-serif;box-shadow:0 0 18px #ffb21f;cursor:pointer;animation:updP 1s ease-in-out infinite alternate}@keyframes updP{to{transform:translateX(-50%) scale(1.05)}}</style>
-<script>(function(){const V='18baff17d547';if(!/^https?:/.test(location.protocol))return;let nv=null;
+<script>(function(){const V='bafd32de52c1';if(!/^https?:/.test(location.protocol))return;let nv=null;
 function show(){if(document.getElementById('updB'))return;try{if(typeof G!=='undefined'&&G.mode==='fight')return}catch(e){}const b=document.createElement('button');b.id='updB';b.textContent='🔄 ATUALIZAÇÃO NOVA! Toque para atualizar';
   b.onclick=()=>{b.textContent='⏳ Atualizando...';try{acSave(1)}catch(e){}setTimeout(()=>location.reload(),900)};document.body.appendChild(b)}
 async function chk(){if(document.hidden)return;if(nv){show();return}try{const r=await fetch('versao.txt?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const t=(await r.text()).trim();if(/^[0-9a-f]{8,40}$/.test(t)&&t!==V){nv=t;show()}}catch(e){}}

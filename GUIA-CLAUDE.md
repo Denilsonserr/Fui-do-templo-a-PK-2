@@ -2862,3 +2862,8 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - `w3em5e` e `vtf0gf` PASSE V2 Hellsing = premium com prêmios em dobro (`x2:1`).
 - `1ju5c3b` SOMBRA BERU sozinha (`sbr:1`).
 - Teste: `ferramentas/testes/tcod_v611.js` (passar os textos por C1..C4).
+
+## v612 — Passe 2X só dobra o que é de juntar
+- O wrapper `bp2Claim` do x2 agora repete só `g` (gemas), `t` (tickets), `j` (joias) e `po` (pó).
+- Personagem, armadura, anel, item exclusivo, poção e 🔴 não dobram (pedido do dono).
+- Hook `window.__bp2`. Teste: `tpasse2x_v612.js`.
