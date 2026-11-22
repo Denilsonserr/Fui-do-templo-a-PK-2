@@ -2815,3 +2815,9 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 
 ## v603
 - ALUCARD: o botão **SUPER/ULTIMATE** (`#bSr`, o "100" em cima dos outros) ficava `hidden` porque o Alucard não estava nas 3 listas de quem tem super (troca de personagem/tag, `setupFighters`, início da luta). Entrou nas 3 (no `9z_v601_alucard_tiro.py`); a lista `ALLC` NÃO foi mexida (continua só no TESTE). Com cadeado no normal; aceso transformado + 100 Ki. Teste: `ferramentas/testes/tal_botao_ult_v603.js` (toque no celular).
+
+## v604
+- **Menu novo do ALUCARD** (vídeo do dono → `ferramentas/ranqueada_artes/v604/video.sh` → webm/mp4/poster; `MN2` no rk.js). Botões do `rkMenuH` reposicionados na arte nova (a arte já tem os ícones das moedas: só os números). A arte NÃO tem o botão PVP: **"Modos de Jogo"** (`mnModos`) abre a escolha ⚔️ PVP RANQUEADA / 🕹️ MODOS CLÁSSICOS (antes ia direto pra tela inicial).
+- **Invocação Ilimitada do ALUCARD** (`RKBAN==='al'`, 3ª aba, no lugar da do Shaka; arte `RQA.gacha_al`): abre **22/11 13:00** (`ALG0`; ADM gira antes), não fecha. 160 💎 / 1.400 💎; ticket: **2 por giro** (10x = 20). SP Alucard (`rk_pityAL`): **nunca antes do giro 200** (regra do dono, NÃO aparece no jogo), 1,2% por giro do 200 ao 249, **garantido no 250** (é o que aparece). **Anel VERMELHO** 1,5% por giro (rank E–SSS sorteado, `alRingRoll`→`anGive`, carta e histórico próprios). Resto: equipamento 30% / moeda vermelha. Equipamentos do Alucard: "em breve" (o dono vai mandar).
+- Alucard entra no `ALLC` (patch 9z_v601) e o rk.js `alRelChk` esconde/tira antes das 13:00 (ADM vê sempre); Biblioteca e `rkRar` = mítico. Os botões genéricos 🎵/CÓDIGO/👤 somem nessa arte (ela já tem os dela; hotspots `conta`/`music`/`code`).
+- Teste: `ferramentas/testes/tgacha_alucard_v604.js`.

@@ -75,4 +75,6 @@ rep("function trySR(f,o){if(f.def.sid==='sj')return _trySR(f,o);","function tryS
 rep("'garou','yuta','shaka','sung'].includes(inn.def.id);","'garou','yuta','shaka','sung','alucard'].includes(inn.def.id);")
 rep("'garou','yuta','shaka','sung'].includes(id);camReset(1.25)}","'garou','yuta','shaka','sung','alucard'].includes(id);camReset(1.25)}")
 rep("G.pick==='shaka'||G.pick==='sung');","G.pick==='shaka'||G.pick==='sung'||G.pick==='alucard');")
+# v604: entra na lista de personagens (ALLC); o rk.js (alRelChk) esconde/tira antes de 22/11 13:00 — o ADM vê sempre
+rep("'garou','yuta','shaka','sung'];const ROS={","'garou','yuta','shaka','sung','alucard'];const ROS={")
 open(P,'w',encoding='utf8').write(s);print('alucard tiro ok',len(TIP),len(s))
