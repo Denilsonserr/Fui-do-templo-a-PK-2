@@ -2792,3 +2792,9 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
   - **Soco**: tiro; se o inimigo estiver a menos de 165 px (`aucNear`) = soco normal. Vale nas duas formas.
   - **Aura transformada** `aucAuraF`: camada vermelho-sangue escura (`aucRed2`) + vermelha clara, maior, com sangue pingando. Em file:// o getImageData falha → recolore com source-atop.
   - Teste: `ferramentas/testes/tal_forma_v598.js`.
+
+## v600
+- ALUCARD (🧪 TESTE do ADM), pedidos do dono depois de testar a forma:
+  - **Recorte da forma**: `seg_al.py` nas tags `f*` — buracos brancos entre fios do cabelo/pontas do casaco saem (componente branco cercado de traço escuro: ≥45% do contorno com lum<70); luvas e armas (contorno cinza claro) ficam. Fundo ligado à borda só depois de `binary_opening(3)` (o fundo vazava para dentro das luvas). Sprites refeitos (`build_ald.py ai`, cache novo); webp antigos órfãos apagados.
+  - Patch novo `9z_v600_alucard_forma2.py`: transformado usa combo de tiros próprio `af1..af5` (`AUCMAPF`, recarga curta, rajada de 10 tiros agachado, 2 tiros grossos), balas ×1,3 mais rápidas; **Ki transformado = MORCEGOS DE SANGUE** (`aucBats`, 9 morcegos desenhados no canvas que perseguem o inimigo, 13 de dano cada); **dash** próprio (`aucDash` envolve `vgUpd`→`vgUpd0`): 24 (normal) / 36 (forma) px por quadro, ~12 quadros, ação liberada no 2º quadro, rastro vermelho, corrida mais rápida.
+  - Teste: `ferramentas/testes/tal_forma2_v600.js`.

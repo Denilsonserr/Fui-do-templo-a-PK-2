@@ -54,11 +54,24 @@ def alpha(tag):
         safe=np.maximum(al,1e-3)[...,None];col=np.where(eff[...,None],np.clip((rgb-(1-al[...,None])*ideal[...,None])/safe,0,255),rgb);return np.dstack([col,al*255])
     bgish=(mn>=226)&(sat<=16)
     bg=border_lab(bgish)
+    if tag.startswith('f'):
+        # v600: o fundo vazava para dentro das LUVAS brancas por frestas finas do contorno -> corta as frestas antes de ligar à borda
+        core=border_lab(nd.binary_opening(bgish,iterations=3));bg=nd.binary_dilation(core,iterations=4)&bgish
     # buracos fechados (ex.: entre a espada e a perna): só se forem branco puro e grandes
     lab,k=nd.label(bgish&~bg)
     if k and tag not in ('16','17'):
         szs=nd.sum(np.ones_like(mn),lab,range(1,k+1));mm=nd.mean(mn,lab,range(1,k+1))
         hole=[i+1 for i in range(k) if szs[i]>350 and mm[i]>=246]
+        if tag.startswith('f'):
+            hole=[]  # v600: na forma todo buraco passa pelo teste do contorno (luva grande não some)
+            # v600 (forma): buracos brancos entre os fios do cabelo / pontas do casaco. Fundo = cercado de traço ESCURO (cabelo);
+            # luva e arma (também brancas) ficam cercadas de cinza claro -> não mexe.
+            sl=nd.find_objects(lab)
+            for i in range(k):
+                if szs[i]<12:continue
+                q=sl[i];y0,y1=max(0,q[0].start-4),q[0].stop+4;x0,x1=max(0,q[1].start-4),q[1].stop+4
+                m=lab[y0:y1,x0:x1]==i+1;ring=nd.binary_dilation(m,iterations=3)&~m&~bgish[y0:y1,x0:x1]
+                if ring.sum() and (rgb[y0:y1,x0:x1][ring].mean(1)<70).mean()>=.45:hole.append(i+1)
         bg|=np.isin(lab,hole)
     al=np.where(bg,0.,1.)
     band=nd.binary_dilation(bg,iterations=3)&~bg
