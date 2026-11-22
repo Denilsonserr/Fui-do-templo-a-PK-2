@@ -2845,3 +2845,7 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - **Carta do ALUCARD** (arte do dono `ferramentas/personagens/alucard/carta.png` → `CRT.chr.alucard`, 700×1018): aparece na revelação quando ganha ele na invocação e no ÁLBUM.
 - Álbum: páginas novas **HELLSING** (Alucard) e **SOLO LEVELING** (Sung — tinha carta mas não estava em nenhuma página). Completar a página dá o prêmio de sempre (+300 💎).
 - Teste: `ferramentas/testes/tcarta_alucard_v608.js`.
+
+## v609
+- **Menu do Alucard trocado** pelo vídeo novo do dono, que tem o botão **RANQUEADA PVP** (`ferramentas/ranqueada_artes/v609/video.sh`, 10 s com emenda no loop). Botões da esquerda reposicionados (Boss, PVP, Torre, Caçador, Gacha, Portais). "Modos de Jogo" voltou a ir direto para a tela inicial (a escolha `mnModos` do v604 ficou sem uso).
+- Teste: `ferramentas/testes/tmenu_pvp_v609.js`.
