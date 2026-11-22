@@ -2749,7 +2749,7 @@ function pvCombo(f,o,_a){const A=f.ai,I=f.inp,dx=o.x-f.x,dist=Math.abs(dx),dy=o.
 
 /* ---------- 5) LUTA: começar e terminar ---------- */
 function pvStart(opp,friendly){rkInit();if(!SPR_OK)return;const TM=pvTeam(),sel=TM[0];try{fsTry()}catch(e){}
-  const my={};for(const c of TM)if(!my[c])my[c]=pvDelta(c);PV.fight={opp,friendly:!!friendly,my,teams:[TM.slice(),opp.team.map(x=>x.ch)]};PV.last=opp.acc;G.pick=sel;G.opp=opp.ch;G.gmode='pvp';PV.diff0=G.diff;G.diff=2;PV.lives0=G.lives;G.lives=2;
+  const my={};for(const c of TM)if(!my[c])my[c]=pvDelta(c);PV.fight={opp,friendly:!!friendly,my,teams:[TM.slice(),opp.team.map(x=>x.ch)]};PV.last=opp.acc;G.pick=sel;G.opp=opp.ch;G.gmode='pvp';PV.diff0=G.diff;G.diff=2;PV.lives0=G.lives;G.lives=PVBARS;
   const sk=Object.keys(STG).filter(k=>!STG[k].hid);G.nextStg=sk[(Math.random()*sk.length)|0];
   const PM=prepMatch([...new Set(PV.fight.teams[0].concat(PV.fight.teams[1]))],G.nextStg);showVS(()=>PM.then(()=>{vsLoadEnd();startMatch();setTimeout(()=>{try{banner(friendly?'SALA PERSONALIZADA':'PVP RANQUEADA','#c58bff',100,'SOMBRA DE '+String(opp.nome).toUpperCase())}catch(e){}},300)}),PM)}
 function pvStep(o,won){const b={t:o.t,d:o.d,s:o.s},need=pvNeed(o.t);let gain=0;
@@ -7899,3 +7899,28 @@ try{window.__jt={jtDo,jtAll,jtGet,psAddJt,psG:()=>psG(),jtOpen:()=>jtOpen(),JT:(
 var ALHIT=0;
 {const _ah=applyHit;applyHit=function(a,d,h){const o=ALHIT;ALHIT=(a&&a!==d&&typeof isAuc==='function'&&isAuc(a))?1:0;try{return _ah.apply(this,arguments)}finally{ALHIT=o}}}
 try{Object.assign(window.__vw,{applyHit:(a,d,h)=>applyHit(a,d,h)})}catch(e){}
+
+/* ================= v620: PVP RANQUEADO EQUILIBRADO + 5 BARRAS DE VIDA =================
+   Pedido do dono: o mais forte continua mais forte, mas a diferença fica bem menor, para a luta parecer PVP de verdade
+   (até a sombra do Vini tem chance contra o Honrado). Só vale no PVP (ranqueado e sala personalizada), não mexe no resto do jogo.
+   • Vida: 5 barras para os dois (G.lives=PVBARS → MAXHP=5×LAYER). Bônus de vida não contam no PVP (os dois com a mesma vida).
+   • Bônus "amassados" (raiz): dano ×8 → ×2,5 · defesa idem · crítico rende metade (máx. 45%) · dano crítico/roubo de vida/velocidade/cura pela metade.
+   • Se mesmo assim um lado ficar mais de 1,6× mais forte que o outro, o mais forte é puxado até 1,6×.
+   • ADM fica de fora (continua como está). */
+const PVBARS=5,PVTIME=180,PVEQ={pw:.45,cr:45,gap:1.6};
+const pvEqPow=f=>(f.tdm||1)/(f.tdf||1)*(1+Math.min(PVEQ.cr,f.tcr||0)/100*(.5+(f.tcd||0)/200))*Math.sqrt(f.tsp||1)*(1+(f.tls||0)/100);
+function pvEqOne(f){if(!f||f._pvEq===f.tdm)return;
+  f.tdm=Math.pow(Math.max(.2,f.tdm||1),PVEQ.pw);f.tdf=1/Math.pow(Math.max(.2,1/(f.tdf||1)),PVEQ.pw);
+  f.tcr=Math.min(PVEQ.cr,5+Math.max(0,(f.tcr||0)-5)*.5);f.tcd=(f.tcd||0)*.5;f.tls=Math.min(8,(f.tls||0)*.5);
+  f.tsp=Math.min(1.35,Math.pow(Math.max(.5,f.tsp||1),.5));if(f.rkCura)f.rkCura=Math.round(f.rkCura*.5);
+  const full=f.hp>=(f.mhp||MAXHP)-1;f.mhp=MAXHP;if(full)f.hp=f.hpLag=MAXHP;else{f.hp=Math.min(f.hp,MAXHP);f.hpLag=Math.min(f.hpLag||f.hp,MAXHP)}f._pvEq=f.tdm}
+function pvEq(){if(G.gmode!=='pvp'||!G.p||!PV.fight)return;const F=PV.fight,[p,o]=G.p;const adm=[mnAdm(),F.opp&&F.opp.tit==='adm'];
+  [p,o].forEach((f,i)=>{if(!adm[i])pvEqOne(f);else if(f&&f.hp>=(f.mhp||MAXHP)-1){f.mhp=MAXHP;f.hp=f.hpLag=MAXHP}});
+  if(adm[0]||adm[1])return;const P=[pvEqPow(p),pvEqPow(o)],s=P[0]>=P[1]?0:1,w=1-s,r=P[s]/Math.max(.01,P[w]);
+  if(r>PVEQ.gap){const f=[p,o][s],k=Math.sqrt(PVEQ.gap/r);f.tdm*=k;f.tdf/=k;f._pvEq=f.tdm}
+  PV.eq={P:[pvEqPow(p),pvEqPow(o)].map(x=>Math.round(x*100)/100)}}
+{const _ra=rkApply;rkApply=function(){const r=_ra.apply(this,arguments);try{pvEq()}catch(e){}return r}}
+/* 5 barras: cada round do PVP tem 180 s (em vez de 99) */
+{const _u=update;update=function(){try{if(G.gmode==='pvp'&&PV.fight&&G.mode==='fight'){if(G.phase!=='fight')PV.tmOn=0;else if(!PV.tmOn){PV.tmOn=1;if(G.timer<=99.9)G.timer=PVTIME}}}catch(e){}return _u.apply(this,arguments)}}
+try{Object.assign(window.__vw||(window.__vw={}),{pvEqOne:f=>pvEqOne(f),pvEqPow:f=>pvEqPow(f),PVEQ,pvEqInfo:()=>PV.eq,MAXHP:()=>MAXHP})}catch(e){}
+try{Object.assign(window.__vw,{pvStart:(o,f)=>pvStart(o,f)})}catch(e){}

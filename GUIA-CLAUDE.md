@@ -2911,3 +2911,14 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 
 ## v619 — Evento do portal Rank S garantido encerrado
 - `PTSE2[1]` = 22/11 14:45 BRT (era até 26/11 23:59). Portais voltam à chance normal.
+
+## v620 — PVP ranqueado equilibrado + 5 barras de vida
+- Vale só no PVP (ranqueado e sala). `pvStart` usa `G.lives=PVBARS` (5) → MAXHP 9000. Round de 180 s (`PVTIME`, wrapper de `update`).
+- `pvEq()` roda depois de todo o `rkApply`:
+  - vida igual para os dois;
+  - `tdm` e `1/tdf` viram potência .45 (×8 → ×2,5);
+  - crítico rende metade (máx. 45%); dano crítico, roubo de vida (máx. 8%), velocidade (máx. 1,35) e cura pela metade;
+  - se um lado ainda ficar >1,6× mais forte (`pvEqPow`), ele é puxado para 1,6×.
+- O ADM fica de fora.
+- Cuidado: já existia `pvPow` (linha ~2669). O novo se chama `pvEqPow`.
+- Teste: `tpvp_equilibrio_v620.js`.
