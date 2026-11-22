@@ -7788,3 +7788,9 @@ function t2Win(){const x=rkG('s3msg',null);if(!x)return;rkS('s3msg',null);const 
 @keyframes hmFl{0%,100%{transform:translateY(0)}50%{transform:translateY(-.15em)}}@keyframes hmBd{0%{opacity:0;transform:translateY(-.2em)}25%{opacity:1}100%{opacity:0;transform:translateY(1em)}}
 .rkWin.hmTw{background:radial-gradient(circle at 50% 45%,#5a0010 0,#140002 50%,#000 85%)}.rkWin.hmTw .t b{color:#ffd0d4;text-shadow:0 0 1.5vh #ff1a2a}`;document.head.appendChild(st)}
 try{window.__t3={rkT3,t2Reward,t2Win,hmTitClaim,hmHonGive,tit:k=>pfTitH(k,'',false),S2F:()=>Object.assign({},S2F)}}catch(e){}
+
+/* v611: códigos de uso único (texto só com o dono): PASSE PREMIUM Hellsing, 2× PASSE V2 (prêmios em dobro) Hellsing, SOMBRA BERU. */
+TWCUP['1ur3vn3']={nm:'PASSE PREMIUM · TEMPORADA DE HELLSING',it:[],bp:2,s3:1,uni:1};
+TWCUP['w3em5e']={nm:'PASSE V2 · TEMPORADA DE HELLSING (prêmios em dobro)',it:[],bp:2,s3:1,x2:1,uni:1};
+TWCUP['vtf0gf']={nm:'PASSE V2 · TEMPORADA DE HELLSING (prêmios em dobro)',it:[],bp:2,s3:1,x2:1,uni:1};
+TWCUP['1ju5c3b']={nm:'🐜 SOMBRA BERU (Rank S)',it:[],uni:1,sbr:1,msg:'✅ Você ganhou 🐜 a SOMBRA BERU (Rank S)! Veja em SISTEMA → SOMBRAS.'};

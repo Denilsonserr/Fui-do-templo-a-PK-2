@@ -2856,3 +2856,9 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - **O PÁSSARO DE HERMES** (Alucard): 10 primeiros do servidor `hm1..hm10` (`hmtit_N`, como o Sung; +30…+6% de dano com o Alucard); tenta ao ganhar o Alucard (carta) e ao abrir o menu se pendente (`rk_hmtp`). **Honrado** (uid `mwc8atkrgg4fns2f`) ganha `hm0` sem número (+30%) e não ocupa vaga.
 - **Invocação do Alucard e liberação: 12:30** (`ALG0`). Contagem regressiva no topo da tela de início (`#alCdT`) e no menu (`#alCdM`); a do Sung foi escondida.
 - Testes: `ttemporada3_v610.js` (servidor local), `tal_pity_v610.js` (contagem 1x/10x, nunca antes de 200, garantido no 250, para depois de ter).
+
+## v611 — 4 códigos de uso único (texto só com o dono)
+- `1ur3vn3` PASSE PREMIUM Hellsing (`bp:2,s3:1,uni:1`).
+- `w3em5e` e `vtf0gf` PASSE V2 Hellsing = premium com prêmios em dobro (`x2:1`).
+- `1ju5c3b` SOMBRA BERU sozinha (`sbr:1`).
+- Teste: `ferramentas/testes/tcod_v611.js` (passar os textos por C1..C4).
