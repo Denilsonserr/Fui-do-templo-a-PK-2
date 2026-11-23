@@ -2949,3 +2949,6 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - O ADM (`pfIsAdm`: título adm + nome) continua entrando.
 - PARA ABRIR: `MANUT_FORCE=null` (só quando o dono mandar). O botão ABRIR do painel de moderação NÃO desfaz isso.
 - Teste: `tmanut_v624.js`.
+
+## v625 — Jogo liberado de novo (22/11 22:04)
+- `MANUT_FORCE=null` no worker. Para fechar de novo: `MANUT_FORCE={msg:'...'}`. Teste: `FECHADO=1 node tmanut_v624.js` quando fechado.
