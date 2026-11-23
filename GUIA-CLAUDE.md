@@ -2937,3 +2937,9 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
   - Gacha: se a 1ª tirada for fraca (red/equip comum/rara/épica), tira de novo.
 - CAIXA DE ESCOLHA LENDÁRIA: 1 por conta durante o evento (`rk_cxLev`, `rk_cxLg`). Abre sozinha no menu da Ranqueada. Se já tiver todos, ganha 5.000 💎.
 - Teste: `ttorneio_sob_v622.js` (hora falsa via `Date.now` depois de carregar).
+
+## v623 — Torre: investigação "trava na 2ª subida" (sem bug achado)
+- Teste `ttorre_2x_v623.js`: completa as duas torres (11 andares), aperta SUBIR DE NOVO e completa de novo. Passou.
+- Todos os chefes e cenários da torre carregam (prepMatch ok).
+- Hooks `window.__tn` (prepMatch, tnStart, tnFinish, tnGo, tnRun).
+- Falta o dono dizer em qual andar trava, o que aparece na tela e o celular.

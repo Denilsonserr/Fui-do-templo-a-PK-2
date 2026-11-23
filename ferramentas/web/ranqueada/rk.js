@@ -7985,3 +7985,4 @@ function cxLgChk(){try{if(ev622On()&&!rkG('cxLev',0)){rkS('cxLev',1);rkS('cxLg',
 .tsL div{display:flex;gap:.6em;align-items:center;padding:.3em .7em;border-radius:.6em;background:#1a140a;border:1px solid #ffcf3a33}.tsL div.me{border-color:#7dff9a;background:#0f2a14}
 .tsL i{font-style:normal;width:2.2em;font-weight:900;color:#ffcf3a}.tsL b{flex:1;text-align:left}.tsL span{font-weight:900}`;document.head.appendChild(st)}
 try{Object.assign(window.__vw,{TSOB,tsMy:()=>tsMy(),tsLoad:f=>tsLoad(f),tsAward:()=>tsAward(),ev622On:()=>ev622On(),cxLgChk:()=>cxLgChk(),cxLgOpen:()=>cxLgOpen(),rkRoll:()=>rkRoll(),pvStep:(o,w)=>pvStep(o,w)})}catch(e){}
+try{window.__tn={prepMatch:(a,s)=>prepMatch(a,s),tnStart:g=>tnStart(g),tnFinish:(w,q)=>tnFinish(w,q),tnGo:()=>tnGo(),tnRun:()=>tnRun(),TNF,TNBARS}}catch(e){}
