@@ -8039,3 +8039,15 @@ function ferOn(t){t=t||Date.now();return t>=FER[0]&&t<FER[1]}
 EV2X[0]=FER[0];EV2X[1]=FER[1];PTSE2[0]=FER[0];PTSE2[1]=FER[1];PTS10[0]=FER[0];PTS10[1]=FER[1];
 RKEVX.unshift([FER[0],FER[1],2,'🏖️ FÉRIAS · 2x XP · 2x GEMAS · 2x SORTE · 2x DROP · 2x ANEL · 2x ESTRELAS',{gem:2,luck:2,anel:2},'fer']);
 try{Object.assign(window.__vw,{ferOn:t=>ferOn(t),beCh:()=>beCh(),ptSE2:t=>ptSE2(t),ptSEP:t=>ptSEP(t),ev2xOn:t=>ev2xOn(t),rkDropK:()=>rkDropK()})}catch(e){}
+
+/* v630: códigos de USO ÚNICO (texto só com o dono): 2× SOMBRA BERU e 1× SHAKA FULL (Shaka + as 5 peças de Virgem em V2 = Armadura Divina). */
+TWCUP['8ee2e2']={nm:'🐜 SOMBRA BERU (Rank S)',it:[],uni:1,sbr:1,msg:'✅ Você ganhou 🐜 a SOMBRA BERU (Rank S)! Veja em SISTEMA → SOMBRAS.'};
+TWCUP['84egp3']={nm:'🐜 SOMBRA BERU (Rank S)',it:[],uni:1,sbr:1,msg:'✅ Você ganhou 🐜 a SOMBRA BERU (Rank S)! Veja em SISTEMA → SOMBRAS.'};
+TWCUP['1weh518']={nm:'🪷 SHAKA FULL V2',it:[],uni:1,skfull:1};
+{const _cq=twCupom;twCupom=async function(code,E){const C=TWCUP[twHash(String(code).toUpperCase())];const r=await _cq.apply(this,arguments);
+  try{if(C&&C.skfull&&r!==false&&E&&/\bok\b/.test(E.className||'')){const own=rkG('own',['goku']);if(!own.includes('shaka')){own.push('shaka');rkS('own',own)}
+    const I=twInv();let n=0;for(const k of SKSEC){if(I.some(x=>x&&x.v2&&(x.skb===k||x.nm===RKSP[k].nm)))continue;let it=I.find(x=>x&&!x.v2&&(x.skb===k||x.nm===RKSP[k].nm));
+      if(!it){it=Object.assign({id:'v2'+k+Date.now().toString(36)+n},RKSP[k]);I.push(it)}skV2Evo(it);n++}
+    twLS.s('tw_inv',I);try{TW.capOut=twCap()}catch(e){}try{acSave(1)}catch(e){}
+    E.textContent='🪷 SHAKA FULL! Você ganhou o SHAKA + as 5 peças de Virgem em V2 (ARMADURA DIVINA → FORMA DIVINA). Equipe na 🎒 MOCHILA!';try{twSfx('boom')}catch(e){}
+    try{if(!rkG('skdvok',0)&&skDivHave()){rkS('skdvok',1);setTimeout(()=>skDivWin(),2500)}}catch(e){}}}catch(e){}return r}}

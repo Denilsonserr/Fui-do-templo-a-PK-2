@@ -2980,3 +2980,8 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - Reusa as janelas mudando os arrays: `EV2X` (2x drop + 2x estrelas PVP), `PTSE2` + `PTS10` (portal rank S/vermelho a cada 10 min).
 - 3x sombra: chance do Igris × 3 (linha do `ch` do pn 'ig') e `beCh` × 3 (`evbOn()||ferOn()`).
 - Faixa do portal mostra "🏖️ FÉRIAS ... 3x CHANCE DE SOMBRA". Teste: `tferias_v629.js`.
+
+## v630 — Códigos únicos: 2× Beru + Shaka full V2 (texto só com o dono)
+- `8ee2e2` e `84egp3`: Beru (`sbr:1,uni:1`).
+- `1weh518` (`skfull:1`): Shaka + as 5 peças de Virgem em V2 (peça V1 que a pessoa já tem evolui, não duplica; V2 não repete) → Armadura Divina.
+- Teste: `tcod_v630.js`.
