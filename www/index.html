@@ -16766,6 +16766,25 @@ function cxLgChk(){try{if(ev622On()&&!rkG('cxLev',0)){rkS('cxLev',1);rkS('cxLg',
 try{Object.assign(window.__vw,{TSOB,tsMy:()=>tsMy(),tsLoad:f=>tsLoad(f),tsAward:()=>tsAward(),ev622On:()=>ev622On(),cxLgChk:()=>cxLgChk(),cxLgOpen:()=>cxLgOpen(),rkRoll:()=>rkRoll(),pvStep:(o,w)=>pvStep(o,w)})}catch(e){}
 try{window.__tn={prepMatch:(a,s)=>prepMatch(a,s),tnStart:g=>tnStart(g),tnFinish:(w,q)=>tnFinish(w,q),tnGo:()=>tnGo(),tnRun:()=>tnRun(),TNF,TNBARS}}catch(e){}
 
+/* ================= v626: TORRE NUNCA FICA PARADA SEM INIMIGO (caso do amigo do dono: matou e ficou andando, não ia para a próxima)
+   Vigia geral na luta da torre:
+   • boss vivo mas FORA DO MAPA (ou longe/caído fora da tela) por 3 s → volta para perto do jogador;
+   • boss vivo que saiu da luta (outro lutador/placeholder no lugar) por 6 s → volta para a luta;
+   • 12 s SEM NENHUM inimigo vivo no mapa (e sem a escolha de passiva aberta) → o andar conta como VENCIDO e vai para o próximo
+     (no último andar, termina a torre). ================= */
+function tnIdleFix(){const W=TN._iw||(TN._iw={n:0,o:0});const p=G.p[0],o=G.p[1];if(!p||p.ko){W.n=0;W.o=0;return}
+  const inMap=x=>x.x>-40&&x.x<WW+40&&x.y>FLOOR-1400&&x.y<FLOOR+200;
+  const live=x=>x&&!x.ko&&!x.hyIdle&&x.hp>0,alive=x=>live(x)&&inMap(x);
+  const B=TN.ph==='boss'?TN.boss:null;
+  if(live(B)&&!inMap(B)){if(++W.o>=180){W.o=0;B.x=clamp(p.x+(p.x<WW/2?320:-320),120,WW-120);B.y=FLOOR;B.vx=0;B.vy=0;B.grounded=true;B.flying=false;B.inv=30;if(o!==B)G.p[1]=B;console.warn('tn: boss fora do mapa voltou')}}else W.o=0;
+  const M=document.getElementById('tnPick');
+  const busy=(M&&M.classList.contains('on'))||(TN.ph==='met'&&TN.mt>0)||(TN.ph==='duelo'&&TN.dt>0)||TN.done||(TN.chest&&!TN.chest.open&&TN.ph==='clear'&&TN.g>=TNT-1&&W.n<600);
+  if(alive(o)||TN.mobs.some(alive)||busy||(live(B)&&!inMap(B))){W.n=0;return}
+  if(++W.n===360&&live(B)&&o!==B){B.x=clamp(p.x+(p.x<WW/2?320:-320),120,WW-120);B.y=FLOOR;B.inv=30;G.p[1]=B;console.warn('tn: boss perdido voltou');return}
+  if(W.n>=720){W.n=0;console.warn('tn: andar parado sem inimigo → próximo andar (ph='+TN.ph+')');TN.done=1;try{tnForceFloor()}catch(e){try{tnGoTower()}catch(_){}}}}
+{const _t=tnTick;tnTick=function(){const r=_t.apply(this,arguments);try{if(TN.on&&G.p&&G.mode==='fight'&&G.phase==='fight'&&!G.paused&&!TN.busy)tnIdleFix()}catch(e){console.warn(e)}return r}}
+try{Object.assign(window.__tn,{TN:()=>TN,tnPh:n=>tnPh(n)})}catch(e){}
+
 function twTrofList(){const tc=twLS.g('tw_tc',{}),run={};for(const t of TW.tr)run[t.k]=(run[t.k]||0)+1;
   twModal(`<div class="twM"><h3>🎖️ TROFÉUS</h3><div class="twTL">${Object.keys(TWTR).map(k=>{const T=TWTR[k];return `<div class="${tc[k]||run[k]?'got':''}"><i>${T.i}</i><b>${T.n}</b><span>${T.d}</span><em>+${T.p} 🏆</em><small>${run[k]?'nesta subida: '+run[k]+' · ':''}total: ${(tc[k]||0)}</small></div>`}).join('')}</div>
     <p class="twH">Cada troféu soma pontos 🏆 no ranking. Quem sobe mais andares fica na frente; empate = mais troféus, depois menos tempo.</p><div class="row"><button class="btn" id="twTx">FECHAR</button></div></div>`);
@@ -16957,7 +16976,7 @@ window.__dbg={mus:()=>[MCUR,MEL.src.split('/').pop()],stg:()=>STAGE.key,prepMatc
 })();
 </script>
 <style>#updB{position:fixed;left:50%;top:max(8px,env(safe-area-inset-top));transform:translateX(-50%);z-index:99999;padding:10px 22px;border-radius:14px;border:2px solid #fff3c0;background:linear-gradient(#ffd84a,#e08a10);color:#3a1d00;font:900 15px system-ui,sans-serif;box-shadow:0 0 18px #ffb21f;cursor:pointer;animation:updP 1s ease-in-out infinite alternate}@keyframes updP{to{transform:translateX(-50%) scale(1.05)}}</style>
-<script>(function(){const V='05535f7f2c14';if(!/^https?:/.test(location.protocol))return;let nv=null;
+<script>(function(){const V='4359c7eb3f7c';if(!/^https?:/.test(location.protocol))return;let nv=null;
 function show(){if(document.getElementById('updB'))return;try{if(typeof G!=='undefined'&&G.mode==='fight')return}catch(e){}const b=document.createElement('button');b.id='updB';b.textContent='🔄 ATUALIZAÇÃO NOVA! Toque para atualizar';
   b.onclick=()=>{b.textContent='⏳ Atualizando...';try{acSave(1)}catch(e){}setTimeout(()=>location.reload(),900)};document.body.appendChild(b)}
 async function chk(){if(document.hidden)return;if(nv){show();return}try{const r=await fetch('versao.txt?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const t=(await r.text()).trim();if(/^[0-9a-f]{8,40}$/.test(t)&&t!==V){nv=t;show()}}catch(e){}}

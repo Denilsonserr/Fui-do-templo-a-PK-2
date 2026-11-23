@@ -2952,3 +2952,11 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 
 ## v625 — Jogo liberado de novo (22/11 22:04)
 - `MANUT_FORCE=null` no worker. Para fechar de novo: `MANUT_FORCE={msg:'...'}`. Teste: `FECHADO=1 node tmanut_v624.js` quando fechado.
+
+## v626 — Torre: vigia contra "matou e ficou andando, não vai para a próxima"
+- `tnIdleFix()` roda depois de `tnTick`:
+  - boss vivo fora do mapa 3 s → volta para perto;
+  - boss vivo fora da luta (placeholder no lugar) 6 s → volta;
+  - 12 s sem nenhum inimigo vivo no mapa (sem escolha de passiva aberta) → `tnForceFloor()` (andar vencido / termina no último).
+- Achado: `tnBossUp` NÃO EXISTE. As fases mob/met/duelo são legado de antes da v380 (andar começa direto em 'boss'). Se algo voltar a usar essas fases, o vigia destrava.
+- Testes: `ttorre_trava_v626.js` e `ttorre_2x_v623.js` (torre completa 2x continua ok).

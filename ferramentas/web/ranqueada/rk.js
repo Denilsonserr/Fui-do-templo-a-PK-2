@@ -7986,3 +7986,22 @@ function cxLgChk(){try{if(ev622On()&&!rkG('cxLev',0)){rkS('cxLev',1);rkS('cxLg',
 .tsL i{font-style:normal;width:2.2em;font-weight:900;color:#ffcf3a}.tsL b{flex:1;text-align:left}.tsL span{font-weight:900}`;document.head.appendChild(st)}
 try{Object.assign(window.__vw,{TSOB,tsMy:()=>tsMy(),tsLoad:f=>tsLoad(f),tsAward:()=>tsAward(),ev622On:()=>ev622On(),cxLgChk:()=>cxLgChk(),cxLgOpen:()=>cxLgOpen(),rkRoll:()=>rkRoll(),pvStep:(o,w)=>pvStep(o,w)})}catch(e){}
 try{window.__tn={prepMatch:(a,s)=>prepMatch(a,s),tnStart:g=>tnStart(g),tnFinish:(w,q)=>tnFinish(w,q),tnGo:()=>tnGo(),tnRun:()=>tnRun(),TNF,TNBARS}}catch(e){}
+
+/* ================= v626: TORRE NUNCA FICA PARADA SEM INIMIGO (caso do amigo do dono: matou e ficou andando, não ia para a próxima)
+   Vigia geral na luta da torre:
+   • boss vivo mas FORA DO MAPA (ou longe/caído fora da tela) por 3 s → volta para perto do jogador;
+   • boss vivo que saiu da luta (outro lutador/placeholder no lugar) por 6 s → volta para a luta;
+   • 12 s SEM NENHUM inimigo vivo no mapa (e sem a escolha de passiva aberta) → o andar conta como VENCIDO e vai para o próximo
+     (no último andar, termina a torre). ================= */
+function tnIdleFix(){const W=TN._iw||(TN._iw={n:0,o:0});const p=G.p[0],o=G.p[1];if(!p||p.ko){W.n=0;W.o=0;return}
+  const inMap=x=>x.x>-40&&x.x<WW+40&&x.y>FLOOR-1400&&x.y<FLOOR+200;
+  const live=x=>x&&!x.ko&&!x.hyIdle&&x.hp>0,alive=x=>live(x)&&inMap(x);
+  const B=TN.ph==='boss'?TN.boss:null;
+  if(live(B)&&!inMap(B)){if(++W.o>=180){W.o=0;B.x=clamp(p.x+(p.x<WW/2?320:-320),120,WW-120);B.y=FLOOR;B.vx=0;B.vy=0;B.grounded=true;B.flying=false;B.inv=30;if(o!==B)G.p[1]=B;console.warn('tn: boss fora do mapa voltou')}}else W.o=0;
+  const M=document.getElementById('tnPick');
+  const busy=(M&&M.classList.contains('on'))||(TN.ph==='met'&&TN.mt>0)||(TN.ph==='duelo'&&TN.dt>0)||TN.done||(TN.chest&&!TN.chest.open&&TN.ph==='clear'&&TN.g>=TNT-1&&W.n<600);
+  if(alive(o)||TN.mobs.some(alive)||busy||(live(B)&&!inMap(B))){W.n=0;return}
+  if(++W.n===360&&live(B)&&o!==B){B.x=clamp(p.x+(p.x<WW/2?320:-320),120,WW-120);B.y=FLOOR;B.inv=30;G.p[1]=B;console.warn('tn: boss perdido voltou');return}
+  if(W.n>=720){W.n=0;console.warn('tn: andar parado sem inimigo → próximo andar (ph='+TN.ph+')');TN.done=1;try{tnForceFloor()}catch(e){try{tnGoTower()}catch(_){}}}}
+{const _t=tnTick;tnTick=function(){const r=_t.apply(this,arguments);try{if(TN.on&&G.p&&G.mode==='fight'&&G.phase==='fight'&&!G.paused&&!TN.busy)tnIdleFix()}catch(e){console.warn(e)}return r}}
+try{Object.assign(window.__tn,{TN:()=>TN,tnPh:n=>tnPh(n)})}catch(e){}
