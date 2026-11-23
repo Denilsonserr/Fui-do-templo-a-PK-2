@@ -29,11 +29,14 @@ const MODF={t:0,v:null},MODE={n:0,t:0};
 async function modCfg(db,k){const r=await db.prepare('SELECT v FROM adm WHERE k=?').bind(k).first();return r?r.v:null}
 async function modSet(db,k,v){await db.prepare('INSERT INTO adm(k,v) VALUES(?,?) ON CONFLICT(k) DO UPDATE SET v=excluded.v').bind(k,v).run()}
 async function modFech(db){if(Date.now()-MODF.t<20000)return MODF.v;const v=await modCfg(db,'fechado');MODF.t=Date.now();MODF.v=v?JSON.parse(v):null;return MODF.v}
+/* v624: MANUTENÇÃO FORÇADA pelo dono (22/11 22h) — jogo fechado para todos até ele mandar abrir (o ADM continua entrando: o jogo não barra o ADM).
+   Para abrir: MANUT_FORCE=null. */
+const MANUT_FORCE={msg:'🔧 O jogo está em manutenção. Voltamos em breve!',t:Date.UTC(2026,10,23,1,0)};
 async function modEstado(db,url){const u=String(url.searchParams.get('u')||'').slice(0,80),a=String(url.searchParams.get('a')||'').slice(0,80),now=Date.now();
   const ks=[u&&'u:'+u,a&&'a:'+a].filter(Boolean);let b=null;
   if(ks.length){const rs=(await db.prepare(`SELECT k,g,ate,mot,nome FROM bans WHERE k IN (${ks.map(()=>'?').join(',')})`).bind(...ks).all()).results||[];
     const at=rs.find(r=>r.ate===0||r.ate>now);if(at){b={ate:at.ate,mot:at.mot||''};for(const k of ks)if(!rs.some(r=>r.k===k))await db.prepare('INSERT OR IGNORE INTO bans(k,g,ate,mot,nome,ct) VALUES(?,?,?,?,?,?)').bind(k,at.g,at.ate,at.mot,at.nome,now).run()}}
-  return J({f:await modFech(db),b})}
+  return J({f:MANUT_FORCE||await modFech(db),b})}
 async function modPost(db,req){const B=await req.json().catch(()=>({}));const op=String(B.op||'');
   if(MODE.n>=8&&Date.now()-MODE.t<600000)return J({ok:0,e:'Muitas senhas erradas. Espere 10 minutos.'},429);
   const h=await modCfg(db,'senha'),hs=async x=>sha('furia|adm|'+String(x||''));

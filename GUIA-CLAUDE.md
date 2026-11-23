@@ -2943,3 +2943,9 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - Todos os chefes e cenários da torre carregam (prepMatch ok).
 - Hooks `window.__tn` (prepMatch, tnStart, tnFinish, tnGo, tnRun).
 - Falta o dono dizer em qual andar trava, o que aparece na tela e o celular.
+
+## v624 — JOGO FECHADO (manutenção) por ordem do dono, 22/11 22h
+- `worker/index.js`: `MANUT_FORCE={msg}` → `/fs-admin/estado` sempre devolve `f` (jogo fechado), até para versões antigas abertas (perguntam a cada 3 min).
+- O ADM (`pfIsAdm`: título adm + nome) continua entrando.
+- PARA ABRIR: `MANUT_FORCE=null` (só quando o dono mandar). O botão ABRIR do painel de moderação NÃO desfaz isso.
+- Teste: `tmanut_v624.js`.
