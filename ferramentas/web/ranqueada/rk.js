@@ -5952,7 +5952,7 @@ let PTNB=0;{const _hd=hyDrop;hyDrop=function(k){if(PTNB&&k==='bau')return {};ret
 function pnBossReward(d){const r=PTR.r;
   if(d.pn.k==='urso'){if(rkG('urso',0))return;if(!sjOwned()){banner('URSO DAS SOMBRAS DERROTADO','#9a7bff',90,'só o SUNG consegue extrair a sombra dele');return}
     rkS('urso',1);const o=sjSys();if(!o.sh.includes('tank'))o.sh.unshift('tank');if(!o.eq)o.eq='tank';sjSave(o);try{acSave(1)}catch(e){}setTimeout(()=>pnShWin('tank'),1400);return}
-  if(d.pn.k==='ig'){const o=sjSys();if(o.sh.includes('igris'))return;const ch=[.2,.5,1,2,3.5,5][r]*(typeof ptSEv==='function'&&ptSEv()?2:1);
+  if(d.pn.k==='ig'){const o=sjSys();if(o.sh.includes('igris'))return;const ch=[.2,.5,1,2,3.5,5][r]*(ferOn()?3:typeof ptSEv==='function'&&ptSEv()?2:1);
     if(Math.random()*100<ch){if(!sjOwned()){banner('A SOMBRA DE IGRIS SE MEXEU...','#ff3b4a',110,'mas só o SUNG pode extrair sombras');return}o.sh.push('igris');sjSave(o);rkS('sjIg',1);try{acSave(1)}catch(e){}setTimeout(()=>pnShWin('igris'),1400)}
     else banner('IGRIS FOI DERROTADO!','#ff3b4a',100,'a sombra não respondeu ('+String(ch).replace('.',',')+'% de chance no rank '+PTRK[r].k+')')}}
 function pnShWin(k){const S=SJSH[k];if(!S)return;const was=G.paused;G.paused=true;const M=document.createElement('div');M.id='pnSh';M.innerHTML=`<i class="sm a"></i><i class="sm b"></i><i class="sm c"></i><div class="ar">ERGA-SE!</div><div class="im"><img src="${S.img}" alt=""></div>
@@ -7064,7 +7064,7 @@ const PTS10=[Date.UTC(2026,10,21,23,40),Date.UTC(2026,10,22,2,59,59)],ptSEP=t=>{
 {const _pn=ptNow;ptNow=function(now){const N=_pn.apply(this,arguments);try{if(N&&N.i!=null&&(N.st==='busca'||N.st==='aberto')){const ini=N.st==='aberto'?N.ini:N.fim,s_i=(5+Math.floor(ptRnd(N.i,1)*6))*6e4,prev=ini-s_i-PTOPEN;
   if(ptSE2(ini)&&Math.floor(ini/ptSEP(ini))>Math.floor(prev/ptSEP(ini))){PTGS[N.i]=true;if(N.L)N.L=ptList(N.i)}}}catch(e){}return N}}
 {const _ph2=ptH;ptH=function(){let h=_ph2.apply(this,arguments);try{if(ptSE2()){const N=ptNow(),g=N.i!=null&&PTGS[N.i];const PP=ptSEP(),nx=Math.ceil(Date.now()/PP)*PP,mm=Math.max(0,Math.ceil((nx-Date.now())/6e4));
-  h+=`<div class="ptSEv be">🐜 EVENTO RAID DAS FORMIGAS: PORTAL RANK S A CADA ${PP===6e5?'10':'20'} MIN · sombra BERU (rank S)${g?` · <b>${N.st==='aberto'?'A RAID ESTÁ ABERTA AGORA!':'ESTE CICLO TEM RAID!'}</b>`:` · próxima em ~${mm} min`}</div>`}}catch(e){}return h}}
+  h+=`<div class="ptSEv be">${ferOn()?'🏖️ FÉRIAS: PORTAL VERMELHO (RANK S)':'🐜 EVENTO RAID DAS FORMIGAS: PORTAL RANK S'} A CADA ${PP===6e5?'10':'20'} MIN · ${ferOn()?'🌑 3x CHANCE DE SOMBRA (Igris e Beru)':'sombra BERU (rank S)'}${g?` · <b>${N.st==='aberto'?'A RAID ESTÁ ABERTA AGORA!':'ESTE CICLO TEM RAID!'}</b>`:` · próxima em ~${mm} min`}</div>`}}catch(e){}return h}}
 {const st=document.createElement('style');st.textContent=`.ptSl .ptRaid{position:absolute;left:0;right:0;top:auto;bottom:3%;text-align:center;font:900 .7em var(--f-ui,sans-serif)!important;color:#fff!important;background:linear-gradient(90deg,transparent,#3a0a6ad0,transparent);padding:.15em 0;text-shadow:0 0 .5em #b06bff,0 0 .2em #000,0 .1em .3em #000;letter-spacing:.02em;pointer-events:none;animation:ptRaidP 1.6s ease-in-out infinite}@keyframes ptRaidP{50%{transform:scale(1.07);text-shadow:0 0 .9em #c070ff,0 0 .2em #000}}.ptSEv.be{background:linear-gradient(90deg,#1c0636e8,#3c0c6ae8,#1c0636e8);border-color:#b06bff;color:#ecdcff;box-shadow:0 0 .8em #b06bff88}`;document.head.appendChild(st)}
 
 /* ---------- SOMBRA BERU (rank S) ---------- */
@@ -7254,7 +7254,7 @@ try{Object.assign(window.__pvT||{},{vn40Apply:()=>vn40Apply(),dropK:()=>rkDropK(
    pegam a sombra GARANTIDA (vaga no servidor: docs berup_1 / berup_2, 409 = vaga já tomada). Só conta quem tem o Sung e ainda não tem o Beru; o ADM não ocupa vaga. */
 const BECH2=3,BEG0=Date.UTC(2026,10,20,20,20);
 /* v596: evento até 21/11 23:59 (Brasília): 3x chance do Beru (3% → 9%) */
-const EVB=[Date.UTC(2026,10,21,23,0),Date.UTC(2026,10,22,2,59,59)],evbOn=t=>{t=t||Date.now();return t>=EVB[0]&&t<EVB[1]},beCh=()=>BECH2*(evbOn()?3:1);
+const EVB=[Date.UTC(2026,10,21,23,0),Date.UTC(2026,10,22,2,59,59)],evbOn=t=>{t=t||Date.now();return t>=EVB[0]&&t<EVB[1]},beCh=()=>BECH2*(evbOn()||ferOn()?3:1);
 function beGive(n){const o=sjSys();if(o.sh.includes('beru'))return;o.sh.push('beru');sjSave(o);rkS('sjBe',1);try{acSave(1)}catch(e){}
   if(n)banner('VOCÊ É O Nº '+n+' DO SERVIDOR!','#ffe08a',130,'Beru garantido para os 2 primeiros');setTimeout(()=>pnShWin('beru'),n?2600:1400)}
 async function beClaim(){const nm=String(twLS.g('tw_nome','')||'?').slice(0,16),IV=v=>({integerValue:String(v)});
@@ -8028,3 +8028,14 @@ setTimeout(()=>{try{const u=String(twLS.g('tw_uid','')||''),n=String(twLS.g('tw_
   try{acSave(1)}catch(e){}try{pfPub(1)}catch(e){}rkToast('👑 Você ganhou o título PATROCINADOR do ADM!','#ffd84a')}catch(e){}},5000);
 /* v628: o botão do leilão ficava por cima do ✅ APROVAR do mercado e roubava o toque */
 {const st=document.createElement('style');st.textContent='.mkAdmB{z-index:40!important}';document.head.appendChild(st)}
+
+/* ================= v629: EVENTO DE FÉRIAS (3 dias: 23/11 11h → 26/11 11h, Brasília) =================
+   • 2x XP de rank · 2x gemas · 2x sorte · 2x anel da alma (entrada 'fer' no RKEVX, na frente de todas)
+   • 2x drop e 2x estrelas no PVP (reusa a janela EV2X)
+   • PORTAL VERMELHO (rank S) a cada 10 min (reusa PTSE2 + PTS10)
+   • 3x chance de SOMBRA: Igris (chance do rank × 3) e Beru (beCh × 3) via ferOn(). ================= */
+const FER=[Date.UTC(2026,10,23,13,55),Date.UTC(2026,10,26,14,0)];
+function ferOn(t){t=t||Date.now();return t>=FER[0]&&t<FER[1]}
+EV2X[0]=FER[0];EV2X[1]=FER[1];PTSE2[0]=FER[0];PTSE2[1]=FER[1];PTS10[0]=FER[0];PTS10[1]=FER[1];
+RKEVX.unshift([FER[0],FER[1],2,'🏖️ FÉRIAS · 2x XP · 2x GEMAS · 2x SORTE · 2x DROP · 2x ANEL · 2x ESTRELAS',{gem:2,luck:2,anel:2},'fer']);
+try{Object.assign(window.__vw,{ferOn:t=>ferOn(t),beCh:()=>beCh(),ptSE2:t=>ptSE2(t),ptSEP:t=>ptSEP(t),ev2xOn:t=>ev2xOn(t),rkDropK:()=>rkDropK()})}catch(e){}

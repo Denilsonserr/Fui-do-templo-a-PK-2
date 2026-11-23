@@ -2974,3 +2974,9 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - Honrado ganha o título 👑 PATROCINADOR (`patr`) sozinho ao abrir o jogo.
 - Teste: `tmercado_mod_v628.js`. O `tmercado_taxa_v547` agora falha só porque o ADM recebe gemas do leilão ao abrir (não é bug).
 - PARA TIRAR o poder: esvaziar `MKMODU`/`MKMODN` e tirar `vnOn()` do `mkMod`.
+
+## v629 — Evento de FÉRIAS (23/11 11h → 26/11 11h BRT)
+- `FER`/`ferOn()`. RKEVX.unshift `{gem:2,luck:2,anel:2}` + XP ×2, tag `fer`.
+- Reusa as janelas mudando os arrays: `EV2X` (2x drop + 2x estrelas PVP), `PTSE2` + `PTS10` (portal rank S/vermelho a cada 10 min).
+- 3x sombra: chance do Igris × 3 (linha do `ch` do pn 'ig') e `beCh` × 3 (`evbOn()||ferOn()`).
+- Faixa do portal mostra "🏖️ FÉRIAS ... 3x CHANCE DE SOMBRA". Teste: `tferias_v629.js`.
