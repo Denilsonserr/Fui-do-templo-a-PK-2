@@ -2963,3 +2963,14 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 
 ## v627 — Código único: 30.000 💎 + anel PRETO SSS nível máximo (texto só com o dono)
 - `5lu504`: `rgx:[[3,7,'dano','crit']]` + `gm627:30000` (wrapper próprio das gemas). Teste: `tcod_v627.js`.
+
+## v628 — Moderadores do Mercado Negro + título Patrocinador do Honrado
+- Pedido do dono antes de viajar: Vini, Honrado e Breno podem ✅ APROVAR / ❌ RECUSAR vendas do Mercado Negro. É o ÚNICO poder deles.
+- `mkMod()` = ADM, `vnOn()` (Vini, conta 10jasju) ou uid em `MKMODU` (Honrado `mwc8atkrgg4fns2f`, Breno `mw8697axqj3ixwzu`) ou nome + conta logada. Só troca o `mnAdm()` do botão/ação/aviso de pedidos do mercado.
+- Os 10% continuam do ADM:
+  - aprovação de moderador grava `mkt_` com `mod='1'` e não dá gema ao moderador;
+  - o ADM recebe ao abrir o jogo (`mkTaxGet`, `rk_mktGot` por lid, com trava contra rodar 2x junto).
+- O botão ✅ APROVAR ficava atrás do botão do leilão: agora `z-index:40`.
+- Honrado ganha o título 👑 PATROCINADOR (`patr`) sozinho ao abrir o jogo.
+- Teste: `tmercado_mod_v628.js`. O `tmercado_taxa_v547` agora falha só porque o ADM recebe gemas do leilão ao abrir (não é bug).
+- PARA TIRAR o poder: esvaziar `MKMODU`/`MKMODN` e tirar `vnOn()` do `mkMod`.

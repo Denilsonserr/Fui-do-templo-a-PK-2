@@ -6905,12 +6905,17 @@ setTimeout(()=>mkPoll(1),9000);setInterval(()=>mkPoll(),60000);
   if(MN.tab==='buy'&&MN.sel&&mkPend().some(p=>p.lid===MN.sel))h=h.replace(/<button data-m="buy">[\s\S]*?<\/button>/,'<button data-m="pcx" class="mkPd">⏳ AGUARDANDO ADM<br><small>cancelar pedido</small></button>');
   const np=mkPend().length;if(np)h+=`<div class="mkPdN" style="${rkB2(475,262,1260,306)}">⏳ ${np} pedido(s) de compra aguardando o OK do ADM — as gemas voltam se não for aprovado</div>`;
   else h+=`<div class="mkPdN i" style="${rkB2(475,262,1260,306)}">🛡️ Toda compra passa pela aprovação do ADM · 10% de cada venda vai para o ADM</div>`;
-  if(mnAdm())h+=`<button class="mkAdmB" data-m="admQ" style="${rkB2(1390,176,1640,244)}">✅ APROVAR${MKADMN?' <b>'+MKADMN+'</b>':''}</button>`}catch(e){}return h}}
+  if(mkMod())h+=`<button class="mkAdmB" data-m="admQ" style="${rkB2(1390,176,1640,244)}">✅ APROVAR${MKADMN?' <b>'+MKADMN+'</b>':''}</button>`}catch(e){}return h}}
 {const _a=mnAct;mnAct=async function(a,b){
-  if(a==='admQ'){if(mnAdm())mkAdmOpen();return}
+  if(a==='admQ'){if(mkMod())mkAdmOpen();return}
   if(a==='buy'||a==='pcx'){if(MN.busy)return;const X=mnRows().find(r=>r.key===MN.sel);if(!X||!X.l)return;MN.busy=1;try{if(a==='buy')await mkReq(X);else await mkReqCancel(X.l.lid)}finally{MN.busy=0}if(RKV==='mn')rkView('mn');return}
   return _a.apply(this,arguments)}}
 
+/* v628: MODERADORES DO MERCADO (pedido do dono antes de viajar): Vini, Honrado e Breno podem APROVAR/RECUSAR vendas do Mercado Negro.
+   É o ÚNICO poder deles. Reconhece pela conta/aparelho (uid) — não só pelo nome. Os 10% continuam indo para o ADM:
+   aprovação de moderador grava mkt_ com mod='1' e o ADM recebe quando abrir o jogo (rk_mktGot guarda os já recebidos). */
+const MKMODU=['mwc8atkrgg4fns2f','mw8697axqj3ixwzu'],MKMODN=['honrado','breno'];
+const mkMod=()=>{try{if(mnAdm())return true;if(vnOn())return true;const u=String(twLS.g('tw_uid','')||''),n=String(twLS.g('tw_nome','')||'').toLowerCase().trim();return MKMODU.includes(u)||(MKMODN.includes(n)&&!!pvAcc())}catch(e){return false}};
 let MKADMN=0,MKADM=null;const MKTAX=.10; /* v547: 10% de toda venda vai para o ADM */
 async function mkAdmLoad(){mkQClr();const [R,D,C]=await Promise.all([rkQ('mkr','1',800),rkQ('mkd','1',1500),rkQ('mkx','1',1500)]);
   const dec=new Set(D.map(d=>d.rid)),cl=new Map(C.map(c=>[c.lid,c]));const P=R.filter(r=>!dec.has(r.rid)).sort((a,b)=>a._ct-b._ct);
@@ -6934,11 +6939,11 @@ async function mkAdmOpen(){rkModal('<div class="mkAdm"><h3>✅ APROVAR VENDAS DO
     try{if(k==='no'){const x=await mkDec(r,'0','recusado pelo ADM');R.querySelector('.mkRb').innerHTML=x.ok||x.status===409?'<em class="no">❌ RECUSADO — gemas voltam</em>':'<em>erro</em>'}
       else{const tx=Math.floor((+r.preco||0)*MKTAX),liq=(+r.preco||0)-tx;const x=await mnPost('mkb_'+r.lid,{mkx:mnSV('1'),mks:mnSV(r.mks),lid:mnSV(r.lid),tipo:mnSV('buy'),preco:mnIV(liq),bruto:mnIV(r.preco),tx:mnIV(tx),bnm:mnSV(String(r.nome||'').slice(0,24)),buid:mnSV(String(r.uid||''))});
         if(!x.ok){await mkDec(r,'0','anúncio já vendido ou cancelado');R.querySelector('.mkRb').innerHTML='<em class="no">já vendido/cancelado — gemas voltam</em>'}
-        else{await mkDec(r,'1','');for(const o of P)if(o!==r&&o.lid===r.lid){try{await mkDec(o,'0','vendido para outro jogador')}catch(_){}}if(tx>0){let t=null;try{t=await mnPost('mkt_'+r.lid,{mkt:mnSV('1'),lid:mnSV(r.lid),tx:mnIV(tx)})}catch(_){}if(t&&t.ok){rkAdd('gem',tx);try{acSave(1)}catch(_){}}}R.querySelector('.mkRb').innerHTML='<em class="ok">✅ APROVADO — venda feita<br>+'+rkFmtN(tx)+' 💎 para você (10%)</em>'}}
+        else{await mkDec(r,'1','');for(const o of P)if(o!==r&&o.lid===r.lid){try{await mkDec(o,'0','vendido para outro jogador')}catch(_){}}if(tx>0){let t=null;try{t=await mnPost('mkt_'+r.lid,{mkt:mnSV('1'),lid:mnSV(r.lid),tx:mnIV(tx),mod:mnSV(mnAdm()?'0':'1'),por:mnSV(String(twLS.g('tw_nome','')||'').slice(0,20))})}catch(_){}if(t&&t.ok&&mnAdm()){rkAdd('gem',tx);try{acSave(1)}catch(_){}}}R.querySelector('.mkRb').innerHTML='<em class="ok">✅ APROVADO — venda feita<br>'+(mnAdm()?'+'+rkFmtN(tx)+' 💎 para você (10%)':rkFmtN(tx)+' 💎 (10%) vão para o ADM')+'</em>'}}
       MKADMN=Math.max(0,MKADMN-1)}catch(_){R.querySelector('.mkRb').innerHTML='<em>sem internet</em>'}});
   P.forEach(async(r,i)=>{const c=await mkAdmChk(r),el=document.getElementById('mkC'+i);if(el){el.textContent=c.t;el.className='mkChk '+c.c}})}
 /* ADM: aviso de pedidos pendentes ao entrar */
-setTimeout(async()=>{try{if(!mnAdm())return;const P=await mkAdmLoad();if(P.length)rkToast('🛒 '+P.length+' pedido(s) no Mercado Negro esperando seu ✅ OK','#ffd84a')}catch(e){}},12000);
+setTimeout(async()=>{try{if(!mkMod())return;const P=await mkAdmLoad();if(P.length)rkToast('🛒 '+P.length+' pedido(s) no Mercado Negro esperando seu ✅ OK','#ffd84a')}catch(e){}},12000);
 try{Object.assign(window.__pvT||{},{mkReq:X=>mkReq(X),mkPoll:l=>mkPoll(l),mkPend:()=>mkPend(),mkAdmLoad:()=>mkAdmLoad(),mkAdmOpen:()=>mkAdmOpen(),mkAdmChk:r=>mkAdmChk(r),mnRows:()=>mnRows(),MN:()=>MN,mnLoad:()=>mnLoad(),mnAct:(a,b)=>mnAct(a,b),mnOpen:()=>mnOpen()})}catch(e){}
 /* v547: aviso no anúncio — vendedor recebe 90% */
 {const _a=mnAct;mnAct=async function(a){const r=await _a.apply(this,arguments);try{if(a==='list')setTimeout(()=>rkToast('ℹ️ Quando vender, você recebe 90% (10% vai para o ADM).','#bfe8ff'),1800)}catch(e){}return r}}
@@ -8009,3 +8014,17 @@ try{Object.assign(window.__tn,{TN:()=>TN,tnPh:n=>tnPh(n)})}catch(e){}
 /* v627: código de USO ÚNICO (texto só com o dono): 30.000 💎 + ANEL PRETO SSS no nível máximo (dano + crítico). */
 TWCUP['5lu504']={nm:'💍 ANEL PRETO SSS + 30.000 💎',it:[],uni:1,gm627:30000,rgx:[[3,7,'dano','crit']],msg:'✅ Você ganhou 30.000 💎 + 💍 ANEL PRETO SSS no nível máximo (⚔️ Dano + 🎯 Crítico)! Veja em ANÉIS DA ALMA.'};
 {const _cq=twCupom;twCupom=async function(code,E){const C=TWCUP[twHash(String(code).toUpperCase())];const r=await _cq.apply(this,arguments);try{if(C&&C.gm627&&r!==false&&E&&/\bok\b/.test(E.className||'')){rkAdd('gem',C.gm627);try{acSave(1)}catch(e){}}}catch(e){}return r}}
+
+/* v628: ADM recebe os 10% das vendas aprovadas pelos moderadores */
+let MKTG=0;async function mkTaxGet(){if(!mnAdm()||MKTG)return;MKTG=1;try{const R=await rkQ('mkt','1',1500);const got=rkG('mktGot',[]);let tot=0,n=0;
+  for(const d of R){if(d.mod!=='1'||!d.lid||got.includes(d.lid))continue;got.push(d.lid);tot+=+d.tx||0;n++}
+  if(n){rkS('mktGot',got.slice(-3000));if(tot>0){rkAdd('gem',tot);try{acSave(1)}catch(e){}rkToast('🛒 +'+rkFmtN(tot)+' 💎 — 10% de '+n+' venda(s) aprovadas pelos moderadores','#ffd84a')}}}catch(e){}MKTG=0}
+setTimeout(mkTaxGet,15000);setInterval(mkTaxGet,10*60e3);
+try{Object.assign(window.__vw,{mkMod:()=>mkMod(),mkTaxGet:()=>mkTaxGet()})}catch(e){}
+
+/* v628: o dono deu o título 👑 PATROCINADOR para o HONRADO (conta/aparelho mwc8atkrgg4fns2f). Entra sozinho quando ele abrir o jogo. */
+setTimeout(()=>{try{const u=String(twLS.g('tw_uid','')||''),n=String(twLS.g('tw_nome','')||'').toLowerCase().trim();
+  if(!(u==='mwc8atkrgg4fns2f'||(n==='honrado'&&pvAcc())))return;const T=twTits();if(T.includes('patr'))return;T.push('patr');twLS.s('tw_tit',T);twLS.s('tw_titOn','patr');
+  try{acSave(1)}catch(e){}try{pfPub(1)}catch(e){}rkToast('👑 Você ganhou o título PATROCINADOR do ADM!','#ffd84a')}catch(e){}},5000);
+/* v628: o botão do leilão ficava por cima do ✅ APROVAR do mercado e roubava o toque */
+{const st=document.createElement('style');st.textContent='.mkAdmB{z-index:40!important}';document.head.appendChild(st)}
