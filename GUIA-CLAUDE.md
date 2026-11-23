@@ -2960,3 +2960,6 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
   - 12 s sem nenhum inimigo vivo no mapa (sem escolha de passiva aberta) → `tnForceFloor()` (andar vencido / termina no último).
 - Achado: `tnBossUp` NÃO EXISTE. As fases mob/met/duelo são legado de antes da v380 (andar começa direto em 'boss'). Se algo voltar a usar essas fases, o vigia destrava.
 - Testes: `ttorre_trava_v626.js` e `ttorre_2x_v623.js` (torre completa 2x continua ok).
+
+## v627 — Código único: 30.000 💎 + anel PRETO SSS nível máximo (texto só com o dono)
+- `5lu504`: `rgx:[[3,7,'dano','crit']]` + `gm627:30000` (wrapper próprio das gemas). Teste: `tcod_v627.js`.

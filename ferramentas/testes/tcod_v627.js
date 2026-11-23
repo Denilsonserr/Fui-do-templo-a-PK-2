@@ -1,0 +1,10 @@
+// v627: código único 30.000 gemas + anel preto SSS nível máximo. Texto NÃO fica no repo: C1=.. node tcod_v627.js
+const {chromium}=require('playwright');
+(async()=>{const b=await chromium.launch();let ok=1;const chk=(c,m)=>{console.log((c?'OK  ':'FALHA ')+m);if(!c)ok=0};const E=[];const p=await b.newPage();p.on('pageerror',e=>E.push(e.message));await p.route(/fonts\.g/,r=>r.abort());
+  await p.route(/\/fs\/v1\//,r=>{const u=r.request().url(),m=r.request().method();if(/:runQuery/.test(u))return r.fulfill({status:200,contentType:'application/json',body:'[]'});if(m==='GET')return r.fulfill({status:404,contentType:'application/json',body:'{"error":{"code":404}}'});return r.fulfill({status:200,contentType:'application/json',body:'{"name":"x","fields":{}}'})});
+  await p.addInitScript(()=>{if(!sessionStorage.d){sessionStorage.d=1;localStorage.clear();Object.assign(localStorage,{rk_ini:'1',rk_xpv2:'1',rk_dia:'1',rk_lvrz:'1',rk_pvupv:'352',rk_own:'["goku"]',rk_sel:'"goku"',tw_nome:'"Bia"',tw_uid:'"u_bia"',ac_n:'bia',ac_k:'k'})}});
+  await p.goto('http://localhost:8790/index.html');await p.waitForFunction(()=>!document.getElementById('goSelect').disabled,null,{timeout:120000});await p.click('#mRank');await p.waitForTimeout(2500);
+  const r=await p.evaluate(async c=>{const g0=+JSON.parse(localStorage.rk_gem||'0');const mk=()=>{const E=document.createElement('div');document.body.appendChild(E);return E};const E=mk();await __pvT.cup(c.toLowerCase(),E);const g1=+JSON.parse(localStorage.rk_gem||'0');const E2=mk();await __pvT.cup(c.toLowerCase(),E2);
+    return {txt:E.textContent,again:E2.textContent,gem:g1-g0,gem2:+JSON.parse(localStorage.rk_gem||'0')-g1,an:JSON.parse(localStorage.rk_an||'[]')}},process.env.C1);
+  console.log(JSON.stringify(r));const a=r.an[0]||{};chk(r.gem===30000,'30.000 gemas');chk(r.an.length===1&&a.c===3&&a.g===7&&a.s==='dano'&&a.s2==='crit'&&a.l>0,'anel PRETO SSS dano+crítico nível máximo (nível '+a.l+')');chk(/já usou/i.test(r.again)&&r.gem2===0,'uso único');
+  console.log(E.length?'ERROS '+E.join('|'):'sem erros');console.log(ok&&!E.length?'TUDO OK':'FALHOU');await b.close()})();

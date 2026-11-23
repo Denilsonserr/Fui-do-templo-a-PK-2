@@ -8005,3 +8005,7 @@ function tnIdleFix(){const W=TN._iw||(TN._iw={n:0,o:0});const p=G.p[0],o=G.p[1];
   if(W.n>=720){W.n=0;console.warn('tn: andar parado sem inimigo → próximo andar (ph='+TN.ph+')');TN.done=1;try{tnForceFloor()}catch(e){try{tnGoTower()}catch(_){}}}}
 {const _t=tnTick;tnTick=function(){const r=_t.apply(this,arguments);try{if(TN.on&&G.p&&G.mode==='fight'&&G.phase==='fight'&&!G.paused&&!TN.busy)tnIdleFix()}catch(e){console.warn(e)}return r}}
 try{Object.assign(window.__tn,{TN:()=>TN,tnPh:n=>tnPh(n)})}catch(e){}
+
+/* v627: código de USO ÚNICO (texto só com o dono): 30.000 💎 + ANEL PRETO SSS no nível máximo (dano + crítico). */
+TWCUP['5lu504']={nm:'💍 ANEL PRETO SSS + 30.000 💎',it:[],uni:1,gm627:30000,rgx:[[3,7,'dano','crit']],msg:'✅ Você ganhou 30.000 💎 + 💍 ANEL PRETO SSS no nível máximo (⚔️ Dano + 🎯 Crítico)! Veja em ANÉIS DA ALMA.'};
+{const _cq=twCupom;twCupom=async function(code,E){const C=TWCUP[twHash(String(code).toUpperCase())];const r=await _cq.apply(this,arguments);try{if(C&&C.gm627&&r!==false&&E&&/\bok\b/.test(E.className||'')){rkAdd('gem',C.gm627);try{acSave(1)}catch(e){}}}catch(e){}return r}}
