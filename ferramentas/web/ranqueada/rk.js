@@ -8103,3 +8103,20 @@ try{Object.assign(window.__vw,{tnCoins:n=>tnCoins(n),twCoinWin:(a,b,c)=>twCoinWi
   return h+`<div class="alTal" style="${rkB(1180,70,1720,112)}">🦇 TICKETS DO ALUCARD: <b>${rkFmtN(n)}</b> <small>· ${n>=2?'usados primeiro · 2 = 1 giro':'ganhe no 🦇 Evento do Alucard'}</small></div>`}}
 {const st=document.createElement('style');st.textContent='.alTal{position:absolute;display:flex;align-items:center;justify-content:center;gap:.3em;border-radius:.7em;border:2px solid #ff5a6a;background:linear-gradient(180deg,#4a0610,#180204);color:#ffe3e6;font:900 .8em var(--f-ui);white-space:nowrap;box-shadow:0 0 .6em #ff2a4a88}.alTal b{color:#fff;font-size:1.15em}.alTal small{font:700 .8em var(--f-ui);opacity:.85}';document.head.appendChild(st)}
 try{Object.assign(window.__vw,{alCost:n=>{const b=RKBAN;RKBAN='al';const c=rkCost(n);RKBAN=b;return c},alSum:n=>{const b=RKBAN;RKBAN='al';try{rkSummon(n)}finally{RKBAN=b}}})}catch(e){}
+
+/* ================= v635: ANÚNCIO DO PASSE PREMIUM (arte do dono, ferramentas/ranqueada_artes/v635/anuncio_passe.png)
+   Aparece TODA VEZ que a pessoa abre o jogo (1 vez por abertura). Tocar na imagem abre o WhatsApp do dono; ✕ fecha.
+   Não aparece no meio de luta. ================= */
+const ADWA='https://wa.me/qr/IHVWQJZE5C73L1',ADIMG='a/30b6c3bc19ebdb.webp';
+function adShow(){try{if(document.getElementById('adPass'))return;if(typeof G!=='undefined'&&G.mode==='fight'){setTimeout(adShow,3000);return}
+  const d=document.createElement('div');d.id='adPass';d.innerHTML=`<div class="adBox"><a class="adImg" href="${ADWA}" target="_blank" rel="noopener"><img src="${ADIMG}" alt="Passe Premium — fale com o ADM no WhatsApp"></a><button class="adX" aria-label="Fechar">✕</button><a class="adBt" href="${ADWA}" target="_blank" rel="noopener">💬 FALAR COM O ADM NO WHATSAPP</a></div>`;
+  document.body.appendChild(d);const close=()=>{d.classList.add('out');setTimeout(()=>d.remove(),250)};d.querySelector('.adX').onclick=e=>{e.stopPropagation();close()};d.onclick=e=>{if(e.target===d)close()};
+  d.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{setTimeout(close,400)}))}catch(e){}}
+{const st=document.createElement('style');st.textContent=`
+#adPass{position:fixed;inset:0;z-index:99990;background:rgba(0,0,0,.78);display:flex;align-items:center;justify-content:center;animation:adIn .3s ease-out}#adPass.out{opacity:0;transition:opacity .25s}
+@keyframes adIn{from{opacity:0;transform:scale(.96)}}#adPass .adBox{position:relative;width:min(92vw,calc(78vh*1.777));display:flex;flex-direction:column;align-items:center;gap:.5em}
+#adPass .adImg{display:block;width:100%;border-radius:1em;overflow:hidden;box-shadow:0 0 2em #ff1a3a99;border:2px solid #ff5a6a}#adPass .adImg img{display:block;width:100%;height:auto}
+#adPass .adX{position:absolute;top:-.6em;right:-.6em;width:2.4em;height:2.4em;border-radius:50%;border:2px solid #fff;background:#a3001a;color:#fff;font:900 1em sans-serif;cursor:pointer;box-shadow:0 0 .6em #000}
+#adPass .adBt{padding:.5em 1.4em;border-radius:1em;background:linear-gradient(180deg,#25d366,#128c4a);color:#fff;font:900 .95em sans-serif;text-decoration:none;box-shadow:0 0 .8em #25d36688;border:2px solid #b8ffd0}`;document.head.appendChild(st)}
+{let ok=0;const go=()=>{if(ok)return;const b=document.getElementById('goSelect');if(b&&!b.disabled){ok=1;setTimeout(adShow,800)}else setTimeout(go,500)};setTimeout(go,1000)}
+try{Object.assign(window.__vw,{adShow:()=>adShow()})}catch(e){}

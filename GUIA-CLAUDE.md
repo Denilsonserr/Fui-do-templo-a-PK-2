@@ -3008,3 +3008,9 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - Faixa `.alTal` na tela do Alucard mostra quantos a pessoa tem.
 - Evento do Alucard agora dá 🦇 em vez de ticket normal. O último prêmio dá 12 → total 70.
 - Teste: `talev_v631.js`.
+
+## v635 — Anúncio do Passe Premium ao abrir o jogo (arte do dono)
+- `adShow()`: toda abertura do jogo, quando `#goSelect` libera.
+  - imagem `a/30b6c3bc19ebdb.webp` (de `ranqueada_artes/v635/anuncio_passe.png`);
+  - tocar na imagem ou no botão verde abre `ADWA` (WhatsApp do dono); ✕ ou tocar fora fecha.
+- Não abre no meio de luta. Teste: `tanuncio_v635.js`.
