@@ -2995,3 +2995,7 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
   - total: 60 tickets (30 giros no Alucard) + 6.000 💎 + 36.000 moedas;
   - botão `.alevB` no topo do menu da Ranqueada → painel `alevOpen()`.
 - Teste: `talev_v631.js`.
+
+## v632 — Moedas douradas que caem jogando −70%
+- `COINK=.3`: `tnCoins` (torre nova), `twCoinWin` (torre antiga) e `hyGrant` 'mo' (portais) rendem 30%.
+- Códigos, prêmios de evento/passe, venda e compras não mudam. Teste: `tmoedas_v632.js`.

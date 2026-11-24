@@ -8083,3 +8083,12 @@ function alevOpen(){const o=alevG(),nx=Math.min(ALN,o.got+1),falta=Math.max(0,nx
 .alevL div.ok{background:#0f2a14;border-color:#7dff9a88}.alevL div.nx{border-color:#ffd84a;box-shadow:0 0 .5em #ffd84a66}.alevL i{font-style:normal;color:#ff8a96;font-weight:900}.alevL em{font-style:normal;color:#7dff9a}`;document.head.appendChild(st)}
 setTimeout(()=>{try{alevGive()}catch(e){}},4000);
 try{Object.assign(window.__vw,{alevG:()=>alevG(),alevOn:()=>alevOn(),alevOpen:()=>alevOpen(),btRec:(m,w,x)=>btRec(m,w,x)})}catch(e){}
+
+/* ================= v632: MOEDAS DOURADAS −70% (pedido do dono) =================
+   As moedas que CAEM jogando: torre nova (tnCoins), torre antiga (twCoinWin) e portais (hyGrant 'mo') agora rendem 30%.
+   Códigos, prêmios de evento/passe, venda de itens e compras NÃO mudam. ================= */
+const COINK=.3,coinCut=n=>n>0?Math.max(1,Math.round(n*COINK)):n;
+{const _f=tnCoins;tnCoins=function(n){return _f.call(this,coinCut(n))}}
+{const _f=twCoinWin;twCoinWin=function(){return coinCut(_f.apply(this,arguments))}}
+{const _f=hyGrant;hyGrant=function(it){try{if(it&&it.k==='mo'&&!it._cc){it._cc=1;it.n=coinCut(it.n)}}catch(e){}return _f.apply(this,arguments)}}
+try{Object.assign(window.__vw,{tnCoins:n=>tnCoins(n),twCoinWin:(a,b,c)=>twCoinWin(a,b,c),hyGrant:it=>hyGrant(it),COINK})}catch(e){}
