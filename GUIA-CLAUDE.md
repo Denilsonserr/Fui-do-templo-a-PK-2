@@ -2999,3 +2999,6 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 ## v632 — Moedas douradas que caem jogando −70%
 - `COINK=.3`: `tnCoins` (torre nova), `twCoinWin` (torre antiga) e `hyGrant` 'mo' (portais) rendem 30%.
 - Códigos, prêmios de evento/passe, venda e compras não mudam. Teste: `tmoedas_v632.js`.
+
+## v633 — Evento do Alucard: 408 partidas para completar
+- `ALX` 5 → 17 (24 prêmios × 17 = 408 partidas). Quem já ganhou prêmio não perde; o próximo vem em (got+1)×17.

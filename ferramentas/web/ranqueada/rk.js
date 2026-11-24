@@ -8058,7 +8058,7 @@ TWCUP['1weh518']={nm:'🪷 SHAKA FULL V2',it:[],uni:1,skfull:1};
    treino e PVP amistoso NÃO contam). A cada ALX=5 partidas = 1 prêmio (24 prêmios = 120 partidas), entregue sozinho:
      ímpares: 🎫 3 tickets + 250 💎 · pares: 🎫 2 tickets + 250 💎 + 3.000 moedas
    TOTAL: 60 tickets (= 30 giros na Invocação do Alucard) + 6.000 💎 + 36.000 moedas. Guardado em rk_alev {n,got}. ================= */
-const ALEV=[Date.UTC(2026,10,24,15,55),Date.UTC(2026,11,2,2,59,59)],ALX=5,ALN=24;
+const ALEV=[Date.UTC(2026,10,24,15,55),Date.UTC(2026,11,2,2,59,59)],ALX=17 /* v633: dono pediu no mínimo 400 partidas (24×17=408) */,ALN=24;
 const alevOn=()=>{const t=Date.now();return t>=ALEV[0]&&t<ALEV[1]},alevG=()=>{const o=rkG('alev',null);return o&&o.k==='al1'?o:{k:'al1',n:0,got:0}};
 const alevRw=i=>i%2===0?{t:3,g:250,m:0}:{t:2,g:250,m:3000};
 function alevGive(){const o=alevG();let msg=[];while(o.got<ALN&&o.n>=(o.got+1)*ALX){const R=alevRw(o.got);rkAdd('tic',R.t);rkAdd('gem',R.g);if(R.m)twAddCoins(R.m);o.got++;

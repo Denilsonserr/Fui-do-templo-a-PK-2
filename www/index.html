@@ -16837,7 +16837,7 @@ TWCUP['1weh518']={nm:'🪷 SHAKA FULL V2',it:[],uni:1,skfull:1};
    treino e PVP amistoso NÃO contam). A cada ALX=5 partidas = 1 prêmio (24 prêmios = 120 partidas), entregue sozinho:
      ímpares: 🎫 3 tickets + 250 💎 · pares: 🎫 2 tickets + 250 💎 + 3.000 moedas
    TOTAL: 60 tickets (= 30 giros na Invocação do Alucard) + 6.000 💎 + 36.000 moedas. Guardado em rk_alev {n,got}. ================= */
-const ALEV=[Date.UTC(2026,10,24,15,55),Date.UTC(2026,11,2,2,59,59)],ALX=5,ALN=24;
+const ALEV=[Date.UTC(2026,10,24,15,55),Date.UTC(2026,11,2,2,59,59)],ALX=17 /* v633: dono pediu no mínimo 400 partidas (24×17=408) */,ALN=24;
 const alevOn=()=>{const t=Date.now();return t>=ALEV[0]&&t<ALEV[1]},alevG=()=>{const o=rkG('alev',null);return o&&o.k==='al1'?o:{k:'al1',n:0,got:0}};
 const alevRw=i=>i%2===0?{t:3,g:250,m:0}:{t:2,g:250,m:3000};
 function alevGive(){const o=alevG();let msg=[];while(o.got<ALN&&o.n>=(o.got+1)*ALX){const R=alevRw(o.got);rkAdd('tic',R.t);rkAdd('gem',R.g);if(R.m)twAddCoins(R.m);o.got++;
@@ -17063,7 +17063,7 @@ window.__dbg={mus:()=>[MCUR,MEL.src.split('/').pop()],stg:()=>STAGE.key,prepMatc
 })();
 </script>
 <style>#updB{position:fixed;left:50%;top:max(8px,env(safe-area-inset-top));transform:translateX(-50%);z-index:99999;padding:10px 22px;border-radius:14px;border:2px solid #fff3c0;background:linear-gradient(#ffd84a,#e08a10);color:#3a1d00;font:900 15px system-ui,sans-serif;box-shadow:0 0 18px #ffb21f;cursor:pointer;animation:updP 1s ease-in-out infinite alternate}@keyframes updP{to{transform:translateX(-50%) scale(1.05)}}</style>
-<script>(function(){const V='e3e5e0134d39';if(!/^https?:/.test(location.protocol))return;let nv=null;
+<script>(function(){const V='bb792a8b20b0';if(!/^https?:/.test(location.protocol))return;let nv=null;
 function show(){if(document.getElementById('updB'))return;try{if(typeof G!=='undefined'&&G.mode==='fight')return}catch(e){}const b=document.createElement('button');b.id='updB';b.textContent='🔄 ATUALIZAÇÃO NOVA! Toque para atualizar';
   b.onclick=()=>{b.textContent='⏳ Atualizando...';try{acSave(1)}catch(e){}setTimeout(()=>location.reload(),900)};document.body.appendChild(b)}
 async function chk(){if(document.hidden)return;if(nv){show();return}try{const r=await fetch('versao.txt?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const t=(await r.text()).trim();if(/^[0-9a-f]{8,40}$/.test(t)&&t!==V){nv=t;show()}}catch(e){}}
