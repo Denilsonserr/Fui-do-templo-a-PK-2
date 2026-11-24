@@ -3014,3 +3014,10 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
   - imagem `a/30b6c3bc19ebdb.webp` (de `ranqueada_artes/v635/anuncio_passe.png`);
   - tocar na imagem ou no botão verde abre `ADWA` (WhatsApp do dono); ✕ ou tocar fora fecha.
 - Não abre no meio de luta. Teste: `tanuncio_v635.js`.
+
+## v636 — Anúncio do passe: quando aparece (pedido do dono)
+- NÃO aparece mais ao abrir o jogo.
+- Aparece TODA VEZ em "BATALHA E AVENTURA" (`#mRank`).
+- Aparece 1 vez por abertura ao entrar no PASSE (`sessionStorage.adBp`).
+- Aparece SEMPRE ao tocar num prêmio PREMIUM sem ter o premium, ou no 🎟️ CÓDIGO DO PREMIUM.
+- Teste: `tanuncio_v635.js`.

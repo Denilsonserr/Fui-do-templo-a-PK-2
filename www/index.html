@@ -16897,7 +16897,12 @@ function adShow(){try{if(document.getElementById('adPass'))return;if(typeof G!==
 #adPass .adImg{display:block;width:100%;border-radius:1em;overflow:hidden;box-shadow:0 0 2em #ff1a3a99;border:2px solid #ff5a6a}#adPass .adImg img{display:block;width:100%;height:auto}
 #adPass .adX{position:absolute;top:-.6em;right:-.6em;width:2.4em;height:2.4em;border-radius:50%;border:2px solid #fff;background:#a3001a;color:#fff;font:900 1em sans-serif;cursor:pointer;box-shadow:0 0 .6em #000}
 #adPass .adBt{padding:.5em 1.4em;border-radius:1em;background:linear-gradient(180deg,#25d366,#128c4a);color:#fff;font:900 .95em sans-serif;text-decoration:none;box-shadow:0 0 .8em #25d36688;border:2px solid #b8ffd0}`;document.head.appendChild(st)}
-{let ok=0;const go=()=>{if(ok)return;const b=document.getElementById('goSelect');if(b&&!b.disabled){ok=1;setTimeout(adShow,800)}else setTimeout(go,500)};setTimeout(go,1000)}
+/* v636: o dono mudou QUANDO aparece:
+   • TODA VEZ que aperta "BATALHA E AVENTURA" (#mRank) · • 1 vez por abertura do jogo ao entrar no PASSE
+   • SEMPRE que tenta pegar/ver prêmio do PREMIUM sem ter o premium, ou aperta 🎟️ CÓDIGO DO PREMIUM. (Não aparece mais ao abrir o jogo.) */
+{const hook=()=>{const b=document.getElementById('mRank');if(!b){setTimeout(hook,500);return}b.addEventListener('click',()=>setTimeout(adShow,900))};hook()}
+{const _v=rkView;rkView=function(v){const r=_v.apply(this,arguments);try{if(v==='bp'){let ss=null;try{ss=sessionStorage}catch(e){}if(!(ss&&ss.adBp)&&!window.__adBp){window.__adBp=1;try{ss&&(ss.adBp='1')}catch(e){}setTimeout(adShow,500)}}}catch(e){}return r}}
+{const _ba=bpAct;bpAct=async function(a,b){try{if(a==='code'||((a==='info'||a==='claim')&&b&&b.dataset.r==='p'&&(bpG().own|0)<2))setTimeout(adShow,a==='code'?0:350)}catch(e){}return _ba.apply(this,arguments)}}
 try{Object.assign(window.__vw,{adShow:()=>adShow()})}catch(e){}
 
 function twTrofList(){const tc=twLS.g('tw_tc',{}),run={};for(const t of TW.tr)run[t.k]=(run[t.k]||0)+1;
@@ -17091,7 +17096,7 @@ window.__dbg={mus:()=>[MCUR,MEL.src.split('/').pop()],stg:()=>STAGE.key,prepMatc
 })();
 </script>
 <style>#updB{position:fixed;left:50%;top:max(8px,env(safe-area-inset-top));transform:translateX(-50%);z-index:99999;padding:10px 22px;border-radius:14px;border:2px solid #fff3c0;background:linear-gradient(#ffd84a,#e08a10);color:#3a1d00;font:900 15px system-ui,sans-serif;box-shadow:0 0 18px #ffb21f;cursor:pointer;animation:updP 1s ease-in-out infinite alternate}@keyframes updP{to{transform:translateX(-50%) scale(1.05)}}</style>
-<script>(function(){const V='04b765d53d50';if(!/^https?:/.test(location.protocol))return;let nv=null;
+<script>(function(){const V='cf186c414f67';if(!/^https?:/.test(location.protocol))return;let nv=null;
 function show(){if(document.getElementById('updB'))return;try{if(typeof G!=='undefined'&&G.mode==='fight')return}catch(e){}const b=document.createElement('button');b.id='updB';b.textContent='🔄 ATUALIZAÇÃO NOVA! Toque para atualizar';
   b.onclick=()=>{b.textContent='⏳ Atualizando...';try{acSave(1)}catch(e){}setTimeout(()=>location.reload(),900)};document.body.appendChild(b)}
 async function chk(){if(document.hidden)return;if(nv){show();return}try{const r=await fetch('versao.txt?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const t=(await r.text()).trim();if(/^[0-9a-f]{8,40}$/.test(t)&&t!==V){nv=t;show()}}catch(e){}}

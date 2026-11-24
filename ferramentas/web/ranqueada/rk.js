@@ -8118,5 +8118,10 @@ function adShow(){try{if(document.getElementById('adPass'))return;if(typeof G!==
 #adPass .adImg{display:block;width:100%;border-radius:1em;overflow:hidden;box-shadow:0 0 2em #ff1a3a99;border:2px solid #ff5a6a}#adPass .adImg img{display:block;width:100%;height:auto}
 #adPass .adX{position:absolute;top:-.6em;right:-.6em;width:2.4em;height:2.4em;border-radius:50%;border:2px solid #fff;background:#a3001a;color:#fff;font:900 1em sans-serif;cursor:pointer;box-shadow:0 0 .6em #000}
 #adPass .adBt{padding:.5em 1.4em;border-radius:1em;background:linear-gradient(180deg,#25d366,#128c4a);color:#fff;font:900 .95em sans-serif;text-decoration:none;box-shadow:0 0 .8em #25d36688;border:2px solid #b8ffd0}`;document.head.appendChild(st)}
-{let ok=0;const go=()=>{if(ok)return;const b=document.getElementById('goSelect');if(b&&!b.disabled){ok=1;setTimeout(adShow,800)}else setTimeout(go,500)};setTimeout(go,1000)}
+/* v636: o dono mudou QUANDO aparece:
+   • TODA VEZ que aperta "BATALHA E AVENTURA" (#mRank) · • 1 vez por abertura do jogo ao entrar no PASSE
+   • SEMPRE que tenta pegar/ver prêmio do PREMIUM sem ter o premium, ou aperta 🎟️ CÓDIGO DO PREMIUM. (Não aparece mais ao abrir o jogo.) */
+{const hook=()=>{const b=document.getElementById('mRank');if(!b){setTimeout(hook,500);return}b.addEventListener('click',()=>setTimeout(adShow,900))};hook()}
+{const _v=rkView;rkView=function(v){const r=_v.apply(this,arguments);try{if(v==='bp'){let ss=null;try{ss=sessionStorage}catch(e){}if(!(ss&&ss.adBp)&&!window.__adBp){window.__adBp=1;try{ss&&(ss.adBp='1')}catch(e){}setTimeout(adShow,500)}}}catch(e){}return r}}
+{const _ba=bpAct;bpAct=async function(a,b){try{if(a==='code'||((a==='info'||a==='claim')&&b&&b.dataset.r==='p'&&(bpG().own|0)<2))setTimeout(adShow,a==='code'?0:350)}catch(e){}return _ba.apply(this,arguments)}}
 try{Object.assign(window.__vw,{adShow:()=>adShow()})}catch(e){}
