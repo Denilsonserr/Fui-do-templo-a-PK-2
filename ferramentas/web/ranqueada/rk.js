@@ -8060,16 +8060,16 @@ TWCUP['1weh518']={nm:'🪷 SHAKA FULL V2',it:[],uni:1,skfull:1};
    TOTAL: 60 tickets (= 30 giros na Invocação do Alucard) + 6.000 💎 + 36.000 moedas. Guardado em rk_alev {n,got}. ================= */
 const ALEV=[Date.UTC(2026,10,24,15,55),Date.UTC(2026,11,2,2,59,59)],ALX=17 /* v633: dono pediu no mínimo 400 partidas (24×17=408) */,ALN=24;
 const alevOn=()=>{const t=Date.now();return t>=ALEV[0]&&t<ALEV[1]},alevG=()=>{const o=rkG('alev',null);return o&&o.k==='al1'?o:{k:'al1',n:0,got:0}};
-const alevRw=i=>i%2===0?{t:3,g:250,m:0}:{t:2,g:250,m:3000};
-function alevGive(){const o=alevG();let msg=[];while(o.got<ALN&&o.n>=(o.got+1)*ALX){const R=alevRw(o.got);rkAdd('tic',R.t);rkAdd('gem',R.g);if(R.m)twAddCoins(R.m);o.got++;
-    msg.push('🎁 PRÊMIO '+o.got+'/'+ALN+': +'+R.t+' 🎫 +'+R.g+' 💎'+(R.m?' +'+rkFmtN(R.m)+' moedas':''))}
+const alevRw=i=>i%2===0?{t:3,g:250,m:0}:{t:i===ALN-1?12:2,g:250,m:3000}; /* v634: 🦇 TICKET DO ALUCARD (só na Invocação do Alucard); total 70 (o último prêmio dá 12) */
+function alevGive(){const o=alevG();let msg=[];while(o.got<ALN&&o.n>=(o.got+1)*ALX){const R=alevRw(o.got);rkAdd('tal',R.t);rkAdd('gem',R.g);if(R.m)twAddCoins(R.m);o.got++;
+    msg.push('🎁 PRÊMIO '+o.got+'/'+ALN+': +'+R.t+' 🦇 TICKET DO ALUCARD +'+R.g+' 💎'+(R.m?' +'+rkFmtN(R.m)+' moedas':''))}
   rkS('alev',o);if(msg.length){try{acSave(1)}catch(e){}setTimeout(()=>{try{rkSfx('powerUp');rkToast(msg.join(' · '),'#ff5a6a')}catch(e){}},1800)}}
 {const _b=btRec;btRec=function(m,w,x){const t0=G._btT;const r=_b.apply(this,arguments);try{if(alevOn()&&G._btT!==t0&&!(m==='pvp'&&PV.fight&&PV.fight.friendly)){const o=alevG();o.n++;rkS('alev',o);alevGive()}}catch(e){}return r}}
 function alevOpen(){const o=alevG(),nx=Math.min(ALN,o.got+1),falta=Math.max(0,nx*ALX-o.n),mm=x=>{const s=Math.max(0,Math.round(x/1000)),d=Math.floor(s/86400),h=Math.floor(s%86400/3600);return (d?d+'d ':'')+h+'h'};
   rkModal(`<div class="twM alevM"><h3>🦇 EVENTO DO ALUCARD · JOGUE E GANHE</h3>
-  <p class="twH">Jogue partidas em <b>qualquer modo</b> (chefes, torre, PVP ranqueado, portais, caça, desafios…). A cada <b>${ALX} partidas</b> você ganha um prêmio! No total: <b>60 🎫 tickets</b> para girar na <b>Invocação do Alucard</b> + <b>6.000 💎</b> + moedas.</p>
+  <p class="twH">Jogue partidas em <b>qualquer modo</b> (chefes, torre, PVP ranqueado, portais, caça, desafios…). A cada <b>${ALX} partidas</b> você ganha um prêmio! No total: <b>70 🦇 TICKETS DO ALUCARD</b> (só servem na <b>Invocação do Alucard</b> · 2 = 1 giro) + <b>6.000 💎</b> + moedas.</p>
   <div class="alevBar"><s style="width:${Math.min(100,o.n/(ALN*ALX)*100)}%"></s><span>${o.n} partidas · ${o.got}/${ALN} prêmios${o.got<ALN?' · faltam '+falta+' para o próximo':' · COMPLETO!'}</span></div>
-  <div class="alevL">${Array.from({length:ALN},(_,i)=>{const R=alevRw(i);return `<div class="${i<o.got?'ok':i===o.got?'nx':''}"><i>${(i+1)*ALX}</i><b>🎫 ${R.t} · 💎 ${R.g}${R.m?' · 🪙 '+rkFmtN(R.m):''}</b><em>${i<o.got?'✔':''}</em></div>`}).join('')}</div>
+  <div class="alevL">${Array.from({length:ALN},(_,i)=>{const R=alevRw(i);return `<div class="${i<o.got?'ok':i===o.got?'nx':''}"><i>${(i+1)*ALX}</i><b>🦇 ${R.t} · 💎 ${R.g}${R.m?' · 🪙 '+rkFmtN(R.m):''}</b><em>${i<o.got?'✔':''}</em></div>`}).join('')}</div>
   <p class="twH">${alevOn()?'Termina em '+mm(ALEV[1]-Date.now())+' (01/12 às 23:59).':'Evento encerrado.'} Treino e PVP amistoso não contam.</p>
   <div class="row"><button class="btn" id="rkMX">FECHAR</button></div></div>`);$('rkMX').onclick=()=>rkModal(null)}
 {const _v=rkView;rkView=function(v){const r=_v.apply(this,arguments);try{if(v==='menu'&&alevOn()){const W=$('rkWrap'),A=W&&W.querySelector('.rkA');if(A&&!A.querySelector('.alevB')){const o=alevG(),b=document.createElement('button');b.className='alevB';
@@ -8092,3 +8092,14 @@ const COINK=.3,coinCut=n=>n>0?Math.max(1,Math.round(n*COINK)):n;
 {const _f=twCoinWin;twCoinWin=function(){return coinCut(_f.apply(this,arguments))}}
 {const _f=hyGrant;hyGrant=function(it){try{if(it&&it.k==='mo'&&!it._cc){it._cc=1;it.n=coinCut(it.n)}}catch(e){}return _f.apply(this,arguments)}}
 try{Object.assign(window.__vw,{tnCoins:n=>tnCoins(n),twCoinWin:(a,b,c)=>twCoinWin(a,b,c),hyGrant:it=>hyGrant(it),COINK})}catch(e){}
+
+/* ================= v634: 🦇 TICKET DO ALUCARD — moeda própria (rk_tal), SÓ vale na Invocação do Alucard (2 = 1 giro).
+   Na invocação do Alucard ele é usado PRIMEIRO; depois os tickets normais; depois 💎. ================= */
+{const _c=rkCost;rkCost=function(n){if(RKBAN!=='al')return _c.apply(this,arguments);const TA=rkG('tal',0)|0,spA=Math.min(n,Math.floor(TA/2)),rem=n-spA;
+  if(!spA)return _c.apply(this,arguments);if(!rem)return {t:0,ta:spA*2,g:0};const sp=Math.min(rem,Math.floor((rkG('tic',0)|0)/2));return {t:sp*2,ta:spA*2,g:(rem-sp)*160}}}
+{const _sm=rkSummon;rkSummon=function(n){if(RKBAN!=='al')return _sm.apply(this,arguments);const C=rkCost(n),h0=(rkG('hist',[])[0]||{}).d;const r=_sm.apply(this,arguments);
+  try{if(C.ta&&(rkG('hist',[])[0]||{}).d!==h0){rkS('tal',Math.max(0,(rkG('tal',0)|0)-C.ta));try{acSave(1)}catch(e){}rkToast('🦇 Usou '+C.ta+' TICKETS DO ALUCARD'+(C.t?' + '+C.t+' 🎫':'')+(C.g?' + '+C.g+' 💎':''),'#ff5a6a');try{if(RKV==='gacha'||RKV==='rk')rkView(RKV)}catch(e){}}}catch(e){}return r}}
+{const _gh=rkGachaH;rkGachaH=function(){const h=_gh.apply(this,arguments);if(RKBAN!=='al')return h;const n=rkG('tal',0)|0;
+  return h+`<div class="alTal" style="${rkB(1180,70,1720,112)}">🦇 TICKETS DO ALUCARD: <b>${rkFmtN(n)}</b> <small>· ${n>=2?'usados primeiro · 2 = 1 giro':'ganhe no 🦇 Evento do Alucard'}</small></div>`}}
+{const st=document.createElement('style');st.textContent='.alTal{position:absolute;display:flex;align-items:center;justify-content:center;gap:.3em;border-radius:.7em;border:2px solid #ff5a6a;background:linear-gradient(180deg,#4a0610,#180204);color:#ffe3e6;font:900 .8em var(--f-ui);white-space:nowrap;box-shadow:0 0 .6em #ff2a4a88}.alTal b{color:#fff;font-size:1.15em}.alTal small{font:700 .8em var(--f-ui);opacity:.85}';document.head.appendChild(st)}
+try{Object.assign(window.__vw,{alCost:n=>{const b=RKBAN;RKBAN='al';const c=rkCost(n);RKBAN=b;return c},alSum:n=>{const b=RKBAN;RKBAN='al';try{rkSummon(n)}finally{RKBAN=b}}})}catch(e){}

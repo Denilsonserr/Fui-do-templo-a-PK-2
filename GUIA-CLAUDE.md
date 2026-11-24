@@ -3002,3 +3002,9 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 
 ## v633 — Evento do Alucard: 408 partidas para completar
 - `ALX` 5 → 17 (24 prêmios × 17 = 408 partidas). Quem já ganhou prêmio não perde; o próximo vem em (got+1)×17.
+
+## v634 — 🦇 TICKET DO ALUCARD (só na Invocação do Alucard) + evento dá 70
+- Moeda `rk_tal`. Na invocação 'al' é usada primeiro (2 = 1 giro), depois o ticket normal, depois 💎 (wrappers de `rkCost` com `ta` e `rkSummon`, que desconta só se o giro aconteceu).
+- Faixa `.alTal` na tela do Alucard mostra quantos a pessoa tem.
+- Evento do Alucard agora dá 🦇 em vez de ticket normal. O último prêmio dá 12 → total 70.
+- Teste: `talev_v631.js`.
