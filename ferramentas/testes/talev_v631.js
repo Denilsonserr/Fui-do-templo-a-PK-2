@@ -1,0 +1,16 @@
+// v631: todos os eventos desligados + drop mais difícil + EVENTO DO ALUCARD (a cada 5 partidas um prêmio; 60 tickets + 6.000 💎 no total)
+const {chromium}=require('playwright');const SH=__dirname+'/shots/t631_';
+(async()=>{const b=await chromium.launch();let ok=1;const chk=(c,m)=>{console.log((c?'OK  ':'FALHA ')+m);if(!c)ok=0};const E=[];const p=await b.newPage({viewport:{width:915,height:412}});p.on('pageerror',e=>E.push(e.message));await p.route(/fonts\.g|firestore/,r=>r.abort());
+  await p.addInitScript(()=>{if(!sessionStorage.d){sessionStorage.d=1;localStorage.clear();Object.assign(localStorage,{tw_nome:'"Bia"',rk_ini:'1',rk_xpv2:'1',rk_dia:'1',rk_lvrz:'1',rk_rs463:'1',rk_rs464:'1',rk_rs464b:'1',rk_urso:'1',rk_own:'["goku"]',rk_gem:'0',rk_tic:'0',tw_moedas:'0'})}});
+  await p.goto('http://localhost:8790/index.html');await p.waitForFunction(()=>!document.getElementById('goSelect').disabled,null,{timeout:120000});await p.waitForTimeout(1500);
+  const ev=await p.evaluate(()=>({ev:__pvT.ev(),m:__pvT.m(),fer:__vw.ferOn(),pt:__vw.ptSE2(),ev2x:__vw.ev2xOn(),be:__vw.beCh(),drop:__vw.rkDropK(),al:__vw.alevOn()}));console.log(JSON.stringify(ev));
+  chk(!ev.ev&&ev.m.every(x=>x===1)&&!ev.fer&&!ev.pt&&!ev.ev2x&&ev.be===3,'nenhum evento ligado');chk(Math.abs(ev.drop-.4)<.001,'drop mais difícil (0,6 → 0,4)');chk(ev.al,'evento do Alucard ligado');
+  await p.click('#mRank');await p.waitForTimeout(2500);await p.evaluate(()=>{document.querySelectorAll('#lvrzM,#leiCl').forEach(x=>x.remove());const m=document.getElementById('rkModal');if(m){m.innerHTML='';m.hidden=true}});await p.screenshot({path:SH+'menu.png'});
+  chk(await p.evaluate(()=>!!document.querySelector('.alevB')),'botão 🦇 EVENTO DO ALUCARD no menu');await p.click('.alevB');await p.waitForTimeout(600);await p.screenshot({path:SH+'painel.png'});await p.evaluate(()=>{const m=document.getElementById('rkModal');m.innerHTML='';m.hidden=true});
+  await p.evaluate(()=>__pvT.treino('goku','goku','pve'));await p.waitForFunction(()=>__dbg.G.mode==='fight',null,{timeout:120000});
+  const r=await p.evaluate(()=>{for(let i=0;i<52;i++){__dbg.G._btT=0;__vw.btRec('boss',i%2===0)}return {a:__vw.alevG(),tic:+JSON.parse(localStorage.rk_tic||'0'),gem:+JSON.parse(localStorage.rk_gem||'0'),moe:+JSON.parse(localStorage.tw_moedas||'0')}});console.log(JSON.stringify(r));
+  chk(r.a.n===52&&r.a.got===10,'52 partidas = 10 prêmios');chk(r.tic===25&&r.gem===2500&&r.moe===15000,'prêmios: 25 tickets, 2.500 💎, 15.000 moedas');
+  const r2=await p.evaluate(()=>{__dbg.G._btT=Date.now();__vw.btRec('boss',true);return __vw.alevG().n});chk(r2===52,'a mesma partida não conta 2x');
+  const r3=await p.evaluate(()=>{for(let i=0;i<200;i++){__dbg.G._btT=0;__vw.btRec('pve',true)}return {a:__vw.alevG(),tic:+JSON.parse(localStorage.rk_tic||'0'),gem:+JSON.parse(localStorage.rk_gem||'0')}});
+  chk(r3.a.got===24&&r3.tic===60&&r3.gem===6000,'completo: 24 prêmios = 60 tickets + 6.000 💎 (e para por aí)');
+  console.log(E.length?'ERROS '+E.join('|'):'sem erros');console.log(ok&&!E.length?'TUDO OK':'FALHOU');await b.close()})();

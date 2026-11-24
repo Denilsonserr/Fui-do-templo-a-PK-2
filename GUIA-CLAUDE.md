@@ -2985,3 +2985,13 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - `8ee2e2` e `84egp3`: Beru (`sbr:1,uni:1`).
 - `1weh518` (`skfull:1`): Shaka + as 5 peças de Virgem em V2 (peça V1 que a pessoa já tem evolui, não duplica; V2 não repete) → Armadura Divina.
 - Teste: `tcod_v630.js`.
+
+## v631 — Todos os eventos desligados + drop mais difícil + EVENTO DO ALUCARD (jogue e ganhe)
+- `FER` termina 24/11 12:55 BRT: junto com ele acabam EV2X (2x drop/estrelas), PTSE2/PTS10 (portal vermelho 10 min) e as sombras 3x.
+- `DROPBASE` .6 → .4.
+- EVENTO DO ALUCARD (`ALEV`, até 01/12 23:59, `rk_alev` {k:'al1',n,got}):
+  - conta 1 partida em cada `btRec` gravado (treino e PVP amistoso não contam);
+  - a cada `ALX`=5 partidas, 1 prêmio (24 no total) — ímpar: 3 🎫 + 250 💎; par: 2 🎫 + 250 💎 + 3.000 moedas;
+  - total: 60 tickets (30 giros no Alucard) + 6.000 💎 + 36.000 moedas;
+  - botão `.alevB` no topo do menu da Ranqueada → painel `alevOpen()`.
+- Teste: `talev_v631.js`.

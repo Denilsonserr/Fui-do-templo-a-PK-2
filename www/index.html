@@ -15889,7 +15889,7 @@ try{Object.assign(window.__pvT||{},{ptNow:t=>ptNow(t),ptRaid:()=>ptRaid(),pnMk:(
    • Drops do jogo todo ×0,6 (rkDropF via extra/9z_v556.py; portais: item/sombra/poção/peça do Monarca/diamante ×0,6). No evento ×2.
    • Evento EV2X: até 22/11 23:59 (Brasília): 2x DROP · 2x XP de rank · 2x ESTRELAS no PVP ranqueado · 2x ANEL (chance de anel).
    • Beru: vida ×2,5 e mais ×1 a ×12 conforme a força de quem entra (dano, crítico e velocidade); ataque ×1 a ×2,4. ================= */
-const DROPBASE=.6,EV2X=[Date.UTC(2026,10,19,19,20),Date.UTC(2026,10,22,17,45)] /* v618: dono pediu para encerrar às 14:45 de 22/11 (era até 23:59) */,ev2xOn=t=>{t=t||Date.now();return t>=EV2X[0]&&t<EV2X[1]};
+const DROPBASE=.4 /* v631: dono pediu drop mais difícil (era .6) */,EV2X=[Date.UTC(2026,10,19,19,20),Date.UTC(2026,10,22,17,45)] /* v618: dono pediu para encerrar às 14:45 de 22/11 (era até 23:59) */,ev2xOn=t=>{t=t||Date.now();return t>=EV2X[0]&&t<EV2X[1]};
 function rkDropK(){return DROPBASE*(ev2xOn()?2:1)}
 RKEVX.splice(0,0,[EV2X[0],EV2X[1],2,'2x DROP · 2x XP · 2x ESTRELAS · 2x ANEL',{anel:2}]);
 try{for(const R of PTRK){for(const k of ['it','sh','pv','sj','gem']){const b=R[k];if(typeof b!=='number')continue;Object.defineProperty(R,k,{get:()=>b*rkDropK(),configurable:true,enumerable:true})}}}catch(e){}
@@ -16813,7 +16813,7 @@ setTimeout(()=>{try{const u=String(twLS.g('tw_uid','')||''),n=String(twLS.g('tw_
    • 2x drop e 2x estrelas no PVP (reusa a janela EV2X)
    • PORTAL VERMELHO (rank S) a cada 10 min (reusa PTSE2 + PTS10)
    • 3x chance de SOMBRA: Igris (chance do rank × 3) e Beru (beCh × 3) via ferOn(). ================= */
-const FER=[Date.UTC(2026,10,23,13,55),Date.UTC(2026,10,26,14,0)];
+const FER=[Date.UTC(2026,10,23,13,55),Date.UTC(2026,10,24,15,55)]; /* v631: dono mandou TIRAR TODOS os eventos (24/11 12:55) — era até 26/11 11h */
 function ferOn(t){t=t||Date.now();return t>=FER[0]&&t<FER[1]}
 EV2X[0]=FER[0];EV2X[1]=FER[1];PTSE2[0]=FER[0];PTSE2[1]=FER[1];PTS10[0]=FER[0];PTS10[1]=FER[1];
 RKEVX.unshift([FER[0],FER[1],2,'🏖️ FÉRIAS · 2x XP · 2x GEMAS · 2x SORTE · 2x DROP · 2x ANEL · 2x ESTRELAS',{gem:2,luck:2,anel:2},'fer']);
@@ -16830,6 +16830,38 @@ TWCUP['1weh518']={nm:'🪷 SHAKA FULL V2',it:[],uni:1,skfull:1};
     twLS.s('tw_inv',I);try{TW.capOut=twCap()}catch(e){}try{acSave(1)}catch(e){}
     E.textContent='🪷 SHAKA FULL! Você ganhou o SHAKA + as 5 peças de Virgem em V2 (ARMADURA DIVINA → FORMA DIVINA). Equipe na 🎒 MOCHILA!';try{twSfx('boom')}catch(e){}
     try{if(!rkG('skdvok',0)&&skDivHave()){rkS('skdvok',1);setTimeout(()=>skDivWin(),2500)}}catch(e){}}}catch(e){}return r}}
+
+/* ================= v631: EVENTO DO ALUCARD · JOGUE E GANHE (24/11 13h → 01/12 23:59, Brasília) =================
+   Pedido do dono: tirar todos os eventos, drop mais difícil e um evento onde a pessoa precisa JOGAR MUITO em vários modos.
+   Conta 1 PARTIDA a cada luta que termina (btRec: chefes, torre, caça, PVP ranqueado, desafios, portais, modos clássicos;
+   treino e PVP amistoso NÃO contam). A cada ALX=5 partidas = 1 prêmio (24 prêmios = 120 partidas), entregue sozinho:
+     ímpares: 🎫 3 tickets + 250 💎 · pares: 🎫 2 tickets + 250 💎 + 3.000 moedas
+   TOTAL: 60 tickets (= 30 giros na Invocação do Alucard) + 6.000 💎 + 36.000 moedas. Guardado em rk_alev {n,got}. ================= */
+const ALEV=[Date.UTC(2026,10,24,15,55),Date.UTC(2026,11,2,2,59,59)],ALX=5,ALN=24;
+const alevOn=()=>{const t=Date.now();return t>=ALEV[0]&&t<ALEV[1]},alevG=()=>{const o=rkG('alev',null);return o&&o.k==='al1'?o:{k:'al1',n:0,got:0}};
+const alevRw=i=>i%2===0?{t:3,g:250,m:0}:{t:2,g:250,m:3000};
+function alevGive(){const o=alevG();let msg=[];while(o.got<ALN&&o.n>=(o.got+1)*ALX){const R=alevRw(o.got);rkAdd('tic',R.t);rkAdd('gem',R.g);if(R.m)twAddCoins(R.m);o.got++;
+    msg.push('🎁 PRÊMIO '+o.got+'/'+ALN+': +'+R.t+' 🎫 +'+R.g+' 💎'+(R.m?' +'+rkFmtN(R.m)+' moedas':''))}
+  rkS('alev',o);if(msg.length){try{acSave(1)}catch(e){}setTimeout(()=>{try{rkSfx('powerUp');rkToast(msg.join(' · '),'#ff5a6a')}catch(e){}},1800)}}
+{const _b=btRec;btRec=function(m,w,x){const t0=G._btT;const r=_b.apply(this,arguments);try{if(alevOn()&&G._btT!==t0&&!(m==='pvp'&&PV.fight&&PV.fight.friendly)){const o=alevG();o.n++;rkS('alev',o);alevGive()}}catch(e){}return r}}
+function alevOpen(){const o=alevG(),nx=Math.min(ALN,o.got+1),falta=Math.max(0,nx*ALX-o.n),mm=x=>{const s=Math.max(0,Math.round(x/1000)),d=Math.floor(s/86400),h=Math.floor(s%86400/3600);return (d?d+'d ':'')+h+'h'};
+  rkModal(`<div class="twM alevM"><h3>🦇 EVENTO DO ALUCARD · JOGUE E GANHE</h3>
+  <p class="twH">Jogue partidas em <b>qualquer modo</b> (chefes, torre, PVP ranqueado, portais, caça, desafios…). A cada <b>${ALX} partidas</b> você ganha um prêmio! No total: <b>60 🎫 tickets</b> para girar na <b>Invocação do Alucard</b> + <b>6.000 💎</b> + moedas.</p>
+  <div class="alevBar"><s style="width:${Math.min(100,o.n/(ALN*ALX)*100)}%"></s><span>${o.n} partidas · ${o.got}/${ALN} prêmios${o.got<ALN?' · faltam '+falta+' para o próximo':' · COMPLETO!'}</span></div>
+  <div class="alevL">${Array.from({length:ALN},(_,i)=>{const R=alevRw(i);return `<div class="${i<o.got?'ok':i===o.got?'nx':''}"><i>${(i+1)*ALX}</i><b>🎫 ${R.t} · 💎 ${R.g}${R.m?' · 🪙 '+rkFmtN(R.m):''}</b><em>${i<o.got?'✔':''}</em></div>`}).join('')}</div>
+  <p class="twH">${alevOn()?'Termina em '+mm(ALEV[1]-Date.now())+' (01/12 às 23:59).':'Evento encerrado.'} Treino e PVP amistoso não contam.</p>
+  <div class="row"><button class="btn" id="rkMX">FECHAR</button></div></div>`);$('rkMX').onclick=()=>rkModal(null)}
+{const _v=rkView;rkView=function(v){const r=_v.apply(this,arguments);try{if(v==='menu'&&alevOn()){const W=$('rkWrap'),A=W&&W.querySelector('.rkA');if(A&&!A.querySelector('.alevB')){const o=alevG(),b=document.createElement('button');b.className='alevB';
+  b.innerHTML=`🦇 EVENTO DO ALUCARD<small>${o.got}/${ALN} prêmios · ${o.n} partidas</small>`;b.onclick=e=>{e.stopPropagation();rkSfx('whoosh');alevOpen()};A.appendChild(b)}}}catch(e){}return r}}
+{const st=document.createElement('style');st.textContent=`
+.alevB{position:absolute;left:28%;top:1.2%;z-index:7;padding:.35em 1em;border-radius:.8em;border:2px solid #ff5a6a;background:linear-gradient(180deg,#5a0612,#1c0206);color:#ffe3e6;font:900 1.05em var(--f-ui);display:flex;flex-direction:column;align-items:flex-start;box-shadow:0 0 .9em #ff2a4a88;cursor:pointer;animation:alevP 1.6s ease-in-out infinite}
+.alevB small{font:700 .72em var(--f-ui);opacity:.9}@keyframes alevP{50%{box-shadow:0 0 1.6em #ff2a4a}}
+.alevM h3{color:#ff8a96}.alevBar{position:relative;height:1.6em;border-radius:.8em;background:#200408;border:1px solid #ff5a6a66;overflow:hidden;margin:.4em 0}
+.alevBar s{position:absolute;inset:0 auto 0 0;background:linear-gradient(90deg,#a3001a,#ff3a5a)}.alevBar span{position:relative;display:block;text-align:center;line-height:1.6em;font:800 .8em var(--f-ui);color:#fff;text-shadow:0 1px 2px #000}
+.alevL{display:grid;grid-template-columns:repeat(4,1fr);gap:.3em;max-height:38vh;overflow:auto}.alevL div{display:flex;flex-direction:column;align-items:center;padding:.3em;border-radius:.5em;background:#1a0a0e;border:1px solid #ff5a6a33;font-size:.78em}
+.alevL div.ok{background:#0f2a14;border-color:#7dff9a88}.alevL div.nx{border-color:#ffd84a;box-shadow:0 0 .5em #ffd84a66}.alevL i{font-style:normal;color:#ff8a96;font-weight:900}.alevL em{font-style:normal;color:#7dff9a}`;document.head.appendChild(st)}
+setTimeout(()=>{try{alevGive()}catch(e){}},4000);
+try{Object.assign(window.__vw,{alevG:()=>alevG(),alevOn:()=>alevOn(),alevOpen:()=>alevOpen(),btRec:(m,w,x)=>btRec(m,w,x)})}catch(e){}
 
 function twTrofList(){const tc=twLS.g('tw_tc',{}),run={};for(const t of TW.tr)run[t.k]=(run[t.k]||0)+1;
   twModal(`<div class="twM"><h3>🎖️ TROFÉUS</h3><div class="twTL">${Object.keys(TWTR).map(k=>{const T=TWTR[k];return `<div class="${tc[k]||run[k]?'got':''}"><i>${T.i}</i><b>${T.n}</b><span>${T.d}</span><em>+${T.p} 🏆</em><small>${run[k]?'nesta subida: '+run[k]+' · ':''}total: ${(tc[k]||0)}</small></div>`}).join('')}</div>
@@ -17022,7 +17054,7 @@ window.__dbg={mus:()=>[MCUR,MEL.src.split('/').pop()],stg:()=>STAGE.key,prepMatc
 })();
 </script>
 <style>#updB{position:fixed;left:50%;top:max(8px,env(safe-area-inset-top));transform:translateX(-50%);z-index:99999;padding:10px 22px;border-radius:14px;border:2px solid #fff3c0;background:linear-gradient(#ffd84a,#e08a10);color:#3a1d00;font:900 15px system-ui,sans-serif;box-shadow:0 0 18px #ffb21f;cursor:pointer;animation:updP 1s ease-in-out infinite alternate}@keyframes updP{to{transform:translateX(-50%) scale(1.05)}}</style>
-<script>(function(){const V='8f0d981e3f72';if(!/^https?:/.test(location.protocol))return;let nv=null;
+<script>(function(){const V='cdebb9dcea80';if(!/^https?:/.test(location.protocol))return;let nv=null;
 function show(){if(document.getElementById('updB'))return;try{if(typeof G!=='undefined'&&G.mode==='fight')return}catch(e){}const b=document.createElement('button');b.id='updB';b.textContent='🔄 ATUALIZAÇÃO NOVA! Toque para atualizar';
   b.onclick=()=>{b.textContent='⏳ Atualizando...';try{acSave(1)}catch(e){}setTimeout(()=>location.reload(),900)};document.body.appendChild(b)}
 async function chk(){if(document.hidden)return;if(nv){show();return}try{const r=await fetch('versao.txt?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const t=(await r.text()).trim();if(/^[0-9a-f]{8,40}$/.test(t)&&t!==V){nv=t;show()}}catch(e){}}
