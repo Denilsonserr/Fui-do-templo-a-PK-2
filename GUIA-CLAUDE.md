@@ -3021,3 +3021,18 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - Aparece 1 vez por abertura ao entrar no PASSE (`sessionStorage.adBp`).
 - Aparece SEMPRE ao tocar num prêmio PREMIUM sem ter o premium, ou no 🎟️ CÓDIGO DO PREMIUM.
 - Teste: `tanuncio_v635.js`.
+
+## v637 — Equipamento de COSTAS + ASAS DA FÊNIX CARMESIM + EVENTO DAS ASAS
+- Espaço novo `t:'cos'`:
+  - `twEqOn` inclui 'cos';
+  - no Personagem, o quadrado das asas (`LBSLC`, era a poção) virou 'cos';
+  - em Equipamentos, o 'x2' EM BREVE virou 'cos'. A poção continua em Equipamentos.
+- `RKSP.asfen` ASAS DA FÊNIX CARMESIM (arte do dono, `ranqueada_artes/v637/asa_fenix.png` → `a/ba857cb1d77f39.webp`):
+  - dmg 120, def 80, crit 90, vel 60;
+  - 100% em qualquer personagem; uniq (não vende/duplica).
+- EVENTO DAS ASAS (`ASEV` até 01/12 23:59, `rk_asev`):
+  - 5 missões/dia (`asToday`: 1 PVP + 1 chefe + 3 sorteadas pela data BRT, iguais para todos), pool `ASM` com 14 missões;
+  - progresso via `btRec` (modo, vitória, duração pela entrada em G.mode 'fight');
+  - RECOLHER = 🪶 1 pena + 150 💎; 10 penas = asas (mínimo 2 dias).
+- Tela = arte do dono (`tela_evento_asas.png` → `a/3fb47322c730cf.webp`), `#asEv`. Botão `.asEvB` no menu, embaixo do evento do Alucard.
+- Teste: `tasas_v637.js`.

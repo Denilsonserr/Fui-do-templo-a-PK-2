@@ -9612,7 +9612,7 @@ const eqChar=()=>{try{if(typeof TW!=='undefined'&&TW.on&&TW.pick)return TW.pick;
 const skSetFull=()=>{const o=twEqOn();return ['cap','arm','esp','bot','anel'].every(k=>o[k]&&o[k].sk)};
 const sjSetFull=()=>{const o=twEqOn();return ['cap','arm','esp','bot','anel'].every(k=>o[k]&&o[k].sj)};
 const eqNf=it=>it&&it.al?(eqChar()!=='alucard'?.5:alSetFull()?1.1:1):it&&it.yt&&eqChar()!=='yuta'?.5:it&&it.sk?(eqChar()!=='shaka'?.5:skSetFull()?1.1:1):it&&it.sj?(it.nm==='MANOPLA DO MONARCA'?(eqChar()!=='sung'?1:sjSetFull()?1.6:1.5):eqChar()!=='sung'?.5:sjSetFull()?1.6:1.5):1; /* v466: Manopla vale 100% em todos; v461: +50% no Sung (set completo +60%) */
-twEqOn=function(){const I=twInv(),Q=twEqp(),o={};for(const k of ['esp','arm','bot','cap','anel','col']){const it=I.find(x=>x.id===Q[k]);if(it)o[k]=it}return o};
+twEqOn=function(){const I=twInv(),Q=twEqp(),o={};for(const k of ['esp','arm','bot','cap','anel','col','cos']){const it=I.find(x=>x.id===Q[k]);if(it)o[k]=it}return o};
 const EQMAIN={esp:'dano',arm:'vida',bot:'vel',cap:'trf',anel:'st'};
 twEqB=st=>{const o=twEqOn();let v=0;for(const k in o){const it=o[k],n=eqNf(it);if(EQMAIN[k]===st)v+=(it.v||0)*n;if(st==='vel'&&it.vel)v+=it.vel*n;if(st==='dano'&&it.dmg)v+=it.dmg*n;if(st==='vida'&&it.def)v+=it.def*n;if(st==='trf'&&it.trf)v+=it.trf*n}return Math.round(v*10)/10};
 const eqCrit=()=>{const o=twEqOn();let c=0;for(const k in o)c+=(o[k].crit||0)*eqNf(o[k]);return c};
@@ -11166,9 +11166,9 @@ const LBX=[1235,1350,1465,1580,1693],LBY=[200,323,448,573];
 const lbSel=()=>{const o=rkG('own',['goku']),s=rkG('sel','goku');return o.includes(s)?s:(o[0]||'goku')};
 const lbC=r=>(TWEQR.find(R=>R.k===r)||TWEQR[0]).c;
 const lbEsc=s=>twEsc(String(s==null?'':s));
-const LBSLN={esp:'ESPADA',cap:'CAPACETE',anel:'ANEL / LUVAS',arm:'ARMADURA',bot:'BOTAS',poc:'POÇÃO',col:'COLAR'};
-const LBSLC=[['esp',320,225],['arm',320,337],['bot',320,450],['cap',726,225],['anel',726,337],['poc',726,450]];
-const LBSLE=[['cap',322,227],['arm',322,330],['anel',322,428],['bot',322,522],['col',728,227],['esp',728,330],['poc',728,428],['x2',728,522]]; /* v468: COLAR no desenho do colar (em cima), espada e poção descem */
+const LBSLN={esp:'ESPADA',cap:'CAPACETE',anel:'ANEL / LUVAS',arm:'ARMADURA',bot:'BOTAS',poc:'POÇÃO',col:'COLAR',cos:'COSTAS'};
+const LBSLC=[['esp',320,225],['arm',320,337],['bot',320,450],['cap',726,225],['anel',726,337],['cos',726,450]]; /* v637: o quadrado das asas (era a poção) vira COSTAS; a poção fica na aba Equipamentos */
+const LBSLE=[['cap',322,227],['arm',322,330],['anel',322,428],['bot',322,522],['col',728,227],['esp',728,330],['poc',728,428],['cos',728,522]]; /* v637: 'EM BREVE' virou COSTAS (asas/capas) · v468: COLAR no desenho do colar (em cima), espada e poção descem */
 function lbEqOf(k){if(k==='poc'){const o=twPocOn();return o?Object.assign({t:'poc'},o):null}const Q=twEqp();return Q[k]?twInv().find(y=>y.id===Q[k])||null:null}
 function lbSlot(k,x,y,w,h){if(k[0]==='x')return `<button class="hs lbSl lk" data-a="lbSl" data-s="${k}" style="${lbB(x,y,x+w,y+h)}"><span class="lbSn">🔒 EM BREVE</span></button>`;
   const it=lbEqOf(k);return `<button class="hs lbSl ${it?'on':''}" data-a="lbSl" data-s="${k}" style="${lbB(x,y,x+w,y+h)};${it?'--c:'+rkItC(it):''}">${it?`<img src="${rkItIc(it)}" alt=""><b>+${rkItV(it)}%</b>`:''}<span class="lbSn">${LBSLN[k]}</span></button>`}
@@ -16905,6 +16905,75 @@ function adShow(){try{if(document.getElementById('adPass'))return;if(typeof G!==
 {const _ba=bpAct;bpAct=async function(a,b){try{if(a==='code'||((a==='info'||a==='claim')&&b&&b.dataset.r==='p'&&(bpG().own|0)<2))setTimeout(adShow,a==='code'?0:350)}catch(e){}return _ba.apply(this,arguments)}}
 try{Object.assign(window.__vw,{adShow:()=>adShow()})}catch(e){}
 
+/* ================= v637: EQUIPAMENTO DE COSTAS (asas/capas) + 1ª ASA + EVENTO DAS ASAS =================
+   • Espaço novo t:'cos' (twEqOn conta 'cos'): quadrado das asas no Personagem e o antigo "EM BREVE" em Equipamentos.
+   • ASAS DA FÊNIX CARMESIM (arte do dono, ranqueada_artes/v637/asa_fenix.png): V1 mas no nível dos melhores itens
+     (dano 120 · defesa 80 · crítico 90 · velocidade 60), vale 100% em qualquer personagem, única (não vende/duplica).
+   • EVENTO DAS ASAS (até 01/12 23:59): 5 MISSÕES POR DIA (sorteadas pela data, iguais para todos, renovam à meia-noite de Brasília).
+     Cada missão feita → RECOLHER = 🪶 1 pena + 150 💎. 🪶 10 penas = ASAS (precisa de pelo menos 2 dias). Tela = arte do dono (tela_evento_asas.png). ================= */
+const ASIMG='a/ba857cb1d77f39.webp',ASTELA='a/3fb47322c730cf.webp';
+RKSP.asfen={t:'cos',r:'sec',v:0,dmg:120,def:80,crit:90,vel:60,nm:'ASAS DA FÊNIX CARMESIM',img:ASIMG,ysec:1,uniq:1,bpx:1};
+const ASEV=[Date.UTC(2026,10,25,0,0),Date.UTC(2026,11,2,2,59,59)],ASNEED=10;
+const asOn=()=>{const t=Date.now();return t>=ASEV[0]&&t<ASEV[1]};
+const asDay=()=>{const d=new Date(Date.now()-3*3600e3);return d.getUTCFullYear()+'-'+(d.getUTCMonth()+1)+'-'+d.getUTCDate()};
+const ASM=[
+  {k:'pvpw',i:'⚔️',n:3,t:'Vença 3 partidas no PVP ranqueado',f:(m,w)=>m==='pvp'&&w},
+  {k:'pvp',i:'⚔️',n:5,t:'Jogue 5 partidas no PVP ranqueado',f:m=>m==='pvp'},
+  {k:'pvpT',i:'⏱️',n:1,t:'Vença no PVP em menos de 2 minutos',f:(m,w,d)=>m==='pvp'&&w&&d<120},
+  {k:'boss',i:'👹',n:3,t:'Derrote 3 chefes',f:(m,w)=>m==='boss'&&w},
+  {k:'bossT',i:'⏱️',n:1,t:'Derrote um chefe em menos de 60 segundos',f:(m,w,d)=>m==='boss'&&w&&d<60},
+  {k:'boss5',i:'👹',n:5,t:'Enfrente 5 chefes',f:m=>m==='boss'},
+  {k:'port',i:'🌀',n:2,t:'Complete 2 portais',f:(m,w)=>m==='hidra'&&w},
+  {k:'torre',i:'🗼',n:1,t:'Suba a torre 1 vez',f:m=>m==='torre'},
+  {k:'any',i:'🎮',n:8,t:'Jogue 8 partidas em qualquer modo',f:()=>true},
+  {k:'anyw',i:'🏆',n:6,t:'Vença 6 partidas em qualquer modo',f:(m,w)=>w},
+  {k:'fast',i:'⚡',n:1,t:'Vença uma partida em menos de 45 segundos',f:(m,w,d)=>w&&d<45},
+  {k:'caca',i:'🏹',n:3,t:'Faça 3 caçadas',f:m=>m==='caca'},
+  {k:'dsf',i:'🎯',n:2,t:'Vença 2 desafios',f:(m,w)=>m==='dsf'&&w},
+  {k:'pve',i:'🥊',n:3,t:'Vença 3 lutas no modo clássico',f:(m,w)=>m==='pve'&&w}];
+function asToday(){const d=asDay();let h=0;for(const c of d)h=(h*31+c.charCodeAt(0))>>>0;const L=ASM.slice(),out=[];
+  /* 1 de PVP, 1 de chefe e 3 sorteadas — assim todo dia tem variedade */
+  const pick=f=>{const C=L.filter(f);h=(h*1103515245+12345)>>>0;const x=C[h%C.length];L.splice(L.indexOf(x),1);out.push(x)};
+  pick(x=>/^pvp/.test(x.k));pick(x=>/^boss/.test(x.k));for(let i=0;i<3;i++)pick(()=>true);return out}
+const asG=()=>{const o=rkG('asev',null)||{k:'as1',pen:0,got:0};if(o.k!=='as1')return {k:'as1',pen:0,got:0};const d=asDay();if(o.d!==d){o.d=d;o.p=[0,0,0,0,0];o.c=[0,0,0,0,0]}return o};
+let ASF={on:0,t:0};setInterval(()=>{try{if(G.mode==='fight'){if(!ASF.on){ASF.on=1;ASF.t=Date.now()}}else ASF.on=0}catch(e){}},400);
+{const _b=btRec;btRec=function(m,w,x){const t0=G._btT;const r=_b.apply(this,arguments);try{if(asOn()&&G._btT!==t0&&!(m==='pvp'&&PV.fight&&PV.fight.friendly)){const d=ASF.t?(Date.now()-ASF.t)/1000:999;const o=asG(),T=asToday();let up=0;
+  T.forEach((M,i)=>{if(!o.c[i]&&o.p[i]<M.n&&M.f(m,!!w,d)){o.p[i]++;up=1;if(o.p[i]>=M.n)setTimeout(()=>{try{rkToast('🪽 Missão feita: '+M.t+' — vá em 🪽 EVENTO DAS ASAS e RECOLHA!','#ffb03a')}catch(e){}},2200)}});if(up)rkS('asev',o)}}catch(e){}return r}}
+function asGive(){const o=asG();if(o.got||o.pen<ASNEED)return;const I=twInv();if(!I.some(x=>x&&x.nm===RKSP.asfen.nm))rkGiveSp('asfen');o.got=1;rkS('asev',o);try{acSave(1)}catch(e){}
+  const W=document.createElement('div');W.className='rkWin end sec';W.innerHTML=`<div class="t"><b>🪽 ASAS DA FÊNIX CARMESIM! 🪽</b><span>NOVO EQUIPAMENTO DE COSTAS</span></div><img class="fl" src="${ASIMG}" alt=""><i class="rays"></i><div class="t2">⚔️ Dano 120% · 🛡️ Defesa 80% · 🎯 Crítico 90% · 💨 Velocidade 60%</div>`;W.style.zIndex='99995';document.body.appendChild(W);rkSfx('boom');setTimeout(()=>rkSfx('powerUp'),300);setTimeout(()=>{W.onclick=()=>W.remove()},600)}
+const asB=(x0,y0,x1,y1)=>`left:${x0/16.72}%;top:${y0/9.41}%;width:${(x1-x0)/16.72}%;height:${(y1-y0)/9.41}%`;
+function asOpen(){let O=document.getElementById('asEv');if(!O){O=document.createElement('div');O.id='asEv';document.body.appendChild(O);O.onclick=e=>{if(e.target===O)O.remove()}}
+  const o=asG(),T=asToday(),Y=[[213,322],[342,447],[475,580],[605,715],[738,845]];
+  O.innerHTML=`<div class="asBox" style="background-image:url(${ASTELA})">
+   <div class="asPen" style="${asB(110,690,610,745)}"><s style="width:${Math.min(100,o.pen/ASNEED*100)}%"></s><span>🪶 PENAS ${Math.min(o.pen,ASNEED)}/${ASNEED}</span></div>
+   ${o.got?`<div class="asOk" style="${asB(150,760,570,820)}">✔ ASAS RESGATADAS</div>`:`<button class="asGet ${o.pen>=ASNEED?'on':''}" data-x="get" style="${asB(150,760,570,820)}">${o.pen>=ASNEED?'🪽 RESGATAR AS ASAS':'Faça as missões (renovam todo dia)'}</button>`}
+   <div class="asTit" style="${asB(110,145,610,200)}">ASAS DA FÊNIX CARMESIM · 🗓️ até 01/12</div>
+   ${T.map((M,i)=>{const [a,b]=Y[i],p=Math.min(o.p[i],M.n),dn=p>=M.n,cl=o.c[i];return `<div class="asMs" style="${asB(715,a+8,1262,b-8)}"><b>${M.t}</b><small>${cl?'✔ recolhido · +1 🪶 +150 💎':dn?'✅ FEITA! aperte RECOLHER':'progresso '+p+'/'+M.n+' · prêmio: 1 🪶 + 150 💎'}</small></div>
+     <div class="asIc" style="${asB(1276,a+14,1362,b-14)}">${M.i}</div>
+     <button class="asCl ${dn&&!cl?'on':''} ${cl?'ok':''}" data-x="cl" data-i="${i}" style="${asB(1384,a+38,1576,b-38)}">${cl?'✔ PEGO':dn?'RECOLHER':p+'/'+M.n}</button>`}).join('')}
+   <button class="asX" data-x="x" style="${asB(1590,70,1660,140)}">✕</button></div>`;
+  O.querySelectorAll('[data-x]').forEach(b=>b.onclick=e=>{e.stopPropagation();const x=b.dataset.x;if(x==='x')return O.remove();
+    if(x==='get'){if(asG().pen<ASNEED){rkSfx('clang');return rkToast('Junte 🪶 '+ASNEED+' penas fazendo as missões de cada dia','#ffb03a')}O.remove();asGive();return}
+    if(x==='cl'){const i=+b.dataset.i,o=asG(),M=asToday()[i];if(o.c[i]){return}if(o.p[i]<M.n){rkSfx('clang');return rkToast('Ainda falta: '+M.t+' ('+o.p[i]+'/'+M.n+')','#ffb03a')}
+      o.c[i]=1;o.pen=(o.pen|0)+1;rkS('asev',o);rkAdd('gem',150);try{acSave(1)}catch(e){}rkSfx('powerUp');rkToast('🪶 +1 PENA (+150 💎) · '+Math.min(o.pen,ASNEED)+'/'+ASNEED,'#ffb03a');asOpen()}})}
+{const _v=rkView;rkView=function(v){const r=_v.apply(this,arguments);try{if(v==='menu'&&asOn()){const W=$('rkWrap'),A=W&&W.querySelector('.rkA');if(A&&!A.querySelector('.asEvB')){const o=asG(),T=asToday(),pr=T.filter((M,i)=>o.p[i]>=M.n&&!o.c[i]).length,b=document.createElement('button');b.className='asEvB';
+  b.innerHTML=`🪽 EVENTO DAS ASAS<small>${o.got?'✔ asas resgatadas':'🪶 '+Math.min(o.pen,ASNEED)+'/'+ASNEED+' penas'}${pr?' · '+pr+' para recolher!':''}</small>`;b.onclick=e=>{e.stopPropagation();rkSfx('whoosh');asOpen()};A.appendChild(b)}}}catch(e){}return r}}
+{const st=document.createElement('style');st.textContent=`
+#asEv{position:fixed;inset:0;z-index:99980;background:rgba(0,0,0,.72);display:flex;align-items:center;justify-content:center}
+#asEv .asBox{position:relative;width:min(98vw,calc(96vh*1.777));aspect-ratio:1672/941;background-size:100% 100%;border-radius:.8em;box-shadow:0 0 2em #ff3a1a88;font-size:min(1.6vw,2.9vh)}
+#asEv .asBox>*{position:absolute;box-sizing:border-box}
+#asEv .asMs{display:flex;flex-direction:column;justify-content:center;padding-left:.8em;color:#ffe9d6;text-shadow:0 1px 3px #000}#asEv .asMs b{font:900 1.05em var(--f-ui)}#asEv .asMs small{font:700 .78em var(--f-ui);color:#ffc38a}
+#asEv .asIc{display:flex;align-items:center;justify-content:center;font-size:2em}
+#asEv .asCl{border:0;background:none;color:#5a2a00;font:900 .95em var(--f-ui);cursor:pointer;opacity:.8}#asEv .asCl.on{opacity:1;color:#3a1200;animation:asP 1s ease-in-out infinite;filter:drop-shadow(0 0 .4em #ffd84a)}#asEv .asCl.ok{color:#1f5a14;opacity:1}
+@keyframes asP{50%{transform:scale(1.08)}}
+#asEv .asPen{border-radius:1em;background:#1a0604cc;border:2px solid #ffb03a;overflow:hidden;display:flex;align-items:center;justify-content:center}#asEv .asPen s{position:absolute;left:0;top:0;bottom:0;background:linear-gradient(90deg,#a32000,#ffb03a)}#asEv .asPen span{position:relative;font:900 1em var(--f-ui);color:#fff;text-shadow:0 1px 3px #000}
+#asEv .asGet{border-radius:1em;border:2px solid #7a4a10;background:#2a1004;color:#ffd7a8;font:800 .85em var(--f-ui);cursor:pointer}#asEv .asGet.on{background:linear-gradient(180deg,#ffd84a,#e08a00);color:#3a1200;border-color:#fff3b0;font-size:1.05em;animation:asP 1s ease-in-out infinite}
+#asEv .asOk{display:flex;align-items:center;justify-content:center;border-radius:1em;background:#0f2a14;border:2px solid #7dff9a;color:#bfffcc;font:900 1em var(--f-ui)}
+#asEv .asTit{display:flex;align-items:center;justify-content:center;color:#ffd7a8;font:900 .95em var(--f-ui);text-shadow:0 1px 3px #000}
+#asEv .asX{border-radius:50%;border:2px solid #fff;background:#a3001a;color:#fff;font:900 1.2em sans-serif;cursor:pointer}
+.asEvB{position:absolute;left:28%;top:12.5%;z-index:7;padding:.35em 1em;border-radius:.8em;border:2px solid #ffb03a;background:linear-gradient(180deg,#6a2a00,#1c0800);color:#ffe9d6;font:900 1.05em var(--f-ui);display:flex;flex-direction:column;align-items:flex-start;box-shadow:0 0 .9em #ff8a1a88;cursor:pointer;animation:alevP 1.6s ease-in-out infinite}.asEvB small{font:700 .72em var(--f-ui);opacity:.9}`;document.head.appendChild(st)}
+try{Object.assign(window.__vw,{asG:()=>asG(),asToday:()=>asToday(),asOpen:()=>asOpen(),asOn:()=>asOn(),ASM,ASF:()=>ASF,eqOn:()=>twEqOn(),twEqB:k=>twEqB(k),eqCrit:()=>eqCrit(),giveSp:k=>rkGiveSp(k)})}catch(e){}
+
 function twTrofList(){const tc=twLS.g('tw_tc',{}),run={};for(const t of TW.tr)run[t.k]=(run[t.k]||0)+1;
   twModal(`<div class="twM"><h3>🎖️ TROFÉUS</h3><div class="twTL">${Object.keys(TWTR).map(k=>{const T=TWTR[k];return `<div class="${tc[k]||run[k]?'got':''}"><i>${T.i}</i><b>${T.n}</b><span>${T.d}</span><em>+${T.p} 🏆</em><small>${run[k]?'nesta subida: '+run[k]+' · ':''}total: ${(tc[k]||0)}</small></div>`}).join('')}</div>
     <p class="twH">Cada troféu soma pontos 🏆 no ranking. Quem sobe mais andares fica na frente; empate = mais troféus, depois menos tempo.</p><div class="row"><button class="btn" id="twTx">FECHAR</button></div></div>`);
@@ -17096,7 +17165,7 @@ window.__dbg={mus:()=>[MCUR,MEL.src.split('/').pop()],stg:()=>STAGE.key,prepMatc
 })();
 </script>
 <style>#updB{position:fixed;left:50%;top:max(8px,env(safe-area-inset-top));transform:translateX(-50%);z-index:99999;padding:10px 22px;border-radius:14px;border:2px solid #fff3c0;background:linear-gradient(#ffd84a,#e08a10);color:#3a1d00;font:900 15px system-ui,sans-serif;box-shadow:0 0 18px #ffb21f;cursor:pointer;animation:updP 1s ease-in-out infinite alternate}@keyframes updP{to{transform:translateX(-50%) scale(1.05)}}</style>
-<script>(function(){const V='cf186c414f67';if(!/^https?:/.test(location.protocol))return;let nv=null;
+<script>(function(){const V='0c075ad703c1';if(!/^https?:/.test(location.protocol))return;let nv=null;
 function show(){if(document.getElementById('updB'))return;try{if(typeof G!=='undefined'&&G.mode==='fight')return}catch(e){}const b=document.createElement('button');b.id='updB';b.textContent='🔄 ATUALIZAÇÃO NOVA! Toque para atualizar';
   b.onclick=()=>{b.textContent='⏳ Atualizando...';try{acSave(1)}catch(e){}setTimeout(()=>location.reload(),900)};document.body.appendChild(b)}
 async function chk(){if(document.hidden)return;if(nv){show();return}try{const r=await fetch('versao.txt?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const t=(await r.text()).trim();if(/^[0-9a-f]{8,40}$/.test(t)&&t!==V){nv=t;show()}}catch(e){}}
