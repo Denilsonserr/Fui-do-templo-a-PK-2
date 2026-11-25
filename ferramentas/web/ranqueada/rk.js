@@ -8227,3 +8227,30 @@ try{if(RKBID!=='broly'){RKBID='broly';RKYD=null}localStorage.removeItem('rk_bsel
 {const st=document.createElement('style');st.textContent=`.ysSlot.lkSlot{display:flex;align-items:center;gap:.6em;padding:0 1em;border-radius:.9em;border:2px solid #ffffff33;background:linear-gradient(90deg,#1a1f2e,#0b0e16);color:#cfd6e6;filter:none;opacity:.92;cursor:pointer}
 .ysSlot.lkSlot i{font:900 2.2em var(--f-ui);font-style:normal;color:#ffffff88;width:1.4em;text-align:center}.ysSlot.lkSlot b{font:900 .92em var(--f-ui);color:#e8eefc;letter-spacing:.04em;white-space:nowrap}.ysSlot.lkSlot em{margin-left:auto;font:800 1.3em var(--f-ui);font-style:normal;color:#9fb4d8}`;document.head.appendChild(st)}
 try{Object.assign(window.__vw,{RKV:()=>RKV,RKBID:()=>RKBID})}catch(e){}
+
+/* ================= v642: MENU PRINCIPAL ANIMADO (vídeo do dono, ranqueada_artes/v642/menu_principal_original.mp4)
+   Vídeo SEM SOM em loop (o fim emenda no começo com fade de 0,8 s → menu_loop.mp4); a música do jogo continua.
+   webm (VP9) + mp4 (H.264) de reserva + imagem parada (poster) enquanto carrega / se o vídeo não tocar.
+   Botões invisíveis reposicionados para a arte nova (BATALHA AVENTURA, Batalha Treino, História, Configuração).
+   Os efeitos antigos da arte velha (brasas, portas, brilhos) foram escondidos — o vídeo já tem os efeitos. ================= */
+const MMV={webm:'a/71a7e2caec96e3.webm',mp4:'a/d49de6bd34b7c1.mp4',poster:'a/6791784ec655e4.webp'};
+(function(){try{const mm=$('mm'),im=$('mmimg');if(!mm||!im)return;mm.classList.add('mmv');
+  document.documentElement.style.setProperty('--mmsrc',`url(${MMV.poster})`);
+  const v=document.createElement('video');v.id='mmVid';v.muted=true;v.defaultMuted=true;v.loop=true;v.autoplay=true;v.playsInline=true;v.setAttribute('playsinline','');v.setAttribute('webkit-playsinline','');v.setAttribute('muted','');v.preload='auto';v.poster=MMV.poster;v.disablePictureInPicture=true;
+  v.innerHTML=`<source src="${MMV.webm}" type="video/webm"><source src="${MMV.mp4}" type="video/mp4">`;im.appendChild(v);
+  const play=()=>{try{const p=v.play();if(p&&p.catch)p.catch(()=>{})}catch(e){}};play();
+  /* tela inicial escondida = pausa (economiza bateria); voltou = toca */
+  const tt=$('title');const chk=()=>{try{const on=tt&&!tt.hidden&&getComputedStyle(tt).display!=='none'&&!document.hidden;if(on){if(v.paused)play()}else if(!v.paused)v.pause()}catch(e){}};
+  setInterval(chk,800);document.addEventListener('visibilitychange',chk);['touchstart','pointerdown','click'].forEach(e=>document.addEventListener(e,()=>{if(v.paused)chk()},{passive:true}));
+}catch(e){}})();
+{const st=document.createElement('style');st.textContent=`
+#mm.mmv{aspect-ratio:1408/640;width:min(100vw,calc(100vh*2.2))}
+#mm.mmv #mmimg{animation:none;background:var(--mmsrc) center/100% 100%}
+#mm.mmv #mmVid{position:absolute;inset:0;width:100%;height:100%;object-fit:fill;pointer-events:none}
+#mm.mmv .mmfx2,#mm.mmv #mmfx,#mm.mmv .glow,#mm.mmv .glare{display:none!important}
+#mm.mmv .mb6{left:1.2%!important;top:13.6%!important;width:32.6%!important;height:27.6%!important;clip-path:polygon(3% 40%,10% 3%,93% 3%,99% 40%,93% 97%,10% 97%)}
+#mm.mmv .mb1{left:1.2%!important;top:44.8%!important;width:27.4%!important;height:10.2%!important}
+#mm.mmv .mb2{left:1.2%!important;top:57.4%!important;width:25.4%!important;height:10.4%!important}
+#mm.mmv .mb5{left:1.2%!important;top:70.2%!important;width:25.4%!important;height:10.6%!important}
+#mm.mmv .mb:active{filter:brightness(1.35);transform:scale(.98)}
+#mm.mmv .mb1 .ld{position:absolute;right:6%;bottom:-38%;font:800 .9cqw var(--f-ui);color:#ffd0d0;text-shadow:0 1px 3px #000}`;document.head.appendChild(st)}

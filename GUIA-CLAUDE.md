@@ -3058,3 +3058,11 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - Sung e Shaka saíram (pedido do dono): `ysSlotOld`/`skSlot` viram cartão bloqueado "🔒 NOVO CHEFE EM BREVE" (`.lkSlot`, data-a lock).
 - `bsel` de outro chefe → toast "em breve". Telas jb/sb/yb redirecionam para 'boss'. `rk_bsel` limpo e `RKBID` forçado 'broly'.
 - Para pôr chefe novo: trocar o cartão `bossLk` do lugar dele. Teste: `tboss_lista_v641.js`.
+
+## v642 — Menu principal animado (vídeo do dono)
+- Original: `ranqueada_artes/v642/menu_principal_original.mp4` (1408x640, 6 s, com som).
+- Loop sem pulo: corta 0,8 s do começo e faz fade do fim para ele (`menu_loop.mp4`, 5,25 s), sem áudio.
+- Arquivos: `a/71a7e2caec96e3.webm` (VP9, 1,5 MB), `a/d49de6bd34b7c1.mp4` (H.264, reserva), poster `a/6791784ec655e4.webp`.
+- `#mmVid` dentro de `#mmimg` (`#mm.mmv`, aspect 1408/640). Toca só com a tela inicial visível (pausa fora dela e com o app em segundo plano).
+- Botões reposicionados (mb6 aventura, mb1 treino, mb2 história, mb5 config). Efeitos da arte antiga escondidos.
+- Teste: `tmenu_video_v642.js`.
