@@ -3036,3 +3036,10 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
   - RECOLHER = 🪶 1 pena + 150 💎; 10 penas = asas (mínimo 2 dias).
 - Tela = arte do dono (`tela_evento_asas.png` → `a/3fb47322c730cf.webp`), `#asEv`. Botão `.asEvB` no menu, embaixo do evento do Alucard.
 - Teste: `tasas_v637.js`.
+
+## v638 — Evento das Asas: XP + missões infinitas (pedido do dono: 100 a 200 partidas)
+- Estado `rk_asev` k:'as2' {pen, got, xp, M:[5 missões {k,p}]}. O 'as1' vira 'as2' mantendo as penas.
+- Toda partida (`btRec`) = XP DA ASA 10 (vitória 15). A cada `ASXP`=400 XP vem 🪶 garantida.
+- Missões (`ASM`, 18 tipos) ficam 5 na tela. RECOLHER = +25 XP, +100 💎, 10% (`ASPC`) de 🪶 extra, e entra outra missão sorteada no lugar.
+- 10 🪶 = asas. Simulação (30 jogadores, vários modos, 60% de vitórias): mín 101 · mediana 143 · máx 200 partidas.
+- Hook `__vw.asCollect(i)`. Teste: `tasas_v638.js`.

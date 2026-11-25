@@ -8135,8 +8135,10 @@ try{Object.assign(window.__vw,{adShow:()=>adShow()})}catch(e){}
 const ASIMG='a/ba857cb1d77f39.webp',ASTELA='a/3fb47322c730cf.webp';
 RKSP.asfen={t:'cos',r:'sec',v:0,dmg:120,def:80,crit:90,vel:60,nm:'ASAS DA FÊNIX CARMESIM',img:ASIMG,ysec:1,uniq:1,bpx:1};
 const ASEV=[Date.UTC(2026,10,25,0,0),Date.UTC(2026,11,2,2,59,59)],ASNEED=10;
+/* v638 (dono): MUITAS missões pequenas + XP. Cada partida dá XP DA ASA (10, vitória 15); cada missão recolhida dá +25 XP, +100 💎 e 10% de chance de 🪶;
+   a cada ASXP=400 XP vem 🪶 garantida. 10 🪶 = ASAS. Conta: ~125 partidas (100 a 200). As 5 missões ficam na tela; recolheu → entra outra nova. */
+const ASXP=400,ASXM=25,ASPC=.10;
 const asOn=()=>{const t=Date.now();return t>=ASEV[0]&&t<ASEV[1]};
-const asDay=()=>{const d=new Date(Date.now()-3*3600e3);return d.getUTCFullYear()+'-'+(d.getUTCMonth()+1)+'-'+d.getUTCDate()};
 const ASM=[
   {k:'pvpw',i:'⚔️',n:3,t:'Vença 3 partidas no PVP ranqueado',f:(m,w)=>m==='pvp'&&w},
   {k:'pvp',i:'⚔️',n:5,t:'Jogue 5 partidas no PVP ranqueado',f:m=>m==='pvp'},
@@ -8146,38 +8148,45 @@ const ASM=[
   {k:'boss5',i:'👹',n:5,t:'Enfrente 5 chefes',f:m=>m==='boss'},
   {k:'port',i:'🌀',n:2,t:'Complete 2 portais',f:(m,w)=>m==='hidra'&&w},
   {k:'torre',i:'🗼',n:1,t:'Suba a torre 1 vez',f:m=>m==='torre'},
-  {k:'any',i:'🎮',n:8,t:'Jogue 8 partidas em qualquer modo',f:()=>true},
-  {k:'anyw',i:'🏆',n:6,t:'Vença 6 partidas em qualquer modo',f:(m,w)=>w},
+  {k:'any',i:'🎮',n:6,t:'Jogue 6 partidas em qualquer modo',f:()=>true},
+  {k:'anyw',i:'🏆',n:4,t:'Vença 4 partidas em qualquer modo',f:(m,w)=>w},
   {k:'fast',i:'⚡',n:1,t:'Vença uma partida em menos de 45 segundos',f:(m,w,d)=>w&&d<45},
   {k:'caca',i:'🏹',n:3,t:'Faça 3 caçadas',f:m=>m==='caca'},
   {k:'dsf',i:'🎯',n:2,t:'Vença 2 desafios',f:(m,w)=>m==='dsf'&&w},
-  {k:'pve',i:'🥊',n:3,t:'Vença 3 lutas no modo clássico',f:(m,w)=>m==='pve'&&w}];
-function asToday(){const d=asDay();let h=0;for(const c of d)h=(h*31+c.charCodeAt(0))>>>0;const L=ASM.slice(),out=[];
-  /* 1 de PVP, 1 de chefe e 3 sorteadas — assim todo dia tem variedade */
-  const pick=f=>{const C=L.filter(f);h=(h*1103515245+12345)>>>0;const x=C[h%C.length];L.splice(L.indexOf(x),1);out.push(x)};
-  pick(x=>/^pvp/.test(x.k));pick(x=>/^boss/.test(x.k));for(let i=0;i<3;i++)pick(()=>true);return out}
-const asG=()=>{const o=rkG('asev',null)||{k:'as1',pen:0,got:0};if(o.k!=='as1')return {k:'as1',pen:0,got:0};const d=asDay();if(o.d!==d){o.d=d;o.p=[0,0,0,0,0];o.c=[0,0,0,0,0]}return o};
+  {k:'pve',i:'🥊',n:3,t:'Vença 3 lutas no modo clássico',f:(m,w)=>m==='pve'&&w},
+  {k:'win3',i:'🔥',n:3,t:'Vença 3 partidas seguidas (qualquer modo)',f:(m,w)=>w,st:1},
+  {k:'pvp8',i:'⚔️',n:8,t:'Jogue 8 partidas no PVP ranqueado',f:m=>m==='pvp'},
+  {k:'boss2T',i:'⏱️',n:2,t:'Derrote 2 chefes em menos de 90 segundos',f:(m,w,d)=>m==='boss'&&w&&d<90},
+  {k:'any10',i:'🎮',n:10,t:'Jogue 10 partidas em qualquer modo',f:()=>true}];
+const asMk=(ex)=>{const L=ASM.filter(x=>!ex.includes(x.k));const x=L[(Math.random()*L.length)|0];return {k:x.k,p:0}};
+const asDef=k=>ASM.find(x=>x.k===k)||ASM[0];
+const asG=()=>{let o=rkG('asev',null);if(!o||o.k!=='as2'){const pen=o&&o.k==='as1'?Math.min(o.pen|0,ASNEED):0,got=o&&o.got?1:0;o={k:'as2',pen,got,xp:0,M:[]}}
+  if(!o.M||o.M.length<5){o.M=o.M||[];while(o.M.length<5)o.M.push(asMk(o.M.map(x=>x.k)))}return o};
+function asXp(o,n){o.xp=(o.xp|0)+n;let g=0;while(o.xp>=ASXP){o.xp-=ASXP;o.pen=(o.pen|0)+1;g++}return g}
 let ASF={on:0,t:0};setInterval(()=>{try{if(G.mode==='fight'){if(!ASF.on){ASF.on=1;ASF.t=Date.now()}}else ASF.on=0}catch(e){}},400);
-{const _b=btRec;btRec=function(m,w,x){const t0=G._btT;const r=_b.apply(this,arguments);try{if(asOn()&&G._btT!==t0&&!(m==='pvp'&&PV.fight&&PV.fight.friendly)){const d=ASF.t?(Date.now()-ASF.t)/1000:999;const o=asG(),T=asToday();let up=0;
-  T.forEach((M,i)=>{if(!o.c[i]&&o.p[i]<M.n&&M.f(m,!!w,d)){o.p[i]++;up=1;if(o.p[i]>=M.n)setTimeout(()=>{try{rkToast('🪽 Missão feita: '+M.t+' — vá em 🪽 EVENTO DAS ASAS e RECOLHA!','#ffb03a')}catch(e){}},2200)}});if(up)rkS('asev',o)}}catch(e){}return r}}
+{const _b=btRec;btRec=function(m,w,x){const t0=G._btT;const r=_b.apply(this,arguments);try{if(asOn()&&G._btT!==t0&&!(m==='pvp'&&PV.fight&&PV.fight.friendly)){const d=ASF.t?(Date.now()-ASF.t)/1000:999;const o=asG();
+  const g=o.got?0:asXp(o,w?15:10);for(const q of o.M){const M=asDef(q.k);if(q.p>=M.n)continue;if(M.f(m,!!w,d)){q.p++;if(q.p>=M.n)setTimeout(()=>{try{rkToast('🪽 Missão feita: '+M.t+' — vá em 🪽 EVENTO DAS ASAS e RECOLHA!','#ffb03a')}catch(e){}},2200)}else if(M.st)q.p=0}
+  rkS('asev',o);if(g)setTimeout(()=>{try{rkSfx('powerUp');rkToast('🪶 +'+g+' PENA (XP DA ASA cheio)! · '+Math.min(o.pen,ASNEED)+'/'+ASNEED,'#ffb03a')}catch(e){}},2600)}}catch(e){}return r}}
 function asGive(){const o=asG();if(o.got||o.pen<ASNEED)return;const I=twInv();if(!I.some(x=>x&&x.nm===RKSP.asfen.nm))rkGiveSp('asfen');o.got=1;rkS('asev',o);try{acSave(1)}catch(e){}
   const W=document.createElement('div');W.className='rkWin end sec';W.innerHTML=`<div class="t"><b>🪽 ASAS DA FÊNIX CARMESIM! 🪽</b><span>NOVO EQUIPAMENTO DE COSTAS</span></div><img class="fl" src="${ASIMG}" alt=""><i class="rays"></i><div class="t2">⚔️ Dano 120% · 🛡️ Defesa 80% · 🎯 Crítico 90% · 💨 Velocidade 60%</div>`;W.style.zIndex='99995';document.body.appendChild(W);rkSfx('boom');setTimeout(()=>rkSfx('powerUp'),300);setTimeout(()=>{W.onclick=()=>W.remove()},600)}
 const asB=(x0,y0,x1,y1)=>`left:${x0/16.72}%;top:${y0/9.41}%;width:${(x1-x0)/16.72}%;height:${(y1-y0)/9.41}%`;
 function asOpen(){let O=document.getElementById('asEv');if(!O){O=document.createElement('div');O.id='asEv';document.body.appendChild(O);O.onclick=e=>{if(e.target===O)O.remove()}}
-  const o=asG(),T=asToday(),Y=[[213,322],[342,447],[475,580],[605,715],[738,845]];
+  const o=asG(),Y=[[213,322],[342,447],[475,580],[605,715],[738,845]];rkS('asev',o);
   O.innerHTML=`<div class="asBox" style="background-image:url(${ASTELA})">
-   <div class="asPen" style="${asB(110,690,610,745)}"><s style="width:${Math.min(100,o.pen/ASNEED*100)}%"></s><span>🪶 PENAS ${Math.min(o.pen,ASNEED)}/${ASNEED}</span></div>
-   ${o.got?`<div class="asOk" style="${asB(150,760,570,820)}">✔ ASAS RESGATADAS</div>`:`<button class="asGet ${o.pen>=ASNEED?'on':''}" data-x="get" style="${asB(150,760,570,820)}">${o.pen>=ASNEED?'🪽 RESGATAR AS ASAS':'Faça as missões (renovam todo dia)'}</button>`}
+   <div class="asPen" style="${asB(110,640,610,690)}"><s style="width:${Math.min(100,o.pen/ASNEED*100)}%"></s><span>🪶 PENAS ${Math.min(o.pen,ASNEED)}/${ASNEED}</span></div>
+   <div class="asPen xp" style="${asB(110,700,610,742)}"><s style="width:${o.got?100:(o.xp|0)/ASXP*100}%"></s><span>✨ XP DA ASA ${o.got?'—':(o.xp|0)+'/'+ASXP+' (cheio = 🪶)'}</span></div>
+   ${o.got?`<div class="asOk" style="${asB(150,760,570,820)}">✔ ASAS RESGATADAS</div>`:`<button class="asGet ${o.pen>=ASNEED?'on':''}" data-x="get" style="${asB(150,760,570,820)}">${o.pen>=ASNEED?'🪽 RESGATAR AS ASAS':'Jogue partidas e faça missões'}</button>`}
    <div class="asTit" style="${asB(110,145,610,200)}">ASAS DA FÊNIX CARMESIM · 🗓️ até 01/12</div>
-   ${T.map((M,i)=>{const [a,b]=Y[i],p=Math.min(o.p[i],M.n),dn=p>=M.n,cl=o.c[i];return `<div class="asMs" style="${asB(715,a+8,1262,b-8)}"><b>${M.t}</b><small>${cl?'✔ recolhido · +1 🪶 +150 💎':dn?'✅ FEITA! aperte RECOLHER':'progresso '+p+'/'+M.n+' · prêmio: 1 🪶 + 150 💎'}</small></div>
+   ${o.M.map((q,i)=>{const M=asDef(q.k),[a,b]=Y[i],p=Math.min(q.p,M.n),dn=p>=M.n;return `<div class="asMs" style="${asB(715,a+8,1262,b-8)}"><b>${M.t}</b><small>${dn?'✅ FEITA! aperte RECOLHER':'progresso '+p+'/'+M.n+' · prêmio: +'+ASXM+' XP · +100 💎 · 10% de chance de 🪶'}</small></div>
      <div class="asIc" style="${asB(1276,a+14,1362,b-14)}">${M.i}</div>
-     <button class="asCl ${dn&&!cl?'on':''} ${cl?'ok':''}" data-x="cl" data-i="${i}" style="${asB(1384,a+38,1576,b-38)}">${cl?'✔ PEGO':dn?'RECOLHER':p+'/'+M.n}</button>`}).join('')}
+     <button class="asCl ${dn?'on':''}" data-x="cl" data-i="${i}" style="${asB(1384,a+38,1576,b-38)}">${dn?'RECOLHER':p+'/'+M.n}</button>`}).join('')}
    <button class="asX" data-x="x" style="${asB(1590,70,1660,140)}">✕</button></div>`;
   O.querySelectorAll('[data-x]').forEach(b=>b.onclick=e=>{e.stopPropagation();const x=b.dataset.x;if(x==='x')return O.remove();
-    if(x==='get'){if(asG().pen<ASNEED){rkSfx('clang');return rkToast('Junte 🪶 '+ASNEED+' penas fazendo as missões de cada dia','#ffb03a')}O.remove();asGive();return}
-    if(x==='cl'){const i=+b.dataset.i,o=asG(),M=asToday()[i];if(o.c[i]){return}if(o.p[i]<M.n){rkSfx('clang');return rkToast('Ainda falta: '+M.t+' ('+o.p[i]+'/'+M.n+')','#ffb03a')}
-      o.c[i]=1;o.pen=(o.pen|0)+1;rkS('asev',o);rkAdd('gem',150);try{acSave(1)}catch(e){}rkSfx('powerUp');rkToast('🪶 +1 PENA (+150 💎) · '+Math.min(o.pen,ASNEED)+'/'+ASNEED,'#ffb03a');asOpen()}})}
-{const _v=rkView;rkView=function(v){const r=_v.apply(this,arguments);try{if(v==='menu'&&asOn()){const W=$('rkWrap'),A=W&&W.querySelector('.rkA');if(A&&!A.querySelector('.asEvB')){const o=asG(),T=asToday(),pr=T.filter((M,i)=>o.p[i]>=M.n&&!o.c[i]).length,b=document.createElement('button');b.className='asEvB';
+    if(x==='get'){if(asG().pen<ASNEED){rkSfx('clang');return rkToast('Junte 🪶 '+ASNEED+' penas: jogue partidas (XP DA ASA) e recolha missões (10% de chance cada)','#ffb03a')}O.remove();asGive();return}
+    if(x==='cl'){const i=+b.dataset.i,o=asG(),q=o.M[i],M=asDef(q.k);if(q.p<M.n){rkSfx('clang');return rkToast('Ainda falta: '+M.t+' ('+q.p+'/'+M.n+')','#ffb03a')}
+      const lucky=!o.got&&Math.random()<ASPC;let g=o.got?0:asXp(o,ASXM);if(lucky){o.pen=(o.pen|0)+1;g++}o.M[i]=asMk(o.M.map(x=>x.k));rkS('asev',o);rkAdd('gem',100);try{acSave(1)}catch(e){}
+      if(lucky){rkSfx('boom');rkToast('🍀 SORTE! 🪶 +1 PENA! · '+Math.min(o.pen,ASNEED)+'/'+ASNEED+' (+'+ASXM+' XP · +100 💎)','#ffd84a')}else{rkSfx('powerUp');rkToast((g?'🪶 +'+g+' PENA (XP cheio)! · ':'')+'+'+ASXM+' XP DA ASA · +100 💎 · nova missão!','#ffb03a')}asOpen()}})}
+{const _v=rkView;rkView=function(v){const r=_v.apply(this,arguments);try{if(v==='menu'&&asOn()){const W=$('rkWrap'),A=W&&W.querySelector('.rkA');if(A&&!A.querySelector('.asEvB')){const o=asG(),pr=o.M.filter(q=>q.p>=asDef(q.k).n).length,b=document.createElement('button');b.className='asEvB';
   b.innerHTML=`🪽 EVENTO DAS ASAS<small>${o.got?'✔ asas resgatadas':'🪶 '+Math.min(o.pen,ASNEED)+'/'+ASNEED+' penas'}${pr?' · '+pr+' para recolher!':''}</small>`;b.onclick=e=>{e.stopPropagation();rkSfx('whoosh');asOpen()};A.appendChild(b)}}}catch(e){}return r}}
 {const st=document.createElement('style');st.textContent=`
 #asEv{position:fixed;inset:0;z-index:99980;background:rgba(0,0,0,.72);display:flex;align-items:center;justify-content:center}
@@ -8187,10 +8196,10 @@ function asOpen(){let O=document.getElementById('asEv');if(!O){O=document.create
 #asEv .asIc{display:flex;align-items:center;justify-content:center;font-size:2em}
 #asEv .asCl{border:0;background:none;color:#5a2a00;font:900 .95em var(--f-ui);cursor:pointer;opacity:.8}#asEv .asCl.on{opacity:1;color:#3a1200;animation:asP 1s ease-in-out infinite;filter:drop-shadow(0 0 .4em #ffd84a)}#asEv .asCl.ok{color:#1f5a14;opacity:1}
 @keyframes asP{50%{transform:scale(1.08)}}
-#asEv .asPen{border-radius:1em;background:#1a0604cc;border:2px solid #ffb03a;overflow:hidden;display:flex;align-items:center;justify-content:center}#asEv .asPen s{position:absolute;left:0;top:0;bottom:0;background:linear-gradient(90deg,#a32000,#ffb03a)}#asEv .asPen span{position:relative;font:900 1em var(--f-ui);color:#fff;text-shadow:0 1px 3px #000}
+#asEv .asPen{border-radius:1em;background:#1a0604cc;border:2px solid #ffb03a;overflow:hidden;display:flex;align-items:center;justify-content:center}#asEv .asPen s{position:absolute;left:0;top:0;bottom:0;background:linear-gradient(90deg,#a32000,#ffb03a)}#asEv .asPen span{position:relative;font:900 1em var(--f-ui);color:#fff;text-shadow:0 1px 3px #000}#asEv .asPen.xp{border-color:#ffd84a88}#asEv .asPen.xp s{background:linear-gradient(90deg,#6a3a00,#ffd84a)}#asEv .asPen.xp span{font-size:.82em}
 #asEv .asGet{border-radius:1em;border:2px solid #7a4a10;background:#2a1004;color:#ffd7a8;font:800 .85em var(--f-ui);cursor:pointer}#asEv .asGet.on{background:linear-gradient(180deg,#ffd84a,#e08a00);color:#3a1200;border-color:#fff3b0;font-size:1.05em;animation:asP 1s ease-in-out infinite}
 #asEv .asOk{display:flex;align-items:center;justify-content:center;border-radius:1em;background:#0f2a14;border:2px solid #7dff9a;color:#bfffcc;font:900 1em var(--f-ui)}
 #asEv .asTit{display:flex;align-items:center;justify-content:center;color:#ffd7a8;font:900 .95em var(--f-ui);text-shadow:0 1px 3px #000}
 #asEv .asX{border-radius:50%;border:2px solid #fff;background:#a3001a;color:#fff;font:900 1.2em sans-serif;cursor:pointer}
 .asEvB{position:absolute;left:28%;top:12.5%;z-index:7;padding:.35em 1em;border-radius:.8em;border:2px solid #ffb03a;background:linear-gradient(180deg,#6a2a00,#1c0800);color:#ffe9d6;font:900 1.05em var(--f-ui);display:flex;flex-direction:column;align-items:flex-start;box-shadow:0 0 .9em #ff8a1a88;cursor:pointer;animation:alevP 1.6s ease-in-out infinite}.asEvB small{font:700 .72em var(--f-ui);opacity:.9}`;document.head.appendChild(st)}
-try{Object.assign(window.__vw,{asG:()=>asG(),asToday:()=>asToday(),asOpen:()=>asOpen(),asOn:()=>asOn(),ASM,ASF:()=>ASF,eqOn:()=>twEqOn(),twEqB:k=>twEqB(k),eqCrit:()=>eqCrit(),giveSp:k=>rkGiveSp(k)})}catch(e){}
+try{Object.assign(window.__vw,{asCollect:i=>{const o=asG(),q=o.M[i],M=asDef(q.k);if(q.p<M.n)return 0;const lucky=!o.got&&Math.random()<ASPC;if(!o.got)asXp(o,ASXM);if(lucky)o.pen=(o.pen|0)+1;o.M[i]=asMk(o.M.map(x=>x.k));rkS('asev',o);return 1},asG:()=>asG(),asOpen:()=>asOpen(),asOn:()=>asOn(),ASM,ASF:()=>ASF,eqOn:()=>twEqOn(),twEqB:k=>twEqB(k),eqCrit:()=>eqCrit(),giveSp:k=>rkGiveSp(k)})}catch(e){}
