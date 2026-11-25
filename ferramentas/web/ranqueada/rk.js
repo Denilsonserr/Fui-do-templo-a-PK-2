@@ -8254,3 +8254,24 @@ const MMV={webm:'a/71a7e2caec96e3.webm',mp4:'a/d49de6bd34b7c1.mp4',poster:'a/679
 #mm.mmv .mb5{left:1.2%!important;top:70.2%!important;width:25.4%!important;height:10.6%!important}
 #mm.mmv .mb:active{filter:brightness(1.35);transform:scale(.98)}
 #mm.mmv .mb1 .ld{position:absolute;right:6%;bottom:-38%;font:800 .9cqw var(--f-ui);color:#ffd0d0;text-shadow:0 1px 3px #000}`;document.head.appendChild(st)}
+
+/* ================= v643: TORRE — SOLUÇÃO DEFINITIVA para "matou o inimigo e não avança, só saindo pelo menu"
+   Vigia INDEPENDENTE (setInterval, fora do tnTick — funciona mesmo se a luta ficar presa em outro estado/fase):
+   sem NENHUM inimigo vivo no mapa e sem a escolha de passiva aberta → 8 s: botão grande "⏭️ PRÓXIMO ANDAR" (andar conta como vencido);
+   20 s: avança sozinho. Também cobre escolha de passiva "aberta" mas sumida da tela (60 s). ================= */
+let TNEX={s:0,pk:0};
+function tnExBtn(on){let b=document.getElementById('tnEx');if(!on){if(b)b.remove();return}
+  if(!b){b=document.createElement('button');b.id='tnEx';b.innerHTML='⏭️ PRÓXIMO ANDAR<small>travou? toque aqui para continuar</small>';b.onclick=e=>{e.stopPropagation();tnExGo('botão')};document.body.appendChild(b)}}
+function tnExGo(por){try{if(G.mode!=='fight'||G.gmode!=='torre'||!TN.on){tnExBtn(0);return}console.warn('tn: destravado ('+por+') ph='+TN.ph+' g='+TN.g);TNEX={s:0,pk:0};tnExBtn(0);const M=document.getElementById('tnPick');if(M)M.classList.remove('on');
+  TN.done=1;G.paused=false;try{tnForceFloor()}catch(e){try{tnFinish(TN.g>=TNT-1,false)}catch(_){try{tnGoTower()}catch(__){}}}}catch(e){}}
+setInterval(()=>{try{if(!TN||!TN.on||G.mode!=='fight'||G.gmode!=='torre'||G.paused||!G.p){TNEX={s:0,pk:0};tnExBtn(0);return}
+  const p=G.p[0],o=G.p[1];if(!p||p.ko||p.hp<=0){TNEX.s=0;tnExBtn(0);return}
+  const inMap=x=>x.x>-40&&x.x<WW+40&&x.y>FLOOR-1400&&x.y<FLOOR+200,alive=x=>x&&!x.ko&&!x.hyIdle&&x.hp>0&&inMap(x);
+  const M=document.getElementById('tnPick'),pick=!!(M&&M.classList.contains('on'));
+  if(pick){TNEX.s=0;tnExBtn(0);const vis=M.getBoundingClientRect();if(vis.width<10||vis.height<10||getComputedStyle(M).visibility==='hidden'||getComputedStyle(M).display==='none')TNEX.pk++;else TNEX.pk=0;if(TNEX.pk>=60)tnExGo('escolha sumida');return}
+  TNEX.pk=0;const wait=(TN.ph==='met'&&TN.mt>0)||(TN.ph==='duelo'&&TN.dt>0)||(TN.chest&&!TN.chest.open&&TN.ph==='clear'&&TN.g>=TNT-1);
+  if(alive(o)||(TN.mobs||[]).some(alive)||alive(TN.boss)||wait){TNEX.s=0;tnExBtn(0);return}
+  TNEX.s++;if(TNEX.s>=8)tnExBtn(1);if(TNEX.s>=20)tnExGo('automático')}catch(e){}},1000);
+{const st=document.createElement('style');st.textContent=`#tnEx{position:fixed;left:50%;bottom:16%;transform:translateX(-50%);z-index:99970;padding:.6em 1.6em;border-radius:1em;border:3px solid #fff3b0;background:linear-gradient(180deg,#ffd84a,#e07a00);color:#2a1000;font:900 1.25em var(--f-ui,sans-serif);display:flex;flex-direction:column;align-items:center;box-shadow:0 0 1.4em #ffb000;animation:tnExP 1s ease-in-out infinite;cursor:pointer}
+#tnEx small{font:700 .55em var(--f-ui,sans-serif);opacity:.85}@keyframes tnExP{50%{transform:translateX(-50%) scale(1.06)}}`;document.head.appendChild(st)}
+try{Object.assign(window.__vw,{TNEX:()=>TNEX,tnExGo:w=>tnExGo(w)})}catch(e){}

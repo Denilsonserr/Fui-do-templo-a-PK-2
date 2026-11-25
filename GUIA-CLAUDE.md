@@ -3066,3 +3066,8 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - `#mmVid` dentro de `#mmimg` (`#mm.mmv`, aspect 1408/640). Toca só com a tela inicial visível (pausa fora dela e com o app em segundo plano).
 - Botões reposicionados (mb6 aventura, mb1 treino, mb2 história, mb5 config). Efeitos da arte antiga escondidos.
 - Teste: `tmenu_video_v642.js`.
+
+## v643 — Torre: destravar definitivo
+- Vigia independente (setInterval 1 s, fora do tnTick, qualquer G.phase) em rk.js: sem inimigo vivo no mapa e sem escolha de passiva → 8 s botão "⏭️ PRÓXIMO ANDAR" (#tnEx, chama tnForceFloor; andar conta como vencido); 20 s avança sozinho; escolha de passiva aberta mas invisível 60 s → avança.
+- tnExGo só age se G.mode==='fight'&&gmode torre&&TN.on (evita pular 2 andares junto com o vigia antigo do v626).
+- Teste: ferramentas/testes/ttorre_destrava_v643.js.
