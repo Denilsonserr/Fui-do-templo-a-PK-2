@@ -3053,3 +3053,8 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 ## v640 — Evento das Asas mais difícil
 - `ASXP` 400 → 800; `ASPC` 10% → 5%. A chance é sorteio puro (sorte do personagem/anéis/eventos não conta).
 - Simulação: mín 220 · mediana 319 · máx 411 partidas.
+
+## v641 — Modo Boss só com o Broly
+- Sung e Shaka saíram (pedido do dono): `ysSlotOld`/`skSlot` viram cartão bloqueado "🔒 NOVO CHEFE EM BREVE" (`.lkSlot`, data-a lock).
+- `bsel` de outro chefe → toast "em breve". Telas jb/sb/yb redirecionam para 'boss'. `rk_bsel` limpo e `RKBID` forçado 'broly'.
+- Para pôr chefe novo: trocar o cartão `bossLk` do lugar dele. Teste: `tboss_lista_v641.js`.

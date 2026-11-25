@@ -8212,3 +8212,18 @@ let ASTN=-1;
 {const _m=tnMisCount;tnMisCount=function(g){const was=TN&&TN.mc;const r=_m.apply(this,arguments);try{if(TN&&TN.mc===g&&was!==g&&ASTN!==g+'|'+(TN.t0||TN.st||'')){ASTN=g+'|'+(TN.t0||TN.st||'');
   if(asOn()){const o=asG(),d=ASF.t?(Date.now()-ASF.t)/1000:999,gg=o.got?0:asXp(o,15);for(const q of o.M){const M=asDef(q.k);if(q.p>=M.n)continue;if(['any','anyw','any10','andar','fast','win3'].includes(q.k)&&M.f(q.k==='andar'?'andar':'torre',true,d)){q.p++;if(q.p>=M.n)setTimeout(()=>{try{rkToast('🪽 Missão feita: '+M.t+' — RECOLHA no 🪽 EVENTO DAS ASAS!','#ffb03a')}catch(e){}},1500)}}rkS('asev',o);if(gg)setTimeout(()=>{try{rkToast('🪶 +'+gg+' PENA (XP DA ASA cheio)!','#ffb03a')}catch(e){}},1800)}
   if(alevOn()){const o=alevG();o.n++;rkS('alev',o);alevGive()}}}catch(e){}return r}}
+
+/* ================= v641: MODO BOSS — Sung e Shaka saíram do jogo (pedido do dono). Na lista fica só o BROLY;
+   os 2 espaços viram "? EM BREVE" bloqueados (para os próximos chefes). Ninguém volta para as telas antigas (jb/sb/yb). ================= */
+const bossLk=(a,b)=>`<button class="ysSlot lkSlot" data-a="lock" style="${rkB(12,a,415,b)}"><i>?</i><b>🔒 NOVO CHEFE EM BREVE</b></button>`;
+ysSlotOld=function(){return bossLk(325,415)};
+skSlot=function(a,b){return bossLk(a,b)};
+try{if(RKBID!=='broly'){RKBID='broly';RKYD=null}localStorage.removeItem('rk_bsel')}catch(e){}
+{const _a=rkAct;rkAct=function(a,b){
+  if(a==='bsel'&&b&&b.dataset.b&&b.dataset.b!=='broly'){rkSfx('clang');return rkToast('🔒 Em breve: novos chefes no Modo Boss!','#7ab8ff')}
+  if(a==='boss'&&RKBID!=='broly'){RKBID='broly';RKYD=null}
+  return _a.apply(this,arguments)}}
+{const _v=rkView;rkView=function(v){if(v==='jb'||v==='sb'||v==='yb'){RKBID='broly';RKYD=null;v='boss'}return _v.call(this,v)}}
+{const st=document.createElement('style');st.textContent=`.ysSlot.lkSlot{display:flex;align-items:center;gap:.6em;padding:0 1em;border-radius:.9em;border:2px solid #ffffff33;background:linear-gradient(90deg,#1a1f2e,#0b0e16);color:#cfd6e6;filter:none;opacity:.92;cursor:pointer}
+.ysSlot.lkSlot i{font:900 2.2em var(--f-ui);font-style:normal;color:#ffffff88;width:1.4em;text-align:center}.ysSlot.lkSlot b{font:900 .92em var(--f-ui);color:#e8eefc;letter-spacing:.04em;white-space:nowrap}.ysSlot.lkSlot em{margin-left:auto;font:800 1.3em var(--f-ui);font-style:normal;color:#9fb4d8}`;document.head.appendChild(st)}
+try{Object.assign(window.__vw,{RKV:()=>RKV,RKBID:()=>RKBID})}catch(e){}

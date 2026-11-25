@@ -16992,6 +16992,21 @@ let ASTN=-1;
   if(asOn()){const o=asG(),d=ASF.t?(Date.now()-ASF.t)/1000:999,gg=o.got?0:asXp(o,15);for(const q of o.M){const M=asDef(q.k);if(q.p>=M.n)continue;if(['any','anyw','any10','andar','fast','win3'].includes(q.k)&&M.f(q.k==='andar'?'andar':'torre',true,d)){q.p++;if(q.p>=M.n)setTimeout(()=>{try{rkToast('🪽 Missão feita: '+M.t+' — RECOLHA no 🪽 EVENTO DAS ASAS!','#ffb03a')}catch(e){}},1500)}}rkS('asev',o);if(gg)setTimeout(()=>{try{rkToast('🪶 +'+gg+' PENA (XP DA ASA cheio)!','#ffb03a')}catch(e){}},1800)}
   if(alevOn()){const o=alevG();o.n++;rkS('alev',o);alevGive()}}}catch(e){}return r}}
 
+/* ================= v641: MODO BOSS — Sung e Shaka saíram do jogo (pedido do dono). Na lista fica só o BROLY;
+   os 2 espaços viram "? EM BREVE" bloqueados (para os próximos chefes). Ninguém volta para as telas antigas (jb/sb/yb). ================= */
+const bossLk=(a,b)=>`<button class="ysSlot lkSlot" data-a="lock" style="${rkB(12,a,415,b)}"><i>?</i><b>🔒 NOVO CHEFE EM BREVE</b></button>`;
+ysSlotOld=function(){return bossLk(325,415)};
+skSlot=function(a,b){return bossLk(a,b)};
+try{if(RKBID!=='broly'){RKBID='broly';RKYD=null}localStorage.removeItem('rk_bsel')}catch(e){}
+{const _a=rkAct;rkAct=function(a,b){
+  if(a==='bsel'&&b&&b.dataset.b&&b.dataset.b!=='broly'){rkSfx('clang');return rkToast('🔒 Em breve: novos chefes no Modo Boss!','#7ab8ff')}
+  if(a==='boss'&&RKBID!=='broly'){RKBID='broly';RKYD=null}
+  return _a.apply(this,arguments)}}
+{const _v=rkView;rkView=function(v){if(v==='jb'||v==='sb'||v==='yb'){RKBID='broly';RKYD=null;v='boss'}return _v.call(this,v)}}
+{const st=document.createElement('style');st.textContent=`.ysSlot.lkSlot{display:flex;align-items:center;gap:.6em;padding:0 1em;border-radius:.9em;border:2px solid #ffffff33;background:linear-gradient(90deg,#1a1f2e,#0b0e16);color:#cfd6e6;filter:none;opacity:.92;cursor:pointer}
+.ysSlot.lkSlot i{font:900 2.2em var(--f-ui);font-style:normal;color:#ffffff88;width:1.4em;text-align:center}.ysSlot.lkSlot b{font:900 .92em var(--f-ui);color:#e8eefc;letter-spacing:.04em;white-space:nowrap}.ysSlot.lkSlot em{margin-left:auto;font:800 1.3em var(--f-ui);font-style:normal;color:#9fb4d8}`;document.head.appendChild(st)}
+try{Object.assign(window.__vw,{RKV:()=>RKV,RKBID:()=>RKBID})}catch(e){}
+
 function twTrofList(){const tc=twLS.g('tw_tc',{}),run={};for(const t of TW.tr)run[t.k]=(run[t.k]||0)+1;
   twModal(`<div class="twM"><h3>🎖️ TROFÉUS</h3><div class="twTL">${Object.keys(TWTR).map(k=>{const T=TWTR[k];return `<div class="${tc[k]||run[k]?'got':''}"><i>${T.i}</i><b>${T.n}</b><span>${T.d}</span><em>+${T.p} 🏆</em><small>${run[k]?'nesta subida: '+run[k]+' · ':''}total: ${(tc[k]||0)}</small></div>`}).join('')}</div>
     <p class="twH">Cada troféu soma pontos 🏆 no ranking. Quem sobe mais andares fica na frente; empate = mais troféus, depois menos tempo.</p><div class="row"><button class="btn" id="twTx">FECHAR</button></div></div>`);
@@ -17183,7 +17198,7 @@ window.__dbg={mus:()=>[MCUR,MEL.src.split('/').pop()],stg:()=>STAGE.key,prepMatc
 })();
 </script>
 <style>#updB{position:fixed;left:50%;top:max(8px,env(safe-area-inset-top));transform:translateX(-50%);z-index:99999;padding:10px 22px;border-radius:14px;border:2px solid #fff3c0;background:linear-gradient(#ffd84a,#e08a10);color:#3a1d00;font:900 15px system-ui,sans-serif;box-shadow:0 0 18px #ffb21f;cursor:pointer;animation:updP 1s ease-in-out infinite alternate}@keyframes updP{to{transform:translateX(-50%) scale(1.05)}}</style>
-<script>(function(){const V='c557e7e2b6ec';if(!/^https?:/.test(location.protocol))return;let nv=null;
+<script>(function(){const V='aa75d7cac4e3';if(!/^https?:/.test(location.protocol))return;let nv=null;
 function show(){if(document.getElementById('updB'))return;try{if(typeof G!=='undefined'&&G.mode==='fight')return}catch(e){}const b=document.createElement('button');b.id='updB';b.textContent='🔄 ATUALIZAÇÃO NOVA! Toque para atualizar';
   b.onclick=()=>{b.textContent='⏳ Atualizando...';try{acSave(1)}catch(e){}setTimeout(()=>location.reload(),900)};document.body.appendChild(b)}
 async function chk(){if(document.hidden)return;if(nv){show();return}try{const r=await fetch('versao.txt?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const t=(await r.text()).trim();if(/^[0-9a-f]{8,40}$/.test(t)&&t!==V){nv=t;show()}}catch(e){}}
