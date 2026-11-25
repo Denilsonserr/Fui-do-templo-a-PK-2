@@ -8153,7 +8153,7 @@ const ASM=[
   {k:'fast',i:'⚡',n:1,t:'Vença uma partida em menos de 45 segundos',f:(m,w,d)=>w&&d<45},
   {k:'caca',i:'🏹',n:3,t:'Faça 3 caçadas',f:m=>m==='caca'},
   {k:'dsf',i:'🎯',n:2,t:'Vença 2 desafios',f:(m,w)=>m==='dsf'&&w},
-  {k:'pve',i:'🥊',n:3,t:'Vença 3 lutas no modo clássico',f:(m,w)=>m==='pve'&&w},
+  {k:'andar',i:'🗼',n:4,t:'Vença 4 andares da torre',f:(m,w)=>m==='andar'&&w},
   {k:'win3',i:'🔥',n:3,t:'Vença 3 partidas seguidas (qualquer modo)',f:(m,w)=>w,st:1},
   {k:'pvp8',i:'⚔️',n:8,t:'Jogue 8 partidas no PVP ranqueado',f:m=>m==='pvp'},
   {k:'boss2T',i:'⏱️',n:2,t:'Derrote 2 chefes em menos de 90 segundos',f:(m,w,d)=>m==='boss'&&w&&d<90},
@@ -8161,7 +8161,7 @@ const ASM=[
 const asMk=(ex)=>{const L=ASM.filter(x=>!ex.includes(x.k));const x=L[(Math.random()*L.length)|0];return {k:x.k,p:0}};
 const asDef=k=>ASM.find(x=>x.k===k)||ASM[0];
 const asG=()=>{let o=rkG('asev',null);if(!o||o.k!=='as2'){const pen=o&&o.k==='as1'?Math.min(o.pen|0,ASNEED):0,got=o&&o.got?1:0;o={k:'as2',pen,got,xp:0,M:[]}}
-  if(!o.M||o.M.length<5){o.M=o.M||[];while(o.M.length<5)o.M.push(asMk(o.M.map(x=>x.k)))}return o};
+  if(o.M)o.M=o.M.filter(q=>ASM.some(x=>x.k===q.k));if(!o.M||o.M.length<5){o.M=o.M||[];while(o.M.length<5)o.M.push(asMk(o.M.map(x=>x.k)))}return o};
 function asXp(o,n){o.xp=(o.xp|0)+n;let g=0;while(o.xp>=ASXP){o.xp-=ASXP;o.pen=(o.pen|0)+1;g++}return g}
 let ASF={on:0,t:0};setInterval(()=>{try{if(G.mode==='fight'){if(!ASF.on){ASF.on=1;ASF.t=Date.now()}}else ASF.on=0}catch(e){}},400);
 {const _b=btRec;btRec=function(m,w,x){const t0=G._btT;const r=_b.apply(this,arguments);try{if(asOn()&&G._btT!==t0&&!(m==='pvp'&&PV.fight&&PV.fight.friendly)){const d=ASF.t?(Date.now()-ASF.t)/1000:999;const o=asG();
@@ -8176,7 +8176,7 @@ function asOpen(){let O=document.getElementById('asEv');if(!O){O=document.create
    <div class="asPen" style="${asB(110,640,610,690)}"><s style="width:${Math.min(100,o.pen/ASNEED*100)}%"></s><span>🪶 PENAS ${Math.min(o.pen,ASNEED)}/${ASNEED}</span></div>
    <div class="asPen xp" style="${asB(110,700,610,742)}"><s style="width:${o.got?100:(o.xp|0)/ASXP*100}%"></s><span>✨ XP DA ASA ${o.got?'—':(o.xp|0)+'/'+ASXP+' (cheio = 🪶)'}</span></div>
    ${o.got?`<div class="asOk" style="${asB(150,760,570,820)}">✔ ASAS RESGATADAS</div>`:`<button class="asGet ${o.pen>=ASNEED?'on':''}" data-x="get" style="${asB(150,760,570,820)}">${o.pen>=ASNEED?'🪽 RESGATAR AS ASAS':'Jogue partidas e faça missões'}</button>`}
-   <div class="asTit" style="${asB(110,145,610,200)}">ASAS DA FÊNIX CARMESIM · 🗓️ até 01/12</div>
+   <div class="asTit" style="${asB(110,128,610,205)}"><span>ASAS DA FÊNIX CARMESIM · 🗓️ até 01/12<small>Contam: Modo Boss · PVP ranqueado · Torre (cada andar) · Caçador · Desafios · Portais</small></span></div>
    ${o.M.map((q,i)=>{const M=asDef(q.k),[a,b]=Y[i],p=Math.min(q.p,M.n),dn=p>=M.n;return `<div class="asMs" style="${asB(715,a+8,1262,b-8)}"><b>${M.t}</b><small>${dn?'✅ FEITA! aperte RECOLHER':'progresso '+p+'/'+M.n+' · prêmio: +'+ASXM+' XP · +100 💎 · 10% de chance de 🪶'}</small></div>
      <div class="asIc" style="${asB(1276,a+14,1362,b-14)}">${M.i}</div>
      <button class="asCl ${dn?'on':''}" data-x="cl" data-i="${i}" style="${asB(1384,a+38,1576,b-38)}">${dn?'RECOLHER':p+'/'+M.n}</button>`}).join('')}
@@ -8199,7 +8199,16 @@ function asOpen(){let O=document.getElementById('asEv');if(!O){O=document.create
 #asEv .asPen{border-radius:1em;background:#1a0604cc;border:2px solid #ffb03a;overflow:hidden;display:flex;align-items:center;justify-content:center}#asEv .asPen s{position:absolute;left:0;top:0;bottom:0;background:linear-gradient(90deg,#a32000,#ffb03a)}#asEv .asPen span{position:relative;font:900 1em var(--f-ui);color:#fff;text-shadow:0 1px 3px #000}#asEv .asPen.xp{border-color:#ffd84a88}#asEv .asPen.xp s{background:linear-gradient(90deg,#6a3a00,#ffd84a)}#asEv .asPen.xp span{font-size:.82em}
 #asEv .asGet{border-radius:1em;border:2px solid #7a4a10;background:#2a1004;color:#ffd7a8;font:800 .85em var(--f-ui);cursor:pointer}#asEv .asGet.on{background:linear-gradient(180deg,#ffd84a,#e08a00);color:#3a1200;border-color:#fff3b0;font-size:1.05em;animation:asP 1s ease-in-out infinite}
 #asEv .asOk{display:flex;align-items:center;justify-content:center;border-radius:1em;background:#0f2a14;border:2px solid #7dff9a;color:#bfffcc;font:900 1em var(--f-ui)}
-#asEv .asTit{display:flex;align-items:center;justify-content:center;color:#ffd7a8;font:900 .95em var(--f-ui);text-shadow:0 1px 3px #000}
+#asEv .asTit{display:flex;align-items:center;justify-content:center;text-align:center;color:#ffd7a8;font:900 .95em var(--f-ui);text-shadow:0 1px 3px #000}#asEv .asTit small{display:block;font:700 .68em var(--f-ui);color:#ffb97a}
 #asEv .asX{border-radius:50%;border:2px solid #fff;background:#a3001a;color:#fff;font:900 1.2em sans-serif;cursor:pointer}
 .asEvB{position:absolute;left:28%;top:12.5%;z-index:7;padding:.35em 1em;border-radius:.8em;border:2px solid #ffb03a;background:linear-gradient(180deg,#6a2a00,#1c0800);color:#ffe9d6;font:900 1.05em var(--f-ui);display:flex;flex-direction:column;align-items:flex-start;box-shadow:0 0 .9em #ff8a1a88;cursor:pointer;animation:alevP 1.6s ease-in-out infinite}.asEvB small{font:700 .72em var(--f-ui);opacity:.9}`;document.head.appendChild(st)}
 try{Object.assign(window.__vw,{asCollect:i=>{const o=asG(),q=o.M[i],M=asDef(q.k);if(q.p<M.n)return 0;const lucky=!o.got&&Math.random()<ASPC;if(!o.got)asXp(o,ASXM);if(lucky)o.pen=(o.pen|0)+1;o.M[i]=asMk(o.M.map(x=>x.k));rkS('asev',o);return 1},asG:()=>asG(),asOpen:()=>asOpen(),asOn:()=>asOn(),ASM,ASF:()=>ASF,eqOn:()=>twEqOn(),twEqB:k=>twEqB(k),eqCrit:()=>eqCrit(),giveSp:k=>rkGiveSp(k)})}catch(e){}
+try{Object.assign(window.__vw,{rkBossStart:()=>rkBossStart()})}catch(e){}
+
+/* v639: reclamação "missões não contam" — a torre só registrava partida no FIM da subida. Agora CADA ANDAR vencido conta
+   (evento das asas: XP + missões de "partida"/"vitória"/"andar"; evento do Alucard: +1 partida). Missão impossível do modo clássico trocada por "Vença 4 andares".
+   Modos que contam: Modo Boss, PVP ranqueado, Torre (cada andar e a subida), Caçador, Desafios, Portais. */
+let ASTN=-1;
+{const _m=tnMisCount;tnMisCount=function(g){const was=TN&&TN.mc;const r=_m.apply(this,arguments);try{if(TN&&TN.mc===g&&was!==g&&ASTN!==g+'|'+(TN.t0||TN.st||'')){ASTN=g+'|'+(TN.t0||TN.st||'');
+  if(asOn()){const o=asG(),d=ASF.t?(Date.now()-ASF.t)/1000:999,gg=o.got?0:asXp(o,15);for(const q of o.M){const M=asDef(q.k);if(q.p>=M.n)continue;if(['any','anyw','any10','andar','fast','win3'].includes(q.k)&&M.f(q.k==='andar'?'andar':'torre',true,d)){q.p++;if(q.p>=M.n)setTimeout(()=>{try{rkToast('🪽 Missão feita: '+M.t+' — RECOLHA no 🪽 EVENTO DAS ASAS!','#ffb03a')}catch(e){}},1500)}}rkS('asev',o);if(gg)setTimeout(()=>{try{rkToast('🪶 +'+gg+' PENA (XP DA ASA cheio)!','#ffb03a')}catch(e){}},1800)}
+  if(alevOn()){const o=alevG();o.n++;rkS('alev',o);alevGive()}}}catch(e){}return r}}

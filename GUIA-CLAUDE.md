@@ -3043,3 +3043,9 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - Missões (`ASM`, 18 tipos) ficam 5 na tela. RECOLHER = +25 XP, +100 💎, 10% (`ASPC`) de 🪶 extra, e entra outra missão sorteada no lugar.
 - 10 🪶 = asas. Simulação (30 jogadores, vários modos, 60% de vitórias): mín 101 · mediana 143 · máx 200 partidas.
 - Hook `__vw.asCollect(i)`. Teste: `tasas_v638.js`.
+
+## v639 — "Missões não contam" (evento das asas)
+- A contagem funciona (teste com luta de chefe real: `tasas_real_v639.js`). O problema era o que conta como partida:
+  - a TORRE só registrava no FIM da subida → agora cada andar vencido (`tnMisCount`) dá +15 XP da asa e conta para missões de partida/vitória/andar e para o Evento do Alucard;
+  - os modos clássicos não chamam `btRec` → missão 'pve' (impossível) trocada por 'andar' ("Vença 4 andares da torre"); missões antigas 'pve' são trocadas sozinhas.
+- A tela do evento mostra quais modos contam. Hook `__vw.rkBossStart`.
