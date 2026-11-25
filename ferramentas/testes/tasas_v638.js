@@ -9,7 +9,7 @@ const {chromium}=require('playwright');const SH=__dirname+'/shots/t638_';
       while(n<2000){const o=__vw.asG();if(o.pen>=10)break;const m=modes[(Math.random()*modes.length)|0],w=Math.random()<.6;__dbg.G._btT=0;__vw.ASF().t=Date.now()-(30+Math.random()*120)*1000;__vw.btRec(m,w);n++;
         /* recolhe o que ficou pronto (como o jogador faria) */const o2=__vw.asG();let ch=0;o2.M.forEach((q,i)=>{const M=__vw.ASM.find(x=>x.k===q.k);if(q.p>=M.n){__vw.asCollect(i);ch=1}})}
       R.push(n)}R.sort((a,b)=>a-b);return {min:R[0],med:R[15],max:R[29],avg:Math.round(R.reduce((a,b)=>a+b)/R.length)}});
-  console.log('partidas até as asas (30 jogadores simulados):',JSON.stringify(sim));chk(sim.med>=100&&sim.med<=200,'em média entre 100 e 200 partidas (mediana '+sim.med+')');
+  console.log('partidas até as asas (30 jogadores simulados):',JSON.stringify(sim));chk(sim.med>=220,'mais difícil: mediana '+sim.med+' partidas');
   await p.evaluate(()=>{localStorage.removeItem('rk_asev');for(let i=0;i<14;i++){__dbg.G._btT=0;__vw.btRec(['pvp','boss','pve'][i%3],true)}__dbg.G.mode='menu'});await p.evaluate(()=>__vw.asOpen());await p.waitForTimeout(400);await p.screenshot({path:SH+'evento.png'});
   const before=await p.evaluate(()=>{const o=__vw.asG();return {ks:o.M.map(q=>q.k),xp:o.xp,gem:+JSON.parse(localStorage.rk_gem||'0')}});
   const i=await p.evaluate(()=>[...document.querySelectorAll('#asEv .asCl')].findIndex(x=>x.classList.contains('on')));

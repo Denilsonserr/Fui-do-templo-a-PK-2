@@ -3049,3 +3049,7 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
   - a TORRE só registrava no FIM da subida → agora cada andar vencido (`tnMisCount`) dá +15 XP da asa e conta para missões de partida/vitória/andar e para o Evento do Alucard;
   - os modos clássicos não chamam `btRec` → missão 'pve' (impossível) trocada por 'andar' ("Vença 4 andares da torre"); missões antigas 'pve' são trocadas sozinhas.
 - A tela do evento mostra quais modos contam. Hook `__vw.rkBossStart`.
+
+## v640 — Evento das Asas mais difícil
+- `ASXP` 400 → 800; `ASPC` 10% → 5%. A chance é sorteio puro (sorte do personagem/anéis/eventos não conta).
+- Simulação: mín 220 · mediana 319 · máx 411 partidas.

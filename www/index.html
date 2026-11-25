@@ -16914,9 +16914,9 @@ try{Object.assign(window.__vw,{adShow:()=>adShow()})}catch(e){}
 const ASIMG='a/ba857cb1d77f39.webp',ASTELA='a/3fb47322c730cf.webp';
 RKSP.asfen={t:'cos',r:'sec',v:0,dmg:120,def:80,crit:90,vel:60,nm:'ASAS DA FÊNIX CARMESIM',img:ASIMG,ysec:1,uniq:1,bpx:1};
 const ASEV=[Date.UTC(2026,10,25,0,0),Date.UTC(2026,11,2,2,59,59)],ASNEED=10;
-/* v638 (dono): MUITAS missões pequenas + XP. Cada partida dá XP DA ASA (10, vitória 15); cada missão recolhida dá +25 XP, +100 💎 e 10% de chance de 🪶;
+/* v638 (dono): MUITAS missões pequenas + XP. Cada partida dá XP DA ASA (10, vitória 15); cada missão recolhida dá +25 XP, +100 💎 e '+Math.round(ASPC*100)+'% de chance de 🪶;
    a cada ASXP=400 XP vem 🪶 garantida. 10 🪶 = ASAS. Conta: ~125 partidas (100 a 200). As 5 missões ficam na tela; recolheu → entra outra nova. */
-const ASXP=400,ASXM=25,ASPC=.10;
+const ASXP=800,ASXM=25,ASPC=.05; /* v640: dono pediu MAIS DIFÍCIL (era 400 XP / 10%). A chance da pena é sorteio PURO: a SORTE do personagem/anéis/eventos NÃO conta. */
 const asOn=()=>{const t=Date.now();return t>=ASEV[0]&&t<ASEV[1]};
 const ASM=[
   {k:'pvpw',i:'⚔️',n:3,t:'Vença 3 partidas no PVP ranqueado',f:(m,w)=>m==='pvp'&&w},
@@ -16956,12 +16956,12 @@ function asOpen(){let O=document.getElementById('asEv');if(!O){O=document.create
    <div class="asPen xp" style="${asB(110,700,610,742)}"><s style="width:${o.got?100:(o.xp|0)/ASXP*100}%"></s><span>✨ XP DA ASA ${o.got?'—':(o.xp|0)+'/'+ASXP+' (cheio = 🪶)'}</span></div>
    ${o.got?`<div class="asOk" style="${asB(150,760,570,820)}">✔ ASAS RESGATADAS</div>`:`<button class="asGet ${o.pen>=ASNEED?'on':''}" data-x="get" style="${asB(150,760,570,820)}">${o.pen>=ASNEED?'🪽 RESGATAR AS ASAS':'Jogue partidas e faça missões'}</button>`}
    <div class="asTit" style="${asB(110,128,610,205)}"><span>ASAS DA FÊNIX CARMESIM · 🗓️ até 01/12<small>Contam: Modo Boss · PVP ranqueado · Torre (cada andar) · Caçador · Desafios · Portais</small></span></div>
-   ${o.M.map((q,i)=>{const M=asDef(q.k),[a,b]=Y[i],p=Math.min(q.p,M.n),dn=p>=M.n;return `<div class="asMs" style="${asB(715,a+8,1262,b-8)}"><b>${M.t}</b><small>${dn?'✅ FEITA! aperte RECOLHER':'progresso '+p+'/'+M.n+' · prêmio: +'+ASXM+' XP · +100 💎 · 10% de chance de 🪶'}</small></div>
+   ${o.M.map((q,i)=>{const M=asDef(q.k),[a,b]=Y[i],p=Math.min(q.p,M.n),dn=p>=M.n;return `<div class="asMs" style="${asB(715,a+8,1262,b-8)}"><b>${M.t}</b><small>${dn?'✅ FEITA! aperte RECOLHER':'progresso '+p+'/'+M.n+' · prêmio: +'+ASXM+' XP · +100 💎 · '+Math.round(ASPC*100)+'% de chance de 🪶'}</small></div>
      <div class="asIc" style="${asB(1276,a+14,1362,b-14)}">${M.i}</div>
      <button class="asCl ${dn?'on':''}" data-x="cl" data-i="${i}" style="${asB(1384,a+38,1576,b-38)}">${dn?'RECOLHER':p+'/'+M.n}</button>`}).join('')}
    <button class="asX" data-x="x" style="${asB(1590,70,1660,140)}">✕</button></div>`;
   O.querySelectorAll('[data-x]').forEach(b=>b.onclick=e=>{e.stopPropagation();const x=b.dataset.x;if(x==='x')return O.remove();
-    if(x==='get'){if(asG().pen<ASNEED){rkSfx('clang');return rkToast('Junte 🪶 '+ASNEED+' penas: jogue partidas (XP DA ASA) e recolha missões (10% de chance cada)','#ffb03a')}O.remove();asGive();return}
+    if(x==='get'){if(asG().pen<ASNEED){rkSfx('clang');return rkToast('Junte 🪶 '+ASNEED+' penas: jogue partidas (XP DA ASA) e recolha missões ('+Math.round(ASPC*100)+'% de chance cada)','#ffb03a')}O.remove();asGive();return}
     if(x==='cl'){const i=+b.dataset.i,o=asG(),q=o.M[i],M=asDef(q.k);if(q.p<M.n){rkSfx('clang');return rkToast('Ainda falta: '+M.t+' ('+q.p+'/'+M.n+')','#ffb03a')}
       const lucky=!o.got&&Math.random()<ASPC;let g=o.got?0:asXp(o,ASXM);if(lucky){o.pen=(o.pen|0)+1;g++}o.M[i]=asMk(o.M.map(x=>x.k));rkS('asev',o);rkAdd('gem',100);try{acSave(1)}catch(e){}
       if(lucky){rkSfx('boom');rkToast('🍀 SORTE! 🪶 +1 PENA! · '+Math.min(o.pen,ASNEED)+'/'+ASNEED+' (+'+ASXM+' XP · +100 💎)','#ffd84a')}else{rkSfx('powerUp');rkToast((g?'🪶 +'+g+' PENA (XP cheio)! · ':'')+'+'+ASXM+' XP DA ASA · +100 💎 · nova missão!','#ffb03a')}asOpen()}})}
@@ -17183,7 +17183,7 @@ window.__dbg={mus:()=>[MCUR,MEL.src.split('/').pop()],stg:()=>STAGE.key,prepMatc
 })();
 </script>
 <style>#updB{position:fixed;left:50%;top:max(8px,env(safe-area-inset-top));transform:translateX(-50%);z-index:99999;padding:10px 22px;border-radius:14px;border:2px solid #fff3c0;background:linear-gradient(#ffd84a,#e08a10);color:#3a1d00;font:900 15px system-ui,sans-serif;box-shadow:0 0 18px #ffb21f;cursor:pointer;animation:updP 1s ease-in-out infinite alternate}@keyframes updP{to{transform:translateX(-50%) scale(1.05)}}</style>
-<script>(function(){const V='6a49ef277012';if(!/^https?:/.test(location.protocol))return;let nv=null;
+<script>(function(){const V='c557e7e2b6ec';if(!/^https?:/.test(location.protocol))return;let nv=null;
 function show(){if(document.getElementById('updB'))return;try{if(typeof G!=='undefined'&&G.mode==='fight')return}catch(e){}const b=document.createElement('button');b.id='updB';b.textContent='🔄 ATUALIZAÇÃO NOVA! Toque para atualizar';
   b.onclick=()=>{b.textContent='⏳ Atualizando...';try{acSave(1)}catch(e){}setTimeout(()=>location.reload(),900)};document.body.appendChild(b)}
 async function chk(){if(document.hidden)return;if(nv){show();return}try{const r=await fetch('versao.txt?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const t=(await r.text()).trim();if(/^[0-9a-f]{8,40}$/.test(t)&&t!==V){nv=t;show()}}catch(e){}}
