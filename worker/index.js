@@ -122,7 +122,10 @@ export default {async fetch(req,env){const url=new URL(req.url),p=url.pathname;
     if(p==='/fs-admin/stats'){const b=Math.floor(Date.now()/300000);const q=async(sql,...a)=>((await db.prepare(sql).bind(...a).first())||{}).n|0;
       return J({jogadores:await q("SELECT COUNT(DISTINCT s) n FROM kv WHERE k='uid'"),contas:await q("SELECT COUNT(DISTINCT s) n FROM kv WHERE k='sv'"),
         online:await q("SELECT COUNT(DISTINCT u.s) n FROM kv o JOIN kv u ON u.id=o.id AND u.k='uid' WHERE o.k='on' AND o.s IN (?,?)",'p'+b,'p'+(b-1)),
-        hoje:await q("SELECT COUNT(DISTINCT u.s) n FROM kv u JOIN docs d ON d.id=u.id WHERE u.k='uid' AND d.ct>?",Date.now()-864e5),docs:await q('SELECT COUNT(*) n FROM docs')})}
+        hoje:await q("SELECT COUNT(DISTINCT u.s) n FROM kv u JOIN docs d ON d.id=u.id WHERE u.k='uid' AND d.ct>?",Date.now()-864e5),docs:await q('SELECT COUNT(*) n FROM docs'),...await (async()=>{/* v645: ?d=N → jogadores diferentes nos últimos N dias (total e por dia, dia = horário de Brasília) */
+        const N=Math.min(30,Math.max(0,parseInt(url.searchParams.get('d')||'0')||0));if(!N)return {};const now=Date.now(),SQ="SELECT COUNT(DISTINCT u.s) n FROM kv u JOIN docs d ON d.id=u.id WHERE u.k='uid' AND d.ct>? AND d.ct<=?";
+        const br=now-3*36e5,d0=br-br%864e5+3*36e5,por={};for(let i=0;i<N;i++){const a=d0-i*864e5,b=i?a+864e5:now;por[new Date(a-3*36e5).toISOString().slice(0,10)]=await q(SQ,a,b)}
+        return {['ultimos_'+N+'_dias']:await q(SQ,now-N*864e5,now),por_dia:por}})()})}
     if(p==='/fs-admin/erros'){/* v450: erros que os celulares dos jogadores mandaram (errRep), agrupados — sem nome nem aparelho do jogador */
       const h=Math.min(720,Math.max(1,+url.searchParams.get('h')||48));const rs=(await db.prepare("SELECT ct,f FROM docs WHERE id LIKE 'er\\_%' ESCAPE '\\' AND ct>? ORDER BY ct DESC LIMIT 2000").bind(Date.now()-h*36e5).all()).results||[];
       const G={};for(const r of rs){let f={};try{f=JSON.parse(r.f)}catch(e){}const v=k=>f[k]&&(f[k].stringValue??f[k].integerValue)||'';const m=String(v('m')).slice(0,200);const g=G[m]||(G[m]={m,n:0,ult:0,modos:{},onde:v('w'),st:String(v('st')).slice(0,600)});g.n++;g.ult=Math.max(g.ult,r.ct);const mo=v('modo');g.modos[mo]=(g.modos[mo]||0)+1}

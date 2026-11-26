@@ -3074,3 +3074,6 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 
 ## v644 — Código 15 joias primordiais + pedras das almas (10 anéis)
 - TWCUP s4oxqb (uso único, texto só com o dono): jpx 15 + pdq [200,200,200,200,75,100,225]; wrapper v644 ajusta a mensagem. Teste: C1=.. node ferramentas/testes/tcod_v644.js
+
+## v645 — Estatística de jogadores por dias
+- worker /fs-admin/stats?d=N (até 30): ultimos_N_dias (jogadores diferentes = uid com documento novo no período) + por_dia (dia de Brasília). Sem d continua igual.
