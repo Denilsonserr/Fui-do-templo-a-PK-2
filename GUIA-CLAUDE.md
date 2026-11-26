@@ -3077,3 +3077,8 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 
 ## v645 — Estatística de jogadores por dias
 - worker /fs-admin/stats?d=N (até 30): ultimos_N_dias (jogadores diferentes = uid com documento novo no período) + por_dia (dia de Brasília). Sem d continua igual.
+
+## v646 — Criar conta: 3 tentativas + motivo real do erro
+- Reclamação "servidor dando erro, não cria conta" (26/11 12:35): status.yml/uso.yml mostraram servidor OK (sem trava, consultas 0,4 s, save de 300 KB em 0,6 s); criação testada local OK.
+- acNew agora tenta salvar 3 vezes (1,5 s/3 s) e mostra acErrMsg(): sem crypto.subtle, offline, 429, código HTTP, timeout ou erro de rede — e manda errRep "CONTA: motivo" (aparece em /fs-admin/erros e no uso.yml).
+- Teste: ferramentas/testes/tconta_v646.js. Ficou um doc de teste tsttempo_* (sv testeconta...) no D1.

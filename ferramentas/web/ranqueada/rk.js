@@ -545,8 +545,8 @@ function acOpen(tab){const n=localStorage.getItem('ac_n'),k=localStorage.getItem
   if(B('acOut'))B('acOut').onclick=()=>{['ac_k','ac_n','ac_h','ac_t'].forEach(x=>localStorage.removeItem(x));acOpen('entrar')};
   if(B('acNew'))B('acNew').onclick=async()=>{const p=B('acP1').value,p2=B('acP2').value;if(p.length<4)return msg('A senha precisa de pelo menos 4 letras/números.','err');if(p!==p2)return msg('As senhas não são iguais.','err');
     B('acNew').disabled=true;msg('Criando conta...');try{const acc=await acId(me),L=await acList(acc);if(L.length){B('acNew').disabled=false;return msg('Esse nome já tem conta. Se a conta é sua, toque em 🔑 ENTRAR (em cima) e digite a senha.','err')}
-      const k=await acKey(me,p);localStorage.setItem('ac_k',k);localStorage.setItem('ac_n',me);localStorage.removeItem('ac_h');const ok=await acSave(1);if(!ok){['ac_k','ac_n'].forEach(x=>localStorage.removeItem(x));B('acNew').disabled=false;return msg(rkNetMsg()+' Tenta de novo.','err')}
-      try{rkSfx('powerUp')}catch(e){}acOpen('ok')}catch(e){B('acNew').disabled=false;msg(rkNetMsg()+' Tenta de novo.','err')}};
+      const k=await acKey(me,p);localStorage.setItem('ac_k',k);localStorage.setItem('ac_n',me);localStorage.removeItem('ac_h');let ok=await acSave(1);for(let t=0;!ok&&t<2;t++){await new Promise(r=>setTimeout(r,1500+t*1500));acBusy=0;acConf=null;ok=await acSave(1)}if(!ok){['ac_k','ac_n'].forEach(x=>localStorage.removeItem(x));B('acNew').disabled=false;return msg(acErrMsg('salvar'),'err')}
+      try{rkSfx('powerUp')}catch(e){}acOpen('ok')}catch(e){B('acNew').disabled=false;msg(acErrMsg('erro',e),'err')}};
   if(B('acIn'))B('acIn').onclick=async()=>{const nn=B('acN').value.trim(),p=B('acP').value;if(!nn||!p)return msg('Digite o nome e a senha.','err');B('acIn').disabled=true;msg('Entrando...');
     try{const acc=await acId(nn),L=await acList(acc);if(!L.length){B('acIn').disabled=false;return msg('Conta não encontrada. Confira o nome.','err')}const k=await acKey(nn,p),x=await acFind(acc,k,L);if(!x){B('acIn').disabled=false;return msg('Senha errada.','err')}
       const D=JSON.parse(x.d);for(const kk of Object.keys(localStorage))if(/^(tw_|rk_)/.test(kk))localStorage.removeItem(kk);for(const kk in D)localStorage.setItem(kk,D[kk]);
@@ -8280,3 +8280,18 @@ try{Object.assign(window.__vw,{TNEX:()=>TNEX,tnExGo:w=>tnExGo(w)})}catch(e){}
 TWCUP['s4oxqb']={nm:'🌟 15 JOIAS PRIMORDIAIS + PEDRAS DAS ALMAS (10 anéis)',it:[],uni:1,jpx:15,pdq:[200,200,200,200,75,100,225],v644:1};
 {const _cq=twCupom;twCupom=async function(code,E){const C=TWCUP[twHash(String(code).toUpperCase())];const r=await _cq.apply(this,arguments);
   try{if(C&&C.v644&&r!==false&&E&&/\bok\b/.test(E.className||''))E.textContent='✅ Você ganhou 🌟 15 JOIAS PRIMORDIAIS (passiva PRIMORDIAL garantida, use no ENCANTAMENTO) + 💎 PEDRAS DAS ALMAS para evoluir 10 anéis até o nível máximo: '+C.pdq.map((n,t)=>n+' '+PDN[t]).join(' · ')+'!'}catch(e){}return r}}
+
+/* ================= v646: CRIAR CONTA — tenta salvar 3 vezes e, se falhar, mostra o MOTIVO real (código do servidor / sem internet / aparelho sem criptografia)
+   e manda o erro para /fs-admin/erros (aparece no uso.yml) para achar a causa. ================= */
+let ACNET={st:0,er:'',t:0};
+{const _f=window.fetch;window.fetch=function(u,o){const url=String(u&&u.url||u);const isAc=/\/torre\?documentId=sv_|:runQuery/.test(url);const p=_f.apply(this,arguments);
+  if(isAc)p.then(r=>{if(!r.ok)ACNET={st:r.status,er:'',t:Date.now()}},e=>{ACNET={st:0,er:String(e&&e.name||e),t:Date.now()}});return p}}
+function acErrMsg(onde,e){let m,c;
+  if(!(window.crypto&&crypto.subtle)){m='Esse aparelho/navegador não deixa criar senha (sem criptografia). Atualize o app ou o Chrome/WebView do celular.';c='sem crypto.subtle'}
+  else if(!navigator.onLine){m='Sem internet agora. Liga o Wi-Fi ou os dados e tenta de novo.';c='offline'}
+  else if(Date.now()-ACNET.t<60000&&ACNET.st===429){m=rkNetMsg()+' Tenta de novo.';c='429'}
+  else if(Date.now()-ACNET.t<60000&&ACNET.st){m='O servidor respondeu com erro (código '+ACNET.st+'). Espera 1 minuto e tenta de novo.';c='http '+ACNET.st}
+  else if(Date.now()-ACNET.t<60000&&/Abort/i.test(ACNET.er)){m='A internet está lenta e o servidor demorou para responder. Tenta de novo (de preferência no Wi-Fi).';c='demorou (timeout)'}
+  else if(Date.now()-ACNET.t<60000&&ACNET.er){m='Não conectou ao servidor ('+ACNET.er+'). Confere a internet e tenta de novo.';c='rede '+ACNET.er}
+  else {m='Não deu para criar a conta agora. Tenta de novo em 1 minuto.';c=onde+' '+String(e&&e.message||e||'')}
+  try{errRep({message:'CONTA: '+c,stack:String(e&&e.stack||'')},'conta')}catch(_){}return m}
