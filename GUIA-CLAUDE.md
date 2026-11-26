@@ -3071,3 +3071,6 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - Vigia independente (setInterval 1 s, fora do tnTick, qualquer G.phase) em rk.js: sem inimigo vivo no mapa e sem escolha de passiva → 8 s botão "⏭️ PRÓXIMO ANDAR" (#tnEx, chama tnForceFloor; andar conta como vencido); 20 s avança sozinho; escolha de passiva aberta mas invisível 60 s → avança.
 - tnExGo só age se G.mode==='fight'&&gmode torre&&TN.on (evita pular 2 andares junto com o vigia antigo do v626).
 - Teste: ferramentas/testes/ttorre_destrava_v643.js.
+
+## v644 — Código 15 joias primordiais + pedras das almas (10 anéis)
+- TWCUP s4oxqb (uso único, texto só com o dono): jpx 15 + pdq [200,200,200,200,75,100,225]; wrapper v644 ajusta a mensagem. Teste: C1=.. node ferramentas/testes/tcod_v644.js

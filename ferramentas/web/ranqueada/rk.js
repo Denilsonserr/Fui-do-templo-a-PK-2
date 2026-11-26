@@ -8275,3 +8275,8 @@ setInterval(()=>{try{if(!TN||!TN.on||G.mode!=='fight'||G.gmode!=='torre'||G.paus
 {const st=document.createElement('style');st.textContent=`#tnEx{position:fixed;left:50%;bottom:16%;transform:translateX(-50%);z-index:99970;padding:.6em 1.6em;border-radius:1em;border:3px solid #fff3b0;background:linear-gradient(180deg,#ffd84a,#e07a00);color:#2a1000;font:900 1.25em var(--f-ui,sans-serif);display:flex;flex-direction:column;align-items:center;box-shadow:0 0 1.4em #ffb000;animation:tnExP 1s ease-in-out infinite;cursor:pointer}
 #tnEx small{font:700 .55em var(--f-ui,sans-serif);opacity:.85}@keyframes tnExP{50%{transform:translateX(-50%) scale(1.06)}}`;document.head.appendChild(st)}
 try{Object.assign(window.__vw,{TNEX:()=>TNEX,tnExGo:w=>tnExGo(w)})}catch(e){}
+
+/* v644: código do dono (uso único, texto só com o dono): 15 JOIAS PRIMORDIAIS (passiva PRIMORDIAL garantida) + Pedras das Almas para evoluir 10 anéis até o nível 60 */
+TWCUP['s4oxqb']={nm:'🌟 15 JOIAS PRIMORDIAIS + PEDRAS DAS ALMAS (10 anéis)',it:[],uni:1,jpx:15,pdq:[200,200,200,200,75,100,225],v644:1};
+{const _cq=twCupom;twCupom=async function(code,E){const C=TWCUP[twHash(String(code).toUpperCase())];const r=await _cq.apply(this,arguments);
+  try{if(C&&C.v644&&r!==false&&E&&/\bok\b/.test(E.className||''))E.textContent='✅ Você ganhou 🌟 15 JOIAS PRIMORDIAIS (passiva PRIMORDIAL garantida, use no ENCANTAMENTO) + 💎 PEDRAS DAS ALMAS para evoluir 10 anéis até o nível máximo: '+C.pdq.map((n,t)=>n+' '+PDN[t]).join(' · ')+'!'}catch(e){}return r}}
