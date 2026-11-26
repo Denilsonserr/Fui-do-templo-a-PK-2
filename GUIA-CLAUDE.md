@@ -3082,3 +3082,11 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - Reclamação "servidor dando erro, não cria conta" (26/11 12:35): status.yml/uso.yml mostraram servidor OK (sem trava, consultas 0,4 s, save de 300 KB em 0,6 s); criação testada local OK.
 - acNew agora tenta salvar 3 vezes (1,5 s/3 s) e mostra acErrMsg(): sem crypto.subtle, offline, 429, código HTTP, timeout ou erro de rede — e manda errRep "CONTA: motivo" (aparece em /fs-admin/erros e no uso.yml).
 - Teste: ferramentas/testes/tconta_v646.js. Ficou um doc de teste tsttempo_* (sv testeconta...) no D1.
+
+## v647 — Desempenho (celular fraco)
+- Medição (ferramentas/testes): `tperf_v647.js` (FPS com CPU 6x lenta), `tperf_ab_v647.js` (antes x depois, cena congelada, ms/quadro), `tperf_abl_v647.js` (tira 1 parte e mede; PARTS=..., LV=...). Gancho só no localhost: `window.__ev(código)` roda dentro do escopo do jogo. `window.__v647off=1` desliga as otimizações (para comparar).
+- O que pesava: cenário dia/noite (drawDN: 4–6 camadas de tela inteira, ~45% do quadro no Leve), luz nos personagens (drawLit, ~1/3 do quadro no Ultra), sombras borradas (shadowBlur), placar. update() é barato (~0,1–0,3 ms).
+- Feito: `dnCache` (camadas paradas do cenário juntadas numa imagem, refeita só quando hora do dia/destruição muda; Ultra/4K mantém estrelas piscando); `drawLit` com cache por lutador (`f._lc`, ~45% reaproveitado em luta real; `__vw.LCS()`); shadowBlur desligado no ctx0/stx no Mínimo/Leve; Leve pode baixar a resolução até 0,8 (Mínimo já ia até 0,7); 1ª vez em aparelho muito fraco (≤2 GB ou ≤2 núcleos) começa no Mínimo (qAuto); menu animado fica parado (imagem) no Mínimo.
+- Regra do dono (v601) mantida: o gráfico NUNCA muda sozinho durante o jogo.
+- Resultado (ms por quadro, cena congelada): Mínimo −34%, Leve −26%, Médio −15%, Ultra −11%, 4K ~−3%. 4K custa ~3x o Ultra.
+- Testes: tcenario_cache_v647, tluz_cache_v647, tgrafico_auto_v647; tmenu_video_v642 agora fixa ft_q=1 (a máquina de teste tem 2 núcleos → começaria no Mínimo).

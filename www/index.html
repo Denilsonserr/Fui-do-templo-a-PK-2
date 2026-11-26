@@ -17019,7 +17019,7 @@ const MMV={webm:'a/71a7e2caec96e3.webm',mp4:'a/d49de6bd34b7c1.mp4',poster:'a/679
   v.innerHTML=`<source src="${MMV.webm}" type="video/webm"><source src="${MMV.mp4}" type="video/mp4">`;im.appendChild(v);
   const play=()=>{try{const p=v.play();if(p&&p.catch)p.catch(()=>{})}catch(e){}};play();
   /* tela inicial escondida = pausa (economiza bateria); voltou = toca */
-  const tt=$('title');const chk=()=>{try{const on=tt&&!tt.hidden&&getComputedStyle(tt).display!=='none'&&!document.hidden;if(on){if(v.paused)play()}else if(!v.paused)v.pause()}catch(e){}};
+  const tt=$('title');const chk=()=>{try{const on=tt&&!tt.hidden&&getComputedStyle(tt).display!=='none'&&!document.hidden&&(G.qlv|0)>0/* v647: no gráfico Mínimo o menu fica parado (imagem), sem vídeo */;if(on){if(v.paused)play()}else if(!v.paused)v.pause()}catch(e){}};
   setInterval(chk,800);document.addEventListener('visibilitychange',chk);['touchstart','pointerdown','click'].forEach(e=>document.addEventListener(e,()=>{if(v.paused)chk()},{passive:true}));
 }catch(e){}})();
 {const st=document.createElement('style');st.textContent=`
@@ -17074,6 +17074,78 @@ function acErrMsg(onde,e){let m,c;
   else if(Date.now()-ACNET.t<60000&&ACNET.er){m='Não conectou ao servidor ('+ACNET.er+'). Confere a internet e tenta de novo.';c='rede '+ACNET.er}
   else {m='Não deu para criar a conta agora. Tenta de novo em 1 minuto.';c=onde+' '+String(e&&e.message||e||'')}
   try{errRep({message:'CONTA: '+c,stack:String(e&&e.stack||'')},'conta')}catch(_){}return m}
+
+/* v647: gancho SÓ para os testes de desempenho no servidor local (localhost) — troca/mede funções do jogo */
+try{if(location.hostname==='localhost')window.__ev=s=>eval(s)}catch(e){}
+
+/* ================= v647: DESEMPENHO — cenário (dia/noite) em CACHE
+   Antes: todo quadro o cenário desenhava 4–6 camadas de tela inteira (fundo, céu do pôr do sol, céu da noite, estrelas, lua).
+   Agora essas camadas são juntadas numa imagem só (refeita só quando a hora do dia/destruição muda) → 1 desenho por quadro.
+   Ultra/4K: estrelas continuam piscando ao vivo. Resto do drawDN igual ao original. ================= */
+const DNC={c:null,g:null,key:''};
+function dnCache(K0,lv,k,A,n,sn,want){const fi=cupImg(lv,'far');if(!fi)return null;if(DNC.k0!==K0){DNC.k0=K0;DNC.mw=0}DNC.mw=Math.max(DNC.mw||0,Math.ceil((want||1000)/200)*200+200);const cap=Math.min(G.qlv>=3?4000:2172,DNC.mw),cw=Math.min(cap,fi.naturalWidth||CUPIW),ch=Math.round(cw*CUPIH/CUPIW);
+  const q=x=>Math.round(x*50)/50,live=G.qlv>=3;let rd=0;for(const l of [lv,A])for(const s of ['far','skyS','skyN','stars'])if(cupImg(l,s))rd++;
+  const key=[K0,lv,A,k<1?Math.round(k*20)/20:1,q(n),q(sn),cw,live,rd].join('|');if(DNC.key===key&&DNC.c)return DNC.c;
+  if(!DNC.c){DNC.c=document.createElement('canvas');DNC.g=DNC.c.getContext('2d')}const c=DNC.c,g=DNC.g;if(c.width!==cw||c.height!==ch){c.width=cw;c.height=ch}
+  g.setTransform(1,0,0,1,0,0);g.globalCompositeOperation='source-over';g.globalAlpha=1;g.clearRect(0,0,cw,ch);g.imageSmoothingEnabled=true;g.imageSmoothingQuality='high';
+  const kk=k<1?Math.round(k*20)/20:1;const pair=(key,fn)=>{if(kk<1){const a=cupImg(A,key);if(a)fn(a,1)}const b=cupImg(lv,key);if(b)fn(b,kk<1?kk:1)};
+  pair('far',(im,a)=>{g.globalAlpha=a;g.drawImage(im,0,0,cw,ch)});
+  if(sn>.01)pair('skyS',(im,a)=>{g.globalAlpha=a*sn*.6;g.drawImage(im,0,0,cw,ch)});
+  if(n>.01){pair('skyN',(im,a)=>{g.globalAlpha=a*n*.88;g.drawImage(im,0,0,cw,ch)});g.globalCompositeOperation='lighter';
+    if(!live)pair('stars',(im,a)=>{g.globalAlpha=a*n*.85;g.drawImage(im,0,0,cw,ch)});
+    const u=cw/CUPIW,mx=CUP.moon[0]*u,my=CUP.moon[1]*u,mr=26*u,gr=g.createRadialGradient(mx,my,mr*.2,mx,my,mr*5);gr.addColorStop(0,`rgba(235,240,255,${.9*n})`);gr.addColorStop(.2,`rgba(200,215,255,${.35*n})`);gr.addColorStop(1,'rgba(150,170,255,0)');g.globalAlpha=1;g.fillStyle=gr;g.fillRect(mx-mr*5,my-mr*5,mr*10,mr*10)}
+  g.globalCompositeOperation='source-over';g.globalAlpha=1;DNC.key=key;return c}
+{const _dn=drawDN;drawDN=function(S){if(window.__dnOld||window.__v647off)return _dn.apply(this,arguments);try{dnSet(S.key);const K=S.dw/CUPIW,X0=-(S.dw-S.ww)/2,dy=S.dy,z=CAM.z,zf=.9,r=zf/z,cxf=WW/2+(CAM.cx-WW/2)*.8;
+  const FX=CAM.cx+(X0-cxf)*r,FY=FLOOR+(dy-FLOOR)*r,FW=S.dw*r,FH=S.dh*r,fu=u=>FX+u*K*r,fv=v=>FY+v*K*r,GY=FY+CUP.feet*K*r;
+  const lv=DN.lv,k=DN.k,A=DN.from,n=DN.night,sn=DN.sun*(1-n),t=G.frame;
+  const C=dnCache(S.key,lv,k,A,n,sn,FW*SC*(ctx===ctx0?DPR:BGD));if(!C)return _dn.apply(this,arguments);
+  const top=H-H/z-60;if(FY>top){ctx.fillStyle=CUP.top;ctx.fillRect(CAM.x-50,top-200,VW/z+100,FY-top+204)}
+  const pair=(key,fn)=>{if(k<1){const a=cupImg(A,key);if(a)fn(a,1)}const b=cupImg(lv,key);if(b)fn(b,k<1?k:1)};
+  ctx.drawImage(C,FX,FY,FW,FH);
+  if(n>.01&&G.qlv>=3){ctx.save();ctx.globalCompositeOperation='lighter';pair('stars',(im,a)=>{ctx.globalAlpha=a*n*(.75+.25*Math.sin(t*.05));ctx.drawImage(im,FX,FY,FW,FH)});ctx.restore()}
+  dnLife(lv,k,A,fu,fv,K*r,n,t);
+  if(DN.smk.length){ctx.save();for(const p of DN.smk){const a=Math.min(1,p.l/25,(p.m-p.l)/60);ctx.globalAlpha=a*.85;const s=p.s*K*r;ctx.drawImage(DNPUF,fu(p.u)-s/2,fv(p.v)-s/2,s,s)}ctx.restore()}
+  pair('far',(im,a)=>{ctx.globalAlpha=a;const ih=im.naturalHeight,iw=im.naturalWidth;ctx.drawImage(im,0,ih-6,iw,6,FX,FY+FH-2,FW,260);ctx.globalAlpha=1});
+  const M=DN.m||[255,255,255];if(M[0]<254||M[1]<254||M[2]<254){ctx.save();ctx.globalCompositeOperation='multiply';ctx.fillStyle=`rgb(${M[0]},${M[1]},${M[2]})`;ctx.fillRect(CAM.x-60,top-260,VW/z+120,H*3);ctx.restore()}
+  ctx.save();ctx.globalCompositeOperation='lighter';
+  if(n>.05){if(CUP.L[0].win)pair('win',(im,a)=>{ctx.globalAlpha=a*n*.85;ctx.drawImage(im,FX,FY,FW,FH)});
+    for(const [u,v] of CUP.lamps){const x=fu(u),y=fv(v),R=90*K*r,g=ctx.createRadialGradient(x,y,0,x,y,R);g.addColorStop(0,`rgba(255,240,200,${.95*n})`);g.addColorStop(.25,`rgba(255,210,140,${.35*n})`);g.addColorStop(1,'rgba(255,190,120,0)');ctx.globalAlpha=1;ctx.fillStyle=g;ctx.fillRect(x-R,y-R,R*2,R*2);
+      if(G.qlv>=2){const gx=x,gy=GY+20*r,g2=ctx.createRadialGradient(gx,gy,0,gx,gy,200*K*r);g2.addColorStop(0,`rgba(255,210,150,${.22*n})`);g2.addColorStop(1,'rgba(255,200,140,0)');ctx.fillStyle=g2;ctx.save();ctx.translate(gx,gy);ctx.scale(1,.3);ctx.translate(-gx,-gy);ctx.fillRect(gx-200*K*r,gy-200*K*r,400*K*r,400*K*r);ctx.restore()}}}
+  pair('fire',(im,a)=>{ctx.globalAlpha=a*(.35+.25*Math.sin(t*.4)+.1*Math.sin(t*1.3))*(1+.6*n);ctx.drawImage(im,FX,FY-2*Math.sin(t*.3),FW,FH)});
+  ctx.restore();
+  const FP=CUP.L[lv].fp;if(FP&&FP.length&&G.mode==='fight'&&t%3===0&&G.hitstop<=0){const q=FP[(Math.random()*FP.length)|0];addP({x:fu(q[0]),y:fv(q[1]),vx:rand(-.3,.3),vy:-rand(.6,1.4),life:30,max:30,c:pick(['#ff7a20','#ffb040','#ffd070']),type:'glow',sz:rand(2,4),g:0})}
+  if(DN.deb.length){ctx.save();ctx.fillStyle='#6a625a';for(const d of DN.deb){ctx.save();ctx.translate(d.x,d.y);ctx.rotate(d.r);ctx.fillRect(-d.s/2,-d.s/2,d.s,d.s*.7);ctx.restore()}ctx.restore()}
+  }catch(e){window.__dnOld=1;try{errRep(e,'dnCache')}catch(_){}return _dn.apply(this,arguments)}}}
+
+/* v647: DESEMPENHO — no Mínimo e no Leve as sombras borradas (shadowBlur, brilho em volta de barras/textos/efeitos) ficam desligadas no canvas da luta: é das coisas mais caras para celular fraco */
+{try{const D=Object.getOwnPropertyDescriptor(CanvasRenderingContext2D.prototype,'shadowBlur');if(D&&D.set)for(const c of [ctx0,typeof stx!=='undefined'?stx:null])if(c)Object.defineProperty(c,'shadowBlur',{configurable:true,get(){return D.get.call(this)},set(v){D.set.call(this,(G.qlv|0)<=1&&!window.__v647off?0:v)}})}catch(e){}}
+/* v647: Leve também pode baixar a resolução um pouco abaixo da tela (até 80%) quando o celular não aguenta (Mínimo já ia até 70%) */
+{const _r=setRes;setRes=function(){if(!G.baseDPR)return;if((G.qlv|0)!==1)return _r.apply(this,arguments);const d=Math.max(.8,G.baseDPR*G.dyn);if(Math.abs(d-DPR)<.01)return;DPR=d;BGD=Math.max(.8,DPR*.55);cv.width=Math.round(VW*SC*DPR);cv.height=Math.round(H*SC*DPR)}}
+
+/* ================= v647: DESEMPENHO Ultra/4K — luz nos personagens (drawLit) em CACHE
+   drawLit monta o personagem iluminado numa tela à parte (luz ambiente, oclusão, luz de borda, contorno) — era ~1/3 do quadro no Ultra.
+   O quadro do sprite só muda ~10x por segundo, então guarda o resultado por lutador e reaproveita enquanto nada que muda a luz mudar
+   (mesmo quadro do sprite, lado, escala, balanço, luz forte perto, noite/pôr do sol). ================= */
+{const _dl=drawLit,LCS={hit:0,miss:0};const r2=(v,s)=>v?Math.round(v/s):0;
+  drawLit=function(f,key,x,y,facing,e,mode){try{if(window.__v647off||!f||!e||e.cape)return _dl.apply(this,arguments);
+    const P=spriteImg(f,key);if(!P)return _dl.apply(this,arguments);const S=P.S||P;if(S.b||(S.gl&&f.form))return _dl.apply(this,arguments);
+    const T=ctx.getTransform();const m=Math.max(S.ax,S.w-S.ax)+40;const wx0=x-m,wx1=x+m,wy0=y+e.dy-S.ay-40,wy1=y+e.dy+(S.h-S.ay)+30;
+    const bx=Math.floor(T.a*wx0+T.e),by=Math.floor(T.d*wy0+T.f),bw=Math.ceil(T.a*(wx1-wx0)),bh=Math.ceil(T.d*(wy1-wy0));if(bw<4||bh<4||bw>4000||bh>4000)return _dl.apply(this,arguments);
+    const q=Math.min(1,(G.litCap||1.2)/Math.max(1,DPR)),sw=Math.max(4,Math.ceil(bw*q)),sh=Math.max(4,Math.ceil(bh*q));
+    const sl=strongLight(f),useF=!!((f.form||f.flick)&&S.imgF&&key[0][0]!=='f');
+    const k=[ssid(f),key[0],key[1],facing,mode,useF?1:0,0,0,r2(Math.log(Math.abs(T.a)||1),.03),r2(Math.log(Math.abs(T.d)||1),.03),r2(e.rot,.015),r2(e.dx,2),r2(e.sx,.015),r2(e.sy,.015),r2(e.kU,.02),r2(e.kH,.02),e.hr||0,r2(f.squash,1),
+      sl&&sl.v>.25?(r2(sl.l.x-f.x,90)+','+r2(sl.l.y-f.y,90)+','+sl.l.c+','+r2(sl.v,.12)):(sl?'f'+r2(sl.l.x-f.x,200):'-'),STAGE.key,r2(STAGE.night||0,.05),r2(STAGE.sunset||0,.05),G.noPop|0,G.noAO|0,G.noLine|0,f.def.sid,(G.frame/90)|0].join('|');
+    const C=f._lc||(f._lc={f:document.createElement('canvas'),o:document.createElement('canvas'),k:''});
+    if(C.k===k&&Math.abs(C.sw-sw)<=Math.max(2,sw*.04)&&Math.abs(C.sh-sh)<=Math.max(2,sh*.04)){LCS.hit++;const cw=C.sw,chh=C.sh;ctx.save();ctx.setTransform(1,0,0,1,0,0);if(C.ol){const o=Math.max(1,Math.abs(T.a)*1.1);ctx.globalAlpha=.85;for(const [dx,dy] of [[o,0],[-o,0],[0,o],[0,-o]])ctx.drawImage(C.o,0,0,cw,chh,bx+dx,by+dy,bw,bh);ctx.globalAlpha=1}
+      ctx.drawImage(C.f,0,0,cw,chh,bx,by,bw,bh);ctx.restore();return}
+    LCS.miss++;const r=_dl.apply(this,arguments);
+    for(const [c,src] of [[C.f,FB],[C.o,RB]]){if(c.width<sw||c.height<sh){c.width=Math.max(c.width,sw);c.height=Math.max(c.height,sh)}const g=c.getContext('2d');g.setTransform(1,0,0,1,0,0);g.globalCompositeOperation='copy';g.globalAlpha=1;g.drawImage(src,0,0,sw,sh,0,0,sw,sh)}
+    C.ol=!G.noLine;C.k=k;C.sw=sw;C.sh=sh;return r}catch(err){return _dl.apply(this,arguments)}};
+  try{window.__vw.LCS=()=>LCS}catch(e){}}
+
+/* v647: gráfico inicial (só para quem NUNCA escolheu, ao abrir pela 1ª vez): aparelho muito fraco (até 2 GB ou até 2 núcleos) começa no MÍNIMO (antes ia para o Leve).
+   O gráfico continua NUNCA mudando sozinho durante o jogo (pedido do dono, v601). */
+{const _qa=qAuto;qAuto=function(){try{const m=+navigator.deviceMemory||0,c=+navigator.hardwareConcurrency||0;if((m&&m<=2)||(c&&c<=2))return 0}catch(e){}return _qa.apply(this,arguments)}}
 
 function twTrofList(){const tc=twLS.g('tw_tc',{}),run={};for(const t of TW.tr)run[t.k]=(run[t.k]||0)+1;
   twModal(`<div class="twM"><h3>🎖️ TROFÉUS</h3><div class="twTL">${Object.keys(TWTR).map(k=>{const T=TWTR[k];return `<div class="${tc[k]||run[k]?'got':''}"><i>${T.i}</i><b>${T.n}</b><span>${T.d}</span><em>+${T.p} 🏆</em><small>${run[k]?'nesta subida: '+run[k]+' · ':''}total: ${(tc[k]||0)}</small></div>`}).join('')}</div>
@@ -17266,7 +17338,7 @@ window.__dbg={mus:()=>[MCUR,MEL.src.split('/').pop()],stg:()=>STAGE.key,prepMatc
 })();
 </script>
 <style>#updB{position:fixed;left:50%;top:max(8px,env(safe-area-inset-top));transform:translateX(-50%);z-index:99999;padding:10px 22px;border-radius:14px;border:2px solid #fff3c0;background:linear-gradient(#ffd84a,#e08a10);color:#3a1d00;font:900 15px system-ui,sans-serif;box-shadow:0 0 18px #ffb21f;cursor:pointer;animation:updP 1s ease-in-out infinite alternate}@keyframes updP{to{transform:translateX(-50%) scale(1.05)}}</style>
-<script>(function(){const V='bcef4ca70b13';if(!/^https?:/.test(location.protocol))return;let nv=null;
+<script>(function(){const V='35685a35ba0d';if(!/^https?:/.test(location.protocol))return;let nv=null;
 function show(){if(document.getElementById('updB'))return;try{if(typeof G!=='undefined'&&G.mode==='fight')return}catch(e){}const b=document.createElement('button');b.id='updB';b.textContent='🔄 ATUALIZAÇÃO NOVA! Toque para atualizar';
   b.onclick=()=>{b.textContent='⏳ Atualizando...';try{acSave(1)}catch(e){}setTimeout(()=>location.reload(),900)};document.body.appendChild(b)}
 async function chk(){if(document.hidden)return;if(nv){show();return}try{const r=await fetch('versao.txt?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const t=(await r.text()).trim();if(/^[0-9a-f]{8,40}$/.test(t)&&t!==V){nv=t;show()}}catch(e){}}
