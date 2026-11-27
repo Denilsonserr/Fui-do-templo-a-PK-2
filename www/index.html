@@ -17248,7 +17248,7 @@ for(let r=14;r<=18;r++){const k='rk'+r,M=MDL[k]={n:RKR[r].n,r};M.d='Chegar ao ra
    • O vigia do v643 continua como segurança extra (botão em 5 s, sozinho em 12 s). ================= */
 const TNV={g:-1,t:0,dead:0};
 function tnWinFx(g){let W=document.getElementById('tnWin');if(W)W.remove();const T=tnFl(g),fim=g>=TNT-1;W=document.createElement('div');W.id='tnWin';
-  W.innerHTML=`<i class="ry"></i><i class="fl"></i><div class="bx"><em>${fim?'👑':'🏆'}</em><h2>${fim?'TORRE CONQUISTADA!':'ANDAR '+T.n+' CONQUISTADO!'}</h2><p>${fim?'Você chegou ao topo!':'✨ Escolha sua passiva · depois volte para a Torre e toque em PRÓXIMO ANDAR'}</p><button id="tnWinGo" hidden>CONTINUAR ▶</button></div>`+'<s></s>'.repeat(14);
+  W.innerHTML=`<i class="ry"></i><i class="fl"></i><div class="bx"><em>${fim?'👑':'🏆'}</em><h2>${fim?'TORRE CONQUISTADA!':'ANDAR '+T.n+' CONQUISTADO!'}</h2><p class="rw">${fim?'Você chegou ao topo!':'🎁 Recompensas guardadas · voltando para a Torre...'}</p><button id="tnWinGo" hidden>CONTINUAR ▶</button></div>`+'<s></s>'.repeat(14);
   document.body.appendChild(W);try{rkSfx('powerUp')}catch(e){}try{twSfx&&twSfx('boom')}catch(e){}
   setTimeout(()=>{const b=document.getElementById('tnWinGo');if(b&&document.getElementById('tnWin')){b.hidden=false;b.onclick=e=>{e.stopPropagation();tnWinCont()}}},6000)}
 function tnWinCont(){try{const M=document.getElementById('tnPick');if(M){M.className='';M.innerHTML=''}if(TN.on&&!TN.done){if(TN.g<TNT-1&&!(TN.statue&&TN.statue.used)){const L=TNRL.filter(b=>b.k!=='barra');const b=L[(Math.random()*L.length)|0];try{tnBless(b.k,Math.round(b.b))}catch(e){}}
@@ -17283,6 +17283,49 @@ ${Array.from({length:14},(_,i)=>`#tnWin s:nth-of-type(${i+1}){--a:${i*360/14}deg
 #twGo.tnNext{animation:tnNxP 1s ease-in-out infinite;filter:drop-shadow(0 0 10px #ffd84a)}@keyframes tnNxP{50%{transform:scale(1.05)}}
 #twGo .tnNx{position:absolute;left:50%;top:-1.7em;transform:translateX(-50%);white-space:nowrap;font:900 12px var(--f-ui,sans-serif);color:#ffe27a;text-shadow:0 0 6px #ff9000,0 1px 2px #000;font-style:normal}`;document.head.appendChild(st)}
 try{Object.assign(window.__vw,{tnWinCont:()=>tnWinCont(),TNV})}catch(e){}
+
+/* ================= v655: TORRE — sem baú caindo e passiva por ROLETA no começo (pedido do dono)
+   • Matou o chefe do andar: recompensa entra direto (igual antigamente: moedas, diamantes, itens, poções, joia negra), aparece a animação
+     com a lista do que ganhou e VOLTA PARA A TORRE sozinho em ~2 s. Nada de baú caindo nem de escolher passiva no cenário.
+   • Toda vez que entra num andar: ROLETA DE PASSIVA na tela (gira as passivas e para numa, com raridade sorteada) → a luta começa com ela.
+     As passivas da roleta somam durante a subida (igual antes). No ULTRA EXTREMO não tem roleta (lá é força pura). ================= */
+{const _cd=tnChestDrop;tnChestDrop=function(){if(TN.v655===TN.g)return;return _cd.apply(this,arguments)}}
+{const _bd=tnBossDown;tnBossDown=function(a,d){const g=TN.g;TN.v655=g;const r=_bd.apply(this,arguments);try{
+  TN.statue={on:0,used:1,x:-9999};const fim=g>=TNT-1,n0=(TN.loot||[]).length;try{const T=tnFl(g);if(!fim){banner('ANDAR '+T.n+' CONQUISTADO!','#ffd84a',130,'🎁 RECOMPENSA GUARDADA · VOLTANDO PARA A TORRE');G.p[1]=tnPh('🏆 ANDAR CONQUISTADO')}}catch(e){}
+  const rk=TN.risk==null?1:TN.risk;TN.chest={x:-9999,y:FLOOR,vy:0,t:0,land:1,open:0,ex:g>=TNP||rk===2||!!TN.ux,sp:rk===2,rw:TNRK[rk].rw*(TN.ux?2.5:1),fim};
+  try{tnChestOpen()}catch(e){console.warn(e)}TN.chest=null;const got=(TN.loot||[]).slice(n0);
+  setTimeout(()=>{const P=document.querySelector('#tnWin p.rw');if(P&&got.length)P.innerHTML='🎁 '+got.map(t=>`<b>${t}</b>`).join(' · ')},60);
+  if(!fim)setTimeout(()=>{try{if(TN.on&&TN.g===g&&!TN.done){TN.done=1;tnForceFloor()}}catch(e){try{tnGoTower()}catch(_){}}},2300)}catch(e){console.warn(e)}return r}}
+/* roleta de passiva no começo do andar */
+const TNRL5={g:-1};
+function tnRoleta(){if(!TN.on||G.gmode!=='torre'||!G.p)return;const p=G.p[0];
+  const L=TNRL.filter(b=>b.k!=='barra'||TW.bars<TWMB);const pick=L[(Math.random()*L.length)|0],R=twRoll();let ri=Math.max(0,TWRAR.indexOf(R));if(pick.k==='barra')ri=Math.max(ri,2);
+  const v=pick.k==='barra'?1:Math.round(pick.b*TNRM[ri]),RR=TWRAR[ri];
+  let W=document.getElementById('tnRl5');if(W)W.remove();W=document.createElement('div');W.id='tnRl5';
+  const strip=[];for(let i=0;i<26;i++){const b=L[(Math.random()*L.length)|0],r=TWRAR[(Math.random()*TWRAR.length)|0];strip.push({b,r})}strip[22]={b:pick,r:RR};
+  W.innerHTML=`<div class="bx"><h3>🎰 ROLETA DE PASSIVA</h3><p>Andar ${tnFl(TN.g).n} · a passiva vale até o fim da subida</p><div class="win"><div class="st">${strip.map(o=>`<div class="c" style="--c:${o.r.c}"><i>${o.b.i}</i><small>${o.r.n}</small><b>${o.b.n}</b></div>`).join('')}</div><u></u></div><div class="res"></div></div>`;
+  document.body.appendChild(W);G.hold=1;try{rkSfx('whoosh')}catch(e){}
+  const st=W.querySelector('.st'),cw=()=>{const c=st.children[0];return c?c.getBoundingClientRect().width+8:120};
+  requestAnimationFrame(()=>{const w=cw(),box=W.querySelector('.win').getBoundingClientRect().width;st.style.transition='transform 2.4s cubic-bezier(.12,.75,.15,1)';st.style.transform=`translateX(${-(22*w)+box/2-w/2+4}px)`});
+  let tk=0;const ti=setInterval(()=>{try{if(++tk<14)rkSfx('clang')}catch(e){}},150);
+  setTimeout(()=>{clearInterval(ti);try{st.children[22].classList.add('on');rkSfx('powerUp')}catch(e){}
+    try{tnBless(pick.k,v)}catch(e){console.warn(e)}W.querySelector('.res').innerHTML=`✨ <b style="color:${RR.c}">${pick.i} ${pick.n} · ${RR.n}</b> — ${pick.d(v)}`;try{tnHud()}catch(e){}},2550);
+  setTimeout(()=>{W.classList.add('out');setTimeout(()=>{W.remove();G.hold=0},350)},4100)}
+{const _fi=tnFloorInit;tnFloorInit=function(){const r=_fi.apply(this,arguments);try{if(TN.on&&!TN.ux&&TNRL5.g!==TN.g+'|'+(TN.runId||'')){TNRL5.g=TN.g+'|'+(TN.runId||'');setTimeout(tnRoleta,650)}}catch(e){}return r}}
+{const _tg=tnGoTower;tnGoTower=function(){TNRL5.g=-1;const W=document.getElementById('tnRl5');if(W){W.remove();G.hold=0}return _tg.apply(this,arguments)}}
+{const st=document.createElement('style');st.textContent=`#tnRl5{position:fixed;inset:0;z-index:99945;display:flex;align-items:center;justify-content:center;background:rgba(0,0,10,.72);animation:tnWinIn .3s}#tnRl5.out{opacity:0;transition:opacity .35s}
+#tnRl5 .bx{width:min(92vw,640px);text-align:center;padding:14px 12px 16px;border-radius:16px;background:linear-gradient(#2a1450,#120826);border:3px solid #ffcf3a;box-shadow:0 0 30px rgba(255,190,40,.5)}
+#tnRl5 h3{margin:0;color:#ffe27a;font:900 22px var(--f-ui,sans-serif);text-shadow:0 0 12px #ff9000}#tnRl5 p{margin:2px 0 10px;color:#d8c8ff;font:700 12px var(--f-ui,sans-serif)}
+#tnRl5 .win{position:relative;overflow:hidden;height:118px;border-radius:10px;background:#0a0418;border:2px solid #6a4ab0}
+#tnRl5 .st{display:flex;gap:8px;padding:6px 4px;will-change:transform}
+#tnRl5 .c{flex:0 0 96px;height:102px;border-radius:10px;border:2px solid var(--c);background:radial-gradient(circle at 50% 30%,color-mix(in srgb,var(--c) 35%,#1a0e30),#120826);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;color:#fff}
+#tnRl5 .c i{font-style:normal;font-size:28px}#tnRl5 .c small{color:var(--c);font:900 9px var(--f-ui,sans-serif)}#tnRl5 .c b{font:800 10px var(--f-ui,sans-serif);line-height:1.1}
+#tnRl5 .c.on{box-shadow:0 0 18px var(--c),0 0 40px var(--c);transform:scale(1.06)}
+#tnRl5 u{position:absolute;left:50%;top:0;bottom:0;width:3px;margin-left:-1.5px;background:#ffe27a;box-shadow:0 0 10px #ffb000}
+#tnRl5 .res{min-height:22px;margin-top:10px;color:#fff;font:800 14px var(--f-ui,sans-serif)}
+#tnWin p.rw b{color:#ffe27a}`;document.head.appendChild(st)}
+try{Object.assign(window.__vw,{tnRoleta:()=>tnRoleta()})}catch(e){}
+{const _tf=tnFight;tnFight=function(){TNRL5.g=-1;return _tf.apply(this,arguments)}}
 
 function twTrofList(){const tc=twLS.g('tw_tc',{}),run={};for(const t of TW.tr)run[t.k]=(run[t.k]||0)+1;
   twModal(`<div class="twM"><h3>🎖️ TROFÉUS</h3><div class="twTL">${Object.keys(TWTR).map(k=>{const T=TWTR[k];return `<div class="${tc[k]||run[k]?'got':''}"><i>${T.i}</i><b>${T.n}</b><span>${T.d}</span><em>+${T.p} 🏆</em><small>${run[k]?'nesta subida: '+run[k]+' · ':''}total: ${(tc[k]||0)}</small></div>`}).join('')}</div>
@@ -17475,7 +17518,7 @@ window.__dbg={mus:()=>[MCUR,MEL.src.split('/').pop()],stg:()=>STAGE.key,prepMatc
 })();
 </script>
 <style>#updB{position:fixed;left:50%;top:max(8px,env(safe-area-inset-top));transform:translateX(-50%);z-index:99999;padding:10px 22px;border-radius:14px;border:2px solid #fff3c0;background:linear-gradient(#ffd84a,#e08a10);color:#3a1d00;font:900 15px system-ui,sans-serif;box-shadow:0 0 18px #ffb21f;cursor:pointer;animation:updP 1s ease-in-out infinite alternate}@keyframes updP{to{transform:translateX(-50%) scale(1.05)}}</style>
-<script>(function(){const V='296cbf415d1c';if(!/^https?:/.test(location.protocol))return;let nv=null;
+<script>(function(){const V='05a8c746c85e';if(!/^https?:/.test(location.protocol))return;let nv=null;
 function show(){if(document.getElementById('updB'))return;try{if(typeof G!=='undefined'&&G.mode==='fight')return}catch(e){}const b=document.createElement('button');b.id='updB';b.textContent='🔄 ATUALIZAÇÃO NOVA! Toque para atualizar';
   b.onclick=()=>{b.textContent='⏳ Atualizando...';try{acSave(1)}catch(e){}setTimeout(()=>location.reload(),900)};document.body.appendChild(b)}
 async function chk(){if(document.hidden)return;if(nv){show();return}try{const r=await fetch('versao.txt?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const t=(await r.text()).trim();if(/^[0-9a-f]{8,40}$/.test(t)&&t!==V){nv=t;show()}}catch(e){}}

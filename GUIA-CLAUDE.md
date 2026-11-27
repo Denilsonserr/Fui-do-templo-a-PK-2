@@ -3126,3 +3126,8 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - Tela da Torre: #twGo pulsa e mostra "▶ PRÓXIMO ANDAR N" quando tem subida salva (tnRun).
 - Vigia v643 mais rápido: botão em 5 s, automático em 12 s.
 - Teste: ttorre_fluxo_v654.js (+ v643 e v623 passam).
+
+## v655 — Torre: sem baú caindo, recompensa direta e ROLETA DE PASSIVA no começo do andar
+- tnBossDown embrulhado: marca TN.v655=g (tnChestDrop ignora), cria o baú "invisível" e chama tnChestOpen na hora (moedas/💎/itens/poções/joia negra iguais), TN.chest=null, banner "RECOMPENSA GUARDADA · VOLTANDO PARA A TORRE", lista do que ganhou no #tnWin e tnForceFloor em 2,3 s. Último andar: tnChestOpen já chama tnFinish(true) em 3,8 s. Sem estátua/escolha (TN.statue.used=1).
+- Roleta (#tnRl5 — NÃO usar #tnRol, já existe CSS antigo com esse id): tnFloorInit embrulhado → 650 ms depois tnRoleta(): G.hold=1, faixa de 26 cartas desliza 2,4 s e para na sorteada (raridade twRoll/TNRM, barra só se TW.bars<TWMB), tnBless, some em ~4,4 s e G.hold=0. 1x por entrada no andar (TNRL5 zera em tnFight/tnGoTower). Sem roleta no ULTRA EXTREMO (TN.ux).
+- ttorre_fluxo_v654 apagado (fluxo mudou); teste novo: ttorre_roleta_v655.js. v643 e v623 passam.
