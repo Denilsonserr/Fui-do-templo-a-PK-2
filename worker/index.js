@@ -82,8 +82,12 @@ const rid=()=>{const a='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123
 function insStmts(db,id,ct,fields,ignore){const st=[db.prepare(`INSERT ${ignore?'OR IGNORE ':''}INTO docs(id,ct,f) VALUES(?,?,?)`).bind(id,ct,JSON.stringify(fields))];
   for(const k in fields){const v=scal(fields[k]);if(v)st.push(db.prepare('INSERT INTO kv(id,k,s,n) VALUES(?,?,?,?)').bind(id,k,v.s??null,v.n??null))}return st}
 const docOut=(base,r)=>({document:{name:base+'/torre/'+r.id,fields:JSON.parse(r.f),createTime:new Date(r.ct).toISOString(),updateTime:new Date(r.ct).toISOString()},readTime:new Date().toISOString()});
+/* 27/11: o D1 às vezes responde "overloaded" por alguns segundos → tenta de novo (até 3x, com espera crescente) antes de dar erro ao celular */
+const CDF=()=>typeof caches!=='undefined'&&caches.default||null;
+const dbBusy=e=>/overload|too many|D1_ERROR|network connection lost|reset|timed? ?out|temporar/i.test(String(e&&e.message||e));
+async function dbTry(fn){let e0;for(let i=0;i<3;i++){try{return await fn()}catch(e){e0=e;if(!dbBusy(e)||/UNIQUE|constraint/i.test(String(e&&e.message)))throw e;await new Promise(r=>setTimeout(r,150+i*350+Math.random()*150))}}throw e0}
 const OPS={EQUAL:'=',GREATER_THAN:'>',GREATER_THAN_OR_EQUAL:'>=',LESS_THAN:'<',LESS_THAN_OR_EQUAL:'<='};
-async function runQuery(db,base,q){q=q||{};const lim=Math.max(1,Math.min(3000,(q.limit|0)||1000));const ff=q.where&&q.where.fieldFilter;const ob=(q.orderBy||[])[0];
+async function runQuery(db,base,q,ctx){q=q||{};const lim=Math.max(1,Math.min(3000,(q.limit|0)||1000));const ff=q.where&&q.where.fieldFilter;const ob=(q.orderBy||[])[0];
   const dir=ob&&ob.direction==='DESCENDING'?'DESC':'ASC';const obf=ob&&ob.field&&ob.field.fieldPath;let sql,args=[];
   if(ff){const op=OPS[ff.op];if(!op)return ERR(400,'INVALID_ARGUMENT','op');const v=scal(ff.value)||{s:''},col=v.s!=null?'s':'n';
     sql=`SELECT d.id,d.ct,d.f FROM kv w JOIN docs d ON d.id=w.id`;args.push(ff.field.fieldPath,v[col]);
@@ -97,14 +101,19 @@ async function runQuery(db,base,q){q=q||{};const lim=Math.max(1,Math.min(3000,(q
     sql=`WITH x AS (SELECT d.id,d.ct,d.f,o.n AS ob,ROW_NUMBER() OVER (PARTITION BY g.s ORDER BY d.ct DESC) rn FROM kv w JOIN docs d ON d.id=w.id JOIN kv g ON g.id=d.id AND g.k=? JOIN kv o ON o.id=d.id AND o.k=? AND o.n IS NOT NULL WHERE w.k=? AND w.${col}=?) SELECT id,ct,f FROM x WHERE rn=1 ORDER BY ob ${dir}`;args=[q.latestBy,obf,ff.field.fieldPath,v[col]]}
   sql+=' LIMIT ?';args.push(lim);
   const kk=qKey(q),ttl=qTTL(kk),ck=JSON.stringify(q);if(ttl){const c=QC.get(ck);if(c&&Date.now()-c.t<ttl)return J(c.v)}
-  const res=await db.prepare(sql).bind(...args).all(),R=res.results||[];const rr=(res.meta&&res.meta.rows_read)|0;RD.tot+=rr;US.rows+=rr;const b=RD.by[kk]||(RD.by[kk]={n:0,rows:0});b.n++;b.rows+=rr;
-  const out=R.length?R.map(r=>docOut(base,r)):[{readTime:new Date().toISOString()}];if(ttl){if(QC.size>300)QC.clear();QC.set(ck,{t:Date.now(),v:out})}
+  /* 27/11: cache COMPARTILHADO entre todos os servidores do mesmo lugar (Cache API) — antes cada cópia do servidor perguntava ao banco de novo */
+  const shared=ttl>=8000&&!/^(ch|mk|mkp|mks|mkv|mkx|avs|claim|gh|cev|lei|lot)$/.test(kk),cKey=shared||ttl?new Request('https://cache.furia/q/'+(await sha(ck))):null;
+  if(shared&&CDF()){try{const r=await CDF().match(cKey);if(r){const t=+r.headers.get('x-t')||0;if(Date.now()-t<ttl){const v=await r.json();QC.set(ck,{t,v});return J(v)}}}catch(e){}}
+  let res;try{res=await dbTry(()=>db.prepare(sql).bind(...args).all())}catch(e){/* banco sobrecarregado: devolve a última resposta guardada (até 15 min) em vez de erro */
+    const c=QC.get(ck);if(c&&Date.now()-c.t<900e3)return J(c.v);if(cKey&&CDF()){try{const r=await CDF().match(cKey);if(r)return J(await r.json())}catch(_){}}throw e}
+  const R=res.results||[];const rr=(res.meta&&res.meta.rows_read)|0;RD.tot+=rr;US.rows+=rr;const b=RD.by[kk]||(RD.by[kk]={n:0,rows:0});b.n++;b.rows+=rr;
+  const out=R.length?R.map(r=>docOut(base,r)):[{readTime:new Date().toISOString()}];if(ttl){if(QC.size>300)QC.clear();QC.set(ck,{t:Date.now(),v:out})}if(cKey&&CDF()){const put=CDF().put(cKey,new Response(JSON.stringify(out),{headers:{'Content-Type':'application/json','Cache-Control':'max-age=900','x-t':String(Date.now())}})).catch(()=>{});if(ctx&&ctx.waitUntil)ctx.waitUntil(put)}
   return J(out)}
 async function create(db,base,url,body){const fields=body&&body.fields;if(!fields||typeof fields!=='object')return ERR(400,'INVALID_ARGUMENT','fields');
   if(Object.keys(fields).length>80)return ERR(400,'INVALID_ARGUMENT','muitos campos');
   let id=url.searchParams.get('documentId');if(id!=null&&!/^[\w.\-]{1,200}$/.test(id))return ERR(400,'INVALID_ARGUMENT','id');if(!id)id=rid();
   for(const k in fields){if(/^(ch|mk|mkp|mks|mkv|mkx|avs|claim|gh|cev)$/.test(k))for(const c of QC.keys())if(c.includes('"fieldPath":"'+k+'"'))QC.delete(c)}
-  const ct=Date.now();try{await db.batch(insStmts(db,id,ct,fields,false))}catch(e){if(/UNIQUE|constraint/i.test(String(e&&e.message)))return ERR(409,'ALREADY_EXISTS','Document already exists: '+id);throw e}
+  const ct=Date.now();let tent=0;try{await dbTry(()=>{tent++;return db.batch(insStmts(db,id,ct,fields,false))})}catch(e){if(/UNIQUE|constraint/i.test(String(e&&e.message))){if(tent>1)return J({name:base+'/torre/'+id,fields,createTime:new Date(ct).toISOString(),updateTime:new Date(ct).toISOString()});return ERR(409,'ALREADY_EXISTS','Document already exists: '+id)}throw e}
   return J({name:base+'/torre/'+id,fields,createTime:new Date(ct).toISOString(),updateTime:new Date(ct).toISOString()})}
 async function sha(s){return [...new Uint8Array(await crypto.subtle.digest('SHA-256',new TextEncoder().encode(s)))].map(x=>x.toString(16).padStart(2,'0')).join('')}
 async function imp(db,req){if(Date.now()>IMPATE)return ERR(403,'PERMISSION_DENIED','importação encerrada');const L=(await req.json()).slice(0,40);const st=[];
@@ -112,10 +121,10 @@ async function imp(db,req){if(Date.now()>IMPATE)return ERR(403,'PERMISSION_DENIE
     st.push(db.prepare('INSERT OR IGNORE INTO docs(id,ct,f) VALUES(?,?,?)').bind(x.id,ct,JSON.stringify(x.fields)));
     for(const k in x.fields){const v=scal(x.fields[k]);if(v)st.push(db.prepare('INSERT INTO kv(id,k,s,n) SELECT ?,?,?,? WHERE NOT EXISTS(SELECT 1 FROM kv WHERE id=? AND k=?)').bind(x.id,k,v.s??null,v.n??null,x.id,k))}}
   if(st.length)await db.batch(st);return J({ok:1,n:L.length})}
-export default {async fetch(req,env){const url=new URL(req.url),p=url.pathname;
+export default {async fetch(req,env,ctx){const url=new URL(req.url),p=url.pathname;
   if(!p.startsWith('/fs'))return env.ASSETS.fetch(req);
   if(req.method==='OPTIONS')return new Response(null,{status:204,headers:CORS});
-  try{const db=env.DB;await init(db);US.req++;if(US.dia&&US.dia!==hoje())US.bloq=false;
+  try{const db=env.DB;await dbTry(()=>init(db));US.req++;if(US.dia&&US.dia!==hoje())US.bloq=false;
     if(p==='/fs-admin/uso'){await usoFlush(db,true);return J({hoje:US.dia,dia:{pedidos:US.mes.dReq,linhas:US.mes.dRows},mes:{pedidos:US.mes.req,linhas:US.mes.rows},trava:TRAVA,travado:US.bloq})}
     await usoFlush(db,false);if(US.bloq)return ERR(429,'RESOURCE_EXHAUSTED','Quota exceeded. trava de gasto: limite do plano quase no fim');
     if(p==='/fs-admin/import'&&req.method==='POST')return await imp(db,req);
@@ -143,7 +152,7 @@ export default {async fetch(req,env){const url=new URL(req.url),p=url.pathname;
     if(p==='/fs-admin/count'){const c=await db.prepare('SELECT COUNT(*) n FROM docs').first();return J(c)}
     const m=p.match(/^\/fs\/v1\/(projects\/[^/]+\/databases\/\(default\)\/documents)(.*)$/)||p.match(/^\/fs\/v1\/(projects\/[^/]+\/databases\/%28default%29\/documents)(.*)$/);if(!m)return ERR(404,'NOT_FOUND','rota');
     const base=decodeURIComponent(m[1]),rest=m[2];
-    if(req.method==='POST'&&rest===':runQuery'){const b=await req.json();return await runQuery(db,base,b.structuredQuery)}
+    if(req.method==='POST'&&rest===':runQuery'){const b=await req.json();return await runQuery(db,base,b.structuredQuery,ctx)}
     if(req.method==='POST'&&rest==='/torre'){const t=await req.text();if(t.length>1000000)return ERR(400,'INVALID_ARGUMENT','grande demais');return await create(db,base,url,JSON.parse(t))}
     return ERR(404,'NOT_FOUND','rota')}
-  catch(e){const m=String(e&&e.message||e);if(/limit|exceeded|too many/i.test(m))return ERR(429,'RESOURCE_EXHAUSTED','Quota exceeded. '+m.slice(0,160));return ERR(500,'INTERNAL',m.slice(0,200))}}};
+  catch(e){const m=String(e&&e.message||e);if(dbBusy(e))return ERR(503,'UNAVAILABLE','ocupado, tente de novo: '+m.slice(0,140));if(/limit|exceeded|too many/i.test(m))return ERR(429,'RESOURCE_EXHAUSTED','Quota exceeded. '+m.slice(0,160));return ERR(500,'INTERNAL',m.slice(0,200))}}};

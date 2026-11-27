@@ -9429,7 +9429,12 @@ twFetchT=function(url,o,ms){if(!/:runQuery/.test(url)||!o||!o.body)return _twFet
   let c=RKQC[b];if(!c&&ttl>=180e3){try{const x=localStorage.getItem('qc_'+twHash(b));if(x)c=RKQC[b]=JSON.parse(x)}catch(e){}}
   if(c&&(now-c.t<ttl||now<RKQ429))return Promise.resolve(mk(c.v));
   if(now<RKQ429)return Promise.resolve(new Response('[]',{status:429}));
-  return _twFetchT(url,o,ms).then(async r=>{if(r.status===429){if(!RKQ429)setTimeout(()=>{try{(showScreen.cur==='tower'?twToast:rkToast)('⏳ Servidor no limite de hoje: rankings e chat voltam mais tarde','#ffb060')}catch(e){}},300);RKQ429=Date.now()+15*60e3;if(c)return mk(c.v);return r}
+  /* 27/11: servidor ocupado por alguns segundos (503 / 429 "overloaded") ou internet piscando → tenta de novo sozinho (até 2x) em vez de travar 15 min.
+     Só a TRAVA DE GASTO de verdade (mensagem "trava de gasto") bloqueia 15 min. */
+  const tryF=async n=>{try{const r=await _twFetchT(url,o,ms);if(r.status===503||r.status===502||r.status===504||(r.status===429&&!/trava de gasto/i.test(await r.clone().text().catch(()=>''))))
+      {if(n<2){await new Promise(z=>setTimeout(z,700+n*1300+Math.random()*400));return tryF(n+1)}return c?mk(c.v):r}return r}
+    catch(e){if(n<2&&navigator.onLine!==false){await new Promise(z=>setTimeout(z,900+n*1500));return tryF(n+1)}if(c)return mk(c.v);throw e}};
+  return tryF(0).then(async r=>{if(r.status===429){if(!RKQ429)setTimeout(()=>{try{(showScreen.cur==='tower'?twToast:rkToast)('⏳ Servidor no limite de hoje: rankings e chat voltam mais tarde','#ffb060')}catch(e){}},300);RKQ429=Date.now()+15*60e3;if(c)return mk(c.v);return r}
     if(!r.ok||!ttl)return r;const v=await r.text();RKQC[b]={t:Date.now(),v};if(ttl>=180e3){try{localStorage.setItem('qc_'+twHash(b),JSON.stringify(RKQC[b]))}catch(e){}}return mk(v)})};
 
 /* abre vários lotes de baús em sequência (ex.: código com 6 míticos + 7 lendários) */
@@ -17643,7 +17648,7 @@ window.__dbg={mus:()=>[MCUR,MEL.src.split('/').pop()],stg:()=>STAGE.key,prepMatc
 })();
 </script>
 <style>#updB{position:fixed;left:50%;top:max(8px,env(safe-area-inset-top));transform:translateX(-50%);z-index:99999;padding:10px 22px;border-radius:14px;border:2px solid #fff3c0;background:linear-gradient(#ffd84a,#e08a10);color:#3a1d00;font:900 15px system-ui,sans-serif;box-shadow:0 0 18px #ffb21f;cursor:pointer;animation:updP 1s ease-in-out infinite alternate}@keyframes updP{to{transform:translateX(-50%) scale(1.05)}}</style>
-<script>(function(){const V='ae45e1a8982d';if(!/^https?:/.test(location.protocol))return;let nv=null;
+<script>(function(){const V='7bd752de976b';if(!/^https?:/.test(location.protocol))return;let nv=null;
 function show(){if(document.getElementById('updB'))return;try{if(typeof G!=='undefined'&&G.mode==='fight')return}catch(e){}const b=document.createElement('button');b.id='updB';b.textContent='🔄 ATUALIZAÇÃO NOVA! Toque para atualizar';
   b.onclick=()=>{b.textContent='⏳ Atualizando...';try{acSave(1)}catch(e){}setTimeout(()=>location.reload(),900)};document.body.appendChild(b)}
 async function chk(){if(document.hidden)return;if(nv){show();return}try{const r=await fetch('versao.txt?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const t=(await r.text()).trim();if(/^[0-9a-f]{8,40}$/.test(t)&&t!==V){nv=t;show()}}catch(e){}}

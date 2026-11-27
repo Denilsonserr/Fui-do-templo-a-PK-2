@@ -4,6 +4,8 @@
   "name": "fui-do-templo-a-pk-2",
   "main": "worker/index.js",
   "compatibility_date": "2026-11-01",
+  // 27/11: o servidor roda perto do banco D1 (menos idas e voltas = menos demora e menos "servidor indisponível")
+  "placement": { "mode": "smart" },
   "assets": {
     "directory": "./www",
     "binding": "ASSETS",

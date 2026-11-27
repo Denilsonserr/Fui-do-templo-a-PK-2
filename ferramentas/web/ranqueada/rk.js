@@ -635,7 +635,12 @@ twFetchT=function(url,o,ms){if(!/:runQuery/.test(url)||!o||!o.body)return _twFet
   let c=RKQC[b];if(!c&&ttl>=180e3){try{const x=localStorage.getItem('qc_'+twHash(b));if(x)c=RKQC[b]=JSON.parse(x)}catch(e){}}
   if(c&&(now-c.t<ttl||now<RKQ429))return Promise.resolve(mk(c.v));
   if(now<RKQ429)return Promise.resolve(new Response('[]',{status:429}));
-  return _twFetchT(url,o,ms).then(async r=>{if(r.status===429){if(!RKQ429)setTimeout(()=>{try{(showScreen.cur==='tower'?twToast:rkToast)('⏳ Servidor no limite de hoje: rankings e chat voltam mais tarde','#ffb060')}catch(e){}},300);RKQ429=Date.now()+15*60e3;if(c)return mk(c.v);return r}
+  /* 27/11: servidor ocupado por alguns segundos (503 / 429 "overloaded") ou internet piscando → tenta de novo sozinho (até 2x) em vez de travar 15 min.
+     Só a TRAVA DE GASTO de verdade (mensagem "trava de gasto") bloqueia 15 min. */
+  const tryF=async n=>{try{const r=await _twFetchT(url,o,ms);if(r.status===503||r.status===502||r.status===504||(r.status===429&&!/trava de gasto/i.test(await r.clone().text().catch(()=>''))))
+      {if(n<2){await new Promise(z=>setTimeout(z,700+n*1300+Math.random()*400));return tryF(n+1)}return c?mk(c.v):r}return r}
+    catch(e){if(n<2&&navigator.onLine!==false){await new Promise(z=>setTimeout(z,900+n*1500));return tryF(n+1)}if(c)return mk(c.v);throw e}};
+  return tryF(0).then(async r=>{if(r.status===429){if(!RKQ429)setTimeout(()=>{try{(showScreen.cur==='tower'?twToast:rkToast)('⏳ Servidor no limite de hoje: rankings e chat voltam mais tarde','#ffb060')}catch(e){}},300);RKQ429=Date.now()+15*60e3;if(c)return mk(c.v);return r}
     if(!r.ok||!ttl)return r;const v=await r.text();RKQC[b]={t:Date.now(),v};if(ttl>=180e3){try{localStorage.setItem('qc_'+twHash(b),JSON.stringify(RKQC[b]))}catch(e){}}return mk(v)})};
 
 /* abre vários lotes de baús em sequência (ex.: código com 6 míticos + 7 lendários) */

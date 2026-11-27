@@ -3164,3 +3164,10 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - pvScore em pontos. Tela: barra dourada "⭐ p/custo" + barra 🛡️ embaixo (pvProt). Resultado: "+N pontos (🔥 +3) (⭐ bônus +6)".
 - Simulação (tpvp_pontos_v660.js): perfeito 537 vitórias; 80% vitória ≈ 930 partidas; 60% ≈ 2.800.
 - pvp_audit.yml agora olha m202611r4. tpvp_novo_v650 apagado (regras mudaram); v652 ajustado.
+
+## v661 — Servidor: menos "indisponível" e menos demora
+- Causa achada (/fs-admin/erros + teste): o D1 às vezes responde "D1 DB is overloaded. Too many resources consumed within a 10 second window" (429). O jogo tratava QUALQUER 429 como trava de gasto e BLOQUEAVA rankings/chat/consultas por 15 min naquele celular → "servidor indisponível".
+- Worker: dbTry (até 3 tentativas com espera 150–650 ms) no init, runQuery e create (create que repete e acha UNIQUE = já gravou → sucesso); sobrecarga vira 503 UNAVAILABLE (não 429); runQuery guarda resposta no Cache API compartilhado (caches.default, chave sha da consulta, x-t = hora) para consultas com TTL ≥ 8 s que não são invalidadas na escrita; se o banco falhar devolve a última resposta guardada (até 15 min). CDF() protege quando não existe caches (servidor local).
+- wrangler.jsonc: "placement": {"mode":"smart"} (worker roda perto do D1 — várias consultas por pedido ficam mais rápidas).
+- Cliente (rk.js, wrapper do twFetchT p/ runQuery): 503/502/504 ou 429 sem "trava de gasto" → tenta de novo 2x (0,7 s / 2 s); erro de rede também; se falhar usa o cache local. Só "trava de gasto" bloqueia 15 min.
+- Ferramentas: .github/workflows/leituras.yml (RD por isolado; pouco útil) e pvp_audit.yml. Teste: tservidor_v661.js.
