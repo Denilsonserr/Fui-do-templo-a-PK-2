@@ -2628,6 +2628,16 @@ img.anOn{position:relative;z-index:2}
 .mkAdm h3{font-size:1.25em;text-shadow:0 0 8px #3dff7a88}.mkRi{font-size:.95em}.mkRi b{font-size:1.05em}
 .mkAdm .mkX{align-self:center;width:auto;padding:.4em 2.4em;font:900 .95em var(--f-ui);background:#444;color:#fff;border:0;border-radius:.5em;cursor:pointer}
 .mkAdmB{font-size:clamp(11px,1.35vw,16px)}.mkPdN{font-size:clamp(10px,1.1vw,14px)}
+/* v650: ranqueada PVP nova — estrelas por cima das 5 estrelas da arte, barra de proteção, elite */
+.rk_pvp .pvS5{position:absolute;z-index:3;display:flex;align-items:center;justify-content:center;font-style:normal;font-size:2.1em;line-height:1;color:transparent;pointer-events:none}
+.rk_pvp .pvS5.on{color:#ffd84a;text-shadow:0 0 .25em #ffb000,0 0 .5em #ff9000;animation:pvS5 1.6s ease-in-out infinite}
+@keyframes pvS5{50%{filter:brightness(1.35)}}
+.rk_pvp .pvPr{position:absolute;z-index:3;border-radius:1em;background:rgba(0,0,20,.7);border:1px solid #6ab8ff;overflow:hidden}
+.rk_pvp .pvPr i{position:absolute;left:0;top:0;bottom:0;background:linear-gradient(90deg,#2a7bff,#7fd8ff)}
+.rk_pvp .pvPr span{position:relative;display:flex;height:100%;align-items:center;justify-content:center;gap:.3em;color:#fff;font:800 .62em var(--f-ui,sans-serif);text-shadow:0 1px 2px #000}
+.rk_pvp .pvElite{position:absolute;z-index:3;display:flex;align-items:center;justify-content:center;color:#ffe27a;font:900 .7em var(--f-ui,sans-serif);text-shadow:0 0 .4em #ff9000}
+.rk_pvp .pvMe small{font-size:.55em}
+.rk_pvp .pvMe b{font-size:.78em;line-height:1.05}.rk_pvp .pvMe img{width:52%}
 
 .twBag .bgw{display:flex;gap:1em;justify-content:center;align-items:flex-start;margin:.4em 0}
 .twBag .bgc{flex:1;max-width:16em;display:flex;flex-direction:column;gap:.4em;max-height:52vh;overflow:auto;padding:.2em}
@@ -11382,18 +11392,20 @@ TWCUP['1n4nhbj']={nm:'GAROU',it:[],chr:'garou',acc:1,so:'ymstjo'};
    Ranks por ESTRELA: Madeira 1-3 … Lendário 1-3 → Divino. Ganhou = +1 estrela (3 vitórias seguidas = +1 extra), perdeu = -1 (Madeira não perde).
    ADM liga/desliga o PVP (documento pvc_<ts> no servidor; desligado = ninguém busca nem envia nada).
    Servidor: sombra = documento pvs_<conta>_<ts> (no máx. 1 a cada 4 min) · aviso para o dono da sombra = pvr_<ts> · tudo da temporada do mês. */
-const PVA={tela:'a/bbc5a551ec39e7.webp',e:{madeira:'a/0bd6de170a631d.webp',bronze:'a/22b6302ff619a9.webp',prata:'a/30f6b827ac50a2.webp',ouro:'a/045b38798470bc.webp',platina:'a/8995ae8c27d64f.webp',diamante:'a/5e424ef5f21f9f.webp',mestre:'a/5b3c28746a56f1.webp',lendario:'a/f8f1de7b753d92.webp',divino:'a/0e7f89a842c6cb.webp'},W:1849,H:851};
+const PVA={tela:'a/6a4796d35f1dc2.webp',e:{soberano:'a/c9a15300d2151c.webp',primordial:'a/46f12247a611c8.webp',supremo:'a/a5c0159e1523f3.webp',absoluto:'a/4de8c17d523631.webp',genesis:'a/e8555444f3ff82.webp',madeira:'a/0bd6de170a631d.webp',bronze:'a/22b6302ff619a9.webp',prata:'a/30f6b827ac50a2.webp',ouro:'a/045b38798470bc.webp',platina:'a/8995ae8c27d64f.webp',diamante:'a/5e424ef5f21f9f.webp',mestre:'a/5b3c28746a56f1.webp',lendario:'a/f8f1de7b753d92.webp',divino:'a/0e7f89a842c6cb.webp'},W:1847,H:852};
 /* [nome, cor, estrelas para subir cada divisão, emblema, prêmio ao chegar a 1ª vez (💎, 🎫)] */
-const PVT=[['MADEIRA','#c48a52',2,'madeira',0,0],['BRONZE','#e09a5c',3,'bronze',300,0],['PRATA','#dfe6ef',4,'prata',600,2],['OURO','#ffd34a',5,'ouro',1000,3],['PLATINA','#7fd0ff',7,'platina',1500,5],['DIAMANTE','#c79bff',10,'diamante',2500,8],['MESTRE','#ff9cf2',15,'mestre',4000,10],['LENDÁRIO','#ff5a5a',25,'lendario',6000,15],['DIVINO','#fff0b0',0,'divino',10000,25]];
-const PVDIV=8,pvB=arBx(PVA.W,PVA.H),PVW=8,PVFREE=['idle','walk','crouch','cblock','jump','charge'];
+/* v650: RANQUEADA PVP NOVA — 13 ranks da arte do dono (Bronze → Deus Gênesis), 5 estrelas cada, sem divisões. Temporada nova: todos do zero. */
+const PVT=[['BRONZE','#e09a5c',5,'bronze',0,0],['PRATA','#dfe6ef',5,'prata',300,1],['OURO','#ffd34a',5,'ouro',600,2],['PLATINA','#7fd0ff',5,'platina',1000,3],['DIAMANTE','#c79bff',5,'diamante',1500,5],['MESTRE','#ff9cf2',5,'mestre',2500,8],['LENDÁRIO','#ff5a5a',5,'lendario',4000,10],['DIVINO','#fff0b0',5,'divino',6000,15],
+  ['DEUS SOBERANO','#c58cff',5,'soberano',8000,18],['DEUS PRIMORDIAL','#ff7ad9',5,'primordial',10000,20],['DEUS SUPREMO','#ff5a7a',5,'supremo',13000,25],['DEUS ABSOLUTO','#ffe27a',5,'absoluto',16000,30],['DEUS GÊNESIS','#ff3b3b',5,'genesis',20000,40]];
+const PVDIV=12,pvB=arBx(PVA.W,PVA.H),PVW=8,PVFREE=['idle','walk','crouch','cblock','jump','charge'];
 const PV={on:null,onT:0,opp:null,srch:0,fight:null,last:''};
 const pvG=()=>{const o=Object.assign({t:0,d:0,s:0,w:0,l:0,sq:0,bt:0,bd:0,rw:[],h:[]},rkG('pvp',{}));if(o.rz!==PVRZ){Object.assign(o,{t:0,d:0,s:0,w:0,l:0,sq:0,bt:0,bd:0,h:[],rz:PVRZ});rkS('pvp',o);rkS('pvup',0)}return o},pvSv=o=>{rkS('pvp',o);try{acSave()}catch(e){}};
 const pvNeed=t=>PVT[t][2];
-const pvRkName=(t,d)=>PVT[t][0]+(t<PVDIV?' '+(d+1):'');
+const pvRkName=(t,d)=>PVT[t][0];
 /* pontuação contínua para o ranking: estrelas somadas de todas as divisões abaixo + as atuais */
-const pvScore=o=>{let n=0;for(let t=0;t<o.t;t++)n+=pvNeed(t)*3;return n+o.d*pvNeed(o.t)+o.s};
+const pvScore=o=>{let n=0;for(let t=0;t<o.t;t++)n+=pvNeed(t);return n+o.s};
 /* v337: PVRZ = número do reset do PVP (zera o rank de todo mundo e separa as sombras no servidor) */
-const PVRZ=2;const pvMon=()=>{const d=new Date(Date.now()-3*3600e3);return 'm'+d.getUTCFullYear()+String(d.getUTCMonth()+1).padStart(2,'0')+'r'+PVRZ};
+const PVRZ=3;const pvMon=()=>{const d=new Date(Date.now()-3*3600e3);return 'm'+d.getUTCFullYear()+String(d.getUTCMonth()+1).padStart(2,'0')+'r'+PVRZ};
 const pvAcc=()=>{const n=String(localStorage.getItem('ac_n')||'').toLowerCase().trim();return n&&localStorage.getItem('ac_k')?twHash(n):''};
 const pvEsc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const pvChar=()=>{const own=rkG('own',['goku']),c=rkG('pvch','')||rkG('sel','goku');return own.includes(c)&&CH[c]?c:(own.find(i=>CH[i])||'goku')};
@@ -11531,17 +11543,23 @@ function pvStart(opp,friendly){rkInit();if(!SPR_OK)return;const TM=pvTeam(),sel=
   const my={};for(const c of TM)if(!my[c])my[c]=pvDelta(c);PV.fight={opp,friendly:!!friendly,my,teams:[TM.slice(),opp.team.map(x=>x.ch)]};PV.last=opp.acc;G.pick=sel;G.opp=opp.ch;G.gmode='pvp';PV.diff0=G.diff;G.diff=2;PV.lives0=G.lives;G.lives=PVBARS;
   const sk=Object.keys(STG).filter(k=>!STG[k].hid);G.nextStg=sk[(Math.random()*sk.length)|0];
   const PM=prepMatch([...new Set(PV.fight.teams[0].concat(PV.fight.teams[1]))],G.nextStg);showVS(()=>PM.then(()=>{vsLoadEnd();startMatch();setTimeout(()=>{try{banner(friendly?'SALA PERSONALIZADA':'PVP RANQUEADA','#c58bff',100,'SOMBRA DE '+String(opp.nome).toUpperCase())}catch(e){}},300)}),PM)}
-function pvStep(o,won){const b={t:o.t,d:o.d,s:o.s},need=pvNeed(o.t);let gain=0;
-  if(won){o.w++;o.sq=Math.max(0,o.sq)+1;gain=1+(o.sq>=3&&o.t<PVDIV?1:0);for(let i=0;i<gain;i++){if(o.t>=PVDIV){o.s++;continue}o.s++;if(o.s>=pvNeed(o.t)){o.s=0;if(o.d<2)o.d++;else{o.t++;o.d=0}}}}
-  else{o.l++;o.sq=0;if(o.t===0){}else if(o.s>0)o.s--;else if(o.t>=PVDIV){o.t=PVDIV-1;o.d=2;o.s=pvNeed(o.t)-1}else if(o.d>0){o.d--;o.s=pvNeed(o.t)-1}else if(o.t>1){o.t--;o.d=2;o.s=pvNeed(o.t)-1}}
-  if(o.t>o.bt||o.t===o.bt&&o.d>o.bd){o.bt=o.t;o.bd=o.d}return {b,gain,up:o.t>b.t||o.t===b.t&&o.d>b.d,down:o.t<b.t||o.t===b.t&&o.d<b.d}}
+/* v650: vitória +1 ⭐ (3 seguidas = +1 extra, menos nos ranks divinos: Divino pra cima) · derrota -1 ⭐ · 0 ⭐ e perdeu = cai para o rank de baixo com 4 ⭐ (Bronze não cai)
+   BARRA DE PROTEÇÃO 0–100 (vitória +15, derrota +10, 5 seguidas +40): cheia = 1 🛡️ PROTEÇÃO (guarda no máx. 2) que segura 1 estrela numa derrota.
+   10 seguidas = prêmio especial 1 vez por temporada. Deus Gênesis com 5 ⭐ = ELITE: cada estrela a mais vira ponto do ranking (Top 100/50/10/3/1). */
+const PVDV=7,PVSHMX=2,PV10={g:5000,tic:15};
+function pvStar1(o){o.d=0;if(o.t>=PVDIV){o.s++;return}o.s++;if(o.s>=pvNeed(o.t)){o.s=0;o.t++}}
+function pvStep(o,won){const b={t:o.t,d:o.d,s:o.s};let gain=0,shUsed=0,sh=0,x10=0;o.d=0;o.pp=o.pp|0;o.sh=o.sh|0;
+  const addP=n=>{o.pp+=n;while(o.pp>=100){if(o.sh>=PVSHMX){o.pp=100;break}o.pp-=100;o.sh++;sh++}};
+  if(won){o.w++;o.sq=Math.max(0,o.sq|0)+1;gain=1+(o.sq>=3&&o.t<PVDV?1:0);for(let i=0;i<gain;i++)pvStar1(o);addP(15);if(o.sq===5)addP(40);if(o.sq===10&&!o.x10){o.x10=1;x10=1;rkAdd('gem',PV10.g);rkAdd('tic',PV10.tic)}}
+  else{o.l++;o.sq=0;addP(10);const lose=!(o.t===0&&o.s===0);if(lose&&o.sh>0){o.sh--;shUsed=1}else if(o.s>0)o.s--;else if(o.t>0){o.t--;o.s=4}}
+  if(o.t>o.bt||o.t===o.bt&&o.s>(o.bs|0)){o.bt=o.t;o.bs=o.s}return {b,gain,shUsed,sh,x10,up:o.t>b.t,down:o.t<b.t}}
 function pvEnd(w){const F=PV.fight;G.mode='ranked';$('controls').hidden=true;$('pauseBtn').hidden=true;try{rainSound(0)}catch(e){}G.paused=false;G.diff=PV.diff0;G.lives=PV.lives0;G.gmode='pve';PV.fight=null;if(!F)return rkOpen('pvp');
   const won=w===0,o=pvG();let st=null,rw=[];
   if(!F.friendly){st=pvStep(o,won);for(let t=1;t<=o.t;t++)if(!o.rw.includes(t)){o.rw.push(t);rw.push(t);const T=PVT[t];if(T[4])rkAdd('gem',T[4]);if(T[5])rkAdd('tic',T[5])}if(won)rkAdd('gem',15)}
   o.h.unshift({n:F.opp.nome,c:F.opp.ch,my:G.pick,w:won?1:0,f:F.friendly?1:0,r:pvRkName(o.t,o.d),d:Date.now()});o.h=o.h.slice(0,30);pvSv(o);
   if(!F.friendly){pvNotify(F.opp,won);pvUp(1)}
   rkOpen('pvp');setTimeout(()=>pvResult(F,won,st,rw,o),350)}
-function pvResult(F,won,st,rw,o){const T=PVT[o.t],stars=st?(won?'+'+st.gain+' ⭐'+(st.gain>1?' (SEQUÊNCIA DE 3!)':''):(st.b.t===0?'sem perder estrela (Madeira)':'-1 ⭐')):'';
+function pvResult(F,won,st,rw,o){const T=PVT[o.t],stars=st?(won?'+'+st.gain+' ⭐'+(st.gain>1?' (SEQUÊNCIA!)':''):(st.shUsed?'🛡️ PROTEÇÃO usada: não perdeu estrela':st.b.t===0&&st.b.s===0?'sem perder estrela (Bronze)':'-1 ⭐'))+(st&&st.sh?' · 🛡️ +'+st.sh+' PROTEÇÃO!':'')+(st&&st.x10?' · 🏆 10 SEGUIDAS: +'+rkFmtN(PV10.g)+' 💎 +'+PV10.tic+' 🎫':''):'';
   rkModal(`<div class="twM pvRes ${won?'win':'lose'}"><h3>${won?'🏆 VITÓRIA!':'💀 DERROTA'}</h3><p class="twH">${F.friendly?'Sala personalizada (não vale estrela)':'Você '+(won?'venceu':'perdeu para')+' a sombra de <b>'+pvEsc(F.opp.nome)+'</b>'}</p>
     ${st?`<div class="pvResR"><img src="${PVA.e[T[3]]}" alt=""><div><b style="color:${T[1]}">${pvRkName(o.t,o.d)}</b><span>${stars}${won?' · +15 💎':''}</span>${st.up?'<em class="up">⬆ SUBIU DE RANK!</em>':st.down?'<em class="dn">⬇ caiu de rank</em>':''}</div></div>`:''}
     ${rw.map(t=>`<p class="twH pvRw">🎁 Primeira vez em <b style="color:${PVT[t][1]}">${PVT[t][0]}</b>: +${rkFmtN(PVT[t][4])} 💎${PVT[t][5]?' +'+PVT[t][5]+' 🎫':''}</p>`).join('')}
@@ -11549,17 +11567,18 @@ function pvResult(F,won,st,rw,o){const T=PVT[o.t],stars=st?(won?'+'+st.gain+' �
   rkSfx(won?'powerUp':'clang');$('rkMX').onclick=()=>{rkModal(null);rkView('pvp')};$('pvAg').onclick=()=>{rkModal(null);rkView('pvp');pvSearch()}}
 
 /* ---------- 6) TELA DO PVP (arte do dono) ---------- */
-const PVRY=[188,250,308,368,427,487,550,612];
-function pvStars(o){const n=pvNeed(o.t);if(o.t>=PVDIV)return `<div class="pvSt big">⭐ ${o.s}</div>`;if(n>7)return `<div class="pvSt big">⭐ ${o.s} / ${n}</div>`;return `<div class="pvSt">${Array.from({length:n},(_,i)=>`<i class="${i<o.s?'on':''}">★</i>`).join('')}</div>`}
+const PVRY=[152,198,242,287,332,377,422,468,513,558,603,650,703];
+function pvStars(o){const el=o.t>=PVDIV&&o.s>=5;return `${[72,117,162,207,251].map((x,i)=>`<i class="pvS5 ${el||i<o.s?'on':''}" style="${pvB(x-21,354,x+21,396)}">★</i>`).join('')}${el?`<div class="pvElite" style="${pvB(40,318,280,350)}">👑 ELITE · ${o.s-5} pts</div>`:''}`}
+function pvProt(o){const pp=Math.min(100,o.pp|0),sh=o.sh|0;return `<div class="pvPr" style="${pvB(34,400,286,426)}"><i style="width:${pp}%"></i><span>🛡️ ${pp}/100${sh?` · <b>${'🛡️'.repeat(sh)} x${sh}</b>`:''}</span></div>`}
 function pvH(){const o=pvG(),T=PVT[o.t],me=pvTeam()[0],off=PV.on===false,acc=pvAcc(),opp=PV.opp;
   return `<button class="hs" data-a="back" style="${pvB(8,4,135,88)}"></button><button class="hs" data-a="pvRules" style="${pvB(1672,10,1744,78)}"></button><button class="hs" data-a="pvCfg" style="${pvB(1760,10,1834,78)}"></button>
-  <div class="pvMe" style="${pvB(26,160,298,428)}"><img src="${PVA.e[T[3]]}" alt=""><b style="color:${T[1]}">${pvRkName(o.t,o.d)}</b>${pvStars(o)}<small>${o.w} V · ${o.l} D${o.sq>=2?' · 🔥 '+o.sq+' seguidas':''}</small></div>
+  <div class="pvMe" style="${pvB(40,148,280,352)}"><img src="${PVA.e[T[3]]}" alt=""><b style="color:${T[1]}">${pvRkName(o.t,o.d)}</b><small>${o.w} V · ${o.l} D${(o.sq|0)>=2?' · 🔥 '+o.sq+' seguidas':''}</small></div>${pvStars(o)}${pvProt(o)}
   <button class="hs pvL" data-a="pvRw" style="${pvB(32,452,288,514)}"></button><button class="hs pvL" data-a="pvRank" style="${pvB(32,518,288,580)}"></button><button class="hs pvL" data-a="pvHist" style="${pvB(32,584,288,646)}"></button><button class="hs pvL" data-a="pvRules" style="${pvB(32,650,288,712)}"></button>
   <button class="hs pvP p1" data-a="pvForm" style="${pvB(478,408,688,584)}"><img src="${pvPortrait(me)}" alt=""><span>${pvEsc(CH[me].name)}</span></button><div class="pvSm" style="${pvB(694,430,760,584)}">${pvTeam().slice(1).map(c=>`<img src="${pvPortrait(c)}" alt="">`).join('')}</div>
   <div class="pvNm" style="${pvB(440,590,730,640)}">${pvEsc(twLS.g('tw_nome','')||'Você')}</div>
   ${opp?`<div class="pvSm r" style="${pvB(1116,430,1182,584)}">${opp.team.slice(1).map(x=>`<img src="${pvPortrait(x.ch)}" alt="">`).join('')}</div>`:''}<div class="hs pvP p2 ${opp?'on':''} ${PV.srch?'srch':''}" style="${pvB(1182,408,1392,584)}">${opp?`<img src="${pvPortrait(opp.ch)}" alt=""><span>${pvEsc(CH[opp.ch].name)}</span>`:PV.srch?'<i class="pvSpin"></i>':''}</div>
   <div class="pvNm" style="${pvB(1140,590,1430,640)}">${opp?`<img src="${PVA.e[PVT[opp.t][3]]}" alt="">${pvEsc(opp.nome)} <small style="color:${PVT[opp.t][1]}">${pvRkName(opp.t,opp.dv)}</small>`:PV.srch?'PROCURANDO...':''}</div>
-  ${PVRY.map((y,i)=>(i+1===o.t?`<div class="pvRkOn" style="${pvB(1574,y-30,1826,y+30)}"></div>`:'')+`<button class="hs pvTr" data-a="pvTier" data-t="${i+1}" style="${pvB(1576,y-28,1824,y+28)}">${(()=>{const n=PV.all?PV.all.filter(e=>e.t===i+1).length:0;return n?`<b>${n}</b>`:''})()}</button>`).join('')}<button class="hs pvTr tt" data-a="pvTier" data-t="all" style="${pvB(1600,104,1800,152)}">${PV.all?`<b>${PV.all.length}</b>`:''}</button>
+  ${PVRY.map((y,i)=>(i===o.t?`<div class="pvRkOn" style="${pvB(1538,y-22,1828,y+22)}"></div>`:'')+`<button class="hs pvTr" data-a="pvTier" data-t="${i}" style="${pvB(1540,y-21,1826,y+21)}">${(()=>{const n=PV.all?PV.all.filter(e=>e.t===i).length:0;return n?`<b>${n}</b>`:''})()}</button>`).join('')}<button class="hs pvTr tt" data-a="pvTier" data-t="all" style="${pvB(1600,74,1780,122)}">${PV.all?`<b>${PV.all.length}</b>`:''}</button>
   <button class="hs pvL" data-a="pvForm" style="${pvB(404,734,700,798)}"></button><button class="hs pvGo ${PV.srch||opp?'busy':''}" data-a="pvGo" style="${pvB(728,706,1140,822)}"><span class="sw"></span></button><button class="hs pvL" data-a="pvRoom" style="${pvB(1164,734,1486,798)}"></button>
   ${off?`<div class="pvOff" style="${pvB(470,150,1400,330)}"><b>⛔ PVP DESLIGADO</b><span>O ADM desligou o PVP por enquanto. Volte mais tarde!</span></div>`:!acc?`<div class="pvOff soft" style="${pvB(520,180,1350,320)}"><b>👤 PRECISA DE CONTA</b><span>Crie ou entre na sua conta (botão Conta) para jogar o PVP.</span></div>`:''}`}
 {const _v=rkView;rkView=function(v){if(v!=='pvp')return _v.apply(this,arguments);
@@ -11587,8 +11606,11 @@ function pvForm(){const own=rkG('own',['goku']).filter(id=>CH[id]),TM=pvTeam(),A
 function pvRules(){rkModal(`<div class="twM pvRu"><h3>📖 REGRAS DO PVP SOMBRA</h3><div class="pvRuB">
   <p>⚔️ Cada jogador tem uma <b>SOMBRA</b>. O jogo grava o seu jeito de lutar (golpes, combos, defesa, quando solta o super e o tempo de reação) e os bônus reais do personagem (nível, equipamentos, anéis, passivas).</p>
   <p>🔎 <b>Buscar Partida</b>: você enfrenta a sombra de alguém do seu rank. Ela luta igual ao dono dela.</p>
-  <p>⭐ Ganhou = <b>+1 estrela</b> (3 vitórias seguidas = +1 estrela extra). Perdeu = <b>-1 estrela</b>. Na Madeira você não perde estrela.</p>
-  <p>🏅 Cada rank tem 3 divisões (1, 2, 3). Estrelas para subir: ${PVT.slice(0,PVDIV).map(T=>`<b style="color:${T[1]}">${T[0]} ${T[2]}</b>`).join(' · ')} → <b style="color:${PVT[PVDIV][1]}">DIVINO</b> (estrelas sem limite).</p>
+  <p>⭐ São <b>13 ranks</b> (Bronze → Deus Gênesis) e cada um tem <b>5 estrelas</b>. Completou 5 = sobe de rank.</p>
+  <p>✅ Ganhou = <b>+1 ⭐</b> · 🔥 3 vitórias seguidas = <b>+1 ⭐ extra</b> (até Lendário; do Divino para cima não tem extra). ❌ Perdeu = <b>-1 ⭐</b>. Com 0 ⭐ e perdeu = cai para o rank de baixo com 4 ⭐. No Bronze não cai.</p>
+  <p>🛡️ <b>Barra de proteção</b>: vitória +15, derrota +10, 5 vitórias seguidas +40. Encheu (100) = ganha 1 PROTEÇÃO (guarda até 2), que segura 1 estrela quando você perde. Não dá para comprar.</p>
+  <p>🏆 10 vitórias seguidas = prêmio especial (+${rkFmtN(PV10.g)} 💎 +${PV10.tic} 🎫), 1 vez por temporada.</p>
+  <p>👑 <b>Deus Gênesis</b> com 5 ⭐ = <b>ELITE</b>: cada vitória a mais vira ponto no ranking (Top 100, 50, 10, 3 e 1 da temporada).</p>
   <p>🎁 Primeira vez em cada rank = prêmio (veja em Recompensas). Cada vitória = +15 💎.</p>
   <p>🛡️ <b>Sala Personalizada</b>: lute contra a sombra de um amigo pelo nome. Não vale estrela.</p>
   <p>👥 <b>Formação</b>: escolha o seu TIME DE 3. Quando um cai, entra o próximo (quem ganhou continua com a vida que sobrou). Para vencer, derrote os 3 da sombra.</p><p>💪 A sombra luta com TODOS os bônus do dono (título, anéis, equipamentos, nível, passivas) e a máquina no nível máximo, com um pouco do estilo dele.</p>
@@ -15736,7 +15758,7 @@ function pbApply(){for(let i=RKEVX.length-1;i>=0;i--)if(RKEVX[i][5]==='pb')RKEVX
 pbApply();setInterval(pbApply,20000);
 {const _cp=twCupom;twCupom=async function(code,E){const C=TWCUP[twHash(String(code).toUpperCase())];const r=await _cp.apply(this,arguments);
   try{if(C&&C.pbo&&r!==false&&E&&/\bok\b/.test(E.className||'')){const B=rkG('pbo',null),t=Date.now();rkS('pbo',{e:Math.max(t,B&&B.e||0)+C.pbo*3600e3});pbApply();try{localStorage.removeItem('ac_h');acSave(1)}catch(e){}if(C.msg)E.textContent=C.msg}}catch(e){}return r}}
-{const _s=pvStep;pvStep=function(o,won){const r=_s.apply(this,arguments);try{if(won&&pbOn()&&r&&r.gain>0){const g=r.gain;for(let i=0;i<g;i++){if(o.t>=PVDIV){o.s++;continue}o.s++;if(o.s>=pvNeed(o.t)){o.s=0;if(o.d<2)o.d++;else{o.t++;o.d=0}}}
+{const _s=pvStep;pvStep=function(o,won){const r=_s.apply(this,arguments);try{if(won&&pbOn()&&r&&r.gain>0){const g=r.gain;for(let i=0;i<g;i++)pvStar1(o);
   if(o.t>o.bt||o.t===o.bt&&o.d>o.bd){o.bt=o.t;o.bd=o.d}r.gain=g*2;r.up=o.t>r.b.t||o.t===r.b.t&&o.d>r.b.d}}catch(e){}return r}}
 {const _ra=rkApply;rkApply=function(){const r=_ra.apply(this,arguments);try{const p=G.p&&G.p[0];if(p&&pbOn()&&p._pbV!==p.tdm){p.tdm=(p.tdm||1)*2;p.tcr=(p.tcr||0)*2+5;p._pbV=p.tdm /* chance = 5+tcr → dobra */}}catch(e){}return r}}
 try{Object.assign(window.__pvT||{},{pbOn:()=>pbOn(),pvStep:(o,w)=>pvStep(o,w),evX:()=>rkEvX()})}catch(e){}
@@ -15893,7 +15915,7 @@ const DROPBASE=.4 /* v631: dono pediu drop mais difícil (era .6) */,EV2X=[Date.
 function rkDropK(){return DROPBASE*(ev2xOn()?2:1)}
 RKEVX.splice(0,0,[EV2X[0],EV2X[1],2,'2x DROP · 2x XP · 2x ESTRELAS · 2x ANEL',{anel:2}]);
 try{for(const R of PTRK){for(const k of ['it','sh','pv','sj','gem']){const b=R[k];if(typeof b!=='number')continue;Object.defineProperty(R,k,{get:()=>b*rkDropK(),configurable:true,enumerable:true})}}}catch(e){}
-{const _s=pvStep;pvStep=function(o,won){const r=_s.apply(this,arguments);try{if(won&&ev2xOn()&&r&&r.gain>0){const g=r.gain;for(let i=0;i<g;i++){if(o.t>=PVDIV){o.s++;continue}o.s++;if(o.s>=pvNeed(o.t)){o.s=0;if(o.d<2)o.d++;else{o.t++;o.d=0}}}
+{const _s=pvStep;pvStep=function(o,won){const r=_s.apply(this,arguments);try{if(won&&ev2xOn()&&r&&r.gain>0){const g=r.gain;for(let i=0;i<g;i++)pvStar1(o);
   if(o.t>o.bt||o.t===o.bt&&o.d>o.bd){o.bt=o.t;o.bd=o.d}r.gain=g*2;r.up=o.t>r.b.t||o.t===r.b.t&&o.d>r.b.d}}catch(e){}return r}}
 /* Beru se adapta */
 function beForca(){try{const p=G.p&&G.p[0];if(!p)return 1;const pw=(p.tdm||1)*(1+Math.min(150,p.tcr||0)/100*.6)*Math.min(3,p.tsp||1);return Math.max(1,Math.min(12,pw/2.5))}catch(e){return 1}}
@@ -15914,7 +15936,7 @@ pvLoadAll=async function(force){if(!force&&PV.all&&Date.now()-PV.allT<60e3)retur
 const VNB=[Date.UTC(2026,10,19,19,45),Date.UTC(2026,10,19,21,45),Date.UTC(2026,10,20,0,45)];
 const vnOn=()=>{try{const n=String(twLS.g('tw_nome','')||'').toLowerCase().trim();return pvAcc()==='10jasju'||n==='vini_junior10'}catch(e){return false}};
 function vnExtra(t){t=t||Date.now();if(t<VNB[0]||t>=VNB[2])return 0;return t<VNB[1]?4:2}
-{const _s=pvStep;pvStep=function(o,won){const r=_s.apply(this,arguments);try{const x=won&&r&&r.gain>0&&vnOn()?vnExtra():0;if(x){for(let i=0;i<x;i++){if(o.t>=PVDIV){o.s++;continue}o.s++;if(o.s>=pvNeed(o.t)){o.s=0;if(o.d<2)o.d++;else{o.t++;o.d=0}}}
+{const _s=pvStep;pvStep=function(o,won){const r=_s.apply(this,arguments);try{const x=won&&r&&r.gain>0&&vnOn()?vnExtra():0;if(x){for(let i=0;i<x;i++)pvStar1(o);
   if(o.t>o.bt||o.t===o.bt&&o.d>o.bd){o.bt=o.t;o.bd=o.d}r.gain+=x;r.up=o.t>r.b.t||o.t===r.b.t&&o.d>r.b.d}}catch(e){}return r}}
 try{Object.assign(window.__pvT||{},{pvLoadAll:f=>pvLoadAll(f),vnExtra:t=>vnExtra(t),vnOn:()=>vnOn()})}catch(e){}
 
@@ -15997,7 +16019,7 @@ const VN4=[Date.UTC(2026,10,20,13,0),Date.UTC(2026,10,20,17,0)],vn4On=t=>{t=t||D
 function vn4Apply(){for(let i=RKEVX.length-1;i>=0;i--)if(RKEVX[i][5]==='vn4')RKEVX.splice(i,1);const t=Date.now();if(!vn4On(t))return;
   const base=RKEVX.find(e=>t>=e[0]&&t<e[1]&&e[5]!=='sx'&&e[5]!=='vn4')||null;RKEVX.unshift([t-1000,base?Math.min(VN4[1],base[1]):VN4[1],(base?base[2]:1)*4,'⚡ 4x XP · 4x ESTRELAS'+(base?' + '+base[3]:''),Object.assign({},base&&base[4]||{}),'vn4'])}
 setTimeout(vn4Apply,1600);setInterval(vn4Apply,20000);
-{const _s=pvStep;pvStep=function(o,won){const r=_s.apply(this,arguments);try{if(won&&r&&r.gain>0&&vn4On()){const x=r.gain*3;for(let i=0;i<x;i++){if(o.t>=PVDIV){o.s++;continue}o.s++;if(o.s>=pvNeed(o.t)){o.s=0;if(o.d<2)o.d++;else{o.t++;o.d=0}}}
+{const _s=pvStep;pvStep=function(o,won){const r=_s.apply(this,arguments);try{if(won&&r&&r.gain>0&&vn4On()){const x=r.gain*3;for(let i=0;i<x;i++)pvStar1(o);
   if(o.t>o.bt||o.t===o.bt&&o.d>o.bd){o.bt=o.t;o.bd=o.d}r.gain+=x;r.up=o.t>r.b.t||o.t===r.b.t&&o.d>r.b.d}}catch(e){}return r}}
 try{Object.assign(window.__pvT||{},{vn4Apply:()=>vn4Apply()})}catch(e){}
 
@@ -16025,7 +16047,7 @@ function vn40Apply(){for(let i=RKEVX.length-1;i>=0;i--)if(RKEVX[i][5]==='vn40')R
   const fim=t<VN40[1]?VN40[1]:VN40B[1];RKEVX.unshift([t-1000,base?Math.min(fim,base[1]):fim,(base?base[2]:1)*4,'⚡ VINI 4x EM TUDO'+(base?' + '+base[3]:''),Object.assign(b4,x),'vn40'])}
 setTimeout(vn40Apply,1700);setInterval(vn40Apply,20000);
 {const _k=rkDropK;rkDropK=function(){const r=_k.apply(this,arguments);try{if(vn40On())return r*4}catch(e){}return r}}
-{const _s=pvStep;pvStep=function(o,won){const r=_s.apply(this,arguments);try{if(won&&r&&r.gain>0&&vn40On()){const x=r.gain*3;for(let i=0;i<x;i++){if(o.t>=PVDIV){o.s++;continue}o.s++;if(o.s>=pvNeed(o.t)){o.s=0;if(o.d<2)o.d++;else{o.t++;o.d=0}}}
+{const _s=pvStep;pvStep=function(o,won){const r=_s.apply(this,arguments);try{if(won&&r&&r.gain>0&&vn40On()){const x=r.gain*3;for(let i=0;i<x;i++)pvStar1(o);
   if(o.t>o.bt||o.t===o.bt&&o.d>o.bd){o.bt=o.t;o.bd=o.d}r.gain+=x;r.up=o.t>r.b.t||o.t===r.b.t&&o.d>r.b.d}}catch(e){}return r}}
 try{Object.assign(window.__pvT||{},{vn40Apply:()=>vn40Apply(),dropK:()=>rkDropK()})}catch(e){}
 
@@ -16057,7 +16079,7 @@ function pb5Apply(){for(let i=RKEVX.length-1;i>=0;i--)if(RKEVX[i][5]==='pb5')RKE
 setTimeout(pb5Apply,1800);setInterval(pb5Apply,20000);
 {const _cp=twCupom;twCupom=async function(code,E){const C=TWCUP[twHash(String(code).toUpperCase())];const r=await _cp.apply(this,arguments);
   try{if(C&&C.pb5&&r!==false&&E&&/\bok\b/.test(E.className||'')){const B=rkG('pb5',null),t=Date.now();rkS('pb5',{e:Math.max(t,B&&B.e||0)+C.pb5*3600e3});pb5Apply();try{localStorage.removeItem('ac_h');acSave(1)}catch(e){}if(C.msg)E.textContent=C.msg}}catch(e){}return r}}
-{const _s=pvStep;pvStep=function(o,won){const r=_s.apply(this,arguments);try{if(won&&pb5On()&&r&&r.gain>0){const x=r.gain*4;for(let i=0;i<x;i++){if(o.t>=PVDIV){o.s++;continue}o.s++;if(o.s>=pvNeed(o.t)){o.s=0;if(o.d<2)o.d++;else{o.t++;o.d=0}}}
+{const _s=pvStep;pvStep=function(o,won){const r=_s.apply(this,arguments);try{if(won&&pb5On()&&r&&r.gain>0){const x=r.gain*4;for(let i=0;i<x;i++)pvStar1(o);
   if(o.t>o.bt||o.t===o.bt&&o.d>o.bd){o.bt=o.t;o.bd=o.d}r.gain+=x;r.up=o.t>r.b.t||o.t===r.b.t&&o.d>r.b.d}}catch(e){}return r}}
 {const _ra=rkApply;rkApply=function(){const r=_ra.apply(this,arguments);try{const p=G.p&&G.p[0];if(p&&!p.cpu&&pb5On()&&p._pb5V!==p.tdm){p.tdm=(p.tdm||1)*2;p.tcr=(p.tcr||0)*2+5;p._pb5V=p.tdm}}catch(e){}return r}}
 {const _sm=speedMul;speedMul=function(f){const r=_sm.apply(this,arguments);try{if(f&&G.p&&f===G.p[0]&&!f.cpu&&pb5On())return r*2}catch(e){}return r}}
@@ -16320,7 +16342,7 @@ function evbApply(){for(let i=RKEVX.length-1;i>=0;i--)if(RKEVX[i][5]==='evb')RKE
   RKEVX.push([t-1000,EVB[1],(base?base[2]:1)*2,'🐜 3x BERU · 2x ESTRELAS PVP · 2x XP'+(base?' + '+base[3]:''),Object.assign({},base&&base[4]||{}),'evb']);
   /* fica DEPOIS das entradas pessoais (vn40/pb5) e ANTES do evento geral */const i=RKEVX.findIndex(e=>e[5]==='evb'),j=RKEVX.indexOf(base);if(base&&j<i){const e=RKEVX.splice(i,1)[0];RKEVX.splice(j,0,e)}}
 setTimeout(evbApply,1600);setInterval(evbApply,20000);
-{const _s=pvStep;pvStep=function(o,won){const r=_s.apply(this,arguments);try{if(won&&evbOn()&&r&&r.gain>0){const x=r.gain;for(let i=0;i<x;i++){if(o.t>=PVDIV){o.s++;continue}o.s++;if(o.s>=pvNeed(o.t)){o.s=0;if(o.d<2)o.d++;else{o.t++;o.d=0}}}
+{const _s=pvStep;pvStep=function(o,won){const r=_s.apply(this,arguments);try{if(won&&evbOn()&&r&&r.gain>0){const x=r.gain;for(let i=0;i<x;i++)pvStar1(o);
   if(o.t>o.bt||o.t===o.bt&&o.d>o.bd){o.bt=o.t;o.bd=o.d}r.gain+=x;r.up=o.t>r.b.t||o.t===r.b.t&&o.d>r.b.d}}catch(e){}return r}}
 try{Object.assign(window.__pvT||{},{evbApply:()=>evbApply(),beCh:()=>beCh()})}catch(e){}
 
@@ -16724,7 +16746,7 @@ TWCUP['p5pgxx']={nm:'PACOTE DO ALUCARD',it:[],bp:2,s3:1,x2:1,uni:1,alpk:1};
 const TSOB={a:Date.UTC(2026,10,22,23,0),b:Date.UTC(2026,10,23,0,0),k:'sob1122',show:Date.UTC(2026,10,24,2,59)};
 const tsOn=()=>{const t=Date.now();return t>=TSOB.a&&t<TSOB.b},tsMy=()=>{const o=rkG('tsob',{});return o&&o.k===TSOB.k?o.n|0:0};
 TWTIT.pvsob={n:'SOBERANO DO PVP',i:'⚜️',c:'#ffcf3a',d:'Venceu o Torneio Soberano do PVP (22/11) · a cada 5 vitórias no PVP ganha +1 ⭐ extra'};
-const pvStar1=o=>{if(o.t>=PVDIV){o.s++;return}o.s++;if(o.s>=pvNeed(o.t)){o.s=0;if(o.d<2)o.d++;else{o.t++;o.d=0}}};
+
 /* bônus do título */
 {const _s=pvStep;pvStep=function(o,won){const r=_s.apply(this,arguments);try{if(won&&r&&twTits().includes('pvsob')){const w=rkG('sobW',0)+1;rkS('sobW',w);
   if(w%5===0){pvStar1(o);if(o.t>o.bt||o.t===o.bt&&o.d>o.bd){o.bt=o.t;o.bd=o.d}r.gain=(r.gain|0)+1;r.up=o.t>r.b.t||o.t===r.b.t&&o.d>r.b.d;setTimeout(()=>{try{rkToast('⚜️ SOBERANO: +1 ⭐ extra (5 vitórias)!','#ffcf3a')}catch(e){}},1200)}}}catch(e){}return r}}
@@ -17361,7 +17383,7 @@ window.__dbg={mus:()=>[MCUR,MEL.src.split('/').pop()],stg:()=>STAGE.key,prepMatc
 })();
 </script>
 <style>#updB{position:fixed;left:50%;top:max(8px,env(safe-area-inset-top));transform:translateX(-50%);z-index:99999;padding:10px 22px;border-radius:14px;border:2px solid #fff3c0;background:linear-gradient(#ffd84a,#e08a10);color:#3a1d00;font:900 15px system-ui,sans-serif;box-shadow:0 0 18px #ffb21f;cursor:pointer;animation:updP 1s ease-in-out infinite alternate}@keyframes updP{to{transform:translateX(-50%) scale(1.05)}}</style>
-<script>(function(){const V='6f2a090edfa2';if(!/^https?:/.test(location.protocol))return;let nv=null;
+<script>(function(){const V='50b74aa9d202';if(!/^https?:/.test(location.protocol))return;let nv=null;
 function show(){if(document.getElementById('updB'))return;try{if(typeof G!=='undefined'&&G.mode==='fight')return}catch(e){}const b=document.createElement('button');b.id='updB';b.textContent='🔄 ATUALIZAÇÃO NOVA! Toque para atualizar';
   b.onclick=()=>{b.textContent='⏳ Atualizando...';try{acSave(1)}catch(e){}setTimeout(()=>location.reload(),900)};document.body.appendChild(b)}
 async function chk(){if(document.hidden)return;if(nv){show();return}try{const r=await fetch('versao.txt?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const t=(await r.text()).trim();if(/^[0-9a-f]{8,40}$/.test(t)&&t!==V){nv=t;show()}}catch(e){}}

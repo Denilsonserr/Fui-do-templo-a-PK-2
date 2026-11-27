@@ -3099,3 +3099,10 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - Mesmo esquema do v370: RKXP/RKXW/RKXL/RKLVS/RKPAS/RKBOSS.ph/BSST/BSANTI/RKRW/RKRWX/TWTIT rk14–rk18/TPRK/p3Tier. RKTOP virou `let` (linha 17) e é recalculado no fim do rk.js.
 - tela_pvp.png (arte nova da PVP do dono, 13 ranks com nomes na imagem) guardada em ferramentas/ranqueada_artes/v649 — ainda NÃO usada (esperando o dono decidir a lista de ranks da PVP).
 - Teste: ferramentas/testes/trank5_v649.js.
+
+## v650 — Ranqueada PVP nova (etapa 2 da Ranqueada Dupla, texto do dono 27/11)
+- Dono escolheu: PVP com os 13 ranks DA ARTE (Bronze, Prata, Ouro, Platina, Diamante, Mestre, Lendário, Divino, Deus Soberano, Deus Primordial, Deus Supremo, Deus Absoluto, Deus Gênesis); Boss segue com os 19 do RKR; jogadores do PVP começam do zero (PVRZ=3 → pvG zera e o pvMon muda, ranking/sombras novos).
+- PVT agora 13 linhas [nome,cor,5,emblema,💎,🎫]; PVDIV=12 (topo); sem divisões (o.d sempre 0); pvRkName = só o nome. pvStar1 virou function (+1 ⭐, 5 = sobe); os 7 loops iguais dos eventos foram trocados por pvStar1(o).
+- pvStep: vitória +1 (3 seguidas +1 extra só até Lendário, PVDV=7), derrota -1, 0 ⭐ → rank de baixo com 4 ⭐, Bronze não cai; barra o.pp (vit +15, der +10, 5 seguidas +40) → o.sh proteções (máx 2) seguram 1 estrela; 10 seguidas = PV10 (5.000 💎 + 15 🎫) 1x por temporada (o.x10); Deus Gênesis com 5+ ⭐ = ELITE (pontos = s-5). Retorno tem shUsed/sh/x10.
+- Tela: arte nova do dono a/6a4796d35f1dc2.webp (1847x852); 5 estrelas acendem por cima das da arte; barra de proteção embaixo; lista da direita PVRY com 13 linhas (data-t = índice do rank). Emblemas dos Deuses: soberano=deus_cosmico, primordial, supremo=deus_celestial, absoluto (RQA.rank) e genesis (v649) — o dono pode mandar os próprios.
+- Teste: ferramentas/testes/tpvp_novo_v650.js. (ttorneio_sob_v622 quebra pelo anúncio #adPass — teste antigo, não é bug.)

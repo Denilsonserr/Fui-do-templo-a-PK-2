@@ -2121,3 +2121,13 @@ img.anOn{position:relative;z-index:2}
 .mkAdm h3{font-size:1.25em;text-shadow:0 0 8px #3dff7a88}.mkRi{font-size:.95em}.mkRi b{font-size:1.05em}
 .mkAdm .mkX{align-self:center;width:auto;padding:.4em 2.4em;font:900 .95em var(--f-ui);background:#444;color:#fff;border:0;border-radius:.5em;cursor:pointer}
 .mkAdmB{font-size:clamp(11px,1.35vw,16px)}.mkPdN{font-size:clamp(10px,1.1vw,14px)}
+/* v650: ranqueada PVP nova — estrelas por cima das 5 estrelas da arte, barra de proteção, elite */
+.rk_pvp .pvS5{position:absolute;z-index:3;display:flex;align-items:center;justify-content:center;font-style:normal;font-size:2.1em;line-height:1;color:transparent;pointer-events:none}
+.rk_pvp .pvS5.on{color:#ffd84a;text-shadow:0 0 .25em #ffb000,0 0 .5em #ff9000;animation:pvS5 1.6s ease-in-out infinite}
+@keyframes pvS5{50%{filter:brightness(1.35)}}
+.rk_pvp .pvPr{position:absolute;z-index:3;border-radius:1em;background:rgba(0,0,20,.7);border:1px solid #6ab8ff;overflow:hidden}
+.rk_pvp .pvPr i{position:absolute;left:0;top:0;bottom:0;background:linear-gradient(90deg,#2a7bff,#7fd8ff)}
+.rk_pvp .pvPr span{position:relative;display:flex;height:100%;align-items:center;justify-content:center;gap:.3em;color:#fff;font:800 .62em var(--f-ui,sans-serif);text-shadow:0 1px 2px #000}
+.rk_pvp .pvElite{position:absolute;z-index:3;display:flex;align-items:center;justify-content:center;color:#ffe27a;font:900 .7em var(--f-ui,sans-serif);text-shadow:0 0 .4em #ff9000}
+.rk_pvp .pvMe small{font-size:.55em}
+.rk_pvp .pvMe b{font-size:.78em;line-height:1.05}.rk_pvp .pvMe img{width:52%}
