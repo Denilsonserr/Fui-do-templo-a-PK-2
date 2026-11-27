@@ -3093,3 +3093,9 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 
 ## v648 — Código para todos: 10.000 💎 + 20 🎫 + anel preto SS
 - TWCUP rfe6cu (ev:1, 1 vez por conta; texto só com o dono): gem 10000, tic 20, rgx [[3,6,dano,crit]] (nível máximo), msg própria. Teste: C1=.. node ferramentas/testes/tcod_v648.js
+
+## v649 — 5 ranks novos acima de Deus Absoluto (etapa 1 da Ranqueada Dupla)
+- RKR agora tem 19: + DEUS ANCESTRAL 750k, DEUS ORIGINÁRIO 1,05M, DEUS DO INFINITO 1,4M, DEUS DA CRIAÇÃO 1,85M, DEUS GÊNESIS 2,4M XP. Emblemas do dono (já transparentes) → ferramentas/ranqueada_artes/v649/fazer.py → a/<md5[:14]>.webp 384px.
+- Mesmo esquema do v370: RKXP/RKXW/RKXL/RKLVS/RKPAS/RKBOSS.ph/BSST/BSANTI/RKRW/RKRWX/TWTIT rk14–rk18/TPRK/p3Tier. RKTOP virou `let` (linha 17) e é recalculado no fim do rk.js.
+- tela_pvp.png (arte nova da PVP do dono, 13 ranks com nomes na imagem) guardada em ferramentas/ranqueada_artes/v649 — ainda NÃO usada (esperando o dono decidir a lista de ranks da PVP).
+- Teste: ferramentas/testes/trank5_v649.js.
