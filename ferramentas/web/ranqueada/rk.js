@@ -8402,3 +8402,14 @@ for(let k=14;k<=18;k++){TWTIT['rk'+k]={n:RKR[k].n,i:'',c:RKR[k].c,d:'Chegar ao r
 TPRK.push('deus_celestial','deus_celestial','deus_celestial','deus_celestial','deus_celestial');
 {const _p3=p3Tier;p3Tier=function(i){return i>=14?5:_p3(i)}}
 RKTOP=RKR.length-1;
+
+/* ================= v651: RANQUEADA PVP só abre hoje (27/11) às 11:00 (Brasília). Antes disso: "Buscar Partida" e "Sala" bloqueados com contagem; ADM joga normal ================= */
+const PVLIB=Date.parse('2026-11-27T14:00:00Z');
+const pvLibOn=()=>Date.now()>=PVLIB||(()=>{try{return mnAdm()}catch(e){return false}})();
+const pvLibFalta=()=>{const m=Math.max(0,Math.ceil((PVLIB-Date.now())/60000));return m>=60?Math.floor(m/60)+'h'+String(m%60).padStart(2,'0'):m+' min'};
+{const _s=pvSearch;pvSearch=async function(){if(!pvLibOn())return rkToast('⏰ A Ranqueada PVP abre HOJE às 11:00! Falta '+pvLibFalta(),'#ffcf3a');return _s.apply(this,arguments)}}
+{const _r=pvRoom;pvRoom=async function(){if(!pvLibOn())return rkToast('⏰ A Ranqueada PVP abre HOJE às 11:00! Falta '+pvLibFalta(),'#ffcf3a');return _r.apply(this,arguments)}}
+{const _h=pvH;pvH=function(){const h=_h.apply(this,arguments);if(pvLibOn())return h;
+  return h+`<div class="pvOff pvLib" style="${pvB(470,150,1400,330)}"><b>⏰ ABRE HOJE ÀS 11:00</b><span>A nova Ranqueada PVP começa às 11h (horário de Brasília). Falta <b class="pvLibT">${pvLibFalta()}</b>!</span></div>`}}
+setInterval(()=>{try{if(RKV!=='pvp')return;const T=document.querySelector('.rk_pvp .pvLibT');if(T)T.textContent=pvLibFalta();else if(pvLibOn()&&document.querySelector('.rk_pvp .pvLib'))pvRe()}catch(e){}},20000);
+try{Object.assign(window.__vw,{pvLibOn:()=>pvLibOn()})}catch(e){}

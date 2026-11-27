@@ -3106,3 +3106,6 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - pvStep: vitória +1 (3 seguidas +1 extra só até Lendário, PVDV=7), derrota -1, 0 ⭐ → rank de baixo com 4 ⭐, Bronze não cai; barra o.pp (vit +15, der +10, 5 seguidas +40) → o.sh proteções (máx 2) seguram 1 estrela; 10 seguidas = PV10 (5.000 💎 + 15 🎫) 1x por temporada (o.x10); Deus Gênesis com 5+ ⭐ = ELITE (pontos = s-5). Retorno tem shUsed/sh/x10.
 - Tela: arte nova do dono a/6a4796d35f1dc2.webp (1847x852); 5 estrelas acendem por cima das da arte; barra de proteção embaixo; lista da direita PVRY com 13 linhas (data-t = índice do rank). Emblemas dos Deuses: soberano=deus_cosmico, primordial, supremo=deus_celestial, absoluto (RQA.rank) e genesis (v649) — o dono pode mandar os próprios.
 - Teste: ferramentas/testes/tpvp_novo_v650.js. (ttorneio_sob_v622 quebra pelo anúncio #adPass — teste antigo, não é bug.)
+
+## v651 — Ranqueada PVP abre 27/11 às 11:00
+- PVLIB=2026-11-27T14:00Z: antes disso pvSearch/pvRoom só avisam e a tela mostra "⏰ ABRE HOJE ÀS 11:00 · falta X" (atualiza a cada 20 s e some sozinho às 11h). ADM (mnAdm) joga normal. Teste: tpvp_lib_v651.js. Depois do dia pode apagar o bloco v651.
