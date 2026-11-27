@@ -6,7 +6,7 @@
    - endereço antigo no navegador → aviso "o jogo mudou de endereço" com botão (só se o novo abrir)
    - APK antigo → aviso para baixar o APK novo (quando APKNOVO=true) */
 (function(){
-var NEW='furiadotemplo.com.br',OLD='fui-do-templo-a-pk-2.denilsinend.workers.dev',APKNOVO=false,
+var NEW='furiadotemplo.com.br',OLD='fui-do-templo-a-pk-2.denilsinend.workers.dev',APKNOVO=true,
   APKURL='https://github.com/Denilsonserr/Fui-do-templo-a-PK-2/releases/download/ultima-versao/FuriaDoTemplo.apk';
 var h=location.hostname,LS;try{LS=window.localStorage;LS.getItem('x')}catch(e){return}
 var cap=!!window.Capacitor;
