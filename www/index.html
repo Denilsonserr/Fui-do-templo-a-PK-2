@@ -17464,6 +17464,14 @@ const pvForca=x=>{const s=x&&x.s||{};return (s.tdm||1)/(s.tdf||1)*(1+Math.min(10
 {const _ps=pvStart;pvStart=function(opp,friendly){try{if(opp&&Array.isArray(opp.team)&&opp.team.length){const best=opp.team.slice().sort((a,b)=>pvForca(b)-pvForca(a))[0];opp=Object.assign({},opp,{team:[best],ch:best.ch,p:best.p||opp.p,s:best.s||opp.s})}}catch(e){}
   const r=_ps.call(this,opp,friendly);try{if(PV.fight&&PV.fight.teams){PV.fight.teams=[[PV.fight.teams[0][0]],[PV.fight.teams[1][0]]]}}catch(e){}return r}}
 
+/* ================= v664: EVENTO 2x XP NA RANQUEADA + 2x DROP (27/11 17:45 → 29/11 23:59, Brasília) =================
+   Pedido do dono: 2x XP na ranqueada (chefes / torre / caça) e 2x drop. NADA no PVP: o pvStep novo (v660) não usa o RKEVX,
+   e a janela EV2X (que dobra estrelas do PVP) NÃO é usada — o drop dos portais vem de um embrulho próprio no rkDropK. ================= */
+const EV664=[Date.UTC(2026,10,27,20,45),Date.UTC(2026,10,30,2,59,59)],ev664On=t=>{t=t||Date.now();return t>=EV664[0]&&t<EV664[1]};
+RKEVX.unshift([EV664[0],EV664[1],2,'2x XP NA RANQUEADA · 2x DROP',{drop:2},'ev664']);
+{const _k=rkDropK;rkDropK=function(){const r=_k.apply(this,arguments);try{if(ev664On())return r*2}catch(e){}return r}}
+try{Object.assign(window.__vw,{ev664On:t=>ev664On(t)})}catch(e){}
+
 function twTrofList(){const tc=twLS.g('tw_tc',{}),run={};for(const t of TW.tr)run[t.k]=(run[t.k]||0)+1;
   twModal(`<div class="twM"><h3>🎖️ TROFÉUS</h3><div class="twTL">${Object.keys(TWTR).map(k=>{const T=TWTR[k];return `<div class="${tc[k]||run[k]?'got':''}"><i>${T.i}</i><b>${T.n}</b><span>${T.d}</span><em>+${T.p} 🏆</em><small>${run[k]?'nesta subida: '+run[k]+' · ':''}total: ${(tc[k]||0)}</small></div>`}).join('')}</div>
     <p class="twH">Cada troféu soma pontos 🏆 no ranking. Quem sobe mais andares fica na frente; empate = mais troféus, depois menos tempo.</p><div class="row"><button class="btn" id="twTx">FECHAR</button></div></div>`);
@@ -17655,7 +17663,7 @@ window.__dbg={mus:()=>[MCUR,MEL.src.split('/').pop()],stg:()=>STAGE.key,prepMatc
 })();
 </script>
 <style>#updB{position:fixed;left:50%;top:max(8px,env(safe-area-inset-top));transform:translateX(-50%);z-index:99999;padding:10px 22px;border-radius:14px;border:2px solid #fff3c0;background:linear-gradient(#ffd84a,#e08a10);color:#3a1d00;font:900 15px system-ui,sans-serif;box-shadow:0 0 18px #ffb21f;cursor:pointer;animation:updP 1s ease-in-out infinite alternate}@keyframes updP{to{transform:translateX(-50%) scale(1.05)}}</style>
-<script>(function(){const V='78ec050aee0c';if(!/^https?:/.test(location.protocol))return;let nv=null;
+<script>(function(){const V='17290839fb3f';if(!/^https?:/.test(location.protocol))return;let nv=null;
 function show(){if(document.getElementById('updB'))return;try{if(typeof G!=='undefined'&&G.mode==='fight')return}catch(e){}const b=document.createElement('button');b.id='updB';b.textContent='🔄 ATUALIZAÇÃO NOVA! Toque para atualizar';
   b.onclick=()=>{b.textContent='⏳ Atualizando...';try{acSave(1)}catch(e){}setTimeout(()=>location.reload(),900)};document.body.appendChild(b)}
 async function chk(){if(document.hidden)return;if(nv){show();return}try{const r=await fetch('versao.txt?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const t=(await r.text()).trim();if(/^[0-9a-f]{8,40}$/.test(t)&&t!==V){nv=t;show()}}catch(e){}}

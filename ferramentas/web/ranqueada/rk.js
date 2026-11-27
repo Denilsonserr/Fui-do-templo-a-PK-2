@@ -8669,3 +8669,11 @@ pvBonUI=(()=>{const _b=pvBonUI;return function(){_b.apply(this,arguments);try{co
 const pvForca=x=>{const s=x&&x.s||{};return (s.tdm||1)/(s.tdf||1)*(1+Math.min(100,s.tcr||0)/100)*(1+(x.lv||1)/100)};
 {const _ps=pvStart;pvStart=function(opp,friendly){try{if(opp&&Array.isArray(opp.team)&&opp.team.length){const best=opp.team.slice().sort((a,b)=>pvForca(b)-pvForca(a))[0];opp=Object.assign({},opp,{team:[best],ch:best.ch,p:best.p||opp.p,s:best.s||opp.s})}}catch(e){}
   const r=_ps.call(this,opp,friendly);try{if(PV.fight&&PV.fight.teams){PV.fight.teams=[[PV.fight.teams[0][0]],[PV.fight.teams[1][0]]]}}catch(e){}return r}}
+
+/* ================= v664: EVENTO 2x XP NA RANQUEADA + 2x DROP (27/11 17:45 → 29/11 23:59, Brasília) =================
+   Pedido do dono: 2x XP na ranqueada (chefes / torre / caça) e 2x drop. NADA no PVP: o pvStep novo (v660) não usa o RKEVX,
+   e a janela EV2X (que dobra estrelas do PVP) NÃO é usada — o drop dos portais vem de um embrulho próprio no rkDropK. ================= */
+const EV664=[Date.UTC(2026,10,27,20,45),Date.UTC(2026,10,30,2,59,59)],ev664On=t=>{t=t||Date.now();return t>=EV664[0]&&t<EV664[1]};
+RKEVX.unshift([EV664[0],EV664[1],2,'2x XP NA RANQUEADA · 2x DROP',{drop:2},'ev664']);
+{const _k=rkDropK;rkDropK=function(){const r=_k.apply(this,arguments);try{if(ev664On())return r*2}catch(e){}return r}}
+try{Object.assign(window.__vw,{ev664On:t=>ev664On(t)})}catch(e){}

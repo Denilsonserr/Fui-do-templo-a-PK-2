@@ -3184,3 +3184,7 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
   - endereço antigo no navegador: aviso "O JOGO MUDOU DE ENDEREÇO" (só se o novo abrir). APK antigo: aviso para baixar APK novo só com `APKNOVO=true`.
 - Teste: ferramentas/testes/tdominio_v663.js (simula os 2 endereços no servidor local).
 - FALTA quando o domínio ativar: capacitor.config.json server.url = https://furiadotemplo.com.br + allowNavigation (os 2 endereços), apk_www tenta novo e depois antigo, APKNOVO=true.
+
+## v664 — EVENTO 2x XP NA RANQUEADA + 2x DROP (27/11 17:45 → 29/11 23:59 Brasília)
+- Entrada 'ev664' na frente do RKEVX (x2 XP de rank em chefes/torre/caça, {drop:2} → rkEvD) + embrulho no rkDropK (x2 drop dos portais).
+- PVP NÃO muda: pvStep v660 não usa RKEVX e a janela EV2X (estrelas x2) fica desligada. Teste: ferramentas/testes/tevento_v664.js.
