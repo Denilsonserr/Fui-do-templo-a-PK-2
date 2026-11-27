@@ -3147,3 +3147,8 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - Na luta: setupFighters roda com ANZ=1 (anSum zera dano/crit/vel dos anéis no meio da cadeia velha — antes eles MULTIPLICAVAM com o ATK do cst) e o plConv(isMe) soma os pontos dos anéis (Boss/Torre/Caça/PVP). Sombra do PVP: anéis vêm do pvDelta enviado pelo dono (convertidos linear ×13).
 - Telas: anTxt (agora `let`, linha ~1817), cartões dos anéis (anCardV), coluna Atributos da aba Anéis (lbAtt com anPL), tela antiga anH, cartões/mochila de itens: `+${rkItV(x)}%` → `${rkItVL(x)}` (⚡ pontos; poção/sorte/drop/transformação em %), rodapé da mochila em PL.
 - Teste: taneis_pl_v657.js.
+
+## v658 — Mochila/equipar mais leve + ✕ em toda janela
+- Medido (CPU 6x): o peso era nativo (estilo/desenho), não JS. Agora: body.rkMdOn pausa TODAS as animações do #rkWrap enquanto uma janela (#rkModal) está aberta; anDecor não roda de novo a cada toque dentro da janela; tocar num item da mochila (rkEquip com mesmo filtro) troca só o quadro de detalhe (.eqR lastElementChild) e a classe .sel (EQF.fast no rkModal) — a lista não é refeita. .eqG com contain:content.
+- ✕ (.rkMdX) no canto de toda janela do rkModal: clica no #rkMX/FECHAR/VOLTAR/SAIR/OK dela ou fecha. Para não ter ✕ numa janela: classe noX no 1º elemento.
+- Teste: tmochila_v658.js. (tpedra_transf_v616 e tmercado_mod_v628 quebram pelo anúncio #adPass — testes antigos.)

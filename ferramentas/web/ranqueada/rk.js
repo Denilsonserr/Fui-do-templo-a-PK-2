@@ -8613,3 +8613,24 @@ try{Object.assign(window.__vw,{anPL:id=>anPL(id),anPLr:r=>anPLr(r),rkItVL:x=>rkI
 /* v657: enquanto o jogo monta os lutadores, os anéis NÃO entram em % (dano/crítico/velocidade) — eles entram depois como pontos (anPL) */
 let ANZ=0;{const _s=anSum;anSum=function(){const o=_s.apply(this,arguments);if(!ANZ)return o;const r=Object.assign({},o);r.dano=0;r.crit=0;r.vel=0;return r}}
 {const _sf=setupFighters;setupFighters=function(){ANZ++;try{return _sf.apply(this,arguments)}finally{ANZ--}}}
+
+/* ================= v658: MOCHILA / EQUIPAR MAIS LEVE + ✕ PARA SAIR EM TODA JANELA
+   • Janela aberta (#rkModal): a tela de trás PARA as animações (brilhos, anéis girando, emblemas pulsando) — antes tudo continuava animando por trás e pesava muito.
+   • Tocar num item da mochila não refaz os enfeites dos anéis toda vez (anDecor só quando a janela abre).
+   • Toda janela ganha um ✕ no canto (fecha igual ao botão FECHAR/VOLTAR dela). ================= */
+let RKMD0=0;
+{const _m=rkModal;rkModal=function(h){const M=$('rkModal'),was=!!(M&&!M.hidden&&M.innerHTML);RKMD0=was?1:0;const r=_m.apply(this,arguments);try{
+  document.body.classList.toggle('rkMdOn',!!h);if(h&&M&&!M.hidden){if(!M.querySelector('.rkMdX')){const box=M.firstElementChild;if(box&&!box.classList.contains('noX')){const X=document.createElement('button');X.className='rkMdX';X.type='button';X.textContent='✕';X.title='Fechar';
+    X.onclick=e=>{e.stopPropagation();try{rkSfx('whoosh')}catch(_){}const c=M.querySelector('#rkMX,#rkMX2,.twMX,[data-a="close"]')||[...M.querySelectorAll('button')].find(b=>b!==X&&/^\s*(FECHAR|VOLTAR|SAIR|OK)\s*$/i.test(b.textContent));if(c)c.click();else rkModal(null)};box.appendChild(X)}}}}catch(e){}return r}}
+/* anDecor do rkModal: só na 1ª abertura (não a cada toque dentro da janela) */
+{const _ad=anDecor;anDecor=function(){if(RKMD0&&document.body.classList.contains('rkMdOn')&&!document.querySelector('#rkModal img:not(.anOn)[src*="a/"]'))return;return _ad.apply(this,arguments)}}
+{const st=document.createElement('style');st.textContent=`body.rkMdOn #rkWrap *,body.rkMdOn #rkWrap *::before,body.rkMdOn #rkWrap *::after{animation-play-state:paused!important}
+#rkModal .rkMdX{position:absolute;top:6px;right:6px;z-index:50;width:34px;height:34px;border-radius:50%;border:2px solid #ffd84a;background:radial-gradient(circle at 35% 30%,#7a2a2a,#2a0808);color:#fff;font:900 17px/1 var(--f-ui,sans-serif);display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 0 10px rgba(255,120,80,.5);padding:0}
+#rkModal>*{position:relative}
+#rkModal .eqG,#rkModal .twBag .bgw{contain:content}`;document.head.appendChild(st)}
+/* v658: tocar num item da mochila só troca o quadro de detalhes e a seleção (não redesenha a janela toda) */
+let EQF={f:null,fast:0};
+{const _m=rkModal;rkModal=function(h){try{const M=$('rkModal');if(EQF.fast&&h&&M&&!M.hidden&&M.querySelector('.rkEq .eqR')&&h.indexOf('twM rkEq')>=0){const T=document.createElement('template');T.innerHTML=h;
+  const nR=T.content.querySelector('.eqR'),oR=M.querySelector('.rkEq .eqR');if(nR&&oR){const nd=nR.lastElementChild,od=oR.lastElementChild;if(nd&&od&&!nd.classList.contains('eqG')&&!od.classList.contains('eqG')){od.replaceWith(nd);
+    const sel=(nR.querySelector('.eqI.sel')||{}).dataset;oR.querySelectorAll('.eqI.sel').forEach(b=>b.classList.remove('sel'));if(sel&&sel.k){const b=oR.querySelector('.eqI[data-k="'+CSS.escape(sel.k)+'"]');if(b)b.classList.add('sel')}return}}}}catch(e){}return _m.apply(this,arguments)}}
+{const _e=rkEquip;rkEquip=function(f,sk){const M=$('rkModal');EQF.fast=!!(sk&&M&&!M.hidden&&M.querySelector('.rkEq')&&(f||'all')===EQF.f);EQF.f=f||'all';try{return _e.apply(this,arguments)}finally{EQF.fast=0}}}
