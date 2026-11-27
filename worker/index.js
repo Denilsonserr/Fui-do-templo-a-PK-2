@@ -148,6 +148,13 @@ export default {async fetch(req,env,ctx){const url=new URL(req.url),p=url.pathna
     if(p==='/fs/sv-antes'){const acc=String(url.searchParams.get('acc')||'');const t=+url.searchParams.get('t')||0;if(!/^[\w-]{4,80}$/.test(acc)||!t)return ERR(400,'INVALID_ARGUMENT','acc/t');
       const lo='sv_'+acc+'_',hi=lo+t.toString(36).padStart(9,'0');const r=await db.prepare('SELECT id,ct,f FROM docs WHERE id>=? AND id<? ORDER BY id DESC LIMIT 1').bind(lo,hi).first();
       if(!r)return J({nada:1});let f={};try{f=JSON.parse(r.f)}catch(e){}const v=k=>f[k]&&(f[k].stringValue??f[k].integerValue);return J({ts:+v('ts')||0,d:v('d')||'',sg:v('sg')||''})}
+    /* v663: passagem do progresso do endereço antigo (workers.dev) para furiadotemplo.com.br: código aleatório de 1 uso, vale 30 min, apagado ao pegar */
+    if(p==='/fs/mig-poe'&&req.method==='POST'){const t=await req.text();if(t.length>1900000)return ERR(400,'INVALID_ARGUMENT','grande demais');const d=JSON.parse(t).d;if(typeof d!=='string'||d.length<3)return ERR(400,'INVALID_ARGUMENT','d');
+      await db.prepare('CREATE TABLE IF NOT EXISTS mig(c TEXT PRIMARY KEY, d TEXT NOT NULL, t INTEGER NOT NULL)').run();const now=Date.now();await db.prepare('DELETE FROM mig WHERE t<?').bind(now-18e5).run();
+      const c=[...crypto.getRandomValues(new Uint8Array(16))].map(x=>x.toString(16).padStart(2,'0')).join('');await db.prepare('INSERT INTO mig(c,d,t) VALUES(?,?,?)').bind(c,d,now).run();return J({c})}
+    if(p==='/fs/mig-pega'&&req.method==='POST'){const c=String((await req.json()).c||'');if(!/^[a-f0-9]{32}$/.test(c))return ERR(400,'INVALID_ARGUMENT','c');
+      await db.prepare('CREATE TABLE IF NOT EXISTS mig(c TEXT PRIMARY KEY, d TEXT NOT NULL, t INTEGER NOT NULL)').run();
+      const r=await db.prepare('DELETE FROM mig WHERE c=? RETURNING d,t').bind(c).first();if(!r||r.t<Date.now()-18e5)return ERR(404,'NOT_FOUND','código vencido');return J({d:r.d})}
     if(p==='/fs-admin/reads')return J(RD);
     if(p==='/fs-admin/count'){const c=await db.prepare('SELECT COUNT(*) n FROM docs').first();return J(c)}
     const m=p.match(/^\/fs\/v1\/(projects\/[^/]+\/databases\/\(default\)\/documents)(.*)$/)||p.match(/^\/fs\/v1\/(projects\/[^/]+\/databases\/%28default%29\/documents)(.*)$/);if(!m)return ERR(404,'NOT_FOUND','rota');

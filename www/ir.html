@@ -1,0 +1,15 @@
+<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Fúria do Templo</title><style>html,body{margin:0;height:100%;background:#06050d;color:#fff;font:800 18px system-ui,sans-serif;display:flex;align-items:center;justify-content:center;text-align:center;padding:0 16px}button,a{display:inline-block;margin:8px;padding:12px 22px;border:0;border-radius:12px;background:#ff8a1f;color:#000;font:900 16px system-ui;text-decoration:none}a{background:#333;color:#fff}</style></head>
+<body><div id="t"><div style="font-size:40px">⚔️</div><p>Levando seu progresso para<br><b style="color:#7fd0ff">furiadotemplo.com.br</b>...</p></div>
+<script>
+/* v663: página do ENDEREÇO ANTIGO que manda o progresso (tudo do aparelho) para o servidor e volta para o endereço novo com um código de 1 uso */
+(function(){var NEW='https://furiadotemplo.com.br/',LS=localStorage,D={},n=0;
+for(var i=0;i<LS.length;i++){var k=LS.key(i);if(/^ft_mig/.test(k))continue;D[k]=LS.getItem(k);n++}
+if(!D.tw_nome&&!D.ac_k){location.replace(NEW+'#mig=0');return}
+var tent=0;function vai(){tent++;var x=new XMLHttpRequest();x.open('POST','/fs/mig-poe');x.setRequestHeader('Content-Type','application/json');x.timeout=20000;
+  x.onload=function(){try{var r=JSON.parse(x.responseText);if(x.status===200&&r.c){LS.setItem('ft_migfeito',String(Date.now()));location.replace(NEW+'#mig='+r.c);return}}catch(e){}falha()};
+  x.onerror=x.ontimeout=falha;x.send(JSON.stringify({d:JSON.stringify(D)}))}
+function falha(){if(tent<3)return setTimeout(vai,1500*tent);
+  document.getElementById('t').innerHTML='<div style="font-size:40px">⚠️</div><p>Não consegui levar o progresso agora (internet ou servidor).</p><button onclick="location.reload()">TENTAR DE NOVO</button><a href="/">JOGAR AQUI MESMO</a>'}
+vai()})();
+</script></body></html>

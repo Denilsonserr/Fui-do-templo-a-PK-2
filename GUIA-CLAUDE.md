@@ -3176,3 +3176,11 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - pvStart embrulhado: a sombra entra só com o personagem MAIS FORTE do time dela (pvForca = tdm/tdf × crítico × nível) e o meu lado só com o 1º da Formação (PV.fight.teams = [[meu1º],[melhor]] → G.teams com 1 cada → derrubou 1 = pvEnd). O upload da sombra (pvUp) continua mandando os 3.
 - PVBARS=11 (MAXHP 19.800), PVTIME=300. Textos da Formação/Regras trocados para 1 contra 1.
 - Teste: tpvp_1x1_v662.js (v652 e v620 ajustados para 19.800).
+
+## v663 — ENDEREÇO NOVO furiadotemplo.com.br (27/11)
+- Domínio comprado pelo dono no Registro.br; DNS no Cloudflare (gabriella/shane.ns.cloudflare.com); Custom Domains do Worker: furiadotemplo.com.br e www (feito no painel, NÃO no wrangler.jsonc).
+- `www/mig.js` (entra no <head> pelo extra/9z_v663_dominio.py, roda ANTES do jogo):
+  - www → sem www; endereço novo vazio na 1ª vez → vai em OLD/ir.html (só se o antigo abrir em 3,5 s), que manda TODO o localStorage para `/fs/mig-poe` (código aleatório de 1 uso, 30 min, tabela `mig`) e volta com `#mig=CÓDIGO`; o novo pega em `/fs/mig-pega` (apaga ao pegar) com XHR síncrono antes do jogo ler nada.
+  - endereço antigo no navegador: aviso "O JOGO MUDOU DE ENDEREÇO" (só se o novo abrir). APK antigo: aviso para baixar APK novo só com `APKNOVO=true`.
+- Teste: ferramentas/testes/tdominio_v663.js (simula os 2 endereços no servidor local).
+- FALTA quando o domínio ativar: capacitor.config.json server.url = https://furiadotemplo.com.br + allowNavigation (os 2 endereços), apk_www tenta novo e depois antigo, APKNOVO=true.
