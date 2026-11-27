@@ -14,7 +14,7 @@ const r=await p.evaluate(()=>{const G=__dbg.G,[me,op]=G.p;const M=__vw.MAXHP();c
   __vw.PVB.on=1;__vw.PVB.v=100;const o2={t:2,d:0,s:1,w:0,l:0,sq:0,bt:0,rw:[],h:[],pp:0,sh:0};const st2=__ev('pvStep')(o2,true);out.ganho2=[st2.gain,st2.bon];
   __vw.PVB.on=1;__vw.PVB.v=100;const o3={t:2,d:0,s:1,w:0,l:0,sq:0,bt:0,rw:[],h:[],pp:0,sh:0};const st3=__ev('pvStep')(o3,false);out.perdeu=[o3.s,st3.bon|0];return out});
 console.log(JSON.stringify(r));
-chk(r.M===14400&&r.mhp===14400,'8 barras de vida (14.400)');chk(r.tm>200,'round de 4 minutos ('+r.tm+' s)');
+chk(r.M===19800&&r.mhp===19800,'11 barras de vida (19.800, v662)');chk(r.tm>250,'round de 5 minutos ('+r.tm+' s)');
 chk(r.golpe<=5.01&&r.vivo,'golpe gigante tirou só '+r.golpe+'% (máx. 5%) e não matou');chk(r.janela<=9.01&&r.vivo2,'7 golpes gigantes seguidos: só '+r.janela+'% (máx. 9% em 1,5 s)');
 chk(r.bon0===1&&/60\/100/.test(r.ui),'barra de bônus aparece na luta ranqueada ('+r.ui+')');chk(r.ganho1[1]===3,'vitória com bônus 60: +3 pontos (v660)');chk(r.ganho2[1]===6,'vitória com bônus 100: +6 pontos (v660)');chk(r.perdeu[1]===0,'derrota: bônus não vale');
 await p.screenshot({path:SH+'luta.png'});

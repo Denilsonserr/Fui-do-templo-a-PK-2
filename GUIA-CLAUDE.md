@@ -3171,3 +3171,8 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - wrangler.jsonc: "placement": {"mode":"smart"} (worker roda perto do D1 — várias consultas por pedido ficam mais rápidas).
 - Cliente (rk.js, wrapper do twFetchT p/ runQuery): 503/502/504 ou 429 sem "trava de gasto" → tenta de novo 2x (0,7 s / 2 s); erro de rede também; se falhar usa o cache local. Só "trava de gasto" bloqueia 15 min.
 - Ferramentas: .github/workflows/leituras.yml (RD por isolado; pouco útil) e pvp_audit.yml. Teste: tservidor_v661.js.
+
+## v662 — PVP 1 contra 1 + 11 barras
+- pvStart embrulhado: a sombra entra só com o personagem MAIS FORTE do time dela (pvForca = tdm/tdf × crítico × nível) e o meu lado só com o 1º da Formação (PV.fight.teams = [[meu1º],[melhor]] → G.teams com 1 cada → derrubou 1 = pvEnd). O upload da sombra (pvUp) continua mandando os 3.
+- PVBARS=11 (MAXHP 19.800), PVTIME=300. Textos da Formação/Regras trocados para 1 contra 1.
+- Teste: tpvp_1x1_v662.js (v652 e v620 ajustados para 19.800).

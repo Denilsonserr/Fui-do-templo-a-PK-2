@@ -2820,7 +2820,7 @@ async function pvRoom(){if(!pvAcc())return rkToast('👤 Entre na sua CONTA para
     try{const x=await pvFindName(n);if(!x){E.textContent='❌ Esse jogador ainda não tem sombra no PVP.';$('pvRok').disabled=false;return}rkModal(null);pvStart(x,1)}catch(e){E.textContent=rkNetMsg();$('pvRok').disabled=false}};
   $('pvRok').onclick=go;$('pvRn').onkeydown=e=>{if(e.key==='Enter')go()}}
 function pvForm(){const own=rkG('own',['goku']).filter(id=>CH[id]),TM=pvTeam(),A=pvProfAll();
-  rkModal(`<div class="twM pvFm"><h3>👥 FORMAÇÃO · TIME DE 3</h3><p class="twH">Escolha 3 personagens (toque na ordem: 1º entra primeiro). Para ganhar, tem que derrotar os 3 do rival. A sua SOMBRA usa este time.</p><div class="pvFg">${own.map(id=>{const n=(A[id]&&A[id].n)||0,p=Math.min(100,Math.round(n/3));const k=TM.indexOf(id);return `<button class="pvFc ${k>=0?'on':''}" data-id="${id}">${k>=0?`<em class="pvFn">${k+1}</em>`:''}<img src="${pvPortrait(id)}" alt=""><b>${pvEsc(CH[id].name)}</b><small>${p>=100?'✔ estilo gravado':'estilo '+p+'%'}</small><i style="width:${p}%"></i></button>`}).join('')}</div>
+  rkModal(`<div class="twM pvFm"><h3>👥 FORMAÇÃO · 1 CONTRA 1</h3><p class="twH">O <b>1º</b> que você escolher é quem luta (1 contra 1). Os outros 2 ficam na sua sombra: quem desafiar você enfrenta o MAIS FORTE deles.</p><div class="pvFg">${own.map(id=>{const n=(A[id]&&A[id].n)||0,p=Math.min(100,Math.round(n/3));const k=TM.indexOf(id);return `<button class="pvFc ${k>=0?'on':''}" data-id="${id}">${k>=0?`<em class="pvFn">${k+1}</em>`:''}<img src="${pvPortrait(id)}" alt=""><b>${pvEsc(CH[id].name)}</b><small>${p>=100?'✔ estilo gravado':'estilo '+p+'%'}</small><i style="width:${p}%"></i></button>`}).join('')}</div>
     <p class="twH">O estilo é gravado sozinho em todas as suas lutas (Boss, Torre, Caça, PVP). Quanto mais você joga com o personagem, mais a sombra fica parecida com você.</p><div class="row"><button class="btn" id="rkMX">FECHAR</button></div></div>`);
   $('rkMX').onclick=()=>{rkModal(null);rkView('pvp')};document.querySelectorAll('#rkModal .pvFc').forEach(b=>b.onclick=()=>{const id=b.dataset.id;let T=(rkG('pvt',null)||pvTeam()).filter(i=>own.includes(i));T=[...new Set(T)];if(T.includes(id))T=T.filter(i=>i!==id);else{if(T.length>=3)T.shift();T.push(id)}rkS('pvt',T);rkS('pvch',T[0]||id);rkS('pvup',0);rkSfx('whoosh');pvForm()})}
 function pvRules(){rkModal(`<div class="twM pvRu"><h3>📖 REGRAS DO PVP SOMBRA</h3><div class="pvRuB">
@@ -2834,7 +2834,7 @@ function pvRules(){rkModal(`<div class="twM pvRu"><h3>📖 REGRAS DO PVP SOMBRA<
   <p>👑 <b>Deus Gênesis</b> com 5 ⭐ = <b>ELITE</b>: os pontos continuam somando no ranking (Top 100, 50, 10, 3 e 1).</p>
   <p>🎁 Primeira vez em cada rank = prêmio (veja em Recompensas). Cada vitória = +15 💎.</p>
   <p>🛡️ <b>Sala Personalizada</b>: lute contra a sombra de um amigo pelo nome. Não vale estrela.</p>
-  <p>👥 <b>Formação</b>: escolha o seu TIME DE 3. Quando um cai, entra o próximo (quem ganhou continua com a vida que sobrou). Para vencer, derrote os 3 da sombra.</p><p>💪 A sombra luta com TODOS os bônus do dono (título, anéis, equipamentos, nível, passivas) e a máquina no nível máximo, com um pouco do estilo dele.</p>
+  <p>⚔️ <b>1 contra 1</b>: você luta com o 1º da sua Formação contra o personagem MAIS FORTE da sombra do rival. 11 barras de vida e 5 minutos.</p><p>💪 A sombra luta com TODOS os bônus do dono (título, anéis, equipamentos, nível, passivas) e a máquina no nível máximo, com um pouco do estilo dele.</p>
   <p>📜 O dono da sombra vê no Histórico quem lutou contra ela.</p></div><div class="row"><button class="btn" id="rkMX">FECHAR</button></div></div>`);$('rkMX').onclick=()=>rkModal(null)}
 function pvRewards(){const o=pvG();rkModal(`<div class="twM pvRwM"><h3>🎁 RECOMPENSAS DO PVP</h3><p class="twH">Prêmio na primeira vez que chegar em cada rank (entra sozinho).</p><div class="pvRwL">${PVT.slice(1).map((T,i)=>{const t=i+1,ok=o.rw.includes(t);return `<div class="${ok?'ok':''}"><img src="${PVA.e[T[3]]}" alt=""><b style="color:${T[1]}">${T[0]}</b><span>+${rkFmtN(T[4])} 💎${T[5]?' · +'+T[5]+' 🎫':''}</span><em>${ok?'✔ PEGO':'🔒'}</em></div>`}).join('')}</div><div class="row"><button class="btn" id="rkMX">FECHAR</button></div></div>`);$('rkMX').onclick=()=>rkModal(null)}
 async function pvHist(){const o=pvG(),row=h=>`<div class="${h.w?'w':'l'}"><b>${h.w?'VITÓRIA':'DERROTA'}</b><span>${pvEsc(CH[h.my]?CH[h.my].name:'')} x sombra de <b>${pvEsc(h.n)}</b> (${pvEsc(CH[h.c]?CH[h.c].name:h.c)})${h.f?' · sala':''}</span><small>${new Date(h.d).toLocaleString('pt-BR').slice(0,17)}</small></div>`;
@@ -7934,7 +7934,7 @@ try{Object.assign(window.__vw,{applyHit:(a,d,h)=>applyHit(a,d,h)})}catch(e){}
    • Bônus "amassados" (raiz): dano ×8 → ×2,5 · defesa idem · crítico rende metade (máx. 45%) · dano crítico/roubo de vida/velocidade/cura pela metade.
    • Se mesmo assim um lado ficar mais de 1,6× mais forte que o outro, o mais forte é puxado até 1,6×.
    • ADM fica de fora (continua como está). */
-const PVBARS=8,PVTIME=240,PVEQ={pw:.45,cr:45,gap:1.6}; /* v652: 8 barras e 240 s por round */
+const PVBARS=11,PVTIME=300,PVEQ={pw:.45,cr:45,gap:1.6}; /* v652: 8 barras e 240 s por round */
 const pvEqPow=f=>(f.tdm||1)/(f.tdf||1)*(1+Math.min(PVEQ.cr,f.tcr||0)/100*(.5+(f.tcd||0)/200))*Math.sqrt(f.tsp||1)*(1+(f.tls||0)/100);
 function pvEqOne(f){if(!f||f._pvEq===f.tdm)return;
   f.tdm=Math.pow(Math.max(.2,f.tdm||1),PVEQ.pw);f.tdf=1/Math.pow(Math.max(.2,1/(f.tdf||1)),PVEQ.pw);
@@ -8662,3 +8662,10 @@ pvStep=function(o,won){const b={t:o.t,d:0,s:o.s,p:o.p|0};o.d=0;o.pp=o.pp|0;o.sh=
   return `<div class="pvPr" style="${pvB(34,400,286,426)}"><i style="width:${pr}%;background:linear-gradient(90deg,#b8860b,#ffd84a)"></i><span>${el?'👑 '+rkFmtN(o.p|0)+' pts':'⭐ '+(o.p|0)+'/'+c}</span></div><div class="pvPr" style="${pvB(34,428,286,446)}"><i style="width:${pp}%"></i><span>🛡️ ${pp}/100${sh?` · <b>${'🛡️'.repeat(sh)} x${sh}</b>`:''}</span></div>`}}
 {const _st=pvStars;pvStars=function(o){return _st.apply(this,arguments).replace(/👑 ELITE · -?\d+ pts/,'👑 ELITE')}}
 pvBonUI=(()=>{const _b=pvBonUI;return function(){_b.apply(this,arguments);try{const B=document.getElementById('pvBon');if(B){const v=Math.round(PVB.v);B.querySelector('span').textContent='⭐ BÔNUS '+v+'/100 · '+(v>=100?'+6 pontos se vencer!':v>=50?'+3 pontos se vencer (100 = +6)':'50 = +3 pontos · 100 = +6')}}catch(e){}}})();
+
+/* ================= v662: PVP VOLTA A SER 1 CONTRA 1 (pedido do dono) + 11 barras de vida
+   Você luta com o 1º da Formação; a sombra do rival entra com o personagem MAIS FORTE do time dela (maior força: dano × defesa × crítico × nível).
+   11 barras e 5 minutos (PVBARS/PVTIME). O resto (PL, equilíbrio, teto de dano, bônus) continua igual. ================= */
+const pvForca=x=>{const s=x&&x.s||{};return (s.tdm||1)/(s.tdf||1)*(1+Math.min(100,s.tcr||0)/100)*(1+(x.lv||1)/100)};
+{const _ps=pvStart;pvStart=function(opp,friendly){try{if(opp&&Array.isArray(opp.team)&&opp.team.length){const best=opp.team.slice().sort((a,b)=>pvForca(b)-pvForca(a))[0];opp=Object.assign({},opp,{team:[best],ch:best.ch,p:best.p||opp.p,s:best.s||opp.s})}}catch(e){}
+  const r=_ps.call(this,opp,friendly);try{if(PV.fight&&PV.fight.teams){PV.fight.teams=[[PV.fight.teams[0][0]],[PV.fight.teams[1][0]]]}}catch(e){}return r}}
