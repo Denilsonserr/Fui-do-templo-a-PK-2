@@ -1,0 +1,20 @@
+// v657: anéis e mochila no sistema de PODER — SP apelão mas com freio, textos em pontos, luta usa os pontos
+const {chromium}=require('playwright');const SH=__dirname+'/shots/t657_';
+(async()=>{const b=await chromium.launch();let ok=1;const chk=(c,m)=>{console.log((c?'OK  ':'FALHA ')+m);if(!c)ok=0};const E=[];
+const p=await b.newPage({viewport:{width:915,height:412}});p.on('pageerror',e=>E.push(e.message));await p.route(/fonts\.g|firestore/,r=>r.abort());
+const SP=(i,s,s2)=>({i,c:5,g:8,s,s2,a:1e7,v:600,l:60});
+await p.addInitScript(R=>{if(!sessionStorage.d){sessionStorage.d=1;localStorage.clear();Object.assign(localStorage,{tw_nome:'"Bia"',rk_ini:'1',rk_xpv2:'1',rk_dia:'1',rk_lvrz:'1',rk_rs463:'1',rk_rs464:'1',rk_rs464b:'1',rk_urso:'1',rk_s2:'1',rk_s2rw:'1',rk_rws2:'1',ft_q:'1',rk_own:'["goku"]',rk_sel:'"goku"',
+  rk_lv:JSON.stringify({goku:{lv:80,t:[],c:[]}}),rk_an:JSON.stringify(R),rk_anEq:JSON.stringify({goku:R.map(x=>x.i)})})}},[SP('a1','dano','crit'),{i:'a2',c:0,g:7,s:'dano',v:15,l:10},{i:'a3',c:4,g:7,s:'crit',v:200,l:50}]);
+await p.goto('http://localhost:8790/index.html');await p.waitForFunction(()=>!document.getElementById('goSelect').disabled,null,{timeout:120000});
+const r=await p.evaluate(()=>{const L=JSON.parse(localStorage.rk_an);return {sp:__vw.anPLr(L[0]),br:__vw.anPLr(L[1]),vm:__vw.anPLr(L[2]),tot:__vw.anPL('goku'),txt:__ev('anTxt')(L[0]),txt3:__ev('anTxt')(L[2]),
+  oito:__ev('anPLDR')(8*6000),it:__vw.rkItVL({t:'esp',v:70,crit:40}),poc:__vw.rkItVL({t:'poc',v:75}),pl:__vw.plOfChar('goku')}});console.log(JSON.stringify(r));
+chk(r.sp===6000&&r.br===400&&r.vm===3800,'poder por cor: SP 6.000 · Branco 400 · Vermelho 3.800 (no máximo)');chk(Math.round(r.oito)<30000&&r.oito>20000,'8 SP no máximo: +'+Math.round(r.oito)+' PL (freio; antes era sem fim)');
+chk(/PL/.test(r.txt)&&/PODER CRÍTICO/.test(r.txt)&&!/\+600%/.test(r.txt),'texto do SP em pontos: '+r.txt.slice(0,70));chk(r.it==='⚡1.710'&&r.poc==='+75%','cartão do item em ⚡ pontos (poção continua %)');
+chk(r.pl.cc<=55&&r.pl.pl>15000,'painel Goku com os anéis: '+r.pl.pl+' PL · crítico '+r.pl.cc+'%');
+await p.evaluate(()=>{document.querySelectorAll('#adPass').forEach(x=>x.remove());__vw.rkBossStart()});await p.waitForFunction(()=>__dbg.G.mode==='fight'&&__dbg.G.gmode==='boss',null,{timeout:120000});await p.waitForTimeout(500);
+const f=await p.evaluate(()=>{const a=__dbg.G.p[0];return {pl:a.pl,tdm:+a.tdm.toFixed(2),tcr:+a.tcr.toFixed(1)}});console.log('luta',JSON.stringify(f));chk(f.pl===r.pl.pl||Math.abs(f.pl-r.pl.pl)<r.pl.pl*.2,'na luta o PL bate com o painel');chk(f.tcr<=55&&f.tdm<12,'na luta: crítico ≤55%, dano sem absurdo');
+const q=await b.newPage({viewport:{width:915,height:412}});await q.route(/fonts\.g|firestore/,r=>r.abort());await q.addInitScript(R=>{if(!sessionStorage.d){sessionStorage.d=1;Object.assign(localStorage,{rk_ini:'1',rk_xpv2:'1',rk_dia:'1',rk_dl:JSON.stringify({d:new Date(Date.now()-3*3600e3).toISOString().slice(0,10),s:1}),rk_lvrz:'1',ft_q:'1',rk_own:'["goku"]',rk_sel:'"goku"',rk_lv:JSON.stringify({goku:{lv:80,t:[],c:[]}}),rk_an:JSON.stringify(R),rk_anEq:JSON.stringify({goku:R.map(x=>x.i)})})}},[SP('a1','dano','crit'),{i:'a3',c:4,g:7,s:'crit',v:200,l:50}]);
+await q.goto('http://localhost:8790/index.html');await q.waitForFunction(()=>!document.getElementById('goSelect').disabled,null,{timeout:120000});await q.click('#mRank');await q.waitForTimeout(2500);
+await q.evaluate(()=>{document.querySelectorAll('#adPass,#t1W,#dlM,.dlM').forEach(x=>x.remove());const M=document.getElementById('rkModal');if(M){M.innerHTML='';M.hidden=true}__ev("RKL.tab='an';rkView('lib')");setTimeout(()=>{const M2=document.getElementById('rkModal');if(M2){M2.innerHTML='';M2.hidden=true}},300)});await q.waitForTimeout(1200);await q.screenshot({path:SH+'aneis.png'});
+await q.evaluate(()=>{__ev("rkEquip('all')")});await q.waitForTimeout(1000);await q.screenshot({path:SH+'mochila.png'});
+console.log(E.length?'ERROS '+E.slice(0,3).join('|'):'sem erros');console.log(ok&&!E.length?'TUDO OK':'FALHOU');await b.close()})();

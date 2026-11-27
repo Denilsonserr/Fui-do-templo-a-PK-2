@@ -3140,3 +3140,10 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - Tela: #plVs mostra "⚡ PL x PL" no começo da luta; cbRows (painel Atributos) mostra "⚡ N PL", "🎯 poder · chance%", "💨 +N PL"; rkItEf (agora `let` na linha 146) converte os textos dos itens (+70% → +910 PL; Crítico +40% → +800).
 - `window.__plOff=1` desliga (teste). Falta (etapa 2): números % nos cartões da mochila, anéis e passivas; PL fixo por andar/nível dos chefes.
 - Teste: tpoder_v656.js; tpvp_equilibrio_v620 ajustado (<1,5).
+
+## v657 — Anéis e mochila no sistema de PODER
+- Anel: anPLr(r) = ANPLM[cor] × (anV(r)/maior ANV da cor) (até 1,2×). ANPLM: Branco 400 · Amarelo 900 · Roxo 1.600 · Preto 2.600 · Vermelho 3.800 · SP 6.000 · Divino(ADM) 99.999. Dano/Vel → PL; Crítico → poder crítico (×0,8); SP s2 = metade (lx = inteiro). Vel. Ultimate/Sorte/Drop continuam %.
+- anPL(id): soma com freio anPLDR (até 10k inteiro, 10–25k rende 60%, acima 35%) → 8 SP máximos ≈ +27k.
+- Na luta: setupFighters roda com ANZ=1 (anSum zera dano/crit/vel dos anéis no meio da cadeia velha — antes eles MULTIPLICAVAM com o ATK do cst) e o plConv(isMe) soma os pontos dos anéis (Boss/Torre/Caça/PVP). Sombra do PVP: anéis vêm do pvDelta enviado pelo dono (convertidos linear ×13).
+- Telas: anTxt (agora `let`, linha ~1817), cartões dos anéis (anCardV), coluna Atributos da aba Anéis (lbAtt com anPL), tela antiga anH, cartões/mochila de itens: `+${rkItV(x)}%` → `${rkItVL(x)}` (⚡ pontos; poção/sorte/drop/transformação em %), rodapé da mochila em PL.
+- Teste: taneis_pl_v657.js.
