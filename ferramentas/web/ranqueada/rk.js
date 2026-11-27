@@ -8677,3 +8677,14 @@ const EV664=[Date.UTC(2026,10,27,20,45),Date.UTC(2026,10,30,2,59,59)],ev664On=t=
 RKEVX.unshift([EV664[0],EV664[1],2,'2x XP NA RANQUEADA · 2x DROP',{drop:2},'ev664']);
 {const _k=rkDropK;rkDropK=function(){const r=_k.apply(this,arguments);try{if(ev664On())return r*2}catch(e){}return r}}
 try{Object.assign(window.__vw,{ev664On:t=>ev664On(t)})}catch(e){}
+
+/* ================= v665: CÓDIGO DE USO ÚNICO (texto só com o dono): EVENTO PESSOAL 3x XP DE RANK por 1 HORA (só para quem usou)
+   rk_px3 {e:fim}. Entrada pessoal 'px3' no RKEVX (multiplica o evento geral, ex.: 2x do v664 → 6x). PVP não muda (pvStep v660 não usa RKEVX). ================= */
+TWCUP['10sshmm']={nm:'🔥 EVENTO PESSOAL 3x XP (1 HORA)',it:[],uni:1,px3:1,msg:'✅ EVENTO PESSOAL ATIVADO por 1 HORA (só para você): 🔥 3x XP DE RANK na ranqueada (chefes, torre e caça)!'};
+const px3On=()=>{const B=rkG('px3',null);return !!(B&&B.e>Date.now())};
+function px3Apply(){for(let i=RKEVX.length-1;i>=0;i--)if(RKEVX[i][5]==='px3')RKEVX.splice(i,1);const B=rkG('px3',null),t=Date.now();if(!B||!(B.e>t))return;
+  const base=RKEVX.find(e=>t>=e[0]&&t<e[1]&&e[5]!=='sx'&&e[5]!=='px3')||null;RKEVX.unshift([t-1000,base?Math.min(B.e,base[1]):B.e,(base?base[2]:1)*3,'🔥 PESSOAL 3x XP'+(base?' + '+base[3]:''),Object.assign({},base&&base[4]||{}),'px3'])}
+setTimeout(px3Apply,1900);setInterval(px3Apply,20000);
+{const _cp=twCupom;twCupom=async function(code,E){const C=TWCUP[twHash(String(code).toUpperCase())];const r=await _cp.apply(this,arguments);
+  try{if(C&&C.px3&&r!==false&&E&&/\bok\b/.test(E.className||'')){const B=rkG('px3',null),t=Date.now();rkS('px3',{e:Math.max(t,B&&B.e||0)+C.px3*3600e3});px3Apply();try{localStorage.removeItem('ac_h');acSave(1)}catch(e){}if(C.msg)E.textContent=C.msg}}catch(e){}return r}}
+try{Object.assign(window.__vw,{px3On:()=>px3On(),px3Apply:()=>px3Apply()})}catch(e){}

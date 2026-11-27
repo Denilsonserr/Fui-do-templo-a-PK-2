@@ -3188,3 +3188,6 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 ## v664 — EVENTO 2x XP NA RANQUEADA + 2x DROP (27/11 17:45 → 29/11 23:59 Brasília)
 - Entrada 'ev664' na frente do RKEVX (x2 XP de rank em chefes/torre/caça, {drop:2} → rkEvD) + embrulho no rkDropK (x2 drop dos portais).
 - PVP NÃO muda: pvStep v660 não usa RKEVX e a janela EV2X (estrelas x2) fica desligada. Teste: ferramentas/testes/tevento_v664.js.
+
+## v665 — CÓDIGO DE USO ÚNICO: EVENTO PESSOAL 3x XP por 1 HORA
+- TWCUP['10sshmm'] (texto só com o dono): uni:1, px3:1 → rk_px3 {e:fim}; entrada pessoal 'px3' no RKEVX (x3 em cima do evento geral). PVP não muda. Teste: C1=.. node ferramentas/testes/tcod_v665.js
