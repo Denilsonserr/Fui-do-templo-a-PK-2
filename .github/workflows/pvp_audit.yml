@@ -1,0 +1,28 @@
+name: Auditoria ranking PVP (ferramenta)
+on: workflow_dispatch
+jobs:
+  q:
+    runs-on: ubuntu-latest
+    steps:
+      - name: baixar
+        run: |
+          S='https://fui-do-templo-a-pk-2.denilsinend.workers.dev';A='Mozilla/5.0 (Linux; Android 13) Chrome/120 Mobile';P="$S/fs/v1/projects/furia-do-templo/databases/(default)/documents"
+          curl -s -A "$A" -H 'Content-Type: application/json' -d '{"structuredQuery":{"from":[{"collectionId":"torre"}],"where":{"fieldFilter":{"field":{"fieldPath":"pvk"},"op":"EQUAL","value":{"stringValue":"m202611r3"}}},"limit":3000}}' "$P:runQuery" > r.json
+          python3 - <<'PY'
+          import json,datetime
+          R=json.load(open('r.json'));rows=[]
+          for x in R:
+            d=x.get('document');
+            if not d: continue
+            F=d['fields'];g=lambda k:list(F.get(k,{'stringValue':''}).values())[0]
+            nm=d['name'].split('/')[-1];ts=int(nm.split('_')[-1],36)
+            try: D=json.loads(g('d'))
+            except: D={}
+            tm=';'.join(f"{t.get('ch')}L{t.get('lv')}:tdm{round((t.get('s') or {}).get('tdm',0) or 0,2)}" for t in D.get('team',[]))
+            rows.append((g('pva'),g('nome'),ts,D.get('t'),D.get('st'),D.get('w'),D.get('l'),g('pvs'),g('tit'),tm))
+          rows.sort(key=lambda r:(r[0],r[2]))
+          print('DOCS',len(rows),'CONTAS',len(set(r[0] for r in rows)))
+          for r in rows:
+            t=datetime.datetime.utcfromtimestamp(r[2]/1000)-datetime.timedelta(hours=3)
+            print('|'.join(str(v) for v in (r[0][:10],r[1],t.strftime('%d %H:%M'),'t',r[3],'s',r[4],'w',r[5],'l',r[6],'pvs',r[7],r[8],r[9])))
+          PY
