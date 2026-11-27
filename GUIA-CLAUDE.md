@@ -3109,3 +3109,9 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 
 ## v651 — Ranqueada PVP abre 27/11 às 11:00
 - PVLIB=2026-11-27T14:00Z: antes disso pvSearch/pvRoom só avisam e a tela mostra "⏰ ABRE HOJE ÀS 11:00 · falta X" (atualiza a cada 20 s e some sozinho às 11h). ADM (mnAdm) joga normal. Teste: tpvp_lib_v651.js. Depois do dia pode apagar o bloco v651.
+
+## v652 — PVP: 8 barras, "segurada" no dano e barra de BÔNUS ⭐
+- PVBARS=8 (MAXHP 14.400), PVTIME=240. Equilíbrio do v620 igual (o mais forte continua mais forte, até 1,6×).
+- Teto de dano no PVP (PVCAP): 1 golpe tira no máx. 5% da vida total; em 90 quadros (1,5 s) no máx. 9%. applyHit embrulhado (PVHIT guarda hp antes) + ko embrulhado (se o golpe cortado não zera a vida, não tem KO). comboDmg corrigido pro dano de verdade. ADM fora (pvAdmSide).
+- Barra de BÔNUS ⭐ (PVB, só ranqueado, #pvBon no topo): dano causado +22 por vida inteira, dano levado -10, combo de 5 +3, cada 10 s de luta +2. Vitória com 50+ = +1 ⭐, 100 = +2 ⭐ (pvStep embrulhado: r.bon). Derrota não usa.
+- Testes: tpvp_8barras_v652.js; tpvp_equilibrio_v620 atualizado pra 14.400.

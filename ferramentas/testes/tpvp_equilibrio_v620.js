@@ -9,7 +9,7 @@ const {chromium}=require('playwright');const SH=__dirname+'/shots/t620_';
     const r=await p.evaluate(()=>{const G=__dbg.G;window.__tm=G.timer;f=x=>({tdm:+x.tdm.toFixed(2),tdf:+x.tdf.toFixed(2),tcr:+(x.tcr||0).toFixed(1),tsp:+(x.tsp||1).toFixed(2),tls:x.tls||0,mhp:x.mhp,hp:Math.round(x.hp)});return {tm:Math.round(G.timer),me:f(G.p[0]),op:f(G.p[1]),MAXHP:__vw.MAXHP(),eq:__vw.pvEqInfo()}});
     await p.screenshot({path:SH+nome+'.png'});await p.close();return r};
   let r=await run('forte',{tdm:9,tdf:.12,tcr:90,tcd:100,tsp:1.6,tls:20});console.log(JSON.stringify(r));
-  chk(r.MAXHP===9000&&r.me.mhp===9000&&r.op.mhp===9000&&r.op.hp===9000,'5 barras de vida para os dois (9000)');
+  chk(r.MAXHP===14400&&r.me.mhp===14400&&r.op.mhp===14400&&r.op.hp===14400,'8 barras de vida para os dois (14400, v652)');
   const ratio=r.eq.P[1]/r.eq.P[0];chk(ratio<=1.61&&ratio>1,'a sombra forte continua mais forte, mas só '+ratio.toFixed(2)+'× (antes era ~'+(9/.12*1.9).toFixed(0)+'×)');
   chk(r.tm>150,'round de 3 minutos ('+r.tm+' s)');chk(r.op.tcr<=45,'crítico no máximo 45% ('+r.op.tcr+')');
   r=await run('igual',{tdm:1.3,tdf:.85,tcr:15});console.log(JSON.stringify(r));chk(r.eq.P[1]/r.eq.P[0]<1.3,'diferença pequena continua pequena');

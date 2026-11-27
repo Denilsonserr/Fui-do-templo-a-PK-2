@@ -2770,7 +2770,7 @@ function pvEnd(w){const F=PV.fight;G.mode='ranked';$('controls').hidden=true;$('
   o.h.unshift({n:F.opp.nome,c:F.opp.ch,my:G.pick,w:won?1:0,f:F.friendly?1:0,r:pvRkName(o.t,o.d),d:Date.now()});o.h=o.h.slice(0,30);pvSv(o);
   if(!F.friendly){pvNotify(F.opp,won);pvUp(1)}
   rkOpen('pvp');setTimeout(()=>pvResult(F,won,st,rw,o),350)}
-function pvResult(F,won,st,rw,o){const T=PVT[o.t],stars=st?(won?'+'+st.gain+' ⭐'+(st.gain>1?' (SEQUÊNCIA!)':''):(st.shUsed?'🛡️ PROTEÇÃO usada: não perdeu estrela':st.b.t===0&&st.b.s===0?'sem perder estrela (Bronze)':'-1 ⭐'))+(st&&st.sh?' · 🛡️ +'+st.sh+' PROTEÇÃO!':'')+(st&&st.x10?' · 🏆 10 SEGUIDAS: +'+rkFmtN(PV10.g)+' 💎 +'+PV10.tic+' 🎫':''):'';
+function pvResult(F,won,st,rw,o){const T=PVT[o.t],stars=st?(won?'+'+st.gain+' ⭐'+(st.bon?' (⭐ BÔNUS +'+st.bon+')':'')+(st.gain-(st.bon|0)>1?' (SEQUÊNCIA!)':''):(st.shUsed?'🛡️ PROTEÇÃO usada: não perdeu estrela':st.b.t===0&&st.b.s===0?'sem perder estrela (Bronze)':'-1 ⭐'))+(st&&st.sh?' · 🛡️ +'+st.sh+' PROTEÇÃO!':'')+(st&&st.x10?' · 🏆 10 SEGUIDAS: +'+rkFmtN(PV10.g)+' 💎 +'+PV10.tic+' 🎫':''):'';
   rkModal(`<div class="twM pvRes ${won?'win':'lose'}"><h3>${won?'🏆 VITÓRIA!':'💀 DERROTA'}</h3><p class="twH">${F.friendly?'Sala personalizada (não vale estrela)':'Você '+(won?'venceu':'perdeu para')+' a sombra de <b>'+pvEsc(F.opp.nome)+'</b>'}</p>
     ${st?`<div class="pvResR"><img src="${PVA.e[T[3]]}" alt=""><div><b style="color:${T[1]}">${pvRkName(o.t,o.d)}</b><span>${stars}${won?' · +15 💎':''}</span>${st.up?'<em class="up">⬆ SUBIU DE RANK!</em>':st.down?'<em class="dn">⬇ caiu de rank</em>':''}</div></div>`:''}
     ${rw.map(t=>`<p class="twH pvRw">🎁 Primeira vez em <b style="color:${PVT[t][1]}">${PVT[t][0]}</b>: +${rkFmtN(PVT[t][4])} 💎${PVT[t][5]?' +'+PVT[t][5]+' 🎫':''}</p>`).join('')}
@@ -7924,7 +7924,7 @@ try{Object.assign(window.__vw,{applyHit:(a,d,h)=>applyHit(a,d,h)})}catch(e){}
    • Bônus "amassados" (raiz): dano ×8 → ×2,5 · defesa idem · crítico rende metade (máx. 45%) · dano crítico/roubo de vida/velocidade/cura pela metade.
    • Se mesmo assim um lado ficar mais de 1,6× mais forte que o outro, o mais forte é puxado até 1,6×.
    • ADM fica de fora (continua como está). */
-const PVBARS=5,PVTIME=180,PVEQ={pw:.45,cr:45,gap:1.6};
+const PVBARS=8,PVTIME=240,PVEQ={pw:.45,cr:45,gap:1.6}; /* v652: 8 barras e 240 s por round */
 const pvEqPow=f=>(f.tdm||1)/(f.tdf||1)*(1+Math.min(PVEQ.cr,f.tcr||0)/100*(.5+(f.tcd||0)/200))*Math.sqrt(f.tsp||1)*(1+(f.tls||0)/100);
 function pvEqOne(f){if(!f||f._pvEq===f.tdm)return;
   f.tdm=Math.pow(Math.max(.2,f.tdm||1),PVEQ.pw);f.tdf=1/Math.pow(Math.max(.2,1/(f.tdf||1)),PVEQ.pw);
@@ -8413,3 +8413,33 @@ const pvLibFalta=()=>{const m=Math.max(0,Math.ceil((PVLIB-Date.now())/60000));re
   return h+`<div class="pvOff pvLib" style="${pvB(470,150,1400,330)}"><b>⏰ ABRE HOJE ÀS 11:00</b><span>A nova Ranqueada PVP começa às 11h (horário de Brasília). Falta <b class="pvLibT">${pvLibFalta()}</b>!</span></div>`}}
 setInterval(()=>{try{if(RKV!=='pvp')return;const T=document.querySelector('.rk_pvp .pvLibT');if(T)T.textContent=pvLibFalta();else if(pvLibOn()&&document.querySelector('.rk_pvp .pvLib'))pvRe()}catch(e){}},20000);
 try{Object.assign(window.__vw,{pvLibOn:()=>pvLibOn()})}catch(e){}
+
+/* ================= v652: PVP MAIS DIFÍCIL DE MATAR + BÔNUS DE ESTRELAS
+   • 8 barras de vida (era 5) e 240 s por round.
+   • "Segurada": no PVP nenhum golpe tira mais que 5% da vida total (0,4 barra) e em 1,5 s ninguém perde mais que 9% — acabou o "matar com 2 golpes".
+     O mais forte continua mais forte (o equilíbrio do v620 segue igual). ADM fica de fora.
+   • BARRA DE BÔNUS ⭐ (só no ranqueado): enche com dano causado, combos e tempo de luta; dano levado tira um pouco.
+     Ganhou com a barra em 50+ = +1 ⭐ extra · 100 = +2 ⭐ extra. ================= */
+const PVCAP={hit:.05,win:.09,wf:90},PVB={on:0,v:0,t0:0,x:0};
+const pvAdmSide=f=>{try{const F=PV.fight;return (f===G.p[0]&&mnAdm())||(f===G.p[1]&&F&&F.opp&&F.opp.tit==='adm')}catch(e){return false}};
+let PVHIT=null;
+const pvCapHp=(a,d,hp0)=>{const MX=d.mhp||MAXHP;let lost=hp0-d.hp;if(lost<=0)return;const lim=MX*PVCAP.hit;if(lost>lim){lost=lim}
+  const W=d._pvw||(d._pvw=[]);while(W.length&&G.frame-W[0].t>PVCAP.wf)W.shift();const used=W.reduce((x,y)=>x+y.v,0),room=Math.max(0,MX*PVCAP.win-used);if(lost>room)lost=room;
+  d.hp=hp0-lost;if(d.hpLag!=null&&d.hpLag<d.hp)d.hpLag=d.hp;W.push({t:G.frame,v:lost});return lost};
+{const _ah=applyHit;applyHit=function(a,d,h){const pv=G.gmode==='pvp'&&PV.fight&&G.mode==='fight'&&d&&!d.ko&&!pvAdmSide(a);if(!pv)return _ah.apply(this,arguments);
+  const hp0=d.hp,c0=a?a.comboDmg|0:0;PVHIT={d,hp0,a,c0};let r;try{r=_ah.apply(this,arguments)}finally{PVHIT=null}
+  try{if(!d.ko&&d.hp<hp0){const l=pvCapHp(a,d,hp0)||0;if(a&&a.comboDmg!=null)a.comboDmg=(a.comboDmg>=c0?c0:0)+Math.round(l);if(PVB.on&&a===G.p[0]&&l>0)pvBonAdd(l/(d.mhp||MAXHP)*22);if(PVB.on&&d===G.p[0]&&l>0)pvBonAdd(-l/(d.mhp||MAXHP)*10);
+    if(PVB.on&&a===G.p[0]&&(a.combo|0)>=5&&a.combo%5===0)pvBonAdd(3)}}catch(e){}return r}}
+{const _ko=ko;ko=function(a,d){try{if(PVHIT&&d===PVHIT.d){const hp0=PVHIT.hp0,c0=PVHIT.c0;const l=pvCapHp(a,d,hp0)||0;if(d.hp>0&&a&&a.comboDmg!=null)a.comboDmg=(a.comboDmg>=c0?c0:0)+Math.round(l);if(d.hp>0){if(PVB.on&&a===G.p[0])pvBonAdd(l/(d.mhp||MAXHP)*22);return}}}catch(e){}return _ko.apply(this,arguments)}}
+function pvBonAdd(n){PVB.v=Math.max(0,Math.min(100,PVB.v+n));pvBonUI()}
+function pvBonUI(){let B=document.getElementById('pvBon');const show=PVB.on&&G.gmode==='pvp'&&G.mode==='fight';if(!show){if(B)B.remove();return}
+  if(!B){B=document.createElement('div');B.id='pvBon';B.innerHTML='<i></i><span></span>';document.body.appendChild(B)}const v=Math.round(PVB.v);
+  B.querySelector('i').style.width=v+'%';B.className=v>=100?'b2':v>=50?'b1':'';B.querySelector('span').textContent='⭐ BÔNUS '+v+'/100 · '+(v>=100?'+2 ⭐ se vencer!':v>=50?'+1 ⭐ se vencer (100 = +2)':'50 = +1 ⭐ · 100 = +2 ⭐')}
+{const _ps=pvStart;pvStart=function(opp,friendly){PVB.on=friendly?0:1;PVB.v=0;PVB.t0=0;const r=_ps.apply(this,arguments);return r}}
+{const _u=update;update=function(){const r=_u.apply(this,arguments);try{if(PVB.on){if(G.gmode!=='pvp'){PVB.on=0;pvBonUI()}else if(G.mode==='fight'&&G.phase==='fight'&&!G.paused){if(++PVB.t0%600===0)pvBonAdd(2)}}}catch(e){}return r}}
+setInterval(()=>{try{pvBonUI()}catch(e){}},500);
+{const _s=pvStep;pvStep=function(o,won){const r=_s.apply(this,arguments);try{if(won&&r&&PVB.on){const x=PVB.v>=100?2:PVB.v>=50?1:0;for(let i=0;i<x;i++)pvStar1(o);r.gain+=x;r.bon=x;if(x){r.up=o.t>r.b.t;if(o.t>o.bt||o.t===o.bt&&o.s>(o.bs|0)){o.bt=o.t;o.bs=o.s}}}}catch(e){}PVB.on=0;try{pvBonUI()}catch(e){}return r}}
+{const st=document.createElement('style');st.textContent=`#pvBon{position:fixed;left:50%;top:21%;transform:translateX(-50%);z-index:60;width:min(40vw,300px);height:20px;border-radius:12px;background:rgba(10,8,30,.75);border:2px solid #ffcf3a;overflow:hidden;pointer-events:none}
+#pvBon i{position:absolute;left:0;top:0;bottom:0;background:linear-gradient(90deg,#b8860b,#ffd84a);transition:width .3s}#pvBon.b1 i{background:linear-gradient(90deg,#ffb000,#ffe680)}#pvBon.b2 i{background:linear-gradient(90deg,#ff7a00,#fff3a0);box-shadow:0 0 12px #ffd84a}
+#pvBon span{position:relative;display:flex;height:100%;align-items:center;justify-content:center;color:#fff;font:800 11px var(--f-ui,sans-serif);text-shadow:0 1px 2px #000}`;document.head.appendChild(st)}
+try{Object.assign(window.__vw,{PVB,PVCAP,pvBonAdd:n=>pvBonAdd(n)})}catch(e){}

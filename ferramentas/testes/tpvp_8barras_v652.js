@@ -1,0 +1,21 @@
+// v652: PVP com 8 barras, golpe gigante não mata (máx. 5% por golpe, 9% em 1,5 s), barra de bônus dá +1/+2 ⭐ na vitória
+const {chromium}=require('playwright');const SH=__dirname+'/shots/t652_';
+(async()=>{let ok=1;const chk=(c,m)=>{console.log((c?'OK  ':'FALHA ')+m);if(!c)ok=0};const E=[];const b=await chromium.launch();
+const p=await b.newPage({viewport:{width:915,height:412}});p.on('pageerror',e=>E.push(e.message));await p.route(/fonts\.g|firestore/,r=>r.abort());
+await p.addInitScript(()=>{if(!sessionStorage.d){sessionStorage.d=1;localStorage.clear();Object.assign(localStorage,{tw_nome:'"Breno"',rk_ini:'1',rk_xpv2:'1',rk_rs463:'1',rk_rs464:'1',rk_rs464b:'1',rk_urso:'1',rk_lvrz:'1',ft_q:'1',rk_own:'["goku"]',rk_pvt:'["goku"]'})}});
+await p.goto('http://localhost:8790/index.html');await p.waitForFunction(()=>!document.getElementById('goSelect').disabled,null,{timeout:120000});
+await p.evaluate(()=>__vw.pvStart({acc:'zz',nome:'FORTE',ch:'alucard',team:[{ch:'alucard',s:{tdm:9,tdf:.12,tcr:90},p:{}}],tit:''},false));
+await p.waitForFunction(()=>__dbg.G.mode==='fight'&&__dbg.G.phase==='fight',null,{timeout:120000});await p.waitForTimeout(1200);
+const r=await p.evaluate(()=>{const G=__dbg.G,[me,op]=G.p;const M=__vw.MAXHP();const out={M,tm:Math.round(G.timer),mhp:me.mhp};
+  me.hp=me.mhp;const h0=me.hp;__vw.applyHit(op,me,{dmg:999999,kb:0,hs:2,px:me.x,py:me.y-100,kind:'melee',lock:1});out.golpe=+((h0-me.hp)/M*100).toFixed(2);out.vivo=!me.ko&&me.hp>0;
+  for(let i=0;i<6;i++){me.state='idle';me.inv=0;__vw.applyHit(op,me,{dmg:999999,kb:0,hs:2,px:me.x,py:me.y-100,kind:'melee',lock:1})}out.janela=+((h0-me.hp)/M*100).toFixed(2);out.vivo2=!me.ko;
+  out.bon0=__vw.PVB.on;__vw.pvBonAdd(60);out.ui=(document.getElementById('pvBon')||{}).textContent||'';
+  const o={t:2,d:0,s:1,w:0,l:0,sq:0,bt:0,rw:[],h:[],pp:0,sh:0};const st=__ev('pvStep')(o,true);out.ganho1=[st.gain,st.bon,o.t,o.s];
+  __vw.PVB.on=1;__vw.PVB.v=100;const o2={t:2,d:0,s:1,w:0,l:0,sq:0,bt:0,rw:[],h:[],pp:0,sh:0};const st2=__ev('pvStep')(o2,true);out.ganho2=[st2.gain,st2.bon];
+  __vw.PVB.on=1;__vw.PVB.v=100;const o3={t:2,d:0,s:1,w:0,l:0,sq:0,bt:0,rw:[],h:[],pp:0,sh:0};const st3=__ev('pvStep')(o3,false);out.perdeu=[o3.s,st3.bon|0];return out});
+console.log(JSON.stringify(r));
+chk(r.M===14400&&r.mhp===14400,'8 barras de vida (14.400)');chk(r.tm>200,'round de 4 minutos ('+r.tm+' s)');
+chk(r.golpe<=5.01&&r.vivo,'golpe gigante tirou só '+r.golpe+'% (máx. 5%) e não matou');chk(r.janela<=9.01&&r.vivo2,'7 golpes gigantes seguidos: só '+r.janela+'% (máx. 9% em 1,5 s)');
+chk(r.bon0===1&&/60\/100/.test(r.ui),'barra de bônus aparece na luta ranqueada ('+r.ui+')');chk(r.ganho1[1]===1&&r.ganho1[0]===2,'vitória com bônus 60: +1 ⭐ extra');chk(r.ganho2[1]===2&&r.ganho2[0]===3,'vitória com bônus 100: +2 ⭐ extra');chk(r.perdeu[1]===0,'derrota: bônus não vale');
+await p.screenshot({path:SH+'luta.png'});
+console.log(E.length?'ERROS '+E.slice(0,3).join('|'):'sem erros');console.log(ok&&!E.length?'TUDO OK':'FALHOU');await b.close()})();
