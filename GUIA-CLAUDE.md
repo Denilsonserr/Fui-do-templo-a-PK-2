@@ -3155,3 +3155,6 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 
 ## v659 — Atributos (Personagem/Equipamentos/Anéis) em PODER
 - lbTot (usado nas abas chr/eq/it/col) agora monta: Dano = ⚡PL total (plOfChar), Crítico = 🎯poder crítico + chance % embaixo, Velocidade = 💨+PL de velocidade, Sorte/Vel. Ultimate como antes. Antes o split(" ")[0] pegava só o emoji. lbK formata 17,5k. Aba Anéis: ⚡/🎯 dos anéis e "—" na velocidade. CSS .lbPL. Teste: tatrib_v659.js.
+
+## Ferramenta: auditoria do ranking PVP
+- .github/workflows/pvp_audit.yml (workflow_dispatch): baixa todos os docs pvs_ da temporada (pvk fixo no arquivo — trocar quando mudar PVRZ/mês) e lista por conta: hora, rank, estrelas, vitórias, derrotas, título e time (tdm do pvDelta). 27/11 15h: nenhuma trapaça; Honrado (Deus Gênesis elite, 20V 0D) e Vini (Deus Supremo, 14V 0D) subiram rápido por regra: até 4 ⭐ por vitória (1 + sequência 1 + bônus 2) e +1 a cada 5 com o título Soberano (pvsob).
