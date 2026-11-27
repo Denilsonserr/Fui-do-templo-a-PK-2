@@ -3090,3 +3090,6 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - Regra do dono (v601) mantida: o gráfico NUNCA muda sozinho durante o jogo.
 - Resultado (ms por quadro, cena congelada): Mínimo −34%, Leve −26%, Médio −15%, Ultra −11%, 4K ~−3%. 4K custa ~3x o Ultra.
 - Testes: tcenario_cache_v647, tluz_cache_v647, tgrafico_auto_v647; tmenu_video_v642 agora fixa ft_q=1 (a máquina de teste tem 2 núcleos → começaria no Mínimo).
+
+## v648 — Código para todos: 10.000 💎 + 20 🎫 + anel preto SS
+- TWCUP rfe6cu (ev:1, 1 vez por conta; texto só com o dono): gem 10000, tic 20, rgx [[3,6,dano,crit]] (nível máximo), msg própria. Teste: C1=.. node ferramentas/testes/tcod_v648.js

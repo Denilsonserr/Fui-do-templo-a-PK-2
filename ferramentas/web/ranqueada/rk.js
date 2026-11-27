@@ -8367,3 +8367,6 @@ function dnCache(K0,lv,k,A,n,sn,want){const fi=cupImg(lv,'far');if(!fi)return nu
 /* v647: gráfico inicial (só para quem NUNCA escolheu, ao abrir pela 1ª vez): aparelho muito fraco (até 2 GB ou até 2 núcleos) começa no MÍNIMO (antes ia para o Leve).
    O gráfico continua NUNCA mudando sozinho durante o jogo (pedido do dono, v601). */
 {const _qa=qAuto;qAuto=function(){try{const m=+navigator.deviceMemory||0,c=+navigator.hardwareConcurrency||0;if((m&&m<=2)||(c&&c<=2))return 0}catch(e){}return _qa.apply(this,arguments)}}
+
+/* v648: código do dono PARA TODOS (1 vez por conta; texto só com o dono): 10.000 💎 + 20 🎫 + 💍 ANEL PRETO SS (nível máximo, ⚔️ Dano + 🎯 Crítico) */
+TWCUP['rfe6cu']={nm:'💍 ANEL PRETO SS + 10.000 💎 + 20 🎫',ev:1,gem:10000,tic:20,rgx:[[3,6,'dano','crit']],msg:'🎉 Código aceito! +10.000 💎, +20 🎫 tickets de giro e 💍 ANEL PRETO SS no nível máximo (⚔️ Dano + 🎯 Crítico)! Veja em ANÉIS DA ALMA.'};
