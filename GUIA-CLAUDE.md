@@ -3197,3 +3197,7 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - apk_www/index.html (página de erro do app): tenta o endereço novo e depois o antigo (reserva).
 - Depois do APK pronto: APKNOVO=true no www/mig.js → app antigo mostra "BAIXAR APK NOVO" (1x por dia).
 - dominio.yml agora testa HTTPS dos 2 endereços e a passagem /fs/mig-poe → /fs/mig-pega no servidor real.
+
+## v667 — MISSÃO INFINITA DO PASSE (só passe pago)
+- Embrulho no bpMis: seção "♾️ MISSÃO INFINITA" no topo. BPIN=2 lutas (contador 'fights' do passe: Boss + andares da Torre) = BPIX=125 XP, sem limite até o nível 25 (PEGAR TUDO não passa do 25).
+- o.ifb = marco de lutas já usadas (na 1ª vez = lutas atuais → as antigas não contam). Grátis vê trancado. Teste: ferramentas/testes/tpasse_inf_v667.js.

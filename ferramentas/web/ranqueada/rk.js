@@ -8688,3 +8688,18 @@ setTimeout(px3Apply,1900);setInterval(px3Apply,20000);
 {const _cp=twCupom;twCupom=async function(code,E){const C=TWCUP[twHash(String(code).toUpperCase())];const r=await _cp.apply(this,arguments);
   try{if(C&&C.px3&&r!==false&&E&&/\bok\b/.test(E.className||'')){const B=rkG('px3',null),t=Date.now();rkS('px3',{e:Math.max(t,B&&B.e||0)+C.px3*3600e3});px3Apply();try{localStorage.removeItem('ac_h');acSave(1)}catch(e){}if(C.msg)E.textContent=C.msg}}catch(e){}return r}}
 try{Object.assign(window.__vw,{px3On:()=>px3On(),px3Apply:()=>px3Apply()})}catch(e){}
+
+/* ================= v667: MISSÃO INFINITA DO PASSE (pedido do dono: quem COMPROU o passe termina rápido)
+   Só para quem tem o passe pago (own>=1). A cada BPIN lutas (Boss ou andar da Torre — contador 'fights' do passe) = +BPIX XP, repete sem limite
+   até o nível 25. Conta só lutas DEPOIS de liberar (o.ifb = marco das lutas já usadas). PEGAR TUDO pega todas as prontas de uma vez.
+   25 níveis × 250 = 6.250 XP ÷ 125 = 50 vezes = 100 lutas (fora as diárias/temporada). ================= */
+const BPIN=2,BPIX=125;
+const bpInf=o=>{if(o.ifb==null){o.ifb=o.c.fights|0;bpS(o)}const f=Math.max(0,(o.c.fights|0)-o.ifb);return {f,k:Math.floor(f/BPIN),r:f%BPIN}};
+{const _bm=bpMis;bpMis=function(){const r=_bm.apply(this,arguments);try{const M=document.querySelector(RKMS()+'.bpMs');if(!M)return r;const o=bpG(),own=(o.own|0)>=1,full=bpLv(o)>=BPMAX,X=bpEvOn()?3:1;
+  const I=own?bpInf(o):{f:0,k:0,r:0},d=document.createElement('div');d.className='bpInf';
+  d.innerHTML=`<h4>♾️ MISSÃO INFINITA ${own?'':'· 🔒 SÓ PASSE PAGO'}</h4><div class="bpMi ${full?'got':I.k?'ok':''}"><span>Jogue ${BPIN} lutas (Boss ou Torre) · repete sem limite${!full&&I.k>1?` · <b style="color:#7dff9a;min-width:0">${I.k} prontas</b>`:''}</span><em>${own?(full?'✔':(I.k?BPIN:I.r)+'/'+BPIN):'🔒'}</em><b>+${BPIX*X} XP</b>${full?'<i>COMPLETO</i>':own&&I.k?`<button id="bpInfB">${I.k>1?'PEGAR TUDO':'PEGAR'}</button>`:''}</div>${own?'':'<p class="twH">Compre o passe para liberar: cada '+BPIN+' lutas = meio nível do passe, sem limite!</p>'}`;
+  const h=M.querySelector('h4');M.insertBefore(d,h||M.querySelector('.row'));
+  const b=document.getElementById('bpInfB');if(b)b.onclick=()=>{const o=bpG();if((o.own|0)<1||bpLv(o)>=BPMAX)return;const I=bpInf(o);if(!I.k)return;
+    const l0=bpLv(o);const need=Math.ceil((BPMAX*BPS.xpL-(o.xp|0))/(BPIX*X)),k=Math.max(1,Math.min(I.k,need));o.ifb+=k*BPIN;o.xp=(o.xp|0)+k*BPIX*X;bpS(o);rkSfx('powerUp');
+    const l1=bpLv(o);rkToast((l1>l0?'⬆ PASSE NÍVEL '+l1+'! · ':'')+'♾️ +'+rkFmtN(k*BPIX*X)+' XP','#ffd84a');bpMis()}}catch(e){}return r}}
+try{Object.assign(window.__vw,{bpInf:()=>bpInf(bpG()),bpG:()=>bpG(),bpAdd:(k,n)=>bpAdd(k,n),bpMis:()=>bpMis(),bpLv:()=>bpLv(bpG())})}catch(e){}
