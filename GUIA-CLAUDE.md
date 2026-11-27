@@ -3204,3 +3204,6 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 
 ## v668 — Vini: recompensas de rank do PVP zeradas (só ele, 1 vez)
 - pvRwVini(): se vnOn() e sem rk_pvrwv668 → o.rw fica só com os ranks em que ele já está (Bronze = vazio). Teste: ferramentas/testes/tpvp_rw_vini_v668.js.
+
+## v669 — CÓDIGO DE USO ÚNICO: CASACO CARMESIM (peitoral) + BOTAS DO ALUCARD
+- TWCUP['ij0vxb'] (texto só com o dono): it alarm+albot, uni:1. Embrulho: código de item sem eq:1 com msg própria mostra a msg (antes dizia "já equipados"). Teste: C1=.. node ferramentas/testes/tcod_v669.js

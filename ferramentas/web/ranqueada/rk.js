@@ -8709,3 +8709,9 @@ try{Object.assign(window.__vw,{bpInf:()=>bpInf(bpG()),bpG:()=>bpG(),bpAdd:(k,n)=
 function pvRwVini(){try{if(!vnOn()||rkG('pvrwv668',0))return;const o=pvG();o.rw=(o.rw||[]).filter(t=>t<=(o.t|0));rkS('pvp',o);rkS('pvrwv668',1);try{localStorage.removeItem('ac_h');acSave(1)}catch(e){}}catch(e){}}
 setTimeout(pvRwVini,2500);
 try{Object.assign(window.__vw,{pvRwVini:()=>pvRwVini(),pvG:()=>pvG()})}catch(e){}
+
+/* v669: código de USO ÚNICO (texto só com o dono): PEITORAL (CASACO CARMESIM) + BOTAS DO ALUCARD */
+TWCUP['ij0vxb']={nm:'🦇 CASACO CARMESIM + BOTAS DO ALUCARD',it:['alarm','albot'].map(k=>Object.assign({},RKSP[k])),uni:1,msg:'✅ Você ganhou 🦇 CASACO CARMESIM (peitoral) + BOTAS DO ALUCARD! Equipe na 🎒 MOCHILA.'};
+/* v669: códigos de item sem eq:1 diziam "(já equipados)" — se o código tem msg própria, mostra ela */
+{const _cp=twCupom;twCupom=async function(code,E){const C=TWCUP[twHash(String(code).toUpperCase())];const r=await _cp.apply(this,arguments);
+  try{if(C&&C.it&&C.it.length&&!C.eq&&C.msg&&r!==false&&E&&/\bok\b/.test(E.className||''))E.textContent=C.msg}catch(e){}return r}}
