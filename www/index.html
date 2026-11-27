@@ -2638,6 +2638,8 @@ img.anOn{position:relative;z-index:2}
 .rk_pvp .pvElite{position:absolute;z-index:3;display:flex;align-items:center;justify-content:center;color:#ffe27a;font:900 .7em var(--f-ui,sans-serif);text-shadow:0 0 .4em #ff9000}
 .rk_pvp .pvMe small{font-size:.55em}
 .rk_pvp .pvMe b{font-size:.78em;line-height:1.05}.rk_pvp .pvMe img{width:52%}
+/* v653: molduras dos ranks novos */
+.pfMold.r14{--rc:#b98cff;--k:1}.pfMold.r15{--rc:#ff4d5e;--k:1}.pfMold.r16{--rc:#c77dff;--k:1}.pfMold.r17{--rc:#e0a8ff;--k:1}.pfMold.r18{--rc:#ff3b3b;--k:1}
 
 .twBag .bgw{display:flex;gap:1em;justify-content:center;align-items:flex-start;margin:.4em 0}
 .twBag .bgc{flex:1;max-width:16em;display:flex;flex-direction:column;gap:.4em;max-height:52vh;overflow:auto;padding:.2em}
@@ -17233,6 +17235,11 @@ setInterval(()=>{try{pvBonUI()}catch(e){}},500);
 #pvBon span{position:relative;display:flex;height:100%;align-items:center;justify-content:center;color:#fff;font:800 11px var(--f-ui,sans-serif);text-shadow:0 1px 2px #000}`;document.head.appendChild(st)}
 try{Object.assign(window.__vw,{PVB,PVCAP,pvBonAdd:n=>pvBonAdd(n)})}catch(e){}
 
+/* ================= v653: MOLDURAS DA FOTO do perfil dos 5 ranks novos (artes do dono): Deus Ancestral, Originário, do Infinito, da Criação e Gênesis
+   Liberam ao chegar no rank (rank máximo já alcançado), igual às outras de rank. ================= */
+Object.assign(RQA.mold,{"rk14":{"src":"a/1a03f7335065db.webp","h":[0.244,0.192,0.756,0.65],"ar":1.014},"rk15":{"src":"a/0b092b3e5405f5.webp","h":[0.261,0.235,0.739,0.674],"ar":1.094},"rk16":{"src":"a/6479951bab6314.webp","h":[0.281,0.271,0.718,0.688],"ar":1.0},"rk17":{"src":"a/0ad6389f29534f.webp","h":[0.279,0.261,0.72,0.696],"ar":1.053},"rk18":{"src":"a/ed648623a7b6ae.webp","h":[0.271,0.259,0.729,0.718],"ar":1.094}});
+for(let r=14;r<=18;r++){const k='rk'+r,M=MDL[k]={n:RKR[r].n,r};M.d='Chegar ao rank '+M.n+' (rank máximo)';M.ok=()=>pfRkMax()>=r;M.cls='rk r'+r+' r7'}
+
 function twTrofList(){const tc=twLS.g('tw_tc',{}),run={};for(const t of TW.tr)run[t.k]=(run[t.k]||0)+1;
   twModal(`<div class="twM"><h3>🎖️ TROFÉUS</h3><div class="twTL">${Object.keys(TWTR).map(k=>{const T=TWTR[k];return `<div class="${tc[k]||run[k]?'got':''}"><i>${T.i}</i><b>${T.n}</b><span>${T.d}</span><em>+${T.p} 🏆</em><small>${run[k]?'nesta subida: '+run[k]+' · ':''}total: ${(tc[k]||0)}</small></div>`}).join('')}</div>
     <p class="twH">Cada troféu soma pontos 🏆 no ranking. Quem sobe mais andares fica na frente; empate = mais troféus, depois menos tempo.</p><div class="row"><button class="btn" id="twTx">FECHAR</button></div></div>`);
@@ -17424,7 +17431,7 @@ window.__dbg={mus:()=>[MCUR,MEL.src.split('/').pop()],stg:()=>STAGE.key,prepMatc
 })();
 </script>
 <style>#updB{position:fixed;left:50%;top:max(8px,env(safe-area-inset-top));transform:translateX(-50%);z-index:99999;padding:10px 22px;border-radius:14px;border:2px solid #fff3c0;background:linear-gradient(#ffd84a,#e08a10);color:#3a1d00;font:900 15px system-ui,sans-serif;box-shadow:0 0 18px #ffb21f;cursor:pointer;animation:updP 1s ease-in-out infinite alternate}@keyframes updP{to{transform:translateX(-50%) scale(1.05)}}</style>
-<script>(function(){const V='8e05a1250beb';if(!/^https?:/.test(location.protocol))return;let nv=null;
+<script>(function(){const V='791b8c9d0f7c';if(!/^https?:/.test(location.protocol))return;let nv=null;
 function show(){if(document.getElementById('updB'))return;try{if(typeof G!=='undefined'&&G.mode==='fight')return}catch(e){}const b=document.createElement('button');b.id='updB';b.textContent='🔄 ATUALIZAÇÃO NOVA! Toque para atualizar';
   b.onclick=()=>{b.textContent='⏳ Atualizando...';try{acSave(1)}catch(e){}setTimeout(()=>location.reload(),900)};document.body.appendChild(b)}
 async function chk(){if(document.hidden)return;if(nv){show();return}try{const r=await fetch('versao.txt?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const t=(await r.text()).trim();if(/^[0-9a-f]{8,40}$/.test(t)&&t!==V){nv=t;show()}}catch(e){}}

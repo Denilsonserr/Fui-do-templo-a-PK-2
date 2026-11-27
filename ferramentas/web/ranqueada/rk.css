@@ -2131,3 +2131,5 @@ img.anOn{position:relative;z-index:2}
 .rk_pvp .pvElite{position:absolute;z-index:3;display:flex;align-items:center;justify-content:center;color:#ffe27a;font:900 .7em var(--f-ui,sans-serif);text-shadow:0 0 .4em #ff9000}
 .rk_pvp .pvMe small{font-size:.55em}
 .rk_pvp .pvMe b{font-size:.78em;line-height:1.05}.rk_pvp .pvMe img{width:52%}
+/* v653: molduras dos ranks novos */
+.pfMold.r14{--rc:#b98cff;--k:1}.pfMold.r15{--rc:#ff4d5e;--k:1}.pfMold.r16{--rc:#c77dff;--k:1}.pfMold.r17{--rc:#e0a8ff;--k:1}.pfMold.r18{--rc:#ff3b3b;--k:1}

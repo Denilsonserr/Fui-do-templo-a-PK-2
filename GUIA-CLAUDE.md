@@ -3115,3 +3115,6 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - Teto de dano no PVP (PVCAP): 1 golpe tira no máx. 5% da vida total; em 90 quadros (1,5 s) no máx. 9%. applyHit embrulhado (PVHIT guarda hp antes) + ko embrulhado (se o golpe cortado não zera a vida, não tem KO). comboDmg corrigido pro dano de verdade. ADM fora (pvAdmSide).
 - Barra de BÔNUS ⭐ (PVB, só ranqueado, #pvBon no topo): dano causado +22 por vida inteira, dano levado -10, combo de 5 +3, cada 10 s de luta +2. Vitória com 50+ = +1 ⭐, 100 = +2 ⭐ (pvStep embrulhado: r.bon). Derrota não usa.
 - Testes: tpvp_8barras_v652.js; tpvp_equilibrio_v620 atualizado pra 14.400.
+
+## v653 — Molduras da foto dos 5 ranks novos
+- Artes do dono (transparentes) em ferramentas/ranqueada_artes/molduras_v653 → fazer.py → www/a + molduras.json (buraco em fração). rk.js: Object.assign(RQA.mold,...) + MDL.rk14..rk18 (liberam por pfRkMax). CSS .pfMold.r14..r18. Ainda faltam molduras próprias de rk11–13 (Deus Cósmico/Primordial/Absoluto). Teste: tmold_v653.js.

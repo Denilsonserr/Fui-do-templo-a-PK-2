@@ -8443,3 +8443,8 @@ setInterval(()=>{try{pvBonUI()}catch(e){}},500);
 #pvBon i{position:absolute;left:0;top:0;bottom:0;background:linear-gradient(90deg,#b8860b,#ffd84a);transition:width .3s}#pvBon.b1 i{background:linear-gradient(90deg,#ffb000,#ffe680)}#pvBon.b2 i{background:linear-gradient(90deg,#ff7a00,#fff3a0);box-shadow:0 0 12px #ffd84a}
 #pvBon span{position:relative;display:flex;height:100%;align-items:center;justify-content:center;color:#fff;font:800 11px var(--f-ui,sans-serif);text-shadow:0 1px 2px #000}`;document.head.appendChild(st)}
 try{Object.assign(window.__vw,{PVB,PVCAP,pvBonAdd:n=>pvBonAdd(n)})}catch(e){}
+
+/* ================= v653: MOLDURAS DA FOTO do perfil dos 5 ranks novos (artes do dono): Deus Ancestral, Originário, do Infinito, da Criação e Gênesis
+   Liberam ao chegar no rank (rank máximo já alcançado), igual às outras de rank. ================= */
+Object.assign(RQA.mold,{"rk14":{"src":"a/1a03f7335065db.webp","h":[0.244,0.192,0.756,0.65],"ar":1.014},"rk15":{"src":"a/0b092b3e5405f5.webp","h":[0.261,0.235,0.739,0.674],"ar":1.094},"rk16":{"src":"a/6479951bab6314.webp","h":[0.281,0.271,0.718,0.688],"ar":1.0},"rk17":{"src":"a/0ad6389f29534f.webp","h":[0.279,0.261,0.72,0.696],"ar":1.053},"rk18":{"src":"a/ed648623a7b6ae.webp","h":[0.271,0.259,0.729,0.718],"ar":1.094}});
+for(let r=14;r<=18;r++){const k='rk'+r,M=MDL[k]={n:RKR[r].n,r};M.d='Chegar ao rank '+M.n+' (rank máximo)';M.ok=()=>pfRkMax()>=r;M.cls='rk r'+r+' r7'}
