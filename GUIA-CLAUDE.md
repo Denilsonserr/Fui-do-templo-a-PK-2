@@ -3201,3 +3201,6 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 ## v667 — MISSÃO INFINITA DO PASSE (só passe pago)
 - Embrulho no bpMis: seção "♾️ MISSÃO INFINITA" no topo. BPIN=2 lutas (contador 'fights' do passe: Boss + andares da Torre) = BPIX=125 XP, sem limite até o nível 25 (PEGAR TUDO não passa do 25).
 - o.ifb = marco de lutas já usadas (na 1ª vez = lutas atuais → as antigas não contam). Grátis vê trancado. Teste: ferramentas/testes/tpasse_inf_v667.js.
+
+## v668 — Vini: recompensas de rank do PVP zeradas (só ele, 1 vez)
+- pvRwVini(): se vnOn() e sem rk_pvrwv668 → o.rw fica só com os ranks em que ele já está (Bronze = vazio). Teste: ferramentas/testes/tpvp_rw_vini_v668.js.

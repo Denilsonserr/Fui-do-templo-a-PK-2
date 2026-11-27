@@ -8703,3 +8703,9 @@ const bpInf=o=>{if(o.ifb==null){o.ifb=o.c.fights|0;bpS(o)}const f=Math.max(0,(o.
     const l0=bpLv(o);const need=Math.ceil((BPMAX*BPS.xpL-(o.xp|0))/(BPIX*X)),k=Math.max(1,Math.min(I.k,need));o.ifb+=k*BPIN;o.xp=(o.xp|0)+k*BPIX*X;bpS(o);rkSfx('powerUp');
     const l1=bpLv(o);rkToast((l1>l0?'⬆ PASSE NÍVEL '+l1+'! · ':'')+'♾️ +'+rkFmtN(k*BPIX*X)+' XP','#ffd84a');bpMis()}}catch(e){}return r}}
 try{Object.assign(window.__vw,{bpInf:()=>bpInf(bpG()),bpG:()=>bpG(),bpAdd:(k,n)=>bpAdd(k,n),bpMis:()=>bpMis(),bpLv:()=>bpLv(bpG())})}catch(e){}
+
+/* ================= v668: Vini_junior10 (vnOn) — zera as RECOMPENSAS DE RANK DO PVP só dele, 1 vez (pedido do dono: ele está no Bronze depois do reset
+   e as recompensas continuavam marcadas como pegas). Mantém só as dos ranks em que ele JÁ está (para não ganhar de novo na hora). ================= */
+function pvRwVini(){try{if(!vnOn()||rkG('pvrwv668',0))return;const o=pvG();o.rw=(o.rw||[]).filter(t=>t<=(o.t|0));rkS('pvp',o);rkS('pvrwv668',1);try{localStorage.removeItem('ac_h');acSave(1)}catch(e){}}catch(e){}}
+setTimeout(pvRwVini,2500);
+try{Object.assign(window.__vw,{pvRwVini:()=>pvRwVini(),pvG:()=>pvG()})}catch(e){}
