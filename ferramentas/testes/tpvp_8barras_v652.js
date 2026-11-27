@@ -16,6 +16,6 @@ const r=await p.evaluate(()=>{const G=__dbg.G,[me,op]=G.p;const M=__vw.MAXHP();c
 console.log(JSON.stringify(r));
 chk(r.M===14400&&r.mhp===14400,'8 barras de vida (14.400)');chk(r.tm>200,'round de 4 minutos ('+r.tm+' s)');
 chk(r.golpe<=5.01&&r.vivo,'golpe gigante tirou só '+r.golpe+'% (máx. 5%) e não matou');chk(r.janela<=9.01&&r.vivo2,'7 golpes gigantes seguidos: só '+r.janela+'% (máx. 9% em 1,5 s)');
-chk(r.bon0===1&&/60\/100/.test(r.ui),'barra de bônus aparece na luta ranqueada ('+r.ui+')');chk(r.ganho1[1]===1&&r.ganho1[0]===2,'vitória com bônus 60: +1 ⭐ extra');chk(r.ganho2[1]===2&&r.ganho2[0]===3,'vitória com bônus 100: +2 ⭐ extra');chk(r.perdeu[1]===0,'derrota: bônus não vale');
+chk(r.bon0===1&&/60\/100/.test(r.ui),'barra de bônus aparece na luta ranqueada ('+r.ui+')');chk(r.ganho1[1]===3,'vitória com bônus 60: +3 pontos (v660)');chk(r.ganho2[1]===6,'vitória com bônus 100: +6 pontos (v660)');chk(r.perdeu[1]===0,'derrota: bônus não vale');
 await p.screenshot({path:SH+'luta.png'});
 console.log(E.length?'ERROS '+E.slice(0,3).join('|'):'sem erros');console.log(ok&&!E.length?'TUDO OK':'FALHOU');await b.close()})();

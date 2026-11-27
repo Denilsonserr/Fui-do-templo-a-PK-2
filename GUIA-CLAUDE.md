@@ -3158,3 +3158,9 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 
 ## Ferramenta: auditoria do ranking PVP
 - .github/workflows/pvp_audit.yml (workflow_dispatch): baixa todos os docs pvs_ da temporada (pvk fixo no arquivo — trocar quando mudar PVRZ/mês) e lista por conta: hora, rank, estrelas, vitórias, derrotas, título e time (tdm do pvDelta). 27/11 15h: nenhuma trapaça; Honrado (Deus Gênesis elite, 20V 0D) e Vini (Deus Supremo, 14V 0D) subiram rápido por regra: até 4 ⭐ por vitória (1 + sequência 1 + bônus 2) e +1 a cada 5 com o título Soberano (pvsob).
+
+## v660 — PVP: temporada zerada (PVRZ=4) e subida lenta por PONTOS (dono: no mínimo 500 partidas pro topo)
+- PVC(t)=50+15×rank pontos por estrela (Bronze 50 … Gênesis 230); 5 estrelas por rank. pvStep NOVO (substitui a cadeia antiga inteira — eventos de estrela em dobro e o +1 do título Soberano não valem mais): vitória +10, sequência 3+ +3 (só até Lendário, PVDV), bônus PVB 50=+3 / 100=+6; derrota -8 (pvLosePts: desce estrela/rank; Bronze 0 não perde; 🛡️ segura). Topo: Gênesis 5 ⭐ = elite, o.p soma sem fim. pvStar1 = +10 pontos. Torneio Soberano conta vitórias (+1).
+- pvScore em pontos. Tela: barra dourada "⭐ p/custo" + barra 🛡️ embaixo (pvProt). Resultado: "+N pontos (🔥 +3) (⭐ bônus +6)".
+- Simulação (tpvp_pontos_v660.js): perfeito 537 vitórias; 80% vitória ≈ 930 partidas; 60% ≈ 2.800.
+- pvp_audit.yml agora olha m202611r4. tpvp_novo_v650 apagado (regras mudaram); v652 ajustado.

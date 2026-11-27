@@ -2618,9 +2618,9 @@ const pvG=()=>{const o=Object.assign({t:0,d:0,s:0,w:0,l:0,sq:0,bt:0,bd:0,rw:[],h
 const pvNeed=t=>PVT[t][2];
 const pvRkName=(t,d)=>PVT[t][0];
 /* pontuação contínua para o ranking: estrelas somadas de todas as divisões abaixo + as atuais */
-const pvScore=o=>{let n=0;for(let t=0;t<o.t;t++)n+=pvNeed(t);return n+o.s};
+const PVC=t=>50+15*t;const pvScore=o=>{let n=0;for(let t=0;t<o.t;t++)n+=5*PVC(t);return n+(o.s|0)*PVC(o.t)+(o.p|0)};
 /* v337: PVRZ = número do reset do PVP (zera o rank de todo mundo e separa as sombras no servidor) */
-const PVRZ=3;const pvMon=()=>{const d=new Date(Date.now()-3*3600e3);return 'm'+d.getUTCFullYear()+String(d.getUTCMonth()+1).padStart(2,'0')+'r'+PVRZ};
+const PVRZ=4;const pvMon=()=>{const d=new Date(Date.now()-3*3600e3);return 'm'+d.getUTCFullYear()+String(d.getUTCMonth()+1).padStart(2,'0')+'r'+PVRZ};
 const pvAcc=()=>{const n=String(localStorage.getItem('ac_n')||'').toLowerCase().trim();return n&&localStorage.getItem('ac_k')?twHash(n):''};
 const pvEsc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const pvChar=()=>{const own=rkG('own',['goku']),c=rkG('pvch','')||rkG('sel','goku');return own.includes(c)&&CH[c]?c:(own.find(i=>CH[i])||'goku')};
@@ -2774,7 +2774,7 @@ function pvEnd(w){const F=PV.fight;G.mode='ranked';$('controls').hidden=true;$('
   o.h.unshift({n:F.opp.nome,c:F.opp.ch,my:G.pick,w:won?1:0,f:F.friendly?1:0,r:pvRkName(o.t,o.d),d:Date.now()});o.h=o.h.slice(0,30);pvSv(o);
   if(!F.friendly){pvNotify(F.opp,won);pvUp(1)}
   rkOpen('pvp');setTimeout(()=>pvResult(F,won,st,rw,o),350)}
-function pvResult(F,won,st,rw,o){const T=PVT[o.t],stars=st?(won?'+'+st.gain+' ⭐'+(st.bon?' (⭐ BÔNUS +'+st.bon+')':'')+(st.gain-(st.bon|0)>1?' (SEQUÊNCIA!)':''):(st.shUsed?'🛡️ PROTEÇÃO usada: não perdeu estrela':st.b.t===0&&st.b.s===0?'sem perder estrela (Bronze)':'-1 ⭐'))+(st&&st.sh?' · 🛡️ +'+st.sh+' PROTEÇÃO!':'')+(st&&st.x10?' · 🏆 10 SEGUIDAS: +'+rkFmtN(PV10.g)+' 💎 +'+PV10.tic+' 🎫':''):'';
+function pvResult(F,won,st,rw,o){const T=PVT[o.t],stars=st?(won?'+'+st.pts+' pontos'+(st.streak?' (🔥 +'+st.streak+')':'')+(st.bon?' (⭐ bônus +'+st.bon+')':''):(st.shUsed?'🛡️ PROTEÇÃO usada: não perdeu estrela':st.b.t===0&&st.b.s===0&&!st.b.p?'sem perder pontos (Bronze)':'-8 pontos'))+(st&&st.sh?' · 🛡️ +'+st.sh+' PROTEÇÃO!':'')+(st&&st.x10?' · 🏆 10 SEGUIDAS: +'+rkFmtN(PV10.g)+' 💎 +'+PV10.tic+' 🎫':''):'';
   rkModal(`<div class="twM pvRes ${won?'win':'lose'}"><h3>${won?'🏆 VITÓRIA!':'💀 DERROTA'}</h3><p class="twH">${F.friendly?'Sala personalizada (não vale estrela)':'Você '+(won?'venceu':'perdeu para')+' a sombra de <b>'+pvEsc(F.opp.nome)+'</b>'}</p>
     ${st?`<div class="pvResR"><img src="${PVA.e[T[3]]}" alt=""><div><b style="color:${T[1]}">${pvRkName(o.t,o.d)}</b><span>${stars}${won?' · +15 💎':''}</span>${st.up?'<em class="up">⬆ SUBIU DE RANK!</em>':st.down?'<em class="dn">⬇ caiu de rank</em>':''}</div></div>`:''}
     ${rw.map(t=>`<p class="twH pvRw">🎁 Primeira vez em <b style="color:${PVT[t][1]}">${PVT[t][0]}</b>: +${rkFmtN(PVT[t][4])} 💎${PVT[t][5]?' +'+PVT[t][5]+' 🎫':''}</p>`).join('')}
@@ -2821,11 +2821,12 @@ function pvForm(){const own=rkG('own',['goku']).filter(id=>CH[id]),TM=pvTeam(),A
 function pvRules(){rkModal(`<div class="twM pvRu"><h3>📖 REGRAS DO PVP SOMBRA</h3><div class="pvRuB">
   <p>⚔️ Cada jogador tem uma <b>SOMBRA</b>. O jogo grava o seu jeito de lutar (golpes, combos, defesa, quando solta o super e o tempo de reação) e os bônus reais do personagem (nível, equipamentos, anéis, passivas).</p>
   <p>🔎 <b>Buscar Partida</b>: você enfrenta a sombra de alguém do seu rank. Ela luta igual ao dono dela.</p>
-  <p>⭐ São <b>13 ranks</b> (Bronze → Deus Gênesis) e cada um tem <b>5 estrelas</b>. Completou 5 = sobe de rank.</p>
-  <p>✅ Ganhou = <b>+1 ⭐</b> · 🔥 3 vitórias seguidas = <b>+1 ⭐ extra</b> (até Lendário; do Divino para cima não tem extra). ❌ Perdeu = <b>-1 ⭐</b>. Com 0 ⭐ e perdeu = cai para o rank de baixo com 4 ⭐. No Bronze não cai.</p>
-  <p>🛡️ <b>Barra de proteção</b>: vitória +15, derrota +10, 5 vitórias seguidas +40. Encheu (100) = ganha 1 PROTEÇÃO (guarda até 2), que segura 1 estrela quando você perde. Não dá para comprar.</p>
+  <p>⭐ São <b>13 ranks</b> (Bronze → Deus Gênesis), cada um com <b>5 estrelas</b>. Cada estrela precisa de <b>PONTOS</b>: Bronze 50 por estrela e +15 a cada rank (Deus Gênesis 230).</p>
+  <p>✅ Vitória = <b>+10 pontos</b> · 🔥 3 seguidas = <b>+3</b> (até Lendário) · ⭐ barra de bônus 50 = <b>+3</b>, cheia = <b>+6</b>. ❌ Derrota = <b>-8 pontos</b> (pode cair de estrela e de rank; no Bronze 0 não cai).</p>
+  <p>⏳ Chegar no Deus Gênesis leva <b>500+ vitórias</b> mesmo jogando perfeito — é para os melhores de verdade.</p>
+  <p>🛡️ <b>Barra de proteção</b>: vitória +15, derrota +10, 5 seguidas +40. Encheu = 1 PROTEÇÃO (máx. 2) que segura os pontos de uma derrota. Não dá para comprar.</p>
   <p>🏆 10 vitórias seguidas = prêmio especial (+${rkFmtN(PV10.g)} 💎 +${PV10.tic} 🎫), 1 vez por temporada.</p>
-  <p>👑 <b>Deus Gênesis</b> com 5 ⭐ = <b>ELITE</b>: cada vitória a mais vira ponto no ranking (Top 100, 50, 10, 3 e 1 da temporada).</p>
+  <p>👑 <b>Deus Gênesis</b> com 5 ⭐ = <b>ELITE</b>: os pontos continuam somando no ranking (Top 100, 50, 10, 3 e 1).</p>
   <p>🎁 Primeira vez em cada rank = prêmio (veja em Recompensas). Cada vitória = +15 💎.</p>
   <p>🛡️ <b>Sala Personalizada</b>: lute contra a sombra de um amigo pelo nome. Não vale estrela.</p>
   <p>👥 <b>Formação</b>: escolha o seu TIME DE 3. Quando um cai, entra o próximo (quem ganhou continua com a vida que sobrou). Para vencer, derrote os 3 da sombra.</p><p>💪 A sombra luta com TODOS os bônus do dono (título, anéis, equipamentos, nível, passivas) e a máquina no nível máximo, com um pouco do estilo dele.</p>
@@ -8636,3 +8637,23 @@ let EQF={f:null,fast:0};
   const nR=T.content.querySelector('.eqR'),oR=M.querySelector('.rkEq .eqR');if(nR&&oR){const nd=nR.lastElementChild,od=oR.lastElementChild;if(nd&&od&&!nd.classList.contains('eqG')&&!od.classList.contains('eqG')){od.replaceWith(nd);
     const sel=(nR.querySelector('.eqI.sel')||{}).dataset;oR.querySelectorAll('.eqI.sel').forEach(b=>b.classList.remove('sel'));if(sel&&sel.k){const b=oR.querySelector('.eqI[data-k="'+CSS.escape(sel.k)+'"]');if(b)b.classList.add('sel')}return}}}}catch(e){}return _m.apply(this,arguments)}}
 {const _e=rkEquip;rkEquip=function(f,sk){const M=$('rkModal');EQF.fast=!!(sk&&M&&!M.hidden&&M.querySelector('.rkEq')&&(f||'all')===EQF.f);EQF.f=f||'all';try{return _e.apply(this,arguments)}finally{EQF.fast=0}}}
+
+/* ================= v660: RANQUEADA PVP — TEMPORADA ZERADA DE NOVO e SUBIDA BEM MAIS LENTA (pedido do dono: no mínimo 500 partidas para o topo)
+   Estrela agora custa PONTOS: PVC(t)=50+15×rank (Bronze 50 … Deus Gênesis 230). Vitória +10 · sequência de 3 +3 (até Lendário) · barra de bônus 50 = +3, cheia = +6.
+   Derrota -8 pontos (cai de estrela/rank). Melhor caso possível (sempre com tudo) ≈ 536 vitórias até o Deus Gênesis; jogador normal ≈ 650–750+.
+   Título Soberano NÃO dá mais estrela extra; os eventos antigos de estrela em dobro não entram (pvStep novo não chama a cadeia antiga). ================= */
+function pvAddPts(o,n){o.p=(o.p|0)+n;for(let k=0;k<200;k++){if(o.t>=PVDIV&&o.s>=5)return;const c=PVC(o.t);if(o.p<c)return;o.p-=c;o.s++;if(o.t<PVDIV&&o.s>=5){o.s=0;o.t++}}}
+function pvLosePts(o,n){o.p=(o.p|0)-n;for(let k=0;k<200&&o.p<0;k++){if(o.t>=PVDIV&&o.s>=5){o.s=4;o.p+=PVC(o.t)}else if(o.s>0){o.s--;o.p+=PVC(o.t)}else if(o.t>0){o.t--;o.s=4;o.p+=PVC(o.t)}else o.p=0}}
+pvStar1=function(o){o.d=0;pvAddPts(o,10)};
+pvStep=function(o,won){const b={t:o.t,d:0,s:o.s,p:o.p|0};o.d=0;o.pp=o.pp|0;o.sh=o.sh|0;let sh=0,shUsed=0,x10=0,pts=0,streak=0,bon=0;
+  const addP=n=>{o.pp+=n;while(o.pp>=100){if(o.sh>=PVSHMX){o.pp=100;break}o.pp-=100;o.sh++;sh++}};
+  if(won){o.w++;o.sq=Math.max(0,o.sq|0)+1;streak=o.sq>=3&&o.t<PVDV?3:0;bon=PVB.on?(PVB.v>=100?6:PVB.v>=50?3:0):0;pts=10+streak+bon;pvAddPts(o,pts);addP(15);if(o.sq===5)addP(40);
+    if(o.sq===10&&!o.x10){o.x10=1;x10=1;rkAdd('gem',PV10.g);rkAdd('tic',PV10.tic)}
+    try{if(tsOn()&&!mnAdm()&&pvAcc()){rkS('tsob',{k:TSOB.k,n:tsMy()+1});tsPost()}}catch(e){}}
+  else{o.l++;o.sq=0;addP(10);const zero=o.t===0&&o.s===0&&(o.p|0)===0;if(!zero){if(o.sh>0){o.sh--;shUsed=1}else pvLosePts(o,8)}}
+  if(o.t>o.bt||o.t===o.bt&&o.s>(o.bs|0)){o.bt=o.t;o.bs=o.s}PVB.on=0;try{pvBonUI()}catch(e){}
+  return {b,gain:won?1:0,pts:won?pts:-8,streak,bon,shUsed,sh,x10,up:o.t>b.t,down:o.t<b.t}};
+{const _pr=pvProt;pvProt=function(o){const el=o.t>=PVDIV&&o.s>=5,pp=Math.min(100,o.pp|0),sh=o.sh|0,c=PVC(o.t),pr=el?100:Math.min(100,(o.p|0)/c*100);
+  return `<div class="pvPr" style="${pvB(34,400,286,426)}"><i style="width:${pr}%;background:linear-gradient(90deg,#b8860b,#ffd84a)"></i><span>${el?'👑 '+rkFmtN(o.p|0)+' pts':'⭐ '+(o.p|0)+'/'+c}</span></div><div class="pvPr" style="${pvB(34,428,286,446)}"><i style="width:${pp}%"></i><span>🛡️ ${pp}/100${sh?` · <b>${'🛡️'.repeat(sh)} x${sh}</b>`:''}</span></div>`}}
+{const _st=pvStars;pvStars=function(o){return _st.apply(this,arguments).replace(/👑 ELITE · -?\d+ pts/,'👑 ELITE')}}
+pvBonUI=(()=>{const _b=pvBonUI;return function(){_b.apply(this,arguments);try{const B=document.getElementById('pvBon');if(B){const v=Math.round(PVB.v);B.querySelector('span').textContent='⭐ BÔNUS '+v+'/100 · '+(v>=100?'+6 pontos se vencer!':v>=50?'+3 pontos se vencer (100 = +6)':'50 = +3 pontos · 100 = +6')}}catch(e){}}})();

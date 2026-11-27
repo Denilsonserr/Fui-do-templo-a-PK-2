@@ -7,7 +7,7 @@ jobs:
       - name: baixar
         run: |
           S='https://fui-do-templo-a-pk-2.denilsinend.workers.dev';A='Mozilla/5.0 (Linux; Android 13) Chrome/120 Mobile';P="$S/fs/v1/projects/furia-do-templo/databases/(default)/documents"
-          curl -s -A "$A" -H 'Content-Type: application/json' -d '{"structuredQuery":{"from":[{"collectionId":"torre"}],"where":{"fieldFilter":{"field":{"fieldPath":"pvk"},"op":"EQUAL","value":{"stringValue":"m202611r3"}}},"limit":3000}}' "$P:runQuery" > r.json
+          curl -s -A "$A" -H 'Content-Type: application/json' -d '{"structuredQuery":{"from":[{"collectionId":"torre"}],"where":{"fieldFilter":{"field":{"fieldPath":"pvk"},"op":"EQUAL","value":{"stringValue":"m202611r4"}}},"limit":3000}}' "$P:runQuery" > r.json
           python3 - <<'PY'
           import json,datetime
           R=json.load(open('r.json'));rows=[]
