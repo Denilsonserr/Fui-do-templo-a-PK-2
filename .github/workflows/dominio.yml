@@ -1,0 +1,11 @@
+name: Checar dominio (ferramenta)
+on: workflow_dispatch
+jobs:
+  q:
+    runs-on: ubuntu-latest
+    steps:
+      - name: dns
+        run: |
+          for d in furiadotemplo.com.br www.furiadotemplo.com.br; do echo "== $d"; dig +short NS $d; dig +short A $d; dig +short CNAME $d; done
+          echo "== whois"; whois furiadotemplo.com.br | grep -iE "nserver|status|created|expires|owner" | head -12
+          echo "== http"; curl -s -o /dev/null -w "%{http_code} %{redirect_url}\n" -m 15 https://furiadotemplo.com.br/ || true
