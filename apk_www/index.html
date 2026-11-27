@@ -1,3 +1,12 @@
 <!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
 <title>Fúria do Templo</title><style>html,body{margin:0;height:100%;background:#06050d;color:#fff;font:700 18px system-ui,sans-serif;display:flex;align-items:center;justify-content:center;text-align:center}button{margin-top:18px;padding:12px 26px;border:0;border-radius:12px;background:#ff8a1f;color:#000;font:900 18px system-ui}</style></head>
-<body><div><div style="font-size:40px">⚔️</div><p>Fúria do Templo precisa de internet para abrir.</p><button onclick="location.href='https://fui-do-templo-a-pk-2.denilsinend.workers.dev/'">TENTAR DE NOVO</button></div></body></html>
+<body><div><div style="font-size:40px">⚔️</div><p id="m">Conectando...</p><button id="b" style="display:none" onclick="tenta()">TENTAR DE NOVO</button></div>
+<script>
+/* v666: o APK abre pelo endereço novo; se não abrir (internet/operadora), tenta o endereço antigo (reserva) */
+var A=['https://furiadotemplo.com.br/','https://fui-do-templo-a-pk-2.denilsinend.workers.dev/'];
+function ok(u,ms){return new Promise(function(r){var d=0,t=setTimeout(function(){if(!d){d=1;r(false)}},ms);fetch(u+'versao.txt?t='+Date.now(),{mode:'no-cors',cache:'no-store'}).then(function(){if(!d){d=1;clearTimeout(t);r(true)}},function(){if(!d){d=1;clearTimeout(t);r(false)}})})}
+async function tenta(){document.getElementById('b').style.display='none';document.getElementById('m').textContent='Conectando...';
+  for(var i=0;i<A.length;i++){if(await ok(A[i],6000)){location.href=A[i];return}}
+  document.getElementById('m').textContent='Fúria do Templo precisa de internet para abrir.';document.getElementById('b').style.display=''}
+tenta();
+</script></body></html>

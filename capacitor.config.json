@@ -2,6 +2,17 @@
   "appId": "com.denilson.furiadotemplo",
   "appName": "Fúria do Templo",
   "webDir": "apk_www",
-  "server": { "url": "https://fui-do-templo-a-pk-2.denilsinend.workers.dev", "cleartext": false, "errorPath": "index.html" },
-  "android": { "backgroundColor": "#06050d" }
+  "server": {
+    "url": "https://furiadotemplo.com.br",
+    "cleartext": false,
+    "errorPath": "index.html",
+    "allowNavigation": [
+      "furiadotemplo.com.br",
+      "www.furiadotemplo.com.br",
+      "fui-do-templo-a-pk-2.denilsinend.workers.dev"
+    ]
+  },
+  "android": {
+    "backgroundColor": "#06050d"
+  }
 }

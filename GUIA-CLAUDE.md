@@ -3191,3 +3191,9 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 
 ## v665 — CÓDIGO DE USO ÚNICO: EVENTO PESSOAL 3x XP por 1 HORA
 - TWCUP['10sshmm'] (texto só com o dono): uni:1, px3:1 → rk_px3 {e:fim}; entrada pessoal 'px3' no RKEVX (x3 em cima do evento geral). PVP não muda. Teste: C1=.. node ferramentas/testes/tcod_v665.js
+
+## v666 — APK NO ENDEREÇO NOVO (27/11 19:30)
+- Domínio ativo (NS Cloudflare 21:48Z, HTTPS Google Trust 22:20Z). capacitor.config.json: server.url https://furiadotemplo.com.br + allowNavigation (novo, www, workers.dev) para a passagem de progresso ficar dentro do app.
+- apk_www/index.html (página de erro do app): tenta o endereço novo e depois o antigo (reserva).
+- Depois do APK pronto: APKNOVO=true no www/mig.js → app antigo mostra "BAIXAR APK NOVO" (1x por dia).
+- dominio.yml agora testa HTTPS dos 2 endereços e a passagem /fs/mig-poe → /fs/mig-pega no servidor real.
