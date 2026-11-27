@@ -12,5 +12,5 @@ const {chromium}=require('playwright');const SH=__dirname+'/shots/t620_';
   chk(r.MAXHP===14400&&r.me.mhp===14400&&r.op.mhp===14400&&r.op.hp===14400,'8 barras de vida para os dois (14400, v652)');
   const ratio=r.eq.P[1]/r.eq.P[0];chk(ratio<=1.61&&ratio>1,'a sombra forte continua mais forte, mas só '+ratio.toFixed(2)+'× (antes era ~'+(9/.12*1.9).toFixed(0)+'×)');
   chk(r.tm>150,'round de 3 minutos ('+r.tm+' s)');chk(r.op.tcr<=45,'crítico no máximo 45% ('+r.op.tcr+')');
-  r=await run('igual',{tdm:1.3,tdf:.85,tcr:15});console.log(JSON.stringify(r));chk(r.eq.P[1]/r.eq.P[0]<1.3,'diferença pequena continua pequena');
+  r=await run('igual',{tdm:1.3,tdf:.85,tcr:15});console.log(JSON.stringify(r));chk(r.eq.P[1]/r.eq.P[0]<1.5,'diferença pequena continua pequena (v656: raridade conta um pouco)');
   console.log(E.length?'ERROS '+E.join('|'):'sem erros');console.log(ok&&!E.length?'TUDO OK':'FALHOU');await b.close()})();

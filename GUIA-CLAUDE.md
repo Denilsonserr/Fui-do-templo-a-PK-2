@@ -3131,3 +3131,12 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - tnBossDown embrulhado: marca TN.v655=g (tnChestDrop ignora), cria o baú "invisível" e chama tnChestOpen na hora (moedas/💎/itens/poções/joia negra iguais), TN.chest=null, banner "RECOMPENSA GUARDADA · VOLTANDO PARA A TORRE", lista do que ganhou no #tnWin e tnForceFloor em 2,3 s. Último andar: tnChestOpen já chama tnFinish(true) em 3,8 s. Sem estátua/escolha (TN.statue.used=1).
 - Roleta (#tnRl5 — NÃO usar #tnRol, já existe CSS antigo com esse id): tnFloorInit embrulhado → 650 ms depois tnRoleta(): G.hold=1, faixa de 26 cartas desliza 2,4 s e para na sorteada (raridade twRoll/TNRM, barra só se TW.bars<TWMB), tnBless, some em ~4,4 s e G.hold=0. 1x por entrada no andar (TNRL5 zera em tnFight/tnGoTower). Sem roleta no ULTRA EXTREMO (TN.ux).
 - ttorre_fluxo_v654 apagado (fluxo mudou); teste novo: ttorre_roleta_v655.js. v643 e v623 passam.
+
+## v656 — PODER DE LUTA (PL), etapa 1 (dono escolheu: base por raridade, tudo vira poder, inimigos com PL, direto para todos)
+- setupFighters embrulhado → plApply() depois de twApply/twAdmBuff/rkApply (toda a cadeia velha continua calculando tdm/tdf/tsp/tcr; o PL converte o resultado no fim).
+- plConv(f): tira o % do TÍTULO (fica em % por cima), converte dano/defesa/velocidade % → pontos (PLK.pct=13 por 1%) e crítico % → PODER CRÍTICO (PLK.crit=20 por 1%). Base: plBase (Épico 5.000, Lendário 6.000, Mítico 7.000, Secreto alucard/shaka/sung/yuta 8.000) × (1+0,6%×(nível-1)); CPU usa nível 1.
+  Luta: tdm=(base+A)/5000 · tdf=5000/(5000+D) · tsp=1+0,35·V/(V+6000) · tcr=chance-5 (chance=5+50·C/(C+2000), máx. 55) · tcd≤100 · tls≤10 · tki≤2. Razão (PLjog/PLini)^0,25 entre 0,8 e 1,25. PVE: jogador ×1,6 de dano (PLK.pve).
+- PVP: pvEq só roda depois da conversão (PLRDY), senão comprimia 2x. Teto de dano v652 continua.
+- Tela: #plVs mostra "⚡ PL x PL" no começo da luta; cbRows (painel Atributos) mostra "⚡ N PL", "🎯 poder · chance%", "💨 +N PL"; rkItEf (agora `let` na linha 146) converte os textos dos itens (+70% → +910 PL; Crítico +40% → +800).
+- `window.__plOff=1` desliga (teste). Falta (etapa 2): números % nos cartões da mochila, anéis e passivas; PL fixo por andar/nível dos chefes.
+- Teste: tpoder_v656.js; tpvp_equilibrio_v620 ajustado (<1,5).
