@@ -3118,3 +3118,11 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 
 ## v653 — Molduras da foto dos 5 ranks novos
 - Artes do dono (transparentes) em ferramentas/ranqueada_artes/molduras_v653 → fazer.py → www/a + molduras.json (buraco em fração). rk.js: Object.assign(RQA.mold,...) + MDL.rk14..rk18 (liberam por pfRkMax). CSS .pfMold.r14..r18. Ainda faltam molduras próprias de rk11–13 (Deus Cósmico/Primordial/Absoluto). Teste: tmold_v653.js.
+
+## v654 — Torre: novo fim de andar (animação → passiva → volta para a Torre → PRÓXIMO ANDAR)
+- Pedido do dono: depois de completar o andar, animação e volta para a tela da Torre; o jogador toca para ir ao próximo (evita o bug de ficar preso no cenário).
+- update embrulhado: na fase 'boss', sem nenhum inimigo vivo por 60 quadros → tnBossDown na hora (TNV.dead). Quando TN.ph vira 'clear' (1x por andar, TNV.g) → #tnWin (raios, flash, "ANDAR N CONQUISTADO!", faíscas) por cima de tudo e o jogador fica invencível; a escolha da passiva (#tnPick, z 99950) aparece por cima; depois tnFloorEnd já volta pra Torre (tnWin some).
+- 6 s sem conseguir escolher: botão CONTINUAR (#tnWinGo) → passiva aleatória + tnForceFloor (último andar: tnFinish).
+- Tela da Torre: #twGo pulsa e mostra "▶ PRÓXIMO ANDAR N" quando tem subida salva (tnRun).
+- Vigia v643 mais rápido: botão em 5 s, automático em 12 s.
+- Teste: ttorre_fluxo_v654.js (+ v643 e v623 passam).

@@ -8283,7 +8283,7 @@ setInterval(()=>{try{if(!TN||!TN.on||G.mode!=='fight'||G.gmode!=='torre'||G.paus
   if(pick){TNEX.s=0;tnExBtn(0);const vis=M.getBoundingClientRect();if(vis.width<10||vis.height<10||getComputedStyle(M).visibility==='hidden'||getComputedStyle(M).display==='none')TNEX.pk++;else TNEX.pk=0;if(TNEX.pk>=60)tnExGo('escolha sumida');return}
   TNEX.pk=0;const wait=(TN.ph==='met'&&TN.mt>0)||(TN.ph==='duelo'&&TN.dt>0)||(TN.chest&&!TN.chest.open&&TN.ph==='clear'&&TN.g>=TNT-1);
   if(alive(o)||(TN.mobs||[]).some(alive)||alive(TN.boss)||wait){TNEX.s=0;tnExBtn(0);return}
-  TNEX.s++;if(TNEX.s>=8)tnExBtn(1);if(TNEX.s>=20)tnExGo('automático')}catch(e){}},1000);
+  TNEX.s++;if(TNEX.s>=5)tnExBtn(1);if(TNEX.s>=12)tnExGo('automático')}catch(e){}},1000);
 {const st=document.createElement('style');st.textContent=`#tnEx{position:fixed;left:50%;bottom:16%;transform:translateX(-50%);z-index:99970;padding:.6em 1.6em;border-radius:1em;border:3px solid #fff3b0;background:linear-gradient(180deg,#ffd84a,#e07a00);color:#2a1000;font:900 1.25em var(--f-ui,sans-serif);display:flex;flex-direction:column;align-items:center;box-shadow:0 0 1.4em #ffb000;animation:tnExP 1s ease-in-out infinite;cursor:pointer}
 #tnEx small{font:700 .55em var(--f-ui,sans-serif);opacity:.85}@keyframes tnExP{50%{transform:translateX(-50%) scale(1.06)}}`;document.head.appendChild(st)}
 try{Object.assign(window.__vw,{TNEX:()=>TNEX,tnExGo:w=>tnExGo(w)})}catch(e){}
@@ -8448,3 +8448,47 @@ try{Object.assign(window.__vw,{PVB,PVCAP,pvBonAdd:n=>pvBonAdd(n)})}catch(e){}
    Liberam ao chegar no rank (rank máximo já alcançado), igual às outras de rank. ================= */
 Object.assign(RQA.mold,{"rk14":{"src":"a/1a03f7335065db.webp","h":[0.244,0.192,0.756,0.65],"ar":1.014},"rk15":{"src":"a/0b092b3e5405f5.webp","h":[0.261,0.235,0.739,0.674],"ar":1.094},"rk16":{"src":"a/6479951bab6314.webp","h":[0.281,0.271,0.718,0.688],"ar":1.0},"rk17":{"src":"a/0ad6389f29534f.webp","h":[0.279,0.261,0.72,0.696],"ar":1.053},"rk18":{"src":"a/ed648623a7b6ae.webp","h":[0.271,0.259,0.729,0.718],"ar":1.094}});
 for(let r=14;r<=18;r++){const k='rk'+r,M=MDL[k]={n:RKR[r].n,r};M.d='Chegar ao rank '+M.n+' (rank máximo)';M.ok=()=>pfRkMax()>=r;M.cls='rk r'+r+' r7'}
+
+/* ================= v654: TORRE — NOVO FIM DE ANDAR (pedido do dono)
+   Terminou o andar → para a luta, animação de "ANDAR CONQUISTADO" na tela toda → escolhe a passiva ali mesmo → VOLTA PARA A TELA DA TORRE.
+   Lá o jogador toca em ENTRAR (botão pulsando "PRÓXIMO ANDAR") para ir para o próximo. Nada de ficar andando pelo cenário depois de matar.
+   • Quando não sobra nenhum inimigo vivo por 1 s, o andar conta como vencido na hora (mesmo que o jogo não tenha percebido a morte).
+   • Se a escolha da passiva não aparecer/travar: em 6 s aparece "CONTINUAR" (pega uma passiva aleatória e volta para a Torre).
+   • O vigia do v643 continua como segurança extra (botão em 5 s, sozinho em 12 s). ================= */
+const TNV={g:-1,t:0,dead:0};
+function tnWinFx(g){let W=document.getElementById('tnWin');if(W)W.remove();const T=tnFl(g),fim=g>=TNT-1;W=document.createElement('div');W.id='tnWin';
+  W.innerHTML=`<i class="ry"></i><i class="fl"></i><div class="bx"><em>${fim?'👑':'🏆'}</em><h2>${fim?'TORRE CONQUISTADA!':'ANDAR '+T.n+' CONQUISTADO!'}</h2><p>${fim?'Você chegou ao topo!':'✨ Escolha sua passiva · depois volte para a Torre e toque em PRÓXIMO ANDAR'}</p><button id="tnWinGo" hidden>CONTINUAR ▶</button></div>`+'<s></s>'.repeat(14);
+  document.body.appendChild(W);try{rkSfx('powerUp')}catch(e){}try{twSfx&&twSfx('boom')}catch(e){}
+  setTimeout(()=>{const b=document.getElementById('tnWinGo');if(b&&document.getElementById('tnWin')){b.hidden=false;b.onclick=e=>{e.stopPropagation();tnWinCont()}}},6000)}
+function tnWinCont(){try{const M=document.getElementById('tnPick');if(M){M.className='';M.innerHTML=''}if(TN.on&&!TN.done){if(TN.g<TNT-1&&!(TN.statue&&TN.statue.used)){const L=TNRL.filter(b=>b.k!=='barra');const b=L[(Math.random()*L.length)|0];try{tnBless(b.k,Math.round(b.b))}catch(e){}}
+  if(TN.g>=TNT-1){TN.ph='clear';tnFinish(true,false)}else{TN.done=1;tnForceFloor()}}}catch(e){try{tnGoTower()}catch(_){}}tnWinOff()}
+function tnWinOff(){const W=document.getElementById('tnWin');if(W)W.remove()}
+{const _u=update;update=function(){const r=_u.apply(this,arguments);try{
+  if(G.mode!=='fight'||G.gmode!=='torre'||!TN||!TN.on){if(document.getElementById('tnWin')&&G.mode!=='fight')tnWinOff();TNV.dead=0;return r}
+  const p=G.p&&G.p[0];if(!p||p.ko)return r;
+  if(TN.ph!=='clear'){const alive=x=>x&&!x.ko&&!x.hyIdle&&x.hp>0;const wait=(TN.ph==='met'&&TN.mt>0)||(TN.ph==='duelo'&&TN.dt>0);
+    if(!wait&&!alive(G.p[1])&&!(TN.mobs||[]).some(alive)&&!alive(TN.boss)&&(TN.ph==='boss')){if(++TNV.dead>=60){TNV.dead=0;const B=TN.boss||G.p[1];console.warn('tn v654: sem inimigo vivo → andar vencido');try{tnBossDown(p,B)}catch(e){TN.ph='clear';TN.done=0;TN.statue={on:1,used:0,x:-9999};try{tnPick()}catch(_){}}}}else TNV.dead=0}
+  if(TN.ph==='clear'&&TNV.g!==TN.g){TNV.g=TN.g;TNV.t=0;p.inv=Math.max(p.inv||0,9999);tnWinFx(TN.g)}
+  if(TN.ph==='clear'){TNV.t++;p.inv=Math.max(p.inv||0,60)}}catch(e){}return r}}
+{const _fe=tnFloorEnd;tnFloorEnd=function(){const r=_fe.apply(this,arguments);setTimeout(tnWinOff,1500);return r}}
+{const _gt=tnGoTower;tnGoTower=function(){tnWinOff();return _gt.apply(this,arguments)}}
+{const _st=tnFloorInit;tnFloorInit=function(){tnWinOff();TNV.dead=0;return _st.apply(this,arguments)}}
+/* botão da Torre pulsando "PRÓXIMO ANDAR" quando tem subida em andamento */
+{const _tr=twRender;twRender=function(){const r=_tr.apply(this,arguments);try{const go=$('twGo');if(go){const R=tnRun();go.classList.toggle('tnNext',!!R);if(R){let t=go.querySelector('.tnNx');if(!t){t=document.createElement('em');t.className='tnNx';go.appendChild(t)}t.textContent='▶ PRÓXIMO ANDAR '+tnFl(TN.g|0).n}else{const t=go.querySelector('.tnNx');if(t)t.remove()}}}catch(e){}return r}}
+{const st=document.createElement('style');st.textContent=`#tnWin{position:fixed;inset:0;z-index:99940;display:flex;align-items:center;justify-content:center;pointer-events:none;background:radial-gradient(circle,rgba(40,20,0,.55),rgba(0,0,0,.78));animation:tnWinIn .35s ease-out}
+#tnWin .ry{position:absolute;left:50%;top:50%;width:160vmax;height:160vmax;transform:translate(-50%,-50%);background:repeating-conic-gradient(rgba(255,210,80,.16) 0 7deg,transparent 7deg 20deg);animation:tnWinSp 9s linear infinite}
+#tnWin .fl{position:absolute;inset:0;background:#fff;animation:tnWinFl .6s ease-out forwards}
+#tnWin .bx{position:relative;text-align:center;transform:translateY(-22vh);animation:tnWinPop .7s cubic-bezier(.2,1.6,.4,1)}
+#tnWin em{display:block;font-style:normal;font-size:52px;animation:tnWinB 1.2s ease-in-out infinite}
+#tnWin h2{margin:0;font:900 clamp(22px,5vw,46px) var(--f-ui,sans-serif);color:#ffe27a;text-shadow:0 3px 0 #7a4a00,0 0 18px #ffb000,0 0 40px #ff8000;letter-spacing:.04em}
+#tnWin p{margin:.3em 0 0;color:#fff;font:700 13px var(--f-ui,sans-serif);text-shadow:0 1px 3px #000}
+#tnWin button{pointer-events:auto;margin-top:12px;padding:.5em 1.6em;border-radius:1em;border:2px solid #fff3b0;background:linear-gradient(#ffd84a,#e07a00);color:#2a1000;font:900 16px var(--f-ui,sans-serif)}
+#tnWin s{position:absolute;left:50%;top:40%;width:8px;height:8px;border-radius:50%;background:#ffe27a;box-shadow:0 0 10px #ffb000;animation:tnWinS 1.4s ease-out infinite}
+${Array.from({length:14},(_,i)=>`#tnWin s:nth-of-type(${i+1}){--a:${i*360/14}deg;animation-delay:${(i%5)*.12}s}`).join('')}
+@keyframes tnWinS{0%{transform:rotate(var(--a)) translateX(0) scale(1);opacity:1}100%{transform:rotate(var(--a)) translateX(42vmin) scale(.2);opacity:0}}
+@keyframes tnWinIn{from{opacity:0}}@keyframes tnWinSp{to{transform:translate(-50%,-50%) rotate(360deg)}}@keyframes tnWinFl{from{opacity:.85}to{opacity:0}}
+@keyframes tnWinPop{from{transform:translateY(-22vh) scale(.2);opacity:0}}@keyframes tnWinB{50%{transform:scale(1.15)}}
+#tnPick{z-index:99950!important}
+#twGo.tnNext{animation:tnNxP 1s ease-in-out infinite;filter:drop-shadow(0 0 10px #ffd84a)}@keyframes tnNxP{50%{transform:scale(1.05)}}
+#twGo .tnNx{position:absolute;left:50%;top:-1.7em;transform:translateX(-50%);white-space:nowrap;font:900 12px var(--f-ui,sans-serif);color:#ffe27a;text-shadow:0 0 6px #ff9000,0 1px 2px #000;font-style:normal}`;document.head.appendChild(st)}
+try{Object.assign(window.__vw,{tnWinCont:()=>tnWinCont(),TNV})}catch(e){}
