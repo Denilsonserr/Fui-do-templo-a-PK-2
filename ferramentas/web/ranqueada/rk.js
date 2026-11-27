@@ -2397,7 +2397,9 @@ function lbSlot(k,x,y,w,h){if(k[0]==='x')return `<button class="hs lbSl lk" data
   const it=lbEqOf(k);return `<button class="hs lbSl ${it?'on':''}" data-a="lbSl" data-s="${k}" style="${lbB(x,y,x+w,y+h)};${it?'--c:'+rkItC(it):''}">${it?`<img src="${rkItIc(it)}" alt=""><b>${rkItVL(it)}</b>`:''}<span class="lbSn">${LBSLN[k]}</span></button>`}
 function lbAtt(vals,col){const Y=col?[281,338,393,450,505]:[286,342,397,451,506],X=col?[836,948]:[1074,1192];
   return `<button class="hs lbAtB" data-a="lbAt" style="${col?lbB(612,255,950,535):lbB(858,258,1198,535)}"></button>`+vals.map((v,i)=>`<b class="lbV" style="${lbB(X[0],Y[i]-21,X[1],Y[i]+21)}">${v}</b>`).join('')}
-const lbTot=id=>cbRows(id).map(v=>String(v).split(' ')[0]);
+/* v659: atributos do personagem no sistema de PODER: Dano = PL total · Crítico = poder crítico + chance · Velocidade = PL de velocidade */
+const lbK=n=>n>=100000?(Math.round(n/1000)).toLocaleString('pt-BR')+'k':n>=10000?(Math.round(n/100)/10).toLocaleString('pt-BR')+'k':Math.round(n).toLocaleString('pt-BR');
+const lbTot=id=>{try{const T=cbAll(id).T,P=plOfChar(id);return [`<em class="lbPL">⚡${lbK(P.pl)}</em>`,`<em class="lbPL s">🎯${lbK(P.C)}<i>${String(P.cc).replace('.',',')}%</i></em>`,`<em class="lbPL">💨+${lbK(P.V)}</em>`,'+'+cbN(T.st),'+'+cbN(Math.min(100,T.uv))+'%']}catch(e){return cbRows(id).map(v=>String(v).split(' ')[0])}};
 function lbHead(t){return `<button class="hs" data-a="back" style="${lbB(38,8,158,72)}"></button><button class="hs" data-a="home" style="${lbB(1690,8,1810,72)}"></button>`+
   LBTAB.map(([k,a,b])=>`<button class="hs lbTab ${t===k?'on':''}" data-a="tab" data-t="${k}" style="${lbB(10,a,292,b)}"><i class="sw"></i></button>`).join('')+
   `<button class="hs lbBt" data-a="lbEvo2" style="${lbB(285,658,605,725)}"><i class="sw"></i></button><button class="hs lbBt" data-a="lbEq2" style="${lbB(625,658,975,725)}"><i class="sw" style="animation-delay:1.6s"></i></button>`}
@@ -2440,7 +2442,7 @@ function lbCtrH(){const t=RKL.tab;
     const S=AN.sel&&L.find(z=>z.i===AN.sel);
     return lbPed(id,0,[497,225,653,505])+sl+`<button class="hs lbNm2 an" data-a="lbNm" style="${lbB(425,572,725,652)}"><b>${lbEsc(CH[id]?CH[id].name:id)} ⇄</b><small>NÍVEL ${lv} · ${E.filter(Boolean).length}/${n} anéis${n<8?' · próxima vaga no '+(n+1)*10:''}</small></button>`+
       (S?`<div class="lbInf an" style="${lbB(1235,712,1790,760)};--c:${ANC[S.c][1]}"><b>ANEL ${ANC[S.c][0]} · ${ANG[S.g]} · Nv ${anLvl(S)}/${ANMX[S.c]}</b><span>${lbEsc(anTxt(S))}</span></div>`:'')+
-      (()=>{const P=anPL(id);return lbAtt(['⚡ +'+rkFmtN(P.pl),'🎯 +'+rkFmtN(P.cp),'(no PL)','+'+cbN(T.st),'+'+cbN(Math.min(100,T.uv))+'%'])})()}
+      (()=>{const P=anPL(id);return lbAtt([`<em class="lbPL">⚡+${lbK(P.pl)}</em>`,`<em class="lbPL">🎯+${lbK(P.cp)}</em>`,'—','+'+cbN(T.st),'+'+cbN(Math.min(100,T.uv))+'%'])})()}
   return ''}
 function lbBind(el){el.querySelectorAll('[data-a]').forEach(b=>b.onclick=e=>{e.stopPropagation();rkAct(b.dataset.a,b)})}
 function lbRef(){const C=$('lbCtr');if(C){C.innerHTML=lbCtrH();lbBind(C)}rkLibGrid();setTimeout(anDecor,40)}

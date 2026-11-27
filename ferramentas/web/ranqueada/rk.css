@@ -2133,3 +2133,6 @@ img.anOn{position:relative;z-index:2}
 .rk_pvp .pvMe b{font-size:.78em;line-height:1.05}.rk_pvp .pvMe img{width:52%}
 /* v653: molduras dos ranks novos */
 .pfMold.r14{--rc:#b98cff;--k:1}.pfMold.r15{--rc:#ff4d5e;--k:1}.pfMold.r16{--rc:#c77dff;--k:1}.pfMold.r17{--rc:#e0a8ff;--k:1}.pfMold.r18{--rc:#ff3b3b;--k:1}
+/* v659: valores de poder nos atributos */
+.lb2 .lbV .lbPL{font-style:normal;color:#ffe27a;text-shadow:0 0 .35em rgba(255,170,40,.6),0 .06em 0 #000}
+.lb2 .lbV .lbPL.s{font-size:.82em;display:flex;flex-direction:column;align-items:flex-end;line-height:.95}.lb2 .lbV .lbPL i{font-style:normal;font-size:.75em;color:#ff9a9a}

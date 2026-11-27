@@ -3152,3 +3152,6 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 - Medido (CPU 6x): o peso era nativo (estilo/desenho), não JS. Agora: body.rkMdOn pausa TODAS as animações do #rkWrap enquanto uma janela (#rkModal) está aberta; anDecor não roda de novo a cada toque dentro da janela; tocar num item da mochila (rkEquip com mesmo filtro) troca só o quadro de detalhe (.eqR lastElementChild) e a classe .sel (EQF.fast no rkModal) — a lista não é refeita. .eqG com contain:content.
 - ✕ (.rkMdX) no canto de toda janela do rkModal: clica no #rkMX/FECHAR/VOLTAR/SAIR/OK dela ou fecha. Para não ter ✕ numa janela: classe noX no 1º elemento.
 - Teste: tmochila_v658.js. (tpedra_transf_v616 e tmercado_mod_v628 quebram pelo anúncio #adPass — testes antigos.)
+
+## v659 — Atributos (Personagem/Equipamentos/Anéis) em PODER
+- lbTot (usado nas abas chr/eq/it/col) agora monta: Dano = ⚡PL total (plOfChar), Crítico = 🎯poder crítico + chance % embaixo, Velocidade = 💨+PL de velocidade, Sorte/Vel. Ultimate como antes. Antes o split(" ")[0] pegava só o emoji. lbK formata 17,5k. Aba Anéis: ⚡/🎯 dos anéis e "—" na velocidade. CSS .lbPL. Teste: tatrib_v659.js.
