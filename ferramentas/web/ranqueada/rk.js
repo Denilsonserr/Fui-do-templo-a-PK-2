@@ -8715,3 +8715,16 @@ TWCUP['ij0vxb']={nm:'🦇 CASACO CARMESIM + BOTAS DO ALUCARD',it:['alarm','albot
 /* v669: códigos de item sem eq:1 diziam "(já equipados)" — se o código tem msg própria, mostra ela */
 {const _cp=twCupom;twCupom=async function(code,E){const C=TWCUP[twHash(String(code).toUpperCase())];const r=await _cp.apply(this,arguments);
   try{if(C&&C.it&&C.it.length&&!C.eq&&C.msg&&r!==false&&E&&/\bok\b/.test(E.className||''))E.textContent=C.msg}catch(e){}return r}}
+
+/* ================= v670: CÓDIGO DE USO ÚNICO "TUDO" (texto só com o dono):
+   TODOS os personagens + 500.000 💎 + TODOS os itens (equipamentos secretos/especiais: espadas, capacetes, armaduras, botas, anéis de equipamento, colar, asas)
+   + TODOS os anéis da alma (1 SSS no nível máximo de cada cor × cada atributo = 30) + SET COMPLETO de anéis DOURADOS SP (6, um de cada atributo)
+   + PASSE 2X da temporada atual (Hellsing). ================= */
+{const S=ANS.map(x=>x[0]),RX=[];for(let c=0;c<5;c++)S.forEach((s,i)=>RX.push([c,7,s,S[(i+1)%S.length]]));
+TWCUP['18udity']={nm:'👑 TUDO DO JOGO',it:[],uni:1,pk:{gem:500000},allch:1,allit:1,bp:2,s3:1,x2:1,
+  rgx:RX,rgsp:[['dano','crit','fur'],['crit','dano','cmb'],['vel','uv','esq'],['st','drop','vamp'],['drop','st','fur'],['uv','vel','cmb']],
+  msg:'👑 Você ganhou TUDO: todos os personagens + 500.000 💎 + todos os itens (veja na 🎒 MOCHILA) + 30 anéis SSS (todas as cores) + 6 ANÉIS DOURADOS SP + PASSE 2X da temporada!'};}
+{const _cp=twCupom;twCupom=async function(code,E){const C=TWCUP[twHash(String(code).toUpperCase())];const r=await _cp.apply(this,arguments);
+  try{if(C&&C.allch&&r!==false&&E&&/\bok\b/.test(E.className||'')){const own=rkG('own',['goku']);for(const id of ['alucard','sung','shaka','yuta',...RK_MIT,...RK_LEG,...RK_EPI])if(CH[id]&&!own.includes(id))own.push(id);rkS('own',own);
+    if(C.allit){const I=twInv();for(const k of Object.keys(RKSP).filter(k=>RKSP[k].t!=='poc'))if(!I.some(x=>x.nm===RKSP[k].nm))I.push(Object.assign({id:'all'+k+Date.now().toString(36)},RKSP[k]));twLS.s('tw_inv',I);try{TW.capOut=twCap()}catch(e){}}
+    try{localStorage.removeItem('ac_h');acSave(1)}catch(e){}if(C.msg)E.textContent=C.msg}}catch(e){}return r}}

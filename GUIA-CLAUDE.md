@@ -3207,3 +3207,6 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 
 ## v669 — CÓDIGO DE USO ÚNICO: CASACO CARMESIM (peitoral) + BOTAS DO ALUCARD
 - TWCUP['ij0vxb'] (texto só com o dono): it alarm+albot, uni:1. Embrulho: código de item sem eq:1 com msg própria mostra a msg (antes dizia "já equipados"). Teste: C1=.. node ferramentas/testes/tcod_v669.js
+
+## v670 — CÓDIGO DE USO ÚNICO "TUDO"
+- TWCUP['18udity'] (texto só com o dono): uni:1, pk gem 500.000, allch (todos os personagens), allit (todos os itens do RKSP menos poções — o `it` normal NÃO funciona junto com bp:2, por isso o embrulho), rgx 30 anéis SSS (5 cores × 6 atributos), rgsp 6 SP, bp:2 s3 x2 (passe 2x Hellsing). Teste: C1=.. node ferramentas/testes/tcod_v670.js

@@ -17512,6 +17512,19 @@ TWCUP['ij0vxb']={nm:'🦇 CASACO CARMESIM + BOTAS DO ALUCARD',it:['alarm','albot
 {const _cp=twCupom;twCupom=async function(code,E){const C=TWCUP[twHash(String(code).toUpperCase())];const r=await _cp.apply(this,arguments);
   try{if(C&&C.it&&C.it.length&&!C.eq&&C.msg&&r!==false&&E&&/\bok\b/.test(E.className||''))E.textContent=C.msg}catch(e){}return r}}
 
+/* ================= v670: CÓDIGO DE USO ÚNICO "TUDO" (texto só com o dono):
+   TODOS os personagens + 500.000 💎 + TODOS os itens (equipamentos secretos/especiais: espadas, capacetes, armaduras, botas, anéis de equipamento, colar, asas)
+   + TODOS os anéis da alma (1 SSS no nível máximo de cada cor × cada atributo = 30) + SET COMPLETO de anéis DOURADOS SP (6, um de cada atributo)
+   + PASSE 2X da temporada atual (Hellsing). ================= */
+{const S=ANS.map(x=>x[0]),RX=[];for(let c=0;c<5;c++)S.forEach((s,i)=>RX.push([c,7,s,S[(i+1)%S.length]]));
+TWCUP['18udity']={nm:'👑 TUDO DO JOGO',it:[],uni:1,pk:{gem:500000},allch:1,allit:1,bp:2,s3:1,x2:1,
+  rgx:RX,rgsp:[['dano','crit','fur'],['crit','dano','cmb'],['vel','uv','esq'],['st','drop','vamp'],['drop','st','fur'],['uv','vel','cmb']],
+  msg:'👑 Você ganhou TUDO: todos os personagens + 500.000 💎 + todos os itens (veja na 🎒 MOCHILA) + 30 anéis SSS (todas as cores) + 6 ANÉIS DOURADOS SP + PASSE 2X da temporada!'};}
+{const _cp=twCupom;twCupom=async function(code,E){const C=TWCUP[twHash(String(code).toUpperCase())];const r=await _cp.apply(this,arguments);
+  try{if(C&&C.allch&&r!==false&&E&&/\bok\b/.test(E.className||'')){const own=rkG('own',['goku']);for(const id of ['alucard','sung','shaka','yuta',...RK_MIT,...RK_LEG,...RK_EPI])if(CH[id]&&!own.includes(id))own.push(id);rkS('own',own);
+    if(C.allit){const I=twInv();for(const k of Object.keys(RKSP).filter(k=>RKSP[k].t!=='poc'))if(!I.some(x=>x.nm===RKSP[k].nm))I.push(Object.assign({id:'all'+k+Date.now().toString(36)},RKSP[k]));twLS.s('tw_inv',I);try{TW.capOut=twCap()}catch(e){}}
+    try{localStorage.removeItem('ac_h');acSave(1)}catch(e){}if(C.msg)E.textContent=C.msg}}catch(e){}return r}}
+
 function twTrofList(){const tc=twLS.g('tw_tc',{}),run={};for(const t of TW.tr)run[t.k]=(run[t.k]||0)+1;
   twModal(`<div class="twM"><h3>🎖️ TROFÉUS</h3><div class="twTL">${Object.keys(TWTR).map(k=>{const T=TWTR[k];return `<div class="${tc[k]||run[k]?'got':''}"><i>${T.i}</i><b>${T.n}</b><span>${T.d}</span><em>+${T.p} 🏆</em><small>${run[k]?'nesta subida: '+run[k]+' · ':''}total: ${(tc[k]||0)}</small></div>`}).join('')}</div>
     <p class="twH">Cada troféu soma pontos 🏆 no ranking. Quem sobe mais andares fica na frente; empate = mais troféus, depois menos tempo.</p><div class="row"><button class="btn" id="twTx">FECHAR</button></div></div>`);
@@ -17703,7 +17716,7 @@ window.__dbg={mus:()=>[MCUR,MEL.src.split('/').pop()],stg:()=>STAGE.key,prepMatc
 })();
 </script>
 <style>#updB{position:fixed;left:50%;top:max(8px,env(safe-area-inset-top));transform:translateX(-50%);z-index:99999;padding:10px 22px;border-radius:14px;border:2px solid #fff3c0;background:linear-gradient(#ffd84a,#e08a10);color:#3a1d00;font:900 15px system-ui,sans-serif;box-shadow:0 0 18px #ffb21f;cursor:pointer;animation:updP 1s ease-in-out infinite alternate}@keyframes updP{to{transform:translateX(-50%) scale(1.05)}}</style>
-<script>(function(){const V='71f1571de6f4';if(!/^https?:/.test(location.protocol))return;let nv=null;
+<script>(function(){const V='1b1530d5ac20';if(!/^https?:/.test(location.protocol))return;let nv=null;
 function show(){if(document.getElementById('updB'))return;try{if(typeof G!=='undefined'&&G.mode==='fight')return}catch(e){}const b=document.createElement('button');b.id='updB';b.textContent='🔄 ATUALIZAÇÃO NOVA! Toque para atualizar';
   b.onclick=()=>{b.textContent='⏳ Atualizando...';try{acSave(1)}catch(e){}setTimeout(()=>location.reload(),900)};document.body.appendChild(b)}
 async function chk(){if(document.hidden)return;if(nv){show();return}try{const r=await fetch('versao.txt?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const t=(await r.text()).trim();if(/^[0-9a-f]{8,40}$/.test(t)&&t!==V){nv=t;show()}}catch(e){}}
