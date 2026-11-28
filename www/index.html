@@ -17525,6 +17525,17 @@ TWCUP['18udity']={nm:'👑 TUDO DO JOGO',it:[],uni:1,pk:{gem:500000},allch:1,all
     if(C.allit){const I=twInv();for(const k of Object.keys(RKSP).filter(k=>RKSP[k].t!=='poc'))if(!I.some(x=>x.nm===RKSP[k].nm))I.push(Object.assign({id:'all'+k+Date.now().toString(36)},RKSP[k]));twLS.s('tw_inv',I);try{TW.capOut=twCap()}catch(e){}}
     try{localStorage.removeItem('ac_h');acSave(1)}catch(e){}if(C.msg)E.textContent=C.msg}}catch(e){}return r}}
 
+/* ================= v671: PVP "Nenhuma sombra encontrada" — a busca (pvFind) pedia 40 docs do rank ordenados pelo ID (pvs_<conta>_<hora>, decrescente):
+   a conta com ID "maior" (Honrado, 66 docs) enchia as 40 vagas sozinha → ele não achava ninguém (pula a própria sombra) e os outros só achavam ele.
+   Agora pede ao servidor 1 doc (o mais novo) POR CONTA (`latestBy:'pva'`, ordenado pelos pontos `pvs`) — todo mundo aparece. Se der erro, usa o jeito antigo. ================= */
+{const pvQ1=async(f,v,lim)=>{try{return await pvQL(f,v,lim,'pvs','DESCENDING','pva')}catch(e){return await pvQ(f,v,lim)}};
+pvFind=async function(){const o=pvG(),me=pvAcc(),seen=new Set(),pool=[];const add=L=>{for(const e of L){if(!e.pva||e.pva===me||seen.has(e.pva))continue;seen.add(e.pva);const x=pvParse(e);if(x)pool.push(x)}};
+  for(const t of [o.t,o.t-1,o.t+1,o.t-2,o.t+2]){if(t<0||t>PVDIV)continue;add(await pvQ1('pvg','g'+t+'_'+pvMon(),60));if(pool.length>=4)break}
+  if(pool.length<2)add(await pvQ1('pvk',pvMon(),200));if(!pool.length)return null;
+  const S=pvScore(o);pool.sort((a,b)=>Math.abs(pvScore({t:a.t,d:a.dv,s:a.st})-S)-Math.abs(pvScore({t:b.t,d:b.dv,s:b.st})-S));
+  const top=pool.slice(0,Math.min(5,pool.length)).filter(x=>x.acc!==PV.last);const L=top.length?top:pool;return L[(Math.random()*L.length)|0]}}
+try{Object.assign(window.__vw,{pvFind:()=>pvFind()})}catch(e){}
+
 function twTrofList(){const tc=twLS.g('tw_tc',{}),run={};for(const t of TW.tr)run[t.k]=(run[t.k]||0)+1;
   twModal(`<div class="twM"><h3>🎖️ TROFÉUS</h3><div class="twTL">${Object.keys(TWTR).map(k=>{const T=TWTR[k];return `<div class="${tc[k]||run[k]?'got':''}"><i>${T.i}</i><b>${T.n}</b><span>${T.d}</span><em>+${T.p} 🏆</em><small>${run[k]?'nesta subida: '+run[k]+' · ':''}total: ${(tc[k]||0)}</small></div>`}).join('')}</div>
     <p class="twH">Cada troféu soma pontos 🏆 no ranking. Quem sobe mais andares fica na frente; empate = mais troféus, depois menos tempo.</p><div class="row"><button class="btn" id="twTx">FECHAR</button></div></div>`);
@@ -17716,7 +17727,7 @@ window.__dbg={mus:()=>[MCUR,MEL.src.split('/').pop()],stg:()=>STAGE.key,prepMatc
 })();
 </script>
 <style>#updB{position:fixed;left:50%;top:max(8px,env(safe-area-inset-top));transform:translateX(-50%);z-index:99999;padding:10px 22px;border-radius:14px;border:2px solid #fff3c0;background:linear-gradient(#ffd84a,#e08a10);color:#3a1d00;font:900 15px system-ui,sans-serif;box-shadow:0 0 18px #ffb21f;cursor:pointer;animation:updP 1s ease-in-out infinite alternate}@keyframes updP{to{transform:translateX(-50%) scale(1.05)}}</style>
-<script>(function(){const V='1b1530d5ac20';if(!/^https?:/.test(location.protocol))return;let nv=null;
+<script>(function(){const V='eac1fa1c39e7';if(!/^https?:/.test(location.protocol))return;let nv=null;
 function show(){if(document.getElementById('updB'))return;try{if(typeof G!=='undefined'&&G.mode==='fight')return}catch(e){}const b=document.createElement('button');b.id='updB';b.textContent='🔄 ATUALIZAÇÃO NOVA! Toque para atualizar';
   b.onclick=()=>{b.textContent='⏳ Atualizando...';try{acSave(1)}catch(e){}setTimeout(()=>location.reload(),900)};document.body.appendChild(b)}
 async function chk(){if(document.hidden)return;if(nv){show();return}try{const r=await fetch('versao.txt?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const t=(await r.text()).trim();if(/^[0-9a-f]{8,40}$/.test(t)&&t!==V){nv=t;show()}}catch(e){}}

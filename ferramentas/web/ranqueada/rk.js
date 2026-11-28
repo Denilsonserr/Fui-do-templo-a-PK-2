@@ -8728,3 +8728,14 @@ TWCUP['18udity']={nm:'👑 TUDO DO JOGO',it:[],uni:1,pk:{gem:500000},allch:1,all
   try{if(C&&C.allch&&r!==false&&E&&/\bok\b/.test(E.className||'')){const own=rkG('own',['goku']);for(const id of ['alucard','sung','shaka','yuta',...RK_MIT,...RK_LEG,...RK_EPI])if(CH[id]&&!own.includes(id))own.push(id);rkS('own',own);
     if(C.allit){const I=twInv();for(const k of Object.keys(RKSP).filter(k=>RKSP[k].t!=='poc'))if(!I.some(x=>x.nm===RKSP[k].nm))I.push(Object.assign({id:'all'+k+Date.now().toString(36)},RKSP[k]));twLS.s('tw_inv',I);try{TW.capOut=twCap()}catch(e){}}
     try{localStorage.removeItem('ac_h');acSave(1)}catch(e){}if(C.msg)E.textContent=C.msg}}catch(e){}return r}}
+
+/* ================= v671: PVP "Nenhuma sombra encontrada" — a busca (pvFind) pedia 40 docs do rank ordenados pelo ID (pvs_<conta>_<hora>, decrescente):
+   a conta com ID "maior" (Honrado, 66 docs) enchia as 40 vagas sozinha → ele não achava ninguém (pula a própria sombra) e os outros só achavam ele.
+   Agora pede ao servidor 1 doc (o mais novo) POR CONTA (`latestBy:'pva'`, ordenado pelos pontos `pvs`) — todo mundo aparece. Se der erro, usa o jeito antigo. ================= */
+{const pvQ1=async(f,v,lim)=>{try{return await pvQL(f,v,lim,'pvs','DESCENDING','pva')}catch(e){return await pvQ(f,v,lim)}};
+pvFind=async function(){const o=pvG(),me=pvAcc(),seen=new Set(),pool=[];const add=L=>{for(const e of L){if(!e.pva||e.pva===me||seen.has(e.pva))continue;seen.add(e.pva);const x=pvParse(e);if(x)pool.push(x)}};
+  for(const t of [o.t,o.t-1,o.t+1,o.t-2,o.t+2]){if(t<0||t>PVDIV)continue;add(await pvQ1('pvg','g'+t+'_'+pvMon(),60));if(pool.length>=4)break}
+  if(pool.length<2)add(await pvQ1('pvk',pvMon(),200));if(!pool.length)return null;
+  const S=pvScore(o);pool.sort((a,b)=>Math.abs(pvScore({t:a.t,d:a.dv,s:a.st})-S)-Math.abs(pvScore({t:b.t,d:b.dv,s:b.st})-S));
+  const top=pool.slice(0,Math.min(5,pool.length)).filter(x=>x.acc!==PV.last);const L=top.length?top:pool;return L[(Math.random()*L.length)|0]}}
+try{Object.assign(window.__vw,{pvFind:()=>pvFind()})}catch(e){}

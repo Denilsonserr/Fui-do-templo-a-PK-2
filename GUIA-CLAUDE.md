@@ -3210,3 +3210,7 @@ O dono mandou uma especificação ("SISTEMA PROFISSIONAL DE COMBATE 2D": animaç
 
 ## v670 — CÓDIGO DE USO ÚNICO "TUDO"
 - TWCUP['18udity'] (texto só com o dono): uni:1, pk gem 500.000, allch (todos os personagens), allit (todos os itens do RKSP menos poções — o `it` normal NÃO funciona junto com bp:2, por isso o embrulho), rgx 30 anéis SSS (5 cores × 6 atributos), rgsp 6 SP, bp:2 s3 x2 (passe 2x Hellsing). Teste: C1=.. node ferramentas/testes/tcod_v670.js
+
+## v671 — PVP "Nenhuma sombra encontrada" (28/11)
+- Causa: pvFind pedia 40 docs do rank ordenados pelo ID (pvs_<conta>_<hora> DESC); Honrado (conta oei6jy, 66 docs) enchia as vagas → ele não achava ninguém e os outros só achavam ele.
+- Agora pvFind usa pvQL(..., 'pvs', 'DESCENDING', 'pva') = 1 doc por conta (worker latestBy). Fallback pvQ. Teste: ferramentas/testes/tpvp_busca_v671.js.
